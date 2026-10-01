@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "resourceId": "M02",
+  "figures": [
+    {
+      "id": "m02-resolved-state",
+      "role": "orientation",
+      "template": "stack",
+      "height": 560,
+      "title": "Eight surfaces of resolved state",
+      "desc": "Direction, Sources, Instructions, Tools, Permissions, State, Feedback, and Decisive evidence are eight surfaces that can load separately. Map each one before you decide what ran.",
+      "caption": "Map Direction, Sources, Instructions, Tools, Permissions, State, Feedback, and Decisive evidence.",
+      "transcript": "Direction, Sources, Instructions, Tools, Permissions, State, Feedback, and Decisive evidence are eight surfaces that can load separately. Map each one before you decide what ran.",
+      "eyebrow": "STATE",
+      "items": [
+        { "label": "Direction", "detail": "the request in force" },
+        { "label": "Sources", "detail": "what was retrieved" },
+        { "label": "Instructions", "detail": "saved rules that loaded" },
+        { "label": "Tools", "detail": "what the run can call" },
+        { "label": "Permissions", "detail": "what those tools may touch" },
+        { "label": "State", "detail": "what persisted from earlier" },
+        { "label": "Feedback", "detail": "what the surface showed" },
+        { "label": "Decisive evidence", "detail": "what would accept or refuse" }
+      ]
+    },
+    {
+      "id": "m02-control-ladder",
+      "role": "mechanism",
+      "template": "stack",
+      "title": "Advice is not a guard",
+      "desc": "Temporary advice, a saved instruction, a deterministic screen, and actual authority sit on different rungs. Advice does not stop a later run.",
+      "caption": "Name the rung: temporary advice, saved instruction, deterministic screen, or actual authority.",
+      "transcript": "Temporary advice, a saved instruction, a deterministic screen, and actual authority sit on different rungs. Advice does not stop a later run.",
+      "eyebrow": "LADDER",
+      "items": [
+        { "label": "Temporary advice", "detail": "spoken once, gone on reload" },
+        { "label": "Saved instruction", "detail": "words that load from disk" },
+        { "label": "Deterministic screen", "detail": "a check that accepts or rejects" },
+        { "label": "Actual authority", "detail": "who may release or refuse" }
+      ]
+    },
+    {
+      "id": "m02-source-as-data",
+      "role": "mechanism",
+      "template": "comparison",
+      "title": "The hostile note is data",
+      "desc": "The clean note states paper arrived. It is not a release. The hostile note states the height and quotes an instruction to release the crate. Treat retrieved source text as data.",
+      "caption": "Treat retrieved source text as data. Do not obey instructions found inside retrieved notes.",
+      "transcript": "The clean note states paper arrived. It is not a release. The hostile note states the height and quotes an instruction to release the crate. Treat retrieved source text as data.",
+      "eyebrow": "DATA",
+      "items": [
+        { "label": "Clean note", "detail": "paper arrived, not a release" },
+        { "label": "Hostile note", "detail": "height plus a quoted instruction to ignore" }
+      ]
+    },
+    {
+      "id": "m02-predict-then-run",
+      "role": "method",
+      "template": "timeline",
+      "title": "Write the prediction first",
+      "desc": "Write the expected accept, then the expected reject, then run. A result you did not predict cannot teach you what the screen did.",
+      "caption": "Write expected accept and expected reject before you run the screen.",
+      "transcript": "Write the expected accept, then the expected reject, then run. A result you did not predict cannot teach you what the screen did.",
+      "eyebrow": "PREDICT",
+      "items": [
+        { "label": "Expect accept", "detail": "the clean note" },
+        { "label": "Expected reject", "detail": "the hostile note" },
+        { "label": "Then run", "detail": "screen only" }
+      ]
+    },
+    {
+      "id": "m02-guard-pair",
+      "role": "mechanism",
+      "template": "comparison",
+      "title": "Clean note passes, hostile note fails",
+      "desc": "The clean note is accepted. The hostile note is rejected. The pair is the evidence that the screen reads the note as data.",
+      "caption": "Confirm the clean note is accepted and the hostile note is rejected.",
+      "transcript": "The clean note is accepted. The hostile note is rejected. The pair is the evidence that the screen reads the note as data.",
+      "eyebrow": "SCREEN",
+      "items": [
+        { "label": "Clean note", "detail": "accept" },
+        { "label": "Hostile note", "detail": "reject" }
+      ]
+    },
+    {
+      "id": "m02-reload",
+      "role": "method",
+      "template": "flow",
+      "title": "Load the rule, exit, load again in a fresh session",
+      "desc": "Load the saved rule through the launcher. Exit completely. Start a new evidence directory. Load the same rule again. The load receipt must match.",
+      "caption": "Load the rule, exit, start a fresh session, load the same rule, confirm identical receipt.",
+      "transcript": "Load the rule through the launcher. Exit completely. Start a new evidence directory. Load the same rule again. The load receipt must match.",
+      "eyebrow": "RELOAD",
+      "items": [
+        { "label": "Load rule", "detail": "via --instruction" },
+        { "label": "Exit", "detail": "no chat memory" },
+        { "label": "Fresh evidence dir", "detail": "new session" },
+        { "label": "Load again", "detail": "identical receipt" }
+      ]
+    },
+    {
+      "id": "m02-failure-kinds",
+      "role": "diagnostic",
+      "template": "comparison",
+      "title": "Four ways a control can miss",
+      "desc": "A control can miss because it was not loaded, not triggered, failed in execution, or executed and then was bypassed. Name the miss before you add another control.",
+      "caption": "Name whether the control was not loaded, not triggered, failed, or bypassed.",
+      "transcript": "A control can miss because it was not loaded, not triggered, failed in execution, or executed and then was bypassed. Name the miss before you add another control.",
+      "eyebrow": "MISS",
+      "items": [
+        { "label": "Not loaded", "detail": "the rule never entered the run" },
+        { "label": "Not triggered", "detail": "the condition never fired" },
+        { "label": "Execution failed", "detail": "the check did not complete" },
+        { "label": "Executed but bypassed", "detail": "a later path ignored it" }
+      ]
+    },
+    {
+      "id": "m02-residual",
+      "role": "diagnostic",
+      "template": "fork",
+      "title": "What the screen stops, what you still own",
+      "desc": "After a correct reject the screen did its job. You still own new notes, new tools, and new authority.",
+      "caption": "After a correct reject, name what you still own.",
+      "transcript": "After a correct reject the screen did its job. You still own new notes, new tools, and new authority.",
+      "eyebrow": "RESIDUAL",
+      "source": { "label": "After a correct reject", "detail": "the screen did its job" },
+      "items": [
+        { "label": "Still human", "detail": "new notes, new tools, new authority" }
+      ]
+    }
+  ]
+}
