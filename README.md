@@ -120,3 +120,13 @@ The publisher reports instructional pages, raw downloads, and UI/generated asset
 `site/` is generated output and is not committed. On a fresh clone, install the pinned build dependency and run the publication commands above before serving or deploying. Publish the contents of `site/` as a static site; do not point a host at the repository root. The generated site needs no application server or provider credentials.
 
 The GitHub repository is private. Give participants repository read access before they use the clone instructions; access to a hosted course page does not grant access to the source repository.
+
+## Netlify deployment
+
+The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
+
+Root `netlify.toml` selects Python 3.12 and Node.js 22, installs `requirements-dev.txt`, runs the publisher and all course gates, and publishes only `site/`. A failed command blocks publication. Pretty URLs are disabled to preserve the generated `.html` routes.
+
+Manage the shared password in [the Netlify project](https://app.netlify.com/projects/reformation-aihb-oct-2026) under **Project configuration → General → Visitor access → Project visibility**. Keep **Password** selected with **Production and previews** scope. This protects pages, assets, downloads, and immutable deploy URLs. Keep credentials out of Git and build environment variables; the local `NETLIFY_PAT` stays in ignored `.env`.
+
+After changing the Git connection, push a deployment-owned change and confirm the published production deploy's commit matches that push. A successful clone or manually triggered build does not prove push notifications work. API linkage must include this repository's GitHub ID, `1400324068`, as `repo.id`, along with the existing App installation, `57313880`.
