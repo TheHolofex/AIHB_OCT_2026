@@ -1,14 +1,18 @@
 # Module 0 · Give AI a clear, limited job
 
-You will ask one bounded AI tool to draft an internal email, check the actual file against its sources, demonstrate a failing check, and decide whether the result may be used. You will then change one supplied fact without silently changing the rest of the task.
+Draft a checked internal email about North Shelf for the Field Clinic S-3 supply clerk. Decide what to delegate to AI, what judgment to keep, and what use to refuse. Give the tool clear limits, check the saved email against the packet, and decide whether named class participants may read it. Then change one supplied fact while preserving the other facts and limits.
 
 North Shelf is fictional. The email stays with named class participants. It is not a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite, material fact, or decision owner is unresolved.
 
-Aim for a first checked draft within 60 minutes. That is a planning target, not a measured completion promise. Allow further time for the falsifier, changed input, comparison, and handoff.
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee. Aim for a first checked draft within 60 minutes of practice. Use the remaining practice allowance to demonstrate a failing check, apply the changed input, compare the drafts, and record the handoff.
 
 ## 1. Create the four-file work folder
 
-Finish the appropriate [setup path](../README.md) first. Use an ordinary terminal with the verified interpreter and checkout. These commands work from any directory and create a new external attempt. `W` holds work; sibling `E` holds evidence. Earlier attempts remain untouched.
+Machine readiness is a prerequisite: finish the appropriate [setup path](../README.md) and its checks before drafting. A **terminal** is the application where you enter commands. Use it as your ordinary user, with the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs.
+
+Your **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create that folder outside the checkout. `W` names the work folder; `E` names the evidence folder beside it. Earlier attempts remain untouched.
+
+Live drafting requires an authorized OpenRouter account and an API key available in this terminal. An API key is the credential the launcher uses to access that account. The course uses the fixed OpenRouter model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`; use the setup credential procedure before the first call.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -45,7 +49,7 @@ $E = "$HOME\course-evidence\module-00-$RUN\evidence"
 
 Open `W/check_artifact.py`. The local checker is inspectable practice software. Its output cannot independently certify the meaning of your email or your judgment. Editing a practice checker does not make a draft more defensible.
 
-Create `W/acceptance-control.md` in your editor. Name the practice checker, the decision owner, the published standard, and two qualities the checker cannot establish. If those are unavailable, record `HOLD`; do not assume that files in a public checkout are secret controls.
+Create `W/acceptance-control.md` in your editor. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
 
 ![The draft producer and acceptance decision have different roles](figures/m00-independent-accept.svg)
 
@@ -108,7 +112,7 @@ Decision to proceed with a class draft, or HOLD:
 
 ## 6. Freeze a testable direction
 
-Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
+Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
 
 Set a limit of two deliberate correction attempts before `HOLD`. A correction requires a diagnosed cause and a fresh retained attempt; this is not permission for automatic retries until a favorable answer appears.
 
@@ -130,7 +134,7 @@ an external action. After writing, report the path only.
 
 ## 7. Produce one actual tool-written draft
 
-Use the shared launcher, not a personal agent profile. It exposes only the declared course tools and permits only the new `artifact.md` output. The child receipt directory must not exist already.
+Use the shared launcher to run the model with the declared course tools and permission to write only the new `artifact.md` output. A **receipt** is a saved record of what the launcher or tool observed during a run. The launcher creates a separate receipt folder for this call; that folder must not already exist.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -184,7 +188,7 @@ Create `W/source-check.md`. Quote each material statement about quantity, custod
 
 ## 10. Make a failing copy without changing the original
 
-Test whether the visible check can reject a known wrong count. The following block changes the original on-hand number only in a separate falsifier file. It also records the original draft's hash for the later unchanged-file check.
+Test whether the visible check can reject a known wrong count. The following block changes the original on-hand number only in a separate falsifier file. It also records the original draft's **hash**, a fingerprint calculated from its bytes, so you can check later that the original stayed unchanged.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -225,7 +229,7 @@ In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, an
 
 **Stop:** Any material concern remains unresolved or the audience extends beyond the supplied authority.
 
-**Recovery:** Keep the draft on hold and name who must resolve the issue. Mechanical success and model authorship do not certify a human operator.
+**Recovery:** Keep the draft on hold and name who must resolve the issue. A mechanical pass does not resolve a missing source or sharing permission.
 
 ## 13. Apply the changed input, compare, and hand off
 
@@ -336,4 +340,3 @@ In `W/stretch-trace.md`, quote every material change and its source support, the
 
 After a machine change, open a new terminal and run the setup check in it. Keep the request, sharing limit, source comparison, and exact first error with the attempt.
 
-Continue with [Module 1 · Verify sources and outputs](../../module-01-mission-thread/README.md).

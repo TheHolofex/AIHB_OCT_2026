@@ -182,12 +182,16 @@ capture_version git '' git --version
 
 python_cmd=""
 for candidate in python3.12 python3 python; do
-  if command -v "$candidate" >/dev/null 2>&1; then python_cmd="$candidate"; break; fi
+  resolved="$("$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))' 2>/dev/null)" || continue
+  [ -x "$resolved" ] || continue
+  "$resolved" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 12) else 1)' 2>/dev/null || continue
+  python_cmd="$resolved"
+  break
 done
 if [ -z "$python_cmd" ]; then
   record FAIL python "Python 3.12+ not found on PATH" "Install Python 3.12+ and ensure it is on PATH in a new terminal."
 else
-  pyver="$($python_cmd --version 2>/dev/null | awk '{print $2}')"
+  pyver="$("$python_cmd" --version 2>/dev/null | awk '{print $2}')"
   if [ -z "$pyver" ]; then
     record FAIL python "could not read version" "Install Python 3.12+."
   else

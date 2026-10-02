@@ -1,10 +1,14 @@
 # Module 6 · Predict the effect of one saved-rule change and prove the exact delta
 
-You can already derive a bounded check from fixed inputs. Now you will predict the exact effect of changing one line in a saved workflow, run it on two 80-lot waves, and prove which receipt rows moved while all others stayed byte-identical. Allow about two hours for inspection, prediction, runs, and notes; this is a planning target, not a measured completion time.
+Keep White Rack's lot decisions consistent when a routing rule changes. Using a bounded control you already know how to validate, predict the full effect of one saved rule change across two batches of 80 lots, called waves. Run both waves under both rules and compare every output row, including the rows that must stay unchanged. Restore the original rule and reproduce both original outputs.
 
-The fictional movement is Icehouse Depot to Clinic I-6. The files are authored practice data. Nothing here authorizes a real movement.
+The fictional movement carries refrigerated reagent kits from Icehouse Depot to Clinic I-6. The files are authored practice data. Nothing here authorizes a real movement.
+
+Plan for one three-hour facilitated session, including two hours of practice for inspection, prediction, runs, and notes. This is a planning allowance, not a measured completion guarantee.
 
 A **saved workflow** is the supplied `route.py` together with the `RULE.md` that sits beside it. A **receipt** is the CSV the workflow writes. Its columns are `lot`, `route`, and `status`. The router decides in this order: RACK_CONFLICT first, then exact permit match, then the single configuration line. Gate-window text and input disposition never change routing.
+
+The **serialized row** is the exact row text saved in that CSV, including separators and its line ending. Acceptance requires a deterministic result: the same saved inputs and rule must produce the same bytes. Exclude any generated prose from acceptance before running; a convincing explanation cannot establish that the receipt rows match.
 
 ## Prepare a separate attempt
 
@@ -44,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 
 **Recovery:** Keep the existing attempt. Correct the prerequisite through setup, then repeat this block with a new `RUN`. Do not reset the checkout or delete an old work folder.
 
-If you open a new terminal later, repeat only the variable assignments. Do not prepare a second folder unless this attempt has stopped.
+If you open a new terminal later, restore the variables to this attempt's saved paths, including its original `RUN`, `W`, and `E`. Do not generate a new `RUN` or prepare a second folder unless this attempt has stopped.
 
 The prepare script prints a suggested next command that runs the router on wave 1. Do not run it yet.
 
@@ -58,7 +62,7 @@ In your editor, open these files under `W`:
 - `shared/workflow/RULE.md`
 - `shared/baseline/RULE.md`
 
-The input columns are `lot`, `permit`, `gate_window`, `input_disposition`, `resource_exception`. `input_disposition` is provenance only. `CANCELLED` rows carry permit `WITHDRAWN`. The exception column is empty or exactly `RACK_CONFLICT`.
+The input columns are `lot`, `permit`, `gate_window`, `input_disposition`, `resource_exception`. `input_disposition` records whether an input is `NEW`, `CHANGED`, `CANCELLED`, or `UNCHANGED`; it does not choose the output route. `CANCELLED` rows carry permit `WITHDRAWN`. The exception column is empty or exactly `RACK_CONFLICT`.
 
 The saved rule contains one configuration line: `pending_status: OPEN`. The router applies rules in this order:
 
@@ -167,7 +171,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rule line check held; preserve the attempt.' }
 
 ## Prove the full serialized delta for both waves
 
-Run the workflow again to new receipt names. Then compare every serialized row against its baseline receipt.
+Run the workflow again to new receipt names. Compare every serialized row against its baseline receipt, not just the number of changed rows. Match each printed before-and-after row to your saved prediction, and check the count of byte-identical rows. The complete comparison must account for all 80 rows in each wave, including both rack-conflict holds.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -236,7 +240,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Serialized delta check held; preserve the rece
 
 ## Restore the baseline rule and prove the full reruns
 
-The baseline rule lives in `shared/baseline/RULE.md` with matching digest. Use the supplied restore that takes the workdir.
+The baseline rule lives in `shared/baseline/RULE.md` with a saved hash that identifies its bytes. Give the supplied restore command the work-folder path `W`; it checks that saved copy before restoring the active rule.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -297,7 +301,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Restored waves check held; preserve the receip
 
 **Recovery:** Preserve the error and receipts. Do not hand-copy a rule over a mismatched baseline digest. Record the damaged file, then use a newly prepared folder if the frozen baseline is no longer intact.
 
-Append the comparison output to `E/prediction.md` without replacing the original prediction. Write `W/handoff.md` with the work path, rule before and after, receipt paths, complete row comparison, and restore evidence. State that input disposition was never used as a route.
+Append the comparison output to `E/prediction.md` without replacing the original prediction. Write `W/handoff.md` with the work path, workflow and input identities, rule before and after, receipt paths and hashes, complete row comparison, and restore evidence. State that input disposition was never used as a route. Retain the two rack-conflict holds explicitly; this rule does not allocate the rack.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: separate an input revision from the policy change</summary>
@@ -474,5 +478,3 @@ Append the observed deltas to your evidence and update the handoff. Explain one 
 Confirm that both original waves used the same work-copy `route.py`, only the intended configuration line changed, and complete receipt comparisons support the predicted delta. The restored runs must match their respective original baselines byte for byte. Keep every attempt; do not hand-patch a receipt.
 
 If you completed the optional stretch, retain its two revised-input conditions and the separate input/policy comparison. Leave an unrun stretch unclaimed rather than treating the core comparison as its proof.
-
-Continue with [paired evaluation](../../module-07-change-eval/README.md).

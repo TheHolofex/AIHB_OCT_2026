@@ -12,6 +12,9 @@ Start with the first failed action. Save its exact error and the last known-good
 | `omp` is not found | Check the resolved command path below. Add only the user-bin directory named by your platform guide, then check again in the intended terminal. |
 | `omp` reports a different version | Keep the observed path and version. Do not overwrite a different installation silently. Use the verified course binary and confirm that PATH resolves to it. |
 | A course directory already exists | Confirm that it is the intended checkout. Use it without reset, pull, or clean when it is valid; otherwise leave it untouched and resolve the path conflict. |
+| Git cannot read the private course repository | A website password is not GitHub access. Follow the platform's disabled-prompt read check and conditional browser-login steps. A successful GitHub login still needs repository read permission; ask the repository owner about the invitation or organization approval. Preserve any existing checkout. |
+| GitHub CLI reports unapproved credential storage | Stop before configuring the Git helper or cloning. Have the device owner provision approved credential storage or approved Git credentials. Do not request plaintext storage or share authentication output. |
+| The conditional GitHub CLI package is unavailable | Use only the named platform's official package route. Ubuntu's `gh` requires Universe; ask the owner to approve that component if unavailable. Do not silently add sources. Arch's `github-cli` installation uses a full upgrade, not a partial upgrade. |
 | The new terminal has tools but the key is `MISSING` | This is expected for independently opened terminals. Enter the key through the hidden-input step in that terminal. Never put the key in a shell profile. |
 | A new process reports an unexpected `SET` | Determine whether it inherited the environment from a parent. `SET` alone does not prove persistence or exposure. Do not dump the environment into evidence. |
 | The launcher exits 2 | Read its prerequisite message. Missing key, wrong OMP version, missing input, conflicting permissions, or an existing attempt can stop before a provider request. No live success has occurred. |
@@ -20,8 +23,11 @@ Start with the first failed action. Save its exact error and the last known-good
 | The provider returns 402, a spending-limit error, or 429 | Stop paid work. Preserve the response and resolve credit, the approved limit, or rate availability before an explicit new attempt. Do not raise the spending ceiling or loop retries. |
 | The assistant claims it wrote a file, but the file or receipt is absent | Record `HOLD`. Check the declared work root and authorized filename. Do not manufacture the file or substitute chat text as a tool-write receipt. |
 | A write or evidence destination already exists | Preserve that attempt. Start with new work/output and receipt paths after documenting the cause; changing only E does not make an existing output new. |
-| A Windows script is blocked by managed execution policy | Save the policy error and ask the device owner. Do not bypass organizational policy or request broad machine-wide weakening. |
-| WSL paths point under `/mnt/c` | Use the Linux home directory and Linux OMP asset in Ubuntu. Do not mix Windows executable/configuration paths with the WSL attempt. |
+| A Windows script is blocked by execution policy or signing requirements | Inspect the effective policy and all scopes. Keep organizational and intentionally configured restrictions unchanged. Ask the device owner for an approved route. Only the native setup's explicitly authorized, unmanaged-default case uses temporary Process-scope `RemoteSigned`; it does not change CurrentUser or LocalMachine. |
+| A new Windows tab cannot find an installed tool | Close all relevant terminal windows and reopen Windows PowerShell from Start. A new tab can inherit the old terminal application's PATH. Re-resolve Git, Python, and OMP before proceeding. |
+| WSL paths point under `/mnt/c` | Use the selected Ubuntu distribution's Linux home and Linux OMP asset. Do not mix Windows executable/configuration paths with the WSL attempt. `df` reports filesystem space; its mount name need not begin with `/home`. |
+| The chosen WSL distribution shows VERSION 1 | Setting the default version affects new distributions only. Preserve the existing distribution and obtain owner-approved backup and conversion before proceeding. Do not unregister or reset it. |
+| A fresh macOS terminal cannot find Homebrew or Python | Check the saved `brew shellenv` and versioned Python PATH settings for the actual shell, then open another independent terminal. Do not repair PATH inside the verification block. |
 
 ## Confirm the command you are actually running
 
@@ -39,6 +45,7 @@ command -v omp && omp --version
 $ompCommand = Get-Command omp -CommandType Application -ErrorAction Stop
 $ompCommand.Source
 & $ompCommand.Source --version
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: the selected OMP executable failed its version check.' }
 ```
 
 **Expected:** The path is the installation you verified, and the version is exactly `omp/18.3.5`.

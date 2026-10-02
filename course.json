@@ -53,7 +53,7 @@
       "directory": "module-00-setup",
       "title": "Module 0 · Set up the harness and direct bounded work",
       "case_name": "North Shelf",
-      "summary": "Direct a bounded draft, check its claims, and keep release decisions with a person.",
+      "summary": "Direct a bounded task and produce a source-checked internal email.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_00_LAB.md", "dest": "shared/MODULE_00_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}},
@@ -91,7 +91,7 @@
       "directory": "module-01-mission-thread",
       "title": "Module 1 · Verify sources and outputs",
       "case_name": "Cold Lantern",
-      "summary": "Verify a polished brief against independent sources and calculations.",
+      "summary": "Challenge a polished brief against applicable sources and calculations.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_01_LAB.md", "dest": "shared/MODULE_01_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": []}},
@@ -131,7 +131,7 @@
       "directory": "module-02-context-desk",
       "title": "Module 2 · Control context and reusable instructions",
       "case_name": "Ledger Pike",
-      "summary": "Prove that a saved instruction loaded and survived a fresh session.",
+      "summary": "Save a rule and prove it loaded in a completely fresh session.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": ["stretch-matched-precedence"]}}
@@ -155,7 +155,7 @@
       "directory": "module-03-release-tools",
       "title": "Module 3 · Decide responsible release and operate bounded tools",
       "case_name": "Kiln Hold",
-      "summary": "Decide whether a packet may be shared and operate a tool with limited authority.",
+      "summary": "Decide whether a packet may be shared; operate and revoke a limited tool.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_03_LAB.md", "dest": "shared/MODULE_03_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -179,7 +179,7 @@
       "directory": "module-04-diagnose-review",
       "title": "Module 4 · Diagnose and recover",
       "case_name": "Copper Span",
-      "summary": "Locate a failure before making one authorized repair and proving recovery.",
+      "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_04_LAB.md", "dest": "shared/MODULE_04_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": ["stretch-competing-causes-on-a-second-case"]}}
@@ -207,7 +207,7 @@
       "directory": "module-05-run-corpus",
       "title": "Module 5 · Improve from observed failures",
       "case_name": "Blue Gauge",
-      "summary": "Derive a bounded control from observed failures and measure its limits.",
+      "summary": "Turn observed practice failures into one precise control and check its limits.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
@@ -232,7 +232,7 @@
       "directory": "module-06-batch-workflow",
       "title": "Module 6 · Operate a fixed workflow through change",
       "case_name": "White Rack",
-      "summary": "Predict and prove exactly what one saved workflow rule changes.",
+      "summary": "Process two batches and prove the full effect of one saved-rule change.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -258,7 +258,7 @@
       "directory": "module-07-change-eval",
       "title": "Module 7 · Evaluate a change with variation controls",
       "case_name": "Slope Brief",
-      "summary": "Compare a change against fixed gates without hiding failures or variation.",
+      "summary": "Compare a proposed change against frozen cases, hard gates, and model variation.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -287,7 +287,7 @@
       "directory": "module-08-agent-safeguards",
       "title": "Module 8 · Constrain agent behavior",
       "case_name": "Night Desk",
-      "summary": "Distinguish an observed tool denial from an action the agent never attempted.",
+      "summary": "Run a declared tool policy and inspect what the agent actually attempted.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -303,7 +303,7 @@
       "directory": "module-09-capstone",
       "title": "Module 9 · Transfer a runnable package",
       "case_name": "Last Count",
-      "summary": "Transfer a runnable package with a working stop and restore path.",
+      "summary": "Transfer work another person can run, stop, and restore without your chat history.",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_09_LAB.md", "dest": "shared/MODULE_09_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}

@@ -1,12 +1,14 @@
 # Module 5 · Derive a bounded control from observed runs
 
-You freeze a sample of runs before you look at their outcomes. You write one earliest failure note for each run in the sample. Then you name the categories and reconcile the counts. From the notes you infer two literal strings that a supplied control can check mechanically. You write those literals into the control's configuration file. You run the control on known cases and a missing path. The control is the only checker you use.
+Turn a repeated failure in Blue Gauge's practice records into a check that can flag the same text condition in another run. Use your source checks and preserved failure evidence to derive a **predicate**: a yes-or-no condition the supplied control can decide mechanically. Configure it with two exact pieces of text, then check known-bad, known-good, and missing input and record its limits.
 
-The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement of oxygen cylinders.
+The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or measurements of current model reliability. Your work stays inside the fictional class case and authorizes no real movement.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Copy a work folder
 
-The repository checkout is at `$HOME/Documents/AIHB_OCT_2026` (R). Use an absolute Python 3.12+ interpreter (PY). The module sources live under M. A unique run identifier (RUN) keeps attempts separate. The work folder (W) and evidence (E) live outside the checkout.
+Use the verified checkout and Python from setup. The commands name the checkout at `$HOME/Documents/AIHB_OCT_2026` as `R` and select the full path to Python 3.12 or newer as `PY`. `M` names the module sources. `RUN` gives this attempt a unique name; `W` holds its work files and `E` its evidence outside the checkout. Use the command blocks for your terminal throughout.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -122,11 +124,14 @@ Do not copy any extra checker into the work folder. Do not run the suggested cor
 | Freeze the config copy and run the three controls | 25 minutes |
 | Handoff | 15 minutes |
 
-At least two hours belong to your own reading and notes.
+The table allocates 140 minutes within the three-hour session, including at least two hours of your own practice. Use the remaining time for preparation and facilitated discussion; the allocations do not predict how quickly you will finish.
 
 ## 1. Freeze the sample rule first
 
 Write `sample-rule.md` before you open any run that shows an outcome or a stamp result.
+
+This makes the sample **outcome-blind**: you fix membership without choosing records because they passed or failed. Use the declaration below only if you have not opened the run files. If you have already seen outcomes, preserve that fact; a fresh folder cannot make them unseen. Record the earlier exposure rather than claim an outcome-blind attempt.
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -186,7 +191,7 @@ The sample is the first sixteen runs, `R-001.md` through `R-016.md`. You will re
 
 **Stop:** The sample-rule file is missing, the digest file already exists, or you have already opened a run and seen a stamp.
 
-**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. Open a new terminal and repeat the prepare block, then write the rule again before opening any run.
+**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. If the failure occurred before you saw outcomes, open a new terminal, repeat the prepare block, and write the rule before opening any run. If you already saw outcomes, record that exposure and do not claim that another attempt is outcome-blind.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -199,7 +204,7 @@ Write-Output "exit $LASTEXITCODE"
 
 **Stop:** The sample-rule file is missing, the digest file already exists, or you have already opened a run and seen a stamp.
 
-**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. Open a new terminal and repeat the prepare block, then write the rule again before opening any run.
+**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. If the failure occurred before you saw outcomes, open a new terminal, repeat the prepare block, and write the rule before opening any run. If you already saw outcomes, record that exposure and do not claim that another attempt is outcome-blind.
 
 **Recovery:**
 
@@ -225,15 +230,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 
 **Recovery:** Select a path that does not exist yet (use a new terminal with new RUN) and repeat the prepare command.
 
-Recreate `sample-rule.md` from the instructions in the "Freeze the sample rule first" section, then repeat the digest step with the new W and E.
+If no outcomes were opened, recreate `sample-rule.md` and repeat the digest step with the new W and E. If outcomes were opened, retain that exposure in the attempt record and do not reuse the declaration that you have not seen them. A rerun can check the control, but cannot establish an outcome-blind first reading.
 ## 2. First-failure notes before categories
 
 
 Open the sixteen sample files under `shared/corpus/`. For each run, write one first-failure note in `first-failures.md` before you write any category tally.
 
-Use the run's own earliest trouble. A first-failure note names a concrete observation in that file. It does not start with a category name.
+Name the earliest concrete problem you can support from that run's text, with the line or passage that shows it. Do not start with a category name. If you find no failure, record that observation instead of inventing one. Keep uncertain cases explicit.
 
-**Expected:** The file `first-failures.md` contains sixteen entries, one per `R-00N.md`, each beginning with the run identifier and a short description of the first thing that looked wrong.
+**Expected:** The file `first-failures.md` contains sixteen entries, one per sample run. Each begins with the run identifier and records the earliest supported problem, an unresolved observation, or that no failure was found.
 
 **Stop:** If you wrote a category count before every run has its note, the counts are not evidence.
 
@@ -241,7 +246,7 @@ Use the run's own earliest trouble. A first-failure note names a concrete observ
 
 ## 3. Then tally categories
 
-After the notes exist, write `counts.md`.
+After all sixteen notes exist, group the observed failures by what went wrong and write `counts.md`. Keep each run identifier attached to its category so another reader can reconcile the counts with the notes. Use the pass, fail, and other totals below to account for every run once.
 
 ```markdown
 # Counts
@@ -252,7 +257,7 @@ other:
 total:
 ```
 
-The total must be 16. PASS and FAIL must each sum to the number of runs you placed in them. If the numbers do not close, record `HOLD` and explain which run prevents reconciliation.
+The total must be 16. Each category count must agree with its listed runs, and pass, fail, and other must add to the total. If they do not, record `HOLD` and identify the missing or double-counted run. State one conclusion supported by the failure categories in this sample; do not generalize its frequency to workplace use or current models.
 
 Keep the original first-failure notes visible next to any revised category label.
 
@@ -270,7 +275,7 @@ The control takes one run file and a configuration file:
 
 The configuration is a JSON object with exactly one key, `all_present`. Its value is a list of exactly two different nonempty strings. Those two strings are the literals.
 
-You infer the literals from the first-failure notes. A literal is a short exact piece of text that appears in the runs you decided were failures and does not appear in the runs you decided were passes. The check is a simple substring search. Capital letters and lowercase letters are different. No regular expression or calculation is performed.
+Choose the literals from your first-failure notes to identify one repeated failure category. A **literal** is an exact piece of text. The predicate matches only when both literals occur in the same file; either one may also occur alone in a passing run. This is a substring search, so text inside a longer word also matches. Capital letters and lowercase letters are different. The control does not interpret meaning, calculate values, or use pattern rules called regular expressions.
 
 The characters `RELEASED` occur inside `UNRELEASED`. A config that uses `RELEASED` therefore matches a hold stamp written as `UNRELEASED` when the other literal is also present. This is a limit of a pure text check. Measure that limit honestly.
 
@@ -512,6 +517,8 @@ What the next person should read first in the full corpus:
 
 A classmate who did not watch you work should be able to reconstruct the result and the limits of the control without coaching.
 
+State which observed failures the predicate targets and which it cannot catch. A **false positive** is a match on a run without that failure; a **false negative** is a missed run that has it. Report any such cases in the records you checked, with their run IDs and the number checked. Do not describe an unmeasured limitation as a zero error rate.
+
 ## Stretch: two preregistered configurations on the held-out runs
 
 <details class="rf-stretch" markdown="1">
@@ -625,7 +632,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Stretch freeze held; preserve the attempt.' }
 
 **Recovery:** Preserve any partial or earlier freeze. Choose fresh frozen filenames for a new pair and use those names in its commands; never overwrite a preregistered configuration.
 
-Write predictions for all 64 held-out runs (R-017 through R-080) in $W/out/stretch-prediction.md before running any config or opening the labels. Predict for each whether promotion_failure will be true and whether each config will MATCH or PASS.
+The **held-out runs**, R-017 through R-080, were not used to choose the original literals. Read those 64 run texts and write predictions in $W/out/stretch-prediction.md before running either configuration or opening the public labels. For each run, predict whether `promotion_failure` is true, meaning a receipt was treated as a release, and whether each configuration will return MATCH or PASS.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -821,7 +828,7 @@ Get-Content "$W\shared\checks\held-out-truth.json"
 
 **Expected:** The json shows promotion_failure true or false for each R-0NN without revealing your literals.
 
-Report the exact counts and the tradeoff. Explain what the UNRELEASED / RELEASED substring collision shows about the limit of a pure text check.
+For each frozen configuration, report matches and misses against the public labels, including false positives and false negatives out of all 64 runs. Compare the two configurations' errors without dropping an inconvenient run. Explain what the UNRELEASED / RELEASED substring collision shows about the limit of a pure text check.
 
 Do not resample runs to improve the numbers. The public labels are practice data only.
 
@@ -839,5 +846,3 @@ Check that:
 - no second checker was written;
 - the work remains inside the fictional class case;
 - the two stretch predictions were written before the held-out labels were opened (if you did the stretch).
-
-Continue with [White Rack](../../module-06-batch-workflow/README.md).

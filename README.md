@@ -119,7 +119,19 @@ The publisher reports instructional pages, raw downloads, and UI/generated asset
 
 `site/` is generated output and is not committed. On a fresh clone, install the pinned build dependency and run the publication commands above before serving or deploying. Publish the contents of `site/` as a static site; do not point a host at the repository root. The generated site needs no application server or provider credentials.
 
-The GitHub repository is private. Give participants repository read access before they use the clone instructions; access to a hosted course page does not grant access to the source repository.
+The GitHub repository is private. Give participants repository read access before they use the clone instructions; access to a hosted course page does not grant access to the source repository. Each setup route checks existing HTTPS access first. Only failed access enters the official `gh` browser-login fallback. `gh` is a conditional repository-access helper, not a harness or model credential. Its preferred OS credential store can fall back to plaintext; device policy must permit the reported storage before configuring the Git helper for `github.com`.
+
+## Setup maintenance and verification
+
+The five owning procedures are under `AI_Harness_Bootcamp_2/module-00-setup/platforms/`. Keep their commands aligned with the shared credential, version, troubleshooting, and source pages. The supported routes are native Windows PowerShell 5.1; Windows plus WSL 2 Ubuntu 24.04/26.04; macOS 15+ on Apple Silicon or Intel; Ubuntu 24.04/26.04 on x86-64/ARM64; and official Arch x86-64. Intel Homebrew is Tier 3, not equivalent support. Arch package installation is a full upgrade, never a partial `pacman -Sy`.
+
+Preserve the setup boundaries: install only missing prerequisites; verify the exact OMP checksum before execution; preserve conflicting installs, profiles, and dirty checkouts; prove saved PATH in an independent terminal without repairing it inside the check; and keep the prerequisite report separate from the token-bound tool proof and actual disk readback. Both report helpers execute Python candidates until a usable 3.12+ interpreter is found. The native helper also tries the Python launcher's version selectors and rejects Store aliases/reparse paths.
+
+Windows execution policy is not a blanket setup prerequisite. Leave an already permitted policy unchanged. Managed restrictions, signing requirements, and intentional local restrictions require the device owner's approved route. The optional unmanaged-default recovery is explicitly consented, Process-only `RemoteSigned`; closing that PowerShell process ends it.
+
+The hands-on language/setup revision passed all 28 offline gates and publication checks for 32 instructional pages, 663 raw downloads, and 38 UI/generated assets. Actual OMP 18.3.5 installation/checksum and no-key launcher boundaries were exercised in a disposable Apple Silicon home and an Ubuntu 24.04 x86-64 container, including Bash/zsh interactive and login startup. The Ubuntu route also exercised the official prerequisite and `gh` packages. PowerShell 7 parsing and controlled command-boundary checks are not Windows PowerShell 5.1 evidence.
+
+Release evidence remains incomplete: native Windows/WSL, Intel macOS, the other Ubuntu combinations, independent desktop-terminal transitions, GitHub browser authentication, and authorized paid proofs remain unobserved for the revised routes. The emulated Arch container could not initialize pacman's syscall sandbox; no sandbox bypass was used to claim an upgrade. A representative nondeveloper's homepage/setup attempt is also unobserved. Browser navigation, clipboard, saved place, keyboard, search, no-script reading, print, and prefixed publication were exercised; narrow DOM checks passed, but narrow screen capture failed in the browser tooling. Keep those limits separate from passed checks. Preserve transcripts and visual evidence outside the checkout; do not describe the five routes as natively verified or the revision as unqualified “S-tier.”
 
 ## Netlify deployment
 

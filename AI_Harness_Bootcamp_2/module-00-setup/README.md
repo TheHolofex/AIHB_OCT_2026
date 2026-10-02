@@ -1,10 +1,14 @@
 # Module 0 · Set up the harness and direct bounded work
 
-Plan for 1–3 hours of machine setup. Setup is finished only after you reopen the terminal and the tools still work. You will watch the AI tool write a real file using the course launcher, then use the same setup to draft and check a short email against a supplied set of facts.
+Direct Oh My Pi to draft an internal email, then check every material claim against the supplied North Shelf facts. You decide what to delegate, set the limits, and accept the email only for its stated use.
+
+First make the tools ready: install what is missing, reopen your terminal, and watch the model read a fresh token and write a real file through the course launcher. Machine readiness and a checked email are separate results.
+
+Allow 1–3 hours for setup. The bounded-work assignment has one three-hour facilitated session, including two hours of practice. These are planning allowances, not measured completion times.
 
 ## Start here
 
-Choose one command-line path and stay in it. A shell is the text window that runs the commands you paste.
+Choose one path and stay in it. A **terminal** is the text window where you enter commands; the **shell** is the program, such as PowerShell or Bash, that runs them.
 
 | Your machine | Use this guide |
 |---|---|
@@ -18,11 +22,15 @@ If you are unsure which Windows path to use, choose WSL when your organization p
 
 ## What you will install
 
-- Git and a copy of this course (a repository: a folder Git can version).
-- Python 3.12 or newer
-- Oh My Pi (`omp`) CLI pinned at version 18.3.5
+- Git and a **checkout**: the local copy of the private course repository.
+- Python 3.12 or newer.
+- Oh My Pi (`omp`) pinned at version 18.3.5.
 
-The AI tool makes a short provider-billed proof call through the course launcher. Before you enter any credential, ask whoever owns your AI provider accounts which account, provider, and model to use.
+The platform steps preserve **PATH**, the saved list of folders your shell searches for commands. They check it in an independently opened terminal, not just the window that ran the installer.
+
+You need GitHub read access to `TheHolofex/AIHB_OCT_2026`. The hosted-course password does not provide it. Each path first checks existing approved Git credentials; GitHub CLI (`gh`) is a conditional browser-login helper only if that access check fails. It is not an AI runtime requirement.
+
+The proof makes one provider-billed request through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key with a US$40 per-key ceiling](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
 
 ## Before the first command
 
@@ -65,17 +73,16 @@ Install the tools. Open a new terminal. Set the OpenRouter key in that terminal.
 </details>
 
 - `origin` reporting `https://github.com/TheHolofex/AIHB_OCT_2026.git`, `git rev-parse HEAD` reporting a 40-character id (the setup check prints the first 12); `git status --short` is reported for information only — unrelated changes are preserved and do not block setup or QA;
-- Python reporting 3.12 or higher (macOS uses `python3.12 --version`; Ubuntu, Arch, and WSL use `python3 --version`; PowerShell-only uses `python --version`);
+- an absolute Python executable reporting 3.12 or higher, selected by the platform's resolver and saved as `PY` (`$PY` in PowerShell);
 - the Oh My Pi version string `omp/18.3.5`, and the absolute path the command resolved to, as printed by the setup check;
 - the word `SET` from the key check in that same terminal — and the key value itself printed nowhere;
 - one proof file — `from-omp.txt` — read back from disk, written by the tool through the course launcher;
-- the same absolute tool path and the same file-writing result you saw in the terminal where you installed everything; and
-- a setup report saved outside the Git clone with no key, token, or password in it.
+- the expected absolute tool path found without repairing PATH in that new terminal; and
+- a setup report saved outside the checkout with no key, token, or password in it.
 
 The setup check reports the version, path, repository and key-presence observations as PASS, WARN or FAIL. The separate `verify_tool_proof.py` command checks the tool-written file, its token and the saved execution evidence. A passing setup report does not replace that proof.
 
+A **receipt** records what a run actually used and did: its inputs, tool calls, results, and file effects. Keep receipts and your **work folder**—the editable exercise copy—outside the checkout so a correction cannot overwrite the supplied inputs or an earlier attempt.
+
 Open the proof file and read it back before you accept it: a tool saying “done” is not the same as a file on disk.
 
-## After setup
-
-Put the machine to work: [Give AI a clear, limited job](shared/MODULE_00_LAB.md).

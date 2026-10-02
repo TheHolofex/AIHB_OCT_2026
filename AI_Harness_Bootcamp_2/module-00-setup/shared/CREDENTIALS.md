@@ -4,6 +4,20 @@ Use your participant-supplied OpenRouter key for `openrouter/anthropic/claude-so
 
 Keep the key in your approved password manager. Do not put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The course launcher receives it through the current process environment and gives OMP an isolated configuration; it does not need another provider login.
 
+## Keep repository access separate from model access
+
+Three kinds of access serve different purposes:
+
+- The **hosted-course password** opens the website. It does not grant GitHub repository access.
+- Your **GitHub account** needs read permission for the private `TheHolofex/AIHB_OCT_2026` repository. Accept the owner's invitation with the account you intend to use.
+- Your **OpenRouter key** authorizes provider-billed model requests. It does not authenticate Git or GitHub.
+
+Each platform first checks whether existing approved Git credentials can read the exact repository, with terminal prompting disabled. If that works, keep the existing credentials. If it fails, the platform's conditional GitHub CLI (`gh`) steps provide browser login. `gh` is an access helper, not another AI tool or a runtime prerequisite.
+
+During browser login, verify the GitHub hostname, device code, and invited account before authorizing. A successful login is not proof of repository permission; the exact repository read check must also succeed. If it still fails, resolve the invitation, organization approval, or network error with the responsible owner. Repeating login cannot grant permission.
+
+[GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Inspect the storage reported by `gh auth status --hostname github.com` without adding `--show-token`. Do not copy authentication output into shared evidence. If that storage is not permitted by device policy, stop and have the device owner provision approved storage or Git credentials; do not request insecure storage. The platform steps configure GitHub CLI as a Git credential helper only for `github.com`, and only after the fallback is needed and its storage is approved.
+
 ## Enter the key through a hidden prompt
 
 Choose the command for your terminal. Paste this command by itself, press Enter, then enter the key at the hidden prompt and press Enter again. Do not paste the export or conversion commands while the hidden prompt is waiting.

@@ -1,10 +1,14 @@
 # Module 7 · Evaluate a change without hiding variation
 
-You can already predict a bounded change and restore its baseline. Now you will decide whether a candidate deserves adoption when individual failures matter more than an average. You will freeze the decision rule before inspecting outcomes, compare the same cases, and distinguish observed variation from an instruction's effect.
+Decide whether a proposed change to Slope Brief can be used without losing a required source check. Use your existing comparison and restoration skills to freeze the cases, configurations, and decision rule before inspecting outcomes. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate even when its other results look better.
 
 The fictional movement carries heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The forty case packets and their three briefs are authored practice data, not records of OpenRouter calls. Nothing here authorizes a real load sheet or movement.
 
-A **hard gate** is a condition that cannot be traded against a better score elsewhere. Here, an unsourced mass or a missing time-zone label defeats a candidate. A **paired comparison** uses the same source packet for each condition.
+A **hard gate** is a condition that every result must meet. Keep the format check, mass gate, and time-zone gate separate: malformed output, an unsourced mass, or a missing time-zone label can each defeat a candidate. A **paired comparison** uses the same source packet for the baseline and candidate.
+
+The core comparison checks fixed authored outputs. Repeating that file check does not measure model variation. In the optional live comparison, repeated model calls show how outputs differ under the same conditions, so you can judge whether an apparent improvement holds across those attempts.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Prepare a separate attempt
 
@@ -72,7 +76,9 @@ Freeze the bytes without displaying the candidate contents. The record includes 
 
 ## Check the baseline, then evaluate every pair
 
-Each case has `sources.json`, a three-row form, and baseline/A/B briefs. The two source-backed gates check each value and its own locator. A zone word elsewhere cannot repair an unlabeled clock value. A number is not wrong merely because it appeared in a previous failure; its source support decides.
+Each case has `sources.json`, a three-row form, and baseline/A/B briefs. A **locator** identifies the exact source record supporting a value. The mass and time-zone gates check each value and its own locator; the format check records whether the brief follows the required form. A zone word elsewhere cannot repair an unlabeled clock value. Judge a number by its source support, not by whether you have seen that number in a previous failure.
+
+A malformed source packet or one for the wrong case stops the comparison. Do not count it as a candidate failure. A malformed candidate under valid sources remains in the comparison as a format failure.
 
 Run every baseline first. Both shell versions retain a failure even if a later case passes.
 
@@ -127,7 +133,7 @@ Now run the supplied evaluator from any directory.
 
 For each failed row, open that brief and its adjacent `sources.json`. Trace the material value to its exact authoritative locator. Record the case, candidate, gate, and source evidence in `decision.md`. Apply your original rule even if most cases pass.
 
-For each candidate, report the number of distinct cases requiring repair. Keep that **cost proxy** separate from measured time, tokens, and money. These authored outputs provide no observed API cost or model-to-model superiority evidence.
+For each candidate, report the number of distinct cases requiring repair. This **cost proxy** is a count of failed cases used to indicate possible repair work; it is not measured repair time or expense. Keep it separate from observed time, tokens, and money. These authored outputs provide no observed API cost or evidence that one live model is better than another.
 
 Check that your frozen inputs still match before accepting the comparison.
 
@@ -215,13 +221,10 @@ The source-only runner freezes the schedule and identities before the first call
 
 ## Interpret the paired observations
 
-Open `comparison.json` and `attempts.csv`. For each case, compare the three baseline outcomes with the three checked outcomes. Report paired disagreements and variation within each instruction, not just pooled averages. Any single checked-instruction violation rejects adoption under the frozen rule. No observed improvement is a valid result.
+Open `comparison.json` and `attempts.csv`. For each case, compare the three baseline outcomes with the three checked outcomes. Report each paired disagreement, where a baseline and checked attempt have different outcomes, and the differences among repeats of the same instruction. Keep all preregistered attempts visible. A single better answer cannot separate an instruction's effect from ordinary variation. Any single checked-instruction violation rejects adoption under the frozen rule. You may find no observed improvement.
 
-Report the failed-case repair proxy separately from wall time, raw usage, and SDK-estimated currency. Provider-billed cost remains unknown unless you independently observe it in your account; do not rename an SDK estimate as a bill. Inspect the two restored controls and the actual restored instruction hash.
+Report the failed-case repair count separately from elapsed time, raw token usage, and the software library's cost estimate, labeled as an SDK estimate in the receipts. Provider-billed cost remains unknown unless you independently observe it in your account; do not rename an estimate as a bill. Inspect the two restored controls and the actual restored instruction hash.
 
 Your stretch conclusion should explain what these six cases support, what they do not establish, and what uncertainty remains. A completed model comparison does not certify a human operator or establish general superiority.
 
 </details>
-
-
-Continue with [Module 8 · Constrain agent behavior](../../module-08-agent-safeguards/README.md).

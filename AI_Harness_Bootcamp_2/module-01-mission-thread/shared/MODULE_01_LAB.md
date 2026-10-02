@@ -1,12 +1,14 @@
 # Module 1 · Verify a logistics mission thread
 
-You decide whether a polished AI brief is supported by its sources. Every fact you need is in a fresh work folder. Allow about three hours; the times below are planning targets, not measured learner completion times.
+Decide whether the polished Cold Lantern brief supports its `GO` recommendation. Open the applicable sources, reproduce the calculations, and write your own supported verdict: accept, revise, reject, or hold for internal class review. Use your existing bounded direction and source checks to determine whether the claims hold together across the movement. Every case fact you need is in the supplied packet.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
 
 ## Start a work folder
 
-The checkout root, module directory, work directory, and Python are defined once for all commands. Use the quoted absolute paths exactly.
+Set the locations of the course checkout, this module, your new work folder, and Python before running the commands. An **absolute path** gives a complete file location rather than a location relative to your current folder. Keep the paths in quotes so spaces in folder names do not split them.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -55,7 +57,7 @@ Create a fresh work folder outside the repository with the supplied starter. The
 
 **Recovery:** Keep the existing attempt. Choose a new `RUN` and `W`, then rerun the starter. Do not remove or overwrite an earlier attempt.
 
-The new folder contains the listed files. Start at desk.md (ordinary links, no wiki syntax).
+Open `desk.md` in the new work folder. Its links point to the working files for this attempt.
 
 The visible checker catches missing fields, known practice values, arithmetic, and stale values. It does not judge whether a source applies or whether the verdict is sound.
 
@@ -118,7 +120,7 @@ Run the content check from the module directory using the absolute helper. This 
 
 **Recovery:** Keep the mismatch and leave the checkout unchanged. Obtain an intact copy in a fresh location, update `R` and `M`, and begin a new work folder. Do not reset or clean existing work.
 
-Then hash the work inbox. Use those hashes when you complete `source-register.csv`; compare each printed filename with the file you opened.
+Then calculate a **hash**, a fingerprint of the file bytes, for each work-inbox file. Save those hashes in `source-register.csv` and compare each printed filename with the file you opened. A matching hash identifies the supplied file; it does not establish that the file supports a claim.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -238,7 +240,7 @@ Do not mark later events as facts. At 14:05, delivery and clinic receipt have no
 
 Use a calculator available on your machine, but enter the source values yourself. Do not copy a result from the AI brief or ask the producing AI to recompute it.
 
-Show the premises, operator, result, and unit in the calculation column. Required calculations are:
+In the calculation column, show the source values you start from, the arithmetic you perform, the result, and its unit. Required calculations are:
 
 1. scanned kits;
 2. usable kits;
@@ -247,7 +249,7 @@ Show the premises, operator, result, and unit in the calculation column. Require
 5. UTC gate closure converted to MDT; and
 6. earliest departure and gate arrival, followed by the clinic arrival if the gate admits the vehicle.
 
-Keep feasibility separate from arithmetic. A computed arrival is achievable only when the supported departure and gate conditions permit it. Label a time that assumes a blocked condition as counterfactual, not an observed or available ETA.
+Keep feasibility separate from arithmetic. A computed arrival is achievable only when the supported departure and gate conditions permit it. Label a time that assumes a blocked condition as **counterfactual**: it describes what would happen if that condition were satisfied. It is not an observed arrival or an available estimated time of arrival (ETA).
 
 The script is a calculator, not evidence. The source rows establish the premises. Your ledger shows whether each premise belongs in the calculation.
 
@@ -370,7 +372,7 @@ Then add one challenge block for any claim in that file you still have not rejec
 
 Write `corrected-brief.md` for another class member who must decide what needs attention next. It must state what is supported, what is contradicted, what remains unresolved, which later events have not occurred, the current blockers, the exact sources and calculations behind the blockers, and the next evidence needed.
 
-The five-question review surface is for a classmate who did not watch you work; an agent replay is technical inspection only and does not replace the classmate review.
+The review page must let a classmate who did not watch you work understand the decision and its evidence. Having an AI agent inspect it supplies technical observations only; it does not replace that person's review.
 
 ![Verdict, blockers, then the five questions](figures/m01-verdict-packet.svg)
 
@@ -413,7 +415,7 @@ Open `review.html` in your browser. Ask a classmate who did not watch you work t
 4. Which source and calculation establish that result?
 5. What evidence would change it?
 
-Record their first answers and questions before revising. If no eligible person is available, mark the classmate review blocked and continue only with technical inspection; an agent or your own rereading does not fill that lane.
+Record their first answers and questions before revising. If no eligible person is available, mark the classmate review blocked and continue only with technical inspection. An agent or your own rereading does not supply the missing human observation.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -635,7 +637,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 & "$env:PY" "$env:M\scripts\check_work.py" "$env:W"
 ```
 
-**Expected:** All seven visible practice phases pass. Source interpretation, classmate review, and independent assessment remain separate evidence requirements.
+**Expected:** All seven visible practice phases pass. Source interpretation, classmate review, and your independent judgment remain separate evidence requirements.
 
 **Stop:** Stale values or unrelated change errors.
 
@@ -683,7 +685,7 @@ For the **claim defense**, open the cited source and show:
 4. why an attractive competing source does not establish the claim; and
 5. what observation would falsify your row.
 
-Use your saved work; do not give a memorized presentation. If the ledger is complete but you cannot defend the selected handoff and row, the result is `HOLD`.
+Use your saved work to show the evidence. If the selected handoff or claim lacks a supportable explanation, keep that work decision on `HOLD` and record the unresolved point. A completed ledger alone does not establish support.
 
 ## Before you stop
 
@@ -703,7 +705,6 @@ Check that:
 - the work remains inside the fictional class case.
 
 
-Continue with [Module 2 · Control context and reusable instructions](../../module-02-context-desk/README.md).
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: defend changed and unchanged claims</summary>

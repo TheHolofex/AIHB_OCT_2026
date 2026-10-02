@@ -130,15 +130,36 @@ if ($free -ge 15) {
 
 Test-VersionCommand -Name git -Expected '' -Command git -Arguments @('--version')
 $pythonCmd = $null
-foreach ($candidate in 'python3.12', 'python', 'python3', 'py') {
-    $resolved = Get-Command $candidate -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
-    if (-not $resolved) { continue }
-    $pyver = [string](& $resolved.Source -c "import sys; print('.'.join(map(str, sys.version_info[:3])))" 2>$null)
-    if ($LASTEXITCODE -eq 0 -and $pyver.Trim() -match '^\d+\.\d+\.\d+$' -and [version]$pyver.Trim() -ge [version]'3.12.0') {
-        $pythonCmd = $resolved.Source
-        Add-Result PASS python "$($pyver.Trim()) at $(Get-Redacted $pythonCmd)"
-        break
+$pythonCandidates = @()
+foreach ($cmd in @(Get-Command py -CommandType Application -All -ErrorAction SilentlyContinue)) {
+    $pythonCandidates += @{ Exe = $cmd.Source; Args = @('-3.12') }
+    $pythonCandidates += @{ Exe = $cmd.Source; Args = @('-3') }
+}
+foreach ($name in @('python3.12', 'python', 'python3')) {
+    foreach ($cmd in @(Get-Command $name -CommandType Application -All -ErrorAction SilentlyContinue)) {
+        $pythonCandidates += @{ Exe = $cmd.Source; Args = @() }
     }
+}
+foreach ($candidate in $pythonCandidates) {
+    $exe = $candidate.Exe
+    if ($exe -like '*\WindowsApps\*') { continue }
+    $item = Get-Item -LiteralPath $exe -Force -ErrorAction SilentlyContinue
+    if (-not $item -or $item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+    $argsForPython = @($candidate.Args) + @('-c', 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)')
+    $output = @(& $exe @argsForPython 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $output.Count -ne 1 -or [string]::IsNullOrWhiteSpace([string]$output[0])) { continue }
+    $resolved = ([string]$output[0]).Trim()
+    if ($resolved -notmatch '^[A-Za-z]:\\' -or $resolved -like '*\WindowsApps\*') { continue }
+    if (-not (Test-Path -LiteralPath $resolved -PathType Leaf)) { continue }
+    $item = Get-Item -LiteralPath $resolved -Force -ErrorAction SilentlyContinue
+    if (-not $item -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+    $confirmed = @(& $resolved -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $confirmed.Count -ne 1 -or ([string]$confirmed[0]).Trim() -ine $resolved) { continue }
+    $versionOutput = @(& $resolved --version 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $versionOutput.Count -ne 1) { continue }
+    $pythonCmd = $resolved
+    Add-Result PASS python "$($versionOutput[0]) at $(Get-Redacted $pythonCmd)"
+    break
 }
 if (-not $pythonCmd) {
     Add-Result FAIL python 'No runnable Python 3.12+ found on PATH' 'Install or select Python 3.12+ using the platform guide.'

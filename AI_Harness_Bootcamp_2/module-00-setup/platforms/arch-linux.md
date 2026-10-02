@@ -6,41 +6,52 @@ You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and 
 
 Every command box is one paste. Select every line in the box, paste it once, and press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine, because every path is quoted.
 
-The steps are: check the machine, install any missing Arch packages with a full upgrade, choose Python, download and verify Oh My Pi, install it without replacing a different copy, record the user folder on PATH, use the course checkout, prove a newly opened terminal, enter the key, run one proof, and save a prerequisite report.
-
-Keep these pages open beside this one: [versions](../shared/VERSIONS.md), [credentials](../shared/CREDENTIALS.md), [sources](../shared/SOURCES.md), and [when setup stops](../shared/TROUBLESHOOTING.md).
-
 ## 1. Check the machine
 
-You need a supported processor family and enough free space in your home folder before any download.
+Use official [Arch Linux](https://archlinux.org/about/) on x86-64 only. Arch Linux ARM is a different distribution and is not a supported route here. Check the operating system, shell, home-folder permissions, and free space before downloading anything. Use an ordinary account with device-owner approval for any package installation.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, current window.**
 
 ```bash
-uname -m
-df -h "$HOME"
+course_preflight() {
+  local ID VERSION_ID machine
+  [ -r /etc/os-release ] || { printf 'STOP: cannot read /etc/os-release\n' >&2; return 1; }
+  . /etc/os-release || return 1
+  machine="$(uname -m)" || return 1
+  printf 'OS %s %s\nARCH %s\n' "$ID" "${VERSION_ID:-rolling}" "$machine"
+  case "$ID:${VERSION_ID:-rolling}:$machine" in
+    arch:*:x86_64) ;;
+    *) printf 'STOP: unsupported OS or architecture\n' >&2; return 1 ;;
+  esac
+  if [ -z "${BASH_VERSION:-}" ] && [ -z "${ZSH_VERSION:-}" ]; then
+    printf 'STOP: use Bash or Zsh\n' >&2; return 1
+  fi
+  if [ "$(id -u)" -eq 0 ] || [ ! -w "$HOME" ] || [ ! -x "$HOME" ]; then
+    printf 'STOP: use an ordinary account with a writable home folder\n' >&2; return 1
+  fi
+  df -h "$HOME" || return 1
+}
+course_preflight
 ```
 
-**Expected:** The first line is `x86_64`, `aarch64`, or `arm64`. In the disk table, the Available column for your home filesystem is at least 15G.
+**Expected:** The OS and architecture match the supported combination above. In the disk table, Available is at least 15G.
 
-**Stop:** The processor family is anything else, or Available is below 15G.
+**Stop:** Any STOP line appears, or Available is below 15G.
 
-**Recovery:** This path has no other Linux build. Free space in your home folder until Available is at least 15G, then run the two commands again. Do not download a binary for a different processor.
+**Recovery:** Free space if needed, then repeat this check. For an unsupported OS, shell, architecture, or account permission, ask the device owner for a supported environment. Do not choose a different processor's binary.
 
 ## 2. See whether the Arch packages are already installed
 
-Git, curl, and Python come from Arch's official packages. The Python package is `python`, and its command may be `python` rather than `python3`. This check only looks. It does not install, remove, or upgrade anything.
+Git, curl, Python, and the certificate bundle come from Arch's official packages. The Python package is `python`, and its command may be `python` rather than `python3`. This check only looks. It does not install, remove, or upgrade anything.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_check_packages() {
-  local missing=""
-  command -v git >/dev/null 2>&1 || missing="git"
-  command -v curl >/dev/null 2>&1 || missing="${missing:+$missing }curl"
-  if ! command -v python >/dev/null 2>&1 && ! command -v python3 >/dev/null 2>&1; then
-    missing="${missing:+$missing }python"
-  fi
+  local missing="" package
+  for package in git curl python ca-certificates; do
+    pacman -Q "$package" >/dev/null 2>&1 || missing="${missing:+$missing }$package"
+  done
   if [ -z "$missing" ]; then
     printf 'PACKAGES present\n'
   else
@@ -50,7 +61,7 @@ course_check_packages() {
 course_check_packages
 ```
 
-**Expected:** The line is `PACKAGES present`, or it names one or more of `git`, `curl`, and `python`.
+**Expected:** The line is `PACKAGES present`, or it names one or more of `git`, `curl`, `python`, and `ca-certificates`.
 
 **Stop:** The command prints an error instead of one of those lines, or you are not in a Bash or Zsh terminal on Arch.
 
@@ -58,34 +69,35 @@ course_check_packages
 
 ## 3. Install missing Arch packages
 
-This is the only step that asks for an administrator password. Arch does not support a partial upgrade, so the install command syncs the databases and upgrades the system before it installs `git`, `python`, `curl`, and `ca-certificates`. That is the [pacman](https://wiki.archlinux.org/title/Pacman) rule, and the Python package is the one named in [Arch's Python page](https://wiki.archlinux.org/title/Python). Do not run `pacman -Sy` without the upgrade.
+This package step asks for an administrator password. Arch does not support a partial upgrade, so the install command syncs the databases and upgrades the system before it installs `git`, `python`, `curl`, and `ca-certificates`. That is the [pacman](https://wiki.archlinux.org/title/Pacman) rule, and the Python package is the one named in [Arch's Python page](https://wiki.archlinux.org/title/Python). Do not run `pacman -Sy` without the upgrade.
 
 Skip this box when the previous step printed `PACKAGES present` and the next Python step accepts the interpreter. If that step says Python is older than 3.12, come back and run this box. Do not install an older interpreter from the AUR to match a version number.
 
-**Terminal: Arch Linux, elevated package installation.**
+**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates package installation.**
 
 ```bash
 sudo pacman -Syu --needed git python curl ca-certificates
 ```
 
-**Expected:** Pacman shows the transaction and asks whether to proceed. The list is a full upgrade plus `git`, `python`, `curl`, and `ca-certificates`, or a subset of those packages when the others are already current. Type `y` and press Return only for that list. When it finishes, the prompt returns. Already-current packages are not reinstalled.
+**Expected:** Pacman shows the transaction and asks whether to proceed. This is a full-system upgrade: many unrelated packages may appear, as well as any missing course packages. Read the entire transaction. Type `y` and press Return only when the device owner has approved that transaction; otherwise type `n` and stop. When it finishes, the prompt returns. Already-current packages are not reinstalled.
 
-**Stop:** `sudo` is missing, the password is rejected, a device policy refuses the transaction, pacman stops with a conflict, or the package list includes a replacement you do not recognize. Type `n` at the confirmation prompt in that last case.
+**Stop:** `sudo` is missing, the password is rejected, a device policy refuses the transaction, pacman stops with a conflict, or the package list includes an unapproved replacement. Type `n` at the confirmation prompt in that last case.
 
 **Recovery:** Stop. Do not use the AUR, an installer script, npm, or pip to get around the refusal. Do not sync the databases without upgrading. Save the exact error and use [when setup stops](../shared/TROUBLESHOOTING.md). When the device owner has approved a full upgrade, paste this box again.
 
 ## 4. Choose the Python interpreter
 
-The later checks must call one real Python executable, not a name that might point somewhere else. Arch's python package provides the python command (may also be python3). This step uses the first of python3.12, python3, or python that reports >=3.12 via sys.executable and keeps the absolute path.
+The later checks must call one real Python executable, not a name that might point somewhere else. Arch’s `python` package provides `python` and may also provide `python3`. Run each available candidate in order: `python3.12`, `python3`, then `python`. Keep the absolute path of the first interpreter that reports Python 3.12 or newer.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_resolve_python() {
-  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.realpath(sys.executable))' 2>/dev/null && break; done)"
   if [ -n "$PY" ]; then
     printf 'PY %s\n' "$PY"
-    "$PY" --version
+    "$PY" -c 'import sys; sys.exit(sys.version_info < (3, 12))' || return 1
+    "$PY" --version || return 1
     return 0
   fi
   printf 'STOP: no real Python executable is version 3.12 or newer\n' >&2
@@ -102,11 +114,11 @@ course_resolve_python
 
 ## 5. Download Oh My Pi into a fresh folder
 
-You are downloading the pinned release file and its official checksum list. Nothing is made executable in this step, and nothing is copied into the command folder. The checksum file also lists musl builds. This path selects only `omp-linux-arm64` for `aarch64` or `arm64`, or `omp-linux-x64` for `x86_64`. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5). This path does not use the project's installer script.
+You are downloading the pinned release file and its official checksum list. Nothing is made executable in this step, and nothing is copied into the command folder. The checksum file also lists musl builds. This path selects only `omp-linux-x64` for `x86_64`. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5). This path does not use the project's installer script.
 
 Each attempt has its own folder under your home directory. A failed download stays there. The next try creates a new folder instead of reusing it.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_download_omp() {
@@ -114,13 +126,15 @@ course_download_omp() {
   unset OMP_ASSET OMP_DOWNLOAD_DIR
   arch="$(uname -m)" || return 1
   case "$arch" in
-    aarch64|arm64) asset="omp-linux-arm64" ;;
     x86_64) asset="omp-linux-x64" ;;
     *)
       printf 'STOP: unsupported architecture %s\n' "$arch" >&2
       return 1
       ;;
   esac
+  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
+    printf 'STOP: evidence parent is linked; keep work under your home folder\n' >&2; return 1
+  fi
   attempt="omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   download="$HOME/course-evidence/reformation-qa/$attempt"
   if [ -e "$download" ] || [ -L "$download" ]; then
@@ -143,11 +157,11 @@ course_download_omp() {
 course_download_omp
 ```
 
-**Expected:** One line starts with `DOWNLOADED ` and names a new folder under your home directory, ending in `omp-linux-arm64` or `omp-linux-x64`.
+**Expected:** One line starts with `DOWNLOADED ` and names a new folder under your home directory, ending in `omp-linux-x64`.
 
 **Stop:** You see a STOP line, curl reports an error, or the line names a musl file. Do not continue to the install step after a STOP line.
 
-**Recovery:** Leave the failed folder in place. Do not delete it to retry, and do not disable certificate checks. If the error mentions a certificate or a proxy, run the elevated package step so `ca-certificates` is installed, then paste this box again. The new paste creates a new folder. Use [when setup stops](../shared/TROUBLESHOOTING.md) if the same certificate error returns.
+**Recovery:** Leave the failed folder in place. Do not delete it to retry, and do not disable certificate checks. For a missing certificate bundle, use the approved package step to install `ca-certificates`. For a proxy or a certificate error with that package already installed, ask the device owner to correct the connection. Start a fresh download only after the cause is corrected. Keep the failed folder for [troubleshooting](../shared/TROUBLESHOOTING.md).
 
 ## 6. Verify the checksum and install the binary
 
@@ -155,7 +169,7 @@ A checksum is a fingerprint for a file. Here it is a 64-character hexadecimal va
 
 The destination is `"$HOME/.local/bin/omp"`. An existing different file is left untouched. A shortcut at that path is left untouched. A file that already matches the verified download is kept.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_install_omp() {
@@ -163,7 +177,7 @@ course_install_omp() {
   asset="${OMP_ASSET:-}"
   download="${OMP_DOWNLOAD_DIR:-}"
   case "$asset" in
-    omp-linux-arm64|omp-linux-x64) ;;
+    omp-linux-x64) ;;
     *)
       printf 'STOP: no selected Linux asset is recorded in this terminal\n' >&2
       return 1
@@ -178,10 +192,10 @@ course_install_omp() {
     BEGIN { count = 0; hash = "" }
     {
       gsub(/\r/, "")
-      if ($2 == asset && NF == 2) { count++; hash = $1 }
+      if ($2 == asset) { count++; hash = $1; if (NF != 2) bad = 1 }
     }
     END {
-      if (count != 1) exit 2
+      if (count != 1 || bad) exit 2
       if (hash !~ /^[0-9a-fA-F]{64}$/) exit 3
       print hash
     }
@@ -199,7 +213,7 @@ course_install_omp() {
     return 1
   fi
   chmod +x -- "$download/$asset" || return 1
-  if [ -L "$HOME/.local/bin" ]; then
+  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
     printf 'STOP: %s is a symlink; the binary was not installed there\n' "$HOME/.local/bin" >&2
     return 1
   fi
@@ -224,7 +238,7 @@ course_install_omp() {
     printf 'INSTALLED %s\n' "$dest"
   fi
   chmod +x -- "$dest" || return 1
-  version="$("$dest" --version 2>/dev/null || true)"
+  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
   if [ "$version" != "omp/18.3.5" ]; then
     printf 'STOP: installed file did not print omp/18.3.5\n' >&2
@@ -238,68 +252,179 @@ course_install_omp
 
 **Stop:** Any STOP line appears, including a checksum miss, a shortcut destination, or a different existing file. The version line is anything other than `omp/18.3.5`.
 
-**Recovery:** Leave both the download folder and any existing `"$HOME/.local/bin/omp"` in place. Do not delete the existing file, and do not rename the download onto it. For a checksum or download problem, paste the download step again and then paste this step again. For a different existing file or a shortcut, ask the device owner before anything is replaced. Do not switch to the musl asset to get past this stop.
+**Recovery:** Leave both the download folder and any existing `"$HOME/.local/bin/omp"` in place. Do not delete the existing file, and do not rename the download onto it. For a checksum or download problem, preserve the failed files and ask the course owner to resolve the source or transfer problem before starting a fresh download attempt. For a different existing file or a shortcut, ask the device owner before anything is replaced. Do not switch to the musl asset to get past this stop.
 
 ## 7. Keep the user command folder on PATH
 
-PATH is the list of folders your terminal searches when you type a command name. Arch does not add `"$HOME/.local/bin"` for you. Bash reads `"$HOME/.bashrc"` for an interactive terminal, and Zsh reads `"$HOME/.zshrc"`. This step adds one PATH line to the file your current shell reads, and only when that line is absent. It does not write the API key.
+PATH is the list of folders searched for command names. Save the nonsecret user-command path for both interactive and login sessions of your current shell. [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html) uses `.bashrc` for interactive sessions and the first existing login file in this order: `.bash_profile`, `.bash_login`, `.profile`. The command preserves that precedence. [Zsh](https://zsh.sourceforge.io/Doc/Release/Files.html) uses `.zshrc` and `.zprofile` under `ZDOTDIR`, or your home folder when `ZDOTDIR` is unset.
 
-A terminal you open later reads the startup file. A terminal that is already open keeps its old PATH until you close it.
+Append the exact line only if it is absent. Existing content stays intact, including a last line without a newline. Links and nonregular files stop the operation. No key is written.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_persist_path() {
-  local startup
-  if [ -L "$HOME/.local/bin" ]; then
-    printf 'STOP: %s is a symlink; the startup file was not changed\n' "$HOME/.local/bin" >&2
-    return 1
+  local startup login_file zdir line
+  line='case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac'
+  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
+    printf 'STOP: user command directory is a symlink\n' >&2; return 1
   fi
   mkdir -p -- "$HOME/.local/bin" || return 1
   if [ -n "${BASH_VERSION:-}" ]; then
-    startup="$HOME/.bashrc"
+    login_file=""
+    for startup in "$HOME/.bash_profile" "$HOME/.bash_login" "$HOME/.profile"; do
+      if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; }; then
+        printf 'STOP: %s is not an ordinary startup file\n' "$startup" >&2; return 1
+      fi
+      if [ -z "$login_file" ] && [ -f "$startup" ]; then login_file="$startup"; fi
+    done
+    set -- "$HOME/.bashrc" "${login_file:-$HOME/.profile}"
   elif [ -n "${ZSH_VERSION:-}" ]; then
-    startup="$HOME/.zshrc"
+    zdir="${ZDOTDIR-$HOME}"
+    if [ ! -d "$zdir" ] || [ -L "$zdir" ]; then
+      printf 'STOP: Zsh startup directory is missing or linked\n' >&2; return 1
+    fi
+    set -- "$zdir/.zshrc" "$zdir/.zprofile"
   else
-    printf 'STOP: open this guide in Bash or Zsh\n' >&2
-    return 1
+    printf 'STOP: use Bash or Zsh\n' >&2; return 1
   fi
-  if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; }; then
-    printf 'STOP: %s is not a regular file; it was not changed\n' "$startup" >&2
-    return 1
-  fi
-  if [ -f "$startup" ] && grep -E -q '^[[:space:]]*(export[[:space:]]+)?PATH=.*\.local/bin' "$startup"; then
-    printf 'PATH_LINE already present in %s\n' "$startup"
-    return 0
-  fi
-  printf '%s\n' 'export PATH="$HOME/.local/bin:$PATH"' >> "$startup" || return 1
-  printf 'PATH_LINE added to %s\n' "$startup"
+  for startup in "$@"; do
+    if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; } || { [ -f "$startup" ] && { [ ! -r "$startup" ] || [ ! -w "$startup" ]; }; }; then
+      printf 'STOP: %s is not a readable, writable ordinary file\n' "$startup" >&2; return 1
+    fi
+  done
+  for startup in "$@"; do
+    if [ -f "$startup" ] && grep -Fqx -- "$line" "$startup"; then
+      printf 'PATH_LINE already present in %s\n' "$startup"
+    else
+      if [ -s "$startup" ] && [ -n "$(tail -c 1 -- "$startup")" ]; then
+        printf '\n' >> "$startup" || return 1
+      fi
+      printf '%s\n' "$line" >> "$startup" || return 1
+      printf 'PATH_LINE added to %s\n' "$startup"
+    fi
+  done
 }
 course_persist_path
 ```
 
-**Expected:** One line says `PATH_LINE already present` or `PATH_LINE added`, and it names `"$HOME/.bashrc"` for Bash or `"$HOME/.zshrc"` for Zsh.
+**Expected:** Two `PATH_LINE` messages name the interactive and login startup files. Each says `added` or `already present`.
 
-**Stop:** You see a STOP line, or the named file is a shortcut.
+**Stop:** A STOP line or file-write error appears.
 
-**Recovery:** Do not write the key into the startup file. If the file is a shortcut, leave it and ask the device owner which ordinary file that terminal reads. Then open a new terminal from the desktop and paste this box there. If the next new-terminal check cannot find `omp`, that desktop terminal is not reading the file this step edited. Do not export PATH in the proof window to hide that miss.
+**Recovery:** Preserve the files. Ask the device owner to resolve linked files or permissions. After that correction, repeat this step; exact existing entries are kept. Then open a new desktop terminal for the check in step 9. Do not export PATH there to hide a startup failure.
 
 ## 8. Use the course checkout
 
-The course lives at `"$HOME/Documents/AIHB_OCT_2026"`. If that folder is absent, this step clones [the course repository](https://github.com/TheHolofex/AIHB_OCT_2026.git). If that folder is already a checkout of that exact origin, it is used as it is. Nothing is reset, pulled, or cleaned.
+Check private-repository access before cloning. GitHub credentials are separate from your course-site password and OpenRouter key. This first check uses existing credentials without changing login or credential-helper settings.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
+```
+
+**Expected:** A commit hash followed by `HEAD`. Skip all GitHub CLI steps below and continue at “Create or reuse the checkout.”
+
+**Stop:** An authentication, repository-not-found, or network error appears. Do not clone yet. This is an access prerequisite, not a directory-permission problem.
+
+**Recovery:** Keep the error. Resolve a network error with the device owner. For missing GitHub credentials, use the fallback below. If your account lacks access, the repository owner must invite or approve that account; login alone cannot grant access.
+
+### Set up GitHub access only if the first check failed
+
+Check whether the official GitHub CLI, `gh`, is already available.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+if command -v gh >/dev/null 2>&1; then
+  gh --version
+else
+  printf 'GH MISSING\n'
+fi
+```
+
+**Expected:** A `gh version` line, or `GH MISSING`. Skip the install box if a version is shown.
+
+**Stop:** An existing `gh` fails to run.
+
+**Recovery:** Ask the device owner to repair the existing helper. Install only when it is missing.
+
+Use Arch’s official [`github-cli` package](https://archlinux.org/packages/extra/x86_64/github-cli/). This command performs a full-system upgrade; many unrelated packages may appear. Approve only the entire transaction approved by the device owner. Type `n` and stop for conflicts or any unapproved replacement. Do not use the AUR, a partial upgrade, or replace system Python. Install the missing helper using this command.
+
+**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates package installation.**
+
+```bash
+sudo pacman -Syu --needed github-cli
+```
+
+**Expected:** The package operation completes and the prompt returns. Enter your administrator password only at the sudo prompt.
+
+**Stop:** Permission is refused, the package is unavailable, or the package operation fails.
+
+**Recovery:** Keep the error and ask the device owner to provide the approved official package. Do not change sources or use another installer.
+
+Sign in through the browser with [GitHub CLI login](https://cli.github.com/manual/gh_auth_login). The terminal supplies a one-time device code and may ask you to press Return to open the browser. Enter that code on GitHub and authorize the **account invited to this repository**. If asked to configure Git authentication now, choose **No**; inspect credential storage first. GitHub CLI prefers the OS credential store but can fall back to a plaintext file. Do not use `--insecure-storage`.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; interactive login.**
+
+```bash
+gh auth login --hostname github.com --git-protocol https --web
+```
+
+**Expected:** The browser authorization completes and the terminal confirms login.
+
+**Stop:** Login fails, the browser has the wrong account, or device policy refuses authorization.
+
+**Recovery:** Stop and ask the account or device owner to resolve that specific problem. Do not paste any password or token into a command.
+
+Inspect the active account and credential-storage location with [auth status](https://cli.github.com/manual/gh_auth_status). Keep this output private; do not share it or add `--show-token`.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+gh auth status --hostname github.com
+```
+
+**Expected:** Authentication succeeds for the invited account, and the reported storage is approved by device policy.
+
+**Stop:** Authentication fails, the active account is wrong, or the storage location is not approved or is unclear.
+
+**Recovery:** Ask the device owner to provision approved storage or credentials. Do not continue to helper setup until both account and storage are approved.
+
+Configure the [Git credential helper for github.com only](https://cli.github.com/manual/gh_auth_setup-git), then check repository access again. The access check runs only if helper setup succeeds.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+gh auth setup-git --hostname github.com &&
+GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
+```
+
+**Expected:** A commit hash followed by `HEAD`.
+
+**Stop:** Either command fails. Do not clone.
+
+**Recovery:** Keep the error and ask the repository owner to confirm the invitation and any organization approval for this account. Repeat the access check only after that correction. Do not force helper setup.
+
+### Create or reuse the checkout
+
+Create or inspect the checkout at `"$HOME/Documents/AIHB_OCT_2026"`. If that folder is absent, this step clones [the course repository](https://github.com/TheHolofex/AIHB_OCT_2026.git). If that folder is already a checkout of that exact origin, it is used as it is. Nothing is reset, pulled, or cleaned.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_use_checkout() {
-  local origin_url
+  local origin_url checkout_top helper
   R="$HOME/Documents/AIHB_OCT_2026"
   ORIGIN="https://github.com/TheHolofex/AIHB_OCT_2026.git"
-  if [ -L "$R" ]; then
+  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then
     printf 'STOP: %s is a symlink; it was not replaced\n' "$R" >&2
     return 1
   fi
   if [ ! -e "$R" ]; then
+    GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD || return 1
+    mkdir -p -- "$HOME/Documents" || return 1
     git clone "$ORIGIN" "$R" || {
       printf 'STOP: clone failed; the path was not reused\n' >&2
       return 1
@@ -315,11 +440,24 @@ course_use_checkout() {
     fi
     printf 'USE: existing checkout; no reset, pull, or clean\n'
   fi
+  if [ -L "$R/.git" ]; then
+    printf 'STOP: checkout metadata is linked\n' >&2; return 1
+  fi
+  checkout_top="$(git -C "$R" rev-parse --show-toplevel 2>/dev/null)" || return 1
+  if [ "$checkout_top" != "$R" ]; then
+    printf 'STOP: intended folder is not the checkout root\n' >&2; return 1
+  fi
+  git -C "$R" rev-parse --verify HEAD >/dev/null || return 1
   M="$R/AI_Harness_Bootcamp_2/module-00-setup"
   if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$R/shared/course_guard.mjs" ] || [ ! -f "$M/scripts/verify-setup.sh" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ]; then
     printf 'STOP: this checkout is missing a course helper; it was not reset or updated\n' >&2
     return 1
   fi
+  for helper in "$R/shared/run_omp.py" "$R/shared/course_guard.mjs" "$M/scripts/verify-setup.sh" "$M/shared/case/verify_tool_proof.py"; do
+    if [ -L "$helper" ]; then
+      printf 'STOP: course helper is linked; checkout was not changed\n' >&2; return 1
+    fi
+  done
   printf 'R %s\n' "$R"
   printf 'M %s\n' "$M"
 }
@@ -334,22 +472,40 @@ course_use_checkout
 
 ## 9. Open a new terminal and confirm the install
 
-Close this terminal completely. Open a new one from the desktop menu, not by typing `bash`, `sh`, or `su` in the old window. A program started from the old window is a child. A child can inherit exported variables and the old PATH. An independently opened terminal reads the startup file instead, and it does not inherit the old window's variables.
+Close this terminal completely. Open a new one from the desktop menu, not by typing `bash`, `sh`, or `su` in the old window. A program started from the old window is a child. A child can inherit exported variables and the old PATH. An independently opened terminal reads its startup files and ordinarily has no key from the old window. A child window can inherit a key; that alone does not prove persistence or exposure.
 
 Do not export PATH in the new window before this check. The check is what shows whether the startup file worked.
 
-**Terminal: Arch Linux, ordinary user, new window.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, newly opened desktop window.**
 
 ```bash
 course_confirm_new_terminal() {
-  local resolved version
+  local resolved version candidate origin_url
+  R="$HOME/Documents/AIHB_OCT_2026"
+  M="$R/AI_Harness_Bootcamp_2/module-00-setup"
+  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; from pathlib import Path; sys.exit(1) if sys.version_info < (3, 12) else print(Path(sys.executable).resolve())' 2>/dev/null && break; done)"
+  case "$PY" in /*) ;; *) printf 'STOP: no absolute Python 3.12+ executable\n' >&2; return 1 ;; esac
+  "$PY" -c 'import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))' || return 1
+  resolved="$(command -v git)" || return 1
+  case "$resolved" in /*) ;; *) printf 'STOP: Git is not an absolute executable\n' >&2; return 1 ;; esac
+  printf 'GIT_PATH %s\n' "$resolved"
+  "$resolved" --version || return 1
+  if [ -L "$HOME/Documents" ] || [ -L "$R" ] || [ -L "$R/.git" ] || [ ! -d "$R" ]; then
+    printf 'STOP: checkout is missing or linked\n' >&2; return 1
+  fi
+  origin_url="$(git -C "$R" remote get-url origin)" || return 1
+  if [ "$origin_url" != 'https://github.com/TheHolofex/AIHB_OCT_2026.git' ] || [ "$(git -C "$R" rev-parse --show-toplevel)" != "$R" ]; then
+    printf 'STOP: wrong checkout identity\n' >&2; return 1
+  fi
+  git -C "$R" rev-parse --verify HEAD >/dev/null || return 1
+  printf 'R %s\nM %s\nPY %s\n' "$R" "$M" "$PY"
   resolved="$(command -v omp 2>/dev/null || true)"
   printf 'OMP_PATH %s\n' "${resolved:-missing}"
   if [ "$resolved" != "$HOME/.local/bin/omp" ]; then
     printf 'STOP: omp is not the user binary\n' >&2
     return 1
   fi
-  version="$("$HOME/.local/bin/omp" --version 2>/dev/null || true)"
+  version="$("$HOME/.local/bin/omp" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
   if [ "$version" != "omp/18.3.5" ]; then
     printf 'STOP: version is not omp/18.3.5\n' >&2
@@ -365,19 +521,21 @@ course_confirm_new_terminal() {
 course_confirm_new_terminal
 ```
 
-**Expected:** `OMP_PATH` is your home folder plus `/.local/bin/omp`. `OMP_VERSION` is `omp/18.3.5`. The last line is `MISSING`.
+**Expected:** `R` and `M` name the course checkout, `PY` is an absolute executable reporting Python 3.12 or newer, and `GIT_PATH` is followed by a Git version. `OMP_PATH` is your home folder plus `/.local/bin/omp`. `OMP_VERSION` is `omp/18.3.5`. The last line is `MISSING`.
 
-**Stop:** The path is missing or points somewhere else, the version is not `omp/18.3.5`, or the key line is `SET`.
+**Stop:** Any command fails, Python is below 3.12, Git cannot run, the checkout identity is wrong, OMP has the wrong path or version, or the key line is `SET`.
 
-**Recovery:** For a missing or wrong `omp`, return to the PATH step in a window that can edit the startup file, then open another terminal from the desktop. Do not export PATH in the proof window to hide a miss. Arch will not add the user bin folder unless that startup file has the line. For `SET`, do not print the variable and do not treat `SET` as proof that the key was written to a file. Close this window. If you had opened it from the old terminal, open the next one from the desktop menu. If an independently opened window still prints `SET`, stop and follow [credentials](../shared/CREDENTIALS.md).
+**Recovery:** For Python or Git, repair only that prerequisite with the device owner. For the checkout, preserve its files and ask the course owner. For a missing or wrong `omp`, return to the PATH step in a window that can edit the startup file, then open another terminal from the desktop. Do not export PATH in the proof window to hide a miss. Arch will not add the user bin folder unless that startup file has the line. For `SET`, do not print the variable and do not treat `SET` as proof that the key was written to a file. Close this window. If you had opened it from the old terminal, open the next one from the desktop menu. If an independently opened window still prints `SET`, stop and follow [credentials](../shared/CREDENTIALS.md).
 
 ## 10. Enter the key
+
+Set a **US$40 per-key spending cap in OpenRouter** before the live turn. Confirm the cap is saved for the key you will use, following [credentials](../shared/CREDENTIALS.md). If you cannot confirm it, stop before entering the key.
 
 The next box is only the hidden read. Paste it, press Return, and wait. The terminal is waiting for the key even when it looks idle. Paste or type the key, then press Return. The characters do not appear. This stores the key in this process only. It does not write a profile, a file, or a log.
 
 Do not put the key on the same line as a command. Do not run `echo`, `env`, `set`, or `printenv` to look at it. Read [credentials](../shared/CREDENTIALS.md) before you paste a key that may already have been exposed.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 IFS= read -r -s OPENROUTER_API_KEY
@@ -391,9 +549,9 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 ## 11. Export the key in this process
 
-Export makes the variable available to programs you start from this window, including the proof. It still does not write the key to disk. `SET` means this process has a non-empty variable. It does not mean the key was saved, and it does not mean a file leak. `MISSING` means this process does not have it.
+Export makes the variable available to programs you start from this window, including the proof. It still does not write the key to disk. `SET` means this process has a non-empty variable. It does not prove persistence, exposure, or successful authentication. `MISSING` means this process does not have it.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 export OPENROUTER_API_KEY
@@ -412,16 +570,17 @@ fi
 
 ## 12. Choose Python and the checkout again
 
-This new window does not keep the variables from the window you closed. These two boxes set them again. The checkout box will not clone over an existing course folder, and it will not update one. The Python box still accepts the `python` command when that is the real Arch interpreter.
+Recheck Python and the checkout in this same window before preparing the proof. The checkout box will not clone over an existing course folder, and it will not update one. The Python box still accepts the `python` command when that is the real Arch interpreter.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_resolve_python() {
-  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.realpath(sys.executable))' 2>/dev/null && break; done)"
   if [ -n "$PY" ]; then
     printf 'PY %s\n' "$PY"
-    "$PY" --version
+    "$PY" -c 'import sys; sys.exit(sys.version_info < (3, 12))' || return 1
+    "$PY" --version || return 1
     return 0
   fi
   printf 'STOP: no real Python executable is version 3.12 or newer\n' >&2
@@ -436,18 +595,22 @@ course_resolve_python
 
 **Recovery:** Return to the pacman step and run the full upgrade. Do not point `PY` at an AUR interpreter or a copy you downloaded outside Arch's packages.
 
-**Terminal: Arch Linux, ordinary user.**
+Confirm the existing checkout without changing its files.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_use_checkout() {
-  local origin_url
+  local origin_url checkout_top helper
   R="$HOME/Documents/AIHB_OCT_2026"
   ORIGIN="https://github.com/TheHolofex/AIHB_OCT_2026.git"
-  if [ -L "$R" ]; then
+  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then
     printf 'STOP: %s is a symlink; it was not replaced\n' "$R" >&2
     return 1
   fi
   if [ ! -e "$R" ]; then
+    GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD || return 1
+    mkdir -p -- "$HOME/Documents" || return 1
     git clone "$ORIGIN" "$R" || {
       printf 'STOP: clone failed; the path was not reused\n' >&2
       return 1
@@ -463,11 +626,24 @@ course_use_checkout() {
     fi
     printf 'USE: existing checkout; no reset, pull, or clean\n'
   fi
+  if [ -L "$R/.git" ]; then
+    printf 'STOP: checkout metadata is linked\n' >&2; return 1
+  fi
+  checkout_top="$(git -C "$R" rev-parse --show-toplevel 2>/dev/null)" || return 1
+  if [ "$checkout_top" != "$R" ]; then
+    printf 'STOP: intended folder is not the checkout root\n' >&2; return 1
+  fi
+  git -C "$R" rev-parse --verify HEAD >/dev/null || return 1
   M="$R/AI_Harness_Bootcamp_2/module-00-setup"
   if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$R/shared/course_guard.mjs" ] || [ ! -f "$M/scripts/verify-setup.sh" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ]; then
     printf 'STOP: this checkout is missing a course helper; it was not reset or updated\n' >&2
     return 1
   fi
+  for helper in "$R/shared/run_omp.py" "$R/shared/course_guard.mjs" "$M/scripts/verify-setup.sh" "$M/shared/case/verify_tool_proof.py"; do
+    if [ -L "$helper" ]; then
+      printf 'STOP: course helper is linked; checkout was not changed\n' >&2; return 1
+    fi
+  done
   printf 'R %s\n' "$R"
   printf 'M %s\n' "$M"
 }
@@ -484,14 +660,18 @@ course_use_checkout
 
 The proof folder, the token, and the evidence folder are outside the course checkout. The token is created with Python's `secrets` module and saved as `run-token.txt` beside the proof folder, then copied into it. The evidence child is named but not created. The launcher creates that child. Do not create `from-omp.txt` yourself.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_prepare_proof() {
   local attempt token_bytes
+  unset COURSE_PROOF_VERIFIED
   if [ -z "${PY:-}" ] || [ ! -x "${PY:-}" ]; then
     printf 'STOP: PY is not set in this terminal\n' >&2
     return 1
+  fi
+  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
+    printf 'STOP: evidence parent is linked; keep work under your home folder\n' >&2; return 1
   fi
   attempt="module-00-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   BASE="$HOME/course-evidence/reformation-qa/$attempt"
@@ -539,11 +719,11 @@ This command starts the course launcher. The launcher selects OpenRouter and `op
 
 A missing key exits 2 and does not create the evidence folder. A live failure exits 1. Keep that attempt. Do not run the launcher again against the same proof folder after a partial file exists.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_run_proof() {
-  local status
+  local course_exit
   if [ -z "${PY:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
     printf 'STOP: proof paths are not set in this terminal\n' >&2
     return 1
@@ -561,13 +741,13 @@ course_run_proof() {
     --prompt "$BASE/proof/prompt.txt" \
     --evidence "$EVIDENCE" \
     --allow-write from-omp.txt
-  status="$?"
-  printf 'LAUNCH_EXIT %s\n' "$status"
-  if [ "$status" -eq 2 ]; then
+  course_exit="$?"
+  printf 'LAUNCH_EXIT %s\n' "$course_exit"
+  if [ "$course_exit" -eq 2 ]; then
     printf 'STOP: prerequisite hold; do not reuse this attempt\n' >&2
     return 2
   fi
-  if [ "$status" -ne 0 ]; then
+  if [ "$course_exit" -ne 0 ]; then
     printf 'STOP: live run failed; keep this attempt\n' >&2
     return 1
   fi
@@ -580,17 +760,18 @@ course_run_proof
 
 **Stop:** `LAUNCH_EXIT 2` means a prerequisite hold. A missing key is that hold, and the evidence folder should still be absent. `LAUNCH_EXIT 1` means the live run failed or was incomplete. Any other STOP line means this attempt must not be reused.
 
-**Recovery:** Do not create `from-omp.txt` by hand, and do not delete the attempt to make the same path work. For exit 2, paste the hidden-read box and the export box again in this window, then start again at the proof-prepare step so the folder is new. For exit 1, keep the attempt and start again at the proof-prepare step. Do not point the launcher at a second provider or a different model.
+**Recovery:** Do not create `from-omp.txt` by hand, and do not delete the attempt to make the same path work. For exit 2, read the prerequisite error. If it names a missing key, repeat the hidden-read and export boxes in this window. For another prerequisite, correct that specific failure with the course owner. Only then prepare a new attempt. For exit 1, keep the attempt, inspect the first failure in its receipts, and correct that cause with the course owner before preparing a new attempt. Do not retry blindly. Do not point the launcher at a second provider or a different model.
 
 ## 15. Check the proof
 
-The checker reads the proof folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains `omp works` and the token from this attempt, and when the evidence records that `course_write` wrote those bytes.
+The checker reads the proof folder, the token file outside that folder, and the evidence folder. It audits the saved receipts and pinned provider, model, and OMP identities. It passes only when `from-omp.txt` contains `omp works` and the token from this attempt, and when the evidence records that `course_write` wrote those bytes.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_verify_proof() {
-  local status
+  local course_exit
+  unset COURSE_PROOF_VERIFIED
   if [ -z "${PY:-}" ] || [ -z "${M:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
     printf 'STOP: proof paths are not set in this terminal\n' >&2
     return 1
@@ -600,9 +781,10 @@ course_verify_proof() {
     return 1
   fi
   "$PY" "$M/shared/case/verify_tool_proof.py" "$BASE/proof" "$BASE/run-token.txt" "$EVIDENCE"
-  status="$?"
-  printf 'VERIFY_EXIT %s\n' "$status"
-  return "$status"
+  course_exit="$?"
+  printf 'VERIFY_EXIT %s\n' "$course_exit"
+  if [ "$course_exit" -eq 0 ]; then COURSE_PROOF_VERIFIED="$BASE"; fi
+  return "$course_exit"
 }
 course_verify_proof
 ```
@@ -611,17 +793,17 @@ course_verify_proof
 
 **Stop:** You see `TOOL PROOF HOLD`, `VERIFY_EXIT 1`, `VERIFY_EXIT 2`, or a STOP line.
 
-**Recovery:** Do not edit `from-omp.txt`, and do not run the checker against a folder you filled in yourself. Keep this attempt. Return to the proof-prepare step for a new attempt. A later prerequisite report cannot replace this check.
+**Recovery:** Do not edit `from-omp.txt`, and do not run the checker against a folder you filled in yourself. Keep this attempt as HOLD. Correct the first reported failure with the course owner before preparing a new attempt. A later prerequisite report cannot replace this check.
 
 ## 16. Save the prerequisite report
 
 This report checks the machine, the tools, the checkout, and whether the key variable is present in this process. It does not prove the live write. A checkout with changed or untracked files is not a failure and is not a reason to clean it.
 
-**Terminal: Arch Linux, ordinary user.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_save_report() {
-  local status
+  local course_exit
   if [ -z "${M:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ]; then
     printf 'STOP: report paths are not set in this terminal\n' >&2
     return 1
@@ -631,25 +813,42 @@ course_save_report() {
     return 1
   fi
   bash "$M/scripts/verify-setup.sh" "$R" "$BASE/setup-report.txt"
-  status="$?"
-  printf 'REPORT_EXIT %s\n' "$status"
-  return "$status"
+  course_exit="$?"
+  printf 'REPORT_EXIT %s\n' "$course_exit"
+  return "$course_exit"
 }
 course_save_report
 ```
 
 **Expected:** The command writes the report file it names. A run with no failed prerequisite prints `SETUP CHECK PASS` and `REPORT_EXIT 0`. The report does not contain the key.
 
-**Stop:** The command prints `SETUP CHECK HOLD` or `REPORT_EXIT 1`. A line in the report tells you to pull, reset, or discard files.
+**Stop:** The command prints `SETUP CHECK HOLD`, any nonzero `REPORT_EXIT`, or an error. A line in the report tells you to pull, reset, or discard files.
 
 **Recovery:** Read the first FAIL line and correct only that prerequisite. Do not pull, reset, clean, or discard the checkout because a report mentions changed files. Do not paste the key into the report. If the report passed but the proof check did not, the proof remains stopped.
 
-## 17. Open the lab
+## 17. Read the actual proof file
 
-The report is not the lab. Open [Give AI a clear, limited job](../shared/MODULE_00_LAB.md) in your browser. Use an ordinary text editor for the notes the lab asks you to write. The course files are in the folder printed as `R`.
+Read the actual result from disk after `TOOL PROOF PASS`. Keep the prerequisite report separate: its PASS cannot replace the tool proof. This command prints every byte of `from-omp.txt`; the token is a run identifier, not your API key.
 
-**Expected:** The lab page opens and you can read its title.
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
-**Stop:** The page is missing, or the browser opens a different folder than the `R` line from this terminal.
+```bash
+course_read_back_proof() {
+  if [ -z "${BASE:-}" ] || [ "${COURSE_PROOF_VERIFIED:-}" != "$BASE" ]; then
+    printf 'STOP: this attempt has not passed the tool-proof check\n' >&2; return 1
+  fi
+  if [ ! -f "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
+    printf 'STOP: proof file is missing or linked\n' >&2; return 1
+  fi
+  printf 'FILE %s\n' "$BASE/proof/from-omp.txt"
+  cat -- "$BASE/proof/from-omp.txt" || return 1
+  printf '\nEND OF FILE\n'
+}
+course_read_back_proof
+```
 
-**Recovery:** From the `R` folder, open `AI_Harness_Bootcamp_2/module-00-setup/shared/MODULE_00_LAB.md` in your browser or editor. Do not clone a second copy to find it.
+**Expected:** Between the file path and `END OF FILE`, you see `omp works` followed by the token for this attempt. This is the file you just verified, under your home folder outside the checkout.
+
+**Stop:** The file cannot be read, its contents differ from the verified result, or any STOP line appears. A failed proof or prerequisite report remains HOLD.
+
+**Recovery:** Preserve the attempt and its receipts. Ask the course owner to resolve the first failed check before creating a new attempt. Do not edit the proof file or use an assistant message as a substitute for the disk file.

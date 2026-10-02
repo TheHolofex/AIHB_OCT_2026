@@ -1,20 +1,22 @@
 # Module 2 · Control context and reusable instructions
 
-Plan for one three-hour session. You will place one desk rule where it can be found after a reload, load it through the harness from a file and observe the load receipt, run the supplied screen on notes from the pile, and write down what the screen still cannot stop.
+Keep a desk rule available after the conversation ends. Save it in a file, load it through the harness, and use the run records to prove it loaded again in a completely fresh session. The rule tells the model to treat retrieved paperwork as data, not as an order to release a crate.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 The notes belong to Ledger Pike, a resupply of surgical instrument sets from Quarry Depot to Clinic P-4 on vehicle QP-17. The warehouse clerk is about to stamp crate C-44. Notes DN-001 through DN-040 are that shift's pile. Every fact you need is in this packet.
 
 ## Start here
 
-1. Open [the Module 2 lab](shared/MODULE_02_LAB.md).
+Use your source-verification skills to identify the applicable measurement and reject unsupported release claims. Check separately what information and instructions the model receives, what the saved rule tells it to do, and what the file screen actually blocks.
 
 ## The packet
 
 Inspect all forty notes to find the requested measurement, its exact source, and any quoted instructions. Decide which statements describe evidence and which try to turn receipt, custody, or a measurement into release authority.
 
-The supplied screen accepts clean notes and rejects notes that contain instruction-like language.
+The supplied **screen** checks files for fixed patterns of instruction-like language. Its result is separate from whether the model loaded or followed the saved rule. Pasting text directly into chat bypasses this file check.
 
-You will load the saved rule through the harness launcher, ask for the height and its source note after the harness has read the whole pile, and prove the load happened by the receipt in the guard log before any provider request.
+Ask for the height and its source note after the harness has read all forty notes. Inspect the **load receipt**, the saved record that identifies the rule text loaded before the first request to the model provider. A correct height alone does not prove the rule loaded.
 
 ## Class-only boundary
 

@@ -1,8 +1,10 @@
 # Module 9 · Transfer a runnable package
 
-A runnable package lets its recipient recover the purpose, inputs, controls, result, stop condition, and restore action without the author's chat history. You will freeze a package, move only its declared files to a fresh location, and operate it from a new terminal. Then give the package to another person so they can operate it from the files on the supplied task.
+A runnable package lets another person run, stop, and restore the Last Count closing task without your chat history. Use your source checks, saved controls, and recovery procedures to assemble the smallest sufficient set of instructions and files. Freeze those files, move only the declared bundle to a fresh location, and operate it from a new terminal. Keep this restart check separate from observing another person use the package.
 
-The Last Count case is fictional: South Store, Clinic R-12, movement W-9, and oral rehydration salts. A quantity-support result is not permission to release or dispatch anything. Allow about three hours for preparation, source inspection, operation, and handoff; this is a planning target, not a measured completion time.
+The fictional Last Count movement carries oral rehydration salts from South Store to Clinic R-12 on movement W-9. A result showing that the required quantity is supported does not grant permission to release or dispatch anything.
+
+Plan for one three-hour facilitated session, including two hours of practice for preparation, source inspection, operation, and handoff preparation. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
 
 ## Prepare separate work and transfer locations
 
@@ -58,7 +60,7 @@ Open these files in your editor:
 - the active and baseline controls and baseline digest
 - `W/shared/PACKAGE.md`
 
-In `E/pre-run.md`, record the exact task identity, required quantity, decision time, and units. Explain the conditions for destination custody and for usable quantity, including what makes an unknown state different from a known held state. Identify near-match identities, stale/future rows, and the scope and time limits on supersession. Quote the hostile instruction as data and explain why it supplies no authority.
+In `E/pre-run.md`, record the exact task identity, required quantity, decision time, and units. Explain the conditions for destination custody and for usable quantity, including what makes an unknown state different from a known held state. Identify almost-matching IDs and rows that are outdated or later than the decision time. Check when a newer record may supersede, or replace, an earlier one and which identities that replacement covers. Quote the hostile instruction as data and explain why it supplies no authority.
 
 Predict which classes of rows can contribute, which must remain explicit exclusions or holds, and what the closure records can establish. Derive any quantities from the actual rows, not from an answer fixture. The records are authored practice data, not historical model receipts.
 
@@ -70,7 +72,7 @@ Predict which classes of rows can contribute, which must remain explicit exclusi
 
 ## Check and run the authoring copy
 
-The package has eleven named fields: purpose, bounds, inputs, controls/config identity, run, check, stop, restore, strongest evidence, limitations, and next owner. Confirm them against the sources. The structural check does not operate the package or show whether another person can use it.
+The package has eleven named fields: purpose, bounds, inputs, controls/config identity, run, check, stop, restore, strongest evidence, limitations, and next owner. Complete and confirm them against the sources and your actual work. Identify the exact controls and configuration used, retain unresolved limits, and provide commands the recipient can run from the package alone. The structural check checks the document's required form; it does not operate the package or show whether another person can use it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -259,6 +261,8 @@ if (-not (Test-Path -LiteralPath 'shared/PACKAGE.md' -PathType Leaf)) { throw 'H
 
 Open the received `shared/PACKAGE.md`. From this point, use its Run, Check, Stop, and Restore commands and its stated observations, without the authoring terminal or chat history. Both terminal families are supplied there. Record every command, first error, actual result, disabled-control refusal, restore digest, and byte comparison in `E/recipient-technical.md` when you return to the evidence terminal. If author help was needed, retain the question and repair; do not call that first attempt independent operation.
 
+If you operate this fresh session yourself, identify yourself as the operator. A successful rerun shows restartability from saved files. It does not show that another person could operate them independently.
+
 The core operation must show a fresh result, the structural-check limit, a disabled-control exit 1 with no new output or prior-result mutation, validated restoration, and a new restored result that matches the fresh result byte for byte.
 
 ## Compare the received run with the retained original
@@ -313,7 +317,7 @@ Choose a new, unused external folder for `F`, keeping `W` and the original `E/bu
 
 Give the fresh folder and the supplied task to another person. Let them try the saved instructions first. Ask them to recover the purpose and bounds, run the commands, reconstruct custody and usable quantity from the cited rows, name the human decision still required, show stop and restore, and name the next owner. Record their questions, commands, observed outcomes, and any help you provide in `E/transfer-status.md`.
 
-A model's authorship, hashes, or a structural pass cannot replace another person's operation of the package. If no person or supplied task is available, retain the technical results and name the missing prerequisite without claiming that transfer was observed. Use the questions and assistance record to improve the package.
+A model's authorship, hashes, or a structural pass cannot replace another person's operation of the package. If no person or supplied task is available, retain the technical results and record independent-person operation as **unobserved**, with the missing prerequisite. It is not a pass. If a recipient needs help, record what they did before and after that help; do not relabel an assisted attempt as independent. Use their questions and the assistance record to improve a new package version while preserving the observed attempt.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: preserve custody while reassessing usable effect</summary>

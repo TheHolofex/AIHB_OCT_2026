@@ -1,25 +1,40 @@
 # Windows PowerShell setup
 
-This path installs the course tools on native Windows and proves one bounded write from Oh My Pi. Plan for 60 to 120 minutes. Open **Windows PowerShell** on the Windows computer, from the Start menu. PowerShell on macOS or Linux is not this path, and an elevated Administrator window is not required after Windows itself is already installed.
+This path installs the course tools on native Windows and proves one bounded write from Oh My Pi. Plan for 60 to 120 minutes. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
 
 You need Git, Python 3.12 or newer, a browser, an ordinary text editor, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You do not install Node, npm, n8n, Obsidian, or another agent for this path.
 
 A checksum is a fingerprint of a file. You compare the fingerprint of the downloaded program with the fingerprint published beside it, and you do that before the program is allowed to run. PATH is the list of folders Windows searches when you type a command name.
 
-The work falls into five parts: install Git and Python, install the verified Oh My Pi binary, put the course checkout in your home folder, enter the key only into this process, and then run the proof and the prerequisite report.
-
 If a company policy denies an installer, stop and save the message. Do not open an Administrator window to get around that denial. When a step stops, start from the first failed check in [When setup stops](../shared/TROUBLESHOOTING.md).
 
 ## Check the disk and the processor
 
-You need enough free space for Git, Python, and the course checkout, and you need the Windows binary that matches the processor. The processor code comes from Windows itself: 12 means ARM64 and 9 means x64. The process you happen to be running can report a different architecture, so this check does not use that process value.
+Confirm that the device owner permits these installations. Use a Windows release and edition still supported under your device’s servicing arrangement. WinGet’s technical floor is Windows 10 version 1809, build 17763; passing that floor does not make an unsupported Windows release supported. Windows 10 with applicable ongoing support is not excluded simply because it is not Windows 11. Check the edition and lifecycle with your device owner if uncertain. See [WinGet requirements](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
 
-**Terminal: Windows PowerShell, ordinary user.**
+Check the OS/build, Windows PowerShell version, and WinGet availability. You need enough free space for Git, Python, and the course checkout, and you need the Windows binary that matches the processor. The processor code comes from Windows itself: 12 means ARM64 and 9 means x64. The process you happen to be running can report a different architecture, so this check does not use that process value.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
+$ErrorActionPreference = 'Stop'
+if ($env:OS -ne 'Windows_NT') { throw 'STOP: use native Windows.' }
+$PSVersionTable
+if ($PSVersionTable.PSEdition -ne 'Desktop' -or $PSVersionTable.PSVersion.Major -ne 5 -or $PSVersionTable.PSVersion.Minor -ne 1) {
+  throw 'STOP: open Windows PowerShell 5.1 from Start.'
+}
+$os = Get-CimInstance -ClassName Win32_OperatingSystem
+$os | Select-Object Caption, Version, BuildNumber
+if ([int]$os.BuildNumber -lt 17763) { throw 'STOP: this OS is below the WinGet technical floor.' }
+$winget = Get-Command winget -CommandType Application -ErrorAction SilentlyContinue
+if ($winget) {
+  & $winget.Source --version
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: WinGet failed. Keep its message.' }
+} else { Write-Output 'WinGet MISSING: use the approved official-installer recovery if needed.' }
 $driveName = ([IO.Path]::GetPathRoot($HOME).TrimEnd('\'))[0]
 $freeGb = (Get-PSDrive -Name $driveName).Free / 1GB
 Write-Output ("free GB: " + [math]::Round($freeGb, 1))
+if ($freeGb -lt 15) { throw 'STOP: free at least 15 GB on the home drive.' }
 $archCode = (Get-CimInstance -ClassName Win32_Processor | Select-Object -First 1).Architecture
 if ($archCode -eq 12) {
   $asset = 'omp-windows-arm64.exe'
@@ -31,87 +46,117 @@ if ($archCode -eq 12) {
 Write-Output $asset
 ```
 
-**Expected:** free space of at least 15 GB, then either `omp-windows-arm64.exe` or `omp-windows-x64.exe`.
+**Expected:** a supported Windows edition/build, Desktop PowerShell 5.1, a WinGet version or explicit missing notice, free space of at least 15 GB, then either `omp-windows-arm64.exe` or `omp-windows-x64.exe`.
 
-**Stop:** free space is under 15 GB, the processor query fails, or the script stops because no published binary matches.
+**Stop:** installation permission or OS support is uncertain, the OS/shell check fails, free space is under 15 GB, the processor query fails, or the script stops because no published binary matches.
 
-**Recovery:** free space on the Windows drive and run the block again. If the processor still does not match, save the code it printed and use the support packet. Do not download the other architecture and hope it runs.
+**Recovery:** resolve an OS/support or installation-permission question with the device owner before continuing. For low disk space, free space on the home drive and check again. For an unsupported processor, save the stop message and ask support for a supported machine. Do not download the other architecture and hope it runs.
 
 The architecture numbers are documented with [Win32_Processor](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor).
 
-## Install Git and Python for your user
-
-Git copies the course repository. Python 3.12 or newer runs the course helpers. Both installs stay in your user account when the package manager allows that.
-
-**Terminal: Windows PowerShell, ordinary user.**
-
-```powershell
-winget --version
-winget install --exact --id Git.Git --source winget --scope user --accept-package-agreements --accept-source-agreements
-winget install --exact --id Python.Python.3.12 --source winget --scope user --accept-package-agreements --accept-source-agreements
-```
-
-**Expected:** `winget` prints a version, and both install commands finish without an access-denied or policy message. The installers can take several minutes and may ask you to approve an official installer prompt.
-
-**Stop:** `winget` is not recognized, either install reports that a policy blocked it, or an approval prompt is denied.
-
-**Recovery:** if `winget` is simply not recognized, and the message does not say that installs are blocked, install current-user Git from [Git for Windows](https://git-scm.com/downloads/win) and current-user Python 3.12 or newer from [Python for Windows](https://docs.python.org/3/using/windows.html). On the Python installer, choose the current-user option and turn on **Add python.exe to PATH**. If a policy message blocks the install, stop. Do not switch to an Administrator window to bypass it. [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget/) is the package command used above.
-
-Close this PowerShell window after the installers finish. The next window has to read the saved PATH.
-
 ## Resolve the real Python 3.12 executable
 
-The later helpers must run on one absolute Python program, not on a Store stub that only opens a shop page. This new window also shows whether the installer PATH survived outside the window that ran the install.
+Check Git and execute each Python candidate until one proves it is version 3.12 or newer. The resolver skips Store aliases and reparse points (links or redirects). It accepts an absolute `sys.executable` only after a successful version check, then checks that executable itself. An absent `py -3.12` or an older `python` does not prevent a later candidate from working. The launcher is documented in [Python for Windows](https://docs.python.org/3.12/using/windows.html).
 
-**Terminal: Windows PowerShell, ordinary user.**
+Paste this whole block in each newly opened setup window to recreate `$PY`, `$R`, and `$M` and check Git again.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window or newly opened from Start after a restart.**
 
 ```powershell
-$PY = $null
-$launcher = Get-Command py -ErrorAction SilentlyContinue
-if ($launcher -and $launcher.Source -notlike '*\WindowsApps\*') {
-  $PY = (& $launcher.Source -3.12 -c 'import sys; print(sys.executable)').Trim()
-}
-if (-not $PY) {
-  foreach ($name in @('python', 'python3')) {
-    $cmd = Get-Command $name -ErrorAction SilentlyContinue
-    if ($cmd -and $cmd.Source -notlike '*\WindowsApps\*') {
-      $PY = $cmd.Source
-      break
+$ErrorActionPreference = 'Stop'
+$R = Join-Path $HOME 'Documents\AIHB_OCT_2026'
+$M = Join-Path $R 'AI_Harness_Bootcamp_2\module-00-setup'
+$gitReady = $false
+$gitCmd = Get-Command git -CommandType Application -ErrorAction SilentlyContinue
+if ($gitCmd) {
+  & $gitCmd.Source --version
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: existing Git failed; preserve the message before repair.' }
+  $gitReady = $true
+} else { Write-Output 'Git MISSING' }
+function Find-CoursePython {
+  $candidates = @()
+  $pyLaunchers = @(Get-Command py -CommandType Application -All -ErrorAction SilentlyContinue)
+  foreach ($cmd in $pyLaunchers) {
+    $candidates += @{ Exe = $cmd.Source; Args = @('-3.12') }
+    $candidates += @{ Exe = $cmd.Source; Args = @('-3') }
+  }
+  foreach ($name in @('python3.12', 'python', 'python3')) {
+    foreach ($cmd in @(Get-Command $name -CommandType Application -All -ErrorAction SilentlyContinue)) {
+      $candidates += @{ Exe = $cmd.Source; Args = @() }
     }
   }
+  foreach ($candidate in $candidates) {
+    $exe = $candidate.Exe
+    if ($exe -like '*\WindowsApps\*') { continue }
+    $item = Get-Item -LiteralPath $exe -Force
+    if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+    $argsForPython = @($candidate.Args) + @('-c', 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)')
+    $output = @(& $exe @argsForPython)
+    if ($LASTEXITCODE -ne 0) { continue }
+    if ($output.Count -ne 1 -or [string]::IsNullOrWhiteSpace([string]$output[0])) { continue }
+    $resolved = ([string]$output[0]).Trim()
+    if ($resolved -notmatch '^[A-Za-z]:\\' -or $resolved -like '*\WindowsApps\*') { continue }
+    if (-not (Test-Path -LiteralPath $resolved -PathType Leaf)) { continue }
+    $item = Get-Item -LiteralPath $resolved -Force
+    if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+    $confirmed = @(& $resolved -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)')
+    if ($LASTEXITCODE -ne 0) { continue }
+    if ($confirmed.Count -ne 1 -or ([string]$confirmed[0]).Trim() -ine $resolved) { continue }
+    return $resolved
+  }
+  return $null
 }
-if (-not $PY) { throw 'STOP: Python 3.12 or newer was not found outside the Store alias.' }
-$item = Get-Item -LiteralPath $PY -Force
-if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-  $PY = $item.Target
-  if ($PY -is [array]) { $PY = $PY[0] }
-  $item = Get-Item -LiteralPath $PY -Force
-}
-if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-  throw 'STOP: Python still resolves through a link. It was not accepted.'
-}
-if ($PY -like '*\WindowsApps\*') { throw 'STOP: Python points at the Store alias.' }
-& $PY -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 12) else 1)'
-if ($LASTEXITCODE -ne 0) { throw 'STOP: that Python is older than 3.12.' }
-Write-Output $PY
-& $PY --version
+$PY = Find-CoursePython
+if ($PY) {
+  Write-Output $PY
+  & $PY --version
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: resolved Python failed its version command.' }
+} else { Write-Output 'Python 3.12+ MISSING' }
 ```
 
-**Expected:** one absolute path to `python.exe`, then a version line beginning `Python 3.12` or newer. The path does not contain `WindowsApps`.
+**Expected:** Git’s version and an absolute Python path followed by Python 3.12 or newer, or a specific `MISSING` line for a prerequisite to install. Failed candidate messages can appear before a later suitable Python is found.
 
-**Stop:** no usable Python is found, the path is a Store alias or a link that cannot be resolved, or the version is older than 3.12.
+**Stop:** an existing Git fails, or no suitable Python is found after installation. Do not continue to downloads or cloning with a missing prerequisite.
 
-**Recovery:** install Python 3.12 for the current user, turn off the `python.exe` and `python3.exe` app execution aliases under Settings, Apps, Advanced app settings, App execution aliases, then close PowerShell and run this block in a new window. Do not point `$PY` at a copy you typed by hand. The alias setting is described in [Python for Windows](https://docs.python.org/3/using/windows.html).
+**Recovery:** install only the missing prerequisite below. If Python still resolves only to a Store alias, use Settings → Apps → Advanced app settings → App execution aliases to turn off the `python.exe` and `python3.exe` aliases, then reopen and resolve again. Do not type a guessed `$PY` path.
 
-Keep this window open. `$PY` exists only in this process.
+## Install Git and Python for your user
+
+Install only missing prerequisites. Skip this block when both tools passed. Git may require an approved machine installation even though you start as an ordinary user. Review WinGet’s source/package agreements when prompted and accept only if authorized. Git’s installer can request elevation; Python requests a user install. If the package does not support the requested scope, an approval is denied, or policy blocks installation, stop and have the device owner provide the approved installation. Do not switch to Administrator to bypass policy. See [WinGet install options](https://learn.microsoft.com/en-us/windows/package-manager/winget/install).
+
+Install only the tools marked missing by the preceding block.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
+
+```powershell
+if (-not (Get-Command winget -CommandType Application -ErrorAction SilentlyContinue)) {
+  throw 'STOP: WinGet is missing. Use the official-installer recovery.'
+}
+if (-not $gitReady) {
+  winget install --exact --id Git.Git --source winget
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: Git installation did not succeed. Keep the installer message.' }
+}
+if (-not $PY) {
+  winget install --exact --id Python.Python.3.12 --source winget --scope user
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: Python installation did not succeed. Keep the installer message.' }
+}
+```
+
+**Expected:** each needed installer exits successfully. Suitable existing tools are skipped.
+
+**Stop:** any nonzero installer exit, including an already-installed message when the tool still failed discovery, or any denied permission/policy prompt.
+
+**Recovery:** preserve the message and correct that specific problem with the device owner. If WinGet alone is unavailable, use the approved official [Git for Windows installer](https://git-scm.com/downloads/win) and [Python Windows installer](https://www.python.org/downloads/windows/), only for missing tools. Choose Python 3.12 or newer, current-user installation, and **Add python.exe to PATH**. Do not reinstall over an unexplained conflicting installation.
+
+After any PATH-changing installer, close **all terminal windows**, including Windows Terminal and editor terminals. Open **Windows PowerShell** again through **Start**. A new tab can inherit the old environment. Repeat the full [Git and Python resolver](#resolve-the-real-python-312-executable) in that new window; it also recreates `$R` and `$M`. Continue only after both tools pass.
 
 ## Download Oh My Pi and verify it before it can run
 
-You download the selected binary and `SHA256SUMS.txt` from the pinned release into a new folder that belongs only to this attempt. The published file lists a lowercase SHA-256 fingerprint, two spaces, then the exact filename. Nothing is copied into place, and nothing is executed, unless that exact line matches the file you downloaded.
+Download the selected binary and `SHA256SUMS.txt` from the pinned release into a new folder that belongs only to this attempt. The published file lists a lowercase SHA-256 fingerprint, two spaces, then the exact filename. Nothing is copied into place, and nothing is executed, unless that exact line matches the file you downloaded.
 
 The release page is [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5). `Get-FileHash` is the Windows command that computes the fingerprint: [Get-FileHash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash).
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $ErrorActionPreference = 'Stop'
@@ -146,11 +191,11 @@ if (-not (Test-Path -LiteralPath $sumsPath) -or -not (Test-Path -LiteralPath $bi
 }
 $matches = @(Get-Content -LiteralPath $sumsPath | Where-Object {
   $pair = $_ -split '  ', 2
-  $pair.Length -eq 2 -and $pair[1].Trim() -eq $asset
+  $pair.Length -eq 2 -and $pair[1] -ceq $asset
 })
 if ($matches.Count -ne 1) { throw 'STOP: the checksum file has no single exact line for the selected file. Nothing was installed.' }
-$expected = (($matches[0] -split '  ', 2)[0]).Trim().ToLowerInvariant()
-if ($expected -notmatch '^[0-9a-f]{64}$') { throw 'STOP: the checksum line is not a SHA-256 value. Nothing was installed.' }
+$expected = ($matches[0] -split '  ', 2)[0]
+if ($expected -cnotmatch '^[0-9a-f]{64}$') { throw 'STOP: the checksum line is not a SHA-256 value. Nothing was installed.' }
 $actual = (Get-FileHash -LiteralPath $binaryPath -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw 'STOP: checksum failed. Nothing was installed.' }
 $destDir = Join-Path $env:LOCALAPPDATA 'omp'
@@ -176,34 +221,43 @@ if (Test-Path -LiteralPath $dest) {
 }
 Write-Output $download
 Write-Output $dest
-& $dest --version
+$ompVersion = @(& $dest --version)
+if ($LASTEXITCODE -ne 0) { throw 'STOP: OMP version command failed.' }
+if ($ompVersion.Count -ne 1 -or ([string]$ompVersion[0]).Trim() -ne 'omp/18.3.5') { throw 'STOP: OMP version differs from omp/18.3.5.' }
+Write-Output $ompVersion
 ```
 
 **Expected:** the download folder path, the destination path ending in `\omp\omp.exe` under your local app data, and a version line `omp/18.3.5`. That version command is the first time the program runs, and it runs only after the fingerprint matched.
 
 **Stop:** the script stops on a failed download, a missing or extra checksum line, a fingerprint mismatch, a symlink or junction, or a different file already at the destination. The destination is left untouched in those cases.
 
-**Recovery:** leave the download folder in place and run the block again only after you have read the stop line. A second run uses a new download folder. Do not copy the binary into place yourself, and do not delete a different existing `omp.exe`. If Windows itself blocks the verified file from starting, save that message and stop. Do not turn off a security control to force it.
+**Recovery:** leave the download folder in place and run the block again only after correcting the specific cause in the stop line. A second run uses a new download folder. Do not copy the binary into place yourself, and do not delete a different existing `omp.exe`. If Windows itself blocks the verified file from starting, save that message and stop. Do not turn off a security control to force it.
 
 ## Save the program folder on your user PATH
 
-The launcher finds `omp` by name. This step records the destination folder in your user PATH so a later window can find the same binary. It does not store the API key.
+The launcher finds `omp` by name. Save the destination folder in your user PATH so a later window can find the same binary. It does not store the API key.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $ompDir = Join-Path $env:LOCALAPPDATA 'omp'
 $dest = Join-Path $ompDir 'omp.exe'
 if (-not (Test-Path -LiteralPath $dest)) { throw 'STOP: the verified binary is not at the destination.' }
+$otherOmp = Get-Command omp -CommandType Application -ErrorAction SilentlyContinue
+if ($otherOmp -and $otherOmp.Source -ine $dest) { throw 'STOP: another omp is already on PATH. It was not hidden or replaced.' }
 $current = [Environment]::GetEnvironmentVariable('Path', 'User')
-$kept = @()
-if ($current) {
-  $kept = @($current -split ';' | Where-Object { $_ -and ($_.TrimEnd('\') -ine $ompDir.TrimEnd('\')) })
+$entries = @($current -split ';')
+if ($entries -ccontains $ompDir) {
+  $updated = $current
+} elseif ([string]::IsNullOrEmpty($current)) {
+  $updated = $ompDir
+} else {
+  $updated = $ompDir + ';' + $current
 }
-$updated = (@($ompDir) + $kept) -join ';'
 [Environment]::SetEnvironmentVariable('Path', $updated, 'User')
 $env:Path = $ompDir + ';' + $env:Path
 $found = (Get-Command omp -ErrorAction SilentlyContinue).Source
+if ($found -ine $dest) { throw 'STOP: omp resolves to a different or missing program. Preserve that installation.' }
 Write-Output $found
 ```
 
@@ -213,28 +267,139 @@ Write-Output $found
 
 **Recovery:** run the download block again only if the destination file is missing. If a different `omp` is found, do not overwrite it. Save the printed path and stop. PATH changes are documented in [about_Environment_Variables](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables).
 
+## Check private GitHub access before cloning
+
+Check whether your existing Git credentials can read the private course repository. This temporarily disables Git terminal prompts and restores the previous process setting afterward. If it succeeds, skip the GitHub CLI fallback entirely; keep your working credentials and helpers. See [git ls-remote](https://git-scm.com/docs/git-ls-remote).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
+
+```powershell
+$savedGitPrompt = [Environment]::GetEnvironmentVariable('GIT_TERMINAL_PROMPT', 'Process')
+try {
+  $env:GIT_TERMINAL_PROMPT = '0'
+  git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: repository access failed. Keep the message; use the access recovery.' }
+} finally {
+  if ($null -eq $savedGitPrompt) {
+    Remove-Item Env:\GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue
+  } else {
+    [Environment]::SetEnvironmentVariable('GIT_TERMINAL_PROMPT', $savedGitPrompt, 'Process')
+  }
+}
+Write-Output 'Repository access confirmed.'
+```
+
+**Expected:** a commit identifier and `HEAD`, then `Repository access confirmed.`
+
+**Stop:** any nonzero exit, denied access, or repository-not-found message. This is an access prerequisite, not a local folder permission problem.
+
+**Recovery:** preserve the message. If it names a network problem, correct that first. If credentials are missing or unsuitable, use the fallback below. Repository access also requires the owner’s invitation and any organization approval; logging in does not grant access.
+
+### Install GitHub CLI only for failed access
+
+Skip installation when `gh` already exists. Review the official installer’s approval prompt. This package can request administrator elevation and does not promise a user-scope install. If approval or policy blocks it, stop for the device owner’s approved route. The command and restart requirement come from [GitHub CLI’s Windows installation instructions](https://raw.githubusercontent.com/cli/cli/trunk/docs/install_windows.md).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
+
+```powershell
+if (Get-Command gh -CommandType Application -ErrorAction SilentlyContinue) {
+  gh --version
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: existing GitHub CLI failed. Preserve its message.' }
+} else {
+  if (-not (Get-Command winget -CommandType Application -ErrorAction SilentlyContinue)) {
+    throw 'STOP: ask the device owner to provision official GitHub CLI; WinGet is unavailable.'
+  }
+  winget install --exact --id GitHub.cli --source winget
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: GitHub CLI installation failed. Keep the message.' }
+}
+```
+
+**Expected:** an existing GitHub CLI version, or a successful official installation.
+
+**Stop:** any nonzero exit, denied approval, or policy restriction.
+
+**Recovery:** preserve the failure and have the device owner resolve the named installation problem. After installation, close **all terminal windows** and reopen **Windows PowerShell through Start**, not a new tab. Repeat the full [Git and Python resolver](#resolve-the-real-python-312-executable) to recreate `$R`, `$M`, and the real `$PY` and verify Git. Do not continue with missing prerequisites.
+
+### Authorize the invited GitHub account
+
+Run the browser login. GitHub CLI shows a device code and asks you to open a browser and authorize access. Check that the browser uses the GitHub account invited to this repository. These GitHub credentials are separate from your course-site password and OpenRouter key. If asked to configure Git credentials during login, choose **No**; inspect storage first and configure the host in the later block.
+
+GitHub CLI prefers the OS credential store but may fall back to a plaintext file. Do not use `--insecure-storage`. See [gh auth login](https://cli.github.com/manual/gh_auth_login).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window after resolving tools following any restart.**
+
+```powershell
+gh auth login --hostname github.com --git-protocol https --web
+if ($LASTEXITCODE -ne 0) { throw 'STOP: GitHub login failed. Do not configure Git yet.' }
+```
+
+**Expected:** browser authorization completes for the invited account and login exits successfully.
+
+**Stop:** wrong account, denied authorization, or a nonzero exit.
+
+**Recovery:** correct the account or invitation with the repository owner before another login. Do not share the device code or authentication output.
+
+Inspect account and storage locally, without displaying a token. See [gh auth status](https://cli.github.com/manual/gh_auth_status).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
+
+```powershell
+gh auth status --hostname github.com
+if ($LASTEXITCODE -ne 0) { throw 'STOP: GitHub authentication status failed.' }
+```
+
+**Expected:** the correct active account and credential storage allowed by your device policy. Do not share this output or add `--show-token`.
+
+**Stop:** wrong account, failed status, unapproved storage, or uncertainty about whether reported storage is approved.
+
+**Recovery:** ask the device owner to provision approved credential storage or credentials. Do not proceed with plaintext fallback unless the device policy explicitly approves that storage.
+
+Configure Git for `github.com` only after the status and storage check passes. See [gh auth setup-git](https://cli.github.com/manual/gh_auth_setup-git).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
+
+```powershell
+gh auth setup-git --hostname github.com
+if ($LASTEXITCODE -ne 0) { throw 'STOP: Git credential setup failed.' }
+```
+
+**Expected:** exit zero; the command may print nothing.
+
+**Stop:** any nonzero exit. Do not add `--force`.
+
+**Recovery:** resolve the reported credential problem with the device owner. Re-run the exact [disabled-prompt repository access block](#check-private-github-access-before-cloning) before cloning. Continue only when it prints `Repository access confirmed.` If it still fails, preserve the message and ask the repository owner to confirm the invitation and organization approval; do not blindly repeat login.
+
 ## Use the course checkout, or clone it once
 
-The course lives at `$HOME\Documents\AIHB_OCT_2026`. An existing checkout of the course origin is used as it is. A different folder at that path is left alone.
+Use or clone the course at `$HOME\Documents\AIHB_OCT_2026` after repository access passes. An existing checkout of the course origin is used as it is. A different folder at that path is left alone.
 
 Git can rewrite line endings while it copies text files. A line ending is the hidden character at the end of a line. Later checks compare exact bytes, so a rewritten ending makes a frozen control look changed even when the words are the same. The copy command below turns that rewrite off for this one command. It does not save a Git setting, and it does not reset, clean, pull, or renormalize a folder that is already there. The published course also marks these text files to keep their published line endings on a later fresh copy.
 
 After the copy is found or made, this step reads three frozen controls: the Module 1 source manifest, the Module 7 policy file, and the Module 9 restore control. A carriage return in any of them means this copy was already rewritten. That result is a hold. Leave the folder untouched and get an intact fresh copy. This step does not give permission to repair the existing files.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $R = Join-Path $HOME 'Documents\AIHB_OCT_2026'
 $origin = 'https://github.com/TheHolofex/AIHB_OCT_2026.git'
 $usingExisting = $false
 if (Test-Path -LiteralPath $R) {
-  if (-not (Test-Path -LiteralPath (Join-Path $R '.git'))) {
+  foreach ($probe in @($R, (Join-Path $R '.git'))) {
+    if (Test-Path -LiteralPath $probe) {
+      $item = Get-Item -LiteralPath $probe -Force
+      if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'STOP: checkout or .git is a link. It was not followed.' }
+    }
+  }
+  if (-not (Test-Path -LiteralPath (Join-Path $R '.git') -PathType Container)) {
     throw 'STOP: the home folder already has AIHB_OCT_2026, and it is not a Git checkout. It was not replaced.'
   }
-  $remote = (& git -C $R remote get-url origin 2>$null)
-  if ($LASTEXITCODE -ne 0 -or $remote.Trim() -ne $origin) {
+  $remote = (& git -C $R remote get-url origin)
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: Git could not read the existing origin.' }
+  if ([string]::IsNullOrWhiteSpace([string]$remote) -or ([string]$remote).Trim() -ne $origin) {
     throw 'STOP: that checkout has a different origin. It was not replaced, reset, pulled, or cleaned.'
   }
+  & git -C $R rev-parse --verify HEAD
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: existing checkout has no valid HEAD. Keep it unchanged.' }
   $usingExisting = $true
 } else {
   & git -c core.autocrlf=false clone $origin $R
@@ -278,15 +443,17 @@ Write-Output $M
 
 **Stop:** the folder exists but is not the course origin, Git cannot read the origin, the clone fails, the lab file is missing, a frozen control is missing or is a folder or link, or a frozen control contains a rewritten line ending. The hold line is `HOLD: a frozen control has rewritten line endings. The checkout was not reset, cleaned, pulled, or renormalized.`
 
-**Recovery:** leave the existing folder in place. If it is the wrong project, choose a different computer folder only with the person who supports your machine; do not delete, reset, pull, or clean this one. If the hold names rewritten line endings, do not edit those files and do not renormalize them. Ask the person who supports your machine before moving the folder aside. After `$HOME\Documents\AIHB_OCT_2026` is no longer occupied, run this block again so the new copy is intact. If a copy you just made still prints that hold, stop and save the message. If the clone failed before creating the folder, run the block again. If a partial folder was created and it is not a valid course checkout, stop and save the Git message. The one-command setting is documented in …
+**Recovery:** leave the existing folder in place. If it is the wrong project, choose a different computer folder only with the person who supports your machine; do not delete, reset, pull, or clean this one. If the hold names rewritten line endings, do not edit those files and do not renormalize them. Ask the person who supports your machine before moving the folder aside. After `$HOME\Documents\AIHB_OCT_2026` is no longer occupied, run this block again so the new copy is intact. If a copy you just made still prints that hold, stop and save the message. If the clone failed before creating the folder, correct the reported access or network problem before another attempt. If a partial folder was created and it is not a valid course checkout, stop and save the Git message. The one-command setting is documented in [Git core.autocrlf](https://git-scm.com/docs/git-config#Documentation/git-config.txt-coreautocrlf).
 
 `$R` and `$M` belong to this window. You will set them again in the window that runs the proof.
 
 ## Enter the key without showing it
 
-The next command does nothing except wait for the key. Type the key at that hidden prompt and press Enter. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
+Set and confirm a **US$40 per-key spending cap at OpenRouter** before any live turn, following [the account setup](../shared/CREDENTIALS.md). Stop if that provider-side cap is not confirmed.
 
-**Terminal: Windows PowerShell, ordinary user.**
+Type the key at the hidden prompt and press Enter. This command does nothing except wait for the key. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
@@ -300,11 +467,11 @@ $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
 
 ## Load the key into this process only
 
-This second command turns the hidden value into a process environment variable, clears the temporary copy, and prints only `SET` or `MISSING`. A SecureString is the hidden value from the previous command. The conversion uses a temporary BSTR, which is an unmanaged string, and then zeroes that memory. The key is not written to a file, a profile, or the saved user environment.
+Load the hidden value into this process. This command turns it into a process environment variable, clears the temporary copy, and prints only `SET` or `MISSING`. A SecureString is the hidden value from the previous command. The conversion uses a temporary BSTR, which is an unmanaged string, and then zeroes that memory. The key is not written to a file, a profile, or the saved user environment.
 
 The conversion and zeroing methods are [SecureStringToBSTR](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.securestringtobstr) and [ZeroFreeBSTR](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.zerofreebstr).
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $bstr = [IntPtr]::Zero
@@ -337,17 +504,21 @@ try {
 
 ## Open an independent window and read the difference
 
-A window you open from the Start menu is a new process. It does not inherit the previous window's environment, so the key you loaded only into that process should be absent here. A child process is different: typing `powershell` inside the window that has the key can inherit the variable. `SET` in that child does not prove the key was written to a profile or a file. `SET` by itself is never proof of a saved leak. `MISSING` in an independently opened window is the check that this new process did not receive a saved key.
+A window you open from the Start menu is a new process. It does not inherit the previous window's environment, so the key you loaded only into that process should be absent here. A child process is different: typing `powershell` inside the window that has the key can inherit the variable. `SET` in that child does not prove the key was written to a profile or a file. `SET` by itself does not prove persistence, exposure, or successful authentication. `MISSING` in an independently opened window is the check that this new process did not receive a saved key.
 
-Close the previous window's work only after you have seen `SET` there. Then open Windows PowerShell from the Start menu. Do not type `powershell` in the old window. This window also does not have `$PY`, `$R`, or `$M`. Resolve Python again in this window before the proof, and let the proof block set `$R` and `$M` again.
+After you have seen `SET`, close all terminal windows, including Windows Terminal and editor terminals. Open Windows PowerShell again through Start. A new tab can inherit the old PATH. Do not type `powershell` in the old window. This window also does not have `$PY`, `$R`, or `$M`. Repeat the full [Git and Python resolver](#resolve-the-real-python-312-executable) here to recreate `$R`, `$M`, and `$PY` and verify Git. Do not repair PATH in this independent window.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, newly opened from Start; Git and Python resolved here.**
 
 ```powershell
 $dest = Join-Path $env:LOCALAPPDATA 'omp\omp.exe'
 $found = (Get-Command omp -ErrorAction SilentlyContinue).Source
+if ($found -ine $dest) { throw 'STOP: omp resolves to a different or missing program. Preserve that installation.' }
 Write-Output $found
-& $dest --version
+$ompVersion = @(& $dest --version)
+if ($LASTEXITCODE -ne 0) { throw 'STOP: OMP version command failed.' }
+if ($ompVersion.Count -ne 1 -or ([string]$ompVersion[0]).Trim() -ne 'omp/18.3.5') { throw 'STOP: OMP version differs from omp/18.3.5.' }
+Write-Output $ompVersion
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { Write-Output 'MISSING' } else { Write-Output 'SET' }
 ```
 
@@ -361,7 +532,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { Write-Output 'MISSI
 
 Run this only when the independent window printed `SET` before you typed a key. It looks for the variable name in the saved environment and in PowerShell profiles, and it does not print a value or a matching line.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 foreach ($scope in @('User', 'Machine')) {
@@ -387,13 +558,15 @@ foreach ($path in $profiles) {
 Write-Output 'No saved environment entry or profile reference was found.'
 ```
 
-**Expected:** if you reached this command because the new window printed `SET`, the script stops with a saved-entry or profile message. If you ran it after a correct `MISSING`, the line is `No saved environment entry or profile reference was found.`
+**Expected:** a saved-entry or profile stop identifies a possible source. If neither is found, the line is `No saved environment entry or profile reference was found.`
 
 **Stop:** a saved entry or a profile reference exists. Also stop if the independent window printed `SET` but this check finds nothing: something else is supplying the variable, and you still must not print it.
 
-**Recovery:** revoke the key at the provider. If the stop line names the User scope, remove that saved name with the next command, then open a new window from the Start menu and confirm `MISSING` before you enter the replacement. If the stop line names Machine scope or a profile, do not delete the profile blindly and do not change machine settings. Remove the assignment in an editor without copying the value, or ask the person who supports the computer. Then confirm a new Start-menu window prints `MISSING`.
+**Recovery:** Identify the source before changing it. A profile reference can be a presence check rather than an assignment; an approved parent can also supply the variable. Inspect locally without copying any value. Revoke the key if you find exposure or unauthorized persistence. If the finding names an unauthorized User-scope entry, remove only that entry below. For a Machine-scope entry or profile assignment, ask the device owner to approve the correction; do not delete a profile or change machine settings blindly. Open another Start-menu window and repeat the presence-only check after the cause is resolved.
 
-**Terminal: Windows PowerShell, ordinary user.**
+Remove only the saved User entry identified by the preceding check.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 [Environment]::SetEnvironmentVariable('OPENROUTER_API_KEY', $null, 'User')
@@ -410,7 +583,7 @@ Write-Output 'User environment name cleared. The value was not printed.'
 
 The proof has to run in the independent window, because that is the window whose PATH came from the saved user setting. The key does not come along. Repeat the hidden read, then the separate conversion. Do not skip the read and paste the key into the conversion command.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
@@ -422,7 +595,9 @@ $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
 
 **Recovery:** revoke a displayed key, then run this read again.
 
-**Terminal: Windows PowerShell, ordinary user.**
+Load the hidden value into this proof process and clear the temporary copy.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $bstr = [IntPtr]::Zero
@@ -455,13 +630,13 @@ try {
 
 ## Create a fresh proof folder and token
 
-The proof folder is outside the course checkout. You are preparing one fresh attempt so the model can read a token and write only `from-omp.txt`. The token is created by Python's secrets module and stored outside the proof folder, then copied in, so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`.
+Create a fresh proof folder outside the course checkout. Prepare one fresh attempt so the model can read a token and write only `from-omp.txt`. The token is created by Python's secrets module and stored outside the proof folder, then copied in, so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`.
 
-Run the Python resolve block in this window before this block. `$PY` from an earlier window is not here. This block sets `$R` and `$M` again. Stay in this window through the checker and the report, because a new Start-menu window does not keep `$PY`, `$R`, `$M`, `$attempt`, or the key.
+Run the full Git and Python resolver in this window before this block. `$PY` from an earlier window is not here. This block sets `$R` and `$M` again. Stay in this window through the checker and the report, because a new Start-menu window does not keep `$PY`, `$R`, `$M`, `$attempt`, or the key.
 
 Windows PowerShell removes quotation marks that sit inside a short `-c` program before Python sees them. The programs below are sent on standard input, which is the text a program reads when you pipe into it, and each file path is a separate argument. The quotation marks therefore stay in the program. Those programs write UTF-8 text and do not print the token. This block also stops if a frozen control was rewritten, and it does not repair that copy. The quoting rules are in [about_Quoting_Rules](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-5.1). `$OutputEncoding` is the encoding PowerShell uses when it sends that text, described in [about_Preference_Variables](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_preference_variables?view=powershell-5.1).
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 if (-not $PY) { throw 'STOP: resolve Python again in this window before the proof.' }
@@ -528,16 +703,18 @@ Write-Output ('evidence exists now: ' + (Test-Path -LiteralPath $evidence))
 
 ## Ask for the one permitted write
 
-The launcher runs the pinned Oh My Pi binary with permission to write only `from-omp.txt`. It reads the key from this process. If the key is missing, it stops before it creates the evidence folder. If the live attempt fails, it keeps the evidence it created. Do not run the launcher a second time against a proof folder that already contains `from-omp.txt`.
+Run the launcher once. It starts the pinned Oh My Pi binary with permission to write only `from-omp.txt`. It reads the key from this process. If the key is missing, it stops before it creates the evidence folder. If the live attempt fails, it keeps the evidence it created. Do not run the launcher a second time against a proof folder that already contains `from-omp.txt`.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $launcher = Join-Path $R 'shared\run_omp.py'
 if (Test-Path -LiteralPath $evidence) { throw 'STOP: the evidence path already exists. Choose a new attempt.' }
 if (Test-Path -LiteralPath (Join-Path $proof 'from-omp.txt')) { throw 'STOP: the proof folder already has a write. Keep it and start a new attempt.' }
 & $PY $launcher --workdir $proof --prompt $promptFile --evidence $evidence --allow-write 'from-omp.txt'
-Write-Output ('launcher exit ' + $LASTEXITCODE)
+if ($LASTEXITCODE -ne 0) { throw ('HOLD: launcher exit ' + $LASTEXITCODE + '. Preserve this attempt and correct the reported cause.') }
+Write-Output 'launcher exit 0'
+if (-not (Test-Path -LiteralPath $evidence -PathType Container)) { throw 'HOLD: launcher produced no evidence folder.' }
 Write-Output ('evidence exists after launch: ' + (Test-Path -LiteralPath $evidence))
 ```
 
@@ -545,69 +722,104 @@ Write-Output ('evidence exists after launch: ' + (Test-Path -LiteralPath $eviden
 
 **Stop:** exit 2, especially with a missing-key hold, means a prerequisite failed. The evidence folder should still be absent, and you must not invent the proof file. Exit 1 means the live attempt failed. Exit 0 with no evidence folder is also a stop.
 
-**Recovery:** on exit 2 with no evidence folder, enter the key again in this window and start again at the fresh-proof step so the new attempt has new paths. On exit 1, or if `from-omp.txt` already exists, keep both folders and start again at the fresh-proof step. Do not retry into the same proof folder, and do not write `from-omp.txt` yourself.
+**Recovery:** on exit 2 with no evidence folder, correct the named prerequisite; enter the key again only if the message says it is missing. Then start at the fresh-proof step with new paths. On exit 1, or if `from-omp.txt` already exists, keep both folders, correct the specific failure named in the evidence, and only then start a new attempt at the fresh-proof step. Do not retry into the same proof folder, and do not write `from-omp.txt` yourself.
 
 ## Check the write against the token and the receipt
 
-The checker takes the proof folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk.
+Run the checker with the proof folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk.
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $checker = Join-Path $M 'shared\case\verify_tool_proof.py'
 & $PY $checker $proof $tokenFile $evidence
-Write-Output ('checker exit ' + $LASTEXITCODE)
+if ($LASTEXITCODE -ne 0) { throw ('HOLD: checker exit ' + $LASTEXITCODE + '. Preserve this attempt.') }
+Write-Output 'checker exit 0'
 ```
 
 **Expected:** the checker's last result line is `TOOL PROOF PASS`, and the exit line is `checker exit 0`.
 
 **Stop:** the last result line is `TOOL PROOF HOLD`, the checker exits nonzero, or the proof file is missing. A file you create by hand is not a pass.
 
-**Recovery:** keep this attempt. Return to the fresh-proof step and use new folders. Do not edit `from-omp.txt` to make the words match.
+**Recovery:** keep this attempt. Correct the specific failure named by the checker before returning to the fresh-proof step with new folders. Do not edit `from-omp.txt` to make the words match.
+
+## Read the actual file on disk
+
+Read the file separately from the receipt check. A model’s claim that it wrote a file is not a disk observation.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same proof window.**
+
+```powershell
+Get-Content -LiteralPath (Join-Path $proof 'from-omp.txt') -Raw -ErrorAction Stop
+```
+
+**Expected:** `omp works` followed by one space and this attempt’s token, as checked by `TOOL PROOF PASS`. The checker also validates real receipts and the pinned OMP/provider/model identities.
+
+**Stop:** the file cannot be read or the content differs.
+
+**Recovery:** preserve this attempt and resolve the reported file or evidence problem before creating a new attempt. Do not edit the file to manufacture a pass.
 
 ## Record prerequisites, not the live turn
 
 This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The tool proof you already ran is the live-write check. Stay in the proof window for this report. `$R`, `$M`, and `$attempt` are already set there, and a new Start-menu window does not have them or the key.
 
-Windows PowerShell may refuse a `.ps1` file until the current user allows local scripts. A managed policy is left unchanged. Execution policies are described in [about_Execution_Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies).
+Open `$M\scripts\verify-setup.ps1` in your text editor and review the local checker before running it. Inspect the effective policy and its scopes. See [PowerShell 5.1 execution policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1).
 
-**Terminal: Windows PowerShell, ordinary user.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same proof window.**
 
 ```powershell
-Get-ExecutionPolicy -List | Format-Table -AutoSize | Out-String | Write-Output
-$machinePolicy = (Get-ExecutionPolicy -Scope MachinePolicy)
-$userPolicy = (Get-ExecutionPolicy -Scope UserPolicy)
-if ($machinePolicy -ne 'Undefined' -or $userPolicy -ne 'Undefined') {
-  throw 'STOP: a managed execution policy is in effect. It was not changed.'
-}
-$currentPolicy = Get-ExecutionPolicy -Scope CurrentUser
-Write-Output ('CurrentUser before: ' + $currentPolicy)
-if ($currentPolicy -eq 'Restricted' -or $currentPolicy -eq 'Undefined' -or $currentPolicy -eq 'AllSigned') {
-  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
-}
-Write-Output ('CurrentUser after: ' + (Get-ExecutionPolicy -Scope CurrentUser))
+Get-ExecutionPolicy
+Get-ExecutionPolicy -List | Format-Table -AutoSize
 ```
 
-**Expected:** the policy list, then a CurrentUser value of `RemoteSigned`, `Unrestricted`, or `Bypass` on the after line. This command does not change Machine or User policy.
+**Expected:** the effective policy and five scope settings. If the effective policy permits this reviewed checker, run the report below unchanged. A permissive managed policy is not itself a reason to stop.
 
-**Stop:** MachinePolicy or UserPolicy is anything other than `Undefined`, or CurrentUser remains `Restricted` after the command.
+**Stop:** an organizational policy, intentional restriction, or signing requirement blocks this checker, or you cannot determine whether running it is authorized.
 
-**Recovery:** if a managed policy is set, send the list to the person who supports the computer and stop. Do not set `Bypass`, and do not change LocalMachine. If CurrentUser is still `Restricted` and no managed policy is set, run this block again in this window.
+**Recovery:** ask the device owner for an approved signed checker or approved execution route. Do not change an intentional restriction or signing requirement, unblock files, paste script contents, or run an in-memory copy to avoid the policy.
 
-**Terminal: Windows PowerShell, ordinary user.**
+Use the following optional block **only** when all scopes are `Undefined`, the effective policy is the unmanaged default `Restricted`, and you have **explicit permission to run this reviewed local course checker**. The absence of Group Policy is not consent. If those conditions do not all hold, skip this block. The ordinary confirmation prompt remains visible: read it and answer **Y** only under that explicit permission; otherwise answer **N** and stop.
+
+Temporarily permit the approved local checker in this process only.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same proof window; only under the conditions above.**
+
+```powershell
+$effective = Get-ExecutionPolicy
+$scopes = @(Get-ExecutionPolicy -List)
+if ($effective -ne 'Restricted' -or @($scopes | Where-Object { $_.ExecutionPolicy -ne 'Undefined' }).Count -ne 0) {
+  throw 'STOP: this is not the unmanaged default restriction. Use the owner-approved route.'
+}
+$permission = Read-Host 'Do you have explicit permission to run the reviewed local course checker? Type YES to confirm'
+if ($permission -cne 'YES') { throw 'STOP: explicit permission was not confirmed.' }
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+$effective = Get-ExecutionPolicy
+Write-Output ('Effective policy: ' + $effective)
+if ($effective -ne 'RemoteSigned') { throw 'STOP: the effective policy did not permit the approved local checker.' }
+```
+
+**Expected:** after your visible confirmation, `Effective policy: RemoteSigned`. Closing this PowerShell process ends this temporary setting; close any child processes too.
+
+**Stop:** permission is absent, a scope is configured, confirmation is declined, or the effective policy differs. A signing or organizational restriction still means stop.
+
+**Recovery:** preserve the policy output and use the device owner’s approved route. Do not use `-Force`, `Bypass`, `Unrestricted`, or a CurrentUser/LocalMachine policy write.
+
+Run the checker directly and save its separate prerequisite report.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same proof window.**
 
 ```powershell
 $report = Join-Path $attempt 'setup-report.txt'
 if (Test-Path -LiteralPath $report) { throw 'STOP: the report path already exists. It was not overwritten.' }
 & (Join-Path $M 'scripts\verify-setup.ps1') -Root $R -ResultsPath $report
-Write-Output ('report exit ' + $LASTEXITCODE)
+if ($LASTEXITCODE -ne 0) { throw ('HOLD: report exit ' + $LASTEXITCODE + '. Preserve the report and correct its first failed prerequisite.') }
+Write-Output 'report exit 0'
 Write-Output $report
 ```
 
-**Expected:** a report file path, and a last report line that begins `SETUP CHECK PASS` or `SETUP CHECK HOLD`. The report does not contain the key.
+**Expected:** `report exit 0`, a report file path, and a last report line that begins `SETUP CHECK PASS`. The report does not contain the key.
 
-**Stop:** the script is blocked by execution policy, the report path already exists, or the report contains the key. A hold in this report is a prerequisite hold. It is not repaired by editing the proof file, and a pass in this report does not replace `TOOL PROOF PASS`.
+**Stop:** the script is blocked by execution policy, exits nonzero, reports `SETUP CHECK HOLD`, the report path already exists, or the report contains the key. A hold in this report is a prerequisite hold. It is not repaired by editing the proof file, and a pass in this report does not replace `TOOL PROOF PASS`.
 
-**Recovery:** fix the first failed prerequisite named in the report, then run this report command again only after choosing a new report path if the old file exists. Do not reset, pull, or clean the checkout because the report mentions local changes. Continue to the lab only after the tool proof printed `TOOL PROOF PASS`.
+**Recovery:** fix the first failed prerequisite named in the report, then run this report command again only after choosing a new report path if the old file exists. Do not reset, pull, or clean the checkout because the report mentions local changes. Continue only after both `SETUP CHECK PASS` and `TOOL PROOF PASS`, plus the separate disk read-back.
 
-The next work is the [Module 0 lab](../shared/MODULE_00_LAB.md). The pins are in [Course setup pins](../shared/VERSIONS.md), and the cited install pages are collected in [Primary setup sources](../shared/SOURCES.md). If you are working in Ubuntu on WSL instead of native Windows, use [Windows WSL 2 with Ubuntu setup](windows-wsl.md) from the start rather than mixing the two paths.

@@ -1,6 +1,8 @@
 # Module 4 · Diagnose and recover
 
-When a duty card drops a field, you need to locate the loss before changing anything. You will preserve the first miss, replace only the faulty renderer, and prove recovery without relying on the original process or working directory.
+A Copper Span duty card could show a scanned load while hiding a condition that requires the movement to hold. Locate where the required information disappears before changing anything. Preserve the failure, use the supplied diagnostic check to distinguish possible causes, and make one authorized, reversible correction. Prove recovery with the original acceptance requirements still in force.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
 
@@ -49,7 +51,7 @@ The prepare script prints a suggested next command. Do not run it yet.
 
 ## 1. Confirm the clean render
 
-From any shell with the variables set, render the duty card using the explicit ledger path.
+The **renderer** is the supplied program that turns ledger rows into a duty card. Run it with the exact ledger path from a terminal where the variables are set. Keep this clean output as the baseline for comparison.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -77,7 +79,7 @@ Read the one-page duty card for the rules:
 
 ## 2. Verify restore before any swap
 
-Restore copies the baseline renderer onto the work copy only after the digest matches and preserves any prior failed renderer and out/ into attempts/.
+The restore command checks the clean baseline renderer's **digest**, a fingerprint of its file bytes, before copying it onto the work version. It first preserves the existing renderer and `out/` files under `attempts/`. Confirm that this recovery path works before placing the fault.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -131,7 +133,7 @@ From the variables, render with the now-faulty work copy:
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\miss.md"
 ```
 
-Use the read-only probe (run from the source module path so a faulty work copy cannot disable it):
+Before running the diagnostic check, record how you would distinguish a missing source field from a field lost while rendering. Use the read-only **probe**, which compares required fields in the selected source rows with the rendered card, to examine that distinction. Run the probe from the source module path so the faulty work copy cannot disable it:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -145,7 +147,7 @@ Use the read-only probe (run from the source module path so a faulty work copy c
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\miss.md"
 ```
 
-Write sealed-first-miss.md before you replace anything:
+Before replacing anything, write `sealed-first-miss.md` and preserve it unchanged. Record the last passing boundary, where the required field is still present, and the first failing boundary, where it is missing. Use the probe output to support that distinction:
 
 ```markdown
 # Sealed first miss
@@ -165,11 +167,11 @@ Still present:
 
 **Stop:** You cannot name the earliest missing field from the probe output, or more than one field is affected before localization.
 
-**Recovery:** Record HOLD. Do not replace until the probe has shown a one-way failure on the known miss.
+**Recovery:** Record `HOLD`. Do not replace the renderer until the probe shows that the selected source supplies the field and the card omits it. If the source itself is missing the field, replacing the renderer cannot recover that information.
 
 ## 4. One authorized replace
 
-Replace only the work-copy renderer from the clean copy. The restore command preserves the failed renderer and out/ in attempts/ first.
+After the probe isolates the renderer as the first failing boundary, authorize one replacement of the work-copy renderer with the clean baseline. Record why that correction addresses the observed cause. The restore command preserves the failed renderer and `out/` in `attempts/` first. Do not hand-edit the card or remove a required field from the acceptance requirements.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -193,9 +195,9 @@ Write replace-record.md with the command and the RESTORE OK line.
 
 ## 5. Prove recovery three ways
 
-Prove the repair in three distinct ways. A repository-only clean render is not enough. Use the required-field probe as the focused check, a complete named render, and a fresh-folder fresh-process run from an unrelated cwd.
+Check the repair three ways: inspect the previously missing field, render the complete card from the ledger, and repeat the run in a fresh folder with a new process. For the last check, start from an unrelated **working directory**, the folder from which commands run. Keep both required fields in every acceptance check; finding the cause alone does not establish recovery.
 
-1. Focused (required-field probe after restore):
+1. For the focused check, render a new card and use the probe to inspect its required fields.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -212,7 +214,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\focused.md"
 ```
 
-2. Complete render (full explicit from W):
+2. For the end-to-end check, render the full card from the work-copy ledger and inspect the saved output.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -226,7 +228,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\complete.md"
 ```
 
-3. Fresh-process (unrelated cwd, fresh dir, fresh process):
+3. For the clean-condition check, copy the renderer and ledger to a fresh folder, then run them in a new process from an unrelated working directory.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -486,4 +488,3 @@ Check that:
 
 Keep the sealed misses, the source selections, each authorized replacement record, and all three recovery proofs. The next owner should be able to distinguish a source gap, a wrong version, and a dropped display field without your explanation.
 
-Continue with [Blue Gauge](../../module-05-run-corpus/README.md).

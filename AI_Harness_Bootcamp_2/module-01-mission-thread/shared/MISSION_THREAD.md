@@ -1,6 +1,6 @@
 # Read a mission thread without getting lost in it
 
-Plan for 15 minutes. This page gives you the only logistics model you need for the Cold Lantern case.
+A polished brief can cite true facts and still recommend a movement those facts do not support. Check what each step establishes and what the next step needs before accepting Cold Lantern's `GO`. Allow about 15 minutes to examine the eight steps.
 
 ## What a mission thread is
 
@@ -32,7 +32,7 @@ The decision is whether the supplied evidence supports a `GO` brief at step 6. E
 
 ## Why a thread becomes difficult
 
-Each step looks simple until you ask what its words mean.
+Check the exact meaning of the recorded state. A record of custody, for example, does not by itself show permission to use the cargo.
 
 “Cargo received” opens into smaller questions:
 
@@ -55,7 +55,7 @@ The same pattern repeats inside every step. Check these seven parts when they ma
 | Handoff | Does this step's output meet the next step's entry condition? |
 | Uncertainty | What is unknown, assumed, contradicted, or not yet observed? |
 
-Do not keep splitting a claim forever. **Stop decomposing** when you reach one of these:
+**Stop decomposing**—splitting a claim into smaller claims to check—when you reach one of these:
 
 - a fact you can read directly in an applicable source;
 - a calculation you can reproduce from supported facts and units;
@@ -65,7 +65,7 @@ Do not keep splitting a claim forever. **Stop decomposing** when you reach one o
 
 ## Five kinds of statement
 
-Use one label for every material statement in the AI brief:
+Use one label for every **material statement** in the AI brief: a statement that could change the decision.
 
 ![Five kinds of statement](figures/m01-statement-kinds.svg)
 

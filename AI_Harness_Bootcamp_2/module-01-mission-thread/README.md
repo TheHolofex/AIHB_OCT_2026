@@ -1,14 +1,14 @@
 # Module 1 · Verify sources and outputs
 
-Plan for one three-hour session. You will inspect a polished AI logistics brief, trace its claims through one fictional mission thread, and decide what the evidence actually supports.
+Challenge the polished Cold Lantern brief against the applicable sources and your own calculations. Decide whether to accept, revise, reject, or hold it for internal class review. A **mission thread** connects each step in the movement to what the next step needs.
+
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 Every domain rule you need is in the packet. First confirm that each record concerns the right vehicle, route, cargo, and time. Then decide what that record can prove and whether its result is enough for the next step.
 
 ## Start here
 
-1. Read [the mission-thread guide](shared/MISSION_THREAD.md).
-2. Open [the Module 1 lab](shared/MODULE_01_LAB.md).
-3. Keep [When evidence breaks](shared/WHEN_EVIDENCE_BREAKS.md) nearby.
+Use the bounded direction and source-checking habits you already practiced. For each decision-changing claim, identify the applicable record, reproduce any calculation, and explain whether the result supports the next step. Keep the final verdict yours.
 
 ## The brief under review
 

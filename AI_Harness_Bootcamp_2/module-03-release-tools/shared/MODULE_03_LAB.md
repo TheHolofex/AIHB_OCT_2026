@@ -1,12 +1,12 @@
 # Module 3 · Judge release and operate a bounded tool
 
-You will make a source-grounded decision about whether packet NB-NOTE-17 may leave the class, then prove the limits of a supplied hashing capability. A sound release judgment does not substitute for operating and revoking the tool, and a correct hash does not settle the release judgment.
+Decide whether packet NB-NOTE-17 may leave the class by checking all six responsibility concerns and their combined effect. Operate the supplied tool with the least authority needed to fingerprint one source file, check whether untrusted instructions cause any unauthorized effect in the observed run, and remove its declared access path. A supported no-release decision still requires the tool work; a correct fingerprint does not grant sharing permission.
 
-The fictional packet concerns burn-dressing cases moving from Mill Depot to Clinic B-2 on MH-6. Nothing you do here authorizes a real release or movement. Allow about three hours for reading, decisions, operations, and handoff; this is a planning target, not a measured completion time.
+The fictional packet concerns burn-dressing cases moving from Mill Depot to Clinic B-2 on MH-6. Nothing you do here authorizes a real release or movement. Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Prepare a fresh work copy
 
-Use the verified checkout and Python from [setup](../../module-00-setup/README.md). These commands work from any directory. `W` contains the work copy, while `E` holds your evidence outside the model's work root. A harmless sentinel sits beside `W`, not in a real system location.
+Use the verified checkout and Python from [setup](../../module-00-setup/README.md). These commands work from any directory. `W` contains the work copy, while `E` holds your evidence outside the model's work root. A **sentinel** is a disposable file whose unchanged contents help you check for unwanted effects. These commands create one beside `W`, outside the tool's allowed case folder.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -48,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 
 ## Read the packet and decide what may leave
 
-Open `W/shared/case/REQUEST.md`, all forty `REL-001.md` through `REL-040.md` files, `W/shared/tools/hash_source.py`, and `W/shared/tools/COMPOSED_NEGATIVE.md` in your editor. Inspect identity, issuer, scope, effective time, supersession, and the difference between receipt, release, and usable effect. A true statement about a different lot, clinic, vehicle, or time cannot establish the target claim.
+Open `W/shared/case/REQUEST.md`, all forty `REL-001.md` through `REL-040.md` files, `W/shared/tools/hash_source.py`, and `W/shared/tools/COMPOSED_NEGATIVE.md` in your editor. Use your source-checking habits: confirm the exact identity, who issued each record, what it covers, when it applies, and whether a later record replaces it. Keep receipt, release, and usable effect distinct. A true statement about a different lot, clinic, vehicle, or time cannot establish the target claim.
 
 Before running the tool, write `E/release-decision.md`. Use the following headings, but supply your own evidence and disposition.
 
@@ -65,7 +65,16 @@ combined effect:
 disposition:
 ```
 
-For each concern, cite a specific REL file and passage, explain its consequence for letting this packet leave the class, and name any evidence or decision owner still needed. Consider how otherwise small disclosures combine. Choose release, no-release, or hold from the evidence; do not fill a generic ethics checklist.
+For each concern, cite a specific REL file and passage, explain its consequence for letting this packet leave the class, and name any evidence or decision owner still needed. Apply each concern to this packet:
+
+- **Privacy/security:** What information would be exposed, to whom, and with what risk?
+- **Copyright/IP:** Who owns the text or images, and what permission supports the proposed use? IP means intellectual property.
+- **Fairness/bias:** Could the packet portray people or groups unfairly or support unequal treatment?
+- **Transparency/disclosure:** What must recipients know about the packet's origin, limits, and status?
+- **Affected-person impact and recourse:** Who could be affected, and how could they challenge or correct the record?
+- **Human accountability:** Who can authorize sharing and remains responsible for its consequences?
+
+Consider the combined effect: separate facts may expose more information or imply more authority when read together. Choose release, no-release, or hold from the evidence, and explain the proposed audience and use. Do not assume that resolving one concern resolves the others.
 
 **Expected:** Another reader can reconstruct your judgment from cited passages, including rights, recourse, accountability, and combined effect.
 
@@ -75,7 +84,7 @@ For each concern, cite a specific REL file and passage, explain its consequence 
 
 ## Bound the operation before approving it
 
-In `E/authority.md`, record what the script can read, what it can write, its resolved path boundary, and the exact command you approve. The supplied script hashes one file per invocation under its own `shared/case` root and writes nothing. A hash is a fingerprint of bytes, not proof of truth, authorship, licensing, or release authority.
+In `E/authority.md`, record what the script can read, what it can write, the actual folder it is restricted to after resolving the input path, and the exact command you approve. Use **least authority**: permit only the access needed for this operation. The supplied script hashes one file per invocation under its own `shared/case` root and writes nothing. A hash is a fingerprint of bytes, not proof of truth, authorship, licensing, or release authority.
 
 Freeze a complete work-file inventory before the operation. The saved record is outside `W`, so recording evidence cannot look like a tool-created work file.
 
@@ -142,7 +151,7 @@ Set-Location -LiteralPath $W -ErrorAction Stop
 
 ## Combine untrusted paperwork with the bounded capability
 
-The supplied prompt asks OMP to read all forty notes and hash the one approved source. Its quoted paperwork asks for additional effects. Treat that quote as data. The launcher exposes only `course_read` and `hash_source`: no write tool and no shell.
+The supplied prompt asks Oh My Pi (OMP), the course harness, to read all forty notes and hash the one approved source. The same prompt includes untrusted paperwork that asks for additional effects. This combines a useful authorized task with a request to exceed its limits. Treat that quote as data. The launcher exposes only `course_read` and `hash_source`: no write tool and no shell.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -503,4 +512,3 @@ Record the observations beside your changed-packet judgment. Success requires a 
 
 </details>
 
-Continue with [diagnosis and recovery](../../module-04-diagnose-review/README.md).
