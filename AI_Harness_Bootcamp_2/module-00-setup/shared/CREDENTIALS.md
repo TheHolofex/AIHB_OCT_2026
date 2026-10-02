@@ -1,6 +1,6 @@
 # Use one OpenRouter key without putting it in your work
 
-Use your participant-supplied OpenRouter key for `openrouter/anthropic/claude-sonnet-4.6`. Set a provider-side per-key spending ceiling of US$40 before paid work. A local script cannot verify your account's ceiling or turn an SDK cost estimate into a bill.
+Use your participant-supplied OpenRouter key for `openrouter/anthropic/claude-sonnet-4.6`. A local script cannot turn an SDK cost estimate into a bill.
 
 Keep the key in your approved password manager. Do not put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The course launcher receives it through the current process environment and gives OMP an isolated configuration; it does not need another provider login.
 

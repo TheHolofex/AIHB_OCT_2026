@@ -529,8 +529,6 @@ course_confirm_new_terminal
 
 ## 10. Enter the key
 
-Set a **US$40 per-key spending cap in OpenRouter** before the live turn. Confirm the cap is saved for the key you will use, following [credentials](../shared/CREDENTIALS.md). If you cannot confirm it, stop before entering the key.
-
 The next box is only the hidden read. Paste it, press Return, and wait. The terminal is waiting for the key even when it looks idle. Paste or type the key, then press Return. The characters do not appear. This stores the key in this process only. It does not write a profile, a file, or a log.
 
 Do not put the key on the same line as a command. Do not run `echo`, `env`, `set`, or `printenv` to look at it. Read [credentials](../shared/CREDENTIALS.md) before you paste a key that may already have been exposed.

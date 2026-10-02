@@ -31,7 +31,7 @@ The platform steps preserve **PATH**, the saved list of folders your shell searc
 
 You need GitHub read access to `TheHolofex/AIHB_OCT_2026`. The hosted-course password does not provide it. Each path first checks existing approved Git credentials; GitHub CLI (`gh`) is a conditional browser-login helper only if that access check fails. It is not an AI runtime requirement.
 
-The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key with a US$40 per-key ceiling](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
+The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
 
 Module 6 uses the local visual workflow editor without a paid model call. No n8n Cloud signup or Assistant provider key is required. Keep Assistant off and workflows unpublished; do not copy the OpenRouter key into n8n.
 

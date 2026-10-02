@@ -449,8 +449,6 @@ Write-Output $M
 
 ## Enter the key without showing it
 
-Set and confirm a **US$40 per-key spending cap at OpenRouter** before any live turn, following [the account setup](../shared/CREDENTIALS.md). Stop if that provider-side cap is not confirmed.
-
 Type the key at the hidden prompt and press Enter. This command does nothing except wait for the key. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**

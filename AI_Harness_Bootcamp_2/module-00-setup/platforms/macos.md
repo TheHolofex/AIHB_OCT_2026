@@ -494,7 +494,7 @@ Observe the key state before entering it. An independent window ordinarily repor
 
 ## Enter the key only after the hidden prompt is ready
 
-Set the provider-side per-key spending ceiling to US$40 before any live turn, then use your participant-supplied OpenRouter key. The supplied `shared/run_omp.py` uses only `openrouter/anthropic/claude-sonnet-4.6`. Do not use a vendor login or another model. Paste this one command, press Enter, then enter the key without echo and press Enter again.
+Use your participant-supplied OpenRouter key. The supplied `shared/run_omp.py` uses only `openrouter/anthropic/claude-sonnet-4.6`. Do not use a vendor login or another model. Paste this one command, press Enter, then enter the key without echo and press Enter again.
 
 **Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
 

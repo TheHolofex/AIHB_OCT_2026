@@ -109,7 +109,7 @@ accepted against Class F until three people score the prose.**
 
 ## Native local n8n cutover — 2026-10-02
 
-**Active contract:** `reference/REFERENCE.md` v5, explicitly amended in `reference/AMENDMENTS.md` and re-frozen in `REFERENCE.sha256`. OMP/Python/Git/credentials/course work remain native on the PowerShell route; WSL is used only as its n8n bridge. The separate WSL course route is unchanged in that respect.
+**Active contract:** `reference/REFERENCE.md` v6, explicitly amended in `reference/AMENDMENTS.md` and re-frozen in `REFERENCE.sha256`. OMP/Python/Git/credentials/course work remain native on the PowerShell route; WSL is used only as its n8n bridge. The separate WSL course route is unchanged in that respect.
 
 The five platform guides now require the full official n8n 2.41.5 stack, approval for Docker/licensing/privileged runners, preservation of existing installs/context/data, loopback binding, a collision-checked recorded Compose project, explicit guarded lifecycle commands, local owner access and a saved-workflow restart proof. No cloud account or AI provider key is required for this n8n work.
 

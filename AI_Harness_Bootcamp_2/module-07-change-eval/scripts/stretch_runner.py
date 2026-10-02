@@ -2,9 +2,10 @@
 """Run the preregistered 36 paired calls and two restored-baseline controls.
 
 Usage: stretch_runner.py <prepared-workdir> <new-comparison-dir>
-Configure the OpenRouter key's $40 ceiling unless staff explicitly supplies both
-local-budget flags. Local admission is a soft stop, not a provider spending cap.
-Calls are sequential, never retried or substituted.
+Without flags the runner stops once the SDK cost estimates it has recorded total
+$40 or more. Staff may supply both local-budget flags to add a soft stop on key
+usage; it is not a hard spending cap. Calls are sequential, never retried or
+substituted.
 """
 from __future__ import annotations
 
@@ -48,10 +49,8 @@ def _read_key_usage(api_key: str) -> dict:
         if len(raw) > 65536:
             raise ValueError("key metadata response too large")
         data = json.loads(raw)["data"]
-        selected = {name: data[name] for name in ("usage", "byok_usage", "limit", "limit_remaining")}
-        for name, value in selected.items():
-            if value is None and name in {"limit", "limit_remaining"}:
-                continue
+        selected = {name: data[name] for name in ("usage", "byok_usage")}
+        for value in selected.values():
             if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
                 raise ValueError("key metadata invalid numeric field")
         if not math.isfinite(selected["usage"] + selected["byok_usage"]):
@@ -220,7 +219,6 @@ def main(argv: list[str] | None = None) -> int:
                 raise ValueError("case identity differs from its directory")
         if budget is not None:
             _observe_budget(budget, os.environ["OPENROUTER_API_KEY"], "preflight", 0, admit=True)
-            budget["provider_limit_usd"] = budget["observations"][0]["limit"]
     except (OSError, ValueError, ImportError) as error:
         print(f"HOLD: {error}", file=sys.stderr)
         return 2
@@ -231,10 +229,9 @@ def main(argv: list[str] | None = None) -> int:
     for variant in VARIANTS:
         shutil.copyfile(paths[f"instruction/{variant}"], configuration / f"{variant}.md")
     shutil.copyfile(paths["prompt"], configuration / "prompt.md")
-    policy = {"schema_version": 1, "case_ids": list(CASES), "repeats": 3, "schedule": schedule(), "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "frozen_sha256": frozen, "permissions": PERMISSIONS, "hard_gates": ["sourced_mass", "labeled_gate_time"], "aggregation": "any_violation_rejects", "exclusions": [], "cost_proxy": "failed_case_count", "provider_key_spend_ceiling_usd_prerequisite": 40, "provider_ceiling_verified_by_adapter": False, "max_simultaneous_paid_calls": 1}
+    policy = {"schema_version": 1, "case_ids": list(CASES), "repeats": 3, "schedule": schedule(), "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "frozen_sha256": frozen, "permissions": PERMISSIONS, "hard_gates": ["sourced_mass", "labeled_gate_time"], "aggregation": "any_violation_rejects", "exclusions": [], "cost_proxy": "failed_case_count", "max_simultaneous_paid_calls": 1}
     if budget is not None:
-        policy["provider_key_spend_ceiling_usd_prerequisite"] = None
-        policy["local_budget"] = {name: budget[name] for name in ("limit_usd", "usage_baseline_usd", "provider_limit_usd", "metric", "hard_cap")}
+        policy["local_budget"] = {name: budget[name] for name in ("limit_usd", "usage_baseline_usd", "metric", "hard_cap")}
     policy_path = destination / "preregistration.json"
     policy_path.write_bytes(runtime.json_bytes(policy))
     policy_hash = runtime.file_hash(policy_path)
@@ -304,7 +301,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"RECORDED {index}/38: {attempt['case_id']} {attempt['variant']} {row['reason']}", flush=True)
             estimates = [item.get("sdk_estimated_usd") for item in rows]
             if budget is None and index < 38 and all(value is not None for value in estimates) and sum(estimates) >= 40:
-                raise ValueError("SDK estimated cost reached $40; stop and inspect actual provider billing/cap")
+                raise ValueError("SDK estimated cost reached $40; stop and inspect actual provider billing")
         status, reason = "COMPLETE", "38 independently receipted and classified attempts; no missing pairs or restore controls"
     except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
         reason = str(error)
