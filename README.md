@@ -117,6 +117,8 @@ Native OMP can exit 0 after an extension preparation error. The launcher still h
 
 The saved-evidence audit joins each successful call to its authorization, independent execution check, tool/path identity, and filesystem effect. It also binds `response.md` to the final assistant event; changing only the extracted answer cannot change the recorded model response.
 
+The MCP cutover retires the `hash_tool` policy field. Historical receipts containing that field require the launcher revision that produced them; the current auditor rejects the obsolete schema. Preserve those receipts unchanged rather than removing fields to make an old run pass a new auditor.
+
 Maintainers need Python 3.12+ and Node.js 22 to publish the course and run the offline checks. From the repository root, create the Python environment once if it does not already exist:
 
 ```bash
