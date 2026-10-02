@@ -1,66 +1,69 @@
 # Reference: Module 6 — Operate a fixed workflow through change
 
-**Frozen on:** 2026-08-23 (v1)  
-**Revision 2:** 2026-09-30 — adopted 80-lot replacement packet (LW-01–LW-80, two waves, rack-first, pending_status line, digest restore, stretch predicate change). Supersedes thin three-lot L-11/L-12/L-13 case.
+**Revision 3:** 2026-10-02 — native local n8n construction, exact comparisons, and verified export restoration.
 
-**Scope:** one three-hour fixed-workflow module built around two fictional 80-lot waves  
-**Course objective:** prove a one-rule deterministic outer-state change with exact byte delta and proven restore
+**Scope:** two fictional 80-lot waves, one three-hour facilitated session including two hours of practice. These are planning allowances, not measured learner-completion times. The course is ungraded.
 
-## 1. The need
+**Capability delta:** a learner who can inspect sources and validate a bounded control can now assemble and operate a saved visual workflow, predict the complete effect of one policy change across batches, and recover the independently identified original workflow with byte-exact reruns. Earlier source inspection, prediction, validation, and evidence habits remain prerequisites, not new objectives.
 
-A fixed path makes repeated work inspectable. Exactness is defensible for routes, statuses, policy versions, receipts, and controlled fields — not for a single stochastic sentence.
+## Active mechanism
 
-**Done (v2):** baseline and changed receipts for both waves are produced by the supplied route.py; the two baseline receipts are byte-identical; exactly the lots carrying PENDING under the changed rule move while rack and others stay identical; restore_rule.py <workdir> from distinct baseline+digest prints RESTORE OK and yields byte match; stretch revision isolates input membership change from policy.
+Use local n8n **2.41.5**, the full approved official Docker stack, localhost-only browser access, and unpublished workflows. Assistant remains off. No provider key, model call, cloud account, production webhook, custom routing code, host-path upload, or completed learner router import is required.
 
-## 2. Case (replacement, revision 2)
+The learner builds 13 nodes from blank:
 
-80 lots `LW-01`–`LW-80` for Icehouse Depot to Clinic I-6.
+1. Upload wave — Form Trigger 2.6, one required `.csv` file named `wave`, multiple files off.
+2. Read CSV — Extract from File 1.1, headers and empty cells retained, erroneous records not skipped, Always Output Data on.
+3. Pending rule — Edit Fields 3.5, retain inputs and add the fixed String `pending_status`.
+4. Check batch — supplied Code 2 validator, Run Once for All Items.
+5. Route lots — Switch 3.4, ordered case-sensitive String equality, first match only, extra fallback, type conversion off.
+6. Rack hold — Edit Fields 3.5, `hold,RESOURCE_CONFLICT`.
+7. Ready — Edit Fields 3.5, `pass,READY`.
+8. Pending decision — Edit Fields 3.5, route expression and retained pending status.
+9. Other permit — Edit Fields 3.5, `hold,OPEN`.
+10. Collect routes — Merge 3.2, Append, four distinct inputs; branch Always Output Data stays off.
+11. Original order — Sort 1, numeric `_row` ascending.
+12. Receipt fields — Edit Fields 3.5, only `lot,route,status` in that order.
+13. Make receipt — Convert to File 1.1, native CSV, header on, execution-specific filename.
 
-Input columns: `lot,permit,gate_window,input_disposition,resource_exception`
+Validation reads `$('Read CSV').all()` and `$input.all()`. It requires exactly five ordered original columns, unchanged source count/order/values, and only the appended policy field. Source-supplied `pending_status`, extra/missing/reordered columns, invalid dispositions/exceptions, cancelled lots without WITHDRAWN, duplicate/blank/unsafe lot IDs, and invalid or mixed policy values stop before routing. Lots exclude comma, quote, and ASCII controls. Unknown permit strings remain valid fallback data. `_row` and item linking preserve original order; validation does not route or repair inputs.
 
-- `input_disposition` (NEW/CHANGED/CANCELLED/UNCHANGED) is provenance only. CANCELLED rows carry permit `WITHDRAWN`.
-- `resource_exception` empty or `RACK_CONFLICT`.
-- RACK_CONFLICT evaluated first → `hold,RESOURCE_CONFLICT`.
-- AUTHORIZED → `pass,READY`.
-- PENDING → baseline `hold,OPEN` or changed `reject,NOT_AUTHORIZED`.
-- All other supplied permit states → `hold,OPEN`.
+The separate supplied six-node checker uses Form Trigger 2.6, parallel Crypto 2 SHA256 hex hashes, a three-input Merge 3.2 by position, Code 2 comparison, and Convert to File 1.1 JSON. Upload comparison enters Merge input 1 directly; Hash baseline enters input 2 and Hash actual input 3. Crypto drops binary data, so the direct path preserves uploads. Code uses `this.helpers.getBinaryDataBuffer`, never a metadata/base64 shortcut. A successful green execution may contain a comparison HOLD.
 
-Both waves contain the three PENDING lots LW-12/LW-28/LW-41 and the LW-19/LW-55 rack conflict. Wave 2 changes gates and dispositions for non-key lots but keeps permit and exception identical for routing identity. Thus baseline receipts are byte-identical across waves. Only the three (or stretch-set) PENDING rows move under the policy delta.
+Import adds nodes to the open canvas. The checker and restored router each require a **new blank workflow**. Restoration is not a manual reversal of the changed field.
 
-Baseline rule (in `shared/baseline/RULE.md` and initially in workflow):
+## Case and protected expected effects
 
-```
-pending_status: OPEN
-```
+White Rack carries refrigerated reagent kits from Icehouse Depot to Clinic I-6. Lots are `LW-01`–`LW-80`. Source columns are `lot,permit,gate_window,input_disposition,resource_exception`.
 
-Changed rule (edit only the active RULE.md):
+Routing is exact and case-sensitive: RACK_CONFLICT first; otherwise AUTHORIZED; otherwise PENDING; otherwise fallback. Gate windows and dispositions are provenance only. CANCELLED requires WITHDRAWN but is not a routing branch. The saved policy changes only from `OPEN` to `NOT_AUTHORIZED`; every other parameter, wire, and input stays fixed.
 
-```
-pending_status: NOT_AUTHORIZED
-```
+- Both core waves: only `LW-12`, `LW-28`, and `LW-41` change from `hold,OPEN` to `reject,NOT_AUTHORIZED`; 77 serialized rows remain identical. `LW-19` and `LW-55` remain rack holds. Baseline wave receipts are byte-identical.
+- Revised input with OPEN fixed: `LW-12`, `LW-44`, and `LW-60` change; 77 rows remain identical.
+- Revised input fixed, policy changed: `LW-28`, `LW-41`, `LW-44`, and `LW-60` change; 76 rows remain identical.
 
-Stretch (`wave2-revised.csv`): changes predicate membership (e.g. LW-12 becomes AUTHORIZED, LW-44 and LW-60 become PENDING). Predict the complete impact before running the same saved path.
+These are staff answers, not learner downloads or pre-prediction demonstration content. Learners derive and freeze their own per-wave and optional revised-wave delta CSVs before routing. The checker contains no answer set.
 
-## 3. Protected answer model
+## Exactness and restoration contract
 
-The visible batch files (labeled practice), the router, and the restore are the practice materials. The deciding expected values for an attempt are never the checked-in thin `tests/expected/` files (those are historical).
+An exact comparison requires complete file-byte equality. Predicted-change comparison accounts for every row and preserves count, order, header/BOM, quoting style, lot serialization, and record terminators. Every declared before/after pair must match and actually change; every undeclared serialized row remains identical. A header-only delta means zero changes, not a missing prediction. Malformed UTF-8/CSV, duplicate lots, missing/reordered rows, omitted/wrong predictions, and unpredicted byte changes HOLD. Files must not be normalized to pass.
 
-The contract that must hold for any batch: exactly the PENDING rows move; rack always first; baseline receipts byte-identical; restore from distinct baseline+digest produces RESTORE OK + match; no hand patch accepted.
+Preserve the original export before the policy edit and retain its separate initial `file-identity` report. Initial equality yields `initial_record_only`; it is not restoration proof. Before import, supply the **original retained** SHA256 as `expected_sha256` and require `matched`. Equal replacement files cannot redefine the baseline. Preserve a separate changed export, then import the verified original into a new blank workflow and compare both reruns against their corresponding original receipts.
 
-## 4. Assessment
+The retained native baseline is `native/router-baseline.json`; its original SHA256 is `3d02aef9cb8da98a61e992609375fd91b0fc5d8b7d9e903e9f681f354ccc67df`. `native/router-changed.json` differs in only Pending rule's node configuration; export version metadata also changes. These exports remain staff-only.
 
-Class F / human panel remains unmeasured.
+## Observed native evidence
 
-## Amendments (v1 to v2)
+`../evidence/native/runtime-proof.json` records native execution IDs, reports, node versions, boundaries, and limits. The same directory retains eight exact browser-downloaded receipts and 24 downloaded comparison/identity reports. Staff predictions are in `native/delta-core.csv`, `native/delta-revised-input.csv`, and `native/delta-revised-policy.csv`.
 
-| # | v1 (thin) | Problem | v2 (replacement) |
-|---|-----------|---------|------------------|
-| 1 | Three lots L-11/L-12/L-13; RULE.changed.md copy; restore without arg | Did not exercise volume floor, near-miss identities, hostile text, time trap, word collision, or rack precedence. Manual copy hid the rule. | 80 lots LW-01–80; two waves + stretch revision; one-line pending_status in RULE.md; restore_rule.py <workdir> with digest; rack first; full byte serialized comparison on disposable copies. |
-| 2 | Manual-repair count file and "count is 0" | Incidental file; not consumer-visible behavior. | Removed from active contract. Repair is proven by byte match of clean re-run vs any altered receipt. |
-| 3 | Expected files pinned L-11 etc and size-ish checks | Prose and incidental. | Behavioral: 80 rows, exact delta only on PENDING membership, byte identity for baseline waves, rack unchanged, hold on bad config, refuse existing output. |
+Observed on macOS arm64 Docker Desktop: Docker 29.7.2, Compose v5.4.0, n8n 2.41.5, managed Chromium, bind `127.0.0.1:5678`. The router was constructed through the UI, the original export hashed natively, both waves run under both policies, the original digest rechecked, and both restored receipts matched exactly. Revised-input and policy-only comparisons each accounted for all 80 rows. All four empty-branch cases preserved the expected rows and source order without fabricated records. Invalid CSV/schema/IDs/disposition/exception/cancellation/policy cases stopped before routing. Native comparison negatives held for unpredicted changes, missing/reordered/duplicate rows, wrong schema, BOM/newline/quoting changes, malformed CSV, wrong/omitted predictions, and a tampered replacement baseline.
 
-Re-freeze after edit:
+The 40 published PNGs are actual n8n captures covering all 35 numbered construction/operation steps. Construction captures use verified native settings with execution output cleared where needed; they are not synthetic UI diagrams. Reports appear after the prediction instructions. Screenshots are context, not substitutes for retained downloaded bytes.
 
-```bash
-shasum -a 256 reference/REFERENCE.md | awk '{print $1"  reference/REFERENCE.md"}' > reference/REFERENCE.sha256
-```
+Browser automation input, clipboard, and download failures were corrected before final evidence. Native platform execution is limited to this Apple Silicon host. Windows/WSL, Intel macOS, Ubuntu, Arch, and Windows Arm remain unexecuted natively. Learner performance and completion times remain unobserved.
+
+## Publication and history
+
+The website publishes the owning overview/lab, their PNGs, and only five raw exercise files: three source CSVs, `validate-batch.js`, and `receipt-checker.json`. Completed routers, controls contracts, staff answers, reference/evidence, and historical fixtures are excluded by `course.json`. Module 6 preparation copies those same five inputs; it does not launch a Python router. Control regressions execute the shipped Code bodies, while native evidence establishes the real graph behavior.
+
+Revision 1 (2026-08-23) used a thin three-lot case. Revision 2 (2026-09-30) introduced the 80-lot packet with a supplied Python router, RULE.md policy, and rule-file restore. Revision 3 retains the case facts but retires that executable mechanism, its callers, and its SVG figure specification. Existing `tests/expected/`, `reviews/`, and the older evidence transcripts remain historical; they are not native n8n proof or the active answer contract. Historical raw evidence is not rewritten to imply a current pass.

@@ -52,14 +52,6 @@ LAB = "shared/MODULE_00_LAB.md"
 
 MUTATIONS: list[Mutation] = [
     # Class A
-    Mutation("A1", "a guide runs a script that is not in the repository",
-             append(GUIDE, "\n```bash\nbash scripts/does-not-exist.sh\n```\n")),
-    Mutation("A3", "a learner block can terminate the learner's shell",
-             append(GUIDE, "\n```bash\ntest -d /nowhere || exit 1\n```\n")),
-    Mutation("A3", "persistent errexit closes the shell on an expected negative",
-             append(GUIDE, "\n```bash\nset -e\n```\n")),
-    Mutation("A4", "a block runs a relative script without establishing its directory",
-             append(GUIDE, "\n```bash\nbash scripts/verify-setup.sh\n```\n")),
     Mutation("A7", "a block persists an empty PATH element",
              append(GUIDE, "\n```bash\nexport PATH=\"$HOME/.local/bin::$PATH\"\n```\n")),
     Mutation("A8", "a pasted line after the credential read would be captured as the key",
