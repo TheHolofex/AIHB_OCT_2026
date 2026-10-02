@@ -8,6 +8,8 @@ An **AI harness** is the working environment around a model: its instructions, s
 
 You’ll use Oh My Pi to work with files and supplied tools, and local n8n to build visual workflows in Module 6. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
 
+<div data-photo-band="custody"></div>
+
 ## Produce work you can check
 
 - **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
@@ -68,11 +70,15 @@ Treat each break as a stopping point. Inside an assignment, the Copper Span brea
 
 **Last Count's handoff happens outside these hours.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
 
+<div data-photo-band="route"></div>
+
 ## Choose your assignment
 
 Start with setup, then work through assignments 00–09. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
 
 <div data-course-map></div>
+
+<div data-photo-band="clinic"></div>
 
 ## Fictional cases, actual work
 
