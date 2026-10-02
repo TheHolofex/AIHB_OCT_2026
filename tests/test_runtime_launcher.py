@@ -6,6 +6,7 @@ import importlib.util
 import json
 import os
 import subprocess
+import shutil
 import sys
 import tempfile
 import unittest
@@ -46,7 +47,7 @@ class LauncherBehavior(unittest.TestCase):
     def test_missing_empty_instruction_and_permission_conflicts_are_prerequisites(self):
         empty = self.base / "empty.md"
         empty.write_text(" \n", encoding="utf-8")
-        for args in (("--instruction", str(self.base / "missing")), ("--instruction", str(empty)), ("--allow-write", "../escape"), ("--allow-write", "source.txt"), ("--hash-tool", "missing.py", "--allow-write", "new.txt")):
+        for args in (("--instruction", str(self.base / "missing")), ("--instruction", str(empty)), ("--allow-write", "../escape"), ("--allow-write", "source.txt"), ("--mcp-config", "missing.json"), ("--authority", "missing.md"), ("--mcp-config", "missing.json", "--authority", "missing.md", "--allow-write", "new.txt")):
             with self.subTest(args=args):
                 result = self.cli(args)
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
@@ -192,6 +193,118 @@ class LauncherBehavior(unittest.TestCase):
             target.write_bytes(raw)
             with self.subTest(raw=raw), self.assertRaises(ValueError):
                 runtime.read_jsonl(target)
+
+    def mcp_receipt(self):
+        """A synthetic MCP run: one allowed read, one server refusal, one runtime refusal, one new draft."""
+        known = [f"mcp__vault_{name}" for name in ("list_directory", "read_note", "read_multiple_notes", "search_notes", "get_frontmatter", "get_vault_stats", "write_note", "patch_note", "update_frontmatter", "manage_tags", "move_note", "delete_note")]
+        allow = ["mcp__vault_read_note", "mcp__vault_write_note"]
+        flags = {"read_only": False, "read_prefixes": ["Sources/"], "write_prefixes": ["Drafts/"], "no_overwrite": True, "max_results": 20}
+        offered = [name.removeprefix("mcp__vault_") for name in known]
+        policy = dict.fromkeys(runtime.POLICY_KEYS)
+        policy.update(schema_version=1, run_id="synthetic", work_root=str(self.work), profile="mcp", tools=[], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION)
+        policy["mcp"] = {"server": "vault", "script": {"path": "vault_mcp.py", "sha256": "script"}, "phase": "research", "allow_tools": ["read_note", "write_note"], "allow_names": allow, "known_names": known,
+                         "read_scope": ["Sources/"], "write_scope": ["Drafts/"], "create_only": True, "flags": flags, "tools_offered": offered}
+        policy["snapshot_exclude"] = ["vault/.obsidian"]
+        shutil.rmtree(self.work / "vault", ignore_errors=True)
+        (self.work / "vault/Sources").mkdir(parents=True)
+        (self.work / "vault/Drafts").mkdir()
+        (self.work / "vault/Sources/KH-001.md").write_text("source", encoding="utf-8")
+        draft = "# finding\n"
+        digest = runtime.sha256(draft.encode())
+        calls = [("read-1", "mcp__vault_read_note", {"path": "Sources/KH-001.md"}), ("deny-1", "mcp__vault_write_note", {"path": "Sources/KH-001.md", "content": "x", "mode": "overwrite"}),
+                 ("gone-1", "mcp__vault_patch_note", {"path": "Sources/KH-001.md", "oldString": "s", "newString": "t"}), ("write-1", "mcp__vault_write_note", {"path": "Drafts/finding.md", "content": draft, "mode": "create"})]
+        blocks = [{"type": "toolCall", "id": identifier, "name": name, "arguments": arguments} for identifier, name, arguments in calls]
+        assistant = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "toolUse", "content": blocks}
+        final = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "stop", "content": [{"type": "text", "text": "done"}]}
+        events = [{"type": "agent_start"}, {"type": "message_end", "message": assistant}]
+        failed = {"deny-1": "DENIED: OUTSIDE_WRITE_SCOPE refused", "gone-1": "Tool mcp__vault_patch_note not found"}
+        for identifier, name, arguments in calls:
+            text = failed.get(identifier, "ok")
+            content = [{"type": "text", "text": text}]
+            events += [{"type": "tool_execution_start", "toolCallId": identifier, "toolName": name, "args": arguments},
+                       {"type": "tool_execution_end", "toolCallId": identifier, "toolName": name, "result": {"content": content}, "isError": identifier in failed},
+                       {"type": "message_end", "message": {"role": "toolResult", "toolCallId": identifier, "toolName": name, "content": content, "isError": identifier in failed, "details": {"mcpToolName": name.removeprefix("mcp__vault_")}}}]
+        events += [{"type": "message_end", "message": final}, {"type": "agent_end", "isTerminal": True, "messages": [assistant, final]}]
+        decisions = [{"run_id": "synthetic", "type": "decision", "call_id": identifier, "tool": name, "arguments": arguments, "allow": True} for identifier, name, arguments in calls if identifier != "gone-1"]
+        guard = [{"type": "guard_ready", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "active_tools": sorted(allow)}, *decisions,
+                 {"type": "provider_request", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "tools": sorted(allow)},
+                 {"type": "guard_end", "run_id": "synthetic", "ready": True, "failed": False, "provider_requests": 1}]
+        redact = runtime.redact_arguments
+        audit = [{"seq": 1, "type": "server_start", "flags": flags, "script_sha256": "script", "tools_offered": offered},
+                 {"seq": 2, "type": "tool_call", "tool": "read_note", "arguments": {"path": "Sources/KH-001.md"}, "allowed": True, "is_error": False, "reads": ["Sources/KH-001.md"], "effect": None},
+                 {"seq": 3, "type": "tool_call", "tool": "write_note", "arguments": redact(calls[1][2]), "allowed": False, "is_error": True, "reads": [], "effect": None},
+                 {"seq": 4, "type": "tool_call", "tool": "write_note", "arguments": redact(calls[3][2]), "allowed": True, "is_error": False, "reads": [], "effect": {"op": "create", "path": "Drafts/finding.md", "sha256_before": None, "sha256_after": digest}}]
+        before = runtime.snapshot(self.work, [], ("vault/.obsidian",))
+        (self.work / "vault/Drafts/finding.md").write_text(draft, encoding="utf-8")
+        after = runtime.snapshot(self.work, [], ("vault/.obsidian",))
+        return policy, events, guard, {"before": before, "after": after}, audit
+
+    def test_mcp_receipts_join_each_call_to_the_servers_own_audit_and_the_disk(self):
+        policy, events, guard, snapshots, audit = self.mcp_receipt()
+        self.assertEqual(runtime.validate_run(policy, events, guard, snapshots, 0, audit), [])
+        calls = {block["id"]: block for row in events if row.get("type") == "message_end" for block in row["message"].get("content", []) if block.get("type") == "toolCall"}
+        results = {row["message"]["toolCallId"]: row["message"] for row in events if row.get("type") == "message_end" and row["message"].get("role") == "toolResult"}
+        ends = {row["toolCallId"]: row for row in events if row.get("type") == "tool_execution_end"}
+        decisions = {row["call_id"]: row for row in guard if row["type"] == "decision"}
+        records, errors = runtime.join_mcp(policy, calls, results, ends, decisions, audit)
+        self.assertEqual(errors, [])
+        self.assertEqual([record["classification"] for record in records], ["EXECUTED", "DENIED_BY_SERVER", "DENIED_BY_RUNTIME", "EXECUTED"])
+        self.assertEqual(records[3]["effect"]["path"], "Drafts/finding.md")
+
+    def test_mcp_receipts_hold_on_missing_extra_or_contradicting_server_records(self):
+        defects = {
+            "a successful call with no audit row": ("no matching server audit row", lambda p, e, g, s, a: a.pop(1)),
+            "an audit call the harness never made": ("never made", lambda p, e, g, s, a: a.append({"seq": 5, "type": "tool_call", "tool": "read_note", "arguments": {"path": "Sources/KH-002.md"}, "allowed": True, "is_error": False, "reads": [], "effect": None})),
+            "a read outside the declared scope": ("outside read_scope", lambda p, e, g, s, a: a[1].update(reads=["Estimate/Calibration.md"])),
+            "a server that started with other limits": ("limits that differ", lambda p, e, g, s, a: a[0].update(flags={**a[0]["flags"], "no_overwrite": False})),
+            "a server that offered other tools": ("different tool set", lambda p, e, g, s, a: a[0].update(tools_offered=["read_note"])),
+            "an overwrite although create_only is declared": ("create_only is declared", lambda p, e, g, s, a: a[3]["effect"].update(op="overwrite")),
+            "a write outside the declared folder": ("outside write_scope", lambda p, e, g, s, a: a[3]["effect"].update(path="Estimate/finding.md")),
+            "a change to a source note": ("unreceipted vault change", lambda p, e, g, s, a: s["after"]["work"].__setitem__("vault/Sources/KH-001.md", {"type": "file", "sha256": "changed"})),
+            "a file nobody receipted": ("unreceipted vault change", lambda p, e, g, s, a: s["after"]["work"].__setitem__("vault/Drafts/stray.md", {"type": "file", "sha256": "stray"})),
+            "a provider request that offered an undeclared tool": ("outside the declaration", lambda p, e, g, s, a: g[-2].update(tools=["mcp__vault_read_note", "mcp__vault_write_note", "mcp__vault_delete_note"])),
+            "a declared tool that was not active": ("active tools differ", lambda p, e, g, s, a: g[0].update(active_tools=["mcp__vault_read_note"])),
+        }
+        for label, (fragment, defect) in defects.items():
+            policy, events, guard, snapshots, audit = self.mcp_receipt()
+            defect(policy, events, guard, snapshots, audit)
+            with self.subTest(label):
+                errors = runtime.validate_run(policy, events, guard, snapshots, 0, audit)
+                self.assertTrue(any(fragment in error for error in errors), f"{label}: {errors}")
+
+    def test_a_revoked_phase_holds_when_any_call_reaches_a_server(self):
+        policy, events, guard, snapshots, audit = self.mcp_receipt()
+        policy["mcp"].update(phase="revoked", allow_names=[], allow_tools=[], read_scope=[], write_scope=[], create_only=False, server=None, flags=None, script=None, tools_offered=[])
+        guard[0]["active_tools"] = []
+        guard[-2]["tools"] = []
+        self.assertTrue(any("revoked phase executed or reached a tool" in error for error in runtime.validate_run(policy, events, guard, snapshots, 0, audit)))
+
+    def test_a_connection_that_differs_from_its_declaration_is_refused_before_any_model_call(self):
+        work = self.base / "mcp-work"
+        script = work / "shared/mcp/vault_mcp.py"
+        script.parent.mkdir(parents=True)
+        script.write_bytes((ROOT / "AI_Harness_Bootcamp_2/module-03-mcp-research/shared/mcp/vault_mcp.py").read_bytes())
+        (work / "vault").mkdir()
+        declaration = {"schema_version": 1, "phase": "research", "allow_tools": ["read_note", "write_note"], "read_scope": ["Sources/"], "write_scope": ["Drafts/research/"], "create_only": True}
+        entry = lambda *flags: {"mcpServers": {"vault": {"type": "stdio", "command": "python", "args": [str(script), "--root", str(work / "vault"), *flags]}}}
+        matching = ["--read-prefix", "Sources/", "--write-prefix", "Drafts/research/", "--no-overwrite"]
+
+        def prepare(config, declared=declaration):
+            (work / "mcp.json").write_text(json.dumps(config), encoding="utf-8")
+            (work / "AUTHORITY.md").write_text("```json\n" + json.dumps(declared) + "\n```\n", encoding="utf-8")
+            return runtime.prepare_mcp({"path": str(work / "mcp.json")}, {"path": str(work / "AUTHORITY.md")}, work.resolve())
+
+        self.assertEqual(prepare(entry(*matching))["parsed"]["write_prefixes"], ["Drafts/research/"])
+        for label, flags in (("no create-only flag", matching[:-1]), ("a wider read folder", ["--read-prefix", "Sources/", "--read-prefix", "Estimate/", *matching[2:]]), ("no write folder", ["--read-prefix", "Sources/", "--no-overwrite"])):
+            with self.subTest(label), self.assertRaisesRegex(ValueError, "limits differ|create_only|read-only"):
+                prepare(entry(*flags))
+        with self.assertRaisesRegex(ValueError, "program|Python|supplied"):
+            prepare({"mcpServers": {"vault": {"type": "stdio", "command": "/bin/sh", "args": [str(script), "--root", str(work / "vault"), *matching]}}})
+        with self.assertRaisesRegex(ValueError, "exactly one server"):
+            prepare({"mcpServers": {}})
+        script.write_text("# edited\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "differs from the course"):
+            prepare(entry(*matching))
 
 
 if __name__ == "__main__":

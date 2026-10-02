@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import hashlib
 import os
 import shutil
@@ -12,7 +13,7 @@ from pathlib import Path
 
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
-    "02": ("case", "controls"), "03": ("case", "tools"), "04": ("case",),
+    "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "04": ("case",),
     "05": ("controls", "corpus", "checks"), "06": ("batch", "controls"),
     "07": ("cases", "controls", "baseline"), "08": ("case", "controls"),
     "09": ("case", "controls", "baseline"),
@@ -39,6 +40,23 @@ def excluded(name: str, module_id: str) -> bool:
 def require_regular(path: Path, boundary: Path) -> None:
     if not path.is_file() or path.is_symlink() or not path.resolve().is_relative_to(boundary.resolve()):
         raise ValueError(f"missing, linked, or escaped required source: {path}")
+
+
+def target_path(module_id: str, relative: Path) -> Path:
+    """Where a published source file lands in the work folder."""
+    if module_id == "03" and relative.parts[:2] == ("shared", "vault"):
+        return Path("vault", *relative.parts[2:])
+    return relative
+
+
+def prepare_module_03(stage: Path, dest: Path) -> None:
+    """Create the vault's empty working folders and the two connection files the lab edits."""
+    for folder in ("vault/Drafts", "vault/Estimate/Releasable"):
+        (stage / folder).mkdir(parents=True, exist_ok=True)
+    template = stage / "shared/mcp/mcp.template.json"
+    inside_json = json.dumps(str(dest))[1:-1]
+    (stage / "mcp.json").write_text(template.read_text(encoding="utf-8").replace("{{WORK}}", inside_json), encoding="utf-8")
+    shutil.copyfile(stage / "shared/mcp/AUTHORITY.template.md", stage / "AUTHORITY.md")
 
 
 def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path:
@@ -73,7 +91,7 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
                     continue
                 source = parent / entry
                 require_regular(source, module)
-                copies.append((source, source.relative_to(module)))
+                copies.append((source, target_path(module_id, source.relative_to(module))))
     if module_id == "06":
         for relative in MODULE_06_DOWNLOADS:
             source = module / relative
@@ -105,6 +123,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
             content = (stage / "scripts/render_review.py").read_bytes()
             (baseline / "render_review.py").write_bytes(content)
             (baseline / "render_review.py.sha256").write_text(hashlib.sha256(content).hexdigest() + "\n", encoding="utf-8")
+        if module_id == "03":
+            prepare_module_03(stage, dest)
         if dest.exists() or dest.is_symlink():
             raise FileExistsError(f"destination already exists: {dest}")
         # Reserve the destination exclusively; never let POSIX rename replace an
@@ -124,7 +144,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "02":
         return [python, "scripts/second_brain.py", "initialize", "--work", "."]
     if module_id == "03":
-        return [python, "shared/tools/hash_source.py", "shared/case/REL-001.md"]
+        return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "04":
         return [python, "scripts/render_review.py", "shared/case/ledger.json", "out/baseline.md"]
     if module_id == "06":

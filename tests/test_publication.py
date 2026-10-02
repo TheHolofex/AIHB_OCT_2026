@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -82,7 +83,7 @@ class WorkspaceBehavior(unittest.TestCase):
         module = self.module("03")
         secret = self.base / "outside.txt"
         secret.write_text("outside", encoding="utf-8")
-        (module / "shared/case/link.txt").symlink_to(secret)
+        (module / "shared/vault/link.txt").symlink_to(secret)
         with self.assertRaisesRegex(ValueError, "linked"):
             prepare_work.prepare("03", self.base / "work", self.root)
         self.assertFalse((self.base / "work").exists())
@@ -90,6 +91,20 @@ class WorkspaceBehavior(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             prepare_work.prepare("03", self.base / "broken", self.root)
         self.assertTrue((self.base / "broken").is_symlink())
+
+    def test_module_03_prepares_the_vault_and_the_connection_files(self):
+        module = self.module("03")
+        (module / "shared/mcp/mcp.template.json").write_text('{"mcpServers": {"vault": {"args": ["{{WORK}}/shared/mcp/vault_mcp.py", "--root", "{{WORK}}/vault"]}}}', encoding="utf-8")
+        (module / "shared/mcp/AUTHORITY.template.md").write_text("# Authority\n", encoding="utf-8")
+        work = prepare_work.prepare("03", self.base / "work with spaces", self.root)
+        self.assertEqual((work / "vault/input.txt").read_text(), "original input\n")
+        self.assertTrue((work / "shared/mcp/input.txt").is_file() and (work / "shared/prompts/input.txt").is_file())
+        self.assertEqual([path for path in (work / "vault/Drafts").iterdir()], [])
+        self.assertTrue((work / "vault/Estimate/Releasable").is_dir())
+        entry = json.loads((work / "mcp.json").read_text(encoding="utf-8"))["mcpServers"]["vault"]["args"]
+        self.assertEqual(entry, [str(work / "shared/mcp/vault_mcp.py"), "--root", str(work / "vault")])
+        self.assertEqual((work / "AUTHORITY.md").read_text(), "# Authority\n")
+        self.assertEqual(prepare_work.next_arguments("03")[1:], ["shared/mcp/mcp_inspect.py", "--config", "mcp.json"])
 
     def test_module_06_copies_only_browser_inputs_without_changing_bytes(self):
         module = self.module("06")

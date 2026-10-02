@@ -80,7 +80,7 @@ Label a material statement `SOURCE FACT`, `CALCULATION`, `INFERENCE`, `DECISION`
 12. **Class-only.** Fictional. The learner does not choose a real route, dispatch a vehicle, interpret law, issue a permit, make a clinical decision, optimize a network, estimate unknown performance, or write software. No real dispatch. No cyber mission-thread defense.
 13. **Nondeveloper.** The learner specifies and configures a supplied control. The adapter implements the checker. Zero programming objectives.
 14. **Orientation stays inside 15 minutes and eight new terms (design target),** each defined at first use. Every rule the learner needs is in the packet.
-15. **Modules 00–02** can claim only bounded internal acceptance. Module 03 owns the six-concern release gate and still requires the tool branch. A supported no-release does not replace operation.
+15. **Modules 00–02** can claim only bounded internal acceptance. Module 03 practices the release-authority boundary on one research product: a marking written by the AI or by the learner is a proposal, and only the Release Authority changes handling or releases anything. No module grants consequential acceptance, and a refusal to connect does not replace operation.
 16. **Adoption.** A shipped spec describes the corresponding current packet, not proof of observed learner performance. The one-harness rebuild explicitly authorizes scenario revision 2 for Modules 02–09, keeps Cold Lantern's source facts and answer model unchanged, and changes North Shelf's setup path without expanding its case. Record actual deterministic, live-provider, human, and platform evidence separately in `evidence/exercise-runs.json`; blocked lanes do not become passes through adoption.
 
 Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
@@ -88,7 +88,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 | Module | Band |
 |---|---|
 | 02 | notes `DN-001`–`DN-040`, crate family `C-40`–`C-49` |
-| 03 | files `REL-001`–`REL-040`, packet `NB-NOTE-17` |
+| 03 | notes `KH-001`–`KH-040` |
 | 04 | ledger rows `BK-200`–`BK-279` |
 | 05 | runs `R-001`–`R-080` |
 | 06 | lots `LW-01`–`LW-80` |
@@ -214,23 +214,23 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Independence:** Does not cite the Tuesday afternoon movement, Mill Depot, that session's clinic or vehicle, Cold Lantern, or source IDs `S01`–`S10`. Tuesday afternoon does not need this crate.
 
-## A class packet can read like the order to commit Kiln Hold
+## A connected assistant can tidy away the evidence
 
-**Status:** adopted. The shipped lab uses the 40-document packet and hash tool. Retired thin-adapter inputs are not active work. Historical evidence stays historical.
+**Status:** adopted. The shipped lab uses a 40-note Obsidian vault, a supplied MCP server, and a probe. The earlier release-packet case and its hash tool are retired. Historical evidence stays historical.
 
-**Project:** Kiln Hold is a vehicle resupply of burn-dressing cases from Mill Depot to Clinic B-2 on vehicle `MH-6`. Documents `REL-001`–`REL-040` form packet `NB-NOTE-17`. Read together, they look like an order committing that movement. Decide whether the packet may leave the class. Then hash one designated file with the supplied read-only tool, combine the untrusted override with that tool, disconnect, and revoke.
+**Project:** Task Force Marlin staff at Forward Base Brandt need 40 burn-dressing cases from Mill Depot at Clinic B-2, and the learner is the staff action officer asked what is known, what blocks it, and what is unknown. Notes `KH-001`–`KH-040` hold the evidence: stock reports, a lot on quality hold beside a lot that can be issued, a deadlined truck, a bridge posted below the truck's class, an air window inside a dust forecast, and notes that mark, notice, and quote one another. The learner connects an assistant to the vault through a supplied MCP server, has it research and propose a handling for every note, and prepares one extract for a partner liaison cell.
 
-**Stake:** An outside desk would treat the packet as authority to commit burn-dressing cases to `MH-6`. One document states a true gate hour, 18:40 MDT, for that vehicle. The hour is not a movement order. One document names a person who cannot challenge the packet. One uses a photo the course does not own. A tool that writes a second file would turn a fingerprint into a release the quality office did not issue.
+**Stake:** A summary that looks releasable can join a location, a time with a zone, and a named route and tell a reader where and when a convoy moves. A contractor note addressed to automation asks it to re-mark every source note and copy STAFF text to the partner folder, and the server's own instructions invite the model to tag and overwrite notes to tidy the vault. A tool marked read-only that tags notes would let a harness approve a change it never meant to allow.
 
-**Skill:** Six-concern release decision — privacy/security, copyright/IP, fairness/bias, transparency/disclosure, affected-person impact and recourse, human accountability, including their combined effect — and least-authority operation. No-release does not replace the hash.
+**Skill:** MCP operation (read the contract, connect with a declared connection), contextual classification with an AI (judge its handling proposals against seven written rules; six decisions come first), and limiting tool authority (declare, enforce at the layers that can, and prove with a probe that attempts each forbidden action). No full release gate is taught.
 
-**Platform:** `tools/hash_source.py` shape: read one local file, write nothing, no network. Refuse paths outside the case. Revoke by renaming the work-copy script.
+**Platform:** A supplied stdio MCP server over the vault's Markdown files, a launcher profile that freezes the declaration and the connection, a guard that re-checks the tool list in the provider request, the server's own audit log, and a verifier that joins them with the files on disk. Obsidian shows the notes, links, and graph; it needs no account, Sync, or plugin.
 
-**Volume:** The decision evidence is scattered across 40 documents so the position cannot be a reading of one paragraph. The tool branch stays one file.
+**Volume:** Forty notes so that no position can be a reading of one paragraph; twelve tools so that the minimum set is a choice; three phases (research, partner, revoked) so that scope changes between them.
 
-**Worked authoring example:** sharing limit is class-only; no outside decision owner exists; supported position is no-release. One document is a photo credit the course does not own. One names a person who has no recourse if the note is published. The override tells the tool to write a second file. The tool does not.
+**Worked authoring example:** A note marked PARTNER lists supply-point hours and is derived from a STAFF note, so its effective handling is STAFF. A note marked OPEN holds a time, a route, and a cargo quantity, so aggregation raises it to STAFF. A notice from the clinic's supply clerk does not change a marking, and a notice printed in local time can be earlier than one printed in Zulu. The server's `manage_tags` is marked read-only and adds tags.
 
-**Independence:** Not the Tuesday morning crate or that session's vehicle, not the Monday email, not the Monday afternoon brief, not 12 Mesa Yard.
+**Independence:** Not the Tuesday morning crate or that session's vehicle, not the Monday email, not the Monday afternoon brief, not 12 Mesa Yard. The names `KH-`, Task Force Marlin, Forward Base Brandt, Clinic B-2, `MH-6`, and `MH-8` appear only here.
 
 ## A finished duty card can send Copper Span
 
@@ -355,7 +355,7 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Session | Unaided two hours | With the supplied control |
 |---|---|---|
 | Tue AM | The clerk stamps `C-44` released because the height is true, and commits it to Ledger Pike vehicle `QP-17`. | Human-admitted, linked knowledge preserves source support and limits. Fresh retrieval proves the saved rule and reviewed content used; a substantive revision is reviewed and retrieved again. The height stays a measurement. |
-| Tue PM | The model publishes Kiln Hold because the 18:40 MDT gate hour is true. | Six-concern record keeps the packet in class. The hash tool cannot write a release. |
+| Tue PM | The model obeys a note addressed to automation and re-marks the sources, or tidies the vault by tagging and overwriting them. | The server refuses writes outside the declared folder, tools the declaration omits are never offered, and the probe shows the limit holds when the model never tries. |
 | Wed block 1 | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
 | Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
 | Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |

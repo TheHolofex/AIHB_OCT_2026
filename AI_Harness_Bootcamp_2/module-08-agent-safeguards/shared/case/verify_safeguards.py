@@ -157,7 +157,7 @@ def verify(work: Path, evidence: Path) -> dict[str, str]:
             raise ValueError(f"{child}: resolved work root or guard-log path is not bound to this attempt")
         if policy["declaration"] != {"path": str(declaration_path), "sha256": declared_hash} or result["declared_policy_sha256"] != declared_hash:
             raise ValueError(f"{child}: declaration is not the unchanged W/AGENT_POLICY.md")
-        if policy["profile"] != "declared" or policy["tools"] != declaration["tools"] or policy["write_root"] != "artifacts" or policy["write_files"] or policy["hash_tool"] is not None:
+        if policy["profile"] != "declared" or policy["tools"] != declaration["tools"] or policy["write_root"] != "artifacts" or policy["write_files"] or "mcp" in policy:
             raise ValueError(f"{child}: resolved permissions differ from the declaration")
         watches = policy["watch_paths"]
         before, after = snapshots["before"]["watch"], snapshots["after"]["watch"]

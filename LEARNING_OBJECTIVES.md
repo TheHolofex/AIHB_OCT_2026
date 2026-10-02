@@ -33,11 +33,11 @@ Source verification and bounded direction are earlier prerequisites; source chec
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
 
-## PO-03 — Decide responsible release and operate bounded tools
+## PO-03 — Operate MCP tools under limited authority
 
-The learner makes a contextual release decision covering privacy/security, copyright/IP, fairness/bias, transparency/disclosure, affected-person impact and recourse, and human accountability including their combined effect; and operates a supplied safe capability at the least authority the work needs, proving containment under untrusted content and proving removal.
+Using verified sources and a placed guard, the learner connects a supplied MCP server to the harness, uses it for AI-assisted research in an Obsidian vault, judges the assistant's handling classifications against stated rules, and limits the connection so named forbidden actions cannot happen, proving each limit and then proving removal.
 
-**Evidence:** decision-branch record with per-concern contextual evidence; raw reach/authority inventory, composed untrusted-content and tool-authority negative, approval result, useful bounded action, and revocation proof.  
+**Evidence:** the server's contract inspection with the learner's reading of it; a declared authority that matches the server's arguments; a probe of the unbounded connection that breaches and probes of each bounded phase that hold; six frozen calibration decisions and a forty-note handling register that sets the AI's proposals beside the final decisions; a partner extract that cites only cleared notes; a revoked run that was offered no tool; and the verifier's joined result.  
 **Owner:** Module 03
 
 ## PO-04 — Diagnose and recover

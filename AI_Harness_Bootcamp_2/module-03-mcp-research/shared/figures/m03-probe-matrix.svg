@@ -1,0 +1,41 @@
+<!-- GENERATED from resources/figures; edit the JSON spec, not this plate. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 280" width="1120" height="280" role="img" aria-labelledby="m03-probe-matrix-title m03-probe-matrix-desc">
+  <title id="m03-probe-matrix-title">The same attempts against two servers</title>
+  <desc id="m03-probe-matrix-desc">A table compares four forbidden attempts against an open server and a bounded server. Reading outside the read folders, overwriting a source note, and creating a note outside Drafts all breach the open server and are held by the bounded one. Deleting a source is held by the allow-list on the open server and by the server&apos;s own limits on the bounded one.</desc>
+  <style>
+    text { font-family: Inter, "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; fill: #0A0A0A; }
+    .eyebrow, .step, .micro { font-size: 14px; font-weight: 650; letter-spacing: 1.7px; }
+    .eyebrow { fill: #E31C23; }
+    .step, .micro { fill: #6B6B6B; }
+    .figure-title { font-size: 22px; font-weight: 600; letter-spacing: -0.2px; }
+    .label { font-size: 15px; font-weight: 650; }
+    .body { font-size: 14px; font-weight: 430; fill: #4A4A4A; }
+  </style>
+  <rect width="1120" height="280" fill="#FFFFFF" />
+  <path d="M 0 0 H 1120" stroke="#0A0A0A" stroke-width="4" />
+  <text class="eyebrow" x="36" y="35">PROBE</text>
+  <text class="figure-title" x="36" y="62" text-anchor="start"><tspan x="36" dy="0">The same attempts against two servers</tspan></text>
+  <rect x="36" y="94" width="1048" height="154" fill="#FFFFFF" stroke="#D0D0D0" />
+  <path d="M 385.3333333333333 94 V 248" stroke="#D0D0D0" />
+  <path d="M 734.6666666666666 94 V 248" stroke="#D0D0D0" />
+  <path d="M 36 124.8 H 1084" stroke="#D0D0D0" />
+  <path d="M 36 155.6 H 1084" stroke="#D0D0D0" />
+  <path d="M 36 186.4 H 1084" stroke="#D0D0D0" />
+  <path d="M 36 217.2 H 1084" stroke="#D0D0D0" />
+  <rect x="36" y="94" width="1048" height="30.8" fill="#FAFAF8" />
+  <text class="micro" x="48" y="114.4" text-anchor="start"><tspan x="48" dy="0">Attempt</tspan></text>
+  <text class="micro" x="397.3333333333333" y="114.4" text-anchor="start"><tspan x="397.3333333333333" dy="0">Open server</tspan></text>
+  <text class="micro" x="746.6666666666666" y="114.4" text-anchor="start"><tspan x="746.6666666666666" dy="0">Bounded server</tspan></text>
+  <text class="label" x="48" y="145.2" text-anchor="start"><tspan x="48" dy="0">Read outside the read folders</tspan></text>
+  <text class="body" x="397.3333333333333" y="145.2" text-anchor="start"><tspan x="397.3333333333333" dy="0">BREACHED</tspan></text>
+  <text class="body" x="746.6666666666666" y="145.2" text-anchor="start"><tspan x="746.6666666666666" dy="0">HELD</tspan></text>
+  <text class="label" x="48" y="176" text-anchor="start"><tspan x="48" dy="0">Overwrite a source note</tspan></text>
+  <text class="body" x="397.3333333333333" y="176" text-anchor="start"><tspan x="397.3333333333333" dy="0">BREACHED</tspan></text>
+  <text class="body" x="746.6666666666666" y="176" text-anchor="start"><tspan x="746.6666666666666" dy="0">HELD</tspan></text>
+  <text class="label" x="48" y="206.8" text-anchor="start"><tspan x="48" dy="0">Create a note outside Drafts</tspan></text>
+  <text class="body" x="397.3333333333333" y="206.8" text-anchor="start"><tspan x="397.3333333333333" dy="0">BREACHED</tspan></text>
+  <text class="body" x="746.6666666666666" y="206.8" text-anchor="start"><tspan x="746.6666666666666" dy="0">HELD</tspan></text>
+  <text class="label" x="48" y="237.6" text-anchor="start"><tspan x="48" dy="0">Delete a source note</tspan></text>
+  <text class="body" x="397.3333333333333" y="237.6" text-anchor="start"><tspan x="397.3333333333333" dy="0">held: allow-list</tspan></text>
+  <text class="body" x="746.6666666666666" y="237.6" text-anchor="start"><tspan x="746.6666666666666" dy="0">HELD</tspan></text>
+</svg>

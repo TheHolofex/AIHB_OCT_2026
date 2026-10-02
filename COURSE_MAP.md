@@ -39,7 +39,7 @@ Modules 00–06 are 180 facilitated minutes each. Thursday allocates **07: 135**
 | 1 | Monday AM | 00 Select, screen, and direct bounded work |
 | 2 | Monday PM | 01 Verify sources and outputs |
 | 3 | Tuesday AM | 02 Build and control a reusable second brain |
-| 4 | Tuesday PM | 03 Decide responsible release and operate bounded tools |
+| 4 | Tuesday PM | 03 Operate MCP tools under limited authority |
 | 5 | Wednesday · Block 1 | 04 Diagnose and recover |
 | 6 | Wednesday · Block 2 | 05 Improve from observed failures |
 | 7 | Wednesday · Block 3 | 06 Build and control a fixed workflow through change |
@@ -101,27 +101,25 @@ File presence cannot establish observed performance. An authored practice output
 | 00 | Select, screen, and direct bounded work | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_ACCEPTANCE` | `FIRST_RESULT`; `MIN_SCREEN`; `DIRECTION`; `INTERNAL_ARTIFACT`; `PO00_RESULT` | **communication artifact** | Checked useful artifact within 60 minutes (design target); delegate/human/refuse choices and minimum screen support bounded internal acceptance; frozen direction and supplied changed-input check support internal accept/fix/hold |
 | 01 | Verify sources and outputs | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SOURCE_FIXTURES` | `SOURCE_EVIDENCE`; `DISCERNMENT_RESULT`; `STANDING_RULE`; `PO01_RESULT` | **research/source** work | Known-answer, source-trace, misleading-source, changed-source, and real-use checks support internal accept/revise/reject/hold |
 | 02 | Build and control a reusable second brain | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT` | Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher | Source-traceable admitted knowledge and useful links; explicit saved-rule load and frozen-content identity; actual knowledge reads and citations without the source-processing chat or raw packet; one substantive improvement in a reviewed revision and fresh run, preserving earlier evidence |
-| 03 | Decide responsible release and operate bounded tools | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CAPABILITY` | `RELEASE_DECISION`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Contextual release decision on every concern, and least-authority operation with containment, approval, disconnect, and revocation |
+| 03 | Operate MCP tools under limited authority | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:MCP_SERVER` | `MCP_CONNECTION`; `HANDLING_REGISTER`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Read a server's contract, connect it with declared limits and prove them with a probe, check an AI's handling classifications against stated rules, and disconnect with proof |
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 05 | Improve from observed failures | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO05_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
 | 06 | Build and control a fixed workflow through change | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO06_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
 | 07 | Evaluate a change with variation controls | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO07_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
 | 08 | Constrain agent behavior | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO08_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
 | 09 | Transfer a runnable package | 2h 30m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `RUNNABLE_PACKAGE`; `PO09_RESULT` | Unfamiliar professional task | Supplied challenge, clean-session run, recipient observations and questions, stop/restore, and a handoff that names unresolved limits |
-## Minimum and full responsibility gates
+## Minimum screen and release authority
 
 `MIN_SCREEN` covers source/data authority, sensitive-data boundary, affected audience/person, disclosure need, consequential authority, and human decision owner. It is a standing rule: every module applies it to its own supplied case, and an unresolved item is `HOLD`. Modules 00–02 can claim only bounded internal acceptance.
 
-An acceptance is **bounded internal** when the artifact reaches only named participants in the learning engagement and no decision outside it depends on the artifact. Anything else is **consequential** and requires the Module 03 gate.
+An acceptance is **bounded internal** when the artifact reaches only named participants in the learning engagement and no decision outside it depends on the artifact. Anything else is **consequential**: the core never grants it, a named release authority decides, and an unresolved item is `HOLD`.
 
-Module 03 owns the full gate: privacy/security, copyright/IP, fairness/bias, transparency/disclosure, affected-person impact and recourse, and human accountability, including their combined effect. A generic checklist or universal legal conclusion fails.
+Module 03 practices that boundary on one research product. Classification and authority are separate claims, and **every learner completes both**:
 
-Decision and operation are separate claims, and **every learner completes both**:
+- **classification:** the learner judges an AI's handling proposals against stated rules before accepting any. A marking written by the AI or by the learner is a proposal; only the release authority changes handling or releases anything;
+- **authority:** the learner connects a supplied MCP server under a declared, minimal authority, proves the limits with a probe that attempts each forbidden action itself, and removes the connection with proof.
 
-- **decision branch:** a supported `no-use`, `no-release`, `no-tool`, or bounded release position with its contextual evidence;
-- **connection branch:** performed by every learner on the supplied safe capability — raw authority, useful bounded action, composed negative, approval, disconnect, and revocation.
-
-A supported refusal is professional performance and is recorded and examined for its reasoning. It is studied, not credited as operation, and it does not replace the supplied connection case. `PO03_RESULT` names which position the learner took.
+A refusal to connect, or an AI proposal accepted without checking, is not credited as either claim. `PO03_RESULT` names what the verifier found for each.
 
 ## Complexity and implementation boundary
 
@@ -129,7 +127,7 @@ Fixed workflow is the highest mandatory operation. Core permits one narrow form 
 
 Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 04's capability, and person-to-person transfer remains Module 09's.
 
-The learner specifies and configures bounded behavior in supplied controls. In Module 06, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. API/MCP, custom RAG, custom runtime implementation, and deployment remain builder work.
+The learner specifies and configures bounded behavior in supplied controls. In Module 06, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. In Module 03 the learner also operates and configures a supplied MCP server and its limits; building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
 
 Module 06 requires local n8n 2.41.5 on the full official six-service Docker stack, localhost access, and unpublished workflows. The platform setup owns installation and readiness. The native Windows PowerShell path uses WSL Ubuntu only as the n8n bridge; it keeps OMP, Python, Git, credentials, and other course work native. Neither an OMP pass nor a supplied receipt substitutes for n8n operation.
 

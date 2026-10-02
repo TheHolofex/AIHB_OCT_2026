@@ -1,13 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 export const digest = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
 const sourceFile = fileURLToPath(import.meta.url);
 const modelId = "anthropic/claude-sonnet-4.6";
-const toolNames = new Set(["course_read", "course_write", "hash_source"]);
+const toolNames = new Set(["course_read", "course_write"]);
 const inside = (root, target) => { const rel = path.relative(root, target); return rel !== ".." && !rel.startsWith(`..${path.sep}`) && !path.isAbsolute(rel); };
 
 export function resolveCoursePath(raw, root) {
@@ -66,20 +65,23 @@ export function authorize(policy, state, tool, args) {
       const permitted = policy.write_files.includes(relative) || (policy.write_root && inside(resolveCoursePath(policy.write_root, policy.work_root), resolved));
       if (!permitted || !relative) throw new Error("write path is not authorized");
       if (state.protected.has(resolved)) throw new Error("existing input/control cannot be replaced");
-      for (const descriptor of [policy.instruction, policy.declaration, policy.hash_tool]) {
+      for (const descriptor of [policy.instruction, policy.declaration]) {
         if (descriptor && resolved === descriptor.path) throw new Error("control file cannot be replaced");
       }
       if (fs.existsSync(resolved) && !state.created.has(resolved)) throw new Error("existing output attempt cannot be replaced");
-    }
-    if (tool === "hash_source") {
-      const script = policy.hash_tool;
-      if (!script || !fs.existsSync(script.path) || fs.lstatSync(script.path).isSymbolicLink() || digest(fs.readFileSync(script.path)) !== script.sha256) throw new Error("hash capability is missing or changed");
     }
     return { allow: true, resolved_path: resolved, relative_path: relative, reason: "authorized" };
   } catch (error) {
     return { allow: false, resolved_path: null, relative_path: null, reason: error.message };
   }
 }
+
+const providerToolNames = event => {
+  const payload = event?.payload;
+  if (!payload || typeof payload !== "object") return null;
+  if (payload.tools === undefined) return [];
+  return Array.isArray(payload.tools) ? payload.tools.map(tool => String(tool?.function?.name ?? tool?.name ?? "")).sort() : null;
+};
 
 export default function courseGuard(pi) {
   const policyFile = process.env.COURSE_GUARD_POLICY;
@@ -89,6 +91,10 @@ export default function courseGuard(pi) {
   const policy = JSON.parse(policyBytes.toString("utf8"));
   if (policy.schema_version !== 1 || policy.provider !== "openrouter" || policy.model !== modelId || policy.omp_version !== "omp/18.3.5" || !Array.isArray(policy.tools) || policy.tools.some(name => !toolNames.has(name))) throw new Error("invalid frozen course policy");
   if (digest(fs.readFileSync(sourceFile)) !== policy.guard_source_sha256) throw new Error("guard source identity changed");
+  const mcp = policy.mcp || null;
+  if (mcp && (!Array.isArray(mcp.allow_names) || !Array.isArray(mcp.known_names) || mcp.allow_names.some(name => !mcp.known_names.includes(name)))) throw new Error("invalid frozen MCP policy");
+  const mcpFiles = mcp ? [mcp.script, mcp.config, mcp.authority].filter(Boolean) : [];
+  const wantedTools = [...policy.tools, ...(mcp ? mcp.allow_names : [])];
   const state = { ready: false, sessionReady: false, protected: initialFiles(policy.work_root), created: new Set(), requests: 0, failed: false };
   const log = row => fs.appendFileSync(policy.guard_log, JSON.stringify({ run_id: policy.run_id, ...row }) + "\n", { encoding: "utf8" });
   const identity = ctx => {
@@ -96,8 +102,8 @@ export default function courseGuard(pi) {
     if (digest(fs.readFileSync(policyFile)) !== policyHash) throw new Error("resolved policy changed");
     if (digest(fs.readFileSync(sourceFile)) !== policy.guard_source_sha256) throw new Error("guard source changed");
     if (digest(fs.readFileSync(path.join(path.dirname(policyFile), "runtime-config.yml"))) !== policy.runtime_config_sha256) throw new Error("runtime configuration changed");
-    for (const descriptor of [policy.instruction, policy.declaration]) {
-      if (descriptor && digest(fs.readFileSync(descriptor.path)) !== descriptor.sha256) throw new Error("saved instruction or declared policy changed");
+    for (const descriptor of [policy.instruction, policy.declaration, ...mcpFiles]) {
+      if (descriptor && digest(fs.readFileSync(descriptor.path)) !== descriptor.sha256) throw new Error("saved instruction, declared policy, or MCP connection file changed");
     }
   };
   const fail = (ctx, error) => {
@@ -110,19 +116,33 @@ export default function courseGuard(pi) {
   pi.on("session_start", async (_event, ctx) => {
     try {
       identity(ctx);
-      const available = new Set(pi.getAllTools().map(tool => tool.name));
+      const registered = pi.getAllTools().map(tool => tool.name);
+      const available = new Set(registered);
       if (policy.tools.some(name => !available.has(name))) throw new Error("explicit course tool did not register");
-      await pi.setActiveTools(policy.tools);
+      const mcpRegistered = registered.filter(name => name.startsWith("mcp__")).sort();
+      if (mcp) {
+        const foreign = mcpRegistered.filter(name => !mcp.known_names.includes(name));
+        if (foreign.length) throw new Error(`unexpected MCP tool registered: ${foreign.join(", ")}`);
+        if (mcp.allow_names.some(name => !available.has(name))) throw new Error("explicit MCP tool did not register");
+      } else if (mcpRegistered.length) {
+        throw new Error("an MCP tool registered although the policy declares none");
+      }
+      await pi.setActiveTools(wantedTools);
       const active = pi.getActiveTools().sort();
-      if (JSON.stringify(active) !== JSON.stringify([...policy.tools].sort())) throw new Error("active tools exceed declared policy");
+      if (JSON.stringify(active) !== JSON.stringify([...wantedTools].sort())) throw new Error("active tools exceed declared policy");
       state.sessionReady = true;
-      log({ type: "guard_ready", provider: ctx.model.provider, model: ctx.model.id, active_tools: active, policy_sha256: policyHash });
+      log({ type: "guard_ready", provider: ctx.model.provider, model: ctx.model.id, active_tools: active, mcp_tools_registered: mcpRegistered, policy_sha256: policyHash });
     } catch (error) { fail(ctx, error); }
   });
-  pi.on("before_agent_start", (_event, ctx) => {
+  pi.on("before_agent_start", async (_event, ctx) => {
     try {
       identity(ctx);
       if (!state.sessionReady || state.failed) throw new Error("guard session initialization failed");
+      if (mcp) {
+        // OMP activates MCP tools after session_start; declare the set again before the first turn.
+        await pi.setActiveTools(wantedTools);
+        if (JSON.stringify(pi.getActiveTools().sort()) !== JSON.stringify([...wantedTools].sort())) throw new Error("active tools exceed declared policy before the first turn");
+      }
       if (policy.instruction) {
         const raw = fs.readFileSync(policy.instruction.path);
         if (digest(raw) !== policy.instruction.sha256) throw new Error("saved instruction changed");
@@ -134,11 +154,13 @@ export default function courseGuard(pi) {
       state.ready = true;
     } catch (error) { fail(ctx, error); }
   });
-  pi.on("before_provider_request", (_event, ctx) => {
+  pi.on("before_provider_request", (event, ctx) => {
     try {
       identity(ctx);
       if (!state.ready || state.failed) throw new Error("provider request before guard readiness");
-      log({ type: "provider_request", sequence: ++state.requests, provider: ctx.model.provider, model: ctx.model.id });
+      const offered = providerToolNames(event);
+      if (mcp && (offered === null || JSON.stringify(offered) !== JSON.stringify([...wantedTools].sort()))) throw new Error(`provider request offered tools outside the declaration: ${offered === null ? "tool list not visible" : offered.join(", ")}`);
+      log({ type: "provider_request", sequence: ++state.requests, provider: ctx.model.provider, model: ctx.model.id, tools: offered });
     } catch (error) { fail(ctx, error); }
   });
   for (const eventName of ["auto_retry_start", "retry_fallback_applied", "model_changed"]) {
@@ -146,6 +168,12 @@ export default function courseGuard(pi) {
   }
   pi.on("tool_call", (event, ctx) => {
     try { identity(ctx); } catch (error) { return fail(ctx, error); }
+    if (String(event.toolName).startsWith("mcp__")) {
+      const declared = Boolean(mcp) && state.ready && mcp.allow_names.includes(event.toolName);
+      log({ type: "decision", call_id: event.toolCallId, tool: event.toolName, arguments: event.input, allow: declared, resolved_path: null, relative_path: null, reason: declared ? "declared MCP tool" : "MCP tool is not declared" });
+      if (!declared) return { block: true, reason: "HOLD: MCP tool is not declared" };
+      return;
+    }
     const decision = authorize(policy, state, event.toolName, event.input);
     log({ type: "decision", call_id: event.toolCallId, tool: event.toolName, arguments: event.input, ...decision });
     if (!decision.allow) return { block: true, reason: `HOLD: ${decision.reason}` };
@@ -154,8 +182,8 @@ export default function courseGuard(pi) {
   for (const name of policy.tools) {
     pi.registerTool({
       name, label: name,
-      description: name === "course_read" ? "Read UTF-8 files or list relative names/types inside the declared work root." : name === "course_write" ? "Save UTF-8 text only to an authorized output inside the work root. Existing inputs are protected." : "Hash one source using the declared, identity-checked read-only Python capability.",
-      loadMode: "essential", approval: name === "course_read" ? "read" : name === "course_write" ? "write" : "exec",
+      description: name === "course_read" ? "Read UTF-8 files or list relative names/types inside the declared work root." : "Save UTF-8 text only to an authorized output inside the work root. Existing inputs are protected.",
+      loadMode: "essential", approval: name === "course_read" ? "read" : "write",
       parameters: z.object(name === "course_write" ? { path: z.string(), content: z.string() } : { path: z.string() }),
       async execute(callId, args, signal, _onUpdate, ctx) {
         identity(ctx);
@@ -178,10 +206,6 @@ export default function courseGuard(pi) {
           fs.writeFileSync(decision.resolved_path, args.content, { encoding: "utf8", flag: state.created.has(decision.resolved_path) ? "w" : "wx" });
           state.created.add(decision.resolved_path);
           text = `WROTE ${decision.relative_path}; sha256=${digest(fs.readFileSync(decision.resolved_path))}`;
-        } else {
-          const result = spawnSync(policy.python, [policy.hash_tool.path, decision.resolved_path], { cwd: policy.work_root, encoding: "utf8", shell: false, timeout: 30000, windowsHide: true });
-          if (result.error || result.status !== 0) throw new Error(`HOLD: hash capability failed: ${result.error?.message || result.stderr || result.stdout}`);
-          text = result.stdout;
         }
         log({ type: "executed", call_id: callId, tool: name, resolved_path: decision.resolved_path, output_sha256: name === "course_write" ? digest(fs.readFileSync(decision.resolved_path)) : null });
         return { content: [{ type: "text", text }], details: { course_run_id: policy.run_id, resolved_path: decision.resolved_path } };
