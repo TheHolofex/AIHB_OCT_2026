@@ -71,7 +71,7 @@ The 32 instructional destinations share the local Sirocco reader. Edit `ui/cours
 
 `course.json` remains the single publication registry:
 
-- Each page has a `kind`: `home`, `overview`, `lab`, `setup`, or `reference`. Each module declares `case_name` and `summary` and exactly one overview and lab page.
+- Each page has a `kind`: `home`, `overview`, `lab`, `setup`, or `reference`. Each module declares `case_name`, `summary`, and `nav_summary`, and exactly one overview and lab page. `summary` describes the work on the homepage card; `nav_summary` concisely names the main tool or skills beneath the case name in the desktop rail, mobile Course menu, and no-JavaScript navigation. Keep these labels grounded in the module's distinct learning objectives; they wrap naturally rather than truncating.
 - Lab `guide` objects list `context_sections` and `optional_sections` by existing H2 ID. Platform setup pages use `guide: {}`. Other page kinds omit `guide`.
 - `ui_assets` explicitly maps each UI source to its published destination. Local CSS dependencies must also be declared. The publisher rejects missing dependencies, external CSS resources, unsafe paths, and unexpected output files.
 - The generated `assets/search-index.json` contains instructional prose and heading targets, not fenced commands, raw exercise contents, staff sources, or evidence. Search loads it only when opened.

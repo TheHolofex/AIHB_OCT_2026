@@ -94,7 +94,7 @@ class PublicationBehavior(unittest.TestCase):
             pages = [{"source": "README.md", "dest": "README.html", "kind": "overview"}]
             (module / "lab.md").write_text(GUIDED_PROCEDURE, encoding="utf-8")
             pages.append({"source": "lab.md", "dest": "lab.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}})
-            self.course["modules"].append({"id": f"{i:02d}", "directory": directory, "title": "Example", "case_name": f"Example {i}", "summary": "Inspect the supplied evidence.", "pages": pages, "download_dirs": ["shared/case"]})
+            self.course["modules"].append({"id": f"{i:02d}", "directory": directory, "title": "Example", "case_name": f"Example {i}", "summary": "Inspect the supplied evidence.", "nav_summary": "Terminal · Source inspection", "pages": pages, "download_dirs": ["shared/case"]})
         (boot / "README.md").write_text("# Synthetic publication test\n\nInspect the supplied course.\n\n## Choose your assignment\n\n<div data-course-map></div>\n\n" + "\n\n".join(links), encoding="utf-8")
         self.save_manifest()
         self.page = boot / "module-00-example/README.md"

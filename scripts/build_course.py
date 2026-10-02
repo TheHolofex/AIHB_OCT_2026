@@ -169,7 +169,7 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
     add(boot, course["index"]["source"], course["index"]["dest"], True)
     for module in modules:
         directory = module["directory"]
-        if any(not isinstance(module.get(key), str) or not module[key].strip() for key in ("title", "case_name", "summary")):
+        if any(not isinstance(module.get(key), str) or not module[key].strip() for key in ("title", "case_name", "summary", "nav_summary")):
             raise ValueError("module display fields must be nonempty strings")
         kinds = [page.get("kind") for page in module["pages"]]
         if any(kind not in PAGE_KINDS - {"home"} for kind in kinds):
@@ -518,8 +518,9 @@ def _course_navigation(modules: list[dict], dest: PurePosixPath, current_module:
         if module["id"] == current_module:
             attrs += f' data-current-module="{module["id"]}"'
         label = html.escape(f'{module["id"]} · {module["caseName"]}')
+        summary = html.escape(module["navSummary"])
         css = ' class="sc-rail__item"' if rail else ""
-        links.append(f'<a{css} href="{_relative(dest, module["overview"])}"{attrs}><span class="sc-rail__label">{label}</span></a>')
+        links.append(f'<a{css} href="{_relative(dest, module["overview"])}"{attrs}><span class="sc-rail__label"><span class="rf-nav-name">{label}</span><span class="rf-nav-summary">{summary}</span></span></a>')
     return f'<nav class="rf-nav{" sc-rail" if rail else ""}" aria-label="Course assignments">{"".join(links)}</nav>'
 
 
@@ -731,7 +732,7 @@ def build(root: Path = ROOT, check: bool = False) -> int:
     outputs = {dest: source.read_bytes() for dest, source in destinations.items() if source not in pages}
     common = {
         "assets": _asset_context(course, outputs),
-        "modules": [{"id": module["id"], "caseName": module["case_name"], "overview": _module_routes(course, module)["overview"]} for module in course["modules"]],
+        "modules": [{"id": module["id"], "caseName": module["case_name"], "navSummary": module["nav_summary"], "overview": _module_routes(course, module)["overview"]} for module in course["modules"]],
         "pages": [{"path": str(dest), "title": page["title"], "kind": page["record"]["kind"], "moduleId": page["record"]["moduleId"]} for dest, page in prepared.items()],
         "resume": {str(dest): [{**step, "optional": False} for step in page["steps"]] + [
             {key: section[key] for key in ("id", "title", "optional")} for section in page["sections"] if section["optional"]
