@@ -8,7 +8,7 @@ A **hard gate** is a condition that every result must meet. Keep the format chec
 
 The core comparison checks fixed authored outputs. Repeating that file check does not measure model variation. In the optional live comparison, repeated model calls show how outputs differ under the same conditions, so you can judge whether an apparent improvement holds across those attempts.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Prepare a separate attempt
 

@@ -5,7 +5,7 @@
 **Prerequisites:** Preflighted accessible environment, this module's supplied baseline configuration, and supplied candidate briefs on frozen paired cases  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BASELINE_CONFIG; VERIFY:CANDIDATE  
 **Produces:** PRE_RESULT_POLICY; CHANGE_DECISION; COST_PROXY; RESTORED_BASELINE; PO07_RESULT  
-**Facilitated time:** 3 hours  
+**Facilitated time:** 2 hours 15 minutes  
 **Practice time:** 2 hours  
 **Performance stage:** Adversarial  
 **Work surface:** Frozen paired cases  

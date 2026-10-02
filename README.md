@@ -18,7 +18,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, decides responsible release and operates a bounded tool, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
-The core runs as **ten sessions of three facilitated hours, including two hours of practice each** — Monday through Thursday morning and afternoon, Friday morning and afternoon. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**.
+The core runs as **four teaching days, Monday through Thursday: 28 facilitated hours, including 20 practice hours**. Monday through Wednesday hold six three-hour blocks; Thursday holds four blocks totaling ten facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
 
 ## Target sequence
 

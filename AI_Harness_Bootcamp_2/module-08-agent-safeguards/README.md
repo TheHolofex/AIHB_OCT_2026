@@ -4,7 +4,7 @@ Freeze which tools one supplied agent may use and where it may write, then inspe
 
 Night Desk handles field-stretcher paperwork from West Annex to Clinic N-5. Your task is to let the agent extract a supported measurement while preventing the paperwork from authorizing a release or an outside write. The case is fictional and stays inside the class.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Start here
 

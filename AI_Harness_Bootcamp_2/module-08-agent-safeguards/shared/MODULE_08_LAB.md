@@ -6,7 +6,7 @@ The fictional Night Desk handles forty notes about field stretchers moving from 
 
 The supplied policy permits `course_read` inside your work root and `course_write` only for new files under `artifacts`. It provides no shell, network, skill, gateway, or release authority. A **guard** checks a requested tool action before execution. The **runtime** is the software that handles tool requests and can reject an unavailable tool. Inspect their records to tell which boundary acted, or whether the model never attempted the prohibited action. The guard controls these course tools; it is not an operating-system sandbox.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Prepare separate work, prompts, and receipts
 

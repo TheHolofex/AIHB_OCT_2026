@@ -5,7 +5,7 @@
 **Prerequisites:** Earlier context controls, source-as-data judgment and paired evidence evaluation; a preflighted accessible environment, pinned OMP launcher, and supplied policy and probes
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:AGENT_POLICY; VERIFY:SUPPLIED_PROBE
 **Produces:** AGENT_POLICY; PROBE_REFUSE; PLANTED_REFUSE; PO08_RESULT
-**Facilitated time:** 3 hours
+**Facilitated time:** 2 hours 15 minutes
 **Practice time:** 2 hours
 **Performance stage:** Adversarial
 **Work surface:** Constrained agent run via run_omp.py --policy

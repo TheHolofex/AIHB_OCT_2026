@@ -5,7 +5,7 @@
 **Prerequisites:** Earlier source verification, bounded controls, and recovery skills; a preflighted environment and this module's supplied unfamiliar task
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:TRANSFER_TASK
 **Produces:** RUNNABLE_PACKAGE; PO09_RESULT
-**Facilitated time:** 3 hours  
+**Facilitated time:** 2 hours 30 minutes  
 **Practice time:** 2 hours  
 **Performance stage:** Transferred  
 **Work surface:** Unfamiliar professional task  
