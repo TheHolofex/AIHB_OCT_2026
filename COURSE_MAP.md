@@ -26,7 +26,7 @@ Ten sessions of three facilitated hours, including two hours of practice each.
 |---:|---|---|
 | 1 | Monday AM | 00 Select, screen, and direct bounded work |
 | 2 | Monday PM | 01 Verify sources and outputs |
-| 3 | Tuesday AM | 02 Control context and reusable instructions |
+| 3 | Tuesday AM | 02 Build and control a reusable second brain |
 | 4 | Tuesday PM | 03 Decide responsible release and operate bounded tools |
 | 5 | Wednesday AM | 04 Diagnose and recover |
 | 6 | Wednesday PM | 05 Improve from observed failures |
@@ -56,7 +56,7 @@ File presence cannot establish observed performance. An authored practice output
 |---:|---|---:|---|---|---|---|
 | 00 | Select, screen, and direct bounded work | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_ACCEPTANCE` | `FIRST_RESULT`; `MIN_SCREEN`; `DIRECTION`; `INTERNAL_ARTIFACT`; `PO00_RESULT` | **communication artifact** | Checked useful artifact within 60 minutes (design target); delegate/human/refuse choices and minimum screen support bounded internal acceptance; frozen direction and supplied changed-input check support internal accept/fix/hold |
 | 01 | Verify sources and outputs | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SOURCE_FIXTURES` | `SOURCE_EVIDENCE`; `DISCERNMENT_RESULT`; `STANDING_RULE`; `PO01_RESULT` | **research/source** work | Known-answer, source-trace, misleading-source, changed-source, and real-use checks support internal accept/revise/reject/hold |
-| 02 | Control context and reusable instructions | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `RELOAD_RESULT`; `PO02_RESULT` | Reusable instruction and guard | Loading, precedence, reset survival, and bypass are independently evidenced |
+| 02 | Build and control a reusable second brain | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT` | Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher | Source-traceable admitted knowledge and useful links; explicit saved-rule load and frozen-content identity; actual knowledge reads and citations without the source-processing chat or raw packet; one substantive improvement in a reviewed revision and fresh run, preserving earlier evidence |
 | 03 | Decide responsible release and operate bounded tools | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CAPABILITY` | `RELEASE_DECISION`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Contextual release decision on every concern, and least-authority operation with containment, approval, disconnect, and revocation |
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 05 | Improve from observed failures | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO05_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
@@ -81,7 +81,9 @@ A supported refusal is professional performance and is recorded and examined for
 
 ## Complexity and implementation boundary
 
-Fixed workflow is the highest mandatory operation. Persistent state operation is advanced. Adaptive flow operation is advanced. Multi-agent operation is advanced.
+Fixed workflow is the highest mandatory operation. Core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure, and MCP construction remain advanced.
+
+Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 04's capability, and person-to-person transfer remains Module 09's.
 
 The learner specifies and configures bounded behavior in supplied controls. In Module 06, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. API/MCP, custom RAG, custom runtime implementation, and deployment remain builder work.
 

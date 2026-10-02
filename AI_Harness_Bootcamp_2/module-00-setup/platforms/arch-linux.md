@@ -42,14 +42,14 @@ course_preflight
 
 ## 2. See whether the Arch packages are already installed
 
-Git, curl, Python, and the certificate bundle come from Arch's official packages. The Python package is `python`, and its command may be `python` rather than `python3`. This check only looks. It does not install, remove, or upgrade anything.
+Git, curl, Python, the certificate bundle, and Obsidian come from Arch's official packages. Before the package steps, inspect your application menu and known app locations for an existing Obsidian installation. Preserve its profile and vaults. If it was installed outside pacman, stop for device-owner review before installing a second copy or replacing it. The Python package is `python`, and its command may be `python` rather than `python3`. This check only looks. It does not install, remove, or upgrade anything.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_check_packages() {
   local missing="" package
-  for package in git curl python ca-certificates; do
+  for package in git curl python ca-certificates obsidian; do
     pacman -Q "$package" >/dev/null 2>&1 || missing="${missing:+$missing }$package"
   done
   if [ -z "$missing" ]; then
@@ -61,7 +61,7 @@ course_check_packages() {
 course_check_packages
 ```
 
-**Expected:** The line is `PACKAGES present`, or it names one or more of `git`, `curl`, `python`, and `ca-certificates`.
+**Expected:** The line is `PACKAGES present`, or it names one or more of `git`, `curl`, `python`, `ca-certificates`, and `obsidian`.
 
 **Stop:** The command prints an error instead of one of those lines, or you are not in a Bash or Zsh terminal on Arch.
 
@@ -69,14 +69,14 @@ course_check_packages
 
 ## 3. Install missing Arch packages
 
-This package step asks for an administrator password. Arch does not support a partial upgrade, so the install command syncs the databases and upgrades the system before it installs `git`, `python`, `curl`, and `ca-certificates`. That is the [pacman](https://wiki.archlinux.org/title/Pacman) rule, and the Python package is the one named in [Arch's Python page](https://wiki.archlinux.org/title/Python). Do not run `pacman -Sy` without the upgrade.
+This package step asks for an administrator password. Arch does not support a partial upgrade, so the install command syncs the databases and upgrades the system before it installs `git`, `python`, `curl`, `ca-certificates`, and the signed Extra `obsidian` package. Existing packaged apps follow that approved system upgrade; do not replace a separate Obsidian installation. That is the [pacman](https://wiki.archlinux.org/title/Pacman) rule, and the Python package is the one named in [Arch's Python page](https://wiki.archlinux.org/title/Python). Do not run `pacman -Sy` without the upgrade.
 
 Skip this box when the previous step printed `PACKAGES present` and the next Python step accepts the interpreter. If that step says Python is older than 3.12, come back and run this box. Do not install an older interpreter from the AUR to match a version number.
 
 **Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates package installation.**
 
 ```bash
-sudo pacman -Syu --needed git python curl ca-certificates
+sudo pacman -Syu --needed git python curl ca-certificates obsidian
 ```
 
 **Expected:** Pacman shows the transaction and asks whether to proceed. This is a full-system upgrade: many unrelated packages may appear, as well as any missing course packages. Read the entire transaction. Type `y` and press Return only when the device owner has approved that transaction; otherwise type `n` and stop. When it finishes, the prompt returns. Already-current packages are not reinstalled.
@@ -853,6 +853,131 @@ course_read_back_proof
 
 **Recovery:** Preserve the attempt and its receipts. Ask the course owner to resolve the first failed check before creating a new attempt. Do not edit the result file or use an assistant message as a substitute for the disk file.
 
+
+## Set up local Obsidian
+
+Obsidian lets you edit and link local notes for Module 2. Allow 10–15 minutes for the practice below, plus any earlier package download time. Use the signed **Extra** `obsidian` package installed in this page’s full `pacman -Syu` transaction. This is an [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR package or an Obsidian-vendor binary. Pacman checks package integrity and signatures before installation; never disable signature checking to bypass a failure. Preserve existing app profiles and vaults.
+
+If the package was missing and you skipped the earlier approved full-upgrade transaction, return to that step. Do not perform a partial upgrade, install through the AUR, or downgrade to match the reference release. The package reference observed for these instructions was 1.13.7-2; record what is actually installed on your machine.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+pacman -Q obsidian
+```
+
+**Expected:** `obsidian` followed by its actual installed package version. **Stop:** Missing package or command failure. **Recovery:** Preserve the error and return to the owner-approved full-upgrade transaction. If an existing non-package Obsidian installation is present, preserve it and have the device owner resolve the package-route conflict before proceeding; do not overwrite it.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+obsidian &
+```
+
+**Expected:** The Obsidian GUI opens in your desktop session and the terminal stays available. **Stop:** A launch error, missing display, or sandbox refusal. **Recovery:** Record Obsidian HOLD and the exact error. Do not add `--no-sandbox`, run as root, or change system security controls to bypass the failure.
+
+### Open a fresh practice vault and follow its links
+
+This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow 10–15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
+
+Keep the same terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` is separate from the OMP attempt and the checkout. Run one box at a time; stop after any failure.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+course_initialize_obsidian() {
+  [ -n "${PY:-}" ] && [ -n "${R:-}" ] && [ -n "${M:-}" ] || {
+    printf 'HOLD: restore this page’s Python and checkout variables first.\n' >&2; return 1;
+  }
+  [ "$M" = "$R/AI_Harness_Bootcamp_2/module-00-setup" ] || return 1
+  [ -f "$M/scripts/obsidian_readiness.py" ] && [ ! -L "$M/scripts/obsidian_readiness.py" ] || {
+    printf 'HOLD: course readiness helper is missing or linked.\n' >&2; return 1;
+  }
+  OBS_ROOT="$HOME/course-evidence/obsidian-arch-linux-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  "$PY" "$M/scripts/obsidian_readiness.py" initialize --root "$OBS_ROOT" || return 1
+  printf 'OPEN EXACT VAULT: %s\n' "$OBS_ROOT/vault"
+}
+course_initialize_obsidian
+```
+
+**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` name the same absolute folder ending in `/vault`. Keep that path visible.
+
+**Stop:** Any HOLD or error, an existing destination, or a missing variable.
+
+**Recovery:** Preserve the attempt. If the terminal was closed, restore `PY`, `R`, and `M` using this page’s earlier Python and checkout instructions. For an existing successful initialization, set `OBS_ROOT` to its actual printed parent path and continue with that vault; do not initialize it again. For a failed initialization, correct the named condition and use a fresh attempt. Ask the checkout owner for a missing helper; do not reset or update their checkout.
+
+**Window: Obsidian, ordinary desktop account.**
+
+1. Open Obsidian using the platform launch step above. If another vault opens, leave its files and settings alone. Open the vault switcher, choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
+2. Select exactly the printed `OBS_ROOT/vault` folder. Press **Ctrl+L** in the folder picker and paste the printed absolute path, then open that folder. Do not select the checkout, the parent `OBS_ROOT`, or an existing personal vault.
+3. In this practice vault, open **Settings → Community plugins** and leave **Restricted mode** on. If it is off, turn it on for this vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in or install a plugin. Open **Settings → General**, note the actual app version, then close Settings.
+4. Open `Start` from the file list. Use Ctrl+E to switch to Reading view if needed, then click its **Token** link. Read the token displayed in `Token`; this random text is an exercise identifier, not a credential.
+5. Click **Reply** in `Token`. Switch to editing view with Ctrl+E if needed. Paste only the token on one line, without a heading, quotation marks, or backticks. Press Ctrl+S to save. Obsidian also saves edits automatically; the next command checks the actual saved bytes.
+
+**Expected:** The links open the existing `Token` and `Reply` notes, and `Reply` shows the token you read in the app.
+
+**Stop:** The wrong vault opens, a link creates an empty note, settings cannot remain local and restricted, or you cannot edit/save through the GUI.
+
+**Recovery:** Leave `Start` and `Token` unchanged. Reopen the exact printed vault and follow its existing links. If a policy or display failure prevents GUI use, record `Obsidian HOLD` with the error. A text-editor edit cannot substitute for this observation.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
+```
+
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, followed by `PASS: Obsidian file round-trip; GUI observation still required`. The command prints the saved disk-observation path.
+
+**Stop:** HOLD or any nonzero exit. A PASS here covers only the initial saved token.
+
+**Recovery:** Read the named failure. For a reply mismatch, return to `Token` in Obsidian, copy its current token into `Reply`, save, and run this check again. Preserve all observations. Do not edit the helper’s `expected` records or repair a reply through the shell.
+
+### Observe an external change, save, and reopen
+
+Keep the practice vault open with `Token` visible. This command changes that note from the terminal while leaving the old reply in place.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" refresh --root "$OBS_ROOT"
+```
+
+**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.`
+
+**Stop:** Any HOLD or error. Do not continue using an old token after a failed refresh.
+
+**Recovery:** Preserve the attempt and the exact error. Resolve the named file or permission condition with support. An interrupted refresh requires a fresh attempt; do not edit expected values or remove a lock to manufacture a pass.
+
+**Window: Obsidian, same practice vault.**
+
+1. Return to `Token` and observe its new text in the already-open app. If needed, select `Start` and follow **Token** again. Confirm that the token differs from the one still saved in `Reply`.
+2. Follow **Reply**, replace the old line with the newly observed token, and press Ctrl+S. Do not run refresh again.
+3. Close the practice vault’s window with its window-close control; leave unrelated vault windows open. Launch Obsidian again using the same platform launch step. If it restores the practice vault, confirm its folder is the exact printed `OBS_ROOT/vault`. Otherwise use the vault switcher’s **Manage vaults → Open folder as vault → Open** to select that exact folder again.
+4. Open `Start`, follow **Token**, then **Reply**. Confirm that the new token is still saved after reopening.
+
+**Expected:** You see the external change, save the new reply in Obsidian, and see that reply again after reopening the same folder.
+
+**Stop:** The app does not show the changed token, the edit disappears, or you cannot establish which vault reopened.
+
+**Recovery:** Record `Obsidian HOLD` and the failed GUI action. Preserve the files and observations; do not call a shell-only match GUI success. Check the exact folder and display/session permissions with support before repeating the GUI action.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
+```
+
+**Expected:** `Token generation 2: refreshed token; GUI observation still required` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a new disk-observation path. If you deliberately refreshed more than once, the generation is higher; record the actual value.
+
+**Stop:** HOLD, an initial-token generation, or any missing GUI observation.
+
+**Recovery:** Preserve the attempt. For a saved-reply mismatch, correct and save the reply in Obsidian, close/reopen that vault, and check again. Missing GUI evidence leaves Obsidian on HOLD even if disk contents match.
+
+### Record actual Obsidian readiness
+
+In an ordinary text editor, create a new `gui-observation.txt` beside the vault at the actual `OBS_ROOT` path. Record the date, operating system and architecture, actual app version, exact vault path, and both printed disk-observation paths. Describe the link navigation, first edit/save, visible external token change, second edit/save, and close/reopen you actually performed. Record Restricted mode on and Sync off. A screenshot of the practice vault may support this record; exclude credentials and unrelated personal notes.
+
+Write `Obsidian READY` only when both disk checks passed and every listed GUI action was observed. Otherwise write `Obsidian HOLD` and the missing action or exact error. File existence and the `.obsidian` folder do not prove GUI use. Keep this record separate from OMP and n8n readiness; a failure in one does not erase a result in another. The Arch GUI lane remains unobserved in the reference evidence; record your own actual result.
 
 ## 18. Inspect Docker before setting up local n8n
 

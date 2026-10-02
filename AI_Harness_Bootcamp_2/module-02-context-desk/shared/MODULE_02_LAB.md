@@ -14,7 +14,7 @@ The route is source → proposal → human review → frozen knowledge → fresh
 
 ## 1. Prepare and open your vault — 10 minutes
 
-A **vault** is the folder of Markdown notes that Obsidian opens. Keep this editable folder separate from the frozen copies used by the model. Use the Python, OMP, and Obsidian environment you verified in [Module 00](../../module-00-setup/README.md). Keep community plugins restricted and Sync off for this local exercise. On WSL, open the Linux-home vault with Linux Obsidian under WSLg.
+A **vault** is the folder of Markdown notes that Obsidian opens. Keep this editable folder separate from the frozen copies used by the model. Use the Python, OMP, and Obsidian environment you verified in [Module 00](../../module-00-setup/README.md). In this vault's Settings, keep community plugins in Restricted mode and turn Sync off if it is on. On WSL, open the Linux-home vault with Linux Obsidian under WSLg.
 
 Set `R` to your actual course checkout. The examples use the standard Documents location; change only that assignment if yours differs. `PY` resolves a Python 3.12+ executable. `W` holds one fresh work attempt; `E` holds its run evidence. They are sibling directories outside the checkout. Use the same terminal throughout so these variables remain available.
 
@@ -55,13 +55,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve the attempt and rea
 
 Initialize once. The preparation helper may print this next command; run it only once.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" initialize --work "$W"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" initialize --work $W
@@ -69,6 +69,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Initialization held; read the named file or co
 ```
 
 **Expected:** `W/vault` has `Sources`, `Drafts`, `Knowledge`, `Reviews`, `Templates`, and `MOC.md`. `Sources` contains DN-001 through DN-040. Drafts, Knowledge, and Reviews start empty. The note, review, and audit templates have blank fields. An existing vault, missing source, or linked/unsafe path produces `HOLD`; preserve the attempt and fix the named prerequisite in a fresh work copy. Do not edit the source packet or machine identity files.
+
+**Recovery:** Correct the named prerequisite, preserve the failed work copy, and prepare a fresh attempt before initializing again.
 
 In Obsidian, use **Open folder as vault** and select exactly the printed `W` path followed by `vault`. Do not open the checkout or `cold`. In the file explorer, open `MOC.md`, then a source note. Your MOC is the navigation index you will fill after your Knowledge notes exist.
 
@@ -92,7 +94,7 @@ Open `W/shared/controls/SAVED_INSTRUCTION.md` in a text viewer. Keep its bytes u
 
 Before running the file screen, write your expected clean, hostile, and missing-input observations in that note. Run the supplied screen once on each case; this is a local file check, not a model call.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 for note in DN-003 DN-014 DN-015 DN-016 DN-000; do
@@ -101,7 +103,7 @@ for note in DN-003 DN-014 DN-015 DN-016 DN-000; do
 done
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 foreach ($note in @("DN-003", "DN-014", "DN-015", "DN-016", "DN-000")) {
@@ -123,13 +125,13 @@ Open `W/shared/controls/INGEST_PROMPT.md`. It asks the model to read all forty s
 
 Use the provider setup already established in Module 00. Ingest and retrieve make model calls; the other helper commands are local. Run one ingest for this work attempt.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" ingest --work "$W" --runner "$R/shared/run_omp.py" --evidence "$E/ingest"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" ingest --work $W --runner "$R/shared/run_omp.py" --evidence "$E/ingest"
@@ -139,7 +141,7 @@ Write-Output "ingest exit=$ingestExit"
 
 **Expected:** The helper checks the saved instruction, read-only policy, unchanged inputs, all forty distinct executed DN reads, and shared run audit before staging valid proposals. Open `Drafts` in Obsidian and observe the new files. `W/reviews/ingest-report.json` lists staged notes and any invalid proposal IDs and reasons. Invalid proposals have report entries only; they do not become Draft files. The model's JSON is captured evidence; you do not edit it, author JSON, or calculate hashes.
 
-**If it holds:** Exit 2 with no evidence directory is a prerequisite failure. Fix the named setup condition; the helper preserves a preflight record and permits a manual retry in the same work attempt. It never retries automatically. Any created evidence, unexpected failure, or other completed attempt consumes this ingest. Keep it; another ingest requires fresh W and E.
+**Stop on HOLD:** Identify which condition below applies before continuing. Exit 2 with no evidence directory is a prerequisite failure. Fix the named setup condition; the helper preserves a preflight record and permits a manual retry in the same work attempt. It never retries automatically. Any created evidence, unexpected failure, or other completed attempt consumes this ingest. Keep it; another ingest requires fresh W and E.
 
 - **Runtime-proof failure:** Stop and preserve the terminal HOLD and runtime evidence. Do not continue because the response looks plausible.
 - **Per-proposal content HOLD after runtime proof passed:** Read `W/reviews/ingest-report.json`. Keep the valid Drafts. Invalid proposals already have a machine defect record in that report; do not run rejection against a Draft that does not exist. Repair or author replacement Markdown in Knowledge without another paid ingestion.
@@ -159,7 +161,7 @@ For each Evidence item, add a `###` heading containing a source link, followed b
 
 Open the source in **Source mode** before copying its text. Use the note's menu to select Source mode if it is in Reading view or Live Preview. Copy the meaningful Markdown characters as well as the words. Prefix each copied line with `> ` to mark your quotation. If the source line already begins with `>`, keep that original character after your added marker. Preserve underscores, emphasis markers, punctuation, and line breaks. Do not paraphrase a quote or remove characters to get a match. Use a passage that identifies a unique location in the source. The helper derives its line locator and hash for you.
 
-Populate all target Knowledge files before creating clickable relationships. Draft `Related` entries are plain-text suggestions so clicking one cannot accidentally create an empty note. Choose relationships that help someone interpret a claim, resolve a conflict, or follow a consequential sequence. Turn useful suggestions into `- [[Knowledge/KB-NNN|Your relationship label]]` entries under Related. Select the exact case-sensitive `Knowledge/` path, not the retained Draft twin. Explain the relationship in the label; do not link merely to inflate the graph.
+Populate all target Knowledge files before creating clickable relationships. Draft `Related` entries are plain-text suggestions so clicking one cannot accidentally create an empty note. Choose relationships that help someone interpret a claim, resolve a conflict, or follow a consequential sequence. Turn useful suggestions into `- [[Knowledge/KB-NNN|Your relationship label]]` entries under Related. Delete suggestions you do not turn into links; Related accepts only Knowledge links. Select the exact case-sensitive `Knowledge/` path, not the retained Draft twin. Explain the relationship in the label; do not link merely to inflate the graph.
 
 In Source mode, make the first line of `MOC.md` exactly `# ` followed by your chosen title. After that, each nonblank line must contain one entry in the form `- [[Knowledge/KB-NNN|Your navigation label]]`. Replace `NNN` with the existing note's three digits and supply your own label. Keep the hyphen and space; do not use numbered bullets, subheadings, surrounding answer prose, or extra text after a link. Every admitted note must be reachable from the index. Source-backed claims belong in Knowledge. Open the links and confirm they reach existing, populated notes. If you accidentally created an empty Knowledge note, inspect it in Obsidian and either remove that empty note yourself or complete and review it. Freeze will name it and stop; it will not delete it for you.
 
@@ -167,13 +169,13 @@ Finish all note and link edits before admission. Copy `Templates/REVIEW_TEMPLATE
 
 Run this command for each note you admit, changing the note and reason filenames to the files you actually prepared:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Knowledge/KB-001.md" --decision admit --reason-file "$W/vault/Reviews/KB-001-v1.md"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" review --work $W --note "$W/vault/Knowledge/KB-001.md" --decision admit --reason-file "$W/vault/Reviews/KB-001-v1.md"
@@ -182,13 +184,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Admission held; correct the named note or reas
 
 To record a rejection of an existing staged Draft, write a separate short reason in Reviews and point to that file. For example, use these commands only if `Drafts/KB-002.md` exists and is the proposal you reject:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Drafts/KB-002.md" --decision reject --reason-file "$W/vault/Reviews/KB-002-reject.md"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" review --work $W --note "$W/vault/Drafts/KB-002.md" --decision reject --reason-file "$W/vault/Reviews/KB-002-reject.md"
@@ -199,19 +201,21 @@ These filenames illustrate commands, not required decisions. An existing staged 
 
 **Expected:** Review records an immutable receipt outside the vault, binding the note's bytes to your decision, reason, and source evidence. Admission does not copy or rewrite Knowledge. If a quotation, link, or reason fails validation, correct the named problem in Obsidian and review again. Any later Knowledge edit, including a relationship edit, requires a new admission receipt. The receipt is your operator record, not machine proof of human judgment.
 
+**Stop:** A review returns `HOLD`. Keep the note and reason, correct the named condition in Obsidian, and review again before freezing.
+
 Before v1, check collective coverage of all three questions. If you find missing evidence, author the missing Knowledge note now, link it, and review every changed note. Do not seed answers into the MOC or prompt.
 
 ## 4. Freeze and retrieve v1 — 15 minutes
 
 A **cold snapshot** is a fixed copy containing only `MOC.md` and admitted `Knowledge/*.md`. Its identity record stays outside the model's read root. Obsidian remains open on the editable vault; you do not open or edit the cold folder as a vault.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v1
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" freeze --work $W --revision v1
@@ -222,13 +226,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Freeze held; resolve the named admission, link
 
 Run a fresh session against that frozen root. The helper starts a new model process; it does not continue the ingest chat. Keep the same saved instruction and three questions.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v1"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v1"
@@ -255,14 +259,14 @@ Edit the focal Knowledge note in Obsidian, or author a missing note with an unus
 
 Create fresh short reason notes, then repeat `review --decision admit` for **every** changed or new Knowledge note. For the focal note, use the command below with its actual ID and reason filename. Review reciprocal-link changes too.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 FOCUS="KB-001"
 "$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Knowledge/$FOCUS.md" --decision admit --reason-file "$W/vault/Reviews/$FOCUS-v2.md"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 $FOCUS = "KB-001"
@@ -272,13 +276,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Revised admission held; inspect the named cond
 
 Set FOCUS to the same note recorded in your audit. Once all revised notes have matching admission receipts, freeze v2:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v2 --previous "$W/identities/v1.json" --focus-note "$FOCUS"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" freeze --work $W --revision v2 --previous "$W/identities/v1.json" --focus-note $FOCUS
@@ -287,13 +291,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Revision freeze held; inspect changed notes an
 
 **Expected:** v2 has at least one changed or new Knowledge note, no deleted Knowledge note, and fresh receipts for every changed byte sequence. The focal note is changed or new. The helper checks the earlier snapshot independently of the editable vault. MOC-only or cosmetic changes do not demonstrate substantive improvement; you must judge the content change yourself. If it holds, follow the named review or link correction and preserve v1.
 
+**Stop:** Revised admission or freeze returns `HOLD`. Preserve v1, correct the named note, reason, or link, and obtain matching admissions before retrying the new freeze.
+
 Before the positive v2 retrieval, perform the missing-rule check below. Then compare all three new answers with the sources and your expected effect. Record the observed effect in `Reviews/audit-v2.md`, including unchanged correct wording when that is what happened. The helper requires the focal note to be read and cited; it cannot establish that your edit improved the meaning.
 
 ## 6. Test the missing rule and close — 15 minutes
 
 Temporarily rename only the work-copy rule. The negative retrieve must exit 2 before provider contact and before creating its evidence directory. The commands restore the original file, preserving its bytes. Do not edit the rule, initialize again, or substitute another rule.
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 (
@@ -316,7 +322,7 @@ Temporarily rename only the work-copy rule. The negative retrieve must exit 2 be
 )
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 $rule = "$W/shared/controls/SAVED_INSTRUCTION.md"
@@ -342,13 +348,13 @@ try {
 
 With the identical rule restored, retrieve v2 into a fresh destination:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v2 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v2"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v2 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v2"
@@ -359,14 +365,14 @@ if ($LASTEXITCODE -ne 0) { throw 'Restored cold run held; keep its evidence and 
 
 For another revision, use the same interfaces with new names. After editing and reviewing every changed note, set FOCUS to the new audit's focal note, then run each command only after the previous one succeeds:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
-"$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v3 --previous "$W/identities/v2.json" --focus-note "$FOCUS"
-"$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v3 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v3"
+"$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v3 --previous "$W/identities/v2.json" --focus-note "$FOCUS" &&
+  "$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v3 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v3"
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" freeze --work $W --revision v3 --previous "$W/identities/v2.json" --focus-note $FOCUS
@@ -377,14 +383,14 @@ if ($LASTEXITCODE -ne 0) { throw 'Further cold run held; preserve its evidence.'
 
 Check that earlier snapshots still match after your legitimate live-vault edits. These checks contact no provider:
 
-**Terminal: Bash or zsh.**
+**Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
 "$PY" "$W/scripts/second_brain.py" check --work "$W" --revision v1
 "$PY" "$W/scripts/second_brain.py" check --work "$W" --revision v2
 ```
 
-**Terminal: native PowerShell.**
+**Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
 & $PY "$W/scripts/second_brain.py" check --work $W --revision v1
@@ -394,5 +400,9 @@ if ($LASTEXITCODE -ne 0) { throw 'v2 identity held; preserve and inspect the nam
 ```
 
 **Expected:** Both frozen identities still match. Later editable reasons, Knowledge changes, and Obsidian settings do not invalidate v1. A changed, added, or missing frozen file produces a named HOLD. Keep that snapshot and report the condition; do not rewrite its manifest or receipts. A digest detects byte changes; it does not prove truth, authority, human authorship, or tamper-proof custody.
+
+**Recovery:** Confirm the work and revision paths. If the mismatch remains, ask the facilitator to inspect the named frozen file and retain the HOLD; do not rewrite the identity to match changed content.
+
+Record the missing-rule exit code, absent evidence directory, and restored rule in `Reviews/context-map.md`.
 
 Keep your context map, screen observations, Knowledge/MOC, short admission reasons, immutable receipts, both frozen revisions, run evidence, audit, and missing-rule observation. In the audit, state what the final knowledge supports for internal class use and what remains unsupported. Discuss which relationship helped retrieval, what changed after review, and what each control actually proved. Record unresolved HOLD conditions plainly; do not turn them into a claim of successful completion.

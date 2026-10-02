@@ -8,6 +8,8 @@ Substantive weakness:
 
 Before:
 
+Expected change:
+
 After:
 
 Expected retrieval effect:

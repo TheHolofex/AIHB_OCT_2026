@@ -616,6 +616,163 @@ bash "$M/scripts/verify-setup.sh" "$R" "$PROOF_RUN/setup-report.txt"
 
 **Recovery:** Follow its specific next action and preserve the report. Use a new report filename after a real correction. Keep model-call failure, missing prerequisites, and unavailable native/accessible operations as distinct evidence limits.
 
+## Set up local Obsidian
+
+Obsidian lets you edit and link local notes for Module 2. Allow 10–20 minutes for a fresh installation, plus download time. Preserve any existing installation, profile, and vaults. In Finder, inspect **Applications** and your home folder’s **Applications**, and check whether you already launch Obsidian from another location. If it is installed, use that copy and skip the download and install blocks. Record its actual version in the GUI exercise below; do not replace it merely to match 1.13.7.
+
+### Install the verified universal DMG only if Obsidian is absent
+
+The fresh reference is the official universal **1.13.7** DMG for Apple Silicon and Intel. This block downloads to a fresh external folder, verifies the approved SHA-256, and opens the disk image only after a match. It uses `PY` from the earlier Python step. [Official installation instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) and [release assets](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7).
+
+**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window; no sudo. Run only if no existing installation was found.**
+
+```bash
+course_download_obsidian() {
+  [ -n "${PY:-}" ] || { printf 'HOLD: restore PY first.\n'; return 1; }
+  for app in /Applications/Obsidian.app "$HOME/Applications/Obsidian.app"; do
+    if [ -e "$app" ] || [ -L "$app" ]; then
+      printf 'HOLD: preserve and use existing %s\n' "$app"; return 1
+    fi
+  done
+  OBS_DOWNLOAD="$HOME/course-evidence/obsidian-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  "$PY" - "$OBS_DOWNLOAD" <<'PYOBS'
+from pathlib import Path
+import sys
+folder = Path(sys.argv[1])
+if folder.is_symlink() or any(p.is_symlink() for p in folder.parents):
+    raise SystemExit('HOLD: linked download path; preserve it.')
+folder.mkdir(parents=True, exist_ok=False)
+PYOBS
+  [ "$?" -eq 0 ] || return 1
+  curl --fail --location --output "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg" 'https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/Obsidian-1.13.7.dmg' || return 1
+  "$PY" - "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg" <<'PYOBS'
+from pathlib import Path
+import hashlib, sys
+asset = Path(sys.argv[1])
+expected = '05daa54f5e1a4458f75da29f8faaa17e8e37ae16998432537f674c626db99bce'
+if asset.is_symlink() or hashlib.sha256(asset.read_bytes()).hexdigest() != expected:
+    raise SystemExit('HOLD: DMG checksum mismatch; do not open or install it.')
+print('SHA256 VERIFIED', asset.name, expected)
+PYOBS
+  [ "$?" -eq 0 ] || return 1
+  open "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg"
+}
+course_download_obsidian
+```
+
+**Expected:** `SHA256 VERIFIED` prints the exact DMG digest, then Finder opens the disk image.
+
+**Stop:** Any download/hash/open failure, an existing app, or device policy refuses installation.
+
+**Recovery:** Keep the failed download. Correct the network/path condition and use a fresh download folder; never bypass a hash mismatch, Gatekeeper, or certificate checks. If an app exists elsewhere, use it instead.
+
+**Window: Finder, verified Obsidian disk image.** Drag **Obsidian** to **Applications** only when that destination is absent and installation is authorized. If Finder asks to replace or merge an existing app, cancel. If administrator approval is required, proceed only with the device owner’s approval. Eject the disk image when copying finishes. Open the installed **Obsidian** from Finder’s Applications folder; for an existing installation, open its known location.
+
+**Expected:** The installed app opens. **Stop:** A copy, permission, or security refusal. **Recovery:** Preserve the existing app/profile and ask the device owner to resolve the specific refusal; do not strip quarantine or disable Gatekeeper.
+
+### Open a fresh practice vault and follow its links
+
+This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow 10–15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
+
+Keep the same terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` is separate from the OMP attempt and the checkout. Run one box at a time; stop after any failure.
+
+**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+course_initialize_obsidian() {
+  [ -n "${PY:-}" ] && [ -n "${R:-}" ] && [ -n "${M:-}" ] || {
+    printf 'HOLD: restore this page’s Python and checkout variables first.\n' >&2; return 1;
+  }
+  [ "$M" = "$R/AI_Harness_Bootcamp_2/module-00-setup" ] || return 1
+  [ -f "$M/scripts/obsidian_readiness.py" ] && [ ! -L "$M/scripts/obsidian_readiness.py" ] || {
+    printf 'HOLD: course readiness helper is missing or linked.\n' >&2; return 1;
+  }
+  OBS_ROOT="$HOME/course-evidence/obsidian-macos-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  "$PY" "$M/scripts/obsidian_readiness.py" initialize --root "$OBS_ROOT" || return 1
+  printf 'OPEN EXACT VAULT: %s\n' "$OBS_ROOT/vault"
+}
+course_initialize_obsidian
+```
+
+**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` name the same absolute folder ending in `/vault`. Keep that path visible.
+
+**Stop:** Any HOLD or error, an existing destination, or a missing variable.
+
+**Recovery:** Preserve the attempt. If the terminal was closed, restore `PY`, `R`, and `M` using this page’s earlier Python and checkout instructions. For an existing successful initialization, set `OBS_ROOT` to its actual printed parent path and continue with that vault; do not initialize it again. For a failed initialization, correct the named condition and use a fresh attempt. Ask the checkout owner for a missing helper; do not reset or update their checkout.
+
+**Window: Obsidian, ordinary desktop account.**
+
+1. Open Obsidian using the platform launch step above. If another vault opens, leave its files and settings alone. Open the vault switcher, choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
+2. Select exactly the printed `OBS_ROOT/vault` folder. Press **Cmd+Shift+G** in the folder picker and paste the printed absolute path, then open that folder. Do not select the checkout, the parent `OBS_ROOT`, or an existing personal vault.
+3. In this practice vault, open **Settings → Community plugins** and leave **Restricted mode** on. If it is off, turn it on for this vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in or install a plugin. Open **Settings → General**, note the actual app version, then close Settings.
+4. Open `Start` from the file list. Use Cmd+E to switch to Reading view if needed, then click its **Token** link. Read the token displayed in `Token`; this random text is an exercise identifier, not a credential.
+5. Click **Reply** in `Token`. Switch to editing view with Cmd+E if needed. Paste only the token on one line, without a heading, quotation marks, or backticks. Press Cmd+S to save. Obsidian also saves edits automatically; the next command checks the actual saved bytes.
+
+**Expected:** The links open the existing `Token` and `Reply` notes, and `Reply` shows the token you read in the app.
+
+**Stop:** The wrong vault opens, a link creates an empty note, settings cannot remain local and restricted, or you cannot edit/save through the GUI.
+
+**Recovery:** Leave `Start` and `Token` unchanged. Reopen the exact printed vault and follow its existing links. If a policy or display failure prevents GUI use, record `Obsidian HOLD` with the error. A text-editor edit cannot substitute for this observation.
+
+**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
+```
+
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, followed by `PASS: Obsidian file round-trip; GUI observation still required`. The command prints the saved disk-observation path.
+
+**Stop:** HOLD or any nonzero exit. A PASS here covers only the initial saved token.
+
+**Recovery:** Read the named failure. For a reply mismatch, return to `Token` in Obsidian, copy its current token into `Reply`, save, and run this check again. Preserve all observations. Do not edit the helper’s `expected` records or repair a reply through the shell.
+
+### Observe an external change, save, and reopen
+
+Keep the practice vault open with `Token` visible. This command changes that note from the terminal while leaving the old reply in place.
+
+**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" refresh --root "$OBS_ROOT"
+```
+
+**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.`
+
+**Stop:** Any HOLD or error. Do not continue using an old token after a failed refresh.
+
+**Recovery:** Preserve the attempt and the exact error. Resolve the named file or permission condition with support. An interrupted refresh requires a fresh attempt; do not edit expected values or remove a lock to manufacture a pass.
+
+**Window: Obsidian, same practice vault.**
+
+1. Return to `Token` and observe its new text in the already-open app. If needed, select `Start` and follow **Token** again. Confirm that the token differs from the one still saved in `Reply`.
+2. Follow **Reply**, replace the old line with the newly observed token, and press Cmd+S. Do not run refresh again.
+3. Close the practice vault’s window with its window-close control; leave unrelated vault windows open. Launch Obsidian again using the same platform launch step. If it restores the practice vault, confirm its folder is the exact printed `OBS_ROOT/vault`. Otherwise use the vault switcher’s **Manage vaults → Open folder as vault → Open** to select that exact folder again.
+4. Open `Start`, follow **Token**, then **Reply**. Confirm that the new token is still saved after reopening.
+
+**Expected:** You see the external change, save the new reply in Obsidian, and see that reply again after reopening the same folder.
+
+**Stop:** The app does not show the changed token, the edit disappears, or you cannot establish which vault reopened.
+
+**Recovery:** Record `Obsidian HOLD` and the failed GUI action. Preserve the files and observations; do not call a shell-only match GUI success. Check the exact folder and display/session permissions with support before repeating the GUI action.
+
+**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+
+```bash
+"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
+```
+
+**Expected:** `Token generation 2: refreshed token; GUI observation still required` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a new disk-observation path. If you deliberately refreshed more than once, the generation is higher; record the actual value.
+
+**Stop:** HOLD, an initial-token generation, or any missing GUI observation.
+
+**Recovery:** Preserve the attempt. For a saved-reply mismatch, correct and save the reply in Obsidian, close/reopen that vault, and check again. Missing GUI evidence leaves Obsidian on HOLD even if disk contents match.
+
+### Record actual Obsidian readiness
+
+In an ordinary text editor, create a new `gui-observation.txt` beside the vault at the actual `OBS_ROOT` path. Record the date, operating system and architecture, actual app version, exact vault path, and both printed disk-observation paths. Describe the link navigation, first edit/save, visible external token change, second edit/save, and close/reopen you actually performed. Record Restricted mode on and Sync off. A screenshot of the practice vault may support this record; exclude credentials and unrelated personal notes.
+
+Write `Obsidian READY` only when both disk checks passed and every listed GUI action was observed. Otherwise write `Obsidian HOLD` and the missing action or exact error. File existence and the `.obsidian` folder do not prove GUI use. Keep this record separate from OMP and n8n readiness; a failure in one does not erase a result in another. Actual reference GUI observation is limited to Obsidian 1.13.7 on Darwin arm64; Intel GUI behavior remains unobserved until you perform and record it.
+
 ## Prepare local n8n for Module 6
 
 This gives you a local workflow editor and checks that a saved workflow survives a stop and start. Allow additional download and startup time; the setup estimate above is a planning allowance, not a measured completion time. Complete this n8n check before Module 6. Keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.

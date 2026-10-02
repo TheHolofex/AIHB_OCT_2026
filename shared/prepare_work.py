@@ -18,7 +18,7 @@ SHARED = {
     "09": ("case", "controls", "baseline"),
 }
 SCRIPTS = {
-    "02": (), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
+    "02": ("second_brain.py",), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
     "06": (), "07": ("evaluate_pairs.py", "restore_baseline.py"),
     "08": (), "09": ("run_close.py", "check_package.py"),
 }
@@ -121,6 +121,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
 
 def next_arguments(module_id: str) -> list[str]:
     python = str(Path(sys.executable).resolve())
+    if module_id == "02":
+        return [python, "scripts/second_brain.py", "initialize", "--work", "."]
     if module_id == "03":
         return [python, "shared/tools/hash_source.py", "shared/case/REL-001.md"]
     if module_id == "04":

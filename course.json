@@ -82,7 +82,8 @@
       ],
       "scripts": [
         {"source": "scripts/verify-setup.sh", "dest": "scripts/verify-setup.sh"},
-        {"source": "scripts/verify-setup.ps1", "dest": "scripts/verify-setup.ps1"}
+        {"source": "scripts/verify-setup.ps1", "dest": "scripts/verify-setup.ps1"},
+        {"source": "scripts/obsidian_readiness.py", "dest": "scripts/obsidian_readiness.py"}
       ],
       "download_dirs": ["shared/case"],
       "tests": ["tests/test_module_00.py", "tests/test_checker.py"]
@@ -131,25 +132,21 @@
     {
       "id": "02",
       "directory": "module-02-context-desk",
-      "title": "Module 2 · Control context and reusable instructions",
+      "title": "Module 2 · Build and control a reusable second brain",
       "case_name": "Ledger Pike",
-      "summary": "Save a rule and prove it loaded in a completely fresh session.",
-      "nav_summary": "Saved instructions · context control",
+      "summary": "Build linked knowledge in Obsidian and prove a fresh session can use it.",
+      "nav_summary": "Obsidian · reusable knowledge",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": ["stretch-matched-precedence"]}}
+        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m02-control-ladder.svg", "dest": "shared/figures/m02-control-ladder.svg"},
-        {"source": "shared/figures/m02-failure-kinds.svg", "dest": "shared/figures/m02-failure-kinds.svg"},
-        {"source": "shared/figures/m02-guard-pair.svg", "dest": "shared/figures/m02-guard-pair.svg"},
-        {"source": "shared/figures/m02-predict-then-run.svg", "dest": "shared/figures/m02-predict-then-run.svg"},
         {"source": "shared/figures/m02-reload.svg", "dest": "shared/figures/m02-reload.svg"},
-        {"source": "shared/figures/m02-residual.svg", "dest": "shared/figures/m02-residual.svg"},
-        {"source": "shared/figures/m02-resolved-state.svg", "dest": "shared/figures/m02-resolved-state.svg"},
-        {"source": "shared/figures/m02-source-as-data.svg", "dest": "shared/figures/m02-source-as-data.svg"}
+        {"source": "shared/figures/m02-resolved-state.svg", "dest": "shared/figures/m02-resolved-state.svg"}
       ],
-      "scripts": [],
+      "scripts": [
+        {"source": "scripts/second_brain.py", "dest": "scripts/second_brain.py"}
+      ],
       "download_dirs": ["shared/case", "shared/controls"],
       "tests": ["tests/test_module_02.py", "tests/test_adequacy.py"]
     },
