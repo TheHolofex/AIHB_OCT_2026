@@ -332,7 +332,7 @@ def main() -> int:
         work = prepare_work.prepare("10", Path(tmp) / "work", root=REPO)
         copied = sorted(path.relative_to(work).as_posix() for path in work.rglob("*") if path.is_file())
         check("M10-BAN", not any("answer_key" in name or name.startswith("tests/") or name.startswith("reference/") for name in copied), "the work copy holds no answer key, tests, or reference")
-        check("M10-BAN", {"scripts/chalk.py", "scripts/route.py", "shared/controls/questions.json", "shared/prompts/DECIDE.md", "shared/case/messages.jsonl"} <= set(copied) and "shared/verify/verify_decisions.py" not in copied, "the work copy holds the controls and scripts, not the verifier")
+        check("M10-BAN", {"scripts/chalk.py", "scripts/route.py", "scripts/check_questions.py", "scripts/compare_runs.py", "shared/controls/questions.json", "shared/prompts/DECIDE.md", "shared/case/messages.jsonl"} <= set(copied) and "shared/verify/verify_decisions.py" not in copied, "the work copy holds the controls and scripts, not the verifier")
     learner_text = "\n".join(read(path) for path in LEARNER_FILES)
     for token in OTHER_MODULE_TOKENS:
         check("M10-INDEP", token not in learner_text, f"learner files omit {token}")

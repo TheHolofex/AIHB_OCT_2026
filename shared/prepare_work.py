@@ -22,7 +22,7 @@ SCRIPTS = {
     "02": ("second_brain.py",), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
     "06": (), "07": ("evaluate_pairs.py", "restore_baseline.py"),
     "08": (), "09": ("run_close.py", "check_package.py"),
-    "10": ("chalk.py", "build_state.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
+    "10": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_06_DOWNLOADS = (
     "shared/batch/wave1.csv",

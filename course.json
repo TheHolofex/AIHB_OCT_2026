@@ -245,6 +245,7 @@
       "scripts": [
         {"source": "scripts/chalk.py", "dest": "scripts/chalk.py"},
         {"source": "scripts/build_state.py", "dest": "scripts/build_state.py"},
+        {"source": "scripts/check_questions.py", "dest": "scripts/check_questions.py"},
         {"source": "scripts/label_template.py", "dest": "scripts/label_template.py"},
         {"source": "scripts/freeze_labels.py", "dest": "scripts/freeze_labels.py"},
         {"source": "scripts/validate_answers.py", "dest": "scripts/validate_answers.py"},
