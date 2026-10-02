@@ -4,11 +4,11 @@ Find a repeated failure in Blue Gauge's practice records and turn it into one ch
 
 The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or evidence of current model reliability. Freeze the sixteen-run sample before opening outcomes. Record each run's first failure, or that you found none, before grouping failures and reconciling the counts to sixteen.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 3 facilitated hours, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Start here
 
-1. [Derive and check a bounded control](shared/MODULE_05_LAB.md) from the authored run records.
+1. [Improve from observed failures](shared/MODULE_05_LAB.md): derive and check a bounded control from the authored run records.
 
 ## The supplied check
 

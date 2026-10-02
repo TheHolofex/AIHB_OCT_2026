@@ -8,6 +8,8 @@ The supplied ledger is the local record for this case. Current rows must supply 
 
 ## Start here
 
+1. [Diagnose and recover the duty card](shared/MODULE_04_LAB.md).
+
 Use your existing source checks, permission limits, and evidence records. Identify the last point where the required information is present and the first point where it is missing. Preserve both observations before authorizing a correction.
 
 ## What you inspect

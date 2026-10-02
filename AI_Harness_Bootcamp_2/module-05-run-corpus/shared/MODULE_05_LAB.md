@@ -1,10 +1,10 @@
-# Module 5 · Derive a bounded control from observed runs
+# Module 5 · Improve from observed failures
 
 Turn a repeated failure in Blue Gauge's practice records into a check that can flag the same text condition in another run. Use your source checks and preserved failure evidence to derive a **predicate**: a yes-or-no condition the supplied control can decide mechanically. Configure it with two exact pieces of text, then check known-bad, known-good, and missing input and record its limits.
 
 The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or measurements of current model reliability. Your work stays inside the fictional class case and authorizes no real movement.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 3 facilitated hours, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Copy a work folder
 
@@ -15,11 +15,14 @@ Use the verified checkout and Python from setup. The commands name the checkout 
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-05-run-corpus"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-05-run" && printf 'RUN=%s\n' "$RUN"
 W="$HOME/course-evidence/module-05-$RUN/work"
 E="$HOME/course-evidence/module-05-$RUN/evidence"
 ```
+
 **Expected:** The variables are defined with R as the checkout root, PY as the absolute path to a Python >= 3.12 interpreter, and W/E under a fresh RUN.
 
 **Stop:** PY is empty or does not point to a 3.12 or newer interpreter.
@@ -45,6 +48,7 @@ if (-not $PY) { throw 'Python 3.12 or newer not found on PATH.' }
 
 $M = "$R\AI_Harness_Bootcamp_2\module-05-run-corpus"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Value $RUN; "RUN=$RUN"
 $W = "$HOME\course-evidence\module-05-$RUN\work"
 $E = "$HOME\course-evidence\module-05-$RUN\evidence"
 ```
@@ -54,6 +58,7 @@ $E = "$HOME\course-evidence\module-05-$RUN\evidence"
 ```bash
 mkdir -p "$E"
 ```
+
 **Expected:** The E directory exists.
 
 **Stop:** The mkdir fails due to permissions.
@@ -65,6 +70,7 @@ mkdir -p "$E"
 ```powershell
 New-Item -ItemType Directory -Force -Path "$E" | Out-Null
 ```
+
 **Expected:** The E directory exists.
 
 **Stop:** The command fails due to permissions.
@@ -84,11 +90,12 @@ cd "$R" && "$PY" "$R/shared/prepare_work.py" 05 "$W"
 ```powershell
 Set-Location -LiteralPath "$R"; & $PY "$R\shared\prepare_work.py" 05 "$W"
 ```
-**Expected:** The prepare prints "PASS: created ..." and the absolute W, followed by the exact cd and list command for the work dir. The W contains shared/controls, shared/corpus (80 R-*.md), shared/checks.
+
+**Expected:** `PASS: created` followed by the full work path, then two suggested next commands, one for each shell. Do not run them yet: they list the corpus, and you freeze the sample rule first. The folder contains `shared/controls/`, `shared/corpus/` with the eighty runs, and `shared/checks/`.
 
 **Stop:** If the destination already exists, prepare refuses with HOLD.
 
-**Recovery:** Choose a different W path that does not exist, repeat the variable assignments with a new RUN, and repeat the prepare command with the new path.
+**Recovery:** Open a new terminal and paste the variable block from the start of this lab, which creates a new `RUN` and so a new `W`; then repeat the prepare command.
 
 After the prepare step, create the output directory once under the absolute W:
 
@@ -103,15 +110,50 @@ mkdir -p "$W/out"
 ```powershell
 New-Item -ItemType Directory -Force -Path "$W\out" | Out-Null
 ```
-**Expected:** The $W/out directory exists.
 
-**Stop:** If mkdir fails due to permissions, choose a different W under your home.
+**Expected:** No output. The folder `W/out` now exists.
 
-**Recovery:** Use a writable path under $HOME/course-evidence and repeat the mkdir with absolute path.
+**Stop:** A permission error.
 
-The script prints the absolute path to the work folder and the exact next command. Change to that directory. The folder contains `shared/controls/`, `shared/corpus/` with the eighty runs, and `shared/checks/`.
+**Recovery:** Use a writable path under `$HOME/course-evidence` and repeat the command with the absolute path.
 
-Do not copy any extra checker into the work folder. Do not run the suggested corpus-list command until after you have frozen the sample rule.
+Every later command uses absolute paths under `W`, so you never need to change directory. Do not copy any extra checker into the work folder.
+
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-05-run")"
+M="$R/AI_Harness_Bootcamp_2/module-05-run-corpus"
+W="$HOME/course-evidence/module-05-$RUN/work"
+E="$HOME/course-evidence/module-05-$RUN/evidence"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Raw).Trim()
+$M = "$R\AI_Harness_Bootcamp_2\module-05-run-corpus"
+$W = "$HOME\course-evidence\module-05-$RUN\work"
+$E = "$HOME\course-evidence\module-05-$RUN\evidence"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
 ## Timebox
 
@@ -178,9 +220,8 @@ I will not use a stamp result to decide which runs belong in the sample.
 
 **Recovery:** Check permissions and repeat the Out-File with absolute path.
 
-The sample is the first sixteen runs, `R-001.md` through `R-016.md`. You will read every one of them. You will not drop a run because it looks clean or broken. You will not invent a seventeenth file.
+Record the rule's fingerprint beside it, so the reading that follows can be shown to have come after the rule.
 
-**Expected:** The file `sample-rule.md` exists on disk with the three headings and states that the sixteen files are the eligible set, that you will read all of them, and that you will not choose by outcome.
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -206,9 +247,9 @@ Write-Output "exit $LASTEXITCODE"
 
 **Recovery:** Leave this attempt in place. Do not delete the digest or the run files. If the failure occurred before you saw outcomes, open a new terminal, repeat the prepare block, and write the rule before opening any run. If you already saw outcomes, record that exposure and do not claim that another attempt is outcome-blind.
 
-**Recovery:**
+### If you must start a new attempt
 
-Open a new terminal. Repeat only the variable assignments with a fresh RUN (the date or guid command). Then:
+Open a new terminal and paste the variable block from the start of this lab, which creates a new `RUN`. Then run:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -224,6 +265,7 @@ Open a new terminal. Repeat only the variable assignments with a fresh RUN (the 
 if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True); (Path(sys.argv[2])/'out').mkdir(exist_ok=True)" "$E" "$W"
 ```
+
 **Expected:** The preparer creates a fresh work folder at the new path. Both `W/out` and the new sibling evidence directory `E` exist before you record the digest.
 
 **Stop:** The prepare holds if the chosen destination already exists.
@@ -231,10 +273,11 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 **Recovery:** Select a path that does not exist yet (use a new terminal with new RUN) and repeat the prepare command.
 
 If no outcomes were opened, recreate `sample-rule.md` and repeat the digest step with the new W and E. If outcomes were opened, retain that exposure in the attempt record and do not reuse the declaration that you have not seen them. A rerun can check the control, but cannot establish an outcome-blind first reading.
+
 ## 2. First-failure notes before categories
 
 
-Open the sixteen sample files under `shared/corpus/`. For each run, write one first-failure note in `first-failures.md` before you write any category tally.
+Open the sixteen sample files under `shared/corpus/`. For each run, write one first-failure note in `$E/first-failures.md` before you write any category tally.
 
 Name the earliest concrete problem you can support from that run's text, with the line or passage that shows it. Do not start with a category name. If you find no failure, record that observation instead of inventing one. Keep uncertain cases explicit.
 
@@ -246,15 +289,17 @@ Name the earliest concrete problem you can support from that run's text, with th
 
 ## 3. Then tally categories
 
-After all sixteen notes exist, group the observed failures by what went wrong and write `counts.md`. Keep each run identifier attached to its category so another reader can reconcile the counts with the notes. Use the pass, fail, and other totals below to account for every run once.
+After all sixteen notes exist, group the observed failures by what went wrong and write `$E/counts.md`. Keep each run identifier attached to its category so another reader can reconcile the counts with the notes. Use the pass, fail, and other totals below to account for every run once.
 
 ```markdown
 # Counts
 
-pass:
-fail:
-other:
-total:
+pass (run IDs):
+fail by category:
+  <category>: <run IDs>
+other (run IDs):
+total: 16
+revisions to category names:
 ```
 
 The total must be 16. Each category count must agree with its listed runs, and pass, fail, and other must add to the total. If they do not, record `HOLD` and identify the missing or double-counted run. State one conclusion supported by the failure categories in this sample; do not generalize its frequency to workplace use or current models.
@@ -263,11 +308,13 @@ Keep the original first-failure notes visible next to any revised category label
 
 **Expected:** The counts file shows totals that add to 16, and the first-failure notes remain the source of truth.
 
-**Stop:** If totals are 11 or 17 or any number other than the sample size, the work does not pass the count gate.
+**Stop:** The totals add to any number other than 16.
+
+**Recovery:** Find the run that is missing or counted twice by comparing with `first-failures.md`, correct the counts, and keep the earlier version.
 
 ## 4. Infer two literals and configure the supplied control
 
-Read `shared/controls/PREDICATE_SPEC.md`.
+Choose the two exact text strings that mark your repeated failure, and lock them so the checks run against a fixed version. Read `shared/controls/PREDICATE_SPEC.md`.
 
 The control takes one run file and a configuration file:
 
@@ -300,7 +347,7 @@ Copy-Item "$W\shared\controls\predicate.template.json" -Destination "$W\out\pred
 
 **Recovery:** Ensure you are in the work folder (W) and that shared/controls/predicate.template.json exists in the copied tree, then repeat the copy command with absolute paths.
 
-Edit $W/out/predicate.json so that `all_present` holds your two strings.
+Edit `$W/out/predicate.json` so that `all_present` holds your two strings. The finished file looks like `{"all_present": ["first text", "second text"]}` with your own two texts and nothing else.
 
 Then copy the file you will actually use:
 
@@ -341,16 +388,17 @@ print('FROZEN', target.name, hashlib.sha256(raw).hexdigest())
 if ($LASTEXITCODE -ne 0) { throw 'Freeze held; preserve the attempt.' }
 ```
 
-**Expected:** `$W/out/predicate-frozen.json` contains exactly two distinct nonempty strings under `all_present` and no extra keys.
+**Expected:** One line: `FROZEN predicate-frozen.json` and a 64-character digest. The freeze checks nothing about the content; step 5 tests it.
 
-**Stop:** A frozen destination already exists, a file cannot be read or written, or the configuration does not contain exactly two distinct nonempty strings and no extra keys.
+**Stop:** A line starting `HOLD:`: the frozen file already exists, or a file cannot be read or written.
 
 **Recovery:** Keep the rejected frozen file and its results. Use the separate copy, edit, and freeze recovery below; never overwrite a frozen attempt. `CFG` names the frozen configuration used by the checks and the stretch.
 
 
 ## 5. Run the supplied control
 
-From the work folder use the absolute PY and absolute paths under W:
+First confirm that the control refuses a malformed configuration: the unedited template has no literals, so it must hold. Then check your frozen configuration on a known-bad run, a known-good run, and a missing file.
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -361,7 +409,7 @@ echo "exit $?"
 
 **Expected:** Standard error prints `HOLD: malformed config`. The echoed exit is 1.
 
-**Stop:** Exit is 0 or the output is MATCH or PASS.
+**Stop:** The exit is not 1, or the output contains `MATCH` or `PASS`.
 
 **Recovery:** Confirm the unedited template copy and the quoted paths; use a new name for any edited copy.
 
@@ -376,33 +424,35 @@ Write-Output "exit $LASTEXITCODE"
 
 **Expected:** Standard error prints `HOLD: malformed config`. The exit line is `exit 1`.
 
-**Stop:** Exit is 0 or 2.
+**Stop:** The exit is not 1, or the output contains `MATCH` or `PASS`.
 
 **Recovery:** Confirm the unedited template copy and the quoted paths; use a new name for any edited copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-"$PY" "$W/shared/controls/predicate.py" "$W/shared/checks/known-bad.txt" --config "$CFG"
-"$PY" "$W/shared/controls/predicate.py" "$W/shared/checks/known-good.txt" --config "$CFG"
-"$PY" "$W/shared/controls/predicate.py" "$W/out/not-created.txt" --config "$CFG"
+"$PY" "$W/shared/controls/predicate.py" "$W/shared/checks/known-bad.txt" --config "$CFG"; echo "exit $?"
+"$PY" "$W/shared/controls/predicate.py" "$W/shared/checks/known-good.txt" --config "$CFG"; echo "exit $?"
+"$PY" "$W/shared/controls/predicate.py" "$W/out/not-created.txt" --config "$CFG"; echo "exit $?"
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
-& $PY "$W\shared\controls\predicate.py" "$W\shared\checks\known-bad.txt" --config "$CFG"
-& $PY "$W\shared\controls\predicate.py" "$W\shared\checks\known-good.txt" --config "$CFG"
-& $PY "$W\shared\controls\predicate.py" "$W\out\not-created.txt" --config "$CFG"
+& $PY "$W\shared\controls\predicate.py" "$W\shared\checks\known-bad.txt" --config "$CFG"; Write-Output "exit $LASTEXITCODE"
+& $PY "$W\shared\controls\predicate.py" "$W\shared\checks\known-good.txt" --config "$CFG"; Write-Output "exit $LASTEXITCODE"
+& $PY "$W\shared\controls\predicate.py" "$W\out\not-created.txt" --config "$CFG"; Write-Output "exit $LASTEXITCODE"
 ```
 
 **Expected:**
 
-- The known-bad check exits 1 and prints `MATCH: both literals present`.
-- The known-good check exits 0 and prints `PASS: at least one literal absent`.
-- The missing path exits 1 and prints `HOLD: missing input` on stderr.
+- The known-bad check prints `MATCH: both literals present`, then `exit 1`.
+- The known-good check prints `PASS: at least one literal absent`, then `exit 0`.
+- The missing path prints `HOLD: missing input`, then `exit 1`.
 
-Copy the three command lines and their output into `predicate-results.md`.
+The exit lines read `exit 1`, `exit 0`, `exit 1` in that order.
+
+Copy the three command lines and their output into `$E/predicate-results.md`.
 
 **Stop:** If known-bad exits 0 or known-good exits 1, the literals do not separate the cases you chose.
 
@@ -500,7 +550,7 @@ Do not edit the predicate.py itself.
 
 ## 6. Finish the handoff
 
-Write `handoff.md`:
+Decide whether this control should be added to the workflow. Base the decision only on the sixteen runs and the three checks. Then write `$E/handoff.md`:
 
 ```markdown
 # Module 5 handoff
@@ -512,6 +562,7 @@ Known-bad result:
 Known-good result:
 Missing result:
 Scope of the control:
+Decision (adopt, revise, or hold) and the sampled evidence that bounds it:
 What the next person should read first in the full corpus:
 ```
 
@@ -577,6 +628,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Stretch working copies held; preserve the atte
 **Recovery:** Preserve any existing stretch work. Use the successfully checked frozen configuration named by `CFG`, including a separately frozen repair when needed. A new attempt needs fresh output names, not overwritten copies.
 
 Edit $W/out/stretch-a.json and $W/out/stretch-b.json to use two different pairs of literals. Freeze both (do not edit after).
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -598,7 +650,7 @@ except OSError as exc:
 PY
 ```
 
-**Expected:** The frozen stretch configs exist as copies of the edited ones.
+**Expected:** Two lines, `FROZEN stretch-a-frozen.json` and `FROZEN stretch-b-frozen.json`, each followed by a 64-character digest.
 
 **Stop:** The copy fails or the files are not distinct two-literal configs.
 
@@ -626,15 +678,13 @@ except OSError as exc:
 if ($LASTEXITCODE -ne 0) { throw 'Stretch freeze held; preserve the attempt.' }
 ```
 
-**Expected:** The frozen stretch configs exist as copies of the edited ones.
+**Expected:** Two lines, `FROZEN stretch-a-frozen.json` and `FROZEN stretch-b-frozen.json`, each followed by a 64-character digest.
 
 **Stop:** The copy fails or the files are not distinct two-literal configs.
 
 **Recovery:** Preserve any partial or earlier freeze. Choose fresh frozen filenames for a new pair and use those names in its commands; never overwrite a preregistered configuration.
 
 The **held-out runs**, R-017 through R-080, were not used to choose the original literals. Read those 64 run texts and write predictions in $W/out/stretch-prediction.md before running either configuration or opening the public labels. For each run, predict whether `promotion_failure` is true, meaning a receipt was treated as a release, and whether each configuration will return MATCH or PASS.
-
-**Terminal: Bash or zsh, ordinary user.**
 
 Create the prediction skeleton below, then fill every value from your reading of the run files. Use `true` or `false` for `promotion_failure` and `MATCH` or `PASS` for each configuration. Keep exactly one row per run, in ID order. Creating the file exclusively prevents an accidental replacement; it does not prevent later edits. The following freeze records the completed bytes before any results or labels are opened.
 
@@ -672,6 +722,12 @@ print("wrote", len(lines))
 '@ | & $PY - "$W"
 if ($LASTEXITCODE -ne 0) { throw 'Prediction file creation held; preserve the attempt.' }
 ```
+
+**Expected:** `wrote 64`.
+
+**Stop:** `FileExistsError`: the file already exists.
+
+**Recovery:** Keep the existing file; fill in its values rather than create another.
 
 Validate all sixty-four completed predictions and freeze their hash. A count alone cannot distinguish predictions from unanswered placeholders.
 
@@ -802,6 +858,7 @@ for label in ("a", "b"):
 '@ | & $PY - $W
 if ($LASTEXITCODE -ne 0) { throw 'Held-out comparison stopped; keep the partial evidence.' }
 ```
+
 **Expected:** Two new JSONL files each contain the 64 run IDs R-017 through R-080, their frozen configuration hash, exit status, stdout, and stderr. Both `COMPLETE` lines print their output paths; the command exits 0. Each invocation chooses a new shared suffix for its two result files.
 
 **Stop:** A result file already exists, a configuration changes, or any invocation produces HOLD or another error instead of MATCH/PASS. A missing input is not a positive classification. A partial result file is not a completed comparison.

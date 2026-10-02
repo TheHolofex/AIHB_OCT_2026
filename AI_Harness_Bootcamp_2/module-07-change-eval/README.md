@@ -12,8 +12,9 @@ Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is 
 ## The hard gates
 A **hard gate** is a required condition that a better result elsewhere cannot offset. Any single violation defeats a candidate, even if its average looks better.
 
-- Payload mass must be the exact number that appears in the authoritative #payload locator record, and the Source cell must name that locator.
-- Gate times must name both the UTC value and the MDT value exactly as they appear in the authoritative #gate locator record, and the Source cells must name that locator.
+- The brief must follow the required three-row form; a malformed brief fails the format gate.
+- Payload mass must be the exact number that appears in the authoritative `#payload` record, and the Source cell must name that record. A **locator**, such as `#payload`, identifies the exact source record that supports a value.
+- Gate times must name both the UTC value and the MDT value exactly as they appear in the authoritative `#gate` record, and the Source cells must name that locator.
 
 Each time value must carry its required zone label in the correct cell. A UTC label elsewhere does not fix a missing label. A clock value without its zone fails the gate.
 

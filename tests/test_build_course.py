@@ -153,7 +153,8 @@ class PublicationBehavior(unittest.TestCase):
             pages = [{"source": "README.md", "dest": "README.html", "kind": "overview"}]
             (module / "lab.md").write_text(GUIDED_PROCEDURE, encoding="utf-8")
             pages.append({"source": "lab.md", "dest": "lab.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}})
-            self.course["modules"].append({"id": f"{i:02d}", "directory": directory, "title": "Example", "case_name": f"Example {i}", "summary": "Inspect the supplied evidence.", "nav_summary": "Terminal · Source inspection", "pages": pages, "download_dirs": ["shared/case"]})
+            self.course["modules"].append({"id": f"{i:02d}", "directory": directory, "title": "Module · Example", "case_name": f"Example {i}", "summary": "Inspect the supplied evidence.", "nav_summary": "Terminal · Source inspection",
+                                           "outcomes": {"can": "Inspect a supplied source before deciding what it supports.", "will": ["Read the file.", "Keep an unsupported claim unresolved."]}, "pages": pages, "download_dirs": ["shared/case"]})
         (boot / "README.md").write_text("# Synthetic publication test\n\nInspect the supplied course.\n\n## Choose your assignment\n\n<div data-course-map></div>\n\n" + "\n\n".join(links), encoding="utf-8")
         self.save_manifest()
         self.page = boot / "module-00-example/README.md"
@@ -178,6 +179,67 @@ class PublicationBehavior(unittest.TestCase):
         home = self.root / "AI_Harness_Bootcamp_2/README.md"
         home.write_text(home.read_text(encoding="utf-8") + "\n\n" + placeholder + "\n", encoding="utf-8")
         self.save_manifest()
+
+    def test_procedure_cards_pair_shells_number_steps_and_publish_outcomes(self):
+        lab = self.page.parent / "lab.md"
+        split = ("## Preserve the decision\n\n**Terminal: Bash or zsh, ordinary user.**\n\n```bash\necho 1; printf 'EXIT=%s\\n' \"$?\"\n```\n\n**Expected:** `EXIT=0`.\n\n**Stop:** Any other exit.\n\n**Recovery:** Rerun.\n\n"
+                 "**Terminal: PowerShell, ordinary user.**\n\n```powershell\nWrite-Output 1\nWrite-Output \"EXIT=$LASTEXITCODE\"\n```\n\n**Expected:** `EXIT=0` on its own line.\n\n**Stop:** Any other exit.\n\n**Recovery:** Rerun.\n\n")
+        lab.write_text(GUIDED_PROCEDURE.replace("```bash\nprintf '%s\\n' 'a < b & c'\n```\n",
+                                                "```bash\nprintf '%s\\n' 'a < b & c'\n```\n\n**Terminal: PowerShell, ordinary user.**\n\n```powershell\nWrite-Output 'a < b & c'\n```\n", 1)
+                       .replace("## Preserve the decision\n\n", split, 1), encoding="utf-8")
+        self.build()
+        tree = builder.parse_html((self.published.parent / "lab.html").read_text())
+        nodes = list(tree.walk())
+        pairs = [node for node in nodes if "rf-shell-pair" in node.attrs.get("class", "").split()]
+        self.assertEqual(len(pairs), 2)
+        shared, own = pairs
+        for pair in pairs:
+            panels = [node for node in pair.children if isinstance(node, builder.Node)]
+            self.assertEqual([(panel.attrs["class"], panel.attrs["data-shell"], panel.attrs["data-shell-name"]) for panel in panels],
+                             [("rf-shell-panel", "bash", "Bash or zsh"), ("rf-shell-panel", "powershell", "PowerShell")])
+            self.assertEqual([panel.children[0].attrs["class"] for panel in panels], ["rf-command", "rf-command"])
+            self.assertEqual([panel.children[0].children[0].attrs.get("class") for panel in panels], ["rf-command-head", "rf-command-head"])
+        self.assertEqual([len([child for child in panel.children if isinstance(child, builder.Node)]) for panel in shared.children if isinstance(panel, builder.Node)], [1, 1])
+        own_panels = [panel for panel in own.children if isinstance(panel, builder.Node)]
+        self.assertEqual([[child.attrs.get("class") for child in panel.children if isinstance(child, builder.Node)] for panel in own_panels],
+                         [["rf-command", "rf-callout rf-callout--expected", "rf-callout rf-callout--stop", "rf-callout rf-callout--recovery"]] * 2)
+        self.assertEqual([node.attrs["class"] for node in nodes if node.attrs.get("class", "").startswith("rf-callout ")],
+                         ["rf-callout rf-callout--expected", "rf-callout rf-callout--stop"] + ["rf-callout rf-callout--expected", "rf-callout rf-callout--stop", "rf-callout rf-callout--recovery"] * 2)
+        steps = [node for node in nodes if "data-step-index" in node.attrs]
+        self.assertEqual([(node.attrs["data-step-id"], node.attrs["data-step-index"]) for node in steps], [("read-a-file", "1"), ("preserve-the-decision", "2")])
+        self.assertEqual([node.text() for node in nodes if node.attrs.get("class") == "rf-step-number"], ["1", "2"])
+        self.assertEqual([node.attrs["data-step-done"] for node in nodes if "data-step-done" in node.attrs], ["read-a-file", "preserve-the-decision"])
+        self.assertEqual(next(node for node in nodes if "data-progress" in node.attrs).attrs["data-step-total"], "2")
+        self.assertEqual(len([node for node in nodes if node.attrs.get("class") == "rf-callout rf-callout--expected"]), 3)
+        data = json.loads(next(node.text() for node in nodes if node.attrs.get("id") == "rf-page-data"))
+        self.assertEqual(next(page for page in data["pages"] if page["path"].endswith("module-00-example/lab.html"))["steps"], ["read-a-file", "preserve-the-decision"])
+        overview = builder.parse_html(self.published.read_text())
+        self.assertEqual(next(node.text() for node in overview.walk() if node.attrs.get("class") == "rf-outcomes-can"), "Inspect a supplied source before deciding what it supports.")
+        self.assertEqual(next(node for node in overview.walk() if "data-module-progress" in node.attrs).attrs["data-step-total"], "2")
+        home = builder.parse_html((self.root / "site/index.html").read_text())
+        self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 10)
+        for bad in ({"can": "Keep PO03_RESULT.", "will": ["a", "b"]}, {"can": "Fine.", "will": ["only one"]}, {"can": "", "will": ["a", "b"]}, {"can": "Fine.", "will": ["Carry VERIFY:CASE forward.", "b"]}):
+            self.course["modules"][0]["outcomes"] = bad
+            self.save_manifest()
+            with self.subTest(outcomes=bad), self.assertRaises(ValueError):
+                self.build()
+
+    def test_authored_step_numbers_win_over_sequential_labels(self):
+        lab = self.page.parent / "lab.md"
+        lab.write_text(GUIDED_PROCEDURE.replace("## Preserve the decision", "## 4. Preserve the decision", 1), encoding="utf-8")
+        self.build()
+        tree = builder.parse_html((self.published.parent / "lab.html").read_text())
+        nodes = list(tree.walk())
+        headings = [node for node in nodes if node.tag == "h2" and node.attrs.get("id") in {"read-a-file", "4-preserve-the-decision"}]
+        self.assertEqual([(node.attrs["id"], node.children[0].text(), node.text()) for node in headings],
+                         [("read-a-file", "·", "·Read a file"), ("4-preserve-the-decision", "4", "4Preserve the decision")])
+        checks = [node for node in nodes if "data-step-done" in node.attrs]
+        self.assertEqual([node.attrs["aria-label"] for node in checks], ["Done: Read a file", "Step 4 done: Preserve the decision"])
+        self.assertEqual([node.text() for node in nodes if node.attrs.get("class") == "rf-stepper-number"], ["·", "·", "4"])
+        lab.write_text(GUIDED_PROCEDURE, encoding="utf-8")
+        self.build()
+        tree = builder.parse_html((self.published.parent / "lab.html").read_text())
+        self.assertEqual([node.text() for node in tree.walk() if node.attrs.get("class") == "rf-step-number"], ["1", "2"])
 
     def test_home_band_renders_decorative_image_with_relative_src(self):
         self.add_home_band()

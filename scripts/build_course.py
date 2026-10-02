@@ -26,6 +26,11 @@ COMMAND_LANGUAGES = {"bash", "sh", "zsh", "powershell"}
 PAGE_KINDS = {"home", "overview", "lab", "setup", "reference"}
 UI_SUFFIXES = {".css", ".js", ".woff2", ".txt", ".svg", ".webp"}
 SEARCH_PATH = PurePosixPath("assets/search-index.json")
+CALLOUT_KINDS = {"Expected:": "expected", "Stop:": "stop", "Recovery:": "recovery"}
+SHELL_FAMILY = {"bash": "bash", "sh": "bash", "zsh": "bash", "powershell": "powershell"}
+SHELL_NAMES = {"bash": "Bash or zsh", "powershell": "PowerShell"}
+LEARNER_TOKEN = re.compile(r"\bVERIFY:|\bPO0\d|\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+\b")
+STEP_NUMBER = re.compile(r"^\s*(\d+)\.\s+")
 
 
 @dataclass
@@ -172,6 +177,15 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
         directory = module["directory"]
         if any(not isinstance(module.get(key), str) or not module[key].strip() for key in ("title", "case_name", "summary", "nav_summary")):
             raise ValueError("module display fields must be nonempty strings")
+        outcomes = module.get("outcomes")
+        if not isinstance(outcomes, dict) or set(outcomes) != {"can", "will"}:
+            raise ValueError(f"module {module['id']} needs outcomes with 'can' and 'will'")
+        if not isinstance(outcomes["can"], str) or not outcomes["can"].strip() or len(outcomes["can"]) > 320:
+            raise ValueError(f"module {module['id']}: outcomes.can must be one sentence of learner language")
+        if not isinstance(outcomes["will"], list) or not 2 <= len(outcomes["will"]) <= 4 or any(not isinstance(item, str) or not item.strip() for item in outcomes["will"]):
+            raise ValueError(f"module {module['id']}: outcomes.will must list two to four learner-language items")
+        if any(LEARNER_TOKEN.search(text) for text in (outcomes["can"], *outcomes["will"])):
+            raise ValueError(f"module {module['id']}: outcomes must not carry staff tokens")
         kinds = [page.get("kind") for page in module["pages"]]
         if any(kind not in PAGE_KINDS - {"home"} for kind in kinds):
             raise ValueError("unrecognized instructional page kind")
@@ -299,6 +313,79 @@ def procedure_errors(tree: Node, label: str) -> list[str]:
     return errors
 
 
+def _procedure_cards(tree: Node) -> None:
+    """Wrap terminal labels with their command, pair the two shells into panels, and wrap Expected/Stop/Recovery. Authored text is unchanged.
+
+    A Bash card followed by its PowerShell twin becomes one ``rf-shell-pair`` of two ``rf-shell-panel`` blocks. When each shell
+    carries its own Expected/Stop/Recovery paragraphs, those callouts stay inside that shell's panel; shared callouts after the twin stay outside."""
+    def lead(node) -> str:
+        if not isinstance(node, Node) or node.tag != "p" or not node.children:
+            return ""
+        first = node.children[0]
+        return first.text().strip() if isinstance(first, Node) and first.tag == "strong" else ""
+
+    def blank(node) -> bool:
+        return isinstance(node, str) and not node.strip()
+
+    def rebuild(parent: Node) -> None:
+        for child in parent.children:
+            if isinstance(child, Node):
+                rebuild(child)
+        children, cards, index = parent.children, [], 0
+        while index < len(children):
+            node = children[index]
+            head = lead(node)
+            after = index + 1
+            while after < len(children) and blank(children[after]):
+                after += 1
+            following = children[after] if after < len(children) else None
+            if head.startswith("Terminal:") and isinstance(following, Node) and following.tag == "pre" and "data-command" in following.attrs:
+                family = SHELL_FAMILY[following.attrs["data-command"]]
+                node.attrs["class"] = "rf-command-head"
+                cards.append(Node("div", {"class": "rf-command", "data-shell": family, "data-shell-name": SHELL_NAMES[family]}, [node, *children[index + 1:after], following]))
+                index = after + 1
+                continue
+            kind = next((kind for prefix, kind in CALLOUT_KINDS.items() if head.startswith(prefix)), None)
+            cards.append(Node("div", {"class": f"rf-callout rf-callout--{kind}"}, [node]) if kind else node)
+            index += 1
+        def callout(node) -> bool:
+            return isinstance(node, Node) and node.attrs.get("class", "").startswith("rf-callout ")
+
+        def panel_end(start: int, own_callouts: bool) -> int:
+            end = start + 1
+            if own_callouts:
+                while end < len(cards) and (blank(cards[end]) or callout(cards[end])):
+                    end += 1
+                while end > start + 1 and blank(cards[end - 1]):
+                    end -= 1
+            return end
+
+        def panel(start: int, end: int) -> Node:
+            card = cards[start]
+            return Node("div", {"class": "rf-shell-panel", "data-shell": card.attrs["data-shell"], "data-shell-name": card.attrs["data-shell-name"]}, cards[start:end])
+
+        paired, index = [], 0
+        while index < len(cards):
+            node = cards[index]
+            if isinstance(node, Node) and node.attrs.get("data-shell") == "bash":
+                after = index + 1
+                while after < len(cards) and (blank(cards[after]) or callout(cards[after])):
+                    after += 1
+                partner = cards[after] if after < len(cards) else None
+                if isinstance(partner, Node) and partner.attrs.get("data-shell") == "powershell":
+                    own = any(callout(item) for item in cards[index + 1:after])
+                    bash_end = panel_end(index, own)
+                    partner_end = panel_end(after, own)
+                    paired.append(Node("div", {"class": "rf-shell-pair"}, [panel(index, bash_end), panel(after, partner_end)]))
+                    index = partner_end
+                    continue
+            paired.append(node)
+            index += 1
+        parent.children = paired
+
+    rebuild(tree)
+
+
 def _page_records(course: dict) -> list[dict]:
     records = [{**course["index"], "path": course["index"]["dest"], "moduleId": None}]
     for module in course["modules"]:
@@ -356,8 +443,15 @@ def _guide_tree(tree: Node, guide: dict, label: str) -> tuple[list[dict], list[d
             context = anchor in contexts
             name = "context" if context else "step"
             body = Node("div", {"class": f"rf-{name}-body", "id": f"rf-body-{anchor}"}, group[1:])
-            result.append(Node("section", {"class": f"rf-{name}", f"data-{name}-id": anchor}, [node, body]))
+            attrs = {"class": f"rf-{name}", f"data-{name}-id": anchor}
             item = {"id": anchor, "title": node.text()}
+            if not context:
+                attrs["data-step-index"] = str(len(steps) + 1)
+                authored = STEP_NUMBER.match(item["title"])
+                if authored and isinstance(node.children[0], str):
+                    item["title"] = STEP_NUMBER.sub("", item["title"], count=1)
+                    item["number"] = authored.group(1)
+            result.append(Node("section", attrs, [node, body]))
             outline.append(item)
             if not context:
                 steps.append(item)
@@ -461,6 +555,7 @@ def _prepare_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePos
     outline = [{"id": node.attrs["id"], "title": node.text()} for node in tree.children if isinstance(node, Node) and node.tag == "h2"]
     if record["kind"] in {"lab", "setup"}:
         steps, outline = _guide_tree(tree, record["guide"], source.relative_to(root).as_posix())
+    _procedure_cards(tree)
     sections = _section_records(tree, title)
     heading = "Course data"
     for node in list(tree.walk()):
@@ -497,7 +592,10 @@ def _course_map(course: dict, dest: PurePosixPath) -> Node:
         rows.append(Node("li", {}, [Node("a", {"href": _relative(dest, path)}, [
             Node("span", {"class": "rf-map-number"}, [module["id"]]),
             Node("span", {"class": "rf-map-name"}, [module["case_name"]]),
+            Node("span", {"class": "rf-map-title"}, [module["title"].split("·", 1)[-1].strip()]),
             Node("span", {"class": "rf-map-summary"}, [module["summary"]]),
+            Node("span", {"class": "rf-map-outcome"}, [module["outcomes"]["can"]]),
+            Node("span", {"class": "rf-map-progress", "data-module-progress": module["id"]}, []),
         ])]))
     return Node("ol", {"class": "rf-course-map"}, rows)
 
@@ -613,7 +711,7 @@ def _appearance(extra_class: str = "") -> str:
 
 
 def _reset_place() -> str:
-    return '<button type="button" class="sc-btn rf-btn sc-btn--secondary rf-reset" data-reset-place hidden>Reset saved place</button>'
+    return '<button type="button" class="sc-btn rf-btn sc-btn--secondary rf-reset" data-reset-place hidden>Reset progress on this device</button>'
 
 
 def _course_navigation(modules: list[dict], dest: PurePosixPath, current_module: str | None, rail: bool = False) -> str:
@@ -629,7 +727,27 @@ def _course_navigation(modules: list[dict], dest: PurePosixPath, current_module:
     return f'<nav class="rf-nav{" sc-rail" if rail else ""}" aria-label="Course assignments">{"".join(links)}</nav>'
 
 
-def _outline(items: list[dict], *, inline: bool = False) -> str:
+def _step_labels(steps: list[dict]) -> dict[str, str]:
+    """Authored numbers win when any step carries one; unnumbered preparation steps then show a neutral marker."""
+    if any("number" in item for item in steps):
+        return {item["id"]: item.get("number", "·") for item in steps}
+    return {item["id"]: str(index + 1) for index, item in enumerate(steps)}
+
+
+def _outline(items: list[dict], *, inline: bool = False, steps: list[dict] | None = None) -> str:
+    if steps is not None and not inline:
+        rows, labels = [], _step_labels(steps)
+        for item in items:
+            anchor = html.escape(item["id"], quote=True)
+            title = html.escape(item["title"])
+            if item in steps:
+                number = labels[item["id"]]
+                done = f"Step {number} done: {title}" if number.isdigit() else f"Done: {title}"
+                rows.append(f'<li class="rf-stepper-item" data-step-ref="{anchor}"><input class="rf-stepper-check" type="checkbox" id="rf-done-{anchor}" data-step-done="{anchor}" aria-label="{done}">'
+                            f'<a href="#{anchor}"><span class="rf-stepper-number" aria-hidden="true">{number}</span><span class="rf-stepper-title">{title}</span></a></li>')
+            else:
+                rows.append(f'<li class="rf-stepper-item rf-stepper-item--aside"><a href="#{anchor}"><span class="rf-stepper-number" aria-hidden="true">·</span><span class="rf-stepper-title">{title}</span></a></li>')
+        return f'<nav id="rf-outline" class="rf-stepper-nav" aria-label="Steps"><h2 class="sc-label">Steps</h2><ol class="rf-stepper">{"".join(rows)}</ol></nav>'
     links = "".join(f'<a href="#{html.escape(item["id"], quote=True)}">{html.escape(item["title"])}</a>' for item in items)
     if inline:
         return f'<details class="rf-inline-outline"><summary>On this page</summary><nav aria-label="Page sections">{links}</nav></details>'
@@ -706,9 +824,17 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
                                           "width": width, "height": height, "alt": "", "loading": "lazy", "decoding": "async"})]
     h1 = next(node for node in tree.children if isinstance(node, Node) and node.tag == "h1")
     tree.children.remove(h1)
-    page_data = {"version": 1, "page": str(dest), "kind": kind, "moduleId": module_id,
+    page_data = {"version": 2, "page": str(dest), "kind": kind, "moduleId": module_id,
                  "root": posixpath.relpath(".", str(dest.parent)).rstrip("/") + "/",
                  "modules": common["modules"], "pages": common["pages"], "steps": prepared["steps"], "resume": common["resume"]}
+    module_steps = sum(len(page["steps"]) for page in common["pages"] if page["moduleId"] == module_id and page["kind"] in {"lab", "setup"})
+    labels = _step_labels(prepared["steps"])
+    for section in list(tree.walk()):
+        if section.tag == "section" and "data-step-index" in section.attrs:
+            heading = next(child for child in section.children if isinstance(child, Node) and child.tag == "h2")
+            if isinstance(heading.children[0], str) and STEP_NUMBER.match(heading.children[0]):
+                heading.children[0] = STEP_NUMBER.sub("", heading.children[0], count=1)
+            heading.children.insert(0, Node("span", {"class": "rf-step-number", "aria-hidden": "true"}, [labels[section.attrs["data-step-id"]]]))
     if kind == "home":
         lead = next(node for node in tree.children if isinstance(node, Node) and node.tag == "p")
         tree.children.remove(lead)
@@ -744,7 +870,24 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
 <button type="button" class="sc-btn rf-btn sc-btn--secondary" data-view-choice="guided">Guided</button>
 <button type="button" class="sc-btn rf-btn sc-btn--secondary" data-view-choice="read">Read full page</button>
 <p class="rf-reader-hint">Use Read full page to find text across every section.</p></fieldset>'''
-        inline_outline = "" if kind in {"lab", "setup"} else _outline(prepared["outline"], inline=True)
+        outcomes = module["outcomes"]
+        can = html.escape(outcomes["can"])
+        if kind == "overview":
+            will = "".join(f"<li>{html.escape(item)}</li>" for item in outcomes["will"])
+            panel = (f'<section class="rf-outcomes" aria-labelledby="rf-outcomes-title"><h2 id="rf-outcomes-title" class="rf-outcomes-title">After this assignment you can</h2>'
+                     f'<p class="rf-outcomes-can">{can}</p><p class="rf-outcomes-sub">You will</p><ul class="rf-outcomes-list">{will}</ul></section>'
+                     f'<section class="rf-module-progress" data-module-progress="{module_id}" data-step-total="{module_steps}" aria-labelledby="rf-module-progress-title">'
+                     f'<h2 id="rf-module-progress-title" class="rf-module-progress-title">Your progress</h2><p class="rf-module-progress-text">{module_steps} lab steps. Mark each one done as you finish it; progress is saved on this device.</p>'
+                     f'<div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div></section>')
+        else:
+            panel = ""
+        progress = ""
+        if kind in {"lab", "setup"}:
+            total = len(prepared["steps"])
+            progress = (f'<p class="rf-outcome-line"><span class="rf-outcome-label">After this assignment you can</span> {can}</p>'
+                        f'<div class="rf-progress" data-progress data-step-total="{total}"><div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div>'
+                        f'<p class="rf-progress-text">{total} steps. Mark each step done as you finish it; progress is saved on this device.</p></div>')
+        inline_outline = "" if kind in {"lab", "setup"} else _outline([{"id": "rf-outcomes-title", "title": "After this assignment you can"}, *prepared["outline"]] if kind == "overview" else prepared["outline"], inline=True)
         if prepared["steps"]:
             last = next(node for node in tree.walk() if node.attrs.get("data-step-id") == prepared["steps"][-1]["id"])
             actions = []
@@ -760,10 +903,11 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             actions.append(Node("a", {"href": next_href, "class": "sc-btn rf-btn sc-btn--secondary"}, [next_label]))
             last.children[-1].children.append(Node("nav", {"class": "rf-end-actions", "aria-label": "Continue reading"}, actions))
         back = f'<p class="rf-back-to-lab"><a class="sc-btn rf-btn sc-btn--secondary" href="{_relative(dest, routes["lab"])}">Back to lab</a></p>' if kind == "reference" else ""
+        rail_outline = _outline(prepared["outline"], steps=prepared["steps"]) if kind in {"lab", "setup"} else _outline(prepared["outline"])
         main = f'''<div class="rf-layout"><aside class="rf-course-rail">{_course_navigation(common["modules"], dest, module_id, True)}</aside>
-<main id="main" class="rf-reading" tabindex="-1"><header class="rf-page-header sc-grid">{breadcrumb}{h1.render()}</header>{local}
-<div class="rf-intro">{Node("", {}, intro).render()}</div><div class="rf-reader-mobile-slot">{controls}</div>{inline_outline}{tree.render()}{back}</main>
-<aside class="rf-section-rail"><div class="rf-reader-desktop-slot"></div>{_outline(prepared["outline"])}</aside></div>'''
+<main id="main" class="rf-reading" tabindex="-1"><header class="rf-page-header sc-grid">{breadcrumb}{h1.render()}</header>{local}{progress}
+<div class="rf-intro">{Node("", {}, intro).render()}</div>{panel}<div class="rf-reader-mobile-slot">{controls}</div>{inline_outline}{tree.render()}{back}</main>
+<aside class="rf-section-rail"><div class="rf-reader-desktop-slot"></div>{rail_outline}</aside></div>'''
     styles = "".join(f'<link rel="stylesheet" href="{_relative(dest, path)}">' for path in assets["styles"])
     preloads = "".join(f'<link rel="preload" href="{_relative(dest, path)}" as="font" type="font/woff2" crossorigin>' for path in assets["fonts"])
     data = json.dumps(page_data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
@@ -847,8 +991,9 @@ def build(root: Path = ROOT, check: bool = False) -> int:
     outputs = {dest: source.read_bytes() for dest, source in destinations.items() if source not in pages}
     common = {
         "assets": _asset_context(course, outputs),
-        "modules": [{"id": module["id"], "caseName": module["case_name"], "navSummary": module["nav_summary"], "overview": _module_routes(course, module)["overview"]} for module in course["modules"]],
-        "pages": [{"path": str(dest), "title": page["title"], "kind": page["record"]["kind"], "moduleId": page["record"]["moduleId"]} for dest, page in prepared.items()],
+        "modules": [{"id": module["id"], "caseName": module["case_name"], "navSummary": module["nav_summary"], "title": module["title"].split("·", 1)[-1].strip(),
+                     **_module_routes(course, module)} for module in course["modules"]],
+        "pages": [{"path": str(dest), "title": page["title"], "kind": page["record"]["kind"], "moduleId": page["record"]["moduleId"], "steps": [step["id"] for step in page["steps"]]} for dest, page in prepared.items()],
         "resume": {str(dest): [{**step, "optional": False} for step in page["steps"]] + [
             {key: section[key] for key in ("id", "title", "optional")} for section in page["sections"] if section["optional"]
         ] for dest, page in prepared.items() if page["record"]["kind"] in {"lab", "setup"}},

@@ -15,8 +15,10 @@ Use the verified Python and checkout from setup. Open an ordinary terminal. Thes
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-04-diagnose-review"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-04-run" && printf 'RUN=%s\n' "$RUN"
 W="$HOME/course-evidence/module-04-$RUN/work"
 E="$HOME/course-evidence/module-04-$RUN/evidence"
 "$PY" "$R/shared/prepare_work.py" 04 "$W" &&
@@ -31,6 +33,7 @@ $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolve
 if (-not $PY) { throw 'No Python >= 3.12 found' }
 $M = "$R\AI_Harness_Bootcamp_2\module-04-diagnose-review"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-04-run" -Value $RUN; "RUN=$RUN"
 $W = "$HOME\course-evidence\module-04-$RUN\work"
 $E = "$HOME\course-evidence\module-04-$RUN\evidence"
 & $PY "$R\shared\prepare_work.py" 04 "$W"
@@ -48,6 +51,41 @@ If you open a new terminal later, repeat only the variable assignments. Do not p
 
 The prepare script prints a suggested next command. Do not run it yet.
 
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-04-run")"
+M="$R/AI_Harness_Bootcamp_2/module-04-diagnose-review"
+W="$HOME/course-evidence/module-04-$RUN/work"
+E="$HOME/course-evidence/module-04-$RUN/evidence"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-04-run" -Raw).Trim()
+$M = "$R\AI_Harness_Bootcamp_2\module-04-diagnose-review"
+$W = "$HOME\course-evidence\module-04-$RUN\work"
+$E = "$HOME\course-evidence\module-04-$RUN\evidence"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
 ## 1. Confirm the clean render
 
@@ -65,11 +103,29 @@ The **renderer** is the supplied program that turns ledger rows into a duty card
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\baseline.md"
 ```
 
-Open `$W/out/baseline.md`. It must contain both `permit_status` and `gate_time_mdt`, plus current_rows and near_miss_ids.
+**Expected:** The terminal prints the full path of `baseline.md`.
 
-**Expected:** Both required fields are present, and the card shows the scanned quantity and near-miss count.
+**Stop:** The command prints a line starting `HOLD:`.
 
-**Stop:** Either field is missing or the command fails with HOLD.
+**Recovery:** Confirm the variables and that `ledger.json` exists under `W`. Keep any output already written; use a new output filename when you repeat the command.
+
+Now read the card. It must contain both required fields.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cat "$W/out/baseline.md"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+Get-Content "$W\out\baseline.md"
+```
+
+**Expected:** The card shows `current_rows:`, `near_miss_rows:`, `near_miss_ids:`, and `scanned_quantity:` lines, then a `permit_status:` line and a `gate_time_mdt:` line, each with a value, then `class_only: true`.
+
+**Stop:** Either `permit_status:` or `gate_time_mdt:` is missing from the card.
 
 **Recovery:** Confirm the variables and that `ledger.json` exists under `W`. Keep any output already written; use a new output filename when you repeat the command.
 
@@ -93,17 +149,15 @@ The restore command checks the clean baseline renderer's **digest**, a fingerpri
 & $PY "$W\scripts\restore.py" "$W"
 ```
 
-**Expected:** RESTORE OK is printed and the scripts/render_review.py bytes now match the baseline.
+**Expected:** `RESTORE OK` is printed, and the `scripts/render_review.py` bytes now match the baseline.
 
-**Stop:** RESTORE OK is not printed or the files differ.
+**Stop:** `RESTORE OK` is not printed, or the files differ.
 
 **Recovery:** Do not continue. Record the error and start with a new prepare_work destination.
 
 ## 3. Seal the first miss
 
-Ask the facilitator to place the fault using the public source script.
-
-Facilitator command:
+Break the work copy on purpose, then record exactly where the field first disappears before you fix anything. When the facilitator tells you to, place the practice fault in your own work copy with the supplied script. It changes only the work copy's renderer; the clean baseline stays untouched.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -117,9 +171,13 @@ Facilitator command:
 & $PY "$M\scripts\place_practice_fault.py" "$W" --variant A
 ```
 
-**Expected:** FAULT PLACED A
+**Expected:** `FAULT PLACED A`.
 
-From the variables, render with the now-faulty work copy:
+**Stop:** A line starting `HOLD:`, for example `HOLD: work copy is not the clean baseline` or `HOLD: output already exists`.
+
+**Recovery:** Run the restore from step 2 again, confirm `RESTORE OK`, then place the fault again. If the hold names an existing output, you have already placed the fault in this attempt; continue.
+
+Render with the now-faulty work copy:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -132,6 +190,12 @@ From the variables, render with the now-faulty work copy:
 ```powershell
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\miss.md"
 ```
+
+**Expected:** The terminal prints the full path of `miss.md`. The command still succeeds: the fault drops a field, it does not crash the renderer.
+
+**Stop:** A line starting `HOLD:`.
+
+**Recovery:** Keep the output. Check that the ledger path is the one under `W`, then repeat with a new output filename.
 
 Before running the diagnostic check, record how you would distinguish a missing source field from a field lost while rendering. Use the read-only **probe**, which compares required fields in the selected source rows with the rendered card, to examine that distinction. Run the probe from the source module path so the faulty work copy cannot disable it:
 
@@ -147,7 +211,7 @@ Before running the diagnostic check, record how you would distinguish a missing 
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\miss.md"
 ```
 
-Before replacing anything, write `sealed-first-miss.md` and preserve it unchanged. Record the last passing boundary, where the required field is still present, and the first failing boundary, where it is missing. Use the probe output to support that distinction:
+Before replacing anything, write `$E/sealed-first-miss.md` and preserve it unchanged. Record the last passing boundary, where the required field is still present, and the first failing boundary, where it is missing. Use the probe output to support that distinction:
 
 ```markdown
 # Sealed first miss
@@ -163,7 +227,7 @@ First missing field:
 Still present:
 ```
 
-**Expected:** The probe identifies renderer_omission (or source_omission for the stretch) for the dropped field. The first missing field matches the variant. The selected_source_ids line shows the renderer-chosen current rows.
+**Expected:** Four lines: `selected_source_ids` followed by the current row IDs, `review_present yes`, then one field line ending `renderer_omission` and the other ending `rendered`. The field marked `renderer_omission` is your first missing field.
 
 **Stop:** You cannot name the earliest missing field from the probe output, or more than one field is affected before localization.
 
@@ -185,9 +249,9 @@ After the probe isolates the renderer as the first failing boundary, authorize o
 & $PY "$W\scripts\restore.py" "$W"
 ```
 
-Write replace-record.md with the command and the RESTORE OK line.
+Write `$E/replace-record.md` with the command and the `RESTORE OK` line.
 
-**Expected:** RESTORE OK and the work copy now matches the baseline bytes.
+**Expected:** `RESTORE OK`, and the work copy now matches the baseline bytes.
 
 **Stop:** More than one change, or the replace happens before the miss is sealed.
 
@@ -267,7 +331,7 @@ Set-Location "$HOME"
 
 **Expected:** The focused probe reports both fields as `rendered`. The complete and fresh review files contain both `permit_status` and `gate_time_mdt`. The fresh run used a new directory and an unrelated working directory. A probe exit of 0 means the diagnosis completed; read its field classifications rather than treating that exit as a completeness check.
 
-**Stop:** Any proof is missing a required field or the restore was not re-proved.
+**Stop:** Any of the three outputs lacks `permit_status:` or `gate_time_mdt:`, or the focused probe reports anything other than `rendered`.
 
 **Recovery:** Keep the failed output. Correct the diagnosed path problem and use unused output names for another proof. If you need another renderer replacement, start a fresh attempt rather than erase the first intervention.
 
@@ -309,7 +373,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 
 ## 6. Finish the handoff
 
-Write handoff.md:
+Write what the next person needs to repeat and check your result without asking you. Write `$E/handoff.md`:
 
 ```markdown
 # Module 4 handoff
@@ -318,6 +382,7 @@ First missing field:
 Probe output that showed it:
   (include selected_source_ids, review_present, and the cause line)
 Replace command:
+Previous renderer and outputs preserved in: (the attempts folder under W)
 Focused probe result:
 Complete render file:
 Fresh-process rerun file:
@@ -358,7 +423,7 @@ if ($LASTEXITCODE -ne 1) { throw 'Expected a malformed-source refusal; inspect t
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger-stretch.json"
 ```
 
-**Expected:** The renderer reports `HOLD: malformed input`. The probe reports `source_omission` and the selected row IDs with missing values.
+**Expected:** The renderer prints `HOLD: malformed input (permit_status)`. The probe then prints `permit_status source_omission BK-202` and `gate_time_mdt source_omission BK-203`.
 
 **Stop:** The renderer accepts the incomplete source, or you cannot locate the missing values in the named rows.
 

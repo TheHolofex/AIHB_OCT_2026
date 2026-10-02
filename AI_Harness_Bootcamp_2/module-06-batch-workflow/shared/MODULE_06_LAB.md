@@ -10,7 +10,7 @@ You will use three named workflows: your router, a separate supplied checker, an
 
 Complete [local n8n readiness](../../module-00-setup/README.md) first: n8n **2.41.5**, the approved full official local stack, and the editor at `http://localhost:5678`. Keep Assistant off. No cloud account, provider key, publication, or production URL is needed. Use your earlier source inspection and evidence habits here.
 
-In Finder or File Explorer, create a new folder such as `module-06-attempt-2026-10-01-a`. Give each attempt its own name. Inside it, create `inputs`, `predictions`, `exports`, `receipts`, and `reports`. Download these exercise files into `inputs`:
+In Finder or File Explorer, create a new folder such as `module-06-attempt-2026-10-01-a`. Give each attempt its own name. Inside it, create `inputs`, `predictions`, `exports`, `receipts`, and `reports`, and create an empty text file named `observations.md` in your plain-text editor; every "record" instruction below writes to it. Download these exercise files into `inputs`:
 
 - [wave1.csv](batch/wave1.csv)
 - [wave2.csv](batch/wave2.csv)
@@ -49,6 +49,8 @@ Add one row for each lot you predict will actually change when `OPEN` becomes `N
 **Expected:** Each declared change is traceable to source cells, and both waves have their own frozen delta. **Stop:** A routing execution already exposed results, or you cannot explain a predicted row from its cells. **Recovery:** Preserve the attempt and record what you saw. Reinspect the sources and start a clearly named new attempt; don't present an after-run prediction as a before-run prediction.
 
 ## Build the router from a blank canvas
+
+Build the fixed workflow node by node, so every routing rule is visible on the canvas and nothing depends on a hidden setting.
 
 For each added node, click the output **+**, search the node type shown in bold, and select it. This connects the preceding node automatically. Click the node title to rename it, enter the exact name shown, and press Enter. Return to the canvas after setting its fields. To connect existing nodes, drag from the source's right output connector to the destination's left input connector. Check the wire rather than assuming it was added.
 
@@ -186,9 +188,11 @@ From Receipt fields, add **Convert to File** named `Make receipt`. Choose **Conv
 
 ## Preserve the baseline and prepare the independent checker
 
+Save the untouched router as a file you can restore from, and set up a separate checker that compares receipts without trusting the router.
+
 ### 15. Export the original router
 
-Return to Overview, reopen your named router, and inspect Pending rule: `pending_status` must still be Fixed `OPEN`. Return to the canvas. Open the **three-dot menu beside the workflow name** and choose **Export JSON**. Copy the download into `exports/router-baseline.json`. Record the router's name and browser URL in your attempt notes. Keep this exact file unchanged; later exports receive different names.
+Return to Overview, reopen your named router, and inspect Pending rule: `pending_status` must still be Fixed `OPEN`. Return to the canvas. Open the **three-dot menu beside the workflow name** and choose **Export JSON**. Copy the download into `exports/router-baseline.json`. Record the router's name and browser URL in `observations.md`. Keep this exact file unchanged; later exports receive different names.
 
 ![Router menu offers Export JSON while the original graph is still unchanged](figures/m06-n8n-15-baseline-export.png)
 
@@ -208,7 +212,7 @@ Confirm the supplied graph: Upload comparison feeds Keep files and hashes input 
 
 Open **Upload comparison** and copy its **Test URL**. Return to the canvas and click **Execute workflow**. Wait for the form listener, then open that Test URL in another browser tab. In `baseline`, choose `exports/router-baseline.json`; in `actual`, choose the same file. Set `mode` to `file-identity`. Leave `delta` and `expected_sha256` empty. Click **Submit** once.
 
-Return to the checker editor. Open **Compare complete files → Output → Schema** or **JSON**. Require `result: PASS`, `raw_byte_equal: true`, and `identity_check: initial_record_only`. Open **Download report → Output → Binary** and click **Download** for its output file. Copy it to `reports/baseline-original-identity.json`. This report stores the original SHA256 digest, an identifier for the file's bytes. Keep it outside the export, and record its path in your notes.
+Return to the checker editor. Open **Compare complete files → Output → Schema** or **JSON**. Require `result: PASS`, `raw_byte_equal: true`, and `identity_check: initial_record_only`. Double-click the **Download report** node. In the right-hand **OUTPUT** panel, select the **Binary** tab and click **Download** under the file card. Copy it to `reports/baseline-original-identity.json`. This report stores the original SHA256 digest, an identifier for the file's bytes. Keep it outside the export, and record its path in `observations.md`.
 
 ![Initial file-identity report shows PASS and initial_record_only for the original router export](figures/m06-n8n-17-original-hash.png)
 
@@ -216,11 +220,13 @@ Return to the checker editor. Open **Compare complete files → Output → Schem
 
 ## Run and compare the two baseline waves
 
+Produce the two reference receipts under the unchanged policy and prove they agree with each other before any change is made.
+
 For every form run, re-arm its own workflow with **Execute workflow**, wait for the listener, and use the **Test URL from that workflow**. A form tab from another workflow or an earlier restored copy is not interchangeable. If the form says it is not listening, return to the intended editor, re-arm it, and reopen its Test URL. Submit once per execution. Use the current execution's output, not an older node preview.
 
 ### 18. Run and download wave 1 under OPEN
 
-Open your router from Overview. Confirm Pending rule is `OPEN` and your predictions are already saved. Open Upload wave and copy its Test URL. Return to the canvas, click **Execute workflow**, wait for the listener, then open the Test URL. Click **Choose file**, select the unchanged `inputs/wave1.csv`, and click **Submit** once. Return to the editor. Inspect Check batch and Receipt fields outputs: each must contain 80 items. Open **Make receipt → Output → Binary → data → Download**. Copy the downloaded file to `receipts/wave1-baseline.csv`. Record the execution ID, source name, and retained filename.
+Open your router from Overview. Confirm Pending rule is `OPEN` and your predictions are already saved. Open Upload wave and copy its Test URL. Return to the canvas, click **Execute workflow**, wait for the listener, then open the Test URL. Click **Choose file**, select the unchanged `inputs/wave1.csv`, and click **Submit** once. Return to the editor. Inspect Check batch and Receipt fields outputs: each must contain 80 items. Double-click the **Make receipt** node. In the right-hand **OUTPUT** panel, select the **Binary** tab. Under the `data` file card, click **Download**. Copy the downloaded file to `receipts/wave1-baseline.csv`. Record the execution ID, source name, and retained filename.
 
 ![Wave 1 baseline execution reaches Make receipt with a CSV available in Binary output](figures/m06-n8n-18-wave1-baseline.png)
 
@@ -228,7 +234,7 @@ Open your router from Overview. Confirm Pending rule is `OPEN` and your predicti
 
 ### 19. Run and download wave 2 under OPEN
 
-On the same unchanged router, click **Execute workflow** again. Open its current Test URL, choose `inputs/wave2.csv`, and Submit once. Inspect Check batch and Receipt fields for 80 items. Download Make receipt's Binary file and retain it as `receipts/wave2-baseline.csv`. Record this execution separately. Inspect both baseline receipts against the source decisions in your frozen note without resaving the files.
+On the same unchanged router, click **Execute workflow** again. Open its current Test URL, choose `inputs/wave2.csv`, and Submit once. Inspect Check batch and Receipt fields for 80 items. Download Make receipt's Binary file the same way and retain it as `receipts/wave2-baseline.csv`. Record this execution separately. Inspect both baseline receipts against the source decisions in your frozen note without resaving the files.
 
 ![Wave 2 baseline execution shows 80 receipt items and its separate downloadable CSV](figures/m06-n8n-19-wave2-baseline.png)
 
@@ -244,9 +250,11 @@ Open the checker, click **Execute workflow**, and open its Test URL after the li
 
 ## Change one saved value and prove both deltas
 
+Change the single policy value, rerun both waves, and prove the checker sees exactly your predicted changes and nothing else.
+
 ### 21. Save only the intended policy change
 
-Return to your router. Recheck that the original export, original identity report, both baselines, baseline exact report, and frozen predictions are retained. Open Pending rule. Change only its Fixed String value from `OPEN` to `NOT_AUTHORIZED`. Return to Overview and reopen the same router; confirm the new value persisted. Leave the workflow name, every other setting, every wire, and every input unchanged. Record the node, field, old value, and new value in observations.
+Return to your router. Recheck that the original export, original identity report, both baselines, baseline exact report, and frozen predictions are retained. Open Pending rule. Change only its Fixed String value from `OPEN` to `NOT_AUTHORIZED`. Return to Overview and reopen the same router; confirm the new value persisted. Leave the workflow name, every other setting, every wire, and every input unchanged. Record the node, field, old value, and new value in `observations.md`.
 
 ![Pending rule retains the same field and input setting with only its value changed to NOT_AUTHORIZED](figures/m06-n8n-21-one-saved-change.png)
 
@@ -280,13 +288,15 @@ Re-arm the checker. Upload `wave2-baseline.csv`, `wave2-changed.csv`, and the fr
 
 ### 25. Export the changed workflow separately
 
-Open the changed router's **three-dot menu beside the workflow name** and choose **Export JSON**. Retain the download as `exports/router-changed.json`. Keep the baseline export and original digest report untouched. Record the changed router's name, URL, export path, and the two changed execution IDs in observations.
+Open the changed router's **three-dot menu beside the workflow name** and choose **Export JSON**. Retain the download as `exports/router-changed.json`. Keep the baseline export and original digest report untouched. Record the changed router's name, URL, export path, and the two changed execution IDs in `observations.md`.
 
 ![Changed router Export JSON action preserves a separate changed workflow before restoration](figures/m06-n8n-25-changed-export.png)
 
 **Expected:** Both baseline and changed exports exist as distinct files. **Stop:** The destination would replace router-baseline.json. **Recovery:** Cancel the replacement and use the changed filename. If the original was overwritten, stop; a new hash cannot recover the old reference.
 
 ## Restore the preserved baseline and prove both reruns
+
+Put the original router back from the saved export, then prove the restored copy produces the baseline receipts byte for byte.
 
 ### 26. Recheck the original export against its retained digest
 

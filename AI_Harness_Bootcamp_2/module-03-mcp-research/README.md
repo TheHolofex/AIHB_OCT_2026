@@ -2,7 +2,7 @@
 
 Connect an AI assistant to an Obsidian research vault through an MCP server, use it to research a supply problem, judge the handling calls it proposes, and limit the connection so the actions you forbid cannot happen. You finish by disconnecting the server and showing that it is gone.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 3 facilitated hours on Tuesday afternoon, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 You are a staff action officer in Task Force Marlin at Forward Base Brandt. The base's burn-care clinic, Clinic B-2, is running low on burn-dressing cases, and you have been asked what is known about getting 40 cases from Mill Depot to the clinic, what blocks it, and what is still unknown. Forty notes in an Obsidian vault hold the evidence. A partner medical liaison cell has also asked for a short extract, and only the Release Authority may decide what leaves the task force. The case is fictional and stays inside the class.
 

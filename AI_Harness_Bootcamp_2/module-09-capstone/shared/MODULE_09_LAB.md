@@ -15,8 +15,10 @@ Use the verified checkout and Python from [setup](../../module-00-setup/README.m
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-09-capstone"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-09-run" && printf 'RUN=%s\n' "$RUN"
 BASE="$HOME/course-evidence/module-09-$RUN"
 W="$BASE/work"
 E="$BASE/evidence"
@@ -33,6 +35,7 @@ $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolve
 if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
 $M = "$R/AI_Harness_Bootcamp_2/module-09-capstone"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME/course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME/course-evidence/module-09-run" -Value $RUN; "RUN=$RUN"
 $BASE = "$HOME/course-evidence/module-09-$RUN"
 $W = "$BASE/work"
 $E = "$BASE/evidence"
@@ -42,11 +45,51 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; e,f=map(Path,sys.argv[1:]); (f.exists() or f.is_symlink()) and sys.exit('HOLD: received destination exists'); e.mkdir(); print('EVIDENCE',e); print('FRESH DESTINATION',f)" "$E" "$F"
 ```
 
-**Expected:** The preparer creates `W` with nested case, control, baseline, package, and scripts. `E` exists beside it, and the printed fresh destination does not exist yet.
+**Expected:** `RUN=` and this attempt's identifier, then `PASS: created` followed by the work path; ignore the printed `Next` suggestion, because this lab gives the next command. `W` holds nested case, control, baseline, package, and scripts. `E` exists beside it, and the printed received-folder destination does not exist yet.
 
 **Stop:** A destination exists, a prerequisite is missing, or preparation fails.
 
 **Recovery:** Keep the first attempt, correct the prerequisite, and use a new `RUN`. Do not reset the checkout or reuse a partially prepared received folder.
+
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-09-run")"
+M="$R/AI_Harness_Bootcamp_2/module-09-capstone"
+BASE="$HOME/course-evidence/module-09-$RUN"
+W="$BASE/work"
+E="$BASE/evidence"
+F="$BASE/received package"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME/course-evidence/module-09-run" -Raw).Trim()
+$M = "$R/AI_Harness_Bootcamp_2/module-09-capstone"
+$BASE = "$HOME/course-evidence/module-09-$RUN"
+$W = "$BASE/work"
+$E = "$BASE/evidence"
+$F = "$BASE/received package"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
 ## Inspect the authority behind the result
 
@@ -72,7 +115,7 @@ Predict which classes of rows can contribute, which must remain explicit exclusi
 
 ## Check and run the authoring copy
 
-The package has eleven named fields: purpose, bounds, inputs, controls/config identity, run, check, stop, restore, strongest evidence, limitations, and next owner. Complete and confirm them against the sources and your actual work. Identify the exact controls and configuration used, retain unresolved limits, and provide commands the recipient can run from the package alone. The structural check checks the document's required form; it does not operate the package or show whether another person can use it.
+Confirm the package text is correct and produces a result before you freeze anything. The package has eleven named fields: purpose, bounds, inputs, controls/config identity, run, check, stop, restore, strongest evidence, limitations, and next owner. The supplied package already contains all eleven fields. Check each one against the sources and your pre-run notes. Edit only a field that is wrong for this task, and record each edit in `E/pre-run.md` before you freeze the bundle. Identify the exact controls and configuration used, retain unresolved limits, and provide commands the recipient can run from the package alone. The structural check checks the document's required form; it does not operate the package or show whether another person can use it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -89,7 +132,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Package structure held; do not transfer it.' }
 & $PY "$W/scripts/run_close.py" "$W/shared/case/task-practice.json" "$W/shared/case/shipments.csv" "$W/out/result.json" --closures "$W/shared/case/closures.json" --control "$W/shared/controls/run.json"
 ```
 
-**Expected:** The structure check prints `PASS: package structure checked`. The supplied practice operation exits 0 and writes its result. Read the printed quantities and inspect every line and closure disposition, the cited revisions, packet-note treatment, input/control hashes, reasons, and `class_only` in the actual file.
+**Expected:** The structure check prints `PASS: package structure checked`. The practice run then prints five lines, `status: PASS`, `custody_quantity:`, `usable_quantity:`, `shortfall:`, and `class_only: true`, and exits 0. Check each value against `W/out/result.json` and your prediction, and inspect every line and closure disposition, the cited revisions, packet-note treatment, input/control hashes, reasons, and `class_only` in the actual file.
 
 **Stop:** A required field, command, or dependency is missing; the adapter holds malformed input; an output already exists; or the result cannot be reconstructed from the sources.
 
@@ -219,23 +262,17 @@ Open a genuinely new terminal. Enter the exact received-folder path printed abov
 IFS= read -r F
 ```
 
-**Expected:** The command waits for the path and returns after you enter it. It does not search for or choose an attempt for you.
-
-**Stop:** You entered commands, a different attempt, or an uncertain path.
-
-**Recovery:** Repeat only this path entry with the exact printed destination. Do not enter an API key here.
-
 **Terminal: PowerShell, ordinary user, new terminal.**
 
 ```powershell
 $F = Read-Host 'Paste the exact received-folder path, without surrounding quotes'
 ```
 
-**Expected:** `F` contains the explicit received-folder path.
+**Expected:** The terminal waits for one line; after you paste the printed path and press Enter, `F` holds it. The command does not search for or choose an attempt for you.
 
-**Stop:** The path is uncertain or belongs to the authoring copy.
+**Stop:** You pasted a command, a different attempt, or an uncertain path.
 
-**Recovery:** Re-enter the printed destination. Do not select a directory by modification time.
+**Recovery:** Repeat only this entry with the exact printed destination. Do not select a folder by modification time, and do not enter an API key here.
 
 Enter that folder and confirm the package is present.
 
@@ -315,7 +352,27 @@ print('TRANSFER TECHNICAL CHECK PASS: bundle intact; three result files match')
 
 The other person's attempt takes place outside the facilitated hours, so your session ends with the package ready and the attempt arranged. Before you finish, write in `E/transfer-status.md` who will operate the package, where and when, which observations you already have from your own technical rerun, and which are still waiting on that attempt. Until the attempt takes place, independent-person operation stays **unobserved**.
 
-Choose a new, unused external folder for `F`, keeping `W` and the original `E/bundle-before.json`. Repeat [Copy only the frozen members](#copy-only-the-frozen-members) to create that fresh received folder with an empty `out/` directory. Preserve the earlier received copy and its results; do not delete them or copy files back into the checkout.
+Point `F` at a new, unused folder for the recipient, keeping `W` and the original `E/bundle-before.json`. Run this in the authoring terminal, where `W`, `E`, and `BASE` are still set; if you opened a new terminal, use the re-entry block at the top of the page first.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+F="$BASE/received package for recipient"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$F = "$BASE/received package for recipient"
+```
+
+**Expected:** No output. The folder does not exist yet; the copy creates it.
+
+**Stop:** The folder already exists, or `BASE` is empty.
+
+**Recovery:** Use the re-entry block to restore the variables, then choose a name under `BASE` that is not in use.
+
+Repeat [Copy only the frozen members](#copy-only-the-frozen-members) to create that fresh received folder with an empty `out/` directory. Preserve the earlier received copy and its results; do not delete them or copy files back into the checkout.
 
 Give the fresh folder and the supplied task to another person. Let them try the saved instructions first. Ask them to recover the purpose and bounds, run the commands, reconstruct custody and usable quantity from the cited rows, name the human decision still required, show stop and restore, and name the next owner. Record their questions, commands, observed outcomes, and any help you provide in `E/transfer-status.md`.
 

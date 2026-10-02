@@ -63,6 +63,14 @@
       "case_name": "North Shelf",
       "summary": "Direct a bounded task and produce a source-checked internal email.",
       "nav_summary": "Oh My Pi · directing bounded work",
+      "outcomes": {
+        "can": "Give an AI tool one clearly limited writing job, check what it wrote against the source facts yourself, and decide whether the result is fit for its stated internal use.",
+        "will": [
+                "Decide, before the tool runs, what it may draft, what judgment stays with you, and what you refuse to delegate.",
+                "Run a supplied check on the draft, make it fail on purpose, and confirm it can catch a wrong fact.",
+                "Change one input fact, predict what should change in the draft, and confirm that only that changed."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_00_LAB.md", "dest": "shared/MODULE_00_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}},
@@ -102,9 +110,17 @@
       "case_name": "Cold Lantern",
       "summary": "Challenge a polished brief against applicable sources and calculations.",
       "nav_summary": "Source and claim verification",
+      "outcomes": {
+        "can": "Test a polished AI recommendation against its sources and your own arithmetic, and give a supported accept, revise, reject, or hold verdict.",
+        "will": [
+                "Sort each claim into source fact, calculation, inference, or human decision, and trace the deciding claim to its exact source line.",
+                "Set aside misleading or irrelevant sources and say what each one can and cannot prove.",
+                "Predict how one new source should change the result, then revise only the claims that depend on it."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_01_LAB.md", "dest": "shared/MODULE_01_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": []}},
+        {"source": "shared/MODULE_01_LAB.md", "dest": "shared/MODULE_01_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox", "before-you-stop"], "optional_sections": []}},
         {"source": "shared/MISSION_THREAD.md", "dest": "shared/MISSION_THREAD.html", "kind": "reference"},
         {"source": "shared/WHEN_EVIDENCE_BREAKS.md", "dest": "shared/WHEN_EVIDENCE_BREAKS.html", "kind": "reference"}
       ],
@@ -143,9 +159,17 @@
       "case_name": "Ledger Pike",
       "summary": "Save a rule and prove it loaded in a completely fresh session.",
       "nav_summary": "Saved instructions · context control",
+      "outcomes": {
+        "can": "Put a standing rule in a saved file, prove from the run records that it reached the model before the first request in every fresh session, and say exactly what a file screen blocks and what it does not.",
+        "will": [
+                "Map what a run actually received: the request, the sources, the instructions, the tools, the permissions, the starting state, and the evidence.",
+                "Show that an order quoted inside a retrieved note stays data and never becomes release authority.",
+                "Prove the rule loads again in a fresh session, that a run stops when the rule file is missing, and that pasting text into chat skips the screen."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": ["stretch-matched-precedence"]}}
+        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox", "before-you-stop"], "optional_sections": ["stretch-matched-precedence"]}}
       ],
       "figures": [
         {"source": "shared/figures/m02-control-ladder.svg", "dest": "shared/figures/m02-control-ladder.svg"},
@@ -168,9 +192,17 @@
       "case_name": "Kiln Hold",
       "summary": "Research an Obsidian vault through an MCP server; judge the AI's handling calls; limit what the connection can do and prove it.",
       "nav_summary": "MCP operation · classification · limited authority",
+      "outcomes": {
+        "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit it to the folders and actions one phase needs, prove those limits with a probe, and remove the connection with proof that nothing is left.",
+        "will": [
+                "Read a server's self-description and catch a tool whose read-only label is false.",
+                "Check an AI's handling proposals against written rules, after making your own decisions first.",
+                "Narrow the assistant's reach between phases and show that every forbidden action was stopped, even the ones the model never tried."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_03_LAB.md", "dest": "shared/MODULE_03_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_03_LAB.md", "dest": "shared/MODULE_03_LAB.html", "kind": "lab", "guide": {"context_sections": ["class-only-boundary"], "optional_sections": []}}
       ],
       "figures": [
         {"source": "shared/figures/m03-mcp-layers.svg", "dest": "shared/figures/m03-mcp-layers.svg"},
@@ -194,9 +226,17 @@
       "case_name": "Copper Span",
       "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
       "nav_summary": "Failure diagnosis · verified recovery",
+      "outcomes": {
+        "can": "Preserve a hidden failure instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized reversible correction, and prove the recovery holds.",
+        "will": [
+                "Seal the failing result and compare it with a known-good run to locate the fault.",
+                "Run a single probe that tells two competing causes apart.",
+                "Correct or revert once, rerun the focused check and the full check, and confirm the clean condition does not recur."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_04_LAB.md", "dest": "shared/MODULE_04_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": ["stretch-competing-causes-on-a-second-case"]}}
+        {"source": "shared/MODULE_04_LAB.md", "dest": "shared/MODULE_04_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-you-stop"], "optional_sections": ["stretch-competing-causes-on-a-second-case"]}}
       ],
       "figures": [
         {"source": "shared/figures/m04-boundaries.svg", "dest": "shared/figures/m04-boundaries.svg"},
@@ -223,9 +263,17 @@
       "case_name": "Blue Gauge",
       "summary": "Turn observed practice failures into one precise control and check its limits.",
       "nav_summary": "Derive and check bounded controls from failures",
+      "outcomes": {
+        "can": "Turn observed failures into one bounded, mechanically checkable rule, configure that rule in a supplied control, and measure what it still misses.",
+        "will": [
+                "Freeze a sample of runs before you see any outcome, then record each failure before you group them.",
+                "Derive one category conclusion that the counts actually support.",
+                "Write the rule as exact literals, prove it on known-bad, known-good, and missing-input cases, and record its false positives and false negatives."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
+        {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox", "before-you-stop"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
       ],
       "figures": [
         {"source": "shared/figures/m05-first-failure.svg", "dest": "shared/figures/m05-first-failure.svg"},
@@ -249,6 +297,14 @@
       "case_name": "White Rack",
       "summary": "Build a visual workflow, prove one policy change across both batches, and restore it.",
       "nav_summary": "Visual workflows · exact comparison and restoration",
+      "outcomes": {
+        "can": "Build a fixed visual batch workflow that routes every record by explicit rules, predict exactly which records one saved rule change will alter, prove nothing else changed, and restore the original workflow from a saved copy.",
+        "will": [
+                "Connect checking, ordered routing, rejoining, and sorting into one saved n8n workflow that accounts for every row.",
+                "Write down, before running anything, which rows a one-value policy change will alter, then prove the before-and-after files match that prediction and nothing else.",
+                "Confirm your saved copy by its fingerprint, rebuild the workflow from it in a blank canvas, and reproduce both original results byte for byte."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -313,6 +369,14 @@
       "case_name": "Slope Brief",
       "summary": "Compare a proposed change against frozen cases, hard gates, and model variation.",
       "nav_summary": "Change evaluation · model variation",
+      "outcomes": {
+        "can": "Decide whether a proposed change is safe to adopt by fixing your rejection rule before you see any result, comparing it case by case against the current version, and proving you can put the current version back.",
+        "will": [
+                "Write down which failures reject a change, and freeze the exact files under test, before opening any candidate output.",
+                "Compare two candidates with the baseline on the same cases and trace every failure to its source record, without letting an average hide a single violation.",
+                "Restore the baseline from stored fingerprints and show the rerun matches byte for byte."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -343,6 +407,14 @@
       "case_name": "Night Desk",
       "summary": "Run a declared tool policy and inspect what the agent actually attempted.",
       "nav_summary": "Agent tool policies · observed enforcement",
+      "outcomes": {
+        "can": "Show, from records rather than the agent's own words, what one AI agent actually tried to do and what stopped it.",
+        "will": [
+                "Freeze a written permission list before the agent runs and check that its real tool use matched it.",
+                "Tell apart an action blocked by the guard, one rejected by the agent program, and one the agent never tried.",
+                "State exactly which actions and folders your evidence covers and which risks remain with a named person."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
@@ -360,6 +432,14 @@
       "case_name": "Last Count",
       "summary": "Transfer work another person can run, stop, and restore without your chat history.",
       "nav_summary": "Runnable handoff · independent operation",
+      "outcomes": {
+        "can": "Hand saved work to another person who can run, stop, and restore it without you or your chat history.",
+        "will": [
+                "Assemble only the files and instructions the task needs, and freeze them.",
+                "Prove the package runs, stops, and restores from a fresh folder in a new terminal.",
+                "Keep your own rerun separate from another person's attempt, and record their questions and any help as evidence for the next version."
+        ]
+      },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_09_LAB.md", "dest": "shared/MODULE_09_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
