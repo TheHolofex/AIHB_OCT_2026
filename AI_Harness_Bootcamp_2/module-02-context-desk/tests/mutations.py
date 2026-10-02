@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Mutation corpus: each item must make test_module_02.py FAIL its named cid."""
-
-from __future__ import annotations
-
-import re
+"""Applied behavioral defects in disposable module copies only."""
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -16,40 +12,23 @@ class Mutation:
     apply: Callable[[Path], None]
 
 
-def append(rel: str, text: str) -> Callable[[Path], None]:
-    def go(root: Path) -> None:
-        p = root / rel
-        p.write_text(p.read_text(encoding="utf-8") + text, encoding="utf-8")
-
-    return go
-
-
-
-def flip_ref_hash(root: Path) -> None:
-    p = root / "reference/REFERENCE.sha256"
-    text = p.read_text(encoding="utf-8")
-    if not text or text[0] not in "0123456789abcdefABCDEF":
-        raise AssertionError("REFERENCE.sha256 missing a leading hex digit")
-    flipped = format(int(text[0], 16) ^ 0xF, "x")
-    if text[0].isupper():
-        flipped = flipped.upper()
-    p.write_text(flipped + text[1:], encoding="utf-8")
+def replace(old, new, relative='scripts/second_brain.py'):
+    def apply(root):
+        path = root / relative
+        value = path.read_text()
+        if value.count(old) != 1:
+            raise AssertionError(f'mutation target must occur once: {old!r}')
+        path.write_text(value.replace(old, new))
+    return apply
 
 
-
-def neuter_guard(root: Path) -> None:
-    p = root / "shared/case/guard.py"
-    text = p.read_text(encoding="utf-8")
-    new, n = re.subn(r"return 0 if ok else 1", "return 0", text)
-    if n == 0:
-        raise AssertionError("guard exit expression not found")
-    p.write_text(new, encoding="utf-8")
-
-
-MUTATIONS: list[Mutation] = [
-    Mutation("M2-REF", "flip first hex digit of REFERENCE.sha256", flip_ref_hash),
-    Mutation("M2-GUARD", "force screen to accept every file", neuter_guard),
-    Mutation("M2-INDEP", "leak S07_ into README.md", append("README.md", "\nS07_\n")),
-    Mutation("M2-BAN", "leak 246 kg into README.md", append("README.md", "\n246 kg\n")),
-    Mutation("M2-TOKEN", "leak VERIFY: into README.md", append("README.md", "\nVERIFY:\n")),
+MUTATIONS = [
+    Mutation('M2-GUARD', 'accept hostile screened input', replace('return 0 if ok else 1', 'return 0', 'shared/case/guard.py')),
+    Mutation('M2-SOURCE', 'trust changed source copy', replace("require(not changed, 'source identity changed/added/missing: ' + ', '.join(str(root / p) for p in changed) + '\\n' + '\\n'.join(originals))", "require(True, 'source identity changed/added/missing: ' + ', '.join(str(root / p) for p in changed) + '\\n' + '\\n'.join(originals))")),
+    Mutation('M2-REVIEW', 'accept substituted immutable reason', replace("require(receipt['reason_text'].strip() and digest(receipt['reason_text'].encode()) == receipt['reason_sha256'], 'immutable review reason differs')", "require(True, 'immutable review reason differs')")),
+    Mutation('M2-LINKS', 'admit dangling Knowledge relationship', replace("require(safe(work / 'vault/Knowledge' / (target + '.md')).is_file(), f'{path.name}: missing Knowledge/{target}.md')", "require(True, f'{path.name}: missing Knowledge/{target}.md')")),
+    Mutation('M2-FREEZE', 'return success on snapshot mismatch', replace("raise ValueError('snapshot changed/added/missing: ' + ', '.join(bad))", 'return manifest')),
+    Mutation('M2-REVISION', 'allow unchanged focal content', replace("require(f'Knowledge/{focus}.md' in changed, 'focus_note must be a changed or new Knowledge note')", "require(True, 'focus_note must be a changed or new Knowledge note')")),
+    Mutation('M2-PRESERVE', 'consume recoverable no-provider preflight reservation', replace('        marker.unlink()', '        pass  # defective reservation retention')),
+    Mutation('M2-RECEIPT', 'count duplicate reads as packet coverage', replace("require(reads == {n + '.md' for n in DN}, 'ingest must read forty distinct DN files')", "require(True, 'ingest must read forty distinct DN files')")),
 ]

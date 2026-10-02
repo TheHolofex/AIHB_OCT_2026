@@ -2,80 +2,65 @@
 
 ## Session result
 
-The learner places one saved rule, maps what actually loaded, predicts that the hostile note is data, runs the supplied screen on a clean note and hostile notes, loads the rule through the harness launcher and observes the instruction_loaded receipt with matching hashes before the first provider request, runs a fresh second session with identical load identity, tests the negative case for a missing rule file, and states the remaining bypass.
+The learner builds and controls a reusable second brain: source-backed Knowledge with useful relationships, explicit saved-rule load proof, human admission, and a fresh knowledge-only run. One substantive audit finding leads to reviewed content changes and a new cold run. This exercise is ungraded and supports only fictional internal class review.
 
-Desk knowledge outside the packet is not tested. If learners need facts that are not in the packet, the case is defective.
+Use the staff [reference](../reference/REFERENCE.md) for semantics and reuse provenance. Keep it out of public pages, prepared copies, prompts, and model roots. Do not seed a completed graph or staff answer into learner templates.
 
-**What the harness changes:** the launcher appends the saved rule through --append-system-prompt and the course_guard extension inspects ctx.getSystemPrompt() for the exact trimmed text, emits the instruction_loaded receipt with file_sha256 and loaded_text_sha256 before any provider_request, and the measurement prompt forces course_read on every DN-001 through DN-040 so the harness actually processes the pile.
+## Before the session
 
-## Before class
+Confirm the existing Python/OMP setup and actual Obsidian readiness separately. WSL uses Linux Obsidian under WSLg on the existing Linux-home work files. Missing GUI readiness is an Obsidian HOLD, not permission to move the vault to a Windows UNC path or reset the environment.
 
-1. Run `python3 shared/case/guard.py shared/case/DN-003.md` from the Module 2 directory and confirm exit 0.
-2. Run the same command on `shared/case/DN-014.md` and confirm exit 1.
-3. Confirm `shared/controls/SAVED_INSTRUCTION.md` contains the current rule text.
-4. Put protected notes and the deciding screen outside the learner repository and model context.
-5. Confirm the learner's environment can copy a folder and run `python3`.
-7. Confirm the learner can reach the shared run_omp.py launcher from the checkout.
+Confirm the approved helper is copied by preparation, all forty unchanged sources are present, templates are blank, and fresh external W/E siblings are used. The saved rule is outside both model roots. Use only authorized provider setup; never look up credentials or invent a successful run. Keep failed attempts. Do not substitute fixture receipts for live evidence.
 
-## Three-hour route
+The file-screen observations are DN-003 exit 0; DN-014/015/016 exit 1 for hostile wording; deliberately absent DN-000 exit 1 for missing input. Teach the distinction once: this screen detects patterns, the saved instruction guides the model, and the tool read root enforces accessible paths. Human admission selects reusable claims. None grants real movement authority.
 
-| Time | Facilitator action | Learner result |
+## Planning allocation
+
+| Minutes | Work | Observable result |
 |---|---|---|
-| 0:00–0:20 | Introduce the desk, class-only boundary, and the pile | Learner can name clean ticket versus hostile note |
-| 0:20–0:45 | Learner maps resolved state | Direction, sources, saved instruction, screen, evidence named |
-| 0:45–1:00 | Learner writes the prediction | Hostile note predicted as data before any screen run |
-| 1:00–1:40 | Learner runs the screen | Clean note accepted; hostile note rejected |
-| 1:40–2:20 | Learner loads the rule and inspects the receipt | instruction_loaded appears before provider_request with matching hashes |
-| 2:20–2:40 | Learner runs a second fresh session | Load hashes match; answer is identical |
-| 2:40–2:55 | Learner tests negative load | Missing rule stops before contact; run is restored |
-| 2:55–3:00 | Collect the handoff | Reconstruction without coaching, or `HOLD` |
+| 0–15 | Orientation | Learner understands the knowledge task and fictional boundary |
+| 15–30 | Walkthrough | Editable vault and separate source/cold read roots are clear |
+| 30–40 | Practice: setup/open, 10 minutes | Exact W/vault opened in Obsidian |
+| 40–55 | Practice: source pass, 15 minutes | Controls inspected; forty-source ingest and proposal report |
+| 55–90 | Practice: review/link/admit, 35 minutes | Human-prepared Knowledge, useful existing-file links, MOC, short reasons, matching admissions |
+| 90–105 | Practice: first cold run, 15 minutes | v1 frozen; fresh retrieval with rule/read evidence |
+| 105–135 | Practice: audit/improve/retest, 30 minutes | Substantive focal edit, all changed notes reviewed, v2 prepared, expected effect recorded |
+| 135–150 | Practice: missing-rule/identity/close, 15 minutes | Negative prerequisite stops; restored v2 run, actual effect and preserved v1 checked |
+| 150–180 | Discussion, 30 minutes | Evidence, useful relationships, remaining limits, bounded internal-use decision |
 
-## Coaching boundary
+Total: 180 facilitated minutes including 120 practice minutes. These are design allocations, not measurements. The positive v2 run follows missing-rule restoration so it also proves the restored rule works.
 
-You may:
+## Observe the human work
 
-- define a term already stated in the packet;
-- point to the current step or file;
-- help open a file or run a supplied command;
-- ask the learner to state which file loaded.
+Watch the learner open original source links and compare support, stale records, and missing authority. Source checking is a quality bar already practiced in Module 01; saved instructions/load evidence are newly taught here. Help with the mechanics without supplying the decisions.
 
-You may not supply:
+Watch a Draft appear from an external helper write. Have the learner use Source mode to copy meaningful Markdown characters into Evidence. Ordinary Reading-view copy may lose characters. A source line beginning with `>` retains that literal marker after the added quotation marker. The helper derives locators/hashes; learners do not write JSON or YAML.
 
-- the prediction that the hostile note is data;
-- the expected exit status for any note;
-- the wording of the remaining bypass;
-- an edited screen; or
-- the handoff verdict.
+The learner creates and populates target Knowledge notes before adding clickable Related links. When using the blank note template, replace its bare first-line `#` with `# ` followed by the learner's chosen title. The exact link path is Knowledge/KB-NNN, not the Draft twin. MOC starts with `# ` followed by a title; each subsequent nonblank line is one `- [[Knowledge/KB-NNN|label]]` entry. No answer prose, subheadings, numbered bullets, or trailing text belongs there. If an empty note was accidentally created, have the learner inspect it and either remove that empty note or complete/review it in Obsidian. Do not delete it for them or silently admit it.
 
-If you cross that line, mark the work as guided practice. Select the examples yourself when you ask a learner to defend a map row.
+Check that relationship labels explain a useful connection and MOC remains navigation. Short reason notes record a decisive reason, competing DN where relevant, and a remaining limit without duplicating the full note. Finish links before review; later edits require fresh admission. Observe an edit saved to disk and a close/reopen. Machine receipts alone cannot establish human authorship or GUI use; label an automation pilot as automation.
 
-## Domain-overload check
+## Interpret outcomes separately
 
-Stop and inspect the case—not the learner—when:
+- **Prerequisite HOLD:** exit 2 and no evidence for unavailable prerequisites. Ingest may retry manually in the same W only after its preflight-only record and reservation release. Missing saved instruction must stop before contact and evidence creation.
+- **Runtime-proof HOLD:** failed audit, wrong rule/root/prompt, incomplete distinct source reads, changed inputs, effects, or forbidden successful reads. Stop and preserve evidence. Do not proceed on answer plausibility.
+- **Per-proposal HOLD:** runtime proof passed, but a proposal is invalid. Keep independently valid Drafts. Invalid unstaged proposals have entries only in `W/reviews/ingest-report.json`; that is their machine defect record. Do not invoke `review --decision reject` against a nonexistent Draft. An existing staged Draft may be rejected even if its citations are invalid or its text has been edited. The learner repairs or authors Markdown Knowledge without another paid ingestion.
+- **Top-level response format HOLD:** runtime proof passed, but response parsing failed before staging or report creation. No Drafts or `ingest-report.json` exist. Inspect the terminal HOLD, preserved `E/ingest/response.md`, and runtime evidence. Once runtime proof is established, have the learner author replacement Knowledge from the blank Markdown template without another paid ingestion. Runtime-proof failure means stop.
+- **Admission/freeze HOLD:** exact bytes lack review, sources/links are invalid, navigation is incomplete, a note is empty, or a revision would delete Knowledge. Missing admissions produce full Bash/zsh and PowerShell commands naming each affected note. Before running the appropriate command, the learner must create and fill its reason file or replace `--reason-file` with the actual reason path under `vault/Reviews`. Follow the named condition; never rewrite receipts or renew approval silently.
+- **Semantic gap:** a structurally valid run may truthfully report unsupported evidence or omit an important qualification. Use this for substantive audit. Do not label it a runtime failure or fabricate missing evidence.
 
-- more than two learners ask for the same unstated yard fact;
-- domain explanation exceeds 15 minutes;
-- learners cannot explain “data versus instruction” in ordinary language; or
-- reviewers cannot attribute a miss to context control rather than depot knowledge.
+A completed ingest with evidence consumes its attempt even when it fails. New ingestion needs new W/E. No automatic paid retries or provider/model substitution. The helper starts a new process for each retrieval. A directory listing does not establish a file read. Report EXECUTED, ALLOWED_ABSENT, DENIED, and NOT_ATTEMPTED literally; no live boundary probe is required. DENIED includes a guard refusal or a runtime rejection of an unavailable tool before the guard runs. The latter has a runtime rejection but no guard decision row; it is valid only if the shared audit passes.
 
-Record the issue and revise the adapter before the next cohort.
+## Staff content review
 
-## `HOLD` conditions
+Use the exact source checks in REFERENCE.md. Q1 must distinguish current DN-014 height 0.92 m at 10:48 from stale DN-037 height 0.80 m and avoid release/assignment authority. Q2 must separate DN-028's unsigned quality/unassigned vehicle, DN-005's received but unapproved permit, and DN-040's unstamped crate at 12:15. Q3 must distinguish DN-003 paper at 11:40 from authority and DN-006 gate closure at 11:55 before the decision. Do not expose this paragraph as a learner answer key.
 
-Use `HOLD` when a decisive note, accessible view, screen, or reload path is missing or compromised; the producer can edit the deciding screen; the hostile note is treated as an instruction; the load receipt is missing or does not match; a negative load does not stop before contact; or the learner attempts consequential use.
+Each material answer cites an actually read Knowledge note and matching DN/excerpt. Check the underlying source yourself outside the cold runtime. No source link in frozen Knowledge permits raw-source access by the model.
 
-A well-documented `HOLD` can complete practice. It does not satisfy the module requirements.
+## Audit and close
 
-## Collect
+Require a focal Knowledge note and a substantive weakness, before/after, expected effect, and observed effect. A meaningful qualification or counter-source is valid even if v1 was correct. Cosmetic edits do not suffice. Review all changed notes, including reciprocal links, before freezing v2 with previous identity and focus note. The helper proves reviewed byte changes and focal read/citation; the human judges improvement. Unchanged correct answer wording is an honest outcome.
 
-- resolved-state map;
-- prediction;
-- screen outputs;
-- guard.jsonl (or the load receipt excerpt);
-- second-session comparison;
-- negative-load evidence;
-- bypass statement;
-- handoff; and
-- result or reason for `HOLD`.
+The missing-rule route renames only the work-copy rule, requires exit 2/no provider/no evidence, then restores identical bytes. Use cold-v2 for the positive. Check v1 still passes after legitimate edits to live Knowledge, reasons, and Obsidian state. A remaining substantive gap requires another reviewed revision/fresh run, not overwriting v1/v2 or retrying unchanged questions.
 
-Do not collect credentials, private local files, outside operational details, or model chat history unrelated to the case.
+Retain context map, screen predictions/observations, Knowledge and MOC, human reasons, immutable admission records, both identities/snapshots, actual run evidence, focal audit, missing-rule observation, and bounded internal-use decision. Separate runtime completion, provenance, semantic judgment, and actual human/desktop observation. Record an unresolved HOLD without presenting it as complete mastery. Do not collect credentials or unrelated personal files.

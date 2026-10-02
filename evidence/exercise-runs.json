@@ -3276,5 +3276,63 @@
     "Module08 inside positive created its permitted parent directory plus the declared file; typed snapshots separated this from unauthorized extra outputs.",
     "Browser command comparison was restricted to shell-command blocks rather than prose templates.",
     "Browser clipboardRead revoked clipboard-write permission; joint local permissions and native clipboard reading verified actual Copy buttons without a course patch."
-  ]
+  ],
+  "module02_obsidian_revision": {
+    "run_id": "module02-obsidian-20261002T060403Z",
+    "evidence_root": "$HOME/course-evidence/module02-obsidian-20261002T060403Z",
+    "scope": "Automated maintainer implementation and local smoke evidence; not learner timing, human judgment, or live-provider evidence. Historical observations above are unchanged.",
+    "acceptance": "blocked",
+    "branch": "feat/module02-obsidian",
+    "base_commit": "d11979bad4915ae38467d937865a9d5ca649b818",
+    "offline": {
+      "module02_criterion_groups": 8,
+      "module02_mutations_killed": 8,
+      "module02_mutation_survivors": 0,
+      "module00_quick_checks_passed": 15,
+      "obsidian_readiness_tests_passed": 17,
+      "module02_command_blocks_parsed": 28,
+      "command_parser_scope": "Bash, zsh, and PowerShell 7 on macOS; not native Windows execution",
+      "transcript": "module02-oracle-adequacy-corrected.txt",
+      "full_integrated_course_gate": "not run; publication and supply contracts await the concurrent owner's committed main changes"
+    },
+    "desktop": {
+      "host": "Darwin 25.6 arm64",
+      "obsidian": "1.13.7",
+      "installation": "Checksum-verified official DMG in a task-owned location with a separate user-data directory; no existing installation replaced",
+      "readiness": "Observed actual Electron link navigation, editor save, external token refresh, close/reopen, matching disk checks, Restricted mode, and inactive Sync",
+      "record": "readiness-desktop-observations.json",
+      "other_gui_lanes": "Native Windows, WSLg, Intel macOS, Ubuntu, and Arch unobserved"
+    },
+    "knowledge_smoke": {
+      "scope": "Private offline attempt; helper manually copied while prepare_work.py integration is owner-blocked. No ingest or retrieval provider call.",
+      "observed": [
+        "Initialized forty source notes without changing the packet",
+        "Created source-backed Knowledge, review reasons, and MOC through actual Obsidian editor interaction",
+        "Followed MOC to Knowledge to the original source and observed a clearly labelled synthetic external draft appear",
+        "Admitted and froze v1, then added a substantive gate-closure qualification in Obsidian",
+        "Freeze held on edited, unreviewed bytes with the named note and runnable review commands",
+        "Renewed admission, froze v2 with focus KB-001, and checked v1 and v2 successfully",
+        "Missing-rule retrieve returned 2 without evidence creation; identical rule bytes restored",
+        "A disposable changed cold snapshot failed with the named Knowledge path; original v1 remained valid"
+      ],
+      "records": ["offline-smoke/revision-proof.json", "offline-smoke/negative-proof.json"]
+    },
+    "live_provider": {
+      "status": "blocked",
+      "paid_calls": 0,
+      "reason": "Authorized masked key input requested in a task-owned terminal; input not yet completed",
+      "task_local_omp": "18.3.5",
+      "existing_default_omp": "18.4.9 preserved",
+      "provider_model": "openrouter/anthropic/claude-sonnet-4.6"
+    },
+    "remaining_acceptance": [
+      "Concurrent owner commits overlapping setup, progression, preparation, and publication changes",
+      "Integrate those committed changes and complete all blocked owning-file updates",
+      "Run the full offline gate and actual generated-site wide/narrow, themes, keyboard, downloads, no-JavaScript, and print proof",
+      "Collect serial live ingest and fresh cold retrieval evidence with the authorized key",
+      "Obtain final integrated independent review closure and fast-forward main"
+    ],
+    "main_merged": false,
+    "pushed_or_deployed": false
+  }
 }

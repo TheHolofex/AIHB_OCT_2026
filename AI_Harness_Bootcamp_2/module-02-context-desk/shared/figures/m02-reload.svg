@@ -1,7 +1,7 @@
 <!-- GENERATED from resources/figures; edit the JSON spec, not this plate. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 280" width="1120" height="280" role="img" aria-labelledby="m02-reload-title m02-reload-desc">
-  <title id="m02-reload-title">Load the rule, exit, load again in a fresh session</title>
-  <desc id="m02-reload-desc">Load the saved rule through the launcher. Exit completely. Start a new evidence directory. Load the same rule again. The load receipt must match.</desc>
+  <title id="m02-reload-title">Build, freeze, retrieve, improve</title>
+  <desc id="m02-reload-desc">Read the sources once. Review proposals into Knowledge. Freeze admitted content. Retrieve in a fresh session. Repair a substantive weakness and repeat with a new revision.</desc>
   <style>
     text { font-family: Inter, "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; fill: #0A0A0A; }
     .eyebrow, .step, .micro { font-size: 14px; font-weight: 650; letter-spacing: 1.7px; }
@@ -13,26 +13,31 @@
   </style>
   <rect width="1120" height="280" fill="#FFFFFF" />
   <path d="M 0 0 H 1120" stroke="#0A0A0A" stroke-width="4" />
-  <text class="eyebrow" x="36" y="35">RELOAD</text>
-  <text class="figure-title" x="36" y="62" text-anchor="start"><tspan x="36" dy="0">Load the rule, exit, load again in a fresh session</tspan></text>
+  <text class="eyebrow" x="36" y="35">KNOWLEDGE</text>
+  <text class="figure-title" x="36" y="62" text-anchor="start"><tspan x="36" dy="0">Build, freeze, retrieve, improve</tspan></text>
   <defs><marker id="m02-reload-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#E31C23" /></marker></defs>
-  <rect x="36" y="102" width="236.5" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
+  <rect x="36" y="102" width="182.4" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
   <text class="step" x="52" y="126">01</text>
-  <text class="label" x="52" y="155" text-anchor="start"><tspan x="52" dy="0">Load rule</tspan></text>
-  <text class="body" x="52" y="196" text-anchor="start"><tspan x="52" dy="0">via --instruction</tspan></text>
-  <path d="M 277.5 168 H 298.5" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
-  <rect x="306.5" y="102" width="236.5" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
-  <text class="step" x="322.5" y="126">02</text>
-  <text class="label" x="322.5" y="155" text-anchor="start"><tspan x="322.5" dy="0">Exit</tspan></text>
-  <text class="body" x="322.5" y="196" text-anchor="start"><tspan x="322.5" dy="0">no chat memory</tspan></text>
-  <path d="M 548 168 H 569" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
-  <rect x="577" y="102" width="236.5" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
-  <text class="step" x="593" y="126">03</text>
-  <text class="label" x="593" y="155" text-anchor="start"><tspan x="593" dy="0">Fresh evidence dir</tspan></text>
-  <text class="body" x="593" y="196" text-anchor="start"><tspan x="593" dy="0">new session</tspan></text>
-  <path d="M 818.5 168 H 839.5" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
-  <rect x="847.5" y="102" width="236.5" height="132" rx="2" fill="#FAFAF8" stroke="#A58650" />
-  <text class="step" x="863.5" y="126">04</text>
-  <text class="label" x="863.5" y="155" text-anchor="start"><tspan x="863.5" dy="0">Load again</tspan></text>
-  <text class="body" x="863.5" y="196" text-anchor="start"><tspan x="863.5" dy="0">identical receipt</tspan></text>
+  <text class="label" x="52" y="155" text-anchor="start"><tspan x="52" dy="0">Sources</tspan></text>
+  <text class="body" x="52" y="196" text-anchor="start"><tspan x="52" dy="0">Read into Draft</tspan><tspan x="52" dy="19">proposals</tspan></text>
+  <path d="M 223.4 168 H 244.4" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
+  <rect x="252.4" y="102" width="182.4" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
+  <text class="step" x="268.4" y="126">02</text>
+  <text class="label" x="268.4" y="155" text-anchor="start"><tspan x="268.4" dy="0">Review</tspan></text>
+  <text class="body" x="268.4" y="196" text-anchor="start"><tspan x="268.4" dy="0">Human Knowledge</tspan><tspan x="268.4" dy="19">admission</tspan></text>
+  <path d="M 439.8 168 H 460.8" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
+  <rect x="468.8" y="102" width="182.4" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
+  <text class="step" x="484.8" y="126">03</text>
+  <text class="label" x="484.8" y="155" text-anchor="start"><tspan x="484.8" dy="0">Freeze</tspan></text>
+  <text class="body" x="484.8" y="196" text-anchor="start"><tspan x="484.8" dy="0">MOC and reviewed notes</tspan></text>
+  <path d="M 656.2 168 H 677.2" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
+  <rect x="685.2" y="102" width="182.4" height="132" rx="2" fill="#FFFFFF" stroke="#D0D0D0" />
+  <text class="step" x="701.2" y="126">04</text>
+  <text class="label" x="701.2" y="155" text-anchor="start"><tspan x="701.2" dy="0">Cold run</tspan></text>
+  <text class="body" x="701.2" y="196" text-anchor="start"><tspan x="701.2" dy="0">Fresh knowledge-only</tspan><tspan x="701.2" dy="19">reads</tspan></text>
+  <path d="M 872.6 168 H 893.6" fill="none" stroke="#E31C23" stroke-width="2" marker-end="url(#m02-reload-arrow)" />
+  <rect x="901.6" y="102" width="182.4" height="132" rx="2" fill="#FAFAF8" stroke="#A58650" />
+  <text class="step" x="917.6" y="126">05</text>
+  <text class="label" x="917.6" y="155" text-anchor="start"><tspan x="917.6" dy="0">Repair</tspan></text>
+  <text class="body" x="917.6" y="196" text-anchor="start"><tspan x="917.6" dy="0">Review and freeze again</tspan></text>
 </svg>

@@ -48,6 +48,15 @@ def failing(results: list[oracle.Result]) -> set[str]:
 
 
 def main() -> int:
+    # Exercise the public readiness CLI once, outside the legacy prose-mutation
+    # loop. These synthetic disk checks do not establish desktop GUI readiness.
+    readiness = subprocess.run(
+        [sys.executable, str(MODULE / "tests/test_obsidian_readiness.py")],
+        cwd=MODULE, capture_output=True, text=True, timeout=180,
+    )
+    print(readiness.stdout, end="")
+    print(readiness.stderr, end="", file=sys.stderr)
+    readiness_ok = readiness.returncode == 0
     print("=" * 78)
     print("1. The module against the oracle")
     print("=" * 78)
@@ -58,7 +67,7 @@ def main() -> int:
     print(f"\n  {len(live) - len(live_fail)} PASS / {len(live_fail)} FAIL")
 
     if "--quick" in sys.argv:
-        return 1 if live_fail else 0
+        return 0 if not live_fail and readiness_ok else 1
 
     print()
     print("=" * 78)
@@ -111,11 +120,13 @@ def main() -> int:
         print(f"C6 PASS — all {len(MUTATIONS)} mutations caught; every criterion is proven to fail")
 
     print()
-    if live_fail:
+    if not readiness_ok:
+        print("MODULE HOLD — Obsidian readiness CLI behavior failed")
+    elif live_fail:
         print(f"MODULE HOLD — {len(live_fail)} criteria failing: {sorted(live_fail)}")
     elif ok:
         print("MODULE PASS — every criterion passes, and every criterion is proven able to fail")
-    return 0 if (not live_fail and ok) else 1
+    return 0 if (not live_fail and ok and readiness_ok) else 1
 
 
 if __name__ == "__main__":
