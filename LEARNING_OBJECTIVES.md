@@ -25,11 +25,11 @@ Using source verification and bounded direction, the learner maps the model's co
 **Evidence:** resolved-context map; system-prompt inspection receipt with raw-file and normalized-text hashes; factual extraction without release authority; clean/hostile screen results; two fresh-session receipts; negative missing-rule attempt; and named manual-paste limitation.
 **Owner:** Module 02
 
-## PO-03 — Decide responsible release and operate bounded tools
+## PO-03 — Operate MCP tools under limited authority
 
-The learner makes a contextual release decision covering privacy/security, copyright/IP, fairness/bias, transparency/disclosure, affected-person impact and recourse, and human accountability including their combined effect; and operates a supplied safe capability at the least authority the work needs, proving containment under untrusted content and proving removal.
+Using verified sources and a placed guard, the learner connects a supplied MCP server to the harness, uses it for AI-assisted research in an Obsidian vault, judges the assistant's handling classifications against stated rules, and limits the connection so named forbidden actions cannot happen, proving each limit and then proving removal.
 
-**Evidence:** decision-branch record with per-concern contextual evidence; raw reach/authority inventory, composed untrusted-content and tool-authority negative, approval result, useful bounded action, and revocation proof.  
+**Evidence:** the server's contract inspection with the learner's reading of it; a declared authority that matches the server's arguments; a probe of the unbounded connection that breaches and probes of each bounded phase that hold; six frozen calibration decisions and a forty-note handling register that sets the AI's proposals beside the final decisions; a partner extract that cites only cleared notes; a revoked run that was offered no tool; and the verifier's joined result.  
 **Owner:** Module 03
 
 ## PO-04 — Diagnose and recover

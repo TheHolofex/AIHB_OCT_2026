@@ -23,7 +23,7 @@ const work=path.join(base,"work"); fs.mkdirSync(work);
 const outside=path.join(base,"work-sibling"); fs.mkdirSync(outside);
 fs.writeFileSync(path.join(work,"source.txt"),"custody, not release");
 fs.writeFileSync(path.join(outside,"sentinel.txt"),"unchanged");
-const policy={schema_version:1,run_id:"synthetic-test",work_root:work,profile:"write_root",tools:["course_read","course_write"],write_files:[],write_root:"artifacts",provider:"openrouter",model:"anthropic/claude-sonnet-4.6",omp_version:"omp/18.3.5",prompt_sha256:"test",instruction:null,declaration:null,hash_tool:null,python:"python3.12",guard_source_sha256:digest(fs.readFileSync(''' + json.dumps(str(GUARD)) + ''')),guard_log:path.join(base,"guard.jsonl"),watch_paths:[]};
+const policy={schema_version:1,run_id:"synthetic-test",work_root:work,profile:"write_root",tools:["course_read","course_write"],write_files:[],write_root:"artifacts",provider:"openrouter",model:"anthropic/claude-sonnet-4.6",omp_version:"omp/18.3.5",prompt_sha256:"test",instruction:null,declaration:null,python:"python3.12",guard_source_sha256:digest(fs.readFileSync(''' + json.dumps(str(GUARD)) + ''')),guard_log:path.join(base,"guard.jsonl"),watch_paths:[]};
 fs.writeFileSync(path.join(base,"runtime-config.yml"),"{}\\n");
 policy.runtime_config_sha256=digest(fs.readFileSync(path.join(base,"runtime-config.yml")));
 const policyFile=path.join(base,"policy.json");
@@ -31,7 +31,7 @@ const tools=new Map(), handlers=new Map(); let active=[], aborted=false;
 const pi={zod:{object:x=>x,string:()=>({})},registerTool:t=>tools.set(t.name,t),on:(name,handler)=>handlers.set(name,handler),getAllTools:()=>[...tools.values()],setActiveTools:async names=>{active=[...names]},getActiveTools:()=>active};
 const ctx={model:{provider:"openrouter",id:"anthropic/claude-sonnet-4.6"},abort:()=>{aborted=true},getSystemPrompt:()=>["base"]};
 function start(){fs.writeFileSync(policyFile,JSON.stringify(policy));process.env.COURSE_GUARD_POLICY=policyFile;guard(pi);}
-async function ready(){await handlers.get("session_start")({},ctx);await handlers.get("before_agent_start")({},ctx);await handlers.get("before_provider_request")({},ctx);}
+async function ready(payload){await handlers.get("session_start")({},ctx);await handlers.get("before_agent_start")({},ctx);await handlers.get("before_provider_request")({payload},ctx);}
 async function call(name,args,id="call-1"){const block=await handlers.get("tool_call")({toolName:name,input:args,toolCallId:id},ctx);if(block?.block)return block;return tools.get(name).execute(id,args,undefined,undefined,ctx);}
 ''' + scenario, encoding="utf-8")
             result = subprocess.run(["node", str(script)], capture_output=True, text=True, timeout=30)
@@ -85,12 +85,67 @@ await assert.rejects(()=>tools.get("course_write").execute("changed-rule",{path:
 assert.equal(fs.existsSync(path.join(work,"artifacts/result.txt")),false);
 ''')
 
-    def test_revoked_hash_capability_cannot_execute(self):
-        self.run_node('''
-const script=path.join(work,"hash.py");fs.writeFileSync(script,'import hashlib, pathlib, sys\\nprint(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())\\n');
-policy.tools=["course_read","hash_source"];policy.profile="hash";policy.write_root=null;policy.hash_tool={path:script,sha256:digest(fs.readFileSync(script))};start();await ready();
-const result=await call("hash_source",{path:"source.txt"});assert.equal(result.content[0].text.trim(),digest(fs.readFileSync(path.join(work,"source.txt"))));
-fs.renameSync(script,script+".revoked");await assert.rejects(()=>tools.get("hash_source").execute("revoked",{path:"source.txt"},undefined,undefined,ctx),/missing or changed/);
+    MCP_SETUP = '''
+const mcpFile=path.join(work,"mcp.json");fs.writeFileSync(mcpFile,"{}");
+const known=["mcp__vault_read_note","mcp__vault_search_notes","mcp__vault_write_note"];
+policy.profile="mcp";policy.tools=[];policy.write_root=null;
+policy.mcp={server:"vault",script:null,config:{path:mcpFile,sha256:digest(fs.readFileSync(mcpFile))},authority:null,allow_names:["mcp__vault_read_note","mcp__vault_search_notes"],known_names:known};
+const register=(...names)=>{for(const name of names)pi.registerTool({name,execute:async()=>({content:[{type:"text",text:"ok"}]})});};
+'''
+
+    def test_mcp_tools_outside_the_declaration_are_hidden_and_blocked(self):
+        self.run_node(self.MCP_SETUP + '''
+register(...known);start();await ready({tools:[{type:"function",function:{name:"mcp__vault_search_notes"}},{type:"function",function:{name:"mcp__vault_read_note"}}]});
+assert.deepEqual([...active].sort(),["mcp__vault_read_note","mcp__vault_search_notes"]);
+const allowed=await call("mcp__vault_read_note",{path:"Sources/KH-001.md"},"allowed-1");assert.equal(allowed.content[0].text,"ok");
+const blocked=await call("mcp__vault_write_note",{path:"Drafts/x.md",content:"x"},"blocked-1");assert.equal(blocked.block,true);assert.match(blocked.reason,/not declared/);
+const rows=fs.readFileSync(policy.guard_log,"utf8").trim().split("\\n").map(line=>JSON.parse(line));
+assert.deepEqual(rows.filter(row=>row.type==="decision").map(row=>[row.call_id,row.allow]),[["allowed-1",true],["blocked-1",false]]);
+assert.deepEqual(rows.find(row=>row.type==="guard_ready").mcp_tools_registered,known);
+''')
+
+    def test_a_foreign_missing_or_unexpected_mcp_tool_stops_the_session(self):
+        cases = {
+            "an MCP server the policy does not name": ('register(...known,"mcp__other_read_note");', r"unexpected MCP tool registered"),
+            "a declared tool that never registered": ('register("mcp__vault_read_note");', r"explicit MCP tool did not register"),
+            "an MCP tool when none is declared": ('policy.mcp=null;policy.profile="write_root";policy.tools=["course_read","course_write"];policy.write_root="artifacts";register("mcp__vault_read_note");', r"registered although the policy declares none"),
+            "a revoked phase that still finds a tool": ('policy.mcp.allow_names=[];policy.mcp.known_names=[];policy.mcp.server=null;register("mcp__vault_read_note");', r"unexpected MCP tool registered"),
+        }
+        for label, (setup, message) in cases.items():
+            with self.subTest(label):
+                self.run_node(self.MCP_SETUP + setup + '''
+start();await assert.rejects(()=>handlers.get("session_start")({},ctx),/''' + message + '''/);assert.equal(aborted,true);
+''')
+
+    def test_changing_the_connection_file_after_the_freeze_aborts_the_next_call(self):
+        self.run_node(self.MCP_SETUP + '''
+register(...known);start();await ready({tools:[{type:"function",function:{name:"mcp__vault_read_note"}},{type:"function",function:{name:"mcp__vault_search_notes"}}]});
+fs.writeFileSync(mcpFile,'{"mcpServers":{"vault":{"command":"/bin/sh"}}}');
+assert.throws(()=>handlers.get("tool_call")({toolName:"mcp__vault_read_note",input:{},toolCallId:"late-1"},ctx),/MCP connection file changed/);
+assert.equal(aborted,true);
+''')
+
+    def test_a_provider_request_must_offer_exactly_the_declared_tools(self):
+        offered = {
+            "an extra tool the model could call": 'tools:[{type:"function",function:{name:"mcp__vault_read_note"}},{type:"function",function:{name:"mcp__vault_search_notes"}},{type:"function",function:{name:"mcp__vault_write_note"}}]',
+            "a declared tool missing": 'tools:[{type:"function",function:{name:"mcp__vault_read_note"}}]',
+            "no tool list at all": "tools:undefined",
+            "a tool list that cannot be read": 'tools:"read_note"',
+        }
+        for label, payload in offered.items():
+            with self.subTest(label):
+                self.run_node(self.MCP_SETUP + "register(...known);start();" + '''
+await handlers.get("session_start")({},ctx);await handlers.get("before_agent_start")({},ctx);
+assert.throws(()=>handlers.get("before_provider_request")({payload:{''' + payload + '''}},ctx),/offered tools outside the declaration/);
+assert.equal(aborted,true);
+''')
+
+    def test_tools_that_appear_after_session_start_are_removed_before_the_first_turn(self):
+        self.run_node(self.MCP_SETUP + '''
+register(...known);start();await handlers.get("session_start")({},ctx);
+active.push("mcp__vault_write_note");
+await handlers.get("before_agent_start")({},ctx);
+assert.deepEqual([...active].sort(),["mcp__vault_read_note","mcp__vault_search_notes"]);
 ''')
 
 

@@ -163,27 +163,28 @@
     },
     {
       "id": "03",
-      "directory": "module-03-release-tools",
-      "title": "Module 3 · Decide responsible release and operate bounded tools",
+      "directory": "module-03-mcp-research",
+      "title": "Module 3 · Operate MCP tools under limited authority",
       "case_name": "Kiln Hold",
-      "summary": "Decide whether a packet may be shared; operate and revoke a limited tool.",
-      "nav_summary": "Contextual release · limited tool authority",
+      "summary": "Research an Obsidian vault through an MCP server; judge the AI's handling calls; limit what the connection can do and prove it.",
+      "nav_summary": "MCP operation · classification · limited authority",
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_03_LAB.md", "dest": "shared/MODULE_03_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m03-approval-edge.svg", "dest": "shared/figures/m03-approval-edge.svg"},
-        {"source": "shared/figures/m03-composed-negative.svg", "dest": "shared/figures/m03-composed-negative.svg"},
-        {"source": "shared/figures/m03-least-power.svg", "dest": "shared/figures/m03-least-power.svg"},
-        {"source": "shared/figures/m03-no-release.svg", "dest": "shared/figures/m03-no-release.svg"},
-        {"source": "shared/figures/m03-raw-authority.svg", "dest": "shared/figures/m03-raw-authority.svg"},
-        {"source": "shared/figures/m03-revoke.svg", "dest": "shared/figures/m03-revoke.svg"},
-        {"source": "shared/figures/m03-six-concerns.svg", "dest": "shared/figures/m03-six-concerns.svg"},
-        {"source": "shared/figures/m03-two-branches.svg", "dest": "shared/figures/m03-two-branches.svg"}
+        {"source": "shared/figures/m03-mcp-layers.svg", "dest": "shared/figures/m03-mcp-layers.svg"},
+        {"source": "shared/figures/m03-contract-read.svg", "dest": "shared/figures/m03-contract-read.svg"},
+        {"source": "shared/figures/m03-handling-ladder.svg", "dest": "shared/figures/m03-handling-ladder.svg"},
+        {"source": "shared/figures/m03-aggregation.svg", "dest": "shared/figures/m03-aggregation.svg"},
+        {"source": "shared/figures/m03-phase-scope.svg", "dest": "shared/figures/m03-phase-scope.svg"},
+        {"source": "shared/figures/m03-probe-matrix.svg", "dest": "shared/figures/m03-probe-matrix.svg"},
+        {"source": "shared/figures/m03-instructions-lure.svg", "dest": "shared/figures/m03-instructions-lure.svg"},
+        {"source": "shared/figures/m03-revoke.svg", "dest": "shared/figures/m03-revoke.svg"}
       ],
       "scripts": [],
-      "download_dirs": ["shared/case", "shared/tools"],
+      "download_dirs": ["shared/vault", "shared/mcp", "shared/prompts"],
+      "verifier_download": "shared/verify/verify_research.py",
       "tests": ["tests/test_module_03.py", "tests/test_adequacy.py"]
     },
     {

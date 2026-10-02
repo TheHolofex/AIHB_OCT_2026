@@ -44,7 +44,7 @@ For each mastery claim, complete “Before this project, the learner could ___. 
 | Delegation, first-use limits, minimum screen, direction, bounded internal acceptance | 00 |
 | Source verification and output discernment | 01 |
 | Context, reusable instruction, source-as-data control | 02 |
-| Full responsible release, tool authority, composed negative, revocation | 03 |
+| MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
 | Hidden-fault diagnosis and recovery | 04 |
 | Observed-run analysis and predicate specification | 05 |
 | Fixed workflow and deterministic outer-state change | 06 |
@@ -56,7 +56,7 @@ For each mastery claim, complete “Before this project, the learner could ___. 
 
 The minimum responsibility screen — source/data authority, sensitive-data boundary, affected audience or person, disclosure need, consequential authority, and human decision owner — is a standing rule applied in every module to its own supplied case. Modules 00–02 can make only bounded internal-acceptance decisions.
 
-Module 03 owns the full contextual release and tool gate. A generic checklist or ethics statement does not establish a release decision. Every learner practices both the decision branch and the connection branch. Study the reasoning for a supported `no-use`, `no-release`, or `no-tool` position without treating it as evidence that a tool was operated.
+Module 03 owns MCP operation, judging an AI's classifications against stated rules, and limiting a tool's authority. A transcript in which the model never attempted a forbidden action does not show that a limit holds; a probe that attempts the action does. Every learner practices both the classification claim and the authority claim. Study a refusal to connect without treating it as evidence that a tool was operated.
 
 ## Evidence standard
 
@@ -127,7 +127,7 @@ Publication uses the existing environment from the repository root: `.venv/bin/p
 
 Use `shared/prepare_work.py` for Modules 02–09, Module 01’s starter for its fixed source boundary, and Module 00’s four-file case copy. Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
 
-Use the pinned shared OMP launcher rather than direct vendor logins or alternate harness branches. Require Git, Python 3.12+, Oh My Pi 18.3.5, a browser, and a text editor. The exact model is `openrouter/anthropic/claude-sonnet-4.6`; the only participant credential is `OPENROUTER_API_KEY`. Node is a maintainer-only figure prerequisite. Keep hashing, arithmetic, predicates, routing, and comparisons deterministic.
+Use the pinned shared OMP launcher rather than direct vendor logins or alternate harness branches. Require Git, Python 3.12+, Oh My Pi 18.3.5, a browser, and a text editor. The exact model is `openrouter/anthropic/claude-sonnet-4.6`; the only participant credential is `OPENROUTER_API_KEY`. Node is a maintainer-only figure prerequisite. Module 03 also uses the free Obsidian desktop application to open its supplied vault; it needs no account, Sync, or community plugin, and the module states the requirement itself. Keep hashing, arithmetic, predicates, routing, and comparisons deterministic.
 
 Record observed exercise outcomes separately from editorial review. Keep live-provider, native-platform, peer-review, and person-to-person transfer observations explicit. Preserve historical evidence without treating an old assessment policy as a current requirement. The 15-minute/eight-term orientation, 120-minute unaided-work limit, and first-result timing remain design targets until measured with people.
 

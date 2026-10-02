@@ -28,7 +28,7 @@ The course runs Monday through Thursday: 28 facilitated hours, which is the time
 | Day | Assignments, in order | Facilitated time | Practice included |
 |---|---|---:|---:|
 | Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours | 4 hours |
-| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-release-tools/README.md) | 6 hours | 4 hours |
+| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md) | 6 hours | 4 hours |
 | Wednesday | [04 Copper Span](module-04-diagnose-review/README.md), then [05 Blue Gauge](module-05-run-corpus/README.md), then [06 White Rack](module-06-batch-workflow/README.md) | 9 hours | 6 hours |
 | Thursday | [07 Slope Brief](module-07-change-eval/README.md), then [08 Night Desk](module-08-agent-safeguards/README.md), then [09 Last Count](module-09-capstone/README.md) | 7 hours | 6 hours |
 

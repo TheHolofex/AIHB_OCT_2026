@@ -793,6 +793,7 @@
       "case": "Kiln Hold",
       "evidence_run_id": "20260930T224039-live-33ed8fb4",
       "observation_scope": "Current technical campaign, with pre/post-correction source versions and limits retained; no human award.",
+      "superseded": "Module 3 was redesigned after this campaign (2026-10-02). The release-packet decision and hash tool observed in this record are retired. The current module has deterministic oracle, adequacy, launcher, guard, and publication tests, and three whole-lab runs on the pinned Oh My Pi 18.3.5 binary with a scripted local provider on macOS arm64, which are not part of this campaign. It has had no live-provider run, no human run, no Obsidian application run, and no run on another platform. The observations below describe the retired case.",
       "lanes": {
         "core": {
           "status": "passed",

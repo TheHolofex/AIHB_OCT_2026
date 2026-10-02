@@ -16,7 +16,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, decides responsible release and operates a bounded tool, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
+The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
 The core runs as **four teaching days, Monday through Thursday: 28 facilitated hours, including 20 practice hours**. Monday through Wednesday hold seven three-hour blocks; Thursday holds three blocks totaling seven facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
 
@@ -27,7 +27,7 @@ The core runs as **four teaching days, Monday through Thursday: 28 facilitated h
 | 00 | Select, screen, and direct bounded work | Delegate appropriately, check one useful result, screen responsibility, and turn a request into accepted direction with a communication artifact. |
 | 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
 | 02 | Control context and reusable instructions | Place information and rules where loading, precedence, survival, and bypass are observable. |
-| 03 | Decide responsible release and operate bounded tools | Apply the full contextual release gate and operate a supplied capability at least authority, proving containment and removal. |
+| 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
 | 04 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
 | 05 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
 | 06 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
