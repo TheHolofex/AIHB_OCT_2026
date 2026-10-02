@@ -3280,59 +3280,75 @@
   "module02_obsidian_revision": {
     "run_id": "module02-obsidian-20261002T060403Z",
     "evidence_root": "$HOME/course-evidence/module02-obsidian-20261002T060403Z",
-    "scope": "Automated maintainer implementation and local smoke evidence; not learner timing, human judgment, or live-provider evidence. Historical observations above are unchanged.",
-    "acceptance": "blocked",
+    "scope": "Automated maintainer implementation, actual host GUI interaction, serial live-provider runs, and published-surface observations; not human learner completion or measured learner timing. Historical observations above are unchanged.",
+    "acceptance": "Observed proof recorded here; final offline and main-integration receipts are retained externally.",
     "branch": "feat/module02-obsidian",
     "base_commit": "d11979bad4915ae38467d937865a9d5ca649b818",
+    "integrated_main": "0bab672a12f38e3bf156c4818d3f69d973519ea9",
     "offline": {
       "module02_criterion_groups": 8,
       "module02_mutations_killed": 8,
       "module02_mutation_survivors": 0,
-      "module00_quick_checks_passed": 15,
       "obsidian_readiness_tests_passed": 17,
-      "module02_command_blocks_parsed": 28,
-      "command_parser_scope": "Bash, zsh, and PowerShell 7 on macOS; not native Windows execution",
-      "transcript": "module02-oracle-adequacy-corrected.txt",
-      "full_integrated_course_gate": "not run; publication and supply contracts await the concurrent owner's committed main changes"
+      "first_integrated_scoped_gates_passed": 27,
+      "first_integrated_transcript": "integrated-offline-gates.txt",
+      "final_tree_transcript": "final-offline-gates.txt",
+      "command_parser_record": "integrated-shell-syntax.json",
+      "command_parser_scope": "73 initial command blocks, 121 Bash/zsh/PowerShell parser runs on macOS. The final overview correction removed eight duplicate blocks without changing surviving commands. This is not native Windows or Linux execution.",
+      "protected_inputs": "The forty DN files, shared/run_omp.py, and shared/course_guard.mjs match the base commit."
     },
     "desktop": {
       "host": "Darwin 25.6 arm64",
       "obsidian": "1.13.7",
-      "installation": "Checksum-verified official DMG in a task-owned location with a separate user-data directory; no existing installation replaced",
-      "readiness": "Observed actual Electron link navigation, editor save, external token refresh, close/reopen, matching disk checks, Restricted mode, and inactive Sync",
+      "installation": "Checksum-verified official DMG in a task-owned location with a separate profile; existing installations and vaults preserved",
+      "readiness": "Actual link/edit/save, external token refresh, second edit, close/reopen, and both disk checks observed",
+      "live_vault": "Actual external Draft refresh, four editor-authored Knowledge notes, MOC, source-link navigation, admission reasons, substantive KB-003 revision, and final GUI audit/context records",
+      "settings": "Restricted mode observed on. Sync initially enabled in the fresh live vault, then explicitly disabled before Knowledge authoring. No account used.",
       "record": "readiness-desktop-observations.json",
       "other_gui_lanes": "Native Windows, WSLg, Intel macOS, Ubuntu, and Arch unobserved"
     },
-    "knowledge_smoke": {
-      "scope": "Private offline attempt; helper manually copied while prepare_work.py integration is owner-blocked. No ingest or retrieval provider call.",
-      "observed": [
-        "Initialized forty source notes without changing the packet",
-        "Created source-backed Knowledge, review reasons, and MOC through actual Obsidian editor interaction",
-        "Followed MOC to Knowledge to the original source and observed a clearly labelled synthetic external draft appear",
-        "Admitted and froze v1, then added a substantive gate-closure qualification in Obsidian",
-        "Freeze held on edited, unreviewed bytes with the named note and runnable review commands",
-        "Renewed admission, froze v2 with focus KB-001, and checked v1 and v2 successfully",
-        "Missing-rule retrieve returned 2 without evidence creation; identical rule bytes restored",
-        "A disposable changed cold snapshot failed with the named Knowledge path; original v1 remained valid"
-      ],
-      "records": ["offline-smoke/revision-proof.json", "offline-smoke/negative-proof.json"]
+    "local_negative_proof": {
+      "records": ["offline-smoke/revision-proof.json", "offline-smoke/negative-proof.json"],
+      "observed": "Unreviewed edited bytes held; renewed admission enabled a new revision; disposable cold tampering held with its named path; original v1 remained valid."
     },
     "live_provider": {
-      "status": "blocked",
-      "paid_calls": 0,
-      "reason": "Authorized masked key input requested in a task-owned terminal; input not yet completed",
+      "status": "Completed with the original ingestion proposal HOLD retained and repaired without another ingestion",
+      "paid_run_invocations": 3,
+      "automatic_retries": 0,
       "task_local_omp": "18.3.5",
       "existing_default_omp": "18.4.9 preserved",
-      "provider_model": "openrouter/anthropic/claude-sonnet-4.6"
+      "provider_model": "openrouter/anthropic/claude-sonnet-4.6",
+      "credential": "Only the user-authorized ignored OPENROUTER_API_KEY assignment was parsed in a child process; the file was not executed and the value was not printed or published.",
+      "cap_exception": "User explicitly authorized the existing provider cap for this maintainer verification. No account setting changed; learner US$40 instructions are unchanged.",
+      "ingest": "Shared and phase audits PASS with all forty distinct sources read. Proposal validation exit 1: KB-001 DN-037 excerpt mismatch. Three valid Drafts staged; all evidence retained; no second ingestion.",
+      "cold_v1": "PASS, five executed reads, all three answers supported with valid citations; raw-source NOT_ATTEMPTED",
+      "revision": "KB-003 only: distinguish three authorizations from stamp status and gate constraint, adding exact DN-040 evidence. Fresh admission/freeze passed; MOC and other Knowledge notes unchanged.",
+      "missing_rule": "With the credential available, exit 2 before provider contact and no evidence directory; identical rule bytes restored before cold-v2",
+      "cold_v2": "PASS, five executed reads, focal KB-003 read and cited including DN-040; all three answers supported; raw-source NOT_ATTEMPTED",
+      "observed_effect": "Q3 explicitly names quality release, vehicle assignment, and permit approval as three authorizations, separately from stamp status and gate closure. One observed category clarification, not a fabricated v1 factual failure or general performance claim.",
+      "identity_after_gui_audit": "Both frozen revisions passed after final audit and context-map edits.",
+      "records": [
+        "live-integrated/evidence",
+        "live-integrated/local-v1-proof.json",
+        "live-integrated/local-v2-preparation.json",
+        "live-integrated/missing-rule-proof.json",
+        "live-integrated/audit-before-cold-v2.md"
+      ]
     },
-    "remaining_acceptance": [
-      "Concurrent owner commits overlapping setup, progression, preparation, and publication changes",
-      "Integrate those committed changes and complete all blocked owning-file updates",
-      "Run the full offline gate and actual generated-site wide/narrow, themes, keyboard, downloads, no-JavaScript, and print proof",
-      "Collect serial live ingest and fresh cold retrieval evidence with the authorized key",
-      "Obtain final integrated independent review closure and fast-forward main"
-    ],
-    "main_merged": false,
+    "publication": {
+      "record": "published-surface-proof.json",
+      "observed": "Actual wide/narrow Dark/Sand views, keyboard skip and guide controls, exact native clipboard copy, both full-size figures, all five setup pages, raw-download byte matches, no-JavaScript content, actual print PDF, prefixed navigation/search, and private-route/search exclusion",
+      "browser": "HeadlessChrome/145.0.7632.6, isolated profile on macOS",
+      "limitation": "Browser rendering does not establish installation or GUI execution on another operating system."
+    },
+    "independent_reviews": {
+      "runtime_security": "EXCELLENT",
+      "learning_progression": "EXCELLENT",
+      "platform_publication": "EXCELLENT",
+      "material_findings_remaining": 0,
+      "records": ["FinalRuntimeReview.txt", "FinalLearningReview.txt", "FinalPlatformReview.txt"]
+    },
+    "integration_receipt": "final-integration.json",
     "pushed_or_deployed": false
   }
 }
