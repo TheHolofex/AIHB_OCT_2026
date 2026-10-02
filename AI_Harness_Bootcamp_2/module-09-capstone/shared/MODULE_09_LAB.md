@@ -4,7 +4,7 @@ A runnable package lets another person run, stop, and restore the Last Count clo
 
 The fictional Last Count movement carries oral rehydration salts from South Store to Clinic R-12 on movement W-9. A result showing that the required quantity is supported does not grant permission to release or dispatch anything.
 
-Plan for one three-hour facilitated session, including two hours of practice for preparation, source inspection, operation, and handoff preparation. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
+Plan for 2 hours 30 minutes on Thursday, including 2 hours of practice for preparation, source inspection, operation, and handoff preparation. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
 
 ## Prepare separate work and transfer locations
 
@@ -312,6 +312,8 @@ print('TRANSFER TECHNICAL CHECK PASS: bundle intact; three result files match')
 **Recovery:** Keep every difference. Identify the exact dependency or decision that changed before starting another transfer; do not patch received results or quietly repair the frozen package.
 
 ## Hand the package to another person
+
+The other person's attempt takes place outside the facilitated hours, so your session ends with the package ready and the attempt arranged. Before you finish, write in `E/transfer-status.md` who will operate the package, where and when, which observations you already have from your own technical rerun, and which are still waiting on that attempt. Until the attempt takes place, independent-person operation stays **unobserved**.
 
 Choose a new, unused external folder for `F`, keeping `W` and the original `E/bundle-before.json`. Repeat [Copy only the frozen members](#copy-only-the-frozen-members) to create that fresh received folder with an empty `out/` directory. Preserve the earlier received copy and its results; do not delete them or copy files back into the checkout.
 

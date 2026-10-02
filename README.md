@@ -18,7 +18,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, decides responsible release and operates a bounded tool, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
-The core runs as **ten sessions of three facilitated hours, including two hours of practice each** — Monday through Thursday morning and afternoon, Friday morning and afternoon. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**.
+The core runs as **four teaching days, Monday through Thursday: 28 facilitated hours, including 20 practice hours**. Monday through Wednesday hold seven three-hour blocks; Thursday holds three blocks totaling seven facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
 
 ## Target sequence
 
@@ -87,6 +87,7 @@ The 32 instructional destinations share the local Sirocco reader. Edit `ui/cours
 - Lab `guide` objects list `context_sections` and `optional_sections` by existing H2 ID. Platform setup pages use `guide: {}`. Other page kinds omit `guide`.
 - `ui_assets` explicitly maps each UI source to its published destination. Local CSS dependencies must also be declared. The publisher rejects missing dependencies, external CSS resources, unsafe paths, and unexpected output files.
 - Figure entries accept SVGs and PNGs. PNGs use standard-library IHDR validation for intrinsic dimensions and the same full-size dialog as SVGs; keep authentic n8n captures under the owning module's `shared/figures/`. Do not feed screenshots into the SVG renderer.
+- The homepage hero is the first `.webp` in `ui_assets` and must be exactly 1672×941. Optional photo bands map an id to a declared 1672×716 `.webp` under the top-level `home_bands` key, and each id appears exactly once on the home page as an empty `<div data-photo-band="ID"></div>`. An unknown, repeated, unused, non-empty, or non-home placeholder fails the build. Bands render as decorative, lazy-loaded figures outside search, the outline, and the figure dialog. The publisher reads WebP dimensions from the file header. Course-owned photographs live in `ui/images/`, not in the vendored Sirocco directory; `ui/images/ART_DIRECTION.md` holds their style contract, exact prompts, encode budgets, and provenance.
 - The generated `assets/search-index.json` contains instructional prose and heading targets, not fenced commands, raw exercise contents, staff sources, or evidence. Search loads it only when opened.
 
 Do not publish standalone accessibility/equivalent-inspection pages or callouts, scoring rubrics, or exercise-grading guidance. Retain keyboard navigation, figure text, and technical checks.

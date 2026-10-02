@@ -10,7 +10,7 @@ import sys
 import tempfile
 import unittest
 import zlib
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("course_build", ROOT / "scripts/build_course.py")
@@ -77,6 +77,53 @@ def _png_image(width: int, height: int) -> bytes:
     return b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", header) + _png_chunk(b"IDAT", zlib.compress(pixels)) + _png_chunk(b"IEND", b"")
 
 
+def _webp_container(kind: bytes, payload: bytes) -> bytes:
+    chunk = kind + len(payload).to_bytes(4, "little") + payload + b"\0" * (len(payload) & 1)
+    return b"RIFF" + (4 + len(chunk)).to_bytes(4, "little") + b"WEBP" + chunk
+
+
+def _webp_image(width: int, height: int, kind: bytes = b"VP8L") -> bytes:
+    """Minimal dimension headers; pixel decoding is outside the publisher's contract."""
+    if kind == b"VP8L":
+        payload = b"\x2f" + ((width - 1) | ((height - 1) << 14)).to_bytes(4, "little")
+    elif kind == b"VP8 ":
+        payload = b"\x10\0\0\x9d\x01\x2a" + width.to_bytes(2, "little") + height.to_bytes(2, "little")
+    else:
+        payload = b"\0" * 4 + (width - 1).to_bytes(3, "little") + (height - 1).to_bytes(3, "little")
+    return _webp_container(kind, payload)
+
+
+class WebPDimensions(unittest.TestCase):
+    def test_webp_dimensions_read_vp8l_vp8_and_vp8x(self):
+        for kind, width, height in ((b"VP8L", 1672, 716), (b"VP8 ", 1672, 941), (b"VP8X", 70001, 80003)):
+            with self.subTest(kind=kind):
+                self.assertEqual(builder._webp_dimensions(_webp_image(width, height, kind), PurePosixPath("image.webp")), (str(width), str(height)))
+        scaled = _webp_image(1672 | 0xc000, 941 | 0x8000, b"VP8 ")
+        self.assertEqual(builder._webp_dimensions(scaled, PurePosixPath("scaled.webp")), ("1672", "941"))
+
+    def test_webp_dimensions_reject_malformed_containers(self):
+        valid = _webp_image(1672, 941)
+        variants = {
+            "truncated": valid[:-1],
+            "RIFF signature": b"NOPE" + valid[4:],
+            "WEBP signature": valid[:8] + b"NOPE" + valid[12:],
+            "RIFF size": valid[:4] + (len(valid) - 9).to_bytes(4, "little") + valid[8:],
+            "trailing garbage": valid + b"garbage",
+            "zero width": _webp_image(0, 941, b"VP8 "),
+            "zero height": _webp_image(1672, 0, b"VP8 "),
+            "unknown chunk": _webp_container(b"NOPE", b"\0" * 10),
+            "chunk bounds": valid[:16] + (100).to_bytes(4, "little") + valid[20:],
+            "VP8 start code": _webp_container(b"VP8 ", b"\0" * 10),
+            "VP8L signature": _webp_container(b"VP8L", b"\0" * 5),
+            "short VP8": _webp_container(b"VP8 ", b"\0" * 9),
+            "short VP8L": _webp_container(b"VP8L", b"\x2f\0\0\0"),
+            "short VP8X": _webp_container(b"VP8X", b"\0" * 9),
+        }
+        for label, data in variants.items():
+            with self.subTest(case=label), self.assertRaises(ValueError):
+                builder._webp_dimensions(data, PurePosixPath("broken.webp"))
+
+
 class PublicationBehavior(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="course-publish-test-")
@@ -118,6 +165,123 @@ class PublicationBehavior(unittest.TestCase):
     def build(self, check=False):
         with contextlib.redirect_stdout(io.StringIO()):
             return builder.build(self.root, check)
+
+    def add_webp(self, name: str, width: int, height: int) -> str:
+        (self.root / "ui" / name).write_bytes(_webp_image(width, height))
+        dest = f"assets/images/{name}"
+        self.course["ui_assets"].append({"source": f"ui/{name}", "dest": dest})
+        return dest
+
+    def add_home_band(self, placeholder: str = '<div data-photo-band="custody"></div>'):
+        self.add_webp("hero.webp", 1672, 941)
+        self.course["home_bands"] = {"custody": self.add_webp("custody.webp", 1672, 716)}
+        home = self.root / "AI_Harness_Bootcamp_2/README.md"
+        home.write_text(home.read_text(encoding="utf-8") + "\n\n" + placeholder + "\n", encoding="utf-8")
+        self.save_manifest()
+
+    def test_home_band_renders_decorative_image_with_relative_src(self):
+        self.add_home_band()
+        self.course["index"]["dest"] = "home/index.html"
+        self.save_manifest()
+        self.build()
+        tree = builder.parse_html((self.root / "site/home/index.html").read_text(encoding="utf-8"))
+        bands = [node for node in tree.walk() if "rf-band" in node.attrs.get("class", "").split()]
+        self.assertEqual(len(bands), 1)
+        band = bands[0]
+        self.assertEqual(band.tag, "figure")
+        self.assertEqual(band.attrs, {"class": "rf-band sc-photo", "data-sc-theme": "dark"})
+        self.assertEqual(len(band.children), 1)
+        image = band.children[0]
+        self.assertEqual(image.tag, "img")
+        self.assertEqual(image.attrs, {"class": "rf-band-image", "src": "../assets/images/custody.webp",
+                                      "width": "1672", "height": "716", "alt": "", "loading": "lazy", "decoding": "async"})
+        self.assertFalse(any("data-figure-open" in node.attrs or "rf-figure" in node.attrs.get("class", "").split() for node in tree.walk()))
+        search = (self.root / "site/assets/search-index.json").read_text(encoding="utf-8")
+        self.assertNotIn("custody", search)
+        self.assertEqual(self.build(check=True), 0)
+
+    def test_hero_renders_intrinsic_webp_dimensions(self):
+        self.add_webp("hero.webp", 1672, 941)
+        self.save_manifest()
+        self.build()
+        tree = builder.parse_html((self.root / "site/index.html").read_text(encoding="utf-8"))
+        image = next(node for node in tree.walk() if node.attrs.get("class") == "rf-hero-image")
+        self.assertEqual((image.attrs["width"], image.attrs["height"]), ("1672", "941"))
+        self.assertEqual(image.attrs["src"], "assets/images/hero.webp")
+
+    def test_wrong_hero_dimensions_fail_before_publication(self):
+        self.add_webp("hero.webp", 1672, 940)
+        self.save_manifest()
+        with self.assertRaises(ValueError):
+            self.build()
+        self.assertFalse((self.root / "site").exists())
+
+    def test_unknown_home_band_placeholder_fails(self):
+        self.add_home_band('<div data-photo-band="unknown"></div>')
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_unused_home_band_fails(self):
+        self.add_home_band("")
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_duplicate_home_band_placeholder_fails(self):
+        self.add_home_band('<div data-photo-band="custody"></div>\n\n<div data-photo-band="custody"></div>')
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_non_home_band_placeholder_fails(self):
+        self.add_home_band()
+        self.page.write_text(PROCEDURE + '\n\n<div data-photo-band="custody"></div>\n', encoding="utf-8")
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_nonempty_home_band_placeholder_fails(self):
+        self.add_home_band("")
+        home = self.root / "AI_Harness_Bootcamp_2/README.md"
+        original = home.read_text(encoding="utf-8")
+        for content in ("Unexpected text", "<span></span>"):
+            with self.subTest(content=content):
+                home.write_text(original + f'\n<div data-photo-band="custody">{content}</div>\n', encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    self.build()
+
+    def test_home_band_without_declaration_fails(self):
+        self.add_home_band()
+        del self.course["home_bands"]
+        self.save_manifest()
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_unlisted_home_band_destination_fails(self):
+        self.add_home_band()
+        self.course["home_bands"]["custody"] = "assets/images/unlisted.webp"
+        self.save_manifest()
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_shared_home_band_destination_fails(self):
+        self.add_home_band('<div data-photo-band="custody"></div>\n\n<div data-photo-band="route"></div>')
+        self.course["home_bands"]["route"] = self.course["home_bands"]["custody"]
+        self.save_manifest()
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_wrong_home_band_dimensions_fail(self):
+        self.add_home_band()
+        (self.root / "ui/custody.webp").write_bytes(_webp_image(1672, 715))
+        with self.assertRaises(ValueError):
+            self.build()
+
+    def test_invalid_home_band_manifest_fails(self):
+        self.add_home_band()
+        for bands in ([], {"Bad-ID": "assets/images/custody.webp"}, {"custody": "assets/course.css"}, {"custody": "assets/images/hero.webp"}):
+            with self.subTest(bands=bands):
+                self.course["home_bands"] = bands
+                self.save_manifest()
+                with self.assertRaises(ValueError):
+                    self.build()
 
     def test_rendered_links_raw_inputs_commands_and_accessible_tables(self):
         self.build()

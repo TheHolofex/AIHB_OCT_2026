@@ -32,7 +32,10 @@
     {"source": "ui/vendor/sirocco/fonts/OFL-SpaceMono.txt", "dest": "assets/sirocco/fonts/OFL-SpaceMono.txt"},
     {"source": "ui/vendor/sirocco/fonts/OFL-Newsreader.txt", "dest": "assets/sirocco/fonts/OFL-Newsreader.txt"},
     {"source": "ui/vendor/sirocco/assets/grain.svg", "dest": "assets/sirocco/assets/grain.svg"},
-    {"source": "ui/vendor/sirocco/assets/starzl-desert-operations.webp", "dest": "assets/sirocco/assets/starzl-desert-operations.webp"},
+    {"source": "ui/images/home-hero.webp", "dest": "assets/images/home-hero.webp"},
+    {"source": "ui/images/home-band-custody.webp", "dest": "assets/images/home-band-custody.webp"},
+    {"source": "ui/images/home-band-route.webp", "dest": "assets/images/home-band-route.webp"},
+    {"source": "ui/images/home-band-clinic.webp", "dest": "assets/images/home-band-clinic.webp"},
     {"source": "ui/vendor/sirocco/icons/menu.svg", "dest": "assets/sirocco/icons/menu.svg"},
     {"source": "ui/vendor/sirocco/icons/close.svg", "dest": "assets/sirocco/icons/close.svg"},
     {"source": "ui/vendor/sirocco/icons/search.svg", "dest": "assets/sirocco/icons/search.svg"},
@@ -47,6 +50,11 @@
     {"source": "ui/course.js", "dest": "assets/course.js"},
     {"source": "ui/theme-init.js", "dest": "assets/theme-init.js"}
   ],
+  "home_bands": {
+    "custody": "assets/images/home-band-custody.webp",
+    "route": "assets/images/home-band-route.webp",
+    "clinic": "assets/images/home-band-clinic.webp"
+  },
   "modules": [
     {
       "id": "00",

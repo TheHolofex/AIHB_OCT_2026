@@ -8,8 +8,8 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 
 | Budget | Standard | Evidence status |
 |---|---:|---|
-| Facilitated seat-time **including practice** | 30 hours across ten sessions; bound 24–35 | Design arithmetic; unmeasured until pilot |
-| Practice included in seat-time | 20 of 30 hours (66.7%); minimum 60% | Design arithmetic; unmeasured until pilot |
+| Facilitated seat-time **including practice** | 28 hours across four teaching days; bound 24–35 | Design arithmetic; unmeasured until pilot |
+| Practice included in seat-time | 20 of 28 hours (71.4%); minimum 60% | Design arithmetic; unmeasured until pilot |
 | First checked useful artifact | Within 60 minutes | Provisional until timestamped pilot |
 | Core modules | 10, one per session | Measured structurally |
 | Variable model/tool spend | Provisional ≤US$40 per learner, enforced by a provider-side per-key ceiling; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
@@ -18,9 +18,21 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 
 No unmeasured budget is reported as achieved. Delivery may vary support and extra optional practice; it may not hide required work outside seat-time or weaken a technical check.
 
+The 28 facilitated hours exclude meals and breaks, setup, optional stretches, and the separately scheduled independent-recipient session.
+
 ## Schedule and independence
 
-Ten sessions of three facilitated hours, including two hours of practice each.
+Ten facilitated module blocks run across four teaching days, Monday–Thursday: seven three-hour blocks on Monday–Wednesday and three blocks totaling seven facilitated hours on Thursday. Every module keeps two hours of practice.
+
+| Day | Modules, in order | Facilitated minutes | Practice minutes |
+|---|---|---:|---:|
+| Monday | 00 North Shelf; 01 Cold Lantern | 360 | 240 |
+| Tuesday | 02 Ledger Pike; 03 Kiln Hold | 360 | 240 |
+| Wednesday | 04 Copper Span; 05 Blue Gauge; 06 White Rack | 540 | 360 |
+| Thursday | 07 Slope Brief; 08 Night Desk; 09 Last Count | 420 | 360 |
+| Total | Ten independent modules | 1,680 / 28 hours | 1,200 / 20 hours |
+
+Modules 00–06 are 180 facilitated minutes each. Thursday allocates **07: 135**, **08: 135**, and **09: 150** minutes. Every module retains **120 practice minutes**.
 
 | Session | Day | Module |
 |---:|---|---|
@@ -28,12 +40,44 @@ Ten sessions of three facilitated hours, including two hours of practice each.
 | 2 | Monday PM | 01 Verify sources and outputs |
 | 3 | Tuesday AM | 02 Build and control a reusable second brain |
 | 4 | Tuesday PM | 03 Decide responsible release and operate bounded tools |
-| 5 | Wednesday AM | 04 Diagnose and recover |
-| 6 | Wednesday PM | 05 Improve from observed failures |
-| 7 | Thursday AM | 06 Build and control a fixed workflow through change |
-| 8 | Thursday PM | 07 Evaluate a change with variation controls |
-| 9 | Friday AM | 08 Constrain agent behavior |
-| 10 | Friday PM | 09 Transfer a runnable package |
+| 5 | Wednesday · Block 1 | 04 Diagnose and recover |
+| 6 | Wednesday · Block 2 | 05 Improve from observed failures |
+| 7 | Wednesday · Block 3 | 06 Build and control a fixed workflow through change |
+| 8 | Thursday · Block 1 | 07 Evaluate a change with variation controls |
+| 9 | Thursday · Block 2 | 08 Constrain agent behavior |
+| 10 | Thursday · Block 3 | 09 Transfer a runnable package |
+
+### Wednesday timetable
+
+| Clock time | Work |
+|---|---|
+| 08:00–09:20 | Copper Span, first 80 facilitated minutes |
+| 09:20–09:30 | Break |
+| 09:30–11:10 | Copper Span, remaining 100 facilitated minutes |
+| 11:10–11:50 | Lunch |
+| 11:50–13:05 | Blue Gauge, first 75 facilitated minutes |
+| 13:05–13:15 | Break |
+| 13:15–15:00 | Blue Gauge, remaining 105 facilitated minutes |
+| 15:00–15:20 | Meal break |
+| 15:20–17:00 | White Rack, first 100 facilitated minutes |
+| 17:00–17:10 | Break |
+| 17:10–18:30 | White Rack, remaining 80 facilitated minutes |
+
+Wednesday is 540 facilitated minutes plus 90 minutes of meals and breaks, 08:00–18:30 local time. The Copper Span break follows the sealed first miss, the Blue Gauge break follows the sixteen first-failure notes, and the White Rack break follows initial graph construction.
+
+### Thursday timetable
+
+| Clock time | Work |
+|---|---|
+| 08:00–10:15 | Slope Brief, 135 facilitated minutes |
+| 10:15–10:25 | Break |
+| 10:25–11:30 | Night Desk, first 65 facilitated minutes |
+| 11:30–11:40 | Break |
+| 11:40–12:50 | Night Desk, remaining 70 facilitated minutes |
+| 12:50–13:30 | Lunch |
+| 13:30–16:00 | Last Count, 150 facilitated minutes |
+
+Thursday is 420 facilitated minutes plus 60 minutes of meals and breaks, 08:00–16:00 local time. The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its elapsed-minute route.
 
 Sessions run in this order. Each capability assumes earlier skills, while **no module depends on another module's evidence**. Every module receives its own case and machinery, verified at entry. Recover missing prerequisites explicitly. A technical `HOLD` identifies work that needs attention; it does not block later participation.
 
@@ -61,9 +105,9 @@ File presence cannot establish observed performance. An authored practice output
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 05 | Improve from observed failures | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO05_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
 | 06 | Build and control a fixed workflow through change | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO06_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
-| 07 | Evaluate a change with variation controls | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO07_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
-| 08 | Constrain agent behavior | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO08_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
-| 09 | Transfer a runnable package | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `RUNNABLE_PACKAGE`; `PO09_RESULT` | Unfamiliar professional task | Supplied challenge, clean-session run, recipient observations and questions, stop/restore, and a handoff that names unresolved limits |
+| 07 | Evaluate a change with variation controls | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO07_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
+| 08 | Constrain agent behavior | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO08_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
+| 09 | Transfer a runnable package | 2h 30m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `RUNNABLE_PACKAGE`; `PO09_RESULT` | Unfamiliar professional task | Supplied challenge, clean-session run, recipient observations and questions, stop/restore, and a handoff that names unresolved limits |
 ## Minimum and full responsibility gates
 
 `MIN_SCREEN` covers source/data authority, sensitive-data boundary, affected audience/person, disclosure need, consequential authority, and human decision owner. It is a standing rule: every module applies it to its own supplied case, and an unresolved item is `HOLD`. Modules 00–02 can claim only bounded internal acceptance.

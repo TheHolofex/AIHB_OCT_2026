@@ -29,6 +29,8 @@ The harness forces explicit ledger input to the renderer, a digest-checked basel
 | 1:50–2:30 | Learner reruns three ways (incl. fresh-process) | Both fields present in each |
 | 2:30–3:00 | Collect the handoff | Reconstruction without coaching, or HOLD |
 
+Count these times from the start of the block; breaks do not count. On Wednesday the block's break falls at 1:20, after the learner seals the first miss and before the authorized replace. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+
 ## Coaching boundary
 
 You may:

@@ -689,6 +689,53 @@ body[data-view="read"] [data-view-choice="read"] {
   padding: 1.75rem var(--rf-gutter) 3rem;
 }
 
+.rf-home-content .rf-band {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 2rem 0;
+  aspect-ratio: 1672 / 716;
+  border-top: 1px solid var(--sc-gold);
+  --sc-corner-color: color-mix(in srgb, var(--sc-gold) 35%, transparent);
+  --sc-corner-size: var(--sc-hud);
+}
+
+.rf-band.sc-photo > img.rf-band-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rf-band.sc-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url("./sirocco/assets/grain.svg");
+  background-size: 240px 240px;
+  opacity: var(--sc-grain-opacity);
+  mix-blend-mode: var(--sc-grain-blend);
+  pointer-events: none;
+}
+
+.rf-band.sc-photo::after {
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) left top / var(--sc-corner-size) 1px,
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) left top / 1px var(--sc-corner-size),
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) right top / var(--sc-corner-size) 1px,
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) right top / 1px var(--sc-corner-size),
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) left bottom / var(--sc-corner-size) 1px,
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) left bottom / 1px var(--sc-corner-size),
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) right bottom / var(--sc-corner-size) 1px,
+    linear-gradient(var(--sc-corner-color), var(--sc-corner-color)) right bottom / 1px var(--sc-corner-size),
+    linear-gradient(180deg, transparent 60%, color-mix(in srgb, var(--sc-void) 25%, transparent));
+  background-repeat: no-repeat;
+}
+
 .rf-course-map {
   margin: 0.5rem 0 2rem;
   padding: 0;
@@ -1238,6 +1285,10 @@ label[for="rf-search-input"] {
 
 /* Two masthead rows. */
 @media (max-width: 639px) {
+  .rf-home-content .rf-band {
+    margin-block: 1.5rem;
+  }
+
   .rf-masthead-inner {
     flex-wrap: wrap;
     align-items: stretch;
@@ -1450,6 +1501,8 @@ label[for="rf-search-input"] {
 
   .rf-hero.sc-photo::before,
   .rf-hero.sc-photo::after,
+  .rf-band.sc-photo::before,
+  .rf-band.sc-photo::after,
   .sc-grain::after {
     display: none;
   }
@@ -1542,6 +1595,7 @@ label[for="rf-search-input"] {
   .rf-figure-link,
   .rf-footer-tools,
   .rf-hero-image,
+  .rf-home-content .rf-band,
   .rf-hero.sc-photo::before,
   .rf-hero.sc-photo::after,
   .sc-grain::after,

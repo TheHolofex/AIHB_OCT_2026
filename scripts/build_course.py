@@ -229,6 +229,22 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
         add(root, entry["source"], entry["dest"])
     if not {"assets/course.css", "assets/course.js", "assets/theme-init.js"}.issubset(entry["dest"] for entry in ui_assets):
         raise ValueError("course.css, course.js and theme-init.js must be declared")
+    bands = course.get("home_bands", {})
+    if not isinstance(bands, dict):
+        raise ValueError("home_bands must be an object")
+    ui_destinations = {entry["dest"] for entry in ui_assets}
+    hero = next((entry["dest"] for entry in ui_assets if PurePosixPath(entry["dest"]).suffix == ".webp"), None)
+    band_destinations = set()
+    for band_id, target in bands.items():
+        if not isinstance(band_id, str) or not re.fullmatch(r"[a-z][a-z0-9-]*", band_id):
+            raise ValueError(f"invalid home band id: {band_id!r}")
+        if not isinstance(target, str) or not target.endswith(".webp") or target not in ui_destinations:
+            raise ValueError(f"home band must reference a declared WebP UI asset: {target!r}")
+        if target == hero:
+            raise ValueError(f"home band cannot use the hero image: {target}")
+        if target in band_destinations:
+            raise ValueError(f"home bands must use distinct images: {target}")
+        band_destinations.add(target)
     return course, destinations, sources, pages
 
 
@@ -383,7 +399,7 @@ def _section_records(tree: Node, title: str) -> list[dict]:
         if isinstance(node, str):
             current["text"].append(node)
             return
-        if node.tag in {"pre", "h1"} or "data-course-map" in node.attrs:
+        if node.tag in {"pre", "h1"} or "data-course-map" in node.attrs or "data-photo-band" in node.attrs:
             return
         classes = node.attrs.get("class", "").split()
         if "rf-optional" in classes or "rf-stretch" in classes:
@@ -422,6 +438,22 @@ def _prepare_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePos
     placeholders = [node for node in tree.walk() if "data-course-map" in node.attrs]
     if len(placeholders) != (1 if record["kind"] == "home" else 0):
         raise ValueError("exactly one course map placeholder is required, on home only")
+    bands = course.get("home_bands", {})
+    band_placeholders = [node for node in tree.walk() if "data-photo-band" in node.attrs]
+    if band_placeholders and record["kind"] != "home":
+        raise ValueError(f"photo band placeholders are allowed on home only: {source}")
+    seen_bands = set()
+    for node in band_placeholders:
+        band_id = node.attrs["data-photo-band"]
+        if node.tag != "div" or any(isinstance(child, Node) or child.strip() for child in node.children):
+            raise ValueError(f"photo band placeholder must be an empty div: {source}: {band_id}")
+        if band_id not in bands:
+            raise ValueError(f"unknown photo band id: {source}: {band_id}")
+        if band_id in seen_bands:
+            raise ValueError(f"duplicate photo band placeholder: {source}: {band_id}")
+        seen_bands.add(band_id)
+    if record["kind"] == "home" and set(bands) != seen_bands:
+        raise ValueError("home bands lack placeholders: " + ", ".join(sorted(set(bands) - seen_bands)))
     if any(node.attrs.get("id", "").startswith("rf-") for node in tree.walk()):
         raise ValueError("rf- anchors are reserved for the publisher")
     title = next(node.text() for node in tree.walk() if node.tag == "h1")
@@ -496,6 +528,46 @@ def _png_dimensions(data: bytes, path: PurePosixPath) -> tuple[str, str]:
     return str(width), str(height)
 
 
+def _webp_dimensions(data: bytes, path: PurePosixPath) -> tuple[str, str]:
+    """Read WebP intrinsic dimensions; image data decoding is left to the browser."""
+    if data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+        raise ValueError(f"invalid WebP signature: {path}")
+    if int.from_bytes(data[4:8], "little") + 8 != len(data):
+        raise ValueError(f"invalid WebP RIFF size: {path}")
+    if len(data) < 20 or data[12:16] not in {b"VP8 ", b"VP8L", b"VP8X"}:
+        raise ValueError(f"invalid WebP first chunk: {path}")
+    offset = 12
+    while offset < len(data):
+        if offset + 8 > len(data):
+            raise ValueError(f"truncated WebP chunk header: {path}")
+        size = int.from_bytes(data[offset + 4:offset + 8], "little")
+        offset += 8 + size + (size & 1)
+        if offset > len(data):
+            raise ValueError(f"truncated WebP chunk: {path}")
+    size = int.from_bytes(data[16:20], "little")
+    chunk = data[20:20 + size]
+    kind = data[12:16]
+    if kind == b"VP8 ":
+        if len(chunk) < 10 or chunk[0] & 1 or chunk[3:6] != b"\x9d\x01\x2a":
+            raise ValueError(f"invalid WebP VP8 keyframe: {path}")
+        width = int.from_bytes(chunk[6:8], "little") & 0x3fff
+        height = int.from_bytes(chunk[8:10], "little") & 0x3fff
+    elif kind == b"VP8L":
+        if len(chunk) < 5 or chunk[0] != 0x2f:
+            raise ValueError(f"invalid WebP VP8L header: {path}")
+        bits = int.from_bytes(chunk[1:5], "little")
+        width = (bits & 0x3fff) + 1
+        height = ((bits >> 14) & 0x3fff) + 1
+    else:
+        if len(chunk) != 10:
+            raise ValueError(f"invalid WebP VP8X header: {path}")
+        width = int.from_bytes(chunk[4:7], "little") + 1
+        height = int.from_bytes(chunk[7:10], "little") + 1
+    if not width or not height:
+        raise ValueError(f"invalid WebP intrinsic dimensions: {path}")
+    return str(width), str(height)
+
+
 def _asset_context(course: dict, outputs: dict[PurePosixPath, bytes]) -> dict:
     declared = [PurePosixPath(entry["dest"]) for entry in course["ui_assets"]]
     fonts = []
@@ -521,8 +593,17 @@ def _asset_context(course: dict, outputs: dict[PurePosixPath, bytes]) -> dict:
             dimensions[str(path)] = (width, height)
         elif path.suffix.lower() == ".png" and "figures" in path.parts:
             dimensions[str(path)] = _png_dimensions(data, path)
+    for path in declared:
+        if path.suffix == ".webp":
+            dimensions[str(path)] = _webp_dimensions(outputs[path], path)
+    hero = next((str(path) for path in declared if path.suffix == ".webp"), None)
+    if hero and dimensions[hero] != ("1672", "941"):
+        raise ValueError(f"hero image must be 1672x941: {hero}")
+    for target in course.get("home_bands", {}).values():
+        if dimensions[target] != ("1672", "716"):
+            raise ValueError(f"home band image must be 1672x716: {target}")
     return {"styles": [str(path) for path in declared if path.suffix == ".css"],
-            "fonts": fonts, "hero": next((str(path) for path in declared if path.suffix == ".webp"), None),
+            "fonts": fonts, "hero": hero,
             "dimensions": dimensions}
 
 
@@ -616,6 +697,13 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
     for node in list(tree.walk()):
         if "data-course-map" in node.attrs:
             node.children = [_course_map(course, dest)]
+        if "data-photo-band" in node.attrs:
+            target = course["home_bands"][node.attrs["data-photo-band"]]
+            width, height = assets["dimensions"][target]
+            node.tag = "figure"
+            node.attrs = {"class": "rf-band sc-photo", "data-sc-theme": "dark"}
+            node.children = [Node("img", {"class": "rf-band-image", "src": _relative(dest, target),
+                                          "width": width, "height": height, "alt": "", "loading": "lazy", "decoding": "async"})]
     h1 = next(node for node in tree.children if isinstance(node, Node) and node.tag == "h1")
     tree.children.remove(h1)
     page_data = {"version": 1, "page": str(dest), "kind": kind, "moduleId": module_id,
@@ -626,7 +714,10 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
         tree.children.remove(lead)
         lead.attrs["class"] = "rf-lead"
         setup = _relative(dest, common["modules"][0]["overview"])
-        image = f'<img class="rf-hero-image" src="{_relative(dest, assets["hero"])}" width="1672" height="941" alt="" fetchpriority="high">' if assets["hero"] else ""
+        image = ""
+        if assets["hero"]:
+            width, height = assets["dimensions"][assets["hero"]]
+            image = f'<img class="rf-hero-image" src="{_relative(dest, assets["hero"])}" width="{width}" height="{height}" alt="" fetchpriority="high">'
         main = f'''<main id="main" class="rf-home-main" tabindex="-1"><section class="rf-hero sc-photo" data-sc-theme="dark">{image}
 <div class="rf-hero-content">{h1.render()}{lead.render()}
 <div class="rf-hero-actions"><a id="rf-home-primary" class="sc-btn rf-btn sc-btn--primary" href="{setup}">Start with setup</a>
