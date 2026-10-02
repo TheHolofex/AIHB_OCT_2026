@@ -22,17 +22,17 @@ The 28 facilitated hours exclude meals and breaks, setup, optional stretches, an
 
 ## Schedule and independence
 
-Ten facilitated module blocks run across four teaching days, Monday–Thursday: six three-hour blocks on Monday–Wednesday and four blocks totaling ten facilitated hours on Thursday. Every module keeps two hours of practice.
+Ten facilitated module blocks run across four teaching days, Monday–Thursday: seven three-hour blocks on Monday–Wednesday and three blocks totaling seven facilitated hours on Thursday. Every module keeps two hours of practice.
 
 | Day | Modules, in order | Facilitated minutes | Practice minutes |
 |---|---|---:|---:|
 | Monday | 00 North Shelf; 01 Cold Lantern | 360 | 240 |
 | Tuesday | 02 Ledger Pike; 03 Kiln Hold | 360 | 240 |
-| Wednesday | 04 Copper Span; 05 Blue Gauge | 360 | 240 |
-| Thursday | 06 White Rack; 07 Slope Brief; 08 Night Desk; 09 Last Count | 600 | 480 |
+| Wednesday | 04 Copper Span; 05 Blue Gauge; 06 White Rack | 540 | 360 |
+| Thursday | 07 Slope Brief; 08 Night Desk; 09 Last Count | 420 | 360 |
 | Total | Ten independent modules | 1,680 / 28 hours | 1,200 / 20 hours |
 
-Modules 00–05 are 180 facilitated minutes each. Thursday allocates **06: 180**, **07: 135**, **08: 135**, and **09: 150** minutes. Every module retains **120 practice minutes**.
+Modules 00–06 are 180 facilitated minutes each. Thursday allocates **07: 135**, **08: 135**, and **09: 150** minutes. Every module retains **120 practice minutes**.
 
 | Session | Day | Module |
 |---:|---|---|
@@ -40,30 +40,44 @@ Modules 00–05 are 180 facilitated minutes each. Thursday allocates **06: 180**
 | 2 | Monday PM | 01 Verify sources and outputs |
 | 3 | Tuesday AM | 02 Control context and reusable instructions |
 | 4 | Tuesday PM | 03 Decide responsible release and operate bounded tools |
-| 5 | Wednesday AM | 04 Diagnose and recover |
-| 6 | Wednesday PM | 05 Improve from observed failures |
-| 7 | Thursday · Block 1 | 06 Build and control a fixed workflow through change |
-| 8 | Thursday · Block 2 | 07 Evaluate a change with variation controls |
-| 9 | Thursday · Block 3 | 08 Constrain agent behavior |
-| 10 | Thursday · Block 4 | 09 Transfer a runnable package |
+| 5 | Wednesday · Block 1 | 04 Diagnose and recover |
+| 6 | Wednesday · Block 2 | 05 Improve from observed failures |
+| 7 | Wednesday · Block 3 | 06 Build and control a fixed workflow through change |
+| 8 | Thursday · Block 1 | 07 Evaluate a change with variation controls |
+| 9 | Thursday · Block 2 | 08 Constrain agent behavior |
+| 10 | Thursday · Block 3 | 09 Transfer a runnable package |
+
+### Wednesday timetable
+
+| Clock time | Work |
+|---|---|
+| 08:00–09:20 | Copper Span, first 80 facilitated minutes |
+| 09:20–09:30 | Break |
+| 09:30–11:10 | Copper Span, remaining 100 facilitated minutes |
+| 11:10–11:50 | Lunch |
+| 11:50–13:05 | Blue Gauge, first 75 facilitated minutes |
+| 13:05–13:15 | Break |
+| 13:15–15:00 | Blue Gauge, remaining 105 facilitated minutes |
+| 15:00–15:20 | Meal break |
+| 15:20–17:00 | White Rack, first 100 facilitated minutes |
+| 17:00–17:10 | Break |
+| 17:10–18:30 | White Rack, remaining 80 facilitated minutes |
+
+Wednesday is 540 facilitated minutes plus 90 minutes of meals and breaks, 08:00–18:30 local time. The Copper Span break follows the sealed first miss, the Blue Gauge break follows the sixteen first-failure notes, and the White Rack break follows initial graph construction.
 
 ### Thursday timetable
 
 | Clock time | Work |
 |---|---|
-| 08:00–09:40 | White Rack, first 100 facilitated minutes |
-| 09:40–09:50 | Break |
-| 09:50–11:10 | White Rack, remaining 80 facilitated minutes |
-| 11:10–11:20 | Break |
-| 11:20–13:35 | Slope Brief, 135 facilitated minutes |
-| 13:35–14:15 | Lunch |
-| 14:15–15:20 | Night Desk, first 65 facilitated minutes |
-| 15:20–15:30 | Break |
-| 15:30–16:40 | Night Desk, remaining 70 facilitated minutes |
-| 16:40–17:00 | Meal break |
-| 17:00–19:30 | Last Count, 150 facilitated minutes |
+| 08:00–10:15 | Slope Brief, 135 facilitated minutes |
+| 10:15–10:25 | Break |
+| 10:25–11:30 | Night Desk, first 65 facilitated minutes |
+| 11:30–11:40 | Break |
+| 11:40–12:50 | Night Desk, remaining 70 facilitated minutes |
+| 12:50–13:30 | Lunch |
+| 13:30–16:00 | Last Count, 150 facilitated minutes |
 
-Thursday is 600 facilitated minutes plus 90 minutes of meals and breaks, 08:00–19:30 local time. The White Rack morning break follows initial graph construction. The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its elapsed-minute route.
+Thursday is 420 facilitated minutes plus 60 minutes of meals and breaks, 08:00–16:00 local time. The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its elapsed-minute route.
 
 Sessions run in this order. Each capability assumes earlier skills, while **no module depends on another module's evidence**. Every module receives its own case and machinery, verified at entry. Recover missing prerequisites explicitly. A technical `HOLD` identifies work that needs attention; it does not block later participation.
 

@@ -24,6 +24,8 @@ The learner freezes a sample of sixteen runs, writes first-failure notes, reconc
 | 2:10–2:40 | Learner runs the three controls | 1 / 0 / 1 with correct messages |
 | 2:40–3:00 | Collect the handoff | Reconstruction or `HOLD` |
 
+Count these times from the start of the block; breaks do not count. On Wednesday the block's break falls at 1:15, after the learner writes the sixteen first-failure notes and before the category tally. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+
 ## Coaching boundary
 
 You may point to a file or help run a supplied command. You may not supply a first-failure note, a count, a literal, or a second checker. If you cross that line, mark the work as guided practice.

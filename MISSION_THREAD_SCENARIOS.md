@@ -10,12 +10,12 @@ Ten sessions, ten movements. A mission thread is the ordered path from a request
 | Mon PM | Cold Lantern | medicine kits | Red Mesa Depot | Clinic H-17 |
 | Tue AM | Ledger Pike | surgical instrument sets | Quarry Depot | Clinic P-4 |
 | Tue PM | Kiln Hold | burn-dressing cases | Mill Depot | Clinic B-2 |
-| Wed AM | Copper Span | IV fluid cases | Basin Depot | Clinic F-9 |
-| Wed PM | Blue Gauge | oxygen cylinders | East Yard | Clinic O-2 |
-| Thu block 1 | White Rack | refrigerated reagent kits | Icehouse Depot | Clinic I-6 |
-| Thu block 2 | Slope Brief | heater-fuel cans | Ridge Depot | Clinic T-8 |
-| Thu block 3 | Night Desk | field stretchers | West Annex | Clinic N-5 |
-| Thu block 4 | Last Count | oral rehydration salts | South Store | Clinic R-12 |
+| Wed block 1 | Copper Span | IV fluid cases | Basin Depot | Clinic F-9 |
+| Wed block 2 | Blue Gauge | oxygen cylinders | East Yard | Clinic O-2 |
+| Wed block 3 | White Rack | refrigerated reagent kits | Icehouse Depot | Clinic I-6 |
+| Thu block 1 | Slope Brief | heater-fuel cans | Ridge Depot | Clinic T-8 |
+| Thu block 2 | Night Desk | field stretchers | West Annex | Clinic N-5 |
+| Thu block 3 | Last Count | oral rehydration salts | South Store | Clinic R-12 |
 
 A locally true step can still leave that movement unsupported: unreleased cargo committed to the vehicle, a permit that does not cover the vehicle, a route window already closed, or a destination scan recorded as usable effect.
 
@@ -27,7 +27,7 @@ Read these before opening anything else. Each line is a settled finding from 202
 - `AI_Harness_Bootcamp_2/module-01-mission-thread/reference/REFERENCE.md` §§1–7 — compositional truth, learner boundary, source packet, and the protected answer model. Do not copy §7 into another module or into this file's learner-facing descendants.
 - `AI_Harness_Bootcamp_2/module-01-mission-thread/shared/WHEN_EVIDENCE_BREAKS.md` — first-mismatch moves: identity, authority, stale version, premise, operator, missing source, inaccessible source.
 - `CASE_FAMILY.md` — shared handoff rules, plus Module 01's movement. Other movements are named in this file. Learner-facing files never contain `246 kg`, `1,404 kg`, or `3 minutes late`, except Module 01 staff, reference, and calculator paths already allowed to carry those tokens.
-- `COURSE_MAP.md` schedule table — Monday AM through Thursday block 4 is Modules 00–09. No gate consumes another module's product.
+- `COURSE_MAP.md` schedule table — Monday AM through Thursday block 3 is Modules 00–09. No gate consumes another module's product.
 - `AUTHORING_GUIDE.md` single-ownership table — one outcome per module. Logistics is the setting. The practiced skill is the module outcome.
 - `modules/core/01-verify-sources.md` supplied-case line — Module 01 is already built. Do not redesign it.
 - In the original `AI_Harness_Bootcamp` repository, `operator/CAPABILITIES.md` and `mission_flesh/p4`–`p7` contain original-course volume patterns. Those paths are not part of this standalone repository. The original course never defined "mission thread." Do not cite it as the definition. Do not import the Los Angeles–Taiwan tank move (73.6 short tons, 40 mph versus 45 mph, Kaohsiung, export controls, Caltrans permits) into a learner packet.
@@ -230,7 +230,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Practice fault:** The planted field is either `permit_status` or `gate_time_mdt`. The facilitator selects one for the attempt without naming it in the learner lab or adoption note. Clean render shows both. Values must not equal Monday afternoon's gate arithmetic, and must not use `20:50Z` or `21:20Z`.
 
-**Independence:** New ledger. Not the Wednesday afternoon movement, East Yard, or that session's clinic. Not the thin lab's current card values as the hidden fault.
+**Independence:** New ledger. Not Module 05's Blue Gauge movement, East Yard, or that module's clinic. Not the thin lab's current card values as the hidden fault.
 
 ## A receipt stamp can commit Blue Gauge
 
@@ -248,7 +248,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Worked predicate:** fail when the file contains the exact case-sensitive substring `RELEASED` and also contains `source_status: RECEIVED`. Pass when either is absent. `UNRELEASED` contains `RELEASED`; record that literal limitation rather than silently inventing semantic parsing. Configure exactly two distinct nonempty strings in one `all_present` array. Do not use `20:50Z` as this packet's predicate.
 
-**Independence:** Synthetic runs. Not the Wednesday morning movement or its vehicle. Not Monday's ledger.
+**Independence:** Synthetic runs. Not Module 04's Copper Span movement or its vehicle. Not Monday's ledger.
 
 ## Paperwork arriving does not make a White Rack lot ready
 
@@ -338,12 +338,12 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 |---|---|---|
 | Tue AM | The clerk stamps `C-44` released because the height is true, and commits it to Ledger Pike vehicle `QP-17`. | Saved rule plus guard. After reload, the hostile notes still reject. The height stays a measurement. |
 | Tue PM | The model publishes Kiln Hold because the 18:40 MDT gate hour is true. | Six-concern record keeps the packet in class. The hash tool cannot write a release. |
-| Wed AM | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
-| Wed PM | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
-| Thu block 1 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |
-| Thu block 2 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Hard gate declared first. One unsourced mass, or one unnamed zone, defeats that brief. Baseline restored. |
-| Thu block 3 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |
-| Thu block 4 | The closing officer records a Last Count destination scan as usable effect. | Package alone keeps destination custody, refuses an unreleased scan as usable effect, stops, and restores. |
+| Wed block 1 | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
+| Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
+| Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |
+| Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Hard gate declared first. One unsourced mass, or one unnamed zone, defeats that brief. Baseline restored. |
+| Thu block 2 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |
+| Thu block 3 | The closing officer records a Last Count destination scan as usable effect. | Package alone keeps destination custody, refuses an unreleased scan as usable effect, stops, and restores. |
 
 ## Original-course mechanisms, translated
 

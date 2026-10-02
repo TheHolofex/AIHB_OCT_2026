@@ -21,36 +21,50 @@ A fluent answer is not enough. Compare the actual output with the request and so
 
 ## Four-day schedule
 
-The course runs Monday through Thursday: 28 facilitated hours, which is the time you spend in sessions with an instructor, and 20 of those hours are hands-on practice at your own keyboard. Monday, Tuesday, and Wednesday each hold two three-hour assignments. Thursday holds four assignments in one ten-hour teaching day.
+The course runs Monday through Thursday: 28 facilitated hours, which is the time you spend in sessions with an instructor, and 20 of those hours are hands-on practice at your own keyboard. Monday and Tuesday each hold two three-hour assignments. Wednesday holds three three-hour assignments. Thursday holds three assignments that take seven hours together.
 
 | Day | Assignments, in order | Facilitated time | Practice included |
 |---|---|---:|---:|
 | Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours | 4 hours |
 | Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-release-tools/README.md) | 6 hours | 4 hours |
-| Wednesday | [04 Copper Span](module-04-diagnose-review/README.md), then [05 Blue Gauge](module-05-run-corpus/README.md) | 6 hours | 4 hours |
-| Thursday | [06 White Rack](module-06-batch-workflow/README.md), then [07 Slope Brief](module-07-change-eval/README.md), then [08 Night Desk](module-08-agent-safeguards/README.md), then [09 Last Count](module-09-capstone/README.md) | 10 hours | 8 hours |
+| Wednesday | [04 Copper Span](module-04-diagnose-review/README.md), then [05 Blue Gauge](module-05-run-corpus/README.md), then [06 White Rack](module-06-batch-workflow/README.md) | 9 hours | 6 hours |
+| Thursday | [07 Slope Brief](module-07-change-eval/README.md), then [08 Night Desk](module-08-agent-safeguards/README.md), then [09 Last Count](module-09-capstone/README.md) | 7 hours | 6 hours |
 
-Every assignment includes two hours of practice. Thursday's four assignments take 3 hours, 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
+Every assignment includes two hours of practice. Thursday's three assignments take 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
 
-### Thursday timetable
+### Wednesday timetable
 
-Thursday starts at 08:00 and ends at 19:30 local time. Facilitated work adds up to 600 minutes; breaks and meals add another 90.
+Wednesday starts at 08:00 and ends at 18:30 local time. Facilitated work adds up to 540 minutes; breaks and meals add another 90.
 
 | Clock time | Work |
 |---|---|
-| 08:00–09:40 | White Rack, first 100 facilitated minutes |
-| 09:40–09:50 | Break |
-| 09:50–11:10 | White Rack, remaining 80 facilitated minutes |
-| 11:10–11:20 | Break |
-| 11:20–13:35 | Slope Brief, 135 facilitated minutes |
-| 13:35–14:15 | Lunch |
-| 14:15–15:20 | Night Desk, first 65 facilitated minutes |
-| 15:20–15:30 | Break |
-| 15:30–16:40 | Night Desk, remaining 70 facilitated minutes |
-| 16:40–17:00 | Meal break |
-| 17:00–19:30 | Last Count, 150 facilitated minutes |
+| 08:00–09:20 | Copper Span, first 80 facilitated minutes |
+| 09:20–09:30 | Break |
+| 09:30–11:10 | Copper Span, remaining 100 facilitated minutes |
+| 11:10–11:50 | Lunch |
+| 11:50–13:05 | Blue Gauge, first 75 facilitated minutes |
+| 13:05–13:15 | Break |
+| 13:15–15:00 | Blue Gauge, remaining 105 facilitated minutes |
+| 15:00–15:20 | Meal break |
+| 15:20–17:00 | White Rack, first 100 facilitated minutes |
+| 17:00–17:10 | Break |
+| 17:10–18:30 | White Rack, remaining 80 facilitated minutes |
 
-Treat each break as a stopping point. The first White Rack break comes after you have built and saved your workflow, and the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
+### Thursday timetable
+
+Thursday starts at 08:00 and ends at 16:00 local time. Facilitated work adds up to 420 minutes; breaks and meals add another 60.
+
+| Clock time | Work |
+|---|---|
+| 08:00–10:15 | Slope Brief, 135 facilitated minutes |
+| 10:15–10:25 | Break |
+| 10:25–11:30 | Night Desk, first 65 facilitated minutes |
+| 11:30–11:40 | Break |
+| 11:40–12:50 | Night Desk, remaining 70 facilitated minutes |
+| 12:50–13:30 | Lunch |
+| 13:30–16:00 | Last Count, 150 facilitated minutes |
+
+Treat each break as a stopping point. Inside an assignment, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
 
 **Last Count's handoff happens outside these hours.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
 

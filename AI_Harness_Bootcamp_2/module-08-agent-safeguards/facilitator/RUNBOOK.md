@@ -18,7 +18,7 @@ The learner freezes AGENT_POLICY.md with the fixed JSON declaration before any l
 
 ## Thursday delivery route
 
-Module 8 is the third Thursday block: 135 facilitated minutes, with 15 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The Night Desk break falls at minute 65, between the two supplied probes and the planted-note attempt. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+Module 8 is the second Thursday block: 135 facilitated minutes, with 15 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The Night Desk break falls at minute 65, between the two supplied probes and the planted-note attempt. The day's clock is in `COURSE_MAP.md` and on the public homepage.
 
 Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, Oh My Pi 18.3.5 and the shared launcher, the supplied policy, probes and notes, and each learner's process-local OpenRouter key with its US$40 per-key ceiling set. The three launcher turns are the mandatory live-agent lane. A missing key, credit, or pinned model holds that lane; record it as blocked and do not switch provider or model. This verifies existing prerequisites. It adds no homework.
 

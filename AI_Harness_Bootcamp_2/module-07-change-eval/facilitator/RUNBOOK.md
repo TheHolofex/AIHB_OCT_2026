@@ -18,7 +18,7 @@ The checked live instruction keeps the two clock values separate: UTC in `Gate t
 
 ## Thursday delivery route
 
-Module 7 is the second Thursday block: 135 facilitated minutes, with 15 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+Module 7 is the first Thursday block: 135 facilitated minutes, with 15 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The day's clock is in `COURSE_MAP.md` and on the public homepage.
 
 Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, the supplied cases, controls, evaluator and restore scripts, and a work-copy preparation that runs. This verifies existing prerequisites. It adds no homework.
 
