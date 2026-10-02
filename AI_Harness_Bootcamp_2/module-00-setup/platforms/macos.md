@@ -523,9 +523,9 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 **Recovery:** Re-enter it through the isolated hidden prompt. Never save the key in a profile, command argument, or evidence file.
 
-## Make a token-bound tool proof
+## Run a readiness check
 
-Create a fresh proof attempt. Its random token is class evidence, not a credential. The prompt receives the token only through a file inside the declared work root.
+Create a fresh readiness-check attempt. Its random token identifies this attempt; it is not a credential. The prompt receives the token only through a file inside the declared work root.
 
 **Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
 
@@ -539,7 +539,7 @@ from pathlib import Path
 import secrets, sys
 run = Path(sys.argv[1])
 if run.is_symlink() or any(parent.is_symlink() for parent in run.parents):
-    raise SystemExit('HOLD: linked proof path; preserve it and resolve the path.')
+    raise SystemExit('HOLD: linked readiness-check path; preserve it and resolve the path.')
 run.mkdir(parents=True, exist_ok=False)
 work = run / 'proof'
 work.mkdir()
@@ -547,17 +547,17 @@ token = secrets.token_hex(16)
 (run / 'run-token.txt').write_text(token + '\n', encoding='utf-8')
 (work / 'run-token.txt').write_text(token + '\n', encoding='utf-8')
 (run / 'prompt.txt').write_text('Read run-token.txt with course_read. Use course_write to create from-omp.txt containing only omp works followed by one space and the exact token. Do not write another file.\n', encoding='utf-8')
-print('FRESH PROOF WORK', work)
+print('FRESH READINESS WORK', work)
 PY
 ```
 
-**Expected:** Fresh proof work, token, and prompt exist. `E` does not exist yet.
+**Expected:** `FRESH READINESS WORK` names the new work folder. Its token and prompt exist. `E` does not exist yet.
 
 **Stop:** The attempt already exists or preparation fails.
 
-**Recovery:** Keep the failed attempt. Correct the reported path or permission problem before creating a new `PROOF_RUN`; never reuse a prior proof file as a new result.
+**Recovery:** Keep the failed attempt. Correct the reported path or permission problem before creating a new `PROOF_RUN`; never reuse a prior result file as a new result.
 
-Run the paid tool proof only after the fresh-terminal and credential checks pass. The launcher writes receipts under the new evidence directory.
+Run the paid readiness check only after the fresh-terminal and credential checks pass. The launcher writes receipts under the new evidence directory.
 
 **Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
 
@@ -566,11 +566,11 @@ Run the paid tool proof only after the fresh-terminal and credential checks pass
 "$PY" "$M/shared/case/verify_tool_proof.py" "$W" "$TOKEN" "$E"
 ```
 
-**Expected:** A completed paid turn has the pinned identities, a successful `course_write`, exact disk contents, and `TOOL PROOF PASS`. The verifier does not accept the assistant's claim or a manually created file as sufficient evidence.
+**Expected:** A completed paid turn has the pinned identities, a successful `course_write`, exact disk contents, and `READINESS CHECK PASS`. The verifier does not accept the assistant's claim or a manually created file as sufficient evidence.
 
-**Stop:** Missing key gives launcher exit 2 before a provider request. An incomplete turn or bad proof holds. A file left behind by a failed child is not success.
+**Stop:** Missing key gives launcher exit 2 before a provider request. An incomplete turn or failed readiness check holds. A file left behind by a failed child is not success.
 
-**Recovery:** Retain all output and receipts. Restore the missing prerequisite before creating a fresh proof attempt; do not switch provider, enable automatic retries, or reuse a partially written output.
+**Recovery:** Retain all output and receipts. Restore the missing prerequisite before creating a fresh readiness-check attempt; do not switch provider, enable automatic retries, or reuse a partially written output.
 
 Read the actual output file from disk in a separate command and compare it with this attempt's token.
 
@@ -582,7 +582,7 @@ from pathlib import Path
 import sys
 output, token_file = map(Path, sys.argv[1:])
 if output.is_symlink() or not output.is_file():
-    raise SystemExit('HOLD: proof output is missing or linked.')
+    raise SystemExit('HOLD: readiness-check output is missing or linked.')
 raw = output.read_bytes()
 token = token_file.read_text(encoding='utf-8').strip()
 expected = ('omp works ' + token).encode('utf-8')
@@ -594,15 +594,15 @@ print('DISK READBACK PASS')
 PY
 ```
 
-**Expected:** The actual absolute file path, `omp works` followed by this attempt's token, and `DISK READBACK PASS`. Together with `TOOL PROOF PASS`, the receipts tie the file to the completed pinned turn.
+**Expected:** The actual absolute file path, `omp works` followed by this attempt's token, and `DISK READBACK PASS`. Together with `READINESS CHECK PASS`, the receipts tie the file to the completed pinned turn.
 
-**Stop:** Disk readback, the prerequisite report, or the tool proof fails. A file alone is not a completed proof.
+**Stop:** Disk readback, the prerequisite report, or the readiness check fails. A file alone is not a completed readiness check.
 
-**Recovery:** Preserve the attempt and receipts as `HOLD`. Correct the specific failed prerequisite before creating a new attempt; do not manually write the proof file, reuse evidence, change providers, or enable retries. If an operation is unavailable on your device or inaccessible to you, record that limit and leave the proof incomplete.
+**Recovery:** Preserve the attempt and receipts as `HOLD`. Correct the specific failed prerequisite before creating a new attempt; do not manually write the result file, reuse evidence, change providers, or enable retries. If an operation is unavailable on your device or inaccessible to you, record that limit and leave the readiness check incomplete.
 
 ## Save the prerequisite report separately
 
-Save the prerequisite observations in a separate report. The report checks tools and configuration presence; it does not replace the token-bound tool proof or the disk readback.
+Save the prerequisite observations in a separate report. The report checks tools and configuration presence; it does not replace the live readiness check or the disk readback.
 
 **Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
 

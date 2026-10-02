@@ -14,7 +14,7 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
 4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, a participant-supplied process-local `OPENROUTER_API_KEY`, and the provider-side US$40 ceiling. There is no direct-provider login, model fallback, or automatic paid retry.
-5. Choose fresh setup proof/work directories and preserve every prior attempt.
+5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. For a formal result, identify the real decision owner, custody location, control/version and original outcome record. If missing, mark HOLD and continue only reachable practice.
 7. Exercise genuine deciding controls on passing and failing specimens before any formal use; never substitute a public practice pass or agent role-play.
 8. Confirm a same-state path for every control a learner must operate. Record any unverified operation explicitly.
@@ -87,9 +87,9 @@ If coaching crosses one of those lines, mark that part of the attempt as guided 
 The shared receipt auditor accounts for OMP 18.3.5's stream-only `completedAt`
 timestamp. It still requires every other final assistant field to match the
 terminal record, plus the tool/guard/filesystem joins. If an older auditor holds
-an otherwise completed proof on that timestamp, retain its original HOLD and
-receipts. After updating the supplied helper, use a fresh proof root and token;
-do not rewrite the earlier result or reuse its output as the new proof.
+an otherwise completed readiness check on that timestamp, retain its original HOLD and
+receipts. After updating the supplied helper, use a fresh work root and token;
+do not rewrite the earlier result or reuse its output for the new readiness check.
 
 ## End-of-session collection
 

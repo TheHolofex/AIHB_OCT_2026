@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Confirm from-omp.txt was written by a successful course_write in this run.
+"""Check readiness by confirming a successful course_write in this run.
 
-Usage: python3 verify_tool_proof.py <proof-dir> <token-file> <evidence-dir>
+Usage: python3 verify_tool_proof.py <work-dir> <token-file> <evidence-dir>
 
 Resolves shared/run_omp via __file__ (parents[4] from this file to the repository root).
 Requires audit_evidence clean + guard executed course_write whose resolved_path
@@ -33,7 +33,7 @@ def _sha256(data: bytes) -> str:
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     if len(args) != 3:
-        print("HOLD: prerequisite: usage is verify_tool_proof.py <proof-dir> <token-file> <evidence-dir>")
+        print("HOLD: prerequisite: usage is verify_tool_proof.py <work-dir> <token-file> <evidence-dir>")
         return 2
 
     proof_dir = Path(args[0]).resolve()
@@ -51,7 +51,7 @@ def main(argv: list[str] | None = None) -> int:
     proof = proof_dir / "from-omp.txt"
     if not proof.is_file():
         print("FAIL: from-omp.txt — the tool reported success but no file exists here")
-        print("TOOL PROOF HOLD")
+        print("READINESS CHECK HOLD")
         return 1
 
     observed = proof.read_text(encoding="utf-8").strip()
@@ -61,19 +61,19 @@ def main(argv: list[str] | None = None) -> int:
             print("FAIL: from-omp.txt — carries no run token, so it cannot be tied to this run")
         else:
             print(f"FAIL: from-omp.txt — content is {observed[:60]!r}; expected {want!r}")
-        print("TOOL PROOF HOLD")
+        print("READINESS CHECK HOLD")
         return 1
 
     if proof.stat().st_mtime < token_file.stat().st_mtime - 1:
         print("FAIL: from-omp.txt — written before this run's token was issued")
-        print("TOOL PROOF HOLD")
+        print("READINESS CHECK HOLD")
         return 1
 
     errors = audit_evidence(evidence)
     if errors:
         for e in errors:
             print(f"FAIL: {e}")
-        print("TOOL PROOF HOLD")
+        print("READINESS CHECK HOLD")
         return 1
 
     # Audited guard check: exact resolved_path match + hash
@@ -86,7 +86,7 @@ def main(argv: list[str] | None = None) -> int:
                     guard.append(json.loads(ln))
     except Exception as e:
         print(f"FAIL: guard read error: {e}")
-        print("TOOL PROOF HOLD")
+        print("READINESS CHECK HOLD")
         return 1
 
     disk_sha = _sha256(proof.read_bytes())
@@ -99,12 +99,12 @@ def main(argv: list[str] | None = None) -> int:
                 break
 
     if not found:
-        print("FAIL: no executed course_write in guard.jsonl whose resolved_path exactly matches the proof and hash matches disk")
-        print("TOOL PROOF HOLD")
+        print("FAIL: no executed course_write in guard.jsonl whose resolved_path exactly matches from-omp.txt and hash matches disk")
+        print("READINESS CHECK HOLD")
         return 1
 
     print("PASS: from-omp.txt — correct content, this run's token, receipted by course_write (exact path + hash)")
-    print("TOOL PROOF PASS")
+    print("READINESS CHECK PASS")
     return 0
 
 

@@ -75,7 +75,7 @@ MUTATIONS: list[Mutation] = [
                                '    on_hand = {27} if re.search(r"on.?hand", text, re.I) else set()\n    ',
                                p.read_text(encoding="utf-8"), flags=re.S),
                            encoding="utf-8"))[0]),
-    Mutation("B8", "the tool proof accepts any file with the right bytes",
+    Mutation("B8", "the readiness check accepts any file with the right bytes",
              sub("shared/case/verify_tool_proof.py", r"        return 1", "        return 0")),
     # Class C
     Mutation("C1", "a file the learner is sent to read is parked where the scan does not look",

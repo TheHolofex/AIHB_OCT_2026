@@ -1,8 +1,8 @@
 # Ubuntu setup for Module 0
 
-This takes an ordinary Ubuntu desktop account through a checked Oh My Pi install, a course checkout, and one live proof file. Plan for 45 to 90 minutes. A package install can take longer on a slow connection. Wait for the prompt to return before you paste the next box.
+This takes an ordinary Ubuntu desktop account through a checked Oh My Pi install, a course checkout, and a live readiness check that writes a file. Plan for 45 to 90 minutes. A package install can take longer on a slow connection. Wait for the prompt to return before you paste the next box.
 
-You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The live proof uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. This path does not install Node, npm, or a second AI tool, and it does not ask you to log in to a model vendor.
+You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. This path does not install Node, npm, or a second AI tool, and it does not ask you to log in to a model vendor.
 
 Every command box is one paste. Select every line in the box, paste it once, and press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine, because every path is quoted.
 
@@ -526,7 +526,7 @@ course_confirm_new_terminal
 
 **Stop:** Any command fails, Python is below 3.12, Git cannot run, the checkout identity is wrong, OMP has the wrong path or version, or the key line is `SET`.
 
-**Recovery:** For Python or Git, repair only that prerequisite with the device owner. For the checkout, preserve its files and ask the course owner. For a missing or wrong `omp`, return to the PATH step in a window that can edit the startup file, then open another terminal from the desktop. Do not export PATH in the proof window to hide a miss. For `SET`, do not print the variable and do not treat `SET` as proof that the key was written to a file. Close this window. If you had opened it from the old terminal, open the next one from the desktop menu. If an independently opened window still prints `SET`, stop and follow [credentials](../shared/CREDENTIALS.md).
+**Recovery:** For Python or Git, repair only that prerequisite with the device owner. For the checkout, preserve its files and ask the course owner. For a missing or wrong `omp`, return to the PATH step in a window that can edit the startup file, then open another terminal from the desktop. Do not export PATH in the new window to hide a miss. For `SET`, do not print the variable and do not treat `SET` as proof that the key was written to a file. Close this window. If you had opened it from the old terminal, open the next one from the desktop menu. If an independently opened window still prints `SET`, stop and follow [credentials](../shared/CREDENTIALS.md).
 
 ## 10. Enter the key
 
@@ -550,7 +550,7 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 ## 11. Export the key in this process
 
-Export makes the variable available to programs you start from this window, including the proof. It still does not write the key to disk. `SET` means this process has a non-empty variable. It does not prove persistence, exposure, or successful authentication. `MISSING` means this process does not have it.
+Export makes the variable available to programs you start from this window, including the readiness check. It still does not write the key to disk. `SET` means this process has a non-empty variable. It does not prove persistence, exposure, or successful authentication. `MISSING` means this process does not have it.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -571,7 +571,7 @@ fi
 
 ## 12. Choose Python and the checkout again
 
-Recheck Python and the checkout in this same window before preparing the proof. The checkout box will not clone over an existing course folder, and it will not update one.
+Recheck Python and the checkout in this same window before preparing the readiness check. The checkout box will not clone over an existing course folder, and it will not update one.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -657,9 +657,9 @@ course_use_checkout
 
 **Recovery:** Do not pull, reset, or clean the checkout to create a missing helper. Stop and ask the person who owns that folder.
 
-## 13. Prepare a fresh proof attempt
+## 13. Prepare a fresh readiness check
 
-The proof folder, the token, and the evidence folder are outside the course checkout. The token is created with Python's `secrets` module and saved as `run-token.txt` beside the proof folder, then copied into it. The evidence child is named but not created. The launcher creates that child. Do not create `from-omp.txt` yourself.
+The work folder, the token, and the evidence folder are outside the course checkout. The token is created with Python's `secrets` module and saved as `run-token.txt` beside the work folder, then copied into it. The evidence child is named but not created. The launcher creates that child. Do not create `from-omp.txt` yourself.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -701,24 +701,24 @@ COURSE_PROMPT
     printf 'STOP: from-omp.txt already exists; start a new attempt\n' >&2
     return 1
   fi
-  printf 'PROOF %s\n' "$BASE/proof"
+  printf 'READINESS_WORK %s\n' "$BASE/proof"
   printf 'TOKEN_OUTSIDE %s\n' "$BASE/run-token.txt"
   printf 'EVIDENCE_NOT_CREATED %s\n' "$EVIDENCE"
 }
 course_prepare_proof
 ```
 
-**Expected:** Three lines, starting with `PROOF`, `TOKEN_OUTSIDE`, and `EVIDENCE_NOT_CREATED`. The evidence path is printed, and that folder does not exist yet. The token value is not printed.
+**Expected:** Three lines, starting with `READINESS_WORK`, `TOKEN_OUTSIDE`, and `EVIDENCE_NOT_CREATED`. The evidence path is printed, and that folder does not exist yet. The token value is not printed.
 
 **Stop:** A STOP line appears, or `from-omp.txt` already exists.
 
-**Recovery:** Leave the existing attempt in place. Paste this box again. The new paste uses a new attempt folder. Do not copy an old `from-omp.txt` into the new proof folder.
+**Recovery:** Leave the existing attempt in place. Paste this box again. The new paste uses a new attempt folder. Do not copy an old `from-omp.txt` into the new work folder.
 
 ## 14. Ask for one tool write
 
-This command starts the course launcher. The launcher selects OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It allows the model to read the proof folder and to write only `from-omp.txt`. The key is read from this process. It is not placed on the command line.
+This command starts the course launcher. The launcher selects OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It allows the model to read the work folder and to write only `from-omp.txt`. The key is read from this process. It is not placed on the command line.
 
-A missing key exits 2 and does not create the evidence folder. A live failure exits 1. Keep that attempt. Do not run the launcher again against the same proof folder after a partial file exists.
+A missing key exits 2 and does not create the evidence folder. A live failure exits 1. Keep that attempt. Do not run the launcher again against the same work folder after a partial file exists.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -726,7 +726,7 @@ A missing key exits 2 and does not create the evidence folder. A live failure ex
 course_run_proof() {
   local course_exit
   if [ -z "${PY:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
-    printf 'STOP: proof paths are not set in this terminal\n' >&2
+    printf 'STOP: readiness-check paths are not set in this terminal\n' >&2
     return 1
   fi
   if [ -e "$EVIDENCE" ] || [ -L "$EVIDENCE" ]; then
@@ -763,9 +763,9 @@ course_run_proof
 
 **Recovery:** Do not create `from-omp.txt` by hand, and do not delete the attempt to make the same path work. For exit 2, read the prerequisite error. If it names a missing key, repeat the hidden-read and export boxes in this window. For another prerequisite, correct that specific failure with the course owner. Only then prepare a new attempt. For exit 1, keep the attempt, inspect the first failure in its receipts, and correct that cause with the course owner before preparing a new attempt. Do not retry blindly. Do not point the launcher at a second provider or a different model.
 
-## 15. Check the proof
+## 15. Verify the readiness result
 
-The checker reads the proof folder, the token file outside that folder, and the evidence folder. It audits the saved receipts and pinned provider, model, and OMP identities. It passes only when `from-omp.txt` contains `omp works` and the token from this attempt, and when the evidence records that `course_write` wrote those bytes.
+The checker reads the work folder, the token file outside that folder, and the evidence folder. It audits the saved receipts and pinned provider, model, and OMP identities. It passes only when `from-omp.txt` contains `omp works` and the token from this attempt, and when the evidence records that `course_write` wrote those bytes.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -774,11 +774,11 @@ course_verify_proof() {
   local course_exit
   unset COURSE_PROOF_VERIFIED
   if [ -z "${PY:-}" ] || [ -z "${M:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
-    printf 'STOP: proof paths are not set in this terminal\n' >&2
+    printf 'STOP: readiness-check paths are not set in this terminal\n' >&2
     return 1
   fi
   if [ ! -d "$EVIDENCE" ]; then
-    printf 'STOP: evidence was not created; do not invent a proof file\n' >&2
+    printf 'STOP: evidence was not created; do not invent a result file\n' >&2
     return 1
   fi
   "$PY" "$M/shared/case/verify_tool_proof.py" "$BASE/proof" "$BASE/run-token.txt" "$EVIDENCE"
@@ -790,9 +790,9 @@ course_verify_proof() {
 course_verify_proof
 ```
 
-**Expected:** The checker prints `TOOL PROOF PASS`, and the last line is `VERIFY_EXIT 0`.
+**Expected:** The checker prints `READINESS CHECK PASS`, and the last line is `VERIFY_EXIT 0`.
 
-**Stop:** You see `TOOL PROOF HOLD`, `VERIFY_EXIT 1`, `VERIFY_EXIT 2`, or a STOP line.
+**Stop:** You see `READINESS CHECK HOLD`, `VERIFY_EXIT 1`, `VERIFY_EXIT 2`, or a STOP line.
 
 **Recovery:** Do not edit `from-omp.txt`, and do not run the checker against a folder you filled in yourself. Keep this attempt as HOLD. Correct the first reported failure with the course owner before preparing a new attempt. A later prerequisite report cannot replace this check.
 
@@ -825,21 +825,21 @@ course_save_report
 
 **Stop:** The command prints `SETUP CHECK HOLD`, any nonzero `REPORT_EXIT`, or an error. A line in the report tells you to pull, reset, or discard files.
 
-**Recovery:** Read the first FAIL line and correct only that prerequisite. Do not pull, reset, clean, or discard the checkout because a report mentions changed files. Do not paste the key into the report. If the report passed but the proof check did not, the proof remains stopped.
+**Recovery:** Read the first FAIL line and correct only that prerequisite. Do not pull, reset, clean, or discard the checkout because a report mentions changed files. Do not paste the key into the report. If the report passed but the readiness check did not, the readiness check remains stopped.
 
-## 17. Read the actual proof file
+## 17. Read the actual result file
 
-Read the actual result from disk after `TOOL PROOF PASS`. Keep the prerequisite report separate: its PASS cannot replace the tool proof. This command prints every byte of `from-omp.txt`; the token is a run identifier, not your API key.
+Read the actual result from disk after `READINESS CHECK PASS`. Keep the prerequisite report separate: its PASS cannot replace the live readiness check. This command prints every byte of `from-omp.txt`; the token is a run identifier, not your API key.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_read_back_proof() {
   if [ -z "${BASE:-}" ] || [ "${COURSE_PROOF_VERIFIED:-}" != "$BASE" ]; then
-    printf 'STOP: this attempt has not passed the tool-proof check\n' >&2; return 1
+    printf 'STOP: this attempt has not passed the readiness check\n' >&2; return 1
   fi
   if [ ! -f "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
-    printf 'STOP: proof file is missing or linked\n' >&2; return 1
+    printf 'STOP: result file is missing or linked\n' >&2; return 1
   fi
   printf 'FILE %s\n' "$BASE/proof/from-omp.txt"
   cat -- "$BASE/proof/from-omp.txt" || return 1
@@ -850,6 +850,6 @@ course_read_back_proof
 
 **Expected:** Between the file path and `END OF FILE`, you see `omp works` followed by the token for this attempt. This is the file you just verified, under your home folder outside the checkout.
 
-**Stop:** The file cannot be read, its contents differ from the verified result, or any STOP line appears. A failed proof or prerequisite report remains HOLD.
+**Stop:** The file cannot be read, its contents differ from the verified result, or any STOP line appears. A failed readiness check or prerequisite report remains HOLD.
 
-**Recovery:** Preserve the attempt and its receipts. Ask the course owner to resolve the first failed check before creating a new attempt. Do not edit the proof file or use an assistant message as a substitute for the disk file.
+**Recovery:** Preserve the attempt and its receipts. Ask the course owner to resolve the first failed check before creating a new attempt. Do not edit the result file or use an assistant message as a substitute for the disk file.

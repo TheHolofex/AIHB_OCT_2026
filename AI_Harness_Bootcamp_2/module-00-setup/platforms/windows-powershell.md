@@ -1,6 +1,6 @@
 # Windows PowerShell setup
 
-This path installs the course tools on native Windows and proves one bounded write from Oh My Pi. Plan for 60 to 120 minutes. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
+This path installs the course tools on native Windows and runs a readiness check in which Oh My Pi writes one file. Plan for 60 to 120 minutes. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
 
 You need Git, Python 3.12 or newer, a browser, an ordinary text editor, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You do not install Node, npm, n8n, Obsidian, or another agent for this path.
 
@@ -445,7 +445,7 @@ Write-Output $M
 
 **Recovery:** leave the existing folder in place. If it is the wrong project, choose a different computer folder only with the person who supports your machine; do not delete, reset, pull, or clean this one. If the hold names rewritten line endings, do not edit those files and do not renormalize them. Ask the person who supports your machine before moving the folder aside. After `$HOME\Documents\AIHB_OCT_2026` is no longer occupied, run this block again so the new copy is intact. If a copy you just made still prints that hold, stop and save the message. If the clone failed before creating the folder, correct the reported access or network problem before another attempt. If a partial folder was created and it is not a valid course checkout, stop and save the Git message. The one-command setting is documented in [Git core.autocrlf](https://git-scm.com/docs/git-config#Documentation/git-config.txt-coreautocrlf).
 
-`$R` and `$M` belong to this window. You will set them again in the window that runs the proof.
+`$R` and `$M` belong to this window. You will set them again in the window that runs the readiness check.
 
 ## Enter the key without showing it
 
@@ -579,9 +579,9 @@ Write-Output 'User environment name cleared. The value was not printed.'
 
 **Recovery:** run this only after the check names the User scope. For a Machine scope or profile finding, use the recovery in the previous step instead of this command.
 
-## Enter the key again in the proof window
+## Enter the key again in the new window
 
-The proof has to run in the independent window, because that is the window whose PATH came from the saved user setting. The key does not come along. Repeat the hidden read, then the separate conversion. Do not skip the read and paste the key into the conversion command.
+The readiness check has to run in the independent window, because that is the window whose PATH came from the saved user setting. The key does not come along. Repeat the hidden read, then the separate conversion. Do not skip the read and paste the key into the conversion command.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
@@ -595,7 +595,7 @@ $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
 
 **Recovery:** revoke a displayed key, then run this read again.
 
-Load the hidden value into this proof process and clear the temporary copy.
+Load the hidden value into this PowerShell process and clear the temporary copy.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
@@ -626,11 +626,11 @@ try {
 
 **Stop:** `MISSING`, or any output that contains the key.
 
-**Recovery:** run the hidden read and this conversion again in this window. Do not continue to the proof on `MISSING`.
+**Recovery:** run the hidden read and this conversion again in this window. Do not continue to the readiness check on `MISSING`.
 
-## Create a fresh proof folder and token
+## Prepare a fresh readiness check
 
-Create a fresh proof folder outside the course checkout. Prepare one fresh attempt so the model can read a token and write only `from-omp.txt`. The token is created by Python's secrets module and stored outside the proof folder, then copied in, so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`.
+Create a fresh work folder outside the course checkout. Prepare one fresh attempt so the model can read a token and write only `from-omp.txt`. The token is created by Python's secrets module and stored outside the work folder, then copied in, so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`.
 
 Run the full Git and Python resolver in this window before this block. `$PY` from an earlier window is not here. This block sets `$R` and `$M` again. Stay in this window through the checker and the report, because a new Start-menu window does not keep `$PY`, `$R`, `$M`, `$attempt`, or the key.
 
@@ -639,7 +639,7 @@ Windows PowerShell removes quotation marks that sit inside a short `-c` program 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
-if (-not $PY) { throw 'STOP: resolve Python again in this window before the proof.' }
+if (-not $PY) { throw 'STOP: resolve Python again in this window before the readiness check.' }
 $R = Join-Path $HOME 'Documents\AIHB_OCT_2026'
 $M = Join-Path $R 'AI_Harness_Bootcamp_2\module-00-setup'
 $frozen = @(
@@ -650,7 +650,7 @@ $frozen = @(
 foreach ($rel in $frozen) {
   $path = Join-Path $R $rel
   if (-not (Test-Path -LiteralPath $path)) {
-    throw 'STOP: a frozen control is missing. Nothing was created for this proof.'
+    throw 'STOP: a frozen control is missing. Nothing was created for this readiness check.'
   }
   $item = Get-Item -LiteralPath $path -Force
   if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
@@ -703,14 +703,14 @@ Write-Output ('evidence exists now: ' + (Test-Path -LiteralPath $evidence))
 
 ## Ask for the one permitted write
 
-Run the launcher once. It starts the pinned Oh My Pi binary with permission to write only `from-omp.txt`. It reads the key from this process. If the key is missing, it stops before it creates the evidence folder. If the live attempt fails, it keeps the evidence it created. Do not run the launcher a second time against a proof folder that already contains `from-omp.txt`.
+Run the launcher once. It starts the pinned Oh My Pi binary with permission to write only `from-omp.txt`. It reads the key from this process. If the key is missing, it stops before it creates the evidence folder. If the live attempt fails, it keeps the evidence it created. Do not run the launcher a second time against a work folder that already contains `from-omp.txt`.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
 ```powershell
 $launcher = Join-Path $R 'shared\run_omp.py'
 if (Test-Path -LiteralPath $evidence) { throw 'STOP: the evidence path already exists. Choose a new attempt.' }
-if (Test-Path -LiteralPath (Join-Path $proof 'from-omp.txt')) { throw 'STOP: the proof folder already has a write. Keep it and start a new attempt.' }
+if (Test-Path -LiteralPath (Join-Path $proof 'from-omp.txt')) { throw 'STOP: the work folder already has a write. Keep it and start a new attempt.' }
 & $PY $launcher --workdir $proof --prompt $promptFile --evidence $evidence --allow-write 'from-omp.txt'
 if ($LASTEXITCODE -ne 0) { throw ('HOLD: launcher exit ' + $LASTEXITCODE + '. Preserve this attempt and correct the reported cause.') }
 Write-Output 'launcher exit 0'
@@ -718,15 +718,15 @@ if (-not (Test-Path -LiteralPath $evidence -PathType Container)) { throw 'HOLD: 
 Write-Output ('evidence exists after launch: ' + (Test-Path -LiteralPath $evidence))
 ```
 
-**Expected:** the launcher finishes, the exit line is `launcher exit 0`, and the evidence folder now exists. The launcher may also print a status line of its own. That line is not the tool proof.
+**Expected:** the launcher finishes, the exit line is `launcher exit 0`, and the evidence folder now exists. The launcher may also print a status line of its own. That line does not complete the readiness check.
 
-**Stop:** exit 2, especially with a missing-key hold, means a prerequisite failed. The evidence folder should still be absent, and you must not invent the proof file. Exit 1 means the live attempt failed. Exit 0 with no evidence folder is also a stop.
+**Stop:** exit 2, especially with a missing-key hold, means a prerequisite failed. The evidence folder should still be absent, and you must not invent the result file. Exit 1 means the live attempt failed. Exit 0 with no evidence folder is also a stop.
 
-**Recovery:** on exit 2 with no evidence folder, correct the named prerequisite; enter the key again only if the message says it is missing. Then start at the fresh-proof step with new paths. On exit 1, or if `from-omp.txt` already exists, keep both folders, correct the specific failure named in the evidence, and only then start a new attempt at the fresh-proof step. Do not retry into the same proof folder, and do not write `from-omp.txt` yourself.
+**Recovery:** on exit 2 with no evidence folder, correct the named prerequisite; enter the key again only if the message says it is missing. Then return to “Prepare a fresh readiness check” with new paths. On exit 1, or if `from-omp.txt` already exists, keep both folders, correct the specific failure named in the evidence, and only then prepare a fresh readiness check. Do not retry into the same work folder, and do not write `from-omp.txt` yourself.
 
 ## Check the write against the token and the receipt
 
-Run the checker with the proof folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk.
+Run the checker with the work folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
@@ -737,23 +737,23 @@ if ($LASTEXITCODE -ne 0) { throw ('HOLD: checker exit ' + $LASTEXITCODE + '. Pre
 Write-Output 'checker exit 0'
 ```
 
-**Expected:** the checker's last result line is `TOOL PROOF PASS`, and the exit line is `checker exit 0`.
+**Expected:** the checker's last result line is `READINESS CHECK PASS`, and the exit line is `checker exit 0`.
 
-**Stop:** the last result line is `TOOL PROOF HOLD`, the checker exits nonzero, or the proof file is missing. A file you create by hand is not a pass.
+**Stop:** the last result line is `READINESS CHECK HOLD`, the checker exits nonzero, or the result file is missing. A file you create by hand is not a pass.
 
-**Recovery:** keep this attempt. Correct the specific failure named by the checker before returning to the fresh-proof step with new folders. Do not edit `from-omp.txt` to make the words match.
+**Recovery:** keep this attempt. Correct the specific failure named by the checker before returning to “Prepare a fresh readiness check” with new folders. Do not edit `from-omp.txt` to make the words match.
 
 ## Read the actual file on disk
 
 Read the file separately from the receipt check. A model’s claim that it wrote a file is not a disk observation.
 
-**Terminal: Windows PowerShell 5.1, ordinary user, same proof window.**
+**Terminal: Windows PowerShell 5.1, ordinary user, same independent window.**
 
 ```powershell
 Get-Content -LiteralPath (Join-Path $proof 'from-omp.txt') -Raw -ErrorAction Stop
 ```
 
-**Expected:** `omp works` followed by one space and this attempt’s token, as checked by `TOOL PROOF PASS`. The checker also validates real receipts and the pinned OMP/provider/model identities.
+**Expected:** `omp works` followed by one space and this attempt’s token, as checked by `READINESS CHECK PASS`. The checker also validates real receipts and the pinned OMP/provider/model identities.
 
 **Stop:** the file cannot be read or the content differs.
 
@@ -761,7 +761,7 @@ Get-Content -LiteralPath (Join-Path $proof 'from-omp.txt') -Raw -ErrorAction Sto
 
 ## Record prerequisites, not the live turn
 
-This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The tool proof you already ran is the live-write check. Stay in the proof window for this report. `$R`, `$M`, and `$attempt` are already set there, and a new Start-menu window does not have them or the key.
+This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The readiness check you already ran checks the live write. Stay in the same window for this report. `$R`, `$M`, and `$attempt` are already set there, and a new Start-menu window does not have them or the key.
 
 Open `$M\scripts\verify-setup.ps1` in your text editor and review the local checker before running it. Inspect the effective policy and its scopes. See [PowerShell 5.1 execution policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1).
 
@@ -819,7 +819,7 @@ Write-Output $report
 
 **Expected:** `report exit 0`, a report file path, and a last report line that begins `SETUP CHECK PASS`. The report does not contain the key.
 
-**Stop:** the script is blocked by execution policy, exits nonzero, reports `SETUP CHECK HOLD`, the report path already exists, or the report contains the key. A hold in this report is a prerequisite hold. It is not repaired by editing the proof file, and a pass in this report does not replace `TOOL PROOF PASS`.
+**Stop:** the script is blocked by execution policy, exits nonzero, reports `SETUP CHECK HOLD`, the report path already exists, or the report contains the key. A hold in this report is a prerequisite hold. It is not repaired by editing the result file, and a pass in this report does not replace `READINESS CHECK PASS`.
 
-**Recovery:** fix the first failed prerequisite named in the report, then run this report command again only after choosing a new report path if the old file exists. Do not reset, pull, or clean the checkout because the report mentions local changes. Continue only after both `SETUP CHECK PASS` and `TOOL PROOF PASS`, plus the separate disk read-back.
+**Recovery:** fix the first failed prerequisite named in the report, then run this report command again only after choosing a new report path if the old file exists. Do not reset, pull, or clean the checkout because the report mentions local changes. Continue only after both `SETUP CHECK PASS` and `READINESS CHECK PASS`, plus the separate disk read-back.
 

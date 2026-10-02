@@ -277,7 +277,7 @@ def class_b(r: Recorder, root: Path) -> None:
             f"practice checker adequacy: {tail}",
             f"practice checker adequacy failed: {adequacy.stdout.strip()[-300:]}")
 
-    # B8 — tool proof rejects bad receipts via exit status. No incidental message wording.
+    # B8 — readiness check rejects bad receipts via exit status.
     verifier = root / "shared/case/verify_tool_proof.py"
     with tempfile.TemporaryDirectory() as td:
         pdir = Path(td)
@@ -288,27 +288,23 @@ def class_b(r: Recorder, root: Path) -> None:
         proof = pdir / "from-omp.txt"
         # missing
         res = subprocess.run([sys.executable, str(verifier), str(pdir), str(tokf), str(evidence)], capture_output=True, text=True)
-        comb = (res.stdout + res.stderr).upper()
-        r.check("B8", res.returncode != 0 and "TOOL PROOF PASS" not in comb, "rejects missing proof", "accepted missing")
+        r.check("B8", res.returncode != 0, "rejects missing result", "accepted missing")
         # wrong content
         proof.write_text("some prose about the token\n")
         res = subprocess.run([sys.executable, str(verifier), str(pdir), str(tokf), str(evidence)], capture_output=True, text=True)
-        comb = (res.stdout + res.stderr).upper()
-        r.check("B8", res.returncode != 0 and "TOOL PROOF PASS" not in comb, "rejects wrong content", "accepted wrong content")
+        r.check("B8", res.returncode != 0, "rejects wrong content", "accepted wrong content")
         # correct bytes no receipt
         proof.write_text("omp works deadbeef\n")
         now = time.time()
         os.utime(proof, (now, now))
         os.utime(tokf, (now, now))
         res = subprocess.run([sys.executable, str(verifier), str(pdir), str(tokf), str(evidence)], capture_output=True, text=True)
-        comb = (res.stdout + res.stderr).upper()
-        r.check("B8", res.returncode != 0 and "TOOL PROOF PASS" not in comb, "rejects no receipt", "accepted no receipt")
+        r.check("B8", res.returncode != 0, "rejects no receipt", "accepted no receipt")
         # stale
         os.utime(proof, (now-10, now-10))
         os.utime(tokf, (now, now))
         res = subprocess.run([sys.executable, str(verifier), str(pdir), str(tokf), str(evidence)], capture_output=True, text=True)
-        comb = (res.stdout + res.stderr).upper()
-        r.check("B8", res.returncode != 0 and "TOOL PROOF PASS" not in comb, "rejects stale", "accepted stale")
+        r.check("B8", res.returncode != 0, "rejects stale", "accepted stale")
 
 # --------------------------------------------------------------------------------------
 # Class C — the oracle cannot be defeated by editing a file it does not read

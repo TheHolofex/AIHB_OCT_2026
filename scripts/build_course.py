@@ -276,7 +276,7 @@ def procedure_errors(tree: Node, label: str) -> list[str]:
             errors.append(f"{label}: {language} command lacks an associated stop condition")
         if not re.search(r"\b(Recover\w*|Retry|Rerun|Restore|Ask|Choose|Correct|Return|Contact)\b", after, re.I):
             errors.append(f"{label}: {language} command lacks an associated recovery")
-        if re.search(r"^(?:PASS|HOLD|FAIL|READY|TOOL PROOF PASS)(?::|$)", codes[0].text(), re.M):
+        if re.search(r"^(?:PASS|HOLD|FAIL|READY|READINESS CHECK (?:PASS|HOLD))(?::|$)", codes[0].text(), re.M):
             errors.append(f"{label}: observed output must be separate from command text")
         node.attrs["data-command"] = language
     return errors
@@ -611,13 +611,11 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
     else:
         role = {"overview": "Overview", "lab": "Lab", "setup": "Setup", "reference": "Reference"}[kind]
         breadcrumb = f'<nav class="rf-breadcrumb" aria-label="Breadcrumb"><a href="{home}">Course</a><span aria-hidden="true"> / </span><a href="{_relative(dest, routes["overview"])}">{module_id} · {html.escape(module["case_name"])}</a><span aria-hidden="true"> / </span><span>{role}</span></nav>'
-        local = ""
-        if kind != "overview":
-            links = []
-            for page_kind, label in (("overview", "Overview"), ("lab", "Lab")):
-                current = ' aria-current="page"' if str(dest) == routes[page_kind] else ""
-                links.append(f'<a href="{_relative(dest, routes[page_kind])}"{current}>{label}</a>')
-            local = f'<nav class="rf-local-links" aria-label="Assignment documents">{"".join(links)}</nav>'
+        links = []
+        for page_kind, label in (("overview", "Overview"), ("lab", "Lab")):
+            current = ' aria-current="page"' if str(dest) == routes[page_kind] else ""
+            links.append(f'<a href="{_relative(dest, routes[page_kind])}"{current}>{label}</a>')
+        local = f'<nav class="rf-local-links" aria-label="Assignment documents">{"".join(links)}</nav>'
         intro = []
         while tree.children:
             node = tree.children[0]

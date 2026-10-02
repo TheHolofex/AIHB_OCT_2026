@@ -1,6 +1,6 @@
 # Windows WSL 2 with Ubuntu setup
 
-This path uses Windows Subsystem for Linux 2 with the Ubuntu distribution so that all course work happens inside the Linux filesystem under your Linux home directory. Plan for 90 to 180 minutes if any Windows feature enable or reboot is needed. All course clone, work directories, evidence directories, and the Oh My Pi binary stay under the Linux `$HOME`. Never use `/mnt/c` for the course checkout or proof work. Use the Linux `omp` binary and Linux configuration. Enter the provider key through the hidden prompt; investigate unexpected inherited key presence without displaying its value.
+This path uses Windows Subsystem for Linux 2 with the Ubuntu distribution so that all course work happens inside the Linux filesystem under your Linux home directory. Plan for 90 to 180 minutes if any Windows feature enable or reboot is needed. All course clone, work directories, evidence directories, and the Oh My Pi binary stay under the Linux `$HOME`. Never use `/mnt/c` for the course checkout or readiness-check work. Use the Linux `omp` binary and Linux configuration. Enter the provider key through the hidden prompt; investigate unexpected inherited key presence without displaying its value.
 
 You need Git, Python 3.12 or newer inside Ubuntu, a browser, an ordinary text editor, and Oh My Pi 18.3.5 for Linux. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You do not install Node, npm, n8n, Obsidian, or another agent for this path.
 
@@ -342,7 +342,7 @@ course_install_wsl_omp
 
 ## See the binary in this window
 
-The export above is only for this window. It does not prove that a new window will find `omp`. That proof is the independent terminal later, and that later check must not export PATH first. Check the selected binary here.
+The export above is only for this window. It does not establish that a new window will find `omp`. Check that in the independent terminal later, without exporting PATH first. Check the selected binary here.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -524,7 +524,7 @@ course_checkout_wsl
 
 **Recovery:** leave the existing folder in place. If it is the wrong project, choose a different computer folder only with the person who supports your machine; do not delete, reset, pull, or clean this one. For a clone failure, resolve the recorded access or network error first. Preserve partial folders; do not retry over them. The command follows GitHub’s instructions for [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-`$R` and `$M` belong to this shell. The proof window sets `R`, `M`, and `PY` again. It cannot use a function that existed only here.
+`$R` and `$M` belong to this shell. The new window used for the readiness check sets `R`, `M`, and `PY` again. It cannot use a function that existed only here.
 
 ## Enter the key without showing it
 
@@ -589,7 +589,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: named Ubuntu session returned an error.'
 
 **Recovery:** preserve the error and select the recorded name. Do not use the default distribution as a substitute.
 
-Check the saved OMP path without exporting or repairing PATH in this proof block.
+Check the saved OMP path without exporting or repairing PATH in this block.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, newly opened independent window.**
 
@@ -686,7 +686,7 @@ course_note_wsl_path_miss
 
 ## Set the course paths in this window
 
-The earlier Ubuntu window kept `R`, `M`, and `PY`. This window does not have those variables, and it does not have the functions from the earlier window. Set them here before any proof command. This block does not clone, reset, pull, or clean.
+The earlier Ubuntu window kept `R`, `M`, and `PY`. This window does not have those variables, and it does not have the functions from the earlier window. Set them here before any readiness-check command. This block does not clone, reset, pull, or clean.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, newly opened independent window.**
 
@@ -762,9 +762,9 @@ fi
 
 **Recovery:** review the named file privately with the device owner and check how the parent application supplies variables. Do not print profile lines, dump the environment, or share values. If an actual secret assignment was saved unintentionally, remove it with owner guidance and assess exposure; revoke only when exposed or required by policy. If inheritance is approved and understood, proceed to the hidden-input step. Presence alone proves neither persistence nor successful authentication.
 
-## Enter the key again in the proof shell
+## Enter the key again in the new window
 
-The proof runs in this independent window, after that window has printed the persisted `omp` path without an extra PATH export. The key is ordinarily missing unless a reviewed parent environment supplies it. Repeat the hidden read, then the separate export. Do not skip the read and paste the key into the export command.
+The readiness check runs in this independent window, after that window has printed the persisted `omp` path without an extra PATH export. The key is ordinarily missing unless a reviewed parent environment supplies it. Repeat the hidden read, then the separate export. Do not skip the read and paste the key into the export command.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -791,11 +791,11 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 **Stop:** `MISSING`, or any output that contains the key.
 
-**Recovery:** run the hidden read and this export again in this shell. Do not continue to the proof on `MISSING`.
+**Recovery:** run the hidden read and this export again in this shell. Do not continue to the readiness check on `MISSING`.
 
-## Create a fresh proof folder and token
+## Prepare a fresh readiness check
 
-The proof folder is outside the course checkout. This window must already have printed `R`, `M`, and `PY`. The token is created by Python's secrets module and stored outside the proof folder, then copied in so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`. Create the new attempt and its input token now.
+The work folder is outside the course checkout. This window must already have printed `R`, `M`, and `PY`. The token is created by Python's secrets module and stored outside the work folder, then copied in so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`. Create the new attempt and its input token now.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -827,7 +827,7 @@ token = secrets.token_hex(16) + '\n'
 (attempt/'run-token.txt').write_text(token,encoding='utf-8')
 (proof/'run-token.txt').write_text(token,encoding='utf-8')
 (attempt/'prompt.txt').write_text('Read run-token.txt with course_read. Use course_write to create only from-omp.txt containing omp works, one space, and the exact token. Do not write another file.\n',encoding='utf-8')
-print('FRESH PROOF WORK',proof)
+print('FRESH READINESS WORK',proof)
 print('EVIDENCE NOT PRECREATED',attempt/'receipts')
 PY
   course_exit=$?
@@ -837,7 +837,7 @@ PY
 course_prepare_wsl_proof
 ```
 
-**Expected:** `FRESH PROOF WORK` names the new work folder, `EVIDENCE NOT PRECREATED` names its absent receipt path, and the last line is `prepare exit 0`. The token value is not printed.
+**Expected:** `FRESH READINESS WORK` names the new work folder, `EVIDENCE NOT PRECREATED` names its absent receipt path, and the last line is `prepare exit 0`. The token value is not printed.
 
 **Stop:** `PY` is unset, Python is missing, a path already exists, a file cannot be written, or `prepare exit` is not 0.
 
@@ -853,7 +853,7 @@ The launcher runs the pinned Oh My Pi binary with permission to write only `from
 course_run_wsl_proof() {
   local course_exit
   if [ -z "${PY:-}" ] || [ ! -x "$PY" ] || [ -z "${R:-}" ] || [ -z "${proof:-}" ] || [ -z "${prompt_file:-}" ] || [ -z "${evidence:-}" ]; then
-    printf 'STOP: this window is missing PY, R, or the proof paths\n' >&2
+    printf 'STOP: this window is missing PY, R, or the readiness-check paths\n' >&2
     return 1
   fi
   "$PY" "$R/shared/run_omp.py" --workdir "$proof" --prompt "$prompt_file" --evidence "$evidence" --allow-write from-omp.txt
@@ -864,15 +864,15 @@ course_run_wsl_proof() {
 course_run_wsl_proof
 ```
 
-**Expected:** The launcher's own output appears, and the last line is `launcher exit 0`. The evidence folder now exists because the launcher created it. That status is not yet the token-bound tool proof.
+**Expected:** The launcher's own output appears, and the last line is `launcher exit 0`. The evidence folder now exists because the launcher created it. That status does not yet complete the readiness check.
 
-**Stop:** `launcher exit 2` with a `HOLD:` line means a prerequisite failed. The evidence folder should still be absent, and you must not invent the proof file. `launcher exit 1` means the live attempt failed. Exit 0 with no evidence folder is also a stop.
+**Stop:** `launcher exit 2` with a `HOLD:` line means a prerequisite failed. The evidence folder should still be absent, and you must not invent the result file. `launcher exit 1` means the live attempt failed. Exit 0 with no evidence folder is also a stop.
 
-**Recovery:** Read the `HOLD:` line. Do not treat every exit 2 as a missing key. If that line says `OPENROUTER_API_KEY unavailable`, repeat the hidden read and the separate export in this window, then start again at the fresh-proof step so the paths are new. If it says `omp is not on PATH`, or that the pinned version did not match, return to the independent-terminal check. Do not export PATH here, and do not enter the key as that fix. If it says a directory is missing, already exists, or overlaps, keep the attempt, correct the named path problem, and start again at the fresh-proof step. If it says `course_guard.mjs` is missing, the checkout is incomplete; do not reset, pull, or clean it. Exit 1 is a failed live attempt, not an authentication prompt. Do not delete `$HOME/course-evidence`, and do not write `from-omp.txt` yourself.
+**Recovery:** Read the `HOLD:` line. Do not treat every exit 2 as a missing key. If that line says `OPENROUTER_API_KEY unavailable`, repeat the hidden read and the separate export in this window, then return to “Prepare a fresh readiness check” so the paths are new. If it says `omp is not on PATH`, or that the pinned version did not match, return to the independent-terminal check. Do not export PATH here, and do not enter the key as that fix. If it says a directory is missing, already exists, or overlaps, keep the attempt, correct the named path problem, and prepare a fresh readiness check. If it says `course_guard.mjs` is missing, the checkout is incomplete; do not reset, pull, or clean it. Exit 1 is a failed live attempt, not an authentication prompt. Do not delete `$HOME/course-evidence`, and do not write `from-omp.txt` yourself.
 
 ## Check the write against the token and the receipt
 
-The checker takes the proof folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk. Run the checker to verify the token, receipts, and pinned identities.
+The checker takes the work folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk. Run the checker to verify the token, receipts, and pinned identities.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -880,7 +880,7 @@ The checker takes the proof folder, the token file outside that folder, and the 
 course_check_wsl_proof() {
   local course_exit
   if [ -z "${PY:-}" ] || [ ! -x "$PY" ] || [ -z "${M:-}" ] || [ -z "${proof:-}" ] || [ -z "${token_file:-}" ] || [ -z "${evidence:-}" ]; then
-    printf 'STOP: this window is missing PY, M, or the proof paths\n' >&2
+    printf 'STOP: this window is missing PY, M, or the readiness-check paths\n' >&2
     return 1
   fi
   checker="$M/shared/case/verify_tool_proof.py"
@@ -892,17 +892,17 @@ course_check_wsl_proof() {
 course_check_wsl_proof
 ```
 
-**Expected:** the checker's last result line is `TOOL PROOF PASS`, and the last line is `checker exit 0`.
+**Expected:** the checker's last result line is `READINESS CHECK PASS`, and the last line is `checker exit 0`.
 
-**Stop:** the last result line is `TOOL PROOF HOLD`, `checker exit` is not 0, or the proof file is missing. A file you create by hand is not a pass.
+**Stop:** the last result line is `READINESS CHECK HOLD`, `checker exit` is not 0, or the result file is missing. A file you create by hand is not a pass.
 
-**Recovery:** keep this failed attempt as HOLD. Correct the specific checker failure before returning to the fresh-proof step with new folders. Do not edit `from-omp.txt` to make the words match. If the STOP line says `PY` or `M` is missing, paste the path-assignment block in this window first.
+**Recovery:** keep this failed attempt as HOLD. Correct the specific checker failure before returning to “Prepare a fresh readiness check” with new folders. Do not edit `from-omp.txt` to make the words match. If the STOP line says `PY` or `M` is missing, paste the path-assignment block in this window first.
 
-## Read the actual proof file
+## Read the actual result file
 
-Read the file on disk separately after `TOOL PROOF PASS`; this command does not construct the expected answer.
+Read the file on disk separately after `READINESS CHECK PASS`; this command does not construct the expected answer.
 
-**Terminal: Ubuntu Bash, ordinary Linux user, same independent proof window.**
+**Terminal: Ubuntu Bash, ordinary Linux user, same independent window.**
 
 ```bash
 cat -- "$proof/from-omp.txt"
@@ -910,13 +910,13 @@ cat -- "$proof/from-omp.txt"
 
 **Expected:** `omp works`, one space, and this attempt's token, matching the successful checker.
 
-**Stop:** missing/unreadable file or contents differ from the checked proof.
+**Stop:** missing/unreadable file or contents differ from the checked result.
 
 **Recovery:** keep the attempt as HOLD and investigate the changed or missing file. Do not write a replacement by hand or retry the live turn in this folder.
 
 ## Record prerequisites, not the live turn
 
-This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The tool proof you already ran is the live-write check. Save the separate prerequisite report now.
+This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The readiness check you already ran checks the live write. Save the separate prerequisite report now.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -938,7 +938,7 @@ course_report_wsl_setup
 
 **Expected:** a report file path, a last report line beginning `SETUP CHECK PASS`, and `report exit 0`. The report does not contain the key. The shell stays open.
 
-**Stop:** `SETUP CHECK HOLD`, any nonzero report exit, the report path already exists, the report contains the key, or the command says `R` or `M` is missing. A hold in this report is a prerequisite hold. It is not repaired by editing the proof file, and a pass in this report does not replace `TOOL PROOF PASS`.
+**Stop:** `SETUP CHECK HOLD`, any nonzero report exit, the report path already exists, the report contains the key, or the command says `R` or `M` is missing. A hold in this report is a prerequisite hold. It is not repaired by editing the result file, and a pass in this report does not replace `READINESS CHECK PASS`.
 
-**Recovery:** fix the first failed prerequisite named in the report, then run this report command again after the timestamp changes so the report path is new. Keep the failed report. Do not reset, pull, or clean the checkout because the report mentions local changes. Proceed only when both the prerequisite report and token-bound tool proof pass.
+**Recovery:** fix the first failed prerequisite named in the report, then run this report command again after the timestamp changes so the report path is new. Keep the failed report. Do not reset, pull, or clean the checkout because the report mentions local changes. Proceed only when both the prerequisite report and the live readiness check pass.
 

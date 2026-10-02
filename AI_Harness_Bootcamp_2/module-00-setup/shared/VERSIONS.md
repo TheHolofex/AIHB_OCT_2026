@@ -35,6 +35,6 @@ Verify the selected file's checksum before installation or first execution. The 
 
 Check OS and architecture before installation. A binary's availability does not make an unsupported operating system supported. Keep a suitable existing tool; do not replace system Python or add a package source to get past a version hold.
 
-The launcher isolates runtime configuration, exposes only declared course tools, and disables automatic retries, model fallback, cache warming, unrelated extensions, skills, and persistent sessions. Use that launcher for exercises rather than a personal OMP profile. A setup check alone does not prove these controls acted during a model turn; inspect the run's receipts.
+The launcher isolates runtime configuration, exposes only declared course tools, and disables automatic retries, model fallback, cache warming, unrelated extensions, skills, and persistent sessions. Use that launcher for exercises rather than a personal OMP profile. A prerequisite report alone does not establish that these controls acted during a model turn; inspect the readiness check's receipts.
 
 No other model-provider key, vendor login, agent CLI, note-taking application, or workflow service is required. If the pinned release or model is unavailable, retain the failure and hold that lane. Do not choose an unreviewed substitute to obtain a passing label.

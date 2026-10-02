@@ -2,7 +2,7 @@
 
 Direct Oh My Pi to draft an internal email, then check every material claim against the supplied North Shelf facts. You decide what to delegate, set the limits, and accept the email only for its stated use.
 
-First make the tools ready: install what is missing, reopen your terminal, and watch the model read a fresh token and write a real file through the course launcher. Machine readiness and a checked email are separate results.
+First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Machine readiness and a checked email are separate results.
 
 Allow 1–3 hours for setup. The bounded-work assignment has one three-hour facilitated session, including two hours of practice. These are planning allowances, not measured completion times.
 
@@ -30,7 +30,7 @@ The platform steps preserve **PATH**, the saved list of folders your shell searc
 
 You need GitHub read access to `TheHolofex/AIHB_OCT_2026`. The hosted-course password does not provide it. Each path first checks existing approved Git credentials; GitHub CLI (`gh`) is a conditional browser-login helper only if that access check fails. It is not an AI runtime requirement.
 
-The proof makes one provider-billed request through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key with a US$40 per-key ceiling](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
+The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key with a US$40 per-key ceiling](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
 
 ## Before the first command
 
@@ -61,14 +61,14 @@ Save the first error message. Change one thing. Run the same check again.
 
 Setup is finished when a terminal you opened after the last install shows these values:
 
-![Setup is finished only after a new terminal proves it](shared/figures/m00-setup-chain.svg)
+![Check readiness in a newly opened terminal](shared/figures/m00-setup-chain.svg)
 
-*Read the proof file from a terminal you opened after the last install.*
+*Run the readiness check from a terminal you opened after the last install.*
 
 <details>
 <summary>Figure text</summary>
 
-Install the tools. Open a new terminal. Set the OpenRouter key in that terminal. Run the tool-write proof and read its file from disk. A tool saying done is not the same as a file on disk.
+Install the tools. Open a new terminal. Set the OpenRouter key in that terminal. Run the readiness check and read its file from disk. A tool saying done is not the same as a file on disk.
 
 </details>
 
@@ -76,13 +76,13 @@ Install the tools. Open a new terminal. Set the OpenRouter key in that terminal.
 - an absolute Python executable reporting 3.12 or higher, selected by the platform's resolver and saved as `PY` (`$PY` in PowerShell);
 - the Oh My Pi version string `omp/18.3.5`, and the absolute path the command resolved to, as printed by the setup check;
 - the word `SET` from the key check in that same terminal — and the key value itself printed nowhere;
-- one proof file — `from-omp.txt` — read back from disk, written by the tool through the course launcher;
+- one result file — `from-omp.txt` — read back from disk, written by the tool through the course launcher during the readiness check;
 - the expected absolute tool path found without repairing PATH in that new terminal; and
 - a setup report saved outside the checkout with no key, token, or password in it.
 
-The setup check reports the version, path, repository and key-presence observations as PASS, WARN or FAIL. The separate `verify_tool_proof.py` command checks the tool-written file, its token and the saved execution evidence. A passing setup report does not replace that proof.
+The setup report records the version, path, repository and key-presence observations as PASS, WARN or FAIL. The separate `verify_tool_proof.py` command checks the tool-written file, its token and the saved execution evidence, then reports `READINESS CHECK PASS` or `READINESS CHECK HOLD`. A passing setup report does not replace the live readiness check.
 
 A **receipt** records what a run actually used and did: its inputs, tool calls, results, and file effects. Keep receipts and your **work folder**—the editable exercise copy—outside the checkout so a correction cannot overwrite the supplied inputs or an earlier attempt.
 
-Open the proof file and read it back before you accept it: a tool saying “done” is not the same as a file on disk.
+Open the result file and read it back before you accept it: a tool saying “done” is not the same as a file on disk.
 
