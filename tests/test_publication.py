@@ -29,6 +29,9 @@ class WorkspaceBehavior(unittest.TestCase):
             directory = module / "shared" / sub
             directory.mkdir(parents=True)
             (directory / "input.txt").write_text("original input\n", encoding="utf-8")
+        if module_id == "06":
+            for relative in prepare_work.MODULE_06_DOWNLOADS:
+                (module / relative).write_bytes(b"exercise input\r\n")
         (module / "scripts").mkdir()
         for script in prepare_work.SCRIPTS[module_id]:
             (module / "scripts" / script).write_text("# authored test control\n", encoding="utf-8")
@@ -87,6 +90,33 @@ class WorkspaceBehavior(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             prepare_work.prepare("03", self.base / "broken", self.root)
         self.assertTrue((self.base / "broken").is_symlink())
+
+    def test_module_06_copies_only_browser_inputs_without_changing_bytes(self):
+        module = self.module("06")
+        for relative in ("shared/controls/CONTRACT.md", "shared/controls/router-private.json",
+                         "shared/controls/compare-receipts.js", "shared/batch/answer.csv"):
+            (module / relative).write_text("private", encoding="utf-8")
+        work = prepare_work.prepare("06", self.base / "browser work", self.root)
+        copied = {p.relative_to(work).as_posix() for p in work.rglob("*") if p.is_file()}
+        self.assertEqual(copied, set(prepare_work.MODULE_06_DOWNLOADS))
+        for relative in copied:
+            self.assertEqual((work / relative).read_bytes(), (module / relative).read_bytes())
+        self.assertTrue((work / "out").is_dir())
+        self.assertEqual(list((work / "out").iterdir()), [])
+        self.assertEqual(prepare_work.next_arguments("06"), [])
+
+    def test_module_06_missing_or_linked_download_holds_before_creation(self):
+        module = self.module("06")
+        source = module / "shared/controls/receipt-checker.json"
+        source.unlink()
+        work = self.base / "attempt/work"
+        with self.assertRaises(ValueError):
+            prepare_work.prepare("06", work, self.root)
+        self.assertFalse(work.parent.exists())
+        source.symlink_to(module / "shared/controls/validate-batch.js")
+        with self.assertRaises(ValueError):
+            prepare_work.prepare("06", work, self.root)
+        self.assertFalse(work.parent.exists())
 
     def test_noncanonical_module_ids_refuse(self):
         for module_id in ("2", "00", "01", "10", " 02", "02 ", "../02"):

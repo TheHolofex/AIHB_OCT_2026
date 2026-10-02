@@ -9,6 +9,7 @@ import os
 import posixpath
 import re
 import sys
+import zlib
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -474,6 +475,27 @@ def _module_routes(course: dict, module: dict) -> dict[str, str]:
     return {page["kind"]: str(prefix / page["dest"]) for page in module["pages"] if page["kind"] in {"overview", "lab"}}
 
 
+def _png_dimensions(data: bytes, path: PurePosixPath) -> tuple[str, str]:
+    """Read a complete PNG IHDR; image data decoding is left to the browser."""
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError(f"invalid PNG signature: {path}")
+    if len(data) < 33:
+        raise ValueError(f"truncated PNG IHDR: {path}")
+    if int.from_bytes(data[8:12], "big") != 13 or data[12:16] != b"IHDR":
+        raise ValueError(f"invalid PNG IHDR length or first chunk: {path}")
+    if zlib.crc32(data[12:29]) != int.from_bytes(data[29:33], "big"):
+        raise ValueError(f"invalid PNG IHDR checksum: {path}")
+    width = int.from_bytes(data[16:20], "big")
+    height = int.from_bytes(data[20:24], "big")
+    if not (0 < width <= 0x7fffffff and 0 < height <= 0x7fffffff):
+        raise ValueError(f"invalid PNG intrinsic dimensions: {path}")
+    depth, color, compression, filtering, interlace = data[24:29]
+    depths = {0: (1, 2, 4, 8, 16), 2: (8, 16), 3: (1, 2, 4, 8), 4: (8, 16), 6: (8, 16)}
+    if depth not in depths.get(color, ()) or compression != 0 or filtering != 0 or interlace not in (0, 1):
+        raise ValueError(f"invalid PNG IHDR fields: {path}")
+    return str(width), str(height)
+
+
 def _asset_context(course: dict, outputs: dict[PurePosixPath, bytes]) -> dict:
     declared = [PurePosixPath(entry["dest"]) for entry in course["ui_assets"]]
     fonts = []
@@ -497,6 +519,8 @@ def _asset_context(course: dict, outputs: dict[PurePosixPath, bytes]) -> dict:
                     raise ValueError(f"figure lacks intrinsic dimensions: {path}")
                 width, height = viewbox[2:]
             dimensions[str(path)] = (width, height)
+        elif path.suffix.lower() == ".png" and "figures" in path.parts:
+            dimensions[str(path)] = _png_dimensions(data, path)
     return {"styles": [str(path) for path in declared if path.suffix == ".css"],
             "fonts": fonts, "hero": next((str(path) for path in declared if path.suffix == ".webp"), None),
             "dimensions": dimensions}

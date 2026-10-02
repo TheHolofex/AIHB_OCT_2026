@@ -1,480 +1,386 @@
-# Module 6 · Predict the effect of one saved-rule change and prove the exact delta
+# Module 6 · Build a workflow, predict a change, and prove the result
 
-Keep White Rack's lot decisions consistent when a routing rule changes. Using a bounded control you already know how to validate, predict the full effect of one saved rule change across two batches of 80 lots, called waves. Run both waves under both rules and compare every output row, including the rows that must stay unchanged. Restore the original rule and reproduce both original outputs.
+Build a local n8n workflow that routes White Rack's refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict a policy change from two source batches, run both batches, and compare every receipt row. Preserve the original workflow, change one saved value, then restore the original into a new blank workflow and reproduce both original receipts.
 
-The fictional movement carries refrigerated reagent kits from Icehouse Depot to Clinic I-6. The files are authored practice data. Nothing here authorizes a real movement.
+Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee. All lots and movements are fictional. A receipt does not authorize a real movement or release product quality.
 
-Plan for one three-hour facilitated session, including two hours of practice for inspection, prediction, runs, and notes. This is a planning allowance, not a measured completion guarantee.
+You will use three named workflows: your router, a separate supplied checker, and a restored router. Keep all three unpublished. Use the local browser editor and test forms only. A **receipt** is a downloaded CSV with the columns `lot,route,status`. An **exact comparison** checks the whole file, including column order, quotes, separators, and line endings. A green workflow execution alone does not prove that files match.
 
-A **saved workflow** is the supplied `route.py` together with the `RULE.md` that sits beside it. A **receipt** is the CSV the workflow writes. Its columns are `lot`, `route`, and `status`. The router decides in this order: RACK_CONFLICT first, then exact permit match, then the single configuration line. Gate-window text and input disposition never change routing.
+## Prepare your files
 
-The **serialized row** is the exact row text saved in that CSV, including separators and its line ending. Acceptance requires a deterministic result: the same saved inputs and rule must produce the same bytes. Exclude any generated prose from acceptance before running; a convincing explanation cannot establish that the receipt rows match.
+Complete [local n8n readiness](../../module-00-setup/README.md) first: n8n **2.41.5**, the approved full official local stack, and the editor at `http://localhost:5678`. Keep Assistant off. No cloud account, provider key, publication, or production URL is needed. Use your earlier source inspection and evidence habits here.
 
-## Prepare a separate attempt
+In Finder or File Explorer, create a new folder such as `module-06-attempt-2026-10-01-a`. Give each attempt its own name. Inside it, create `inputs`, `predictions`, `exports`, `receipts`, and `reports`. Download these exercise files into `inputs`:
 
-Use the verified Python and checkout from [setup](../../module-00-setup/README.md). Open an ordinary terminal. These commands work from any directory and leave earlier attempts intact. `W` is your work folder; `E` holds your records outside it.
+- [wave1.csv](batch/wave1.csv)
+- [wave2.csv](batch/wave2.csv)
+- [validate-batch.js](controls/validate-batch.js)
+- [receipt-checker.json](controls/receipt-checker.json)
 
-**Terminal: Bash or zsh, ordinary user.**
+Right-click each link and choose **Save link as** (**Download Linked File As** in Safari). On macOS, Control-click also opens the link menu. Keep the filename and extension shown above; these links may display text if you open them instead of saving them.
 
-```bash
-R="$HOME/Documents/AIHB_OCT_2026"
-PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
-M="$R/AI_Harness_Bootcamp_2/module-06-batch-workflow"
-RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
-W="$HOME/course-evidence/module-06-$RUN/work"
-E="$HOME/course-evidence/module-06-$RUN/evidence"
-"$PY" "$R/shared/prepare_work.py" 06 "$W" &&
-"$PY" -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
+Keep source CSVs unchanged. View them in a plain text editor; don't save them through a spreadsheet. Copy browser downloads into the appropriate folder with the stage names used below. Renaming a file is fine; opening and resaving its contents can change its bytes. Keep the original download too. Never replace a retained receipt, export, or report. If a name exists, use a new attempt suffix and record the actual name.
+
+**Expected:** You can open both CSVs and see the ordered header `lot,permit,gate_window,input_disposition,resource_exception`. Each wave has 80 lots. **Stop:** A file is missing, the local editor isn't ready, or a source was changed. **Recovery:** Resolve setup or download a fresh source into a new attempt folder before proceeding.
+
+## Freeze predictions before any routing run
+
+Read the `permit` and `resource_exception` cells in both waves. The router applies this order:
+
+| First matching condition | Receipt under `OPEN` | Receipt under `NOT_AUTHORIZED` |
+| --- | --- | --- |
+| `resource_exception` exactly `RACK_CONFLICT` | `hold,RESOURCE_CONFLICT` | `hold,RESOURCE_CONFLICT` |
+| Otherwise, `permit` exactly `AUTHORIZED` | `pass,READY` | `pass,READY` |
+| Otherwise, `permit` exactly `PENDING` | `hold,OPEN` | `reject,NOT_AUTHORIZED` |
+| Otherwise | `hold,OPEN` | `hold,OPEN` |
+
+Matches are case-sensitive. A shortened, lowercase, or space-padded permit is a different string and goes to the fallback. `gate_window` and `input_disposition` are provenance: they describe the input but do not choose a route. Cancelled lots carry `WITHDRAWN`, which goes to the fallback unless rack precedence applies. Never trim or repair a source value to force a match.
+
+In your plain text editor, create `predictions/prediction.md`. For each wave, record the source filename, the cells behind your expected decisions, and the rack claimants that must stay held. State explicitly: “Every other serialized row stays byte-identical, and rack precedence holds.” A serialized row is the exact text saved in the CSV, not just what a spreadsheet displays.
+
+Create `predictions/wave1-delta.csv` and `predictions/wave2-delta.csv`. Start each with this exact header:
+
+```csv
+lot,before_route,before_status,after_route,after_status
 ```
 
-**Terminal: PowerShell, ordinary user.**
+Add one row for each lot you predict will actually change when `OPEN` becomes `NOT_AUTHORIZED`. Use that lot's source ID and its predicted before and after values. Do not include unchanged lots or duplicate IDs. If you predict no changes, retain just the header. Save all three prediction files before any router execution. Record the date and time in the note. After results arrive, append observations in a separate file; don't replace your original prediction or silently repair its delta CSV.
 
-```powershell
-$R = "$HOME\Documents\AIHB_OCT_2026"
-$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
-if (-not $PY) { throw 'No Python >= 3.12 found' }
-$M = "$R\AI_Harness_Bootcamp_2\module-06-batch-workflow"
-$RUN = [guid]::NewGuid().ToString('N')
-$W = "$HOME\course-evidence\module-06-$RUN\work"
-$E = "$HOME\course-evidence\module-06-$RUN\evidence"
-& $PY "$R\shared\prepare_work.py" 06 "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
-& $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
-```
+**Expected:** Each declared change is traceable to source cells, and both waves have their own frozen delta. **Stop:** A routing execution already exposed results, or you cannot explain a predicted row from its cells. **Recovery:** Preserve the attempt and record what you saw. Reinspect the sources and start a clearly named new attempt; don't present an after-run prediction as a before-run prediction.
 
-**Expected:** The preparer prints `PASS: created` followed by the absolute work path. `W` contains `shared/batch`, `shared/workflow`, `shared/baseline`, `scripts/restore_rule.py`, and an empty `out/` directory. `E` is a sibling evidence directory.
+## Build the router from a blank canvas
 
-**Stop:** A command fails, a destination already exists, Python is not the verified 3.12-or-newer interpreter, or you already followed the preparer's suggested route command and created a receipt.
+For each added node, click the output **+**, search the node type shown in bold, and select it. This connects the preceding node automatically. Click the node title to rename it, enter the exact name shown, and press Enter. Return to the canvas after setting its fields. To connect existing nodes, drag from the source's right output connector to the destination's left input connector. Check the wire rather than assuming it was added.
 
-**Recovery:** Keep the existing attempt. Correct the prerequisite through setup, then repeat this block with a new `RUN`. Do not reset the checkout or delete an old work folder.
+For Edit Fields nodes, use **Manual Mapping** and **Add Field**, and set each field's type to **String**. Use **Fixed** for literal values. For values inside `{{ }}`, switch the value control to **Expression** and paste the whole expression. Do not paste expressions as fixed text. Leave unmentioned settings at their defaults. Leave **Settings → On Error** at **Stop Workflow**; don't enable retry, error continuation, or pinned test data.
 
-If you open a new terminal later, restore the variables to this attempt's saved paths, including its original `RUN`, `W`, and `E`. Do not generate a new `RUN` or prepare a second folder unless this attempt has stopped.
+### 1. Create and name the blank router
 
-The prepare script prints a suggested next command that runs the router on wave 1. Do not run it yet.
+Open **Overview → Build a workflow** on a fresh installation, or **Overview → Create workflow** when workflows already exist. Click the workflow title, enter `White Rack — attempt a — router`, and press Enter. Use your attempt identifier in place of `a`. n8n autosaves; there is no Save/Saved indicator to wait for. Leave the workflow unpublished.
 
-## Read the packet and write a prediction before any run
+![Blank n8n canvas named White Rack — attempt a — router, with no nodes](figures/m06-n8n-01-blank-router.png)
 
-In your editor, open these files under `W`:
+**Expected:** The named canvas has no nodes. **Stop:** An existing graph is visible. **Recovery:** Return to Overview and create a new workflow; don't clear someone else's canvas.
 
-- `shared/batch/wave1.csv`
-- `shared/batch/wave2.csv`
-- `shared/batch/wave2-revised.csv`
-- `shared/workflow/RULE.md`
-- `shared/baseline/RULE.md`
+### 2. Add the upload form
 
-The input columns are `lot`, `permit`, `gate_window`, `input_disposition`, `resource_exception`. `input_disposition` records whether an input is `NEW`, `CHANGED`, `CANCELLED`, or `UNCHANGED`; it does not choose the output route. `CANCELLED` rows carry permit `WITHDRAWN`. The exception column is empty or exactly `RACK_CONFLICT`.
+Click **Add first step**, search **n8n Form**, and choose **On new n8n Form event**. Rename it `Upload wave`. Set **Form Title** to `White Rack — upload one wave` and **Form Description** to `Use the test form. Upload one unchanged source CSV.` Under **Form Elements**, select **Add Form Element**. Set **Field Label** to `wave` and **Element Type** to `File`. Use **Add Attributes** to expose **Multiple Files**, **Accepted File Types**, and **Required Field**. Turn Multiple Files off, enter `.csv` for Accepted File Types, and turn Required Field on. Keep authentication at **None** for this local test form. Do not execute yet.
 
-The saved rule contains one configuration line: `pending_status: OPEN`. The router applies rules in this order:
+![Upload wave form settings show required single CSV file field named wave](figures/m06-n8n-02-upload-field.png)
 
-1. If `resource_exception` is `RACK_CONFLICT`, output `hold,RESOURCE_CONFLICT` before the permit is considered.
-2. Otherwise, if permit is exactly `AUTHORIZED`, output `pass,READY`.
-3. Otherwise, if permit is exactly `PENDING`, output `hold,OPEN` while the line says `OPEN`, or `reject,NOT_AUTHORIZED` when the line says `NOT_AUTHORIZED`.
-4. Every other supplied permit value becomes `hold,OPEN`.
+**Expected:** There is exactly one upload field named `wave`. **Stop:** The field allows multiple files or uses a different label. **Recovery:** Correct the field before adding downstream nodes; its label is also the binary file key.
 
-The permit match is case-sensitive. A lowercase or shortened lookalike is not `PENDING`. Text inside gate windows, including any received, released, or superseded wording, is not a routing input.
+### 3. Extract the CSV without dropping empty cells
 
-Create `E/prediction.md`. From the CSVs, list every lot whose `permit` or `resource_exception` you expect to affect routing under the current rule. Then predict exactly which lots will change if the only edit is the configuration line to `pending_status: NOT_AUTHORIZED`. For each such lot write the baseline receipt row and the changed receipt row. Name the rack claimants and state that they stay `hold,RESOURCE_CONFLICT`. State that every other serialized row remains byte-for-byte identical to its baseline. Do the same prediction for wave 2 using its own permit and exception columns. Save the note before you run the workflow on any input.
+From Upload wave, add **Extract from File** and rename it `Read CSV`. Select **Extract From CSV**. Set **Input Binary Field** to `wave`. Under **Options**, use **Add option** to expose **Header Row**, **Include Empty Cells**, and **Skip Records with Errors**. Turn Header Row and Include Empty Cells on. Keep Skip Records with Errors → **Enabled** off. Open **Settings** and turn **Always Output Data** on. Return to Parameters and confirm the input key.
 
-**Expected:** Your prediction file names the exact cells that drive each row you expect to move and states the byte-identity requirement for the rest.
+![Read CSV uses wave with Header Row and Include Empty Cells on and Skip Records with Errors disabled](figures/m06-n8n-03-read-csv.png)
 
-**Stop:** A required file is missing, a header differs from the description, the baseline and active rule are not byte-identical three-line files, or you cannot point to the permit and exception cells behind each predicted row.
+![Read CSV has Always Output Data on so a header-only extraction reaches validation](figures/m06-n8n-03-empty-batch-setting.png)
 
-**Recovery:** Return to the fresh work folder and read the cells again. Do not fill the prediction from memory after a run, and do not edit a receipt to match a guess.
+**Expected:** Upload wave connects to Read CSV. Empty or header-only extraction still reaches validation instead of silently ending the path. **Stop:** Errors are skipped or empty cells are omitted. **Recovery:** Correct these settings; don't compensate by changing the source file.
 
-## Run both waves on the unchanged rule
+### 4. Add the single saved policy value
 
-A successful route prints nothing on stdout or stderr and exits 0. It creates the named receipt only when that path does not already exist. A held run prints a `HOLD:` message on standard error and exits 1. Wrong argument count prints `HOLD: usage` and exits 2. Keep any held output; a hold is an observation.
+From Read CSV, add **Edit Fields (Set)** and rename it `Pending rule`. Select **Manual Mapping**. Add one String field named `pending_status`, with Fixed value `OPEN`. Turn **Include Other Input Fields** on, retaining all input fields.
 
-**Terminal: Bash or zsh, ordinary user.**
+![Pending rule adds the String pending_status set to OPEN while retaining input fields](figures/m06-n8n-04-pending-rule.png)
 
-```bash
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave1.csv" "$W/out/wave1-baseline.csv" &&
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave2.csv" "$W/out/wave2-baseline.csv" &&
-"$PY" -c "
-from pathlib import Path
-import sys
-left = Path(sys.argv[1]).read_bytes()
-right = Path(sys.argv[2]).read_bytes()
-same = left == right
-print('BYTE MATCH' if same else 'HOLD: bytes differ')
-sys.exit(0 if same else 1)
-" "$W/out/wave1-baseline.csv" "$W/out/wave2-baseline.csv"
-```
+**Expected:** This node adds one value without replacing the source columns. **Stop:** Include Other Input Fields is off or the value is an expression. **Recovery:** Restore the setting and the literal `OPEN`.
 
-**Terminal: PowerShell, ordinary user.**
+### 5. Install the supplied batch validation
 
-```powershell
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave1.csv" "$W\out\wave1-baseline.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Wave 1 baseline held; preserve the attempt.' }
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave2.csv" "$W\out\wave2-baseline.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Wave 2 baseline held; preserve the attempt.' }
-@'
-from pathlib import Path
-import sys
-left = Path(sys.argv[1]).read_bytes()
-right = Path(sys.argv[2]).read_bytes()
-same = left == right
-print('BYTE MATCH' if same else 'HOLD: bytes differ')
-sys.exit(0 if same else 1)
-'@ | & $PY - "$W\out\wave1-baseline.csv" "$W\out\wave2-baseline.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Byte match check held; preserve the receipts.' }
-```
+From Pending rule, add **Code** and rename it `Check batch`. Choose **JavaScript** and **Run Once for All Items**. Open the downloaded `validate-batch.js` in your plain text editor, select its entire contents, and copy them. Select all placeholder code in the node and paste the supplied contents unchanged.
 
-**Expected:** Both route commands exit 0 with no output. Each receipt contains a header row and 80 data rows. The comparison prints `BYTE MATCH`. Open the receipts and confirm their rows match the baseline half of your prediction.
+The validator reads the original output of `Read CSV` as well as the policy-augmented rows. Keep that node's exact name. It requires the five ordered source columns, unchanged source values and row order, string values, unique nonblank lot IDs without commas, quotes, or ASCII controls, valid dispositions and exceptions, cancelled/withdrawn consistency, and a uniform saved policy value. A source-supplied `pending_status` is invalid even if Pending rule overwrites it. The validator adds `_row`, the source row's position, without changing source strings. Invalid input stops before routing. Unknown permit strings remain valid input for the fallback.
 
-**Stop:** Either route exits non-zero, a receipt is missing or contains fewer than 80 data rows, the comparison does not print `BYTE MATCH`, or any receipt row disagrees with the permit and exception cells you inspected.
+![Check batch is JavaScript in Run Once for All Items mode with the supplied validator body](figures/m06-n8n-05-check-batch.png)
 
-**Recovery:** Preserve both receipts and the error text. Correct the path or the prediction in a new prepared folder. Do not delete, overwrite, or hand-edit a receipt.
+**Expected:** The wire is Pending rule → Check batch, and no placeholder code remains. **Stop:** The code was shortened, rewritten, or put in per-item mode. **Recovery:** Replace the entire body from the supplied file and restore the mode. Don't add routing code here.
 
-## Change exactly one line in the rule
+### 6. Set ordered, case-sensitive routing
 
-In your editor, edit only `W/shared/workflow/RULE.md`. Change the configuration line to `pending_status: NOT_AUTHORIZED`. Leave the two comment lines untouched. Do not edit `shared/baseline/RULE.md`, either wave file, or any receipt. Do not add a second `pending_status` line.
+From Check batch, add **Switch** and rename it `Route lots`. Select **Rules** mode. Add exactly three routing rules in this order. Each uses **String → is equal to**, an Expression on the left, and a Fixed value on the right:
 
-**Terminal: Bash or zsh, ordinary user.**
+| Output | Left expression | Right fixed value |
+| --- | --- | --- |
+| 0, first rule | `{{$json.resource_exception}}` | `RACK_CONFLICT` |
+| 1, second rule | `{{$json.permit}}` | `AUTHORIZED` |
+| 2, third rule | `{{$json.permit}}` | `PENDING` |
 
-```bash
-"$PY" -c "
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-base_lines = (w / 'shared/baseline/RULE.md').read_text(encoding='utf-8').splitlines()
-active_lines = (w / 'shared/workflow/RULE.md').read_text(encoding='utf-8').splitlines()
-diff = [(i+1, a, b) for i, (a, b) in enumerate(zip(base_lines, active_lines)) if a != b]
-ok = len(base_lines) == len(active_lines) and diff == [(3, 'pending_status: OPEN', 'pending_status: NOT_AUTHORIZED')]
-print('ONE LINE CHANGE' if ok else 'HOLD: rule edit is not the single pending_status line')
-sys.exit(0 if ok else 1)
-" "$W"
-```
+Under **Options**, use **Add option** to expose **Fallback Output**, **Ignore Case**, and **Send data to all matching outputs**. Set Fallback Output to **Extra Output**, Ignore Case off, and Send data to all matching outputs off. Leave **Convert types where required** off. Keep one condition per rule. The first matching rule wins, so rack conflicts cannot also enter the permit branches.
 
-**Terminal: PowerShell, ordinary user.**
+![Route lots places exact rack matching before exact AUTHORIZED matching](figures/m06-n8n-06-switch-rules.png)
 
-```powershell
-@'
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-base_lines = (w / 'shared/baseline/RULE.md').read_text(encoding='utf-8').splitlines()
-active_lines = (w / 'shared/workflow/RULE.md').read_text(encoding='utf-8').splitlines()
-diff = [(i+1, a, b) for i, (a, b) in enumerate(zip(base_lines, active_lines)) if a != b]
-ok = len(base_lines) == len(active_lines) and diff == [(3, 'pending_status: OPEN', 'pending_status: NOT_AUTHORIZED')]
-print('ONE LINE CHANGE' if ok else 'HOLD: rule edit is not the single pending_status line')
-sys.exit(0 if ok else 1)
-'@ | & $PY - "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Rule line check held; preserve the attempt.' }
-```
+![The third rule matches exact PENDING; fallback is Extra Output and case folding and all-match routing are off](figures/m06-n8n-06-switch-options.png)
 
-**Expected:** The check prints `ONE LINE CHANGE`. The baseline file remains the original three-line rule.
+**Expected:** Four output connectors appear: three rules and the fallback. **Stop:** Rules use contains, ignore case, or send to all matches. **Recovery:** Restore exact equality and the options above before wiring branches.
 
-**Stop:** The check prints a `HOLD` message, or the baseline file changed.
+### 7. Wire the rack hold branch
 
-**Recovery:** Correct only the active rule in the editor until the check passes. If the baseline changed, stop this attempt and prepare a new folder. Do not copy a receipt backward into the rule.
+Click the **+** on Route lots output **0**, the first rule. Add **Edit Fields (Set)** and rename it `Rack hold`. Use Manual Mapping. Add String fields `route` = Fixed `hold` and `status` = Fixed `RESOURCE_CONFLICT`. Turn **Include Other Input Fields** on. Leave **Settings → Always Output Data** off.
 
-## Prove the full serialized delta for both waves
+![Rack hold sets hold and RESOURCE_CONFLICT and connects to the first Switch output](figures/m06-n8n-07-rack-hold.png)
 
-Run the workflow again to new receipt names. Compare every serialized row against its baseline receipt, not just the number of changed rows. Match each printed before-and-after row to your saved prediction, and check the count of byte-identical rows. The complete comparison must account for all 80 rows in each wave, including both rack-conflict holds.
+**Expected:** Only the first Switch output feeds Rack hold, and `_row` will be retained. **Stop:** The node is attached after another branch or drops inputs. **Recovery:** Remove the incorrect wire and reconnect output 0 directly to Rack hold.
 
-**Terminal: Bash or zsh, ordinary user.**
+### 8. Wire the authorized branch
 
-```bash
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave1.csv" "$W/out/wave1-changed.csv" &&
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave2.csv" "$W/out/wave2-changed.csv" &&
-"$PY" -c "
-from pathlib import Path
-import sys
-def get_lines(p): return p.read_bytes().splitlines(keepends=True)
-pairs = [(sys.argv[1], sys.argv[2]), (sys.argv[3], sys.argv[4])]
-for left, right in pairs:
-    bl = get_lines(Path(left))
-    cl = get_lines(Path(right))
-    if len(bl) != len(cl) or bl[0] != cl[0]:
-        print('HOLD: receipt shape')
-        sys.exit(1)
-    diffs = [i for i in range(1, len(bl)) if bl[i] != cl[i]]
-    print(Path(left).name, 'CHANGED', len(diffs))
-    print('UNCHANGED', len(bl) - 1 - len(diffs))
-    for i in diffs:
-        print(bl[i].decode('utf-8', errors='replace').rstrip(), '->', cl[i].decode('utf-8', errors='replace').rstrip())
-    if len(diffs) != 3:
-        print('HOLD: unexpected delta')
-        sys.exit(1)
-    print('SERIALIZED BYTE DELTA OK')
-" "$W/out/wave1-baseline.csv" "$W/out/wave1-changed.csv" "$W/out/wave2-baseline.csv" "$W/out/wave2-changed.csv"
-```
+From Route lots output **1**, add **Edit Fields (Set)** named `Ready`. Use Manual Mapping with String fields `route` = Fixed `pass` and `status` = Fixed `READY`. Turn **Include Other Input Fields** on. Leave **Always Output Data** off.
 
-**Terminal: PowerShell, ordinary user.**
+![Ready maps pass and READY from the second Switch output with source fields retained](figures/m06-n8n-08-ready.png)
 
-```powershell
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave1.csv" "$W\out\wave1-changed.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Changed wave 1 held; preserve the attempt.' }
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave2.csv" "$W\out\wave2-changed.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Changed wave 2 held; preserve the attempt.' }
-@'
-from pathlib import Path
-import sys
-def get_lines(p): return p.read_bytes().splitlines(keepends=True)
-pairs = [(sys.argv[1], sys.argv[2]), (sys.argv[3], sys.argv[4])]
-for left, right in pairs:
-    bl = get_lines(Path(left))
-    cl = get_lines(Path(right))
-    if len(bl) != len(cl) or bl[0] != cl[0]:
-        print('HOLD: receipt shape')
-        sys.exit(1)
-    diffs = [i for i in range(1, len(bl)) if bl[i] != cl[i]]
-    print(Path(left).name, 'CHANGED', len(diffs))
-    print('UNCHANGED', len(bl) - 1 - len(diffs))
-    for i in diffs:
-        print(bl[i].decode('utf-8', errors='replace').rstrip(), '->', cl[i].decode('utf-8', errors='replace').rstrip())
-    if len(diffs) != 3:
-        print('HOLD: unexpected delta')
-        sys.exit(1)
-    print('SERIALIZED BYTE DELTA OK')
-'@ | & $PY - "$W\out\wave1-baseline.csv" "$W\out\wave1-changed.csv" "$W\out\wave2-baseline.csv" "$W\out\wave2-changed.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Serialized delta check held; preserve the receipts.' }
-```
+**Expected:** Output 1 feeds Ready directly. **Stop:** Ready receives rack or pending output. **Recovery:** Reconnect the correct Switch output; don't change the branch values to hide a wiring error.
 
-**Expected:** Both route commands exit 0. For each wave the comparison prints one `CHANGED` count and one `UNCHANGED` count that add to 80. The printed moves are exactly the lots you predicted under the changed rule; each moves from `hold,OPEN` to `reject,NOT_AUTHORIZED`. No rack row appears in the changed list. No other row is printed.
+### 9. Wire the pending branch
 
-**Stop:** A route holds, a changed lot was not in your prediction, a predicted lot is missing from the list, a rack row moves, or any other serialized row differs. Record `HOLD: unexpected delta` together with the printed lines.
+From Route lots output **2**, add **Edit Fields (Set)** named `Pending decision`. Use Manual Mapping. Add String `route` in Expression mode with `{{$json.pending_status === 'NOT_AUTHORIZED' ? 'reject' : 'hold'}}`. Add String `status` in Expression mode with `{{$json.pending_status}}`. Turn **Include Other Input Fields** on. Leave **Always Output Data** off.
 
-**Recovery:** Preserve all four receipts and the comparison text. Do not patch a receipt or add a routing rule. If the one-line check did not pass, correct only that line and repeat the section in a new prepared folder so the old receipts remain as evidence.
+![Pending decision uses expressions for route and status and retains other input fields](figures/m06-n8n-09-pending-decision.png)
 
-## Restore the baseline rule and prove the full reruns
+**Expected:** Both values are expressions and output 2 feeds this node. **Stop:** The expression appears as literal text or status is fixed to OPEN. **Recovery:** Select Expression mode and paste the exact expressions.
 
-The baseline rule lives in `shared/baseline/RULE.md` with a saved hash that identifies its bytes. Give the supplied restore command the work-folder path `W`; it checks that saved copy before restoring the active rule.
+### 10. Wire the fallback
 
-**Terminal: Bash or zsh, ordinary user.**
+From Route lots' **Fallback** output, add **Edit Fields (Set)** named `Other permit`. Use Manual Mapping with String fields `route` = Fixed `hold` and `status` = Fixed `OPEN`. Turn **Include Other Input Fields** on. Leave **Always Output Data** off.
 
-```bash
-"$PY" "$W/scripts/restore_rule.py" "$W" &&
-"$PY" -c "
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-same = (w / 'shared/workflow/RULE.md').read_bytes() == (w / 'shared/baseline/RULE.md').read_bytes()
-print('RULE BYTES MATCH' if same else 'HOLD: rule bytes differ')
-sys.exit(0 if same else 1)
-" "$W" &&
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave1.csv" "$W/out/wave1-restored.csv" &&
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave2.csv" "$W/out/wave2-restored.csv" &&
-"$PY" -c "
-from pathlib import Path
-import sys
-pairs = [(sys.argv[1], sys.argv[2]), (sys.argv[3], sys.argv[4])]
-ok = all(Path(a).read_bytes() == Path(b).read_bytes() for a,b in pairs)
-print('RESTORED WAVES MATCH' if ok else 'HOLD: restored waves differ')
-sys.exit(0 if ok else 1)
-" "$W/out/wave1-baseline.csv" "$W/out/wave1-restored.csv" "$W/out/wave2-baseline.csv" "$W/out/wave2-restored.csv"
-```
+![Other permit is connected to fallback and sets hold and OPEN](figures/m06-n8n-10-fallback.png)
 
-**Terminal: PowerShell, ordinary user.**
+**Expected:** All unmatched permit strings have a path to a receipt. **Stop:** The fallback is unconnected or points to Pending decision. **Recovery:** Connect it to Other permit and retain the fixed values.
 
-```powershell
-& $PY "$W\scripts\restore_rule.py" "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Restore held; preserve the attempt.' }
-@'
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-same = (w / 'shared/workflow/RULE.md').read_bytes() == (w / 'shared/baseline/RULE.md').read_bytes()
-print('RULE BYTES MATCH' if same else 'HOLD: rule bytes differ')
-sys.exit(0 if same else 1)
-'@ | & $PY - "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Restored rule bytes differ.' }
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave1.csv" "$W\out\wave1-restored.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Restored wave 1 held.' }
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave2.csv" "$W\out\wave2-restored.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Restored wave 2 held.' }
-@'
-from pathlib import Path
-import sys
-pairs = [(sys.argv[1], sys.argv[2]), (sys.argv[3], sys.argv[4])]
-ok = all(Path(a).read_bytes() == Path(b).read_bytes() for a,b in pairs)
-print('RESTORED WAVES MATCH' if ok else 'HOLD: restored waves differ')
-sys.exit(0 if ok else 1)
-'@ | & $PY - "$W\out\wave1-baseline.csv" "$W\out\wave1-restored.csv" "$W\out\wave2-baseline.csv" "$W\out\wave2-restored.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Restored waves check held; preserve the receipts.' }
-```
+### 11. Collect all four branches
 
-**Expected:** `RESTORE OK` on stdout. The rule bytes check prints `RULE BYTES MATCH`. The restored receipts are byte-identical to the original baseline receipts.
+From Rack hold, add **Merge** named `Collect routes`. Set **Mode** to **Append** and **Number of Inputs** to `4`. Connect the branches to its inputs in this order: Rack hold → **Input 1** (index 0); Ready → **Input 2** (index 1); Pending decision → **Input 3** (index 2); Other permit → **Input 4** (index 3). Drag the remaining three wires on the canvas. Check that each branch has exactly one connection to its own Merge input.
 
-**Stop:** Restore exits non-zero, rule bytes differ, a route holds, or the restored receipts differ from baselines. Record `HOLD: restore failed`.
+![Collect routes is configured for Append with four inputs](figures/m06-n8n-11-collect-routes.png)
 
-**Recovery:** Preserve the error and receipts. Do not hand-copy a rule over a mismatched baseline digest. Record the damaged file, then use a newly prepared folder if the frozen baseline is no longer intact.
+![Four distinct branch wires enter Collect routes before Original order restores source order](figures/m06-n8n-11-branch-wires.png)
 
-Append the comparison output to `E/prediction.md` without replacing the original prediction. Write `W/handoff.md` with the work path, workflow and input identities, rule before and after, receipt paths and hashes, complete row comparison, and restore evidence. State that input disposition was never used as a route. Retain the two rack-conflict holds explicitly; this rule does not allocate the rack.
+**Expected:** Four distinct branch wires enter Merge. **Stop:** Mode is Combine, an input is missing, or a branch has Always Output Data on. **Recovery:** Restore Append and the four wires; disable branch Always Output Data so empty branches cannot fabricate rows.
+
+### 12. Restore source order
+
+From Collect routes, add **Sort** named `Original order`. Select **Simple** sorting. Add a sort field named `_row` with **Ascending** order. Keep `_row` through this node: Merge groups branches, and this sort puts their rows back into source order.
+
+![Original order sorts the retained numeric _row field ascending](figures/m06-n8n-12-original-order.png)
+
+**Expected:** Collect routes connects to Original order, sorting only `_row`. **Stop:** Sorting uses lot, route, or status. **Recovery:** Replace that sort field with `_row`; don't reorder the input file.
+
+### 13. Keep only the receipt columns
+
+From Original order, add **Edit Fields (Set)** named `Receipt fields`. Use Manual Mapping. Add these String fields in this exact order, each in Expression mode: `lot` = `{{$json.lot}}`, `route` = `{{$json.route}}`, `status` = `{{$json.status}}`. Turn **Include Other Input Fields** off. This is the first point where `_row` and source-only fields are removed.
+
+![Receipt fields contains only lot, route, and status expressions in that order with other fields excluded](figures/m06-n8n-13-receipt-fields.png)
+
+**Expected:** Exactly three fields remain in the stated order. **Stop:** A source field or pending_status is included. **Recovery:** Disable Include Other Input Fields and remove extra assignments.
+
+### 14. Make a downloadable CSV
+
+From Receipt fields, add **Convert to File** named `Make receipt`. Choose **Convert to CSV**. Set **Put Output File in Field** to `data`. Under **Options**, turn **Header Row** on and set **File Name** in Expression mode to `white-rack-{{$execution.id}}.csv`. Keep the remaining CSV options at their defaults. Return to the canvas and trace the complete path from Upload wave through all four branches to Make receipt.
+
+![Make receipt converts the three fields to a CSV with headers and an execution-specific filename](figures/m06-n8n-14-make-receipt.png)
+
+![The complete 13-node router validates before routing and sorts after all four branches rejoin](figures/m06-n8n-complete-canvas.png)
+
+**Expected:** The graph has 13 nodes, with validation before Switch and Sort after Merge. **Stop:** There is an extra path around validation, a missing branch, or a disconnected final node. **Recovery:** Correct the wires before execution. Do not use a completed router import to replace construction.
+
+## Preserve the baseline and prepare the independent checker
+
+### 15. Export the original router
+
+Return to Overview, reopen your named router, and inspect Pending rule: `pending_status` must still be Fixed `OPEN`. Return to the canvas. Open the **three-dot menu beside the workflow name** and choose **Export JSON**. Copy the download into `exports/router-baseline.json`. Record the router's name and browser URL in your attempt notes. Keep this exact file unchanged; later exports receive different names.
+
+![Router menu offers Export JSON while the original graph is still unchanged](figures/m06-n8n-15-baseline-export.png)
+
+**Expected:** A nonempty baseline JSON export exists before any policy edit. **Stop:** The policy already changed or the file would replace an earlier export. **Recovery:** Preserve what exists and start a separate baseline attempt; don't relabel a changed export as original.
+
+### 16. Import the checker into a new blank workflow
+
+Choose **Overview → Create workflow**. Confirm there are no nodes. Open the **three-dot menu beside the workflow name**, choose **Import → From file**, and select `receipt-checker.json`. Import adds nodes to the open canvas, so never do this on your router. Rename this workflow `White Rack — attempt a — checker` and press Enter. Keep it unpublished.
+
+Confirm the supplied graph: Upload comparison feeds Keep files and hashes input 1 directly, Hash baseline feeds input 2, and Hash actual feeds input 3. The two hash nodes each receive Upload comparison directly. Keep files and hashes combines by position, then feeds Compare complete files → Download report. Keep this supplied graph unchanged. The parallel paths preserve uploaded files while Crypto produces hashes.
+
+![Separate checker canvas contains the upload, two parallel hash paths, file merge, comparison, and report download](figures/m06-n8n-16-checker-import.png)
+
+**Expected:** Six nodes appear, with no router nodes. **Stop:** The import created a mixed graph or the hash nodes are chained sequentially. **Recovery:** Leave that workflow unused and import the supplied checker into another new blank workflow.
+
+### 17. Record the original export's digest separately
+
+Open **Upload comparison** and copy its **Test URL**. Return to the canvas and click **Execute workflow**. Wait for the form listener, then open that Test URL in another browser tab. In `baseline`, choose `exports/router-baseline.json`; in `actual`, choose the same file. Set `mode` to `file-identity`. Leave `delta` and `expected_sha256` empty. Click **Submit** once.
+
+Return to the checker editor. Open **Compare complete files → Output → Schema** or **JSON**. Require `result: PASS`, `raw_byte_equal: true`, and `identity_check: initial_record_only`. Open **Download report → Output → Binary** and click **Download** for its output file. Copy it to `reports/baseline-original-identity.json`. This report stores the original SHA256 digest, an identifier for the file's bytes. Keep it outside the export, and record its path in your notes.
+
+![Initial file-identity report shows PASS and initial_record_only for the original router export](figures/m06-n8n-17-original-hash.png)
+
+**Expected:** The retained report has equal baseline and actual SHA256 values. **Stop:** The report says HOLD, the files differ, or an expected digest was entered on this initial record. **Recovery:** Preserve the report, select the original export in both fields, and repeat to a new report name. Initial recording establishes a reference; it does not yet prove restoration.
+
+## Run and compare the two baseline waves
+
+For every form run, re-arm its own workflow with **Execute workflow**, wait for the listener, and use the **Test URL from that workflow**. A form tab from another workflow or an earlier restored copy is not interchangeable. If the form says it is not listening, return to the intended editor, re-arm it, and reopen its Test URL. Submit once per execution. Use the current execution's output, not an older node preview.
+
+### 18. Run and download wave 1 under OPEN
+
+Open your router from Overview. Confirm Pending rule is `OPEN` and your predictions are already saved. Open Upload wave and copy its Test URL. Return to the canvas, click **Execute workflow**, wait for the listener, then open the Test URL. Click **Choose file**, select the unchanged `inputs/wave1.csv`, and click **Submit** once. Return to the editor. Inspect Check batch and Receipt fields outputs: each must contain 80 items. Open **Make receipt → Output → Binary → data → Download**. Copy the downloaded file to `receipts/wave1-baseline.csv`. Record the execution ID, source name, and retained filename.
+
+![Wave 1 baseline execution reaches Make receipt with a CSV available in Binary output](figures/m06-n8n-18-wave1-baseline.png)
+
+**Expected:** All 80 source lots reach the three-column receipt. **Stop:** Validation throws HOLD, a node fails, or the count differs. **Recovery:** Retain the execution error and inspect the first failing node's settings against the construction steps. Don't trim inputs, bypass validation, or manufacture a receipt.
+
+### 19. Run and download wave 2 under OPEN
+
+On the same unchanged router, click **Execute workflow** again. Open its current Test URL, choose `inputs/wave2.csv`, and Submit once. Inspect Check batch and Receipt fields for 80 items. Download Make receipt's Binary file and retain it as `receipts/wave2-baseline.csv`. Record this execution separately. Inspect both baseline receipts against the source decisions in your frozen note without resaving the files.
+
+![Wave 2 baseline execution shows 80 receipt items and its separate downloadable CSV](figures/m06-n8n-19-wave2-baseline.png)
+
+**Expected:** Both receipts reflect OPEN and rack precedence. **Stop:** A source-based baseline decision is wrong or wave 1 was uploaded again. **Recovery:** Preserve the mistaken run and diagnose the source selection or graph; repeat under a new filename. A byte match cannot by itself prove the routing rule was constructed correctly.
+
+### 20. Prove the two baseline files match exactly
+
+Open the checker, click **Execute workflow**, and open its Test URL after the listener starts. Choose `wave1-baseline.csv` for `baseline` and `wave2-baseline.csv` for `actual`. Select `mode` = `exact`. Leave `delta` and `expected_sha256` empty. Submit once. Inspect Compare complete files, then download the report from Download report's Binary output to `reports/baseline-waves-exact.json`.
+
+![Exact baseline comparison reports PASS, raw byte equality, and all 80 rows unchanged](figures/m06-n8n-20-baseline-exact.png)
+
+**Expected:** `result` is `PASS`, `raw_byte_equal` is `true`, both row counts and `row_count_checked` are `80`, `changed_count` is `0`, and `unchanged_count` is `80`. **Stop:** Any field disagrees, even if the workflow is green. **Recovery:** Preserve the HOLD report and both receipts. Check uploaded filenames, branch wires, sorting, and receipt columns before a new run. Don't normalize files to make them match.
+
+## Change one saved value and prove both deltas
+
+### 21. Save only the intended policy change
+
+Return to your router. Recheck that the original export, original identity report, both baselines, baseline exact report, and frozen predictions are retained. Open Pending rule. Change only its Fixed String value from `OPEN` to `NOT_AUTHORIZED`. Return to Overview and reopen the same router; confirm the new value persisted. Leave the workflow name, every other setting, every wire, and every input unchanged. Record the node, field, old value, and new value in observations.
+
+![Pending rule retains the same field and input setting with only its value changed to NOT_AUTHORIZED](figures/m06-n8n-21-one-saved-change.png)
+
+**Expected:** One saved parameter changed: Pending rule's `pending_status`. **Stop:** Another parameter, expression, wire, or input changed. **Recovery:** Preserve the attempt and exports. Use a new baseline attempt if you cannot establish the single change; don't rewrite evidence to conceal extra edits.
+
+### 22. Run and retain both changed receipts
+
+Click Execute workflow on the changed router, wait, open its Test URL, upload `wave1.csv`, and Submit once. Check for 80 receipt items and download the Binary CSV as `receipts/wave1-changed.csv`. Re-arm the same router and repeat with `wave2.csv`, retaining `receipts/wave2-changed.csv`. Record both execution IDs and filenames. Do not change the policy between runs.
+
+![Make receipt offers the changed run's CSV for download](figures/m06-n8n-22-changed-runs.png)
+
+**Expected:** Each run produces 80 receipt rows under the same changed policy. **Stop:** A run fails, a count differs, or the source is uncertain. **Recovery:** Keep the failed run and inspect the first error or upload selection. Repeat only to new filenames after resolving the cause.
+
+### 23. Prove wave 1's predicted change
+
+Re-arm the checker and open its Test URL. Set `baseline` to `wave1-baseline.csv`, `actual` to `wave1-changed.csv`, `delta` to the frozen `wave1-delta.csv`, and `mode` to `predicted-change`. Leave `expected_sha256` empty. Submit, inspect Compare complete files, and download the report as `reports/wave1-predicted-change.json`.
+
+The checker compares every row. It requires declared before and after values to match, each declared change to occur, and every undeclared row to remain byte-identical. It also checks count, order, header, byte-order mark, quotes, and line endings. It does not infer your prediction from the output.
+
+![Wave 1 predicted-change report shows its selected files, result, checked row count, and changed and unchanged counts](figures/m06-n8n-23-wave1-delta.png)
+
+**Expected:** `PASS`, both row counts and `row_count_checked` equal `80`, and changed plus unchanged counts total `80`. `changed_ids` must exactly match your frozen wave 1 list; rack claimants must be absent. **Stop:** A prediction is missing, extra, or incorrect, or any undeclared bytes differ. **Recovery:** Keep the HOLD report and original prediction. Explain the mismatch in observations; don't revise the prediction after seeing output and call that the original proof.
+
+### 24. Prove wave 2's predicted change
+
+Re-arm the checker. Upload `wave2-baseline.csv`, `wave2-changed.csv`, and the frozen `wave2-delta.csv` in their matching fields. Select `predicted-change`, leave expected_sha256 empty, and Submit. Download the report as `reports/wave2-predicted-change.json`.
+
+![Wave 2 predicted-change report identifies wave 2 files and accounts for all 80 rows](figures/m06-n8n-24-wave2-delta.png)
+
+**Expected:** `PASS`, 80 baseline rows, 80 actual rows, and 80 rows checked. The changed IDs match only wave 2's frozen prediction, and all remaining rows are byte-identical. **Stop:** The report uses wave 1 files, moves a rack claimant, or returns HOLD. **Recovery:** Preserve it and inspect the exact filenames and source cells. Use a new report name for a corrected file selection; preserve any mistaken prediction as written.
+
+### 25. Export the changed workflow separately
+
+Open the changed router's **three-dot menu beside the workflow name** and choose **Export JSON**. Retain the download as `exports/router-changed.json`. Keep the baseline export and original digest report untouched. Record the changed router's name, URL, export path, and the two changed execution IDs in observations.
+
+![Changed router Export JSON action preserves a separate changed workflow before restoration](figures/m06-n8n-25-changed-export.png)
+
+**Expected:** Both baseline and changed exports exist as distinct files. **Stop:** The destination would replace router-baseline.json. **Recovery:** Cancel the replacement and use the changed filename. If the original was overwritten, stop; a new hash cannot recover the old reference.
+
+## Restore the preserved baseline and prove both reruns
+
+### 26. Recheck the original export against its retained digest
+
+Open `reports/baseline-original-identity.json` read-only and copy its original `baseline_sha256` value. Re-arm the checker. Upload the preserved `router-baseline.json` in both file fields, select `file-identity`, leave delta empty, and paste the original value into `expected_sha256`. Submit and download `reports/baseline-identity-recheck.json`.
+
+![File-identity recheck reports PASS and matched against the original retained expected SHA256](figures/m06-n8n-26-digest-recheck.png)
+
+**Expected:** `PASS`, `identity_check: matched`, `raw_byte_equal: true`, and expected_sha256 equals the original retained digest. **Stop:** The result is mismatch or initial_record_only, or the original report is missing. **Recovery:** Preserve the failure and locate the original file and report. Never calculate a replacement expected digest from the file you are trying to verify.
+
+### 27. Restore into a NEW BLANK workflow
+
+Choose **Overview → Create workflow**. Confirm the canvas is completely empty. Only then open the **three-dot menu beside the workflow name**, choose **Import → From file**, and select the exact `router-baseline.json` that passed the digest recheck. Import adds nodes; it does not replace a populated canvas. Rename the new workflow `White Rack — attempt a — restored` and press Enter. Keep it unpublished. Open Pending rule and confirm `OPEN`. Trace the 13-node graph and all four Merge inputs. Leave the changed router intact.
+
+![An empty new workflow has Import → From file open before the baseline is selected](figures/m06-n8n-27-blank-restore.png)
+
+![The imported baseline retains Pending rule's fixed OPEN value](figures/m06-n8n-27-restored-rule.png)
+
+**Expected:** A distinct restored workflow contains one router graph with OPEN. **Stop:** There are duplicate nodes, checker nodes, or NOT_AUTHORIZED remains. **Recovery:** Leave that mixed workflow unused. Create another new blank workflow and import the verified original export. Don't turn the changed value back by hand and call that an import restore.
+
+### 28. Run restored wave 1
+
+Open Upload wave in the restored workflow and copy its own Test URL. Click Execute workflow, wait for the listener, open that URL, upload unchanged `wave1.csv`, and Submit once. Check for 80 receipt items. Download the new Binary CSV as `receipts/wave1-restored.csv`. Record the restored workflow URL and execution ID.
+
+![Restored workflow's wave 1 execution offers its receipt for download](figures/m06-n8n-28-wave1-restored.png)
+
+**Expected:** The execution belongs to the restored workflow, not the old router. **Stop:** An old form tab submits to the changed workflow or a row count differs. **Recovery:** Preserve the mistaken run, copy the restored workflow's own Test URL, and repeat to a new receipt name.
+
+### 29. Prove restored wave 1 is exact
+
+Re-arm the checker. Upload `wave1-baseline.csv` as baseline and `wave1-restored.csv` as actual. Select `exact`; leave delta and expected_sha256 empty. Submit and download `reports/wave1-restored-exact.json`.
+
+![Wave 1 restored exact report shows PASS, raw byte equality, and 80 unchanged rows](figures/m06-n8n-29-wave1-restored-exact.png)
+
+**Expected:** `PASS`, raw byte equality true, both row counts and checked count `80`, changed count `0`, unchanged count `80`. **Stop:** Any byte differs or the report checks different files. **Recovery:** Keep the report. Check workflow identity, the imported export's digest, and upload selection; don't edit receipt bytes.
+
+### 30. Run restored wave 2
+
+Re-arm the restored router, open its own Test URL, upload unchanged `wave2.csv`, and Submit once. Inspect the 80 receipt items and download `receipts/wave2-restored.csv`. Record the execution ID and source filename.
+
+![Restored workflow's separate wave 2 execution produces its downloadable receipt](figures/m06-n8n-30-wave2-restored.png)
+
+**Expected:** The restored OPEN graph produces the second retained restored receipt. **Stop:** The workflow, policy, source, or item count is wrong. **Recovery:** Preserve the execution and resolve the specific mismatch before downloading a new attempt.
+
+### 31. Prove restored wave 2 is exact
+
+Re-arm the checker. Upload `wave2-baseline.csv` as baseline and `wave2-restored.csv` as actual. Select `exact`, leave delta and expected_sha256 empty, and Submit. Download `reports/wave2-restored-exact.json`.
+
+![Wave 2 restored exact report shows PASS, raw byte equality, and all 80 rows unchanged](figures/m06-n8n-31-wave2-restored-exact.png)
+
+**Expected:** `PASS`, raw byte equality true, 80 rows on both sides and checked, zero changed, and 80 unchanged. **Stop:** The report holds or only wave 1 has a restored proof. **Recovery:** Preserve the evidence and resolve wave 2 independently. One matching wave does not establish the other.
+
+## Keep a usable operating record
+
+In `observations.md`, retain the attempt path; all three workflow names and URLs; input filenames; execution IDs; baseline and changed export paths; original and rechecked digest reports; six receipt paths; and the five receipt comparison reports. State the one saved change and whether each comparison passed or held. Keep the original frozen predictions separately. Reports contain receipt sizes and hashes; refer to the actual retained values rather than copying a screenshot's digest.
+
+Explain any mismatch using the source cells, node settings, or selected files. State that input disposition never chose a route and rack precedence held. Screenshots show settings and execution context; the downloaded checker reports establish file comparison results. Leave a held attempt intact, and label any later attempt separately.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: separate an input revision from the policy change</summary>
 
-The stretch file keeps the same saved workflow and rule format. It changes which rows meet the existing exact-`PENDING` predicate and also changes some non-routing text.
+Download [wave2-revised.csv](batch/wave2-revised.csv) into inputs. Before running it, compare its source cells with wave2.csv. Freeze two new delta CSVs using the same five-column prediction header: `revised-input-delta.csv` predicts wave 2 baseline → revised wave baseline with OPEN fixed; `revised-policy-delta.csv` predicts revised wave baseline → revised wave changed with the revised input fixed. Create a separate note naming each source-cell change, every unchanged row requirement, and rack precedence. Use a header-only delta when no output changes are predicted. Do not use a comparison that changes both input and policy at once to explain either effect.
 
-Before any stretch command, add a new prediction section to `E/prediction.md`. Compare `wave2.csv` with `wave2-revised.csv`. List every lot whose `permit` or `resource_exception` changes, and predict its receipt under the restored `OPEN` line and the proposed `NOT_AUTHORIZED` line. Separate input-revision effects from policy effects. Predict which full receipt rows remain identical, including both rack claimants. Save this prediction before running either condition.
+**Expected:** Both predictions exist before either revised run. **Stop:** A prediction depends on results already seen. **Recovery:** Preserve the observation and label a new attempt honestly.
 
-**Stop:** You cannot point to the two input cells for each predicted difference, or a revised receipt already exists.
+### 32. Produce the revised baseline with policy fixed
 
-**Recovery:** Return to the two CSVs and finish the list. Choose new output names if a previous stretch file exists; do not delete it.
+Open the restored router and confirm OPEN. Re-arm it, open its Test URL, upload wave2-revised.csv, and Submit. Check for 80 receipt items and download `receipts/wave2-revised-baseline.csv`. Keep the restored policy unchanged.
 
-Re-apply the exact one-line change and verify it, then run the revised input under the changed rule.
+![Restored OPEN router processes the revised input and offers the revised baseline receipt](figures/m06-n8n-32-revised-baseline.png)
 
-**Terminal: Bash or zsh, ordinary user.**
+**Expected:** Only the input differs from the retained wave 2 baseline condition. **Stop:** Policy is NOT_AUTHORIZED or the wrong input was uploaded. **Recovery:** Keep that run and repeat on the correct restored graph with a new filename.
 
-```bash
-"$PY" -c "
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-base_lines = (w / 'shared/baseline/RULE.md').read_text(encoding='utf-8').splitlines()
-active_lines = (w / 'shared/workflow/RULE.md').read_text(encoding='utf-8').splitlines()
-diff = [(i+1, a, b) for i, (a, b) in enumerate(zip(base_lines, active_lines)) if a != b]
-ok = len(base_lines) == len(active_lines) and diff == [(3, 'pending_status: OPEN', 'pending_status: NOT_AUTHORIZED')]
-print('ONE LINE CHANGE' if ok else 'HOLD: rule edit is not the single pending_status line')
-sys.exit(0 if ok else 1)
-" "$W"
-```
+### 33. Prove the input-only effect
 
-**Terminal: PowerShell, ordinary user.**
+Re-arm the checker. Upload `wave2-baseline.csv` as baseline, `wave2-revised-baseline.csv` as actual, and frozen `revised-input-delta.csv` as delta. Select predicted-change, leave expected_sha256 empty, and Submit. Download `reports/revised-input-delta.json`.
 
-```powershell
-@'
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-base_lines = (w / 'shared/baseline/RULE.md').read_text(encoding='utf-8').splitlines()
-active_lines = (w / 'shared/workflow/RULE.md').read_text(encoding='utf-8').splitlines()
-diff = [(i+1, a, b) for i, (a, b) in enumerate(zip(base_lines, active_lines)) if a != b]
-ok = len(base_lines) == len(active_lines) and diff == [(3, 'pending_status: OPEN', 'pending_status: NOT_AUTHORIZED')]
-print('ONE LINE CHANGE' if ok else 'HOLD: rule edit is not the single pending_status line')
-sys.exit(0 if ok else 1)
-'@ | & $PY - "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Rule line check held; preserve the attempt.' }
-```
+![Input-only comparison pairs the original and revised OPEN receipts with the frozen input delta](figures/m06-n8n-33-input-only-proof.png)
 
-**Expected:** The check prints `ONE LINE CHANGE`. The rule is now `NOT_AUTHORIZED`.
+**Expected:** PASS with all 80 rows checked and exactly the frozen input changes. **Stop:** Any other row differs or a rack hold changes unexpectedly. **Recovery:** Preserve the report and inspect the two source files and original prediction; don't rewrite the delta to fit the result.
 
-**Stop:** The check prints HOLD or the baseline changed.
+### 34. Produce the revised changed receipt on the retained changed router
 
-**Recovery:** Correct only the active rule.
+Open the original changed router, not the restored one. Confirm Pending rule is still NOT_AUTHORIZED. Re-arm it, open its own Test URL, upload the same wave2-revised.csv, and Submit. Check for 80 receipt items and download `receipts/wave2-revised-changed.csv`. No additional policy edit is needed.
 
-Run the revised input under the changed rule.
+![Retained changed router processes the same revised input under NOT_AUTHORIZED](figures/m06-n8n-34-revised-changed.png)
 
-**Terminal: Bash or zsh, ordinary user.**
+**Expected:** The revised input stays fixed and only the saved policy differs between the two revised conditions. **Stop:** A source file or another setting changed. **Recovery:** Preserve the run and select the retained changed workflow and unchanged revised input.
 
-```bash
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave2-revised.csv" "$W/out/wave2-revised-changed.csv" &&
-"$PY" -c "
-import csv, sys
-from pathlib import Path
-a = list(csv.reader(Path(sys.argv[1]).open(newline='')))
-b = list(csv.reader(Path(sys.argv[2]).open(newline='')))
-if a[0] != ['lot','route','status'] or b[0] != a[0] or len(a) != len(b):
-    print('HOLD: receipt shape')
-    sys.exit(1)
-changed = [(x, y) for x, y in zip(a[1:], b[1:]) if x != y]
-print('CHANGED', len(changed))
-for x, y in changed:
-    print(','.join(x), '->', ','.join(y))
-print('UNCHANGED', len(a) - 1 - len(changed))
-" "$W/out/wave2-changed.csv" "$W/out/wave2-revised-changed.csv"
-```
+### 35. Prove the policy-only effect
 
-**Terminal: PowerShell, ordinary user.**
+Re-arm the checker. Choose `wave2-revised-baseline.csv` for baseline, `wave2-revised-changed.csv` for actual, and frozen `revised-policy-delta.csv` for delta. Select predicted-change, leave expected_sha256 empty, and Submit. Download `reports/revised-policy-delta.json`. Append the two separate observed effects to observations without changing either frozen prediction.
 
-```powershell
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave2-revised.csv" "$W\out\wave2-revised-changed.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Revised changed run held; preserve the attempt.' }
-@'
-import csv, sys
-from pathlib import Path
-a = list(csv.reader(Path(sys.argv[1]).open(newline='')))
-b = list(csv.reader(Path(sys.argv[2]).open(newline='')))
-if a[0] != ['lot','route','status'] or b[0] != a[0] or len(a) != len(b):
-    print('HOLD: receipt shape')
-    sys.exit(1)
-changed = [(x, y) for x, y in zip(a[1:], b[1:]) if x != y]
-print('CHANGED', len(changed))
-for x, y in changed:
-    print(','.join(x), '->', ','.join(y))
-print('UNCHANGED', len(a) - 1 - len(changed))
-'@ | & $PY - "$W\out\wave2-changed.csv" "$W\out\wave2-revised-changed.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Revised csv check held; preserve the attempt.' }
-```
+![Policy-only comparison pairs the two revised-input receipts and accounts for all rows against its own frozen delta](figures/m06-n8n-35-policy-only-proof.png)
 
-**Expected:** The route exits 0. The changed rows are exactly the input-membership rows you predicted for the `NOT_AUTHORIZED` rule. Lots whose routing fields did not change are absent from the list. Both rack claimants remain `hold,RESOURCE_CONFLICT`.
-
-**Stop:** The route holds, a printed move was not in the pre-run list, a predicted move is missing, or a rack row changes. Record `HOLD: unexpected revised delta`.
-
-**Recovery:** Keep the original prediction, the revised receipt, and the comparison. Add an explanation of the mismatch rather than rewriting the prediction after seeing the result. Inspect the input cells and control identity before deciding whether a fresh attempt is justified.
-
-Restore the frozen rule, run the revised input to a separate baseline-condition receipt, and distinguish the input delta from the policy delta. The comparison below prints every differing serialized row and counts the byte-identical remainder.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/restore_rule.py" "$W" &&
-"$PY" "$W/shared/workflow/route.py" "$W/shared/batch/wave2-revised.csv" "$W/out/wave2-revised-baseline.csv" &&
-"$PY" - "$W" <<'PY'
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-if (w/'shared/workflow/RULE.md').read_bytes() != (w/'shared/baseline/RULE.md').read_bytes():
-    raise SystemExit('HOLD: restored rule bytes differ')
-print('RULE BYTES MATCH')
-for label, before, after in (
-    ('INPUT DELTA', 'wave2-baseline.csv', 'wave2-revised-baseline.csv'),
-    ('POLICY DELTA', 'wave2-revised-baseline.csv', 'wave2-revised-changed.csv'),
-):
-    left = (w/'out'/before).read_bytes().splitlines(keepends=True)
-    right = (w/'out'/after).read_bytes().splitlines(keepends=True)
-    if not left or len(left) != len(right) or left[0] != right[0]:
-        raise SystemExit('HOLD: receipt shape differs')
-    changed = [(a,b) for a,b in zip(left[1:],right[1:]) if a != b]
-    print(label, 'CHANGED', len(changed), 'UNCHANGED', len(left)-1-len(changed))
-    for a,b in changed:
-        print(a.decode().rstrip(), '->', b.decode().rstrip())
-PY
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\restore_rule.py" "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Restore held; preserve the attempt.' }
-& $PY "$W\shared\workflow\route.py" "$W\shared\batch\wave2-revised.csv" "$W\out\wave2-revised-baseline.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Revised baseline run held.' }
-@'
-from pathlib import Path
-import sys
-w = Path(sys.argv[1])
-if (w/'shared/workflow/RULE.md').read_bytes() != (w/'shared/baseline/RULE.md').read_bytes():
-    raise SystemExit('HOLD: restored rule bytes differ')
-print('RULE BYTES MATCH')
-for label, before, after in (
-    ('INPUT DELTA', 'wave2-baseline.csv', 'wave2-revised-baseline.csv'),
-    ('POLICY DELTA', 'wave2-revised-baseline.csv', 'wave2-revised-changed.csv'),
-):
-    left = (w/'out'/before).read_bytes().splitlines(keepends=True)
-    right = (w/'out'/after).read_bytes().splitlines(keepends=True)
-    if not left or len(left) != len(right) or left[0] != right[0]:
-        raise SystemExit('HOLD: receipt shape differs')
-    changed = [(a,b) for a,b in zip(left[1:],right[1:]) if a != b]
-    print(label, 'CHANGED', len(changed), 'UNCHANGED', len(left)-1-len(changed))
-    for a,b in changed:
-        print(a.decode().rstrip(), '->', b.decode().rstrip())
-'@ | & $PY - "$W"
-```
-
-**Expected:** Restore prints `RESTORE OK`; the comparison prints `RULE BYTES MATCH`. `INPUT DELTA` accounts for input-revision effects with the policy fixed. `POLICY DELTA` accounts for the one-line policy change with the revised input fixed. Match every printed row and every unchanged row against the saved prediction. Rack conflicts retain precedence in both conditions.
-
-**Stop:** Restore holds, rule bytes differ, a receipt already exists, a row moves for an unexplained reason, or an unchanged row is not byte-identical.
-
-**Recovery:** Preserve all conditions and the first error. Do not patch a receipt or weaken the restore check. If a new attempt is needed, begin with a fresh folder and a new prediction that explicitly acknowledges the earlier result.
-
-Append the observed deltas to your evidence and update the handoff. Explain one input-only change, one policy-only change, and the condition that keeps a rack claimant on hold. A matching practice receipt is not clinic movement authority.
+**Expected:** PASS with 80 rows checked, only predicted policy changes, and every other serialized row byte-identical. **Stop:** The comparison mixes original input with revised input, or returns HOLD. **Recovery:** Preserve the report and correct a mistaken selection in a separately named run. A prediction mismatch remains recorded. Keep the restored workflow at OPEN and the retained changed workflow at NOT_AUTHORIZED.
 
 </details>
-
-## Before you stop
-
-Confirm that both original waves used the same work-copy `route.py`, only the intended configuration line changed, and complete receipt comparisons support the predicted delta. The restored runs must match their respective original baselines byte for byte. Keep every attempt; do not hand-patch a receipt.
-
-If you completed the optional stretch, retain its two revised-input conditions and the separate input/policy comparison. Leave an unrun stretch unclaimed rather than treating the core comparison as its proof.

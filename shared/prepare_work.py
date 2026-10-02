@@ -13,15 +13,22 @@ from pathlib import Path
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
     "02": ("case", "controls"), "03": ("case", "tools"), "04": ("case",),
-    "05": ("controls", "corpus", "checks"), "06": ("batch", "workflow", "baseline"),
+    "05": ("controls", "corpus", "checks"), "06": ("batch", "controls"),
     "07": ("cases", "controls", "baseline"), "08": ("case", "controls"),
     "09": ("case", "controls", "baseline"),
 }
 SCRIPTS = {
     "02": (), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
-    "06": ("restore_rule.py",), "07": ("evaluate_pairs.py", "restore_baseline.py"),
+    "06": (), "07": ("evaluate_pairs.py", "restore_baseline.py"),
     "08": (), "09": ("run_close.py", "check_package.py"),
 }
+MODULE_06_DOWNLOADS = (
+    "shared/batch/wave1.csv",
+    "shared/batch/wave2.csv",
+    "shared/batch/wave2-revised.csv",
+    "shared/controls/validate-batch.js",
+    "shared/controls/receipt-checker.json",
+)
 EXCLUDED = {"figures", "__pycache__", "staff", "reference", "reviews", "evidence", "tests", "facilitator", "history", "assessment", "ACCESSIBILITY.md", "PUBLIC_RUBRIC.md", "CUSTODY_CONTRACT.md"}
 
 
@@ -53,6 +60,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
         subtree = module / "shared" / name
         if not subtree.is_dir() or subtree.is_symlink():
             raise ValueError(f"missing or linked required input directory: {subtree}")
+        if module_id == "06":
+            continue
         for directory, dirs, files in os.walk(subtree, followlinks=False):
             parent = Path(directory)
             dirs[:] = [entry for entry in dirs if not excluded(entry, module_id)]
@@ -65,6 +74,11 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
                 source = parent / entry
                 require_regular(source, module)
                 copies.append((source, source.relative_to(module)))
+    if module_id == "06":
+        for relative in MODULE_06_DOWNLOADS:
+            source = module / relative
+            require_regular(source, module)
+            copies.append((source, Path(relative)))
     for name in SCRIPTS[module_id]:
         source = module / "scripts" / name
         require_regular(source, module)
@@ -112,7 +126,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "04":
         return [python, "scripts/render_review.py", "shared/case/ledger.json", "out/baseline.md"]
     if module_id == "06":
-        return [python, "shared/workflow/route.py", "shared/batch/wave1.csv", "out/wave1-baseline.csv"]
+        return []
     if module_id == "07":
         code = 'from pathlib import Path; print(Path("shared/controls/policy.json").read_text(encoding="utf-8"))'
     elif module_id == "09":
@@ -136,6 +150,15 @@ def main() -> int:
     except (OSError, ValueError) as error:
         print(f"HOLD: {error}; correct the prerequisite and use a new destination")
         return 2
+    if args.module_id == "06":
+        print(f"PASS: created {work}")
+        print("Next: open your local n8n editor in the browser and follow the Module 6 lab.")
+        print(f"Upload the wave CSVs from {work / 'shared/batch'} through the workflow test form.")
+        print(f"Copy Check batch code from {work / 'shared/controls/validate-batch.js'}.")
+        print(f"Import {work / 'shared/controls/receipt-checker.json'} into a separate NEW BLANK workflow.")
+        print("Keep workflows unpublished. Arm Execute workflow, then use that workflow's current Test URL.")
+        print(f"Download receipts and reports in the browser; retain unchanged bytes under unique names in {work / 'out'}.")
+        return 0
     command = next_arguments(args.module_id)
     ps_quote = lambda value: "'" + str(value).replace("'", "''") + "'"
     shell_quote = lambda value: "'" + str(value).replace("'", "'\"'\"'") + "'"

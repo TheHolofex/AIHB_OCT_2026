@@ -9,6 +9,7 @@ import json
 import sys
 import tempfile
 import unittest
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +64,17 @@ The continuation remains outside the optional disclosure.
 
 Keep the unsupported claim unresolved.
 """
+
+
+def _png_chunk(kind: bytes, data: bytes) -> bytes:
+    return len(data).to_bytes(4, "big") + kind + data + zlib.crc32(kind + data).to_bytes(4, "big")
+
+
+def _png_image(width: int, height: int) -> bytes:
+    """An opaque black, 8-bit RGB image with unfiltered scanlines."""
+    header = width.to_bytes(4, "big") + height.to_bytes(4, "big") + bytes((8, 2, 0, 0, 0))
+    pixels = (b"\0" + b"\0\0\0" * width) * height
+    return b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", header) + _png_chunk(b"IDAT", zlib.compress(pixels)) + _png_chunk(b"IEND", b"")
 
 
 class PublicationBehavior(unittest.TestCase):
@@ -129,6 +141,69 @@ class PublicationBehavior(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.build(check=True)
         self.assertEqual(raw.read_text(), "tampered")
+
+    def test_png_and_svg_figures_publish_dimensions_lazy_loading_and_full_size_links(self):
+        figures = {
+            "workflow.png": (_png_image(257, 3), "257", "3"),
+            "sized.svg": (b'<svg xmlns="http://www.w3.org/2000/svg" width="37" height="19"></svg>', "37", "19"),
+            "viewbox.svg": (b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53 29"></svg>', "53", "29"),
+        }
+        (self.page.parent / "figures").mkdir()
+        entries = self.course["modules"][0]["figures"] = []
+        additions = []
+        for name, (data, width, height) in figures.items():
+            (self.page.parent / "figures" / name).write_bytes(data)
+            entries.append({"source": f"figures/{name}", "dest": f"figures/published-{name}"})
+            additions.append(f"![Diagram {name}](figures/{name})")
+        self.page.write_text(PROCEDURE + "\n\n" + "\n\n".join(additions), encoding="utf-8")
+        self.save_manifest()
+        self.build()
+        tree = builder.parse_html(self.published.read_text(encoding="utf-8"))
+        wrappers = [node for node in tree.walk() if "rf-figure" in node.attrs.get("class", "").split()]
+        self.assertEqual(len(wrappers), len(figures))
+        for wrapper, (name, (data, width, height)) in zip(wrappers, figures.items()):
+            with self.subTest(name=name):
+                image = next(node for node in wrapper.walk() if node.tag == "img")
+                link = next(node for node in wrapper.walk() if node.tag == "a")
+                self.assertEqual((image.attrs["width"], image.attrs["height"]), (width, height))
+                self.assertEqual(image.attrs["loading"], "lazy")
+                self.assertEqual(image.attrs["alt"], f"Diagram {name}")
+                self.assertEqual(image.attrs["src"], f"figures/published-{name}")
+                self.assertEqual(link.attrs["href"], image.attrs["src"])
+                self.assertIn("data-figure-open", link.attrs)
+                self.assertEqual((self.published.parent / link.attrs["href"]).read_bytes(), data)
+        self.assertEqual(self.build(check=True), 0)
+
+    def test_malformed_png_figures_fail_before_publication(self):
+        (self.page.parent / "figures").mkdir()
+        figure = self.page.parent / "figures/broken.png"
+        self.course["modules"][0]["figures"] = [{"source": "figures/broken.png", "dest": "figures/broken.png"}]
+        self.page.write_text(PROCEDURE + "\n\n![Workflow](figures/broken.png)\n", encoding="utf-8")
+        self.save_manifest()
+        valid = _png_image(2, 3)
+        variants = {
+            "signature": b"not PNG!" + valid[8:],
+            "first chunk": valid[:12] + b"IDAT" + valid[16:],
+            "short IHDR length": valid[:8] + (12).to_bytes(4, "big") + valid[12:],
+            "long IHDR length": valid[:8] + (14).to_bytes(4, "big") + valid[12:],
+            "checksum": valid[:29] + bytes(byte ^ 0xff for byte in valid[29:33]) + valid[33:],
+        }
+        for length in (0, 7, 8, 15, 23, 24, 28, 29, 32):
+            variants[f"truncated at {length}"] = valid[:length]
+        for offset, value in ((0, 0), (4, 0), (0, 0x80000000), (4, 0x80000000), (0, 0xffffffff), (4, 0xffffffff)):
+            header = bytearray(valid[16:29])
+            header[offset:offset + 4] = value.to_bytes(4, "big")
+            variants[f"dimension {offset}={value}"] = valid[:8] + _png_chunk(b"IHDR", header) + valid[33:]
+        for offset, value in ((8, 3), (9, 1), (10, 1), (11, 1), (12, 2)):
+            header = bytearray(valid[16:29])
+            header[offset] = value
+            variants[f"IHDR field {offset}={value}"] = valid[:8] + _png_chunk(b"IHDR", header) + valid[33:]
+        for label, data in variants.items():
+            with self.subTest(case=label):
+                figure.write_bytes(data)
+                with self.assertRaises(ValueError):
+                    self.build()
+                self.assertFalse((self.root / "site").exists())
 
     def test_duplicate_destinations_and_escaping_paths_fail(self):
         self.course["modules"][0]["pages"].append({"source": "README.md", "dest": "README.html", "kind": "reference"})

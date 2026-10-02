@@ -42,7 +42,7 @@ Modules 00–05 are 180 facilitated minutes each. Thursday allocates **06: 180**
 | 4 | Tuesday PM | 03 Decide responsible release and operate bounded tools |
 | 5 | Wednesday AM | 04 Diagnose and recover |
 | 6 | Wednesday PM | 05 Improve from observed failures |
-| 7 | Thursday · Block 1 | 06 Operate a fixed workflow through change |
+| 7 | Thursday · Block 1 | 06 Build and control a fixed workflow through change |
 | 8 | Thursday · Block 2 | 07 Evaluate a change with variation controls |
 | 9 | Thursday · Block 3 | 08 Constrain agent behavior |
 | 10 | Thursday · Block 4 | 09 Transfer a runnable package |
@@ -90,7 +90,7 @@ File presence cannot establish observed performance. An authored practice output
 | 03 | Decide responsible release and operate bounded tools | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CAPABILITY` | `RELEASE_DECISION`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Contextual release decision on every concern, and least-authority operation with containment, approval, disconnect, and revocation |
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 05 | Improve from observed failures | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO05_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
-| 06 | Operate a fixed workflow through change | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:SAVED_WORKFLOW` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO06_RESULT` | **structured-data/batch** work | Same saved path handles baseline and second wave; one-rule exact delta is limited to deterministic outer state; stochastic material items follow a rule declared before the run or hold |
+| 06 | Build and control a fixed workflow through change | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO06_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
 | 07 | Evaluate a change with variation controls | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO07_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
 | 08 | Constrain agent behavior | 2h 15m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO08_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
 | 09 | Transfer a runnable package | 2h 30m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `RUNNABLE_PACKAGE`; `PO09_RESULT` | Unfamiliar professional task | Supplied challenge, clean-session run, recipient observations and questions, stop/restore, and a handoff that names unresolved limits |
@@ -113,7 +113,9 @@ A supported refusal is professional performance and is recorded and examined for
 
 Fixed workflow is the highest mandatory operation. Persistent state operation is advanced. Adaptive flow operation is advanced. Multi-agent operation is advanced.
 
-The learner specifies and configures bounded behavior in supplied controls. The adapter implements dynamic checks and executable mechanics. API/MCP, custom RAG, runtime, and deployment remain builder work.
+The learner specifies and configures bounded behavior in supplied controls. In Module 06, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. API/MCP, custom RAG, custom runtime implementation, and deployment remain builder work.
+
+Module 06 requires local n8n 2.41.5 on the full official six-service Docker stack, localhost access, and unpublished workflows. The platform setup owns installation and readiness. The native Windows PowerShell path uses WSL Ubuntu only as the n8n bridge; it keeps OMP, Python, Git, credentials, and other course work native. Neither an OMP pass nor a supplied receipt substitutes for n8n operation.
 
 ## Degraded and 10x policy
 
