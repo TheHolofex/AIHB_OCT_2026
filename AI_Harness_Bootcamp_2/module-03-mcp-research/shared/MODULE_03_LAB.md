@@ -6,7 +6,7 @@ You are a staff action officer in Task Force Marlin at Forward Base Brandt. The 
 
 **MCP**, the Model Context Protocol, is the standard way an assistant's harness connects to a separate program, called a **server**, that offers it tools. The server here is a small Python program that reads and writes the notes in your vault. A connection entry in `mcp.json` names the program the machine will start, so adding an entry is agreeing to run that program with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes; Obsidian shows the links between them.
 
-Plan for 3 hours on Tuesday afternoon, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 3 facilitated hours on Tuesday afternoon, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 The work runs in seven steps:
 
@@ -27,8 +27,10 @@ Use the verified checkout, Python, OMP, and process-local OpenRouter key from [s
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-03-mcp-research"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-03-run" && printf 'RUN=%s\n' "$RUN"
 BASE="$HOME/course-evidence/module-03-$RUN"
 W="$BASE/work"
 E="$BASE/receipts"
@@ -43,6 +45,7 @@ $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolve
 if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
 $M = "$R\AI_Harness_Bootcamp_2\module-03-mcp-research"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-03-run" -Value $RUN; "RUN=$RUN"
 $BASE = "$HOME\course-evidence\module-03-$RUN"
 $W = "$BASE\work"
 $E = "$BASE\receipts"
@@ -51,7 +54,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The verifier is not copied into `W`, and the vault's `Drafts` and `Estimate/Releasable` folders exist and are empty.
+**Expected:** The terminal prints `RUN=` and this attempt's identifier, then `PASS: created` followed by the work path, then two `Next` commands that you can ignore because the next step runs the inspector itself. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`, and the vault's `Drafts` and `Estimate/Releasable` folders exist and are empty.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
@@ -62,6 +65,94 @@ Obsidian is a separate application. If it is not on your computer, install it fr
 In the vault, read `Start here`, then `Handbook/Handling rules`. The rules are numbered H1 to H7 and use exercise categories, OPEN, PARTNER, and STAFF, that stand for real ideas and map to no real marking system. You will apply them to six notes yourself before the AI applies them to forty.
 
 Obsidian writes a hidden `.obsidian` folder into the vault. The server never serves it, and the launcher ignores it. Leave Obsidian idle during a live run: the launcher compares the vault before and after, and a note you edit mid-run appears as a change nobody explained.
+
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-03-run")"
+M="$R/AI_Harness_Bootcamp_2/module-03-mcp-research"
+BASE="$HOME/course-evidence/module-03-$RUN"
+W="$BASE/work"
+E="$BASE/receipts"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-03-run" -Raw).Trim()
+$M = "$R\AI_Harness_Bootcamp_2\module-03-mcp-research"
+$BASE = "$HOME\course-evidence\module-03-$RUN"
+$W = "$BASE\work"
+$E = "$BASE\receipts"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+
+### Enter your key in this terminal
+
+The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+IFS= read -r -s OPENROUTER_API_KEY
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$secret = Read-Host 'OpenRouter key' -AsSecureString
+```
+
+**Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
+
+**Stop:** Characters appear as you type, or you are not sure which program is reading the input.
+
+**Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+export OPENROUTER_API_KEY
+if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$bstr = [IntPtr]::Zero
+try {
+  $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+  $env:OPENROUTER_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+} finally {
+  if ($bstr -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+  if ($secret) { $secret.Dispose() }
+  Remove-Variable secret,bstr -ErrorAction SilentlyContinue
+}
+if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
+```
+
+**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+
+**Stop:** `MISSING`, or any part of the key appears in the output.
+
+**Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
 
 ## Read the server's contract before you connect it
 
@@ -97,7 +188,7 @@ Two columns compare a server's claims with its abilities. The server marks manag
 
 </details>
 
-Write `contract.md` in `E`, in your own words, answering three questions. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool's read-only mark does not match its description, and what could go wrong if a harness approved it because of that mark? Name `manage_tags` and the server's instructions in your answer. You'll decide in the next step whether the model receives those instructions at all.
+Write `contract.md` in `E`, in your own words, answering three questions. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool's read-only mark does not match its description, and what could go wrong if a harness approved it because of that mark? Name `manage_tags` and the server's instructions in your answer, and write at least forty words, because the final check holds a shorter note. You'll decide in the next step whether the model receives those instructions at all.
 
 ## Declare what the connection may do, then prove the limits
 
@@ -137,7 +228,7 @@ if ($LASTEXITCODE -ne 1) { throw 'HOLD: the unbounded probe was expected to repo
 
 **Recovery:** If the declaration is refused, the message names the field to fix. If the probe passes, `mcp.json` already carries limit arguments. Rename the result to `probe-raw-attempt-1.json` and keep it, remove those arguments so only the server script, `--root`, and the vault path remain, and run the probe again into `probe-raw.json`.
 
-Now make the connection match the declaration. In `W/mcp.json`, add the limit arguments to the server's `args`, after the `--root` entry, using the table in `AUTHORITY.md`. Decide whether `"instructions"` stays `true`. Then run the probe again.
+Now make the connection match the declaration. In `W/mcp.json`, add the limit arguments to the server's `args` list, after the vault path that follows `--root`, using the table in `AUTHORITY.md`. Each limit that takes a folder is two list items, the flag and then the folder, each in its own quotes and separated by commas; a flag with no value is one item. For example, a connection that may read one folder named `Example/` and may never change an existing note would end its list with `"--read-prefix", "Example/", "--no-overwrite"`. Repeat a flag once for each folder. Decide whether `"instructions"` stays `true`. Then run the probe again.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -321,7 +412,7 @@ Copy the AI's proposal into your register so the two sit side by side. The comma
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the register was not seeded; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: filled the AI proposed column` for all forty notes, with `Final`, `Rule`, and `Reason` still empty.
+**Expected:** `PASS: filled the AI proposed column for 40 of 40 notes`, with `Final`, `Rule`, and `Reason` still empty.
 
 **Stop:** The command cannot find the proposal, or reports notes without a usable proposal.
 
@@ -344,7 +435,7 @@ Then copy the notes you marked OPEN or PARTNER into `Estimate/Releasable`.
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the releasable folder was not staged; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: Estimate/Releasable/ holds` the number of notes you marked OPEN or PARTNER, and byte-identical copies of exactly those notes in that folder.
+**Expected:** An `added` line and a `removed` line, then `PASS: Estimate/Releasable/ holds N notes, the ones you marked OPEN or PARTNER`, where N is your own count. The folder holds byte-identical copies of exactly those notes.
 
 **Stop:** The command lists notes whose `Final` is blank or not OPEN, PARTNER, or STAFF.
 
@@ -399,9 +490,9 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the extract needs work; preserve this at
 
 **Recovery:** A scan finds only what a program can find. Fix the cause: a line without a link, a note you should not have marked shareable, or an extract that joins too many movement elements. If you change your register, stage again. Then rename `E/partner` to `partner-attempt-1`, move `Drafts/partner/partner-extract.md` into that folder, and run the partner phase again into `E/partner`; the extract is a draft, so moving it loses no source. A wise sentence is still your decision.
 
-## Disconnect and hand off
+## Disconnect and prove it
 
-To remove the connection, empty the server map in `W/mcp.json` so it reads exactly this:
+End the connection by removing it, then prove that a fresh run is offered no tools. To remove the connection, empty the server map in `W/mcp.json` so it reads exactly this:
 
 ```json
 {"mcpServers": {}}
@@ -458,7 +549,9 @@ A table lists three phases. Research reads Handbook and Sources and writes new n
 
 </details>
 
-Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
+## Hand off and run the final check
+
+The next owner gets your finding, the limits that were in force, and what the probes showed, and then the verifier reads it all back. Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
 
 Run the check. It reads your work copy and your receipts, joins the launcher's receipts to the server's own log and the files on disk, and compares your handling decisions with the rules.
 

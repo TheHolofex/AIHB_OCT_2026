@@ -1263,6 +1263,459 @@ label[for="rf-search-input"] {
   line-height: 1.45;
 }
 
+/* Outcomes: what the learner can do after the assignment. */
+.rf-outcomes,
+.rf-module-progress {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border: 1px solid var(--sc-line-2);
+  border-left: 3px solid var(--sc-gold);
+  background: var(--sc-deck);
+}
+
+.rf-outcomes-title,
+.rf-module-progress-title,
+.rf-outcome-label,
+.rf-outcomes-sub {
+  margin: 0 0 0.5rem;
+  color: var(--sc-gold);
+  font-family: var(--sc-font-mono);
+  font-size: var(--rf-label);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.rf-outcomes-sub {
+  margin-top: 0.9rem;
+}
+
+.rf-outcomes-can {
+  margin: 0;
+  color: var(--sc-head);
+  font-family: var(--sc-font-display);
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.rf-outcomes-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.rf-outcomes-list li {
+  margin: 0.3rem 0;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.rf-outcome-line {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.rf-outcome-line .rf-outcome-label {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Progress bars. The width is set by the script; without it the track stays empty. */
+.rf-progress {
+  margin: 0 0 1.25rem;
+}
+
+.rf-progress-track {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--sc-line-2);
+  background: var(--sc-deck-2);
+}
+
+.rf-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--sc-spice);
+  transition: width var(--sc-dur-state, 200ms) var(--sc-ease, ease);
+}
+
+[data-complete] .rf-progress-fill {
+  background: var(--sc-olive, var(--sc-spice));
+}
+
+.rf-progress-text,
+.rf-module-progress-text {
+  margin: 0.45rem 0 0;
+  color: var(--sc-ink-2);
+  font-size: var(--rf-ui);
+  line-height: 1.45;
+}
+
+.rf-module-progress-text {
+  margin: 0 0 0.6rem;
+}
+
+/* Numbered steps. */
+.rf-step-number {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin: 0.1rem 0.6rem 0 0;
+  border: 1px solid var(--sc-gold);
+  border-radius: 50%;
+  color: var(--sc-gold);
+  font-family: var(--sc-font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.rf-step[data-done] > h2 .rf-step-number,
+.rf-step[data-done] > h2 .rf-step-toggle .rf-step-number {
+  border-color: var(--sc-olive, var(--sc-gold));
+  background: var(--sc-olive, var(--sc-gold));
+  color: var(--sc-void);
+}
+
+.rf-step[data-done] > h2 .rf-step-number::before {
+  content: "✓";
+}
+
+.rf-step[data-done] > h2 .rf-step-number {
+  font-size: 0;
+}
+
+.rf-step[data-done] > h2 .rf-step-number::before {
+  font-size: 0.9rem;
+}
+
+/* Step footer: done button, then previous/next. */
+.rf-step-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sc-line);
+}
+
+.rf-step-footer .rf-step-actions {
+  margin-top: 0;
+}
+
+.rf-done-button {
+  min-height: 44px;
+  height: auto;
+  padding: 0.5rem 1rem;
+  white-space: normal;
+}
+
+.rf-done-button[aria-pressed="true"] {
+  background: transparent;
+  color: var(--sc-olive, var(--sc-ink));
+  border: 1px solid var(--sc-olive, var(--sc-line-2));
+}
+
+/* Step rail. */
+.rf-stepper {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rf-stepper-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0 0.5rem;
+  align-items: start;
+  max-width: none;
+  margin: 0;
+}
+
+.rf-stepper-item + .rf-stepper-item {
+  border-top: 1px solid var(--sc-line);
+}
+
+.rf-stepper-check {
+  grid-column: 1;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.85rem 0 0;
+  accent-color: var(--sc-olive, var(--sc-spice));
+  cursor: pointer;
+}
+
+.rf-stepper-item > a {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1.45rem minmax(0, 1fr);
+  gap: 0 0.5rem;
+  align-items: start;
+  min-height: 44px;
+  padding: 0.6rem 0.4rem 0.6rem 0;
+  color: var(--sc-ink);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.rf-stepper-item--aside > a {
+  grid-column: 1 / -1;
+  padding-left: 1.6rem;
+}
+
+.rf-stepper-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-top: 0.05rem;
+  border: 1px solid var(--sc-line-2);
+  border-radius: 50%;
+  color: var(--sc-ink-2);
+  font-family: var(--sc-font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.rf-stepper-item[data-current] > a {
+  color: var(--sc-spice-ink);
+  box-shadow: inset 2px 0 0 var(--sc-spice);
+  padding-left: 0.5rem;
+}
+
+.rf-stepper-item[data-current] .rf-stepper-number {
+  border-color: var(--sc-spice);
+  color: var(--sc-spice-ink);
+}
+
+.rf-stepper-item[data-done] .rf-stepper-number {
+  border-color: var(--sc-olive, var(--sc-gold));
+  background: var(--sc-olive, var(--sc-gold));
+  color: var(--sc-void);
+}
+
+.rf-stepper-item[data-done] .rf-stepper-title {
+  color: var(--sc-ink-2);
+}
+
+#rf-outline.rf-stepper-nav a[aria-current="location"] {
+  box-shadow: none;
+}
+
+/* Command cards: label, copy button, one shell at a time. */
+.rf-command {
+  margin: 1rem 0;
+  border: 1px solid var(--sc-line-2);
+  background: var(--sc-deck);
+}
+
+.rf-command-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 0.55rem 0.5rem 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--sc-line);
+  color: var(--sc-ink-2);
+  font-size: var(--rf-ui);
+  line-height: 1.4;
+}
+
+.rf-command-head strong {
+  color: var(--sc-ink);
+  font-weight: 500;
+}
+
+.rf-command > pre {
+  margin: 0;
+  border: 0;
+}
+
+.rf-command .rf-copy {
+  flex: 0 0 auto;
+  min-height: 36px;
+  height: auto;
+  padding: 0.3rem 0.75rem;
+  font-size: var(--rf-label);
+}
+
+.rf-copy[data-copied]::after {
+  content: " ✓";
+}
+
+.rf-shell-pair {
+  margin: 1rem 0;
+}
+
+.rf-shell-pair .rf-command {
+  margin: 0;
+}
+
+.rf-shell-pair[data-tabbed] > .rf-shell-panel:not([hidden]) > .rf-command {
+  border-top: 0;
+}
+
+.rf-shell-panel + .rf-shell-panel {
+  margin-top: 0.75rem;
+}
+
+.rf-shell-pair[data-tabbed] > .rf-shell-panel + .rf-shell-panel {
+  margin-top: 0;
+}
+
+.rf-shell-panel > .rf-callout:first-of-type {
+  margin-top: 0.75rem;
+}
+
+.rf-shell-tabs {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  border: 1px solid var(--sc-line-2);
+  border-bottom: 0;
+  background: var(--sc-deck-2);
+}
+
+.rf-shell-tab {
+  flex: 1 1 auto;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-right: 1px solid var(--sc-line-2);
+  border-radius: 0;
+  background: transparent;
+  color: var(--sc-ink-2);
+  font-family: var(--sc-font-mono);
+  font-size: var(--rf-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rf-shell-tab:last-child {
+  border-right: 0;
+}
+
+.rf-shell-tab[aria-selected="true"] {
+  background: var(--sc-deck);
+  color: var(--sc-spice-ink);
+  box-shadow: inset 0 3px 0 var(--sc-spice);
+}
+
+/* Expected / Stop / Recovery callouts. */
+.rf-callout {
+  position: relative;
+  margin: 0.75rem 0;
+  padding: 0.65rem 0.9rem 0.65rem 1rem;
+  border: 1px solid var(--sc-line);
+  border-left: 3px solid var(--sc-line-2);
+  background: var(--sc-deck);
+}
+
+.rf-callout > p {
+  margin: 0;
+}
+
+.rf-callout > p > strong:first-child {
+  display: inline-block;
+  margin-right: 0.35rem;
+  font-family: var(--sc-font-mono);
+  font-size: var(--rf-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rf-callout--expected {
+  border-left-color: var(--sc-olive, var(--sc-gold));
+}
+
+.rf-callout--expected > p > strong:first-child {
+  color: var(--sc-olive, var(--sc-gold));
+}
+
+.rf-callout--stop {
+  border-left-color: var(--sc-spice);
+}
+
+.rf-callout--stop > p > strong:first-child {
+  color: var(--sc-spice-ink);
+}
+
+.rf-callout--recovery {
+  border-left-color: var(--sc-gold);
+}
+
+.rf-callout--recovery > p > strong:first-child {
+  color: var(--sc-gold);
+}
+
+.rf-callout + .rf-callout {
+  margin-top: -1px;
+}
+
+/* Course map: capability line and device-local progress. */
+.rf-home-content .rf-course-map a {
+  text-decoration: none;
+}
+
+.rf-home-content .rf-course-map .rf-map-name {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.rf-map-title {
+  grid-column: 2;
+  color: var(--sc-ink);
+  font-family: var(--sc-font-ui);
+  font-size: var(--rf-ui);
+  letter-spacing: 0.02em;
+}
+
+.rf-map-outcome {
+  grid-column: 2;
+  margin-top: 0.3rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--sc-gold);
+  color: var(--sc-ink-2);
+  font-size: var(--rf-ui);
+  line-height: 1.5;
+}
+
+.rf-map-progress {
+  grid-column: 2;
+  margin-top: 0.4rem;
+  color: var(--sc-spice-ink);
+  font-family: var(--sc-font-mono);
+  font-size: var(--rf-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rf-map-progress:empty {
+  display: none;
+}
+
+.rf-map-progress[data-complete] {
+  color: var(--sc-olive, var(--sc-spice-ink));
+}
+
 /* 320 */
 @media (max-width: 359px) {
   .rf-masthead-inner,
@@ -1411,6 +1864,15 @@ label[for="rf-search-input"] {
   .rf-map-summary {
     grid-column: auto;
   }
+
+  .rf-map-outcome,
+  .rf-map-progress {
+    grid-column: 3;
+  }
+
+  .rf-map-outcome {
+    margin-top: 0.1rem;
+  }
 }
 
 /* No right rail from 960 through 1279. Inline outline remains. */
@@ -1451,6 +1913,13 @@ label[for="rf-search-input"] {
 @media (min-width: 1440px) {
   :root {
     --rf-gutter: 2rem;
+    --rf-outline: 248px;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --rf-outline: 272px;
   }
 }
 
@@ -1469,7 +1938,8 @@ label[for="rf-search-input"] {
   .rf-hero::after,
   .sc-btn.rf-btn,
   .rf-disclosure-cue,
-  .rf-step[data-selected] {
+  .rf-step[data-selected],
+  .rf-progress-fill {
     animation: none !important;
     transition: none !important;
   }
@@ -1485,6 +1955,22 @@ label[for="rf-search-input"] {
     background: Canvas;
     color: CanvasText;
     forced-color-adjust: none;
+  }
+
+  .rf-shell-tab[aria-selected="true"],
+  .rf-stepper-item[data-done] .rf-stepper-number,
+  .rf-step[data-done] > h2 .rf-step-number,
+  .rf-progress-fill {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .rf-callout,
+  .rf-command,
+  .rf-outcomes,
+  .rf-module-progress {
+    border-color: CanvasText;
   }
 
   .rf-hero h1,
@@ -1567,7 +2053,8 @@ label[for="rf-search-input"] {
   }
 
   .rf-step-body[hidden],
-  .rf-context-body[hidden] {
+  .rf-context-body[hidden],
+  .rf-shell-pair > .rf-shell-panel[hidden] {
     display: block !important;
   }
 
@@ -1592,6 +2079,11 @@ label[for="rf-search-input"] {
   .rf-hero-actions,
   .rf-disclosure-cue,
   .rf-copy,
+  .rf-shell-tabs,
+  .rf-stepper-check,
+  .rf-progress,
+  .rf-module-progress,
+  .rf-step-footer,
   .rf-figure-link,
   .rf-footer-tools,
   .rf-hero-image,

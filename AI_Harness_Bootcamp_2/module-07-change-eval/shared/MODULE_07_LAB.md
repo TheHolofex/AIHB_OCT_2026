@@ -1,4 +1,4 @@
-# Module 7 · Evaluate a change without hiding variation
+# Module 7 · Evaluate a change with variation controls
 
 Decide whether a proposed change to Slope Brief can be used without losing a required source check. Use your existing comparison and restoration skills to freeze the cases, configurations, and decision rule before inspecting outcomes. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate even when its other results look better.
 
@@ -12,15 +12,17 @@ Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is 
 
 ## Prepare a separate attempt
 
-Use the verified Python and checkout from [setup](../../module-00-setup/README.md). Open an ordinary terminal. These commands work from any directory and leave earlier attempts intact. `W` is your work folder; `E` holds your records outside it. Do not open candidate briefs yet.
+Create a fresh work folder and a separate evidence folder so that this attempt cannot overwrite an earlier one. Use the verified Python and checkout from [setup](../../module-00-setup/README.md). Open an ordinary terminal. These commands work from any directory and leave earlier attempts intact. `W` is your work folder; `E` holds your records outside it. Do not open candidate briefs yet.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-07-change-eval"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-07-run" && printf 'RUN=%s\n' "$RUN"
 W="$HOME/course-evidence/module-07-$RUN/work"
 E="$HOME/course-evidence/module-07-$RUN/evidence"
 "$PY" "$R/shared/prepare_work.py" 07 "$W" &&
@@ -35,6 +37,7 @@ $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolve
 if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
 $M = "$R\AI_Harness_Bootcamp_2\module-07-change-eval"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-07-run" -Value $RUN; "RUN=$RUN"
 $W = "$HOME\course-evidence\module-07-$RUN\work"
 $E = "$HOME\course-evidence\module-07-$RUN\evidence"
 & $PY "$R\shared\prepare_work.py" 07 "$W"
@@ -42,15 +45,51 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
 ```
 
-**Expected:** The preparer reports the new work directory. It contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two operational scripts. Your evidence folder is separate.
+**Expected:** `RUN=` and this attempt's identifier, then `PASS: created` followed by your work path, then two `Next` commands that display the policy file; you may skip them, because the next step opens that file in your editor. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two operational scripts. Your evidence folder is separate.
 
 **Stop:** A command fails, a destination already exists, or Python is not the verified 3.12-or-newer interpreter.
 
 **Recovery:** Keep the existing attempt. Correct the prerequisite through setup, then repeat this block with a new `RUN`; do not reset the checkout or delete an old work folder.
 
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-07-run")"
+M="$R/AI_Harness_Bootcamp_2/module-07-change-eval"
+W="$HOME/course-evidence/module-07-$RUN/work"
+E="$HOME/course-evidence/module-07-$RUN/evidence"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-07-run" -Raw).Trim()
+$M = "$R\AI_Harness_Bootcamp_2\module-07-change-eval"
+$W = "$HOME\course-evidence\module-07-$RUN\work"
+$E = "$HOME\course-evidence\module-07-$RUN\evidence"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+
 ## Freeze your rule and input identities
 
-In your editor, open `W/shared/controls/policy.json` and the three adjacent batch manifests. A manifest names which existing brief the evaluator will read; it is not evidence that a model generated that brief. The policy declares forty case IDs, the three material rows, both gates, no exclusions, and `any_violation_rejects`.
+In your editor, open `W/shared/controls/policy.json` and the three adjacent batch manifests. A manifest names which existing brief the evaluator will read; it is not evidence that a model generated that brief. The policy lists the forty case IDs, the three form rows whose values must be sourced (mass, gate time UTC, gate time MDT), the format, mass, and time-zone gates, no exclusions, and `any_violation_rejects`.
 
 Create `W/decision.md` in your editor. Before opening any candidate, state what would reject either candidate, what counts as a failed case, and why a faster result cannot excuse an unsupported material claim. Do not enter an adoption decision yet.
 
@@ -76,7 +115,7 @@ Freeze the bytes without displaying the candidate contents. The record includes 
 
 ## Check the baseline, then evaluate every pair
 
-Each case has `sources.json`, a three-row form, and baseline/A/B briefs. A **locator** identifies the exact source record supporting a value. The mass and time-zone gates check each value and its own locator; the format check records whether the brief follows the required form. A zone word elsewhere cannot repair an unlabeled clock value. Judge a number by its source support, not by whether you have seen that number in a previous failure.
+Confirm all forty baseline briefs pass, then score every baseline, A, and B brief on the same cases. Each case has `sources.json`, a three-row form, and baseline/A/B briefs. A **locator** identifies the exact source record supporting a value. The mass and time-zone gates check each value and its own locator; the format check records whether the brief follows the required form. A zone word elsewhere cannot repair an unlabeled clock value. Judge a number by its source support, not by whether you have seen that number in a previous failure.
 
 A malformed source packet or one for the wrong case stops the comparison. Do not count it as a candidate failure. A malformed candidate under valid sources remains in the comparison as a format failure.
 
@@ -89,23 +128,23 @@ baseline_failed=0
 for case_dir in "$W"/shared/cases/PC-*; do
   "$PY" "$W/shared/controls/hard_gates.py" "$case_dir/baseline.md" || baseline_failed=1
 done
-[ "$baseline_failed" -eq 0 ]
+if [ "$baseline_failed" -eq 0 ]; then echo 'BASELINE PASS'; else echo 'HOLD: a baseline failed; do not evaluate adoption.'; fi
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
 $baselineFailed = $false
-foreach ($caseDir in Get-ChildItem "$W\shared\cases" -Directory) {
+foreach ($caseDir in Get-ChildItem "$W\shared\cases" -Directory -Filter 'PC-*') {
   & $PY "$W\shared\controls\hard_gates.py" "$($caseDir.FullName)\baseline.md"
   if ($LASTEXITCODE -ne 0) { $baselineFailed = $true }
 }
-if ($baselineFailed) { throw 'A baseline failed; do not evaluate adoption.' }
+if ($baselineFailed) { throw 'HOLD: a baseline failed; do not evaluate adoption.' } else { 'BASELINE PASS' }
 ```
 
-**Expected:** All forty baseline checks pass. This establishes a usable reference, not a claim that either candidate is good.
+**Expected:** Forty `PASS` lines, then `BASELINE PASS`. This establishes a usable reference, not a claim that either candidate is good.
 
-**Stop:** Any baseline holds or the loop cannot read all cases.
+**Stop:** Any line starting `HOLD:`, or fewer than forty `PASS` lines.
 
 **Recovery:** Save the failed output. Check the named input against your frozen record; do not hand-repair a brief to force a passing baseline.
 
@@ -157,7 +196,7 @@ Check that your frozen inputs still match before accepting the comparison.
 
 ## Demonstrate restoration
 
-Select the checked instruction as the active condition, retaining the previous active file, then invoke the supplied restore. This deliberately changes a control; it does not edit a candidate brief.
+Swap in the candidate instruction, restore the baseline from its stored fingerprints, and prove the rerun is byte-identical. Select the checked instruction as the active condition, retaining the previous active file, then invoke the supplied restore. This deliberately changes a control; it does not edit a candidate brief.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -180,13 +219,17 @@ if ($LASTEXITCODE -ne 0) { throw 'Restored evaluation held.' }
 & $PY -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); same=(w/'out/results.csv').read_bytes()==(w/'out/restored-results.csv').read_bytes(); print('RESTORED RESULTS MATCH' if same else 'HOLD: results differ'); sys.exit(not same)" "$W"
 ```
 
-**Expected:** `RESTORE OK` follows hash and byte checks of the active instruction and all forty baseline briefs. The second evaluation matches the first byte for byte; candidate attempts remain intact.
+**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs by hash and bytes; the second evaluation matches the first byte for byte; candidate attempts remain intact.
 
 **Stop:** The frozen restore source changed, any restore check holds, or comparison bytes differ.
 
 **Recovery:** Preserve both results and the control backup. Do not reconstruct a baseline from memory or patch a candidate. Start a fresh prepared copy only after recording what broke.
 
-In `W/handoff.md`, name the frozen policy record, comparison results, your adoption decision, the repair proxy, and restore evidence. State the limit: a deterministic comparison of supplied briefs does not measure how a live instruction behaves over repeated runs.
+## Write the handoff
+
+Give the next owner everything needed to repeat or reverse your decision. In `W/handoff.md`, name the frozen policy record, comparison results, your adoption decision, the repair proxy, and restore evidence. State the limit: a deterministic comparison of supplied briefs does not measure how a live instruction behaves over repeated runs.
+
+Before you stop, check that `handoff.md` names `pre-result.json`, `results.csv`, `restored-results.csv`, your decision, the failed-case counts for A and B, and the stated limit.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: separate an instruction effect from ordinary variation</summary>
@@ -198,6 +241,58 @@ Compare the supplied baseline and checked instructions on PC-01–PC-06. Use thr
 Open both instruction files in your editor. Explain the single added check and predict where it might help, do nothing, or add work. Record that prediction in `decision.md` before running. Keep the model, source/form pair, prompt, and permissions fixed within each pair.
 
 This is paid work. Use only your process-local OpenRouter key and the pinned Sonnet model from setup. The runner runs one call at a time, never retries a failed call, and never changes the provider or model. Missing key, credit, or model availability leaves this lane blocked; it is not a reason to substitute a provider.
+
+Run this in the same window that holds `PY`, `W`, `E`, and `M`; if you opened a new terminal, use the re-entry block at the top of the page first.
+
+### Enter your key in this terminal
+
+The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+IFS= read -r -s OPENROUTER_API_KEY
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$secret = Read-Host 'OpenRouter key' -AsSecureString
+```
+
+**Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
+
+**Stop:** Characters appear as you type, or you are not sure which program is reading the input.
+
+**Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+export OPENROUTER_API_KEY
+if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$bstr = [IntPtr]::Zero
+try {
+  $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+  $env:OPENROUTER_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+} finally {
+  if ($bstr -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+  if ($secret) { $secret.Dispose() }
+  Remove-Variable secret,bstr -ErrorAction SilentlyContinue
+}
+if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
+```
+
+**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+
+**Stop:** `MISSING`, or any part of the key appears in the output.
+
+**Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
 
 The source-only runner freezes the schedule and identities before the first call. Each model attempt receives only `sources.json` and `form.md`, with permission to create `brief.md`. The launcher, not the batch runner, creates each receipt directory.
 

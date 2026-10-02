@@ -16,7 +16,9 @@ Set the locations of the course checkout, this module, your new work folder, and
 export R="$HOME/Documents/AIHB_OCT_2026"
 export M="$R/AI_Harness_Bootcamp_2/module-01-mission-thread"
 export PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-01-run" && printf 'RUN=%s\n' "$RUN"
 export W="$HOME/course-evidence/module-01-$RUN/work"
 ```
 
@@ -28,6 +30,7 @@ $env:M = "$env:R\AI_Harness_Bootcamp_2\module-01-mission-thread"
 $env:PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
 if (-not $env:PY) { throw 'HOLD: Python 3.12 or newer is required.' }
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-01-run" -Value $RUN; "RUN=$RUN"
 $env:W = "$HOME\course-evidence\module-01-$RUN\work"
 ```
 
@@ -61,6 +64,40 @@ Open `desk.md` in the new work folder. Its links point to the working files for 
 
 The visible checker catches missing fields, known practice values, arithmetic, and stale values. It does not judge whether a source applies or whether the verdict is sound.
 
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+export R="$HOME/Documents/AIHB_OCT_2026"
+export PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-01-run")"
+export M="$R/AI_Harness_Bootcamp_2/module-01-mission-thread"
+export W="$HOME/course-evidence/module-01-$RUN/work"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$env:R = "$HOME\Documents\AIHB_OCT_2026"
+$env:PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $env:PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-01-run" -Raw).Trim()
+$env:M = "$env:R\AI_Harness_Bootcamp_2\module-01-mission-thread"
+$env:W = "$HOME\course-evidence\module-01-$RUN\work"
+"RUN=$RUN"; "W=$env:W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+
 ## Timebox
 
 | Work | Time |
@@ -81,7 +118,7 @@ At least two hours belong to your own inspection, calculation, writing, and deci
 
 ## 1. Open and hash the inbox
 
-Open:
+Record the exact identity of every file you are judging, so that no one can later swap a source without the change showing. Open:
 
 - `REQUEST.md` in the work folder
 - every file under `inbox/`
@@ -100,7 +137,7 @@ Start at desk.md. Read REQUEST.md. Open every inbox file. Hash the inbox before 
 
 Do not inspect facilitator fixture files. The supplied reveal command will copy the practice change into your work folder after the baseline is frozen.
 
-Run the content check from the module directory using the absolute helper. This confirms the clone you are working from is intact:
+Run the content check. It confirms that the checkout you are working from is intact, and it works from any folder because it uses the absolute module path.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -162,7 +199,7 @@ Check the inbox itself:
 
 ## 2. Freeze exact identity and allowed source use
 
-Open the starter's `source-register.csv` in your editor. Complete one row for every inbox file, using the file's actual hash and the source's identity, version, authority, time, and allowed use. Then run the register check.
+Write down what each source is, how current it is, and what it may be used for, before any of them is used. Open the starter's `source-register.csv` in your editor. Complete one row for every inbox file, using the file's actual hash and the source's identity, version, authority, time, and allowed use. Then run the register check.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -182,9 +219,12 @@ Open the starter's `source-register.csv` in your editor. Complete one row for ev
 
 **Recovery:** Correct the register rows against the actual inbox files and rerun.
 
-Before you inspect the brief sentence by sentence, write the identity values at the top of `baseline-verdict.md`:
+Before you inspect the brief sentence by sentence, start `baseline-verdict.md` with its heading and the identity values. You will add the verdict fields below them in step 9.
 
 ```text
+# Baseline verdict
+
+## Identity
 Mission:
 Decision time:
 Vehicle:
@@ -199,7 +239,7 @@ Near matches are not matches. Write the exact identifier you read, including rev
 
 ## 3. Split the AI brief into material claims
 
-Open the 14:05 AI file in the inbox — the one whose name ends desk-ai-go. It is a finished `GO`. You did not write it. Put each statement that could change the decision into its own row in `thread-ledger.csv`.
+A polished recommendation can only be tested one claim at a time, so break it into the statements that would change the decision. Open the 14:05 AI file in the inbox — the one whose name ends desk-ai-go. It is a finished `GO`. You did not write it. Put each statement that could change the decision into its own row in `thread-ledger.csv`.
 
 Use this header (the 8 steps and 5 statement types are required):
 
@@ -213,7 +253,7 @@ A compound sentence needs several rows. "All 216 kits are ready" contains a scan
 
 ## 4. Trace all eight thread steps
 
-Your ledger must contain these step names exactly:
+Follow the cargo through every handoff from origin to clinic, so that a gap in the thread shows up as a gap in the ledger. Your ledger must contain these step names exactly:
 
 1. `Requirement defined`
 2. `Cargo received`
@@ -238,7 +278,7 @@ Do not mark later events as facts. At 14:05, delivery and clinic receipt have no
 
 ## 5. Recompute every deterministic claim
 
-Use a calculator available on your machine, but enter the source values yourself. Do not copy a result from the AI brief or ask the producing AI to recompute it.
+A number you have recomputed from the sources is evidence; a number you copied from the brief is not. Use a calculator available on your machine, but enter the source values yourself. Do not copy a result from the AI brief or ask the producing AI to recompute it.
 
 In the calculation column, show the source values you start from, the arithmetic you perform, the result, and its unit. Required calculations are:
 
@@ -273,7 +313,7 @@ The script is a calculator, not evidence. The source rows establish the premises
 
 ## 6. Challenge the files you will not use for `GO`
 
-After you have opened every inbox file and run the hash command, write `challenge-matrix.md` yourself.
+State why each source you set aside does not support the recommendation, so your verdict rests on a reasoned selection rather than a convenient one. After you have opened every inbox file and run the hash command, write `challenge-matrix.md` yourself.
 
 One block per source you will not use to support `GO`. Each block states:
 
@@ -328,7 +368,7 @@ Choose one rebuttal path. Both produce claims for you to inspect; neither makes 
 
 **Recovery:** Preserve the existing rebuttal and provenance. Begin a new attempt through the starter if a new practice run is needed; do not delete the old result to rerun it.
 
-**For live (when OPENROUTER_API_KEY is set and prerequisites pass):**
+**For live (optional):** this path makes one paid model call, so your OpenRouter key must be present in this terminal. Enter it with the hidden-prompt procedure in [the credentials page](../../module-00-setup/shared/CREDENTIALS.md) first; without it the command exits 2 before writing anything.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -370,7 +410,7 @@ Then add one challenge block for any claim in that file you still have not rejec
 
 ## 8. Write the corrected internal brief
 
-Write `corrected-brief.md` for another class member who must decide what needs attention next. It must state what is supported, what is contradicted, what remains unresolved, which later events have not occurred, the current blockers, the exact sources and calculations behind the blockers, and the next evidence needed.
+Turn your findings into a brief another person can act on without having watched you work. Write `corrected-brief.md` for another class member who must decide what needs attention next. It must state what is supported, what is contradicted, what remains unresolved, which later events have not occurred, the current blockers, the exact sources and calculations behind the blockers, and the next evidence needed.
 
 The review page must let a classmate who did not watch you work understand the decision and its evidence. Having an AI agent inspect it supplies technical observations only; it does not replace that person's review.
 
@@ -387,7 +427,7 @@ A classmate who did not watch you work should answer the five questions from the
 
 Do not turn this into a movement plan. Do not select another route, estimate a permit decision, or claim that the clinic received cargo.
 
-Render the local review page from the module directory using absolute path:
+Render the local review page. The command works from any folder because it uses the absolute module path.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -401,21 +441,13 @@ Render the local review page from the module directory using absolute path:
 & "$env:PY" "$env:M\scripts\render_review.py" "$env:W"
 ```
 
-**Expected:** review.html is created in the work folder.
+**Expected:** The last line reads `PASS: wrote` followed by the path of `review.html` in your work folder.
 
 **Stop:** review.html is missing or the surface omits decision-critical state.
 
-**Recovery:** Rerun the renderer from the module directory with the quoted work path.
+**Recovery:** Fix the file the message names, then run the renderer again. The command works from any folder because it uses the absolute module path.
 
-Open `review.html` in your browser. Ask a classmate who did not watch you work to answer the five questions from that page alone. Use three minutes as a review target, not a measured guarantee.
-
-1. What can proceed?
-2. What cannot proceed?
-3. What exact condition blocks the decision?
-4. Which source and calculation establish that result?
-5. What evidence would change it?
-
-Record their first answers and questions before revising. If no eligible person is available, mark the classmate review blocked and continue only with technical inspection. An agent or your own rereading does not supply the missing human observation.
+Open `review.html` in your browser and check that it shows your blockers and evidence. The page shows the verdict as `UNSET` until step 9, so the classmate review comes after that step. The packet check below confirms that the page has the decision-critical state.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -437,13 +469,16 @@ Record their first answers and questions before revising. If no eligible person 
 
 ## 9. Freeze the baseline verdict
 
-Complete `baseline-verdict.md`:
+Commit to a verdict and record its identity before any source changes, so a later change can be judged against a fixed baseline. Add the verdict fields under the identity block you wrote in step 2, so the file reads:
 
 ```markdown
 # Baseline verdict
 
-Decision time:
-Verdict: ACCEPT / REVISE / REJECT / HOLD
+## Identity
+(the eight identity lines from step 2)
+
+## Verdict
+Verdict:
 Strongest supported fact:
 Strongest contradiction:
 Unresolved condition:
@@ -453,7 +488,7 @@ Reason:
 Standing rule:
 ```
 
-`ACCEPT` means every material claim needed for this class-only decision is supported. `REVISE` means the evidence supports a decision after bounded corrections to the brief. `REJECT` means the recommendation is contradicted. `HOLD` means required evidence, authority, access, or a decision condition is unresolved.
+Write exactly one of `ACCEPT`, `REVISE`, `REJECT`, or `HOLD` after `Verdict:`. `ACCEPT` means every material claim needed for this class-only decision is supported. `REVISE` means the evidence supports a decision after bounded corrections to the brief. `REJECT` means the recommendation is contradicted. `HOLD` means required evidence, authority, access, or a decision condition is unresolved.
 
 Any unsupported material premise blocks `ACCEPT` even when most of the brief is right.
 
@@ -477,9 +512,37 @@ Save the ledger and verdict. Record their hashes:
 
 **Recovery:** Complete the verdict and ledger, rerun the hash commands, then proceed only after recording.
 
+Render the review page again so it shows the verdict, then ask a classmate who did not watch you work to answer the five questions from that page alone. Use three minutes as a review target, not a measured guarantee.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/render_review.py" "$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\render_review.py" "$env:W"
+```
+
+**Expected:** The last line reads `PASS: wrote` followed by the path of `review.html`, and the page now shows your verdict instead of `UNSET`.
+
+**Stop:** The page still shows `UNSET`, or it omits a blocker you recorded.
+
+**Recovery:** Check the `Verdict:` line holds exactly one of the four words, save the file, and render again.
+
+1. What can proceed?
+2. What cannot proceed?
+3. What exact condition blocks the decision?
+4. Which source and calculation establish that result?
+5. What evidence would change it?
+
+Record their first answers and questions before revising anything. If no eligible person is available, mark the classmate review blocked and continue with technical inspection only. An agent or your own rereading does not supply the missing human observation.
+
 ## 10. Predict the source-change effect
 
-Before running the reveal command, write `change-prediction.md`:
+Write down what a new source should and should not change before you see it, so the revision can be checked against a prediction rather than a rationalization. Before running the reveal command, write `change-prediction.md`:
 
 ```markdown
 # Source-change prediction
@@ -505,7 +568,7 @@ The prediction must exist before the reveal command. Update only claims that dep
 
 </details>
 
-Your prediction must exist before you reveal the change. Freeze the source register, baseline ledger, challenge matrix, corrected brief, verdict, and prediction from the Module 1 directory:
+Your prediction must exist before you reveal the change. Freeze the source register, baseline ledger, challenge matrix, corrected brief, verdict, and prediction:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -519,7 +582,7 @@ Your prediction must exist before you reveal the change. Freeze the source regis
 & "$env:PY" "$env:M\scripts\freeze_baseline.py" "$env:W"
 ```
 
-**Expected:** baseline-freeze.json is created with hashes that match the current files.
+**Expected:** The last line reads `PASS: baseline frozen at` followed by the path of `baseline-freeze.json`, which now holds a fingerprint of each frozen file.
 
 **Stop:** The command refuses because freeze already exists or required files are missing.
 
@@ -541,11 +604,11 @@ Release the practice change only after the freeze command passes. Preserve the b
 & "$env:PY" "$env:M\scripts\reveal_change.py" "$env:W"
 ```
 
-**Expected:** REVEALED_CHANGE.md appears and change-release.json records the baseline freeze preceded the reveal.
+**Expected:** The last line reads `PASS: practice change copied to` followed by the path of `REVEALED_CHANGE.md`. `change-release.json` records that the freeze came first.
 
 **Stop:** The command holds because freeze is missing or change was already released.
 
-**Recovery:** Complete the freeze first, then rerun the reveal from the module directory.
+**Recovery:** Complete the freeze first, then run the reveal again.
 
 Now open `REVEALED_CHANGE.md` in your work folder. Refer to this revealed source as `S10`; keep the frozen nine-source register unchanged. Do not open the staff fixture directly.
 
@@ -637,7 +700,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 & "$env:PY" "$env:M\scripts\check_work.py" "$env:W"
 ```
 
-**Expected:** All seven visible practice phases pass. Source interpretation, classmate review, and your independent judgment remain separate evidence requirements.
+**Expected:** All seven visible practice phases pass. The checker also compares both verdict lines with the practice case's known answer, so a different verdict prints `FAIL: baseline verdict is HOLD` or `FAIL: changed verdict is HOLD`. Treat that as a prompt to recheck your blockers against the sources, not as an instruction to change your judgment; record a verdict you still stand behind in `handoff.md`. Source interpretation, classmate review, and your independent judgment remain separate evidence requirements.
 
 **Stop:** Stale values or unrelated change errors.
 
@@ -645,7 +708,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 
 ## 12. Finish the handoff
 
-Write `handoff.md`:
+Leave the next reader a record that names the verdict, the evidence, and the first thing to inspect. Write `handoff.md`:
 
 ```markdown
 # Module 1 handoff

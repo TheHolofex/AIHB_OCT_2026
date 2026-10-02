@@ -1,4 +1,4 @@
-/* Local reading preferences are navigation conveniences, never learning evidence. */
+/* Local reading preferences and progress marks are navigation conveniences, never learning evidence. */
 (() => {
   'use strict';
   const one = (selector, root = document) => root.querySelector(selector);
@@ -13,17 +13,22 @@
   const plainClick = event => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   const decode = hash => { try { return decodeURIComponent(hash.slice(1)); } catch { return null; } };
   const urlFor = (path, anchor = '') => new URL(path + (anchor ? `#${encodeURIComponent(anchor)}` : ''), root).href;
-  const blankState = () => ({version: 1, theme: 'system', view: 'guided', last: null, positions: {}});
+  const blankState = () => ({version: 2, theme: 'system', view: 'guided', shell: null, last: null, positions: {}, done: {}});
   const targets = page => pages.has(page) ? data.resume[page] || [] : [];
+  const stepIds = page => pages.get(page)?.steps || [];
+  const SHELLS = ['bash', 'powershell'];
   let state = blankState();
   let storageAvailable = true;
   let storageAnnounced = false;
   let printing = false;
+  const listeners = [];
+  const onProgress = handler => listeners.push(handler);
+  const announce = text => { const status = one('#rf-state-status'); if (status) status.textContent = text; };
 
   function storageFailure() {
     storageAvailable = false;
     if (!storageAnnounced) {
-      one('#rf-state-status').textContent = 'Your place could not be saved on this device.';
+      announce('Your place and progress could not be saved on this device.');
       storageAnnounced = true;
     }
   }
@@ -36,9 +41,10 @@
     try { raw = localStorage.getItem(key); } catch { storageFailure(); return; }
     let value;
     try { value = JSON.parse(raw); } catch { return; }
-    if (!value || value.version !== 1) return;
+    if (!value || ![1, 2].includes(value.version)) return;
     if (['system', 'dark', 'sand'].includes(value.theme)) state.theme = value.theme;
     if (['guided', 'read'].includes(value.view)) state.view = value.view;
+    if (SHELLS.includes(value.shell)) state.shell = value.shell;
     const last = value.last;
     if (last && pages.has(last.page) && ['lab', 'setup'].includes(pages.get(last.page).kind)) {
       state.last = {page: last.page, anchor: targets(last.page).some(item => item.id === last.anchor) ? last.anchor : ''};
@@ -49,6 +55,13 @@
             (page !== data.page || one('.rf-step > h2[id="' + anchor + '"]'))) state.positions[page] = anchor;
       }
     }
+    if (value.done && typeof value.done === 'object') {
+      for (const [page, anchors] of Object.entries(value.done)) {
+        if (!Array.isArray(anchors) || !pages.has(page)) continue;
+        const kept = anchors.filter(anchor => stepIds(page).includes(anchor));
+        if (kept.length) state.done[page] = [...new Set(kept)];
+      }
+    }
   }
   function remember(anchor, core) {
     if (printing || !targets(data.page).some(item => item.id === anchor)) return;
@@ -56,6 +69,39 @@
     state.last = {page: data.page, anchor};
     save();
   }
+
+  // Progress: which steps a learner marked done, per page, summed per assignment.
+  const doneList = page => (state.done[page] || []).filter(id => stepIds(page).includes(id));
+  const isDone = (page, id) => doneList(page).includes(id);
+  function setDone(page, id, value) {
+    if (!stepIds(page).includes(id)) return;
+    const current = doneList(page);
+    const next = value ? [...new Set([...current, id])] : current.filter(item => item !== id);
+    if (next.length) state.done[page] = next; else delete state.done[page];
+    save();
+    listeners.forEach(handler => handler());
+  }
+  function moduleProgress(moduleId) {
+    let total = 0, done = 0;
+    for (const page of data.pages) {
+      if (page.moduleId !== moduleId || !['lab', 'setup'].includes(page.kind)) continue;
+      total += page.steps.length;
+      done += doneList(page.path).length;
+    }
+    return {total, done};
+  }
+  function progressWords(done, total) {
+    if (!total) return '';
+    if (done >= total) return `All ${total} steps done`;
+    return `${done} of ${total} steps done`;
+  }
+  function paintBar(container, done, total) {
+    const fill = one('.rf-progress-fill', container);
+    if (fill) fill.style.width = `${total ? Math.round((done / total) * 100) : 0}%`;
+    container.toggleAttribute('data-complete', total > 0 && done >= total);
+    container.toggleAttribute('data-started', done > 0);
+  }
+
   function applyTheme() {
     if (state.theme === 'system') document.documentElement.removeAttribute('data-sc-theme');
     else document.documentElement.dataset.scTheme = state.theme;
@@ -86,19 +132,36 @@
       setup.hidden = note.hidden = true;
       return;
     }
+    const progress = moduleProgress(resume.module.id);
     primary.textContent = `Continue · ${resume.module.caseName}`;
     primary.href = urlFor(resume.page.path, resume.section?.id);
-    note.textContent = `${resume.section?.title || resume.page.title} · Last opened on this device`;
+    note.textContent = `${resume.section?.title || resume.page.title} · Last opened on this device${progress.total ? ` · ${progressWords(progress.done, progress.total)}` : ''}`;
     setup.hidden = note.hidden = false;
+  }
+  function renderModuleProgress() {
+    all('[data-module-progress]').forEach(node => {
+      const {done, total} = moduleProgress(node.dataset.moduleProgress);
+      if (node.classList.contains('rf-map-progress')) {
+        node.textContent = done ? progressWords(done, total) : '';
+        node.toggleAttribute('data-complete', total > 0 && done >= total);
+        return;
+      }
+      const text = one('.rf-module-progress-text', node);
+      if (text && done) text.textContent = `${progressWords(done, total)} on this device.`;
+      paintBar(node, done, total);
+    });
   }
   function initReset() {
     all('[data-reset-place]').forEach(button => {
       button.addEventListener('click', () => {
-        if (!confirm('Reset saved place for this course on this device?')) return;
+        if (!confirm('Reset your saved place and progress marks for this course on this device?')) return;
         state.last = null;
         state.positions = {};
+        state.done = {};
         save();
         renderHomeResume();
+        listeners.forEach(handler => handler());
+        announce('Saved place and progress marks were reset on this device.');
       });
       button.hidden = false;
     });
@@ -147,20 +210,80 @@
     one('.rf-course-fallback').hidden = true;
   }
   function initCopy() {
-    all('pre[data-command]').forEach(pre => {
+    all('pre', main).forEach(pre => {
+      const command = pre.hasAttribute('data-command');
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'sc-btn rf-btn sc-btn--secondary rf-copy';
-      button.textContent = 'Copy command';
+      button.textContent = command ? 'Copy command' : 'Copy text';
       button.addEventListener('click', async () => {
         const status = one('#copy-status');
         try {
           await navigator.clipboard.writeText(one('code', pre).textContent);
-          status.textContent = 'Command copied.';
-        } catch { status.textContent = 'Copy failed. Select the command text and copy it manually.'; }
+          status.textContent = command ? 'Command copied.' : 'Text copied.';
+          button.dataset.copied = '';
+          setTimeout(() => { delete button.dataset.copied; }, 1600);
+        } catch { status.textContent = 'Copy failed. Select the text and copy it manually.'; }
       });
-      pre.before(button);
+      const head = pre.closest('.rf-command')?.querySelector(':scope > .rf-command-head');
+      if (head) head.append(button);
+      else pre.before(button);
     });
+  }
+  // One shell at a time. The first explicit choice is remembered for every page; before that, the device's platform picks.
+  function initShell() {
+    const pairs = all('.rf-shell-pair', main);
+    if (!pairs.length) return;
+    const platform = navigator.userAgentData?.platform || navigator.platform || '';
+    const current = () => state.shell || (/win/i.test(platform) ? 'powershell' : 'bash');
+    const tabs = [];
+    pairs.forEach((pair, index) => {
+      const panels = SHELLS.map(shell => one(`:scope > .rf-shell-panel[data-shell="${shell}"]`, pair)).filter(Boolean);
+      if (panels.length !== 2) return;
+      const list = document.createElement('div');
+      list.className = 'rf-shell-tabs';
+      list.setAttribute('role', 'tablist');
+      list.setAttribute('aria-label', 'Shell');
+      panels.forEach((panel, order) => {
+        const shell = panel.dataset.shell;
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'rf-shell-tab';
+        tab.setAttribute('role', 'tab');
+        tab.id = `rf-shell-tab-${index}-${shell}`;
+        tab.dataset.shell = shell;
+        tab.textContent = panel.dataset.shellName;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', tab.id);
+        tab.addEventListener('click', () => { state.shell = shell; save(); paint(); tab.focus(); });
+        tab.addEventListener('keydown', event => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          const next = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : (order + 1) % 2;
+          state.shell = panels[next].dataset.shell; save(); paint();
+          one(`[data-shell="${state.shell}"]`, list).focus();
+        });
+        list.append(tab);
+        tabs.push(tab);
+      });
+      pair.prepend(list);
+      pair.dataset.tabbed = '';
+    });
+    function paint() {
+      const shell = current();
+      pairs.forEach(pair => {
+        all(':scope > .rf-shell-panel', pair).forEach(panel => { panel.hidden = panel.dataset.shell !== shell; });
+        all('.rf-shell-tab', pair).forEach(tab => {
+          const selected = tab.dataset.shell === shell;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+      });
+      document.body.dataset.shell = shell;
+    }
+    paint();
+    addEventListener('beforeprint', () => pairs.forEach(pair => all(':scope > .rf-shell-panel', pair).forEach(panel => { panel.hidden = false; })));
+    addEventListener('afterprint', paint);
   }
   function initFigures() {
     if (!modalSupported) return;
@@ -293,12 +416,14 @@
       }
     });
   }
+  const headingTitle = heading => [...heading.childNodes].filter(node => !(node.classList?.contains('rf-step-number'))).map(node => node.textContent).join('').trim();
   function initReader() {
     const controls = one('#rf-reader-controls');
     const sections = all('.rf-step, .rf-context', main).map(section => {
       const heading = one(':scope > h2', section);
       const body = one(':scope > .rf-step-body, :scope > .rf-context-body', section);
-      return {section, heading, body, id: heading.id, title: heading.textContent, nodes: [...heading.childNodes], core: section.classList.contains('rf-step'), open: false};
+      const badge = heading.querySelector('.rf-step-number')?.textContent.trim();
+      return {section, heading, body, id: heading.id, title: headingTitle(heading), label: /^\d+$/.test(badge || '') ? `Step ${badge}` : 'Section', nodes: [...heading.childNodes], core: section.classList.contains('rf-step'), open: false};
     });
     const steps = sections.filter(item => item.core);
     if (!steps.length) { history.scrollRestoration = 'auto'; return null; }
@@ -334,6 +459,7 @@
         const current = optional ? !!linkTarget?.closest('.rf-stretch, .rf-optional') : anchor === (target?.closest('.rf-context') ? target.closest('.rf-context').dataset.contextId : selected);
         if (current) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
+        link.closest('.rf-stepper-item')?.toggleAttribute('data-current', current);
       });
     }
     function select(id, {scroll = false, focus = false, record = false} = {}) {
@@ -373,6 +499,31 @@
       if (initial) history.replaceState(historyState(id), '', location.href);
       locationSeen = location.href;
     }
+    // Progress marks for this page: rail checkboxes, step badges, the header bar, and each step's done button.
+    function paintProgress() {
+      const done = doneList(data.page);
+      const total = stepIds(data.page).length;
+      for (const item of steps) {
+        const marked = done.includes(item.id);
+        item.section.toggleAttribute('data-done', marked);
+        if (item.doneButton) {
+          item.doneButton.setAttribute('aria-pressed', String(marked));
+          item.doneButton.textContent = marked ? 'Done · undo' : 'Mark step done';
+        }
+        const row = one(`.rf-stepper-item[data-step-ref="${CSS.escape(item.id)}"]`);
+        if (row) {
+          row.toggleAttribute('data-done', marked);
+          const box = one('input[data-step-done]', row);
+          if (box) box.checked = marked;
+        }
+      }
+      const header = one('[data-progress]');
+      if (header) {
+        paintBar(header, done.length, total);
+        const text = one('.rf-progress-text', header);
+        if (text) text.textContent = done.length ? progressWords(done.length, total) : `${total} steps. Mark each step done as you finish it; progress is saved on this device.`;
+      }
+    }
     try {
       for (const item of sections) {
         item.button = document.createElement('button');
@@ -390,6 +541,20 @@
         });
       }
       steps.forEach((item, index) => {
+        const footer = document.createElement('div');
+        footer.className = 'rf-step-footer';
+        const done = document.createElement('button');
+        done.type = 'button';
+        done.className = 'sc-btn rf-btn sc-btn--primary rf-done-button';
+        done.addEventListener('click', () => {
+          const marked = !isDone(data.page, item.id);
+          setDone(data.page, item.id, marked);
+          const {done: count, total} = {done: doneList(data.page).length, total: stepIds(data.page).length};
+          announce(marked ? `${item.label} marked done. ${progressWords(count, total)}.` : `${item.label} unmarked. ${progressWords(count, total)}.`);
+          const next = steps[index + 1];
+          if (marked && next && state.view === 'guided') navigate(next.id);
+        });
+        item.doneButton = done;
         const nav = document.createElement('nav');
         nav.className = 'rf-step-actions';
         nav.setAttribute('aria-label', 'Adjacent sections');
@@ -400,8 +565,16 @@
           link.textContent = `${label}: ${neighbor.title}`;
           nav.append(link);
         }
-        item.body.append(nav);
+        footer.append(done, nav);
+        item.body.append(footer);
       });
+      all('input[data-step-done]').forEach(box => box.addEventListener('change', () => {
+        setDone(data.page, box.dataset.stepDone, box.checked);
+        const {length: count} = doneList(data.page);
+        announce(`${box.checked ? 'Marked' : 'Unmarked'}. ${progressWords(count, stepIds(data.page).length)}.`);
+      }));
+      onProgress(paintProgress);
+      paintProgress();
       fromLocation(true);
       function setView(view, persist) {
         if (view === 'read') {
@@ -448,7 +621,7 @@
       return {select};
     } catch (error) {
       sections.forEach(item => { item.heading.replaceChildren(...item.nodes); item.body.hidden = false; item.section.removeAttribute('data-selected'); });
-      all('.rf-step-actions', main).forEach(nav => nav.remove());
+      all('.rf-step-actions, .rf-step-footer', main).forEach(node => node.remove());
       controls.hidden = true;
       delete document.body.dataset.view;
       history.scrollRestoration = 'auto';
@@ -483,7 +656,9 @@
     try { initialize(); } catch (error) { console.warn('A reading control is unavailable; ordinary course links remain usable.', error); }
   }
   load();
-  [initTheme, initCopy, initCourse, initFigures, initSearch, initReset, renderHomeResume, initPrint].forEach(independently);
+  onProgress(renderModuleProgress);
+  onProgress(renderHomeResume);
+  [initTheme, initCopy, initShell, initCourse, initFigures, initSearch, initReset, renderHomeResume, renderModuleProgress, initPrint].forEach(independently);
   const reader = initReader();
   one('.sc-skip-link').addEventListener('click', () => main.focus({preventScroll: true}));
   if (!reader) {

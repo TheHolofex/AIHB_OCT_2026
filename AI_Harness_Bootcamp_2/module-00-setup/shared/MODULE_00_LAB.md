@@ -12,18 +12,20 @@ Machine readiness is a prerequisite: finish the appropriate [setup path](../READ
 
 Your **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create that folder outside the checkout. `W` names the work folder; `E` names the evidence folder beside it. Earlier attempts remain untouched.
 
-Live drafting requires an authorized OpenRouter account and an API key available in this terminal. An API key is the credential the launcher uses to access that account. The course uses the fixed OpenRouter model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`; use the setup credential procedure before the first call.
+Live drafting needs your OpenRouter key in this terminal. An API key is the credential the launcher uses to reach the account that pays for the model call. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
 PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
 M="$R/AI_Harness_Bootcamp_2/module-00-setup"
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-00-run" && printf 'RUN=%s\n' "$RUN"
 W="$HOME/course-evidence/module-00-$RUN/work"
 E="$HOME/course-evidence/module-00-$RUN/evidence"
-"$PY" -c "from pathlib import Path; import shutil,sys; source,w,e=map(Path,sys.argv[1:]); w.mkdir(parents=True,exist_ok=False); e.mkdir(parents=True,exist_ok=False); names=('SOURCE_PACKET.md','REQUEST.md','CHANGED_INPUT.md','check_artifact.py'); [shutil.copyfile(source/name,w/name) for name in names]; print('\n'.join(sorted(p.name for p in w.iterdir())))" "$M/shared/case" "$W" "$E"
+"$PY" -c "from pathlib import Path; import shutil,sys; source,w,e=map(Path,sys.argv[1:]); w.mkdir(parents=True,exist_ok=False); e.mkdir(parents=True,exist_ok=False); names=('SOURCE_PACKET.md','REQUEST.md','CHANGED_INPUT.md','check_artifact.py'); [shutil.copyfile(source/name,w/name) for name in names]; print(w); print('\n'.join(sorted(p.name for p in w.iterdir())))" "$M/shared/case" "$W" "$E"
 ```
 
 **Terminal: PowerShell, ordinary user.**
@@ -34,20 +36,107 @@ $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolve
 if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
 $M = "$R\AI_Harness_Bootcamp_2\module-00-setup"
 $RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-00-run" -Value $RUN; "RUN=$RUN"
 $W = "$HOME\course-evidence\module-00-$RUN\work"
 $E = "$HOME\course-evidence\module-00-$RUN\evidence"
-& $PY -c "from pathlib import Path; import shutil,sys; source,w,e=map(Path,sys.argv[1:]); w.mkdir(parents=True,exist_ok=False); e.mkdir(parents=True,exist_ok=False); names=('SOURCE_PACKET.md','REQUEST.md','CHANGED_INPUT.md','check_artifact.py'); [shutil.copyfile(source/name,w/name) for name in names]; print('\n'.join(sorted(p.name for p in w.iterdir())))" "$M\shared\case" "$W" "$E"
+& $PY -c "from pathlib import Path; import shutil,sys; source,w,e=map(Path,sys.argv[1:]); w.mkdir(parents=True,exist_ok=False); e.mkdir(parents=True,exist_ok=False); names=('SOURCE_PACKET.md','REQUEST.md','CHANGED_INPUT.md','check_artifact.py'); [shutil.copyfile(source/name,w/name) for name in names]; print(w); print('\n'.join(sorted(p.name for p in w.iterdir())))" "$M\shared\case" "$W" "$E"
 ```
 
-**Expected:** The work folder contains exactly `SOURCE_PACKET.md`, `REQUEST.md`, `CHANGED_INPUT.md`, and `check_artifact.py`.
+**Expected:** The terminal prints `RUN=` and this attempt's identifier, then the full path of the work folder, then exactly four names: `CHANGED_INPUT.md`, `REQUEST.md`, `SOURCE_PACKET.md`, and `check_artifact.py`. Open that folder in your editor; the page calls it `W` from here on.
 
 **Stop:** A destination exists, copying fails, or a source is missing.
 
 **Recovery:** Preserve the partial attempt. Repair the path or prerequisite, then repeat the block with a new `RUN`. Do not delete earlier work or change the source checkout.
 
+### If you open a new terminal
+
+Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+R="$HOME/Documents/AIHB_OCT_2026"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
+RUN="$(cat "$HOME/course-evidence/module-00-run")"
+M="$R/AI_Harness_Bootcamp_2/module-00-setup"
+W="$HOME/course-evidence/module-00-$RUN/work"
+E="$HOME/course-evidence/module-00-$RUN/evidence"
+printf '%s\n' "RUN=$RUN" "W=$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$R = "$HOME\Documents\AIHB_OCT_2026"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-00-run" -Raw).Trim()
+$M = "$R\AI_Harness_Bootcamp_2\module-00-setup"
+$W = "$HOME\course-evidence\module-00-$RUN\work"
+$E = "$HOME\course-evidence\module-00-$RUN\evidence"
+"RUN=$RUN"; "W=$W"
+```
+
+**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+
+**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+
+### Enter your key in this terminal
+
+The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+IFS= read -r -s OPENROUTER_API_KEY
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$secret = Read-Host 'OpenRouter key' -AsSecureString
+```
+
+**Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
+
+**Stop:** Characters appear as you type, or you are not sure which program is reading the input.
+
+**Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+export OPENROUTER_API_KEY
+if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+$bstr = [IntPtr]::Zero
+try {
+  $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+  $env:OPENROUTER_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+} finally {
+  if ($bstr -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+  if ($secret) { $secret.Dispose() }
+  Remove-Variable secret,bstr -ErrorAction SilentlyContinue
+}
+if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
+```
+
+**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+
+**Stop:** `MISSING`, or any part of the key appears in the output.
+
+**Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
+
 ## 2. Identify who decides acceptance
 
-Open `W/check_artifact.py`. The local checker is inspectable practice software. Its output cannot independently certify the meaning of your email or your judgment. Editing a practice checker does not make a draft more defensible.
+A check can report a result, but only a named person can accept the email for its use; settle who that is before any draft exists. Open `W/check_artifact.py`. The local checker is inspectable practice software. Its output cannot independently certify the meaning of your email or your judgment. Editing a practice checker does not make a draft more defensible.
 
 Create `W/acceptance-control.md` in your editor. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
 
@@ -63,7 +152,7 @@ Create `W/acceptance-control.md` in your editor. Name the practice checker, who 
 
 ## 3. Read the packet and checker in full
 
-Open `W/SOURCE_PACKET.md`, `W/REQUEST.md`, and `W/check_artifact.py` in your editor. Leave `CHANGED_INPUT.md` unopened until stage 13.
+You can only judge a draft against facts you have read yourself, so read every supplied fact and every condition the checker tests before the tool runs. Open `W/SOURCE_PACKET.md`, `W/REQUEST.md`, and `W/check_artifact.py` in your editor. Leave `CHANGED_INPUT.md` unopened until step 13.
 
 The packet distinguishes a request, custody, paperwork availability, and release authority. The request requires a 130–190-word email with a subject and contact line. The checker recognizes selected facts and prohibited claims, but it can miss meanings expressed in unfamiliar wording.
 
@@ -77,7 +166,7 @@ In `acceptance-control.md`, add one example of a claim that still needs your rea
 
 ## 4. Divide drafting, judgment, and prohibited action
 
-Create `W/direction-brief.md`. State what AI may draft, what judgment remains yours, and what it must not do. The AI may reorganize supplied facts into the requested email. You retain source interpretation, acceptance, disclosure, and the sharing decision. A real send, release, or invented service is outside scope.
+Decide in writing what the tool may do, what stays with you, and what it must never do, so the limits exist before the first draft. Create `W/direction-brief.md`. State what AI may draft, what judgment remains yours, and what it must not do. The AI may reorganize supplied facts into the requested email. You retain source interpretation, acceptance, disclosure, and the sharing decision. A real send, release, or invented service is outside scope.
 
 ![Separate delegated work from retained judgment and prohibited action](figures/m00-delegation.svg)
 
@@ -91,7 +180,7 @@ Create `W/direction-brief.md`. State what AI may draft, what judgment remains yo
 
 ## 5. Complete the minimum responsibility screen
 
-Create `W/minimum-screen.md` and answer each line from what you inspected:
+Answer the questions that decide whether this job is safe to delegate at all, from what you inspected rather than from habit. Create `W/minimum-screen.md` and answer each line from what you inspected:
 
 ```text
 Source and data authority:
@@ -112,7 +201,7 @@ Decision to proceed with a class draft, or HOLD:
 
 ## 6. Freeze a testable direction
 
-Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
+Write the direction so that a finished draft can be checked against it line by line. Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
 
 Set a limit of two deliberate correction attempts before `HOLD`. A correction requires a diagnosed cause and a fresh retained attempt; this is not permission for automatic retries until a favorable answer appears.
 
@@ -134,7 +223,7 @@ an external action. After writing, report the path only.
 
 ## 7. Produce one actual tool-written draft
 
-Use the shared launcher to run the model with the declared course tools and permission to write only the new `artifact.md` output. A **receipt** is a saved record of what the launcher or tool observed during a run. The launcher creates a separate receipt folder for this call; that folder must not already exist.
+Run the tool once under the limits you wrote, so that what you check is a real file the tool produced, with the run's records kept beside it. Use the shared launcher to run the model with the declared course tools and permission to write only the new `artifact.md` output. A **receipt** is a saved record of what the launcher or tool observed during a run. The launcher creates a separate receipt folder for this call; that folder must not already exist.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -156,7 +245,7 @@ Use the shared launcher to run the model with the declared course tools and perm
 
 ## 8. Read the disk file, count words, and check
 
-Open `W/artifact.md` in your editor and read it, rather than relying on the assistant's path claim. The checker uses its own documented word-count rule; ordinary editor counts may differ slightly around punctuation.
+Judge the file on disk, not the assistant's description of it. Open `W/artifact.md` in your editor and read it, rather than relying on the assistant's path claim. The checker uses its own documented word-count rule; ordinary editor counts may differ slightly around punctuation.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -178,7 +267,7 @@ Open `W/artifact.md` in your editor and read it, rather than relying on the assi
 
 ## 9. Trace material claims yourself
 
-Create `W/source-check.md`. Quote each material statement about quantity, custody, paperwork timing, authority, and prohibited clinic action, then give its exact supporting packet line or paragraph. Mark unsupported implications as well as plainly wrong facts.
+Every claim that could change a reader's action needs a source you can point to; the checker cannot do this part. Create `W/source-check.md`. Quote each material statement about quantity, custody, paperwork timing, authority, and prohibited clinic action, then give its exact supporting packet line or paragraph. Mark unsupported implications as well as plainly wrong facts.
 
 **Expected:** The email's material claims are supported, and the distinctions between custody/release and paperwork/pickup remain explicit.
 
@@ -213,7 +302,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Falsifier preparation stopped.' }
 
 ## 11. Describe an observed capability and limit
 
-Create `W/capability-limit.md`. Distinguish the model's text, the terminal/file interface, the harness's enforced permissions and recorded checks, and the human decision. Name one capability and one limitation supported by this attempt's evidence.
+Record what you saw the tool do and fail to do, so the next person inherits observations rather than opinions. Create `W/capability-limit.md`. Distinguish the model's text, the terminal/file interface, the harness's enforced permissions and recorded checks, and the human decision. Name one capability and one limitation supported by this attempt's evidence.
 
 **Expected:** Your claims refer to actual behavior rather than a general claim that AI is reliable or unreliable.
 
@@ -223,7 +312,7 @@ Create `W/capability-limit.md`. Distinguish the model's text, the terminal/file 
 
 ## 12. Make the bounded human decision
 
-In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, and explain the supporting evidence and remaining limit. This is not permission to send the email to a real operations list.
+The decision is yours and it has a boundary; write both down. In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, and explain the supporting evidence and remaining limit. This is not permission to send the email to a real operations list.
 
 **Expected:** The decision respects the source trace, responsibility screen, observed falsifier, and class-only audience.
 
@@ -231,9 +320,9 @@ In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, an
 
 **Recovery:** Keep the draft on hold and name who must resolve the issue. A mechanical pass does not resolve a missing source or sharing permission.
 
-## 13. Apply the changed input, compare, and hand off
+## 13. Predict and apply the changed input
 
-Now open `W/CHANGED_INPUT.md`. Before running again, create `W/changed-input-prediction.md`: record what must change, what must stay unchanged, and why. The changed input replaces the on-hand count; it does not grant new authority.
+A real request changes after the first draft, and the test of a limited job is whether only the changed fact moves. Now open `W/CHANGED_INPUT.md`. Before running again, create `W/changed-input-prediction.md`: record what must change, what must stay unchanged, and why. The changed input replaces the on-hand count; it does not grant new authority.
 
 Save this as `W/prompt-changed.txt` in your editor:
 
@@ -263,7 +352,9 @@ unchanged. After writing, report the new path only.
 
 **Recovery:** Preserve both versions and the failed turn. Diagnose the unsupported change; do not silently replace the original or broaden the task.
 
-Run the original checker on the changed draft, then compare the two files. The checker still expects the original count; its stale-count failure is intentional.
+## 14. Check and compare the two drafts
+
+The original checker and a line-by-line comparison tell you what actually changed, which your prediction can then be judged against. Run the original checker on the changed draft, then compare the two files. The checker still expects the original count; its stale-count failure is intentional.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -301,7 +392,11 @@ Run the original checker on the changed draft, then compare the two files. The c
 
 **Recovery:** Record the mismatch in `W/changed-input-comparison.md` and hold the revised draft. Do not treat a diff as a substitute for reading its meaning.
 
-Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, decision, observed limit, unresolved owner, and first file the next reader should inspect. Keep work and receipts outside the checkout.
+## 15. Write the handoff
+
+The next reader has your folder and nothing else, so the handoff names where to look and what was decided. Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, decision, observed limit, unresolved owner, and first file the next reader should inspect. Keep work and receipts outside the checkout.
+
+Before you stop, confirm that `W` holds the files this lab asked you to create: `acceptance-control.md`, `minimum-screen.md`, `direction-brief.md`, `prompt.txt`, `artifact.md`, `source-check.md`, `falsifier-probe.md`, `falsifier-observation.md`, `capability-limit.md`, `decision.md`, `changed-input-prediction.md`, `prompt-changed.txt`, `artifact-changed.md`, `changed-input-comparison.md`, and `handoff.md`, and that `E` holds the launcher receipts for both turns and `original-artifact.sha256`.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: remove an unsupported readiness implication</summary>
