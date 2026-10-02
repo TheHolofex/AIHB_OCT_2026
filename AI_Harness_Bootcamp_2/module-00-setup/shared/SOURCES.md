@@ -46,6 +46,26 @@
 - [OpenRouter authentication](https://openrouter.ai/docs/api-reference/authentication)
 - [Python downloads](https://www.python.org/downloads/)
 
+## Local n8n and Docker
+
+- [Official n8n one-line setup, flags, and Windows shell guidance](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup)
+- [Live installer download](https://get.n8n.io) and [reviewable installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh): reviewed source reports installer 1.4.0; the course requests n8n 2.41.5 explicitly. The live URL is not an immutable installer pin.
+- [Official six-service Compose source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml): includes the privileged Docker-in-Docker runner and named data volumes.
+- [Docker Desktop for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
+- [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+- [Docker Desktop WSL integration](https://docs.docker.com/desktop/features/wsl/)
+- [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)
+- [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker Linux post-install access and docker-group privileges](https://docs.docker.com/engine/install/linux-postinstall/)
+- [Docker Compose installation](https://docs.docker.com/compose/install/)
+- [Compose down and volume removal options](https://docs.docker.com/reference/cli/docker/compose/down/)
+- [Compose project-name precedence](https://docs.docker.com/compose/how-tos/project-name/) and [environment-variable interpolation precedence](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/): the recorded project and explicit configuration files prevent accidental defaults; exported overrides still require a guard.
+- [Arch Docker guidance](https://wiki.archlinux.org/title/Docker), [Docker package](https://archlinux.org/packages/extra/x86_64/docker/), and [Compose package](https://archlinux.org/packages/extra/x86_64/docker-compose/)
+
+The course selects the full official stack, restricts the n8n host port to `127.0.0.1:5678`, and leaves Assistant off. The platform guides supply guarded installation and download-and-review alternatives. Upstream upgrade, uninstall, Assistant activation, or convenience-install examples are not course steps. A modern Compose plugin may report version 5; the required interface is `docker compose`, not a literal `2.x` version string.
+
+The integration owner’s direct observations cover Apple Silicon only: local owner **Next**, optional survey **Get started**, free-license **Skip**, Assistant **Set up later in Settings**, and **Overview → Build a workflow** on an empty instance. Clicking the title, renaming, pressing **Enter**, and reloading proved automatic saving without requiring a **Saved** label. The observed stack had five long-running services, `sandbox-certs` at `Exited (0)`, localhost-only publication, and workflow persistence through ordinary `down` / `up -d`. These observations do not establish another platform’s execution.
+
 ## Source hierarchy
 
 Use documentation for the pinned product release first, then operating-system documentation and the official package source. A community post can explain a symptom but does not establish the required command or grant permission to bypass device policy.

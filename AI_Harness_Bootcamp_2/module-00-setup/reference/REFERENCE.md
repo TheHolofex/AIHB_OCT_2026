@@ -1,8 +1,8 @@
 # Reference: Module 0 and the initial course setup
 
-**Version:** 3 · **Frozen on:** 2026-09-30 · supersedes v2 (2026-08-14) for the single-OMP/OpenRouter setup and evidence contract
+**Version:** 5 · **Frozen on:** 2026-10-02 · incorporates the v3 single-OMP/OpenRouter contract and recorded v4 ungraded amendment; adds native local n8n readiness
 **Scope:** Module 0 learner material, shared setup contract, five platform setup paths, and the acceptance machinery that decides them
-**Supported paths:** Windows PowerShell only, Windows with WSL 2 and Ubuntu, macOS, Ubuntu, Arch Linux
+**Supported paths:** Windows PowerShell with an n8n-only WSL bridge, Windows with WSL 2 and Ubuntu for course work, macOS, Ubuntu, Arch Linux
 **Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability or replace a named independent evaluator. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.
 **Changes are recorded in `AMENDMENTS.md`.** The research survey below is retained; the active requirements in §§3–8 supersede the obsolete multi-tool setup, thin-case examples, and assertions that a public practice checker is secret.
 
@@ -92,7 +92,7 @@ Fourteen systems, selected because each one settles a specific decision. Confide
 ## 3. Active execution and setup contract
 
 1. Participants use Git, Python 3.12 or newer, a browser, an ordinary text editor, and **OMP 18.3.5**. The sole provider/model is **`openrouter/anthropic/claude-sonnet-4.6`**, with a participant-supplied process-local `OPENROUTER_API_KEY`. Node is a maintainer figure-build dependency, not a participant prerequisite.
-2. Each of the five platform paths stays in its named shell. WSL work remains in Linux home, not a Windows mount. Native Windows has both x64 and ARM64 official assets; an unavailable native test host is a verification blocker, not a missing-release claim.
+2. OMP, Python, Git, credentials and course work stay in each platform's named shell. The native Windows PowerShell route uses a WSL 2 Ubuntu bridge only for the official n8n Docker stack, then returns to PowerShell. The separate WSL course route keeps course work in Linux home, not a Windows mount. Native Windows has both x64 and ARM64 official OMP assets; an unavailable native test host is a verification blocker, not a missing-release claim.
 3. Download the selected binary and `SHA256SUMS.txt` directly from release v18.3.5. Verify the unique exact-filename digest before installing, making executable, or executing those bytes. Preserve a conflicting installation and every failed download.
 4. Put the verified user binary on PATH through explicit, non-secret configuration. Verify it again in a newly opened terminal without repairing PATH in that verification step. Preserve existing profiles and append idempotently. OS installation and managed-device approval remain with the device owner.
 5. Hidden key entry runs as one isolated command; export follows separately. Print SET/MISSING only. Do not put a key in argv, profiles, reports, screenshots or committed files. An independently opened terminal normally lacks the previous terminal's process-local key; a child may inherit it.
@@ -101,6 +101,7 @@ Fourteen systems, selected because each one settles a specific decision. Confide
 8. The launcher retains policy/config identity, raw OMP events, guard lifecycle and execution receipts, before/after snapshots, extracted response and result. Missing prerequisites exit 2; attempted incomplete/failed work exits 1. No output file or confident model sentence can turn a failed child into success.
 9. `verify_tool_proof.py <proof-dir> <token-file> <evidence-dir>` requires the fresh exact `omp works <token>` disk content and a successful audited `course_write` with matching path and output hash. A hand-created or stale file does not prove tool use.
 10. Keep local raw evidence outside the checkout; publish redacted staff summaries using `$HOME` and `$CHECKOUT`. Local policy receipts necessarily contain resolved paths. Never commit credentials or personal paths.
+11. Before Module 6, prepare **n8n 2.41.5** using the full official local stack, not a reduced single-container substitute. Review the Docker Desktop licence, daemon access, privileged sandbox runner and effects on existing workloads with the device owner before installation or startup. Use the official installer without starting it, pin the version, preserve existing installs/contexts/data, and bind the editor to `127.0.0.1:5678`. A fresh owner-approved Compose project must be unused across containers, volumes and networks; record its name without overwriting a file or symlink. Lifecycle commands must use that recorded project and explicit Compose/environment files, refusing inherited overrides rather than silently replacing them. Prove the expected service states, local owner access, exact version, a saved blank workflow and its persistence after a non-destructive stop/start. This is a later-project entry condition, not an alternate AI harness or a new Module 0 objective.
 
 ## 4. Module 0 capability and invariant case facts
 
@@ -136,6 +137,7 @@ Use meaningful behavior and integrity gates, not source-wording, incidental form
 | Fresh-shell setup | Supported Python/Git and verified OMP resolve after persistent configuration | Missing command, wrong pin/path, empty PATH component, absent prerequisites |
 | Secret entry | Hidden input and process-only export; no value in output | Multi-command entry, persisted secret, exposed value |
 | Checkout/work separation | Intended clone and fresh external work, unrelated changes preserved | Existing work destination, unrelated checkout, dangerous escape |
+| Local n8n readiness | Full pinned stack; loopback editor; expected service states; owner access and saved-workflow restart persistence | Unapproved privilege/licence change, occupied install/project, inherited Compose overrides, wrong version/binding, lost existing state |
 | Guarded execution | Real raw lifecycle, authorized tool joins, exact file readback and hashes | Missing/unready guard, outside path, missing instruction, stale or hand-created proof |
 | Practice draft | Faithful source-supported email, recognized negative facts, all quantity bindings | Contradiction, unsupported pickup/release, wrong subject/count, wrong audience |
 | Changed input | Original unchanged; correct revised count and expected old-checker failure | New authority, untraced material change, overwritten original |
@@ -157,4 +159,4 @@ A technical reviewer may find defects without being a novice learner. An agent m
 
 Revalidate when the pinned OMP CLI, extension API, context discovery, OpenRouter model/tool behavior, official assets, Python floor, OS shell or checkout path changes. Migrate launcher, guards, platform guides, proof checker and their consumers together; no legacy provider aliases or silent substitutions.
 
-Do not add participant toolchains, an alternate agent runtime, provider fallbacks, a new installation framework, AI-authorship detection, or claims that local hashes resist an owner rewriting the entire evidence set. Preserve historical reviews/run records as historical, not current-platform or current-provider proof.
+Do not add participant toolchains beyond Git/Python/OMP and the approved local n8n stack, an alternate agent runtime, provider fallbacks, a new installation framework, AI-authorship detection, or claims that local hashes resist an owner rewriting the entire evidence set. Preserve historical reviews/run records as historical, not current-platform or current-provider proof.

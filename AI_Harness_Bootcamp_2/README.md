@@ -6,14 +6,16 @@ Learn to operate AI harnesses by doing useful work: draft a document, check a cl
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You’ll use Oh My Pi to work with files and supplied tools. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
+You’ll use Oh My Pi to work with files and supplied tools, and local n8n to build visual workflows in Module 6. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
 
 ## Produce work you can check
 
 - **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
-- **A repeatable batch workflow.** Process records under a saved rule, handle exceptions, and prove what changes—and what does not—when you change that rule.
+- **A repeatable batch workflow.** Build and save a visual n8n workflow that validates records, routes exceptions, and produces ordered receipts. Predict one policy change, compare every output row across two batches, and restore the original workflow to reproduce both results.
 - **An operable handoff.** Give another person the inputs, instructions, controls, and checks they need to run, stop, and restore the work without your chat history.
+
+Keep the original workflow export and its separately recorded SHA-256 fingerprint before changing the policy. Save the changed export separately. Restore the verified original into a new blank workflow and compare both reruns byte-for-byte with their original receipts. Generated prose stays outside these deterministic checks, and outputs are never patched by hand.
 
 A fluent answer is not enough. Compare the actual output with the request and sources. When a check fails, preserve the failure, correct its cause, and check again. When a required fact or permission is missing, stop and name the gap.
 
@@ -27,12 +29,14 @@ Start with setup, then work through assignments 00–09. Each supplies its own c
 
 The cases are fictional. The tools you run, files you produce, checks you perform, and handoffs you attempt are real. Use the supplied data, not confidential workplace information. No exercise authorizes a real dispatch, release, or other operational decision.
 
-This bootcamp is ungraded. `PASS` and `HOLD` describe technical checks and work decisions, not learner scores. A successful script run does not prove that another person can operate your handoff; observe that separately.
+`PASS` and `HOLD` describe technical checks and work decisions. A successful execution does not prove that another person can operate your handoff; observe that separately.
 
 ## Before you start
 
 Choose the [setup path for Windows PowerShell, Windows with WSL 2, macOS, Ubuntu, or Arch Linux](module-00-setup/README.md). You need a browser, a plain-text editor, permission to install the required tools, and GitHub read access to the private course repository. The hosted-course password is separate from repository access.
 
-Setup installs or checks Git, Python 3.12 or newer, and Oh My Pi 18.3.5. Live work uses a [participant-supplied OpenRouter key with a per-key spending ceiling of US$40](module-00-setup/shared/CREDENTIALS.md) and the pinned Sonnet 4.6 model. Set that ceiling before paid work; do not save the key in course files or shell profiles.
+Setup installs or checks Git, Python 3.12 or newer, Oh My Pi 18.3.5, and local n8n 2.41.5 with its full official Docker stack. Live OMP work uses a [participant-supplied OpenRouter key with a per-key spending ceiling of US$40](module-00-setup/shared/CREDENTIALS.md) and the pinned Sonnet 4.6 model. Set that ceiling before paid work; do not save the key in course files or shell profiles.
 
-Allow 1–3 hours for setup. The ten facilitated sessions are three hours each, including two hours of practice. These are planning allowances, not measured learner-completion guarantees.
+Module 6 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
+
+Allow 1–3 hours for setup, with additional time as needed for Docker downloads and owner approvals. The ten facilitated sessions are three hours each, including two hours of practice. These are planning allowances, not measured learner-completion guarantees.

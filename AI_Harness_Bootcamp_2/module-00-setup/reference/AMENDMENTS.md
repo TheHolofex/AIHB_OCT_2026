@@ -78,3 +78,11 @@ The digest will be re-frozen for this explicit amendment. Historical evidence an
 ## Standalone repository path amendment
 
 The course now lives at `~/Documents/AIHB_OCT_2026`, with `shared/` and `AI_Harness_Bootcamp_2/` directly under its root. The active launcher path in `REFERENCE.md` is updated to match, and `REFERENCE.sha256` records those bytes. Research, supplied case facts, runtime pins, and historical evidence remain unchanged. Current run summaries are at `evidence/exercise-runs.json`; earlier paths above describe the original repository.
+
+## v5 amendment — native local n8n readiness, 2026-10-02
+
+The native Module 6 cutover requires the full official n8n 2.41.5 stack. The prior named-shell rule did not describe the n8n-only WSL bridge on the PowerShell route. Active §3 now preserves native PowerShell for OMP/Python/Git/credentials/course work while bounding that bridge to n8n. Local n8n readiness remains a prerequisite, not a Module 0 mastery objective or an alternate AI harness.
+
+The readiness contract now names owner approval for Docker/licensing/privileged runners, preserved installations and engine context, loopback binding, a collision-checked recorded Compose project, explicit lifecycle inputs, refusal of inherited overrides, and saved-workflow persistence. Native Apple Silicon evidence used the six-service stack; host-shell parser/boundary checks cover the five authored procedures without claiming five native platform runs. Current evidence is in `../evidence/REVIEW_VERDICT.md` and Module 6's `evidence/native/runtime-proof.json`.
+
+The obsolete A1/A4 source scans misread `printf '%s/get-n8n.sh'` as an executed relative path. A3 banned every `exit`, including safe subshell refusals and the intentional WSL-to-PowerShell return. Those incidental-source assertions and their mutations were removed rather than re-pinned. Real syntax, collision/preservation/refusal boundaries and native runtime behavior are recorded separately; the remaining oracle is explicitly scoped, not proof that every platform procedure was executed. The digest is re-frozen for this explicit contract amendment; historical v1–v4 records remain unchanged.

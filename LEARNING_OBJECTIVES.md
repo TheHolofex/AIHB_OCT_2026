@@ -46,11 +46,11 @@ Using preserved failures and source distinctions, the learner freezes an outcome
 **Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
 **Owner:** Module 05
 
-## PO-06 — Operate one fixed workflow
+## PO-06 — Build and control a fixed workflow
 
-Using a validated bounded control, the learner runs two waves through one saved fixed workflow, predicts the complete effect of one rule change, proves every changed and unchanged serialized row without hand patching, and restores the baseline. Generated prose is excluded from deterministic acceptance before running.
+Using source-verification and bounded-predicate validation skills, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
 
-**Evidence:** workflow and input identities, branch/exception map, separate input dispositions, baseline and changed receipts for both waves, exact full-row comparison, unchanged rack-conflict holds, receipt hashes, and byte-equal restored runs.
+**Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
 **Owner:** Module 06
 
 ## PO-07 — Evaluate a change with variation controls

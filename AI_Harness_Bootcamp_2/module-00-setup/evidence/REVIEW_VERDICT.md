@@ -1,5 +1,7 @@
 # Module 0 verdict
 
+The 2026-08-23 verdict below is historical. Current local n8n evidence and its platform limits are recorded in [Native local n8n cutover](#native-local-n8n-cutover--2026-10-02); the earlier counts and qualification language are not current acceptance claims.
+
 **Date:** 2026-08-23
 **Standard:** `reference/REFERENCE.md` v2, SHA-256 recorded in `reference/REFERENCE.sha256`
 **Changes from v1 and what forced them:** `reference/AMENDMENTS.md`
@@ -104,3 +106,25 @@ facilitator present.**
 
 **Not accepted as working on five platforms, not accepted as a measured learner experience, and not
 accepted against Class F until three people score the prose.**
+
+## Native local n8n cutover — 2026-10-02
+
+**Active contract:** `reference/REFERENCE.md` v5, explicitly amended in `reference/AMENDMENTS.md` and re-frozen in `REFERENCE.sha256`. OMP/Python/Git/credentials/course work remain native on the PowerShell route; WSL is used only as its n8n bridge. The separate WSL course route is unchanged in that respect.
+
+The five platform guides now require the full official n8n 2.41.5 stack, approval for Docker/licensing/privileged runners, preservation of existing installs/context/data, loopback binding, a collision-checked recorded Compose project, explicit guarded lifecycle commands, local owner access and a saved-workflow restart proof. No cloud account or AI provider key is required for this n8n work.
+
+| Evidence | Exercised result |
+|---|---|
+| Complete authored command extraction and parsing | 206 Bash/PowerShell blocks; 322 Bash/zsh/PowerShell 7 parser runs; no parse failures |
+| Controlled host-shell project/lifecycle checks | 216 passing cases: fresh project record; existing file/symlink preservation; invalid/colliding names; failed inspection; nine inherited overrides both empty and nonempty; explicit project/environment/Compose arguments |
+| Native n8n stack | Apple Silicon Docker Desktop, six-service official stack, version 2.41.5, loopback editor, healthy sandbox API, successful certificate service, owner setup and saved-workflow persistence after down/up |
+| Exact authored macOS helper | `course_n8n ps --all`, `course_n8n port n8n 5678`, `course_n8n exec -T n8n n8n --version`: expected services, `127.0.0.1:5678`, `2.41.5` |
+| Remaining Module 0 oracle/adequacy | `tests/test_module_00.py`: 12 PASS, 0 FAIL; all 10 current mutations caught |
+| Integrated publication | All 27 scoped gates passed; publisher and exact-byte check passed for 32 instructional pages, 692 raw downloads and 38 UI/generated assets |
+| Browser | Every generated setup route opened at the prefixed mount in Full mode; no document-width overflow at 1440 or 390 CSS pixels; long code blocks scroll within their own boxes |
+
+Detailed host-shell and browser observations, native execution IDs and the redacted gate transcript are retained in `../../module-06-batch-workflow/evidence/native/`. Raw runtime secrets, screenshots and renderer output remain outside the checkout.
+
+The first integrated run exposed obsolete A1/A4 scans that treated `printf '%s/get-n8n.sh'` as an executed relative file and A3's blanket ban on `exit`, which rejected safe subshell refusals and the intentional WSL-to-PowerShell return. Those incidental-source tests and their mutations were removed, not re-pinned. The surviving oracle is scoped; it does not certify execution of every platform command. PowerShell argument passing, subprocess stdin and complete-file extraction mistakes in the throwaway harness were corrected before recording the successful matrices.
+
+**Limits:** PowerShell 7 parsing on macOS is not native Windows PowerShell 5.1 verification; controlled Bash/zsh checks use a Docker stub. Native Windows/WSL, Intel macOS, Ubuntu and Arch n8n startup were not observed. Direct course-page screen capture timed out; Chromium screen-media PDF and print output were successfully rendered and visually inspected instead. No new human learner-performance, assistive-technology, paid provider, or hosted-deployment result is claimed.

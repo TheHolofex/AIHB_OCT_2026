@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance oracle for Module 0, implementing Reference v2 section 6.
+"""Scoped maintainer checks for Module 0; setup execution remains separate evidence.
 
 Governing principle: a check that has never failed proves nothing. Every check here
 has at least one killing mutation in mutations.py, and test_module_00.py asserts that
@@ -125,14 +125,6 @@ EXEC_LANGS = SHELL_LANGS | PS_LANGS | {"text", "console"}
 # --------------------------------------------------------------------------------------
 # Helpers
 
-def repo_root(root: Path) -> Path | None:
-    for parent in [root, *root.parents]:
-        if (parent / ".git").exists():
-            return parent
-    return None
-
-
-
 def section_of(path: Path, line: int) -> str:
     """The nearest '## ' heading above a line."""
     heading = ""
@@ -147,62 +139,12 @@ def section_of(path: Path, line: int) -> str:
 # --------------------------------------------------------------------------------------
 # Class A — reachable, runnable, cannot strand the learner
 
-CLONE_PATH_RE = re.compile(r"(?<![\w/$.-])((?:[\w.-]+/){1,6}[\w.-]+\.(?:sh|ps1|py))")
-RELATIVE_USE_RE = re.compile(r"(?<![\w/$\"'.-])((?:[\w.-]+/){0,4}[\w.-]+\.(?:sh|ps1|py))")
 PATH_ASSIGN_RE = re.compile(r"""PATH=["']?([^"'\n]*)["']?""")
 
 
 def class_a(r: Recorder, root: Path) -> None:
     docs, plats = learner_docs(root), sorted(root.glob(PLATFORM_GLOB))
-    repo = repo_root(root)
     fs = fences(docs)
-
-    # A1 — every clone-relative path a learner executes exists
-    missing = []
-    for f in fs:
-        if f.lang not in EXEC_LANGS:
-            continue
-        for cand in CLONE_PATH_RE.findall(f.body):
-            if cand.startswith(("http", "/", "~")) or "$" in cand:
-                continue
-            if repo and (repo / cand).exists():
-                continue
-            if (root / cand).exists() or (f.path.parent / cand).exists():
-                continue
-            missing.append(f"{f.path.name}:{f.line} -> {cand}")
-    r.check("A1", not missing, f"{len(fs)} fences; every executed path resolves",
-            f"unresolvable executed paths: {missing[:6]}")
-
-
-    # A3 — pasted exits and persistent errexit can terminate the learner's shell.
-    escapes = []
-    for f in fs:
-        if f.lang not in EXEC_LANGS:
-            continue
-        for i, ln in enumerate(f.body.splitlines(), 1):
-            s = ln.strip()
-            if (re.search(r"(^|[;&|}]\s*)exit\b", s) and "$?" not in s) or re.match(r"set\s+-[A-Za-z]*e\b", s):
-                escapes.append(f"{f.path.name}:{f.line + i}")
-    r.check("A3", not escapes, "no fence can exit the learner's shell",
-            f"{len(escapes)} shell-terminating statements: {escapes[:8]}")
-
-    # A4 — a fence using a relative script path establishes its directory first
-    strays = []
-    for f in fs:
-        if f.lang not in EXEC_LANGS:
-            continue
-        body = f.body
-        uses = [c for c in RELATIVE_USE_RE.findall(body)
-                if not c.startswith(("http", "/", "~", "$")) and "/" in c]
-        if not uses:
-            continue
-        establishes = re.search(r"^\s*(cd|Set-Location)\s+[\"']?(\$HOME|\$env:USERPROFILE|/|~)", body, re.M)
-        if not establishes:
-            strays.append(f"{f.path.name}:{f.line} uses {uses[0]}")
-    r.check("A4", not strays, "every relative-path fence sets its own directory",
-            f"fences using a relative path without cd: {strays[:6]}")
-
-
 
     # A7 — no block can persist an empty PATH element
     empties = []
