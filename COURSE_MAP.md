@@ -12,7 +12,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Practice included in seat-time | 20 of 28 hours (71.4%); minimum 60% | Design arithmetic; unmeasured until pilot |
 | First checked useful artifact | Within 60 minutes | Provisional until timestamped pilot |
 | Core modules | 10, one per session | Measured structurally |
-| Variable model/tool spend | Provisional ≤US$40 per learner, enforced by a provider-side per-key ceiling; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
+| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
 | Independent-recipient session | One per learner, outside the facilitated hours | Provisional; requires recruitment and scheduling evidence |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 

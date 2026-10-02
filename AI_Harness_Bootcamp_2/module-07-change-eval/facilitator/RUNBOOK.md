@@ -50,9 +50,10 @@ Use `HOLD` when the policy changes after results, a baseline fails, a non-design
 
 ## Staff-only local campaign stop
 
-The learner command still requires the provider-side US$40 per-key ceiling. An
-explicitly authorized staff campaign may keep its existing provider limit and
-instead supply both local-stop flags:
+The learner command does not query the provider for usage. It stops after an
+attempt once the SDK cost estimates it has recorded total US$40 or more. An
+explicitly authorized staff campaign can instead supply both local-stop flags to
+add a soft stop on key usage:
 
 ```bash
 "$PY" "$M/scripts/stretch_runner.py" "$W" "$E/live-comparison" \
@@ -82,6 +83,5 @@ overshoot. The final observation can leave a complete 38-attempt comparison
 Inspect `comparison.json.local_budget` and the campaign ledger before any later
 paid operation. Aggregate key usage is not exact per-generation billing.
 
-Local mode records a null provider-ceiling prerequisite and leaves
-`provider_ceiling_verified_by_adapter` false. It does not change the provider
-limit, establish available account credit, or waive learner prerequisites.
+Local mode does not establish available account credit or waive learner
+prerequisites.

@@ -532,8 +532,6 @@ course_checkout_wsl
 
 ## Enter the key without showing it
 
-Before any live turn, confirm the OpenRouter key has a provider-side **US$40 per-key spending cap** using [the credential setup](../shared/CREDENTIALS.md). Stop if that cap is not set.
-
 Enter the key at the hidden prompt. The next command does nothing except wait for the key. Type the key at that hidden prompt and press Enter. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**

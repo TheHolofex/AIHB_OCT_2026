@@ -3284,7 +3284,7 @@
     "acceptance": "Observed proof recorded here; final offline and main-integration receipts are retained externally.",
     "branch": "feat/module02-obsidian",
     "base_commit": "d11979bad4915ae38467d937865a9d5ca649b818",
-    "integrated_main": "0bab672a12f38e3bf156c4818d3f69d973519ea9",
+    "integrated_main": "3cfb72be5ca43b4b3f3e574bf6f4a2f0a76a5f81",
     "offline": {
       "module02_criterion_groups": 8,
       "module02_mutations_killed": 8,
@@ -3319,7 +3319,7 @@
       "existing_default_omp": "18.4.9 preserved",
       "provider_model": "openrouter/anthropic/claude-sonnet-4.6",
       "credential": "Only the user-authorized ignored OPENROUTER_API_KEY assignment was parsed in a child process; the file was not executed and the value was not printed or published.",
-      "cap_exception": "User explicitly authorized the existing provider cap for this maintainer verification. No account setting changed; learner US$40 instructions are unchanged.",
+      "spending_authorization": "User explicitly authorized the paid maintainer runs; the original authorization metadata is retained. No account setting changed. Current learner instructions do not prescribe a per-key spending limit.",
       "ingest": "Shared and phase audits PASS with all forty distinct sources read. Proposal validation exit 1: KB-001 DN-037 excerpt mismatch. Three valid Drafts staged; all evidence retained; no second ingestion.",
       "cold_v1": "PASS, five executed reads, all three answers supported with valid citations; raw-source NOT_ATTEMPTED",
       "revision": "KB-003 only: distinguish three authorizations from stamp status and gate constraint, adding exact DN-040 evidence. Fresh admission/freeze passed; MOC and other Knowledge notes unchanged.",

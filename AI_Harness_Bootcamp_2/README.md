@@ -91,7 +91,7 @@ The cases are fictional. The tools you run, files you produce, checks you perfor
 
 Choose the [setup path for Windows PowerShell, Windows with WSL 2, macOS, Ubuntu, or Arch Linux](module-00-setup/README.md). You need a browser, a plain-text editor, permission to install the required tools, and GitHub read access to the private course repository. The hosted-course password is separate from repository access.
 
-Setup installs or checks Git, Python 3.12 or newer, Oh My Pi 18.3.5, local Obsidian, and local n8n 2.41.5 with its full official Docker stack. Live OMP work uses a [participant-supplied OpenRouter key with a per-key spending ceiling of US$40](module-00-setup/shared/CREDENTIALS.md) and the pinned Sonnet 4.6 model. Set that ceiling before paid work; do not save the key in course files or shell profiles.
+Setup installs or checks Git, Python 3.12 or newer, Oh My Pi 18.3.5, local Obsidian, and local n8n 2.41.5 with its full official Docker stack. Live OMP work uses a [participant-supplied OpenRouter key](module-00-setup/shared/CREDENTIALS.md) and the pinned Sonnet 4.6 model. Do not save the key in course files or shell profiles.
 
 Module 2 requires local Obsidian with community plugins restricted and Sync off. Preserve an existing installation that passes readiness; fresh installs use the reference release in your platform guide. Open the practice vault, follow its links, save a reply, observe an external change, then close and reopen it. Keep the actual GUI observation separate from the disk check and from OMP and n8n readiness. The WSL route runs Linux Obsidian through WSLg against the same Linux-home files, not a native Windows app watching a network path.
 

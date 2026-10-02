@@ -13,7 +13,7 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 1. Run the relevant setup path on the actual classroom images, including local Obsidian before Module 2 and its full local n8n path before Module 6.
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
-4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, a participant-supplied process-local `OPENROUTER_API_KEY`, and the provider-side US$40 ceiling. There is no direct-provider login, model fallback, or automatic paid retry.
+4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic paid retry.
 5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. For a formal result, identify the real decision owner, custody location, control/version and original outcome record. If missing, mark HOLD and continue only reachable practice.
 7. Exercise genuine deciding controls on passing and failing specimens before any formal use; never substitute a public practice pass or agent role-play.
@@ -44,7 +44,7 @@ Follow **Set up local Obsidian** in the learner's [platform guide](../README.md#
 
 Record actual platform, architecture, app version, date, observer, attempt location, and the GUI actions seen separately from helper output. The helper deliberately records `gui_observed: false`; never edit that field to manufacture desktop evidence. A token copied by a script, a matching disk file, or `.obsidian` presence does not prove GUI operation. Capture only credential-free practice-window evidence. Preserve every HOLD and use [Obsidian troubleshooting](../shared/TROUBLESHOOTING.md#when-local-obsidian-stops).
 
-The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes remain unobserved in this record. Do not infer their success from the Mac observation or from shell parsing. Keep the learner's process-local hidden key entry, no-secret-files procedure, and provider-side **US$40 per-key ceiling** unchanged; a maintainer credential exception grants no learner exception.
+The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes remain unobserved in this record. Do not infer their success from the Mac observation or from shell parsing. Keep the learner's process-local hidden key entry, no-secret-files procedure, fixed provider/model, and no automatic paid retries unchanged; a maintainer credential exception grants no learner exception.
 
 ## Local n8n readiness
 
