@@ -220,6 +220,45 @@
       "tests": ["tests/test_module_03.py", "tests/test_adequacy.py"]
     },
     {
+      "id": "10",
+      "directory": "module-10-typed-decisions",
+      "title": "Module 10 · Decide with typed questions",
+      "case_name": "Chalk Line",
+      "summary": "Turn a shift's pile of raw messages into typed answers that software can route; measure the answers before you trust them.",
+      "nav_summary": "Typed questions · measured confidence · code-owned routes",
+      "outcomes": {
+        "can": "Work with atomic questions that have fixed answer sets, add one of your own, run a model once as a decision function with no side effects, validate every typed answer mechanically, measure the answers against labels you wrote first, and set the gates so that code and a named person, not the model, decide what acts.",
+        "will": [
+                "Build the state the model sees, read a question set whose every answer is a probability, a listed option, or a level, and add one question that isolates a judgment the set does not cover.",
+                "Label ten messages before the run, freeze them, and measure where the model's typed answers and its declared confidence held up.",
+                "Set routing gates from the measurement, route forty messages in code, and decide the queue that only a person may decide."
+        ]
+      },
+      "pages": [
+        {"source": "README.md", "dest": "README.html", "kind": "overview"},
+        {"source": "shared/MODULE_10_LAB.md", "dest": "shared/MODULE_10_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-you-stop", "class-only-boundary"], "optional_sections": ["stretch-measure-stability-across-a-second-run"]}}
+      ],
+      "figures": [
+        {"source": "shared/figures/m10-function-not-chat.svg", "dest": "shared/figures/m10-function-not-chat.svg"},
+        {"source": "shared/figures/m10-measure-before-trust.svg", "dest": "shared/figures/m10-measure-before-trust.svg"},
+        {"source": "shared/figures/m10-declared-vs-measured.svg", "dest": "shared/figures/m10-declared-vs-measured.svg"},
+        {"source": "shared/figures/m10-routes.svg", "dest": "shared/figures/m10-routes.svg"}
+      ],
+      "scripts": [
+        {"source": "scripts/chalk.py", "dest": "scripts/chalk.py"},
+        {"source": "scripts/build_state.py", "dest": "scripts/build_state.py"},
+        {"source": "scripts/label_template.py", "dest": "scripts/label_template.py"},
+        {"source": "scripts/freeze_labels.py", "dest": "scripts/freeze_labels.py"},
+        {"source": "scripts/validate_answers.py", "dest": "scripts/validate_answers.py"},
+        {"source": "scripts/compare_labels.py", "dest": "scripts/compare_labels.py"},
+        {"source": "scripts/route.py", "dest": "scripts/route.py"},
+        {"source": "scripts/compare_runs.py", "dest": "scripts/compare_runs.py"}
+      ],
+      "download_dirs": ["shared/case", "shared/controls", "shared/prompts"],
+      "verifier_download": "shared/verify/verify_decisions.py",
+      "tests": ["tests/test_module_10.py", "tests/test_adequacy.py"]
+    },
+    {
       "id": "04",
       "directory": "module-04-diagnose-review",
       "title": "Module 4 · Diagnose and recover",

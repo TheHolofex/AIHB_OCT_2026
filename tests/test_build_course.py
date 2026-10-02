@@ -143,7 +143,7 @@ class PublicationBehavior(unittest.TestCase):
             (self.root / "ui" / name).write_text(content, encoding="utf-8")
             self.course["ui_assets"].append({"source": f"ui/{name}", "dest": f"assets/{name}"})
         links = []
-        for i in range(10):
+        for i in range(11):
             directory = f"module-{i:02d}-example"
             module = boot / directory
             (module / "shared/case").mkdir(parents=True)
@@ -217,7 +217,7 @@ class PublicationBehavior(unittest.TestCase):
         self.assertEqual(next(node.text() for node in overview.walk() if node.attrs.get("class") == "rf-outcomes-can"), "Inspect a supplied source before deciding what it supports.")
         self.assertEqual(next(node for node in overview.walk() if "data-module-progress" in node.attrs).attrs["data-step-total"], "2")
         home = builder.parse_html((self.root / "site/index.html").read_text())
-        self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 10)
+        self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 11)
         for bad in ({"can": "Keep PO03_RESULT.", "will": ["a", "b"]}, {"can": "Fine.", "will": ["only one"]}, {"can": "", "will": ["a", "b"]}, {"can": "Fine.", "will": ["Carry VERIFY:CASE forward.", "b"]}):
             self.course["modules"][0]["outcomes"] = bad
             self.save_manifest()

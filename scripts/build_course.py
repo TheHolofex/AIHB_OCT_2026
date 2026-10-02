@@ -137,8 +137,8 @@ def source_path(base: Path, rel: str) -> Path:
 def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, PurePosixPath], set[Path]]:
     course = json.loads((root / "course.json").read_text(encoding="utf-8"))
     modules = course.get("modules", [])
-    if [module.get("id") for module in modules] != [f"{i:02d}" for i in range(10)]:
-        raise ValueError("manifest must enumerate exactly ten modules in order, 00–09")
+    if sorted(module.get("id") for module in modules) != [f"{i:02d}" for i in range(11)]:
+        raise ValueError("manifest must enumerate exactly the eleven modules 00–10, each once, in teaching order")
     if course.get("schema_version") != 1 or course.get("site_dir") != "site" or course.get("course_id") != "AI_Harness_Bootcamp_2":
         raise ValueError("unsupported course manifest identity")
     boot = root / safe_relative(course["source_root"])
@@ -896,10 +896,12 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
                 actions.append(Node("a", {"href": "#" + stretch.attrs["id"], "class": "sc-btn rf-btn sc-btn--secondary"}, ["Optional stretch"]))
             if kind == "setup":
                 next_href, next_label = _relative(dest, routes["lab"]), "Open the lab"
-            elif module_id == "09":
-                next_href, next_label = home + "#choose-your-assignment", "Course map"
             else:
-                next_href, next_label = _relative(dest, common["modules"][int(module_id) + 1]["overview"]), "Next assignment"
+                position = next(index for index, item in enumerate(common["modules"]) if item["id"] == module_id)
+                if position + 1 < len(common["modules"]):
+                    next_href, next_label = _relative(dest, common["modules"][position + 1]["overview"]), "Next assignment"
+                else:
+                    next_href, next_label = home + "#choose-your-assignment", "Course map"
             actions.append(Node("a", {"href": next_href, "class": "sc-btn rf-btn sc-btn--secondary"}, [next_label]))
             last.children[-1].children.append(Node("nav", {"class": "rf-end-actions", "aria-label": "Continue reading"}, actions))
         back = f'<p class="rf-back-to-lab"><a class="sc-btn rf-btn sc-btn--secondary" href="{_relative(dest, routes["lab"])}">Back to lab</a></p>' if kind == "reference" else ""

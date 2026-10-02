@@ -16,9 +16,9 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
+The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
-The core runs as **four teaching days, Monday through Thursday: 28 facilitated hours, including 20 practice hours**. Monday through Wednesday hold seven three-hour blocks; Thursday holds three blocks totaling seven facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
+The core runs as **four teaching days, Monday through Thursday: 30.5 facilitated hours, including 22 practice hours**. Monday through Wednesday hold seven three-hour blocks and one 150-minute block; Thursday holds three blocks totaling seven facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
 
 ## Target sequence
 
@@ -28,6 +28,7 @@ The core runs as **four teaching days, Monday through Thursday: 28 facilitated h
 | 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
 | 02 | Control context and reusable instructions | Place information and rules where loading, precedence, survival, and bypass are observable. |
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
+| 10 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
 | 04 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
 | 05 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
 | 06 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
@@ -91,7 +92,7 @@ Appearance, reading mode, shell choice, explicitly selected reading positions, a
 
 Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. The only provider credential is `OPENROUTER_API_KEY`, supplied to the current process. Every live exercise selects **`openrouter/anthropic/claude-sonnet-4.6`** through `shared/run_omp.py`. The launcher creates fresh runtime state, exposes only course tools, disables retries and model fallback, and preserves evidence separately from work. The guard is an OMP tool boundary, not an operating-system sandbox.
 
-Modules 02–09 use `shared/prepare_work.py`; Module 01 retains its nine-source starter and Module 00 retains its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
+Modules 02–10 use `shared/prepare_work.py`; Module 01 retains its nine-source starter and Module 00 retains its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
 Module 6 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-06-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
 

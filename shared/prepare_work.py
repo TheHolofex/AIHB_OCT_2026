@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create an external, non-overwriting Module 02–09 exercise work folder."""
+"""Create an external, non-overwriting Module 02–10 exercise work folder."""
 from __future__ import annotations
 
 import argparse
@@ -16,12 +16,13 @@ SHARED = {
     "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "04": ("case",),
     "05": ("controls", "corpus", "checks"), "06": ("batch", "controls"),
     "07": ("cases", "controls", "baseline"), "08": ("case", "controls"),
-    "09": ("case", "controls", "baseline"),
+    "09": ("case", "controls", "baseline"), "10": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
     "02": (), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
     "06": (), "07": ("evaluate_pairs.py", "restore_baseline.py"),
     "08": (), "09": ("run_close.py", "check_package.py"),
+    "10": ("chalk.py", "build_state.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_06_DOWNLOADS = (
     "shared/batch/wave1.csv",
@@ -61,7 +62,7 @@ def prepare_module_03(stage: Path, dest: Path) -> None:
 
 def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path:
     if module_id not in SHARED:
-        raise ValueError("module-id must be exactly two digits, 02–09")
+        raise ValueError("module-id must be exactly two digits, 02–10")
     requested = destination.expanduser().absolute()
     if requested.exists() or requested.is_symlink():
         raise FileExistsError(f"destination already exists: {requested}")

@@ -37,8 +37,8 @@ def check() -> None:
         raise ValueError("historical source-access evidence is incomplete")
 
     modules = sorted((ROOT / "modules/core").glob("[0-9][0-9]-*.md"))
-    if [path.name[:2] for path in modules] != [f"{i:02d}" for i in range(10)]:
-        raise ValueError("the supply graph must contain exactly Modules 00–09")
+    if [path.name[:2] for path in modules] != [f"{i:02d}" for i in range(11)]:
+        raise ValueError("the supply graph must contain exactly Modules 00–10")
     course_map = (ROOT / "COURSE_MAP.md").read_text(encoding="utf-8")
     rows = {}
     for line in course_map.splitlines():
@@ -47,7 +47,7 @@ def check() -> None:
             if cells[0] in rows:
                 raise ValueError(f"duplicate module in course map: {cells[0]}")
             rows[cells[0]] = (re.findall(r"`([^`]+)`", cells[3]), re.findall(r"`([^`]+)`", cells[4]))
-    if set(rows) != {f"{i:02d}" for i in range(10)}:
+    if set(rows) != {f"{i:02d}" for i in range(11)}:
         raise ValueError("course map is missing a module supply contract")
     produced: set[str] = set()
     consumed: set[str] = set()
@@ -82,7 +82,7 @@ def main() -> int:
     except (OSError, ValueError) as error:
         print(f"HOLD: {error}", file=sys.stderr)
         return 1
-    print("PASS: frozen research identity and ten-module supply graph")
+    print("PASS: frozen research identity and eleven-module supply graph")
     print("MANUAL: capability progression, responsible decisions, peer review, human transfer, and timing require separate evidence")
     return 0
 

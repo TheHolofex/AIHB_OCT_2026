@@ -31,4 +31,4 @@ System, then owner:
 - A module gate does not consume another module’s product.
 - Learner-facing files never contain `246 kg`, `1,404 kg`, or `3 minutes late`, except Module 01 staff, reference, and calculator paths already allowed to carry those tokens.
 - No module teaches cyber mission-thread defense or real dispatch.
-- New packets follow [MISSION_THREAD_SCENARIOS.md](MISSION_THREAD_SCENARIOS.md). Replacement specs for Modules 02–09 are adopted in the shipped labs; retired thin-adapter inputs are not active work.
+- New packets follow [MISSION_THREAD_SCENARIOS.md](MISSION_THREAD_SCENARIOS.md). Replacement specs for Modules 02–10 are adopted in the shipped labs; retired thin-adapter inputs are not active work.

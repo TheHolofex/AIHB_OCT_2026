@@ -8,44 +8,63 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 
 | Budget | Standard | Evidence status |
 |---|---:|---|
-| Facilitated seat-time **including practice** | 28 hours across four teaching days; bound 24–35 | Design arithmetic; unmeasured until pilot |
-| Practice included in seat-time | 20 of 28 hours (71.4%); minimum 60% | Design arithmetic; unmeasured until pilot |
+| Facilitated seat-time **including practice** | 30.5 hours across four teaching days; bound 24–35 | Design arithmetic; unmeasured until pilot |
+| Practice included in seat-time | 22 of 30.5 hours (72.1%); minimum 60% | Design arithmetic; unmeasured until pilot |
 | First checked useful artifact | Within 60 minutes | Provisional until timestamped pilot |
-| Core modules | 10, one per session | Measured structurally |
+| Core modules | 11, one per session | Measured structurally |
 | Variable model/tool spend | Provisional ≤US$40 per learner, enforced by a provider-side per-key ceiling; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
 | Independent-recipient session | One per learner, outside the facilitated hours | Provisional; requires recruitment and scheduling evidence |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
 No unmeasured budget is reported as achieved. Delivery may vary support and extra optional practice; it may not hide required work outside seat-time or weaken a technical check.
 
-The 28 facilitated hours exclude meals and breaks, setup, optional stretches, and the separately scheduled independent-recipient session.
+The 30.5 facilitated hours exclude meals and breaks, setup, optional stretches, and the separately scheduled independent-recipient session.
 
 ## Schedule and independence
 
-Ten facilitated module blocks run across four teaching days, Monday–Thursday: seven three-hour blocks on Monday–Wednesday and three blocks totaling seven facilitated hours on Thursday. Every module keeps two hours of practice.
+Eleven facilitated module blocks run across four teaching days, Monday–Thursday: seven three-hour blocks and one 150-minute block on Monday–Wednesday, and three blocks totaling seven facilitated hours on Thursday. Every module keeps two hours of practice.
 
 | Day | Modules, in order | Facilitated minutes | Practice minutes |
 |---|---|---:|---:|
 | Monday | 00 North Shelf; 01 Cold Lantern | 360 | 240 |
-| Tuesday | 02 Ledger Pike; 03 Kiln Hold | 360 | 240 |
+| Tuesday | 02 Ledger Pike; 03 Kiln Hold; 10 Chalk Line | 510 | 360 |
 | Wednesday | 04 Copper Span; 05 Blue Gauge; 06 White Rack | 540 | 360 |
 | Thursday | 07 Slope Brief; 08 Night Desk; 09 Last Count | 420 | 360 |
-| Total | Ten independent modules | 1,680 / 28 hours | 1,200 / 20 hours |
+| Total | Eleven independent modules | 1,830 / 30.5 hours | 1,320 / 22 hours |
 
-Modules 00–06 are 180 facilitated minutes each. Thursday allocates **07: 135**, **08: 135**, and **09: 150** minutes. Every module retains **120 practice minutes**.
+Modules 00–06 are 180 facilitated minutes each. Tuesday's third block allocates **10: 150** minutes, and Thursday allocates **07: 135**, **08: 135**, and **09: 150** minutes. Every module retains **120 practice minutes**.
 
 | Session | Day | Module |
 |---:|---|---|
 | 1 | Monday AM | 00 Select, screen, and direct bounded work |
 | 2 | Monday PM | 01 Verify sources and outputs |
-| 3 | Tuesday AM | 02 Control context and reusable instructions |
-| 4 | Tuesday PM | 03 Operate MCP tools under limited authority |
-| 5 | Wednesday · Block 1 | 04 Diagnose and recover |
-| 6 | Wednesday · Block 2 | 05 Improve from observed failures |
-| 7 | Wednesday · Block 3 | 06 Build and control a fixed workflow through change |
-| 8 | Thursday · Block 1 | 07 Evaluate a change with variation controls |
-| 9 | Thursday · Block 2 | 08 Constrain agent behavior |
-| 10 | Thursday · Block 3 | 09 Transfer a runnable package |
+| 3 | Tuesday · Block 1 | 02 Control context and reusable instructions |
+| 4 | Tuesday · Block 2 | 03 Operate MCP tools under limited authority |
+| 5 | Tuesday · Block 3 | 10 Decide with typed questions |
+| 6 | Wednesday · Block 1 | 04 Diagnose and recover |
+| 7 | Wednesday · Block 2 | 05 Improve from observed failures |
+| 8 | Wednesday · Block 3 | 06 Build and control a fixed workflow through change |
+| 9 | Thursday · Block 1 | 07 Evaluate a change with variation controls |
+| 10 | Thursday · Block 2 | 08 Constrain agent behavior |
+| 11 | Thursday · Block 3 | 09 Transfer a runnable package |
+
+### Tuesday timetable
+
+| Clock time | Work |
+|---|---|
+| 08:00–09:20 | Ledger Pike, first 80 facilitated minutes |
+| 09:20–09:30 | Break |
+| 09:30–11:10 | Ledger Pike, remaining 100 facilitated minutes |
+| 11:10–11:50 | Lunch |
+| 11:50–13:05 | Kiln Hold, first 75 facilitated minutes |
+| 13:05–13:15 | Break |
+| 13:15–15:00 | Kiln Hold, remaining 105 facilitated minutes |
+| 15:00–15:20 | Meal break |
+| 15:20–16:40 | Chalk Line, first 80 facilitated minutes |
+| 16:40–16:50 | Break |
+| 16:50–18:00 | Chalk Line, remaining 70 facilitated minutes |
+
+Tuesday is 510 facilitated minutes plus 90 minutes of meals and breaks, 08:00–18:00 local time. The Ledger Pike break follows the screen runs, the Kiln Hold break follows the bounded probe, and the Chalk Line break follows the printed comparison and precedes adjudication.
 
 ### Wednesday timetable
 
@@ -88,9 +107,9 @@ Adapters share [CASE_FAMILY.md](CASE_FAMILY.md); every module still receives its
 | Stage | Meaning | Sessions |
 |---|---|---|
 | **Guided** | Use and challenge a supplied bounded method. | Opening of session 1 |
-| **Independent** | Author task-specific direction, evidence, and decisions. | 1–4 |
-| **Adversarial** | Preserve standards under changed, misleading, malformed, over-authorized, hidden, or variable conditions. | 5–9 |
-| **Transferred** | Operate from saved artifacts and enable another person to use the package. | 10 |
+| **Independent** | Author task-specific direction, evidence, and decisions. | 1–5 |
+| **Adversarial** | Preserve standards under changed, misleading, malformed, over-authorized, hidden, or variable conditions. | 6–10 |
+| **Transferred** | Operate from saved artifacts and enable another person to use the package. | 11 |
 
 File presence cannot establish observed performance. An authored practice output is not a live-model receipt. A technical replay can establish observed software behavior; it cannot establish a real classmate's independent reading or recipient performance.
 
@@ -102,6 +121,7 @@ File presence cannot establish observed performance. An authored practice output
 | 01 | Verify sources and outputs | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SOURCE_FIXTURES` | `SOURCE_EVIDENCE`; `DISCERNMENT_RESULT`; `STANDING_RULE`; `PO01_RESULT` | **research/source** work | Known-answer, source-trace, misleading-source, changed-source, and real-use checks support internal accept/revise/reject/hold |
 | 02 | Control context and reusable instructions | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `RELOAD_RESULT`; `PO02_RESULT` | Reusable instruction and guard | Loading, precedence, reset survival, and bypass are independently evidenced |
 | 03 | Operate MCP tools under limited authority | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:MCP_SERVER` | `MCP_CONNECTION`; `HANDLING_REGISTER`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Read a server's contract, connect it with declared limits and prove them with a probe, check an AI's handling classifications against stated rules, and disconnect with proof |
+| 10 | Decide with typed questions | 2h 30m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:QUESTION_SET`; `VERIFY:DECISION_CONTROLS` | `TYPED_ANSWERS`; `LABEL_AGREEMENT`; `CONFIDENCE_GATES`; `ROUTED_REQUIREMENT`; `PO10_RESULT` | Typed question set and code-owned router | Labels frozen before a read-only run; every typed answer validated against the question set; agreement and declared confidence measured on the sample; gates set from the measurement; routes and requirement recomputable from answers and gates; queues and the authority change decided by a person |
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 05 | Improve from observed failures | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO05_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
 | 06 | Build and control a fixed workflow through change | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO06_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |

@@ -32,6 +32,13 @@ Using verified sources and a placed guard, the learner connects a supplied MCP s
 **Evidence:** the server's contract inspection with the learner's reading of it; a declared authority that matches the server's arguments; a probe of the unbounded connection that breaches and probes of each bounded phase that hold; six frozen calibration decisions and a forty-note handling register that sets the AI's proposals beside the final decisions; a partner extract that cites only cleared notes; a revoked run that was offered no tool; and the verifier's joined result.  
 **Owner:** Module 03
 
+## PO-10 — Decide with typed questions
+
+Using bounded direction, source verification, a saved instruction, and the rule-based judgment practiced with an assistant's proposals, the learner works with atomic typed questions with fixed answer sets, states which judgment each isolates and adds one of their own, runs a general model once as a read-only decision function, validates every typed answer mechanically, measures the answers and their declared confidence against labels written and frozen before the run, sets routing gates from that measurement, routes a pile in code, and hands a person the decisions that only a person may make. Labels frozen before the run are this module's method; later modules assume it.
+
+**Evidence:** the supplied question set with the learner's added question and the judgment each question isolates; labels digest frozen before the run and bound to the run's input snapshot; a read-only receipt that read the state and the questions; validated typed answers or a preserved held reply; agreement table with adjudicated disagreements and the highest declared confidence among wrong answers; gate settings tied to that measurement; routing table and requirement line recomputable from the answers and gates; queue decisions and the authority change recorded as the desk lead's; and the stated limit that declared confidence is the model's claim.  
+**Owner:** Module 10
+
 ## PO-04 — Diagnose and recover
 
 The learner preserves a material hidden failure, identifies the last passing and first failing boundary, runs a discriminating probe, makes one authorized reversible correction or verified revert, and proves recovery without weakening acceptance.
@@ -41,7 +48,7 @@ The learner preserves a material hidden failure, identifies the last passing and
 
 ## PO-05 — Improve from observed failures
 
-Using preserved failures and source distinctions, the learner freezes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
+Using preserved failures, source distinctions, and the freeze-before-outcome discipline, the learner fixes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
 
 **Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
 **Owner:** Module 05
@@ -55,7 +62,7 @@ Using source-verification and bounded-predicate validation skills, the learner c
 
 ## PO-07 — Evaluate a change with variation controls
 
-Using exact workflow comparisons, the learner freezes cases, configurations and hard gates before outcomes, evaluates authored paired practice outputs without averaging away a violation, and verifies baseline restoration. A live instruction comparison controls the provider, model, sources, form, prompt and permissions while preserving run-to-run variation.
+Using exact workflow comparisons and the freeze-before-outcome discipline, the learner fixes cases, configurations and hard gates before outcomes, evaluates authored paired practice outputs without averaging away a violation, and verifies baseline restoration. A live instruction comparison controls the provider, model, sources, form, prompt and permissions while preserving run-to-run variation.
 
 **Evidence:** pre-result policy, all paired case results, separate format/mass/time-zone gates, failed-case repair proxy, bounded recommendation and restored-baseline identities. Live stretch evidence retains every preregistered repeat, paired disagreement, observed latency and costs, with SDK estimates separated from provider billing.
 **Owner:** Module 07

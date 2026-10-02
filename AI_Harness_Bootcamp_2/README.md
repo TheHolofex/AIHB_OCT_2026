@@ -23,16 +23,34 @@ A fluent answer is not enough. Compare the actual output with the request and so
 
 ## Four-day schedule
 
-The course runs Monday through Thursday: 28 facilitated hours, which is the time you spend in sessions with an instructor, and 20 of those hours are hands-on practice at your own keyboard. Monday and Tuesday each hold two three-hour assignments. Wednesday holds three three-hour assignments. Thursday holds three assignments that take seven hours together.
+The course runs Monday through Thursday: 30½ facilitated hours, which is the time you spend in sessions with an instructor, and 22 of those hours are hands-on practice at your own keyboard. Monday holds two three-hour assignments. Tuesday holds two three-hour assignments and a third of 2½ hours. Wednesday holds three three-hour assignments. Thursday holds three assignments that take seven hours together.
 
 | Day | Assignments, in order | Facilitated time | Practice included |
 |---|---|---:|---:|
 | Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours | 4 hours |
-| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md) | 6 hours | 4 hours |
+| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [10 Chalk Line](module-10-typed-decisions/README.md) | 8½ hours | 6 hours |
 | Wednesday | [04 Copper Span](module-04-diagnose-review/README.md), then [05 Blue Gauge](module-05-run-corpus/README.md), then [06 White Rack](module-06-batch-workflow/README.md) | 9 hours | 6 hours |
 | Thursday | [07 Slope Brief](module-07-change-eval/README.md), then [08 Night Desk](module-08-agent-safeguards/README.md), then [09 Last Count](module-09-capstone/README.md) | 7 hours | 6 hours |
 
-Every assignment includes two hours of practice. Thursday's three assignments take 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
+Every assignment includes two hours of practice. Tuesday's third assignment takes 2 hours 30 minutes. Thursday's three assignments take 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
+
+### Tuesday timetable
+
+Tuesday starts at 08:00 and ends at 18:00 local time. Facilitated work adds up to 510 minutes; breaks and meals add another 90.
+
+| Clock time | Work |
+|---|---|
+| 08:00–09:20 | Ledger Pike, first 80 facilitated minutes |
+| 09:20–09:30 | Break |
+| 09:30–11:10 | Ledger Pike, remaining 100 facilitated minutes |
+| 11:10–11:50 | Lunch |
+| 11:50–13:05 | Kiln Hold, first 75 facilitated minutes |
+| 13:05–13:15 | Break |
+| 13:15–15:00 | Kiln Hold, remaining 105 facilitated minutes |
+| 15:00–15:20 | Meal break |
+| 15:20–16:40 | Chalk Line, first 80 facilitated minutes |
+| 16:40–16:50 | Break |
+| 16:50–18:00 | Chalk Line, remaining 70 facilitated minutes |
 
 ### Wednesday timetable
 
@@ -66,7 +84,7 @@ Thursday starts at 08:00 and ends at 16:00 local time. Facilitated work adds up 
 | 12:50–13:30 | Lunch |
 | 13:30–16:00 | Last Count, 150 facilitated minutes |
 
-Treat each break as a stopping point. Inside an assignment, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
+Treat each break as a stopping point. Inside an assignment, the Ledger Pike break comes after the screen runs, the Kiln Hold break comes after the bounded probe, the Chalk Line break comes after the comparison has been printed and before you adjudicate it, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
 
 **Last Count's handoff happens outside these hours.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
 
@@ -74,7 +92,7 @@ Treat each break as a stopping point. Inside an assignment, the Copper Span brea
 
 ## Choose your assignment
 
-Start with setup, then work through assignments 00–09. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
+Start with setup, then work through the assignments in the order shown, which is the teaching order; each number is that assignment's permanent ID. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
 
 <div data-course-map></div>
 

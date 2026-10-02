@@ -2154,6 +2154,47 @@
         },
         "notes": "Records preserve exact command/argv, cwd, exits, stdout/stderr, elapsed seconds and page/block/command hashes when captured. Older rows use step/command/elapsed_seconds. Referenced state files preserve shell variables. No missing timestamp or input-before hash is invented."
       }
+    },
+    {
+      "id": "10",
+      "case": "Chalk Line",
+      "evidence_run_id": "20261002-module10-build",
+      "observation_scope": "Module added 2026-10-02. Deterministic oracle (12 criteria), adequacy (30 mutations killed), publication, launcher, and guard tests pass. One whole-lab run on the pinned Oh My Pi 18.3.5 binary with a scripted local provider on macOS arm64 produced real launcher receipts that the validator, comparison, router, and verifier accepted. No live-provider run, no human run, no run on another platform.",
+      "lanes": {
+        "core": {
+          "status": "passed",
+          "scope": "Technical: scripted-provider whole-lab run with real receipts; read-only profile, instruction receipt, two course_read executions, 280 validated answers, two routing attempts, verifier PASS. No human award."
+        },
+        "stretch": {
+          "status": "not_measured",
+          "scope": "Second-run stability compare exercised only in unit tests on two synthetic answer sets."
+        },
+        "live_provider": {
+          "status": "blocked",
+          "reason": "No OPENROUTER_API_KEY and no pinned 18.3.5 binary on PATH in the build environment; the launcher's provider call was not made."
+        },
+        "platform": {
+          "status": "blocked",
+          "observed": "Darwin arm64 native Bash/zsh.",
+          "missing": "PowerShell on any platform, native Windows, WSL, Ubuntu and Arch execution."
+        },
+        "accessibility": {
+          "status": "passed",
+          "scope": "Browser structural checks only: desktop 1440, 390px mobile, stepper, shell pairs, figures, next-assignment links. Not screen-reader usability or novice timing."
+        },
+        "peer_review": {
+          "status": "blocked",
+          "reason": "No real classmate supplied."
+        },
+        "human_qualification": {
+          "status": "blocked",
+          "reason": "No eligible human run of the lab; the 150-minute allocation is a design target."
+        }
+      },
+      "observed": [
+        "Scripted provider replied with the staff key plus two deliberate quantity errors at declared confidence 0.86 and 0.9; compare_labels reported both with those values; a gate at 0.91 sent all eight picks to REVIEW and the verifier accepted the second routing attempt.",
+        "A mislabeled sample entry (CL-026) surfaced as a disagreement where the model was right; the frozen label stayed and the verifier passed."
+      ]
     }
   ],
   "execution_records": {

@@ -51,6 +51,7 @@ For each mastery claim, complete “Before this project, the learner could ___. 
 | Variation-aware candidate comparison and rollback | 07 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 08 |
 | Restartability and person-to-person transfer | 09 |
+| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 10 |
 
 ## Responsibility before release
 
@@ -125,7 +126,7 @@ Keep all core/context bodies visible in static HTML. Guided controls, search, co
 Publication uses the existing environment from the repository root: `.venv/bin/python scripts/build_course.py`, then `.venv/bin/python scripts/check_course.py`, then `.venv/bin/python scripts/build_course.py --check`. The gate makes no paid model calls. Compare existing URLs, fragments, command bytes, labeled conditions, the class-only footer, and download/figure bytes when changing the reader. Exercise the actual HTML at root and prefixed mounts; keep visual, keyboard, clipboard, print, and fallback evidence outside the checkout. Do not put browser observations in the live-exercise ledger.
 
 
-Use `shared/prepare_work.py` for Modules 02–09, Module 01’s starter for its fixed source boundary, and Module 00’s four-file case copy. Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
+Use `shared/prepare_work.py` for Modules 02–10, Module 01’s starter for its fixed source boundary, and Module 00’s four-file case copy. Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
 
 Use the pinned shared OMP launcher rather than direct vendor logins or alternate harness branches. Require Git, Python 3.12+, Oh My Pi 18.3.5, a browser, and a text editor. The exact model is `openrouter/anthropic/claude-sonnet-4.6`; the only participant credential is `OPENROUTER_API_KEY`. Node is a maintainer-only figure prerequisite. Module 03 also uses the free Obsidian desktop application to open its supplied vault; it needs no account, Sync, or community plugin, and the module states the requirement itself. Keep hashing, arithmetic, predicates, routing, and comparisons deterministic.
 

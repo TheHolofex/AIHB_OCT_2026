@@ -30,8 +30,8 @@ def main() -> int:
     try:
         course = json.loads((ROOT / "course.json").read_text(encoding="utf-8"))
         modules = course["modules"]
-        if [module["id"] for module in modules] != [f"{i:02d}" for i in range(10)]:
-            raise ValueError("manifest must enumerate all ten module IDs in order")
+        if sorted(module["id"] for module in modules) != [f"{i:02d}" for i in range(11)]:
+            raise ValueError("manifest must enumerate all eleven module IDs, each once")
         commands: list[tuple[list[str], Path]] = []
         for module in modules:
             directory = (ROOT / "AI_Harness_Bootcamp_2" / module["directory"]).resolve()
