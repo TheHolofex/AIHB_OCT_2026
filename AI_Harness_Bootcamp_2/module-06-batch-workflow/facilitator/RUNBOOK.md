@@ -4,13 +4,40 @@ Help learners build a repeatable routing graph, predict one saved policy change,
 
 ## Prepare the room
 
-Allow three hours, including two hours of practice. Treat this as a planning allowance, not a measured completion claim. Reserve the remaining time for prerequisite recovery, a short visual demonstration, and discussion of observed results. If construction takes longer, preserve the current state and continue later; do not replace the learner's graph with a completed router export to meet the clock.
+Allow three hours on Thursday, including two hours of practice; the Thursday delivery route below allocates the minutes. Treat this as a planning allowance, not a measured completion claim. The remaining hour covers prerequisite recovery, short visual demonstrations, and discussion of observed results. If construction takes longer than its window, preserve the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule; do not replace the learner's graph with a completed router export to meet the clock.
 
 Confirm each learner has completed the local n8n setup: version 2.41.5, the approved full official six-service stack, localhost-only browser access, and the platform-specific readiness observations. Keep Assistant off and workflows unpublished. Do not treat an OMP pass as n8n readiness. Resolve blocked setup using the existing setup guide, without substituting a cloud instance, production webhook, shell router, or container host-path upload.
 
 Have the unchanged wave CSVs, supplied validate-batch.js, and receipt-checker.json available through the lab downloads. Learners need an ordinary text editor and browser uploads/downloads. Earlier source inspection, bounded-control validation, prediction, and evidence habits are prerequisites; recover a missing prerequisite directly where needed.
 
 Before facilitating, complete the published click-by-click path on a separate staff attempt. Build the router from blank, run both waves, check their baseline byte identity, compare each changed wave against its own frozen prediction, export both policy conditions, verify the preserved baseline digest, restore into a new blank workflow, and obtain both restored exact reports. Check the revised-wave practice separately if using it. Preserve actual outcomes; don't describe an unrun path as verified. Keep completed router exports and row-level answer sets out of learner downloads and demonstrations before prediction.
+
+## Thursday delivery route
+
+Module 6 is the first Thursday block: 180 facilitated minutes, with 60 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The first Thursday break falls at minute 100, after initial graph construction. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+
+Before Thursday, confirm the prerequisites this module already requires: local n8n readiness (version 2.41.5 on the approved full official stack, editor on localhost, a saved workflow that survives a stop and start) and the supplied wave CSVs, `validate-batch.js`, and `receipt-checker.json` from the lab downloads. This verifies existing prerequisites. It adds no homework.
+
+| Elapsed minutes | Mode | Action and result |
+|---|---|---|
+| 0–15 | Facilitation | Case-specific boundary, readiness confirmation, and the new graph-composition capability. Remind learners of their source, predicate, and recovery skills rather than reteaching them. |
+| 15–35 | Practice | Learners inspect both 80-row waves and freeze two source-derived predictions before any router execution. |
+| 35–55 | Facilitation | Demonstrate native-node wiring, Fixed versus Expression, preserved source fields, and independent checker use, without giving a completed router or a predicted answer set. |
+| 55–100 | Practice | Learners build and save the native router from a blank canvas. |
+| 100–110 | Facilitation | Inspect branch precedence, complete record accounting, and the original-export and pre-edit digest sequence. |
+| 110–130 | Practice | Learners preserve the original export and its separate initial identity report, run both baselines and their exact comparison, and inspect the source-supported routing. |
+| 130–145 | Practice | Learners make the one saved policy edit, run both waves, save the changed export, and obtain both complete predicted-change reports. |
+| 145–165 | Practice | Learners recheck the original digest, import it into a new blank workflow, rerun both waves, and obtain both restored exact reports. |
+| 165–180 | Facilitation | Inspect the observed results, explain any `HOLD` and its recovery need, and establish the retained operating record. |
+
+The rows total 60 facilitation minutes and 120 practice minutes.
+
+Every native-n8n requirement in this runbook stays in force. The 13-node learner-built graph, the two 80-row waves, six receipts, five receipt-comparison reports, the original and changed exports, and the separately recorded pre-edit digest with its later matched recheck are all mandatory. Do not substitute a completed router, a one-wave shortcut, a manual output patch, or a manual reversal of the visible value as a restore. The optional revised-wave practice stays in the lab, unscheduled; claim it only if it was run.
+
+Hold the clock without cutting the work:
+
+- Save time by shortening repeated plenaries, using the lab's existing prerequisite reminders, and coaching while learners build and operate. Do not remove a lab explanation or supply a completed router, changed IDs, counts, or a prediction table to meet the clock.
+- If a learner cannot finish a required operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move normal required practice into homework, or label an incomplete technical claim complete.
 
 ## Facilitate construction and prediction
 

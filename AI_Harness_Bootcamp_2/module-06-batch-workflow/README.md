@@ -2,7 +2,7 @@
 
 Build a local visual n8n workflow for White Rack's fictional refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict the effect of one saved policy change across two batches of 80 lots. Compare all changed and unchanged receipt rows, then restore the preserved workflow into a new blank canvas and reproduce both original files exactly.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for 3 facilitated hours on Thursday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
 
 ## Before you begin
 
