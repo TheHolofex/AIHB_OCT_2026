@@ -18,11 +18,19 @@ The learner completes research from bounded sources, verifies a material claim a
 **Evidence:** research/source artifact, known-answer and source-trace results, misleading/irrelevant-source result, changed-source result, standing rule, and independent verdict.  
 **Owner:** Module 01
 
-## PO-02 — Control context and reusable instructions
+## PO-02 — Build and control a reusable second brain
 
-Using source verification and bounded direction, the learner maps the model's context and permissions, proves that a saved instruction loaded and survived a completely fresh session, and distinguishes instruction precedence from a file screen's enforcement and remaining bypass.
+**Mastery:** Using verified sources and bounded direction, construct a small source-traceable knowledge vault, load its governing instruction explicitly, and demonstrate useful retrieval from that knowledge in a fresh session without the source-processing chat or raw packet.
 
-**Evidence:** resolved-context map; system-prompt inspection receipt with raw-file and normalized-text hashes; factual extraction without release authority; clean/hostile screen results; two fresh-session receipts; negative missing-rule attempt; and named manual-paste limitation.
+**Enabling objectives:**
+
+1. Select and relate source-backed claims while separating evidence from instructions.
+2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
+3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
+
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 04; person-to-person transfer belongs to Module 09.
+
+**Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
 
 ## PO-03 — Operate MCP tools under limited authority

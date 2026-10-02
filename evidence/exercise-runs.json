@@ -3318,5 +3318,79 @@
     "Module08 inside positive created its permitted parent directory plus the declared file; typed snapshots separated this from unauthorized extra outputs.",
     "Browser command comparison was restricted to shell-command blocks rather than prose templates.",
     "Browser clipboardRead revoked clipboard-write permission; joint local permissions and native clipboard reading verified actual Copy buttons without a course patch."
-  ]
+  ],
+  "module02_obsidian_revision": {
+    "run_id": "module02-obsidian-20261002T060403Z",
+    "evidence_root": "$HOME/course-evidence/module02-obsidian-20261002T060403Z",
+    "scope": "Automated maintainer implementation, actual host GUI interaction, serial live-provider runs, and published-surface observations; not human learner completion or measured learner timing. Historical observations above are unchanged.",
+    "acceptance": "Observed proof recorded here; final offline and main-integration receipts are retained externally.",
+    "branch": "feat/module02-obsidian",
+    "base_commit": "d11979bad4915ae38467d937865a9d5ca649b818",
+    "integrated_main": "3cfb72be5ca43b4b3f3e574bf6f4a2f0a76a5f81",
+    "offline": {
+      "module02_criterion_groups": 8,
+      "module02_mutations_killed": 8,
+      "module02_mutation_survivors": 0,
+      "obsidian_readiness_tests_passed": 17,
+      "first_integrated_scoped_gates_passed": 27,
+      "first_integrated_transcript": "integrated-offline-gates.txt",
+      "final_tree_transcript": "final-offline-gates.txt",
+      "command_parser_record": "integrated-shell-syntax.json",
+      "command_parser_scope": "73 initial command blocks, 121 Bash/zsh/PowerShell parser runs on macOS. The final overview correction removed eight duplicate blocks without changing surviving commands. This is not native Windows or Linux execution.",
+      "protected_inputs": "The forty DN files, shared/run_omp.py, and shared/course_guard.mjs match the base commit."
+    },
+    "desktop": {
+      "host": "Darwin 25.6 arm64",
+      "obsidian": "1.13.7",
+      "installation": "Checksum-verified official DMG in a task-owned location with a separate profile; existing installations and vaults preserved",
+      "readiness": "Actual link/edit/save, external token refresh, second edit, close/reopen, and both disk checks observed",
+      "live_vault": "Actual external Draft refresh, four editor-authored Knowledge notes, MOC, source-link navigation, admission reasons, substantive KB-003 revision, and final GUI audit/context records",
+      "settings": "Restricted mode observed on. Sync initially enabled in the fresh live vault, then explicitly disabled before Knowledge authoring. No account used.",
+      "record": "readiness-desktop-observations.json",
+      "other_gui_lanes": "Native Windows, WSLg, Intel macOS, Ubuntu, and Arch unobserved"
+    },
+    "local_negative_proof": {
+      "records": ["offline-smoke/revision-proof.json", "offline-smoke/negative-proof.json"],
+      "observed": "Unreviewed edited bytes held; renewed admission enabled a new revision; disposable cold tampering held with its named path; original v1 remained valid."
+    },
+    "live_provider": {
+      "status": "Completed with the original ingestion proposal HOLD retained and repaired without another ingestion",
+      "paid_run_invocations": 3,
+      "automatic_retries": 0,
+      "task_local_omp": "18.3.5",
+      "existing_default_omp": "18.4.9 preserved",
+      "provider_model": "openrouter/anthropic/claude-sonnet-4.6",
+      "credential": "Only the user-authorized ignored OPENROUTER_API_KEY assignment was parsed in a child process; the file was not executed and the value was not printed or published.",
+      "spending_authorization": "User explicitly authorized the paid maintainer runs; the original authorization metadata is retained. No account setting changed. Current learner instructions do not prescribe a per-key spending limit.",
+      "ingest": "Shared and phase audits PASS with all forty distinct sources read. Proposal validation exit 1: KB-001 DN-037 excerpt mismatch. Three valid Drafts staged; all evidence retained; no second ingestion.",
+      "cold_v1": "PASS, five executed reads, all three answers supported with valid citations; raw-source NOT_ATTEMPTED",
+      "revision": "KB-003 only: distinguish three authorizations from stamp status and gate constraint, adding exact DN-040 evidence. Fresh admission/freeze passed; MOC and other Knowledge notes unchanged.",
+      "missing_rule": "With the credential available, exit 2 before provider contact and no evidence directory; identical rule bytes restored before cold-v2",
+      "cold_v2": "PASS, five executed reads, focal KB-003 read and cited including DN-040; all three answers supported; raw-source NOT_ATTEMPTED",
+      "observed_effect": "Q3 explicitly names quality release, vehicle assignment, and permit approval as three authorizations, separately from stamp status and gate closure. One observed category clarification, not a fabricated v1 factual failure or general performance claim.",
+      "identity_after_gui_audit": "Both frozen revisions passed after final audit and context-map edits.",
+      "records": [
+        "live-integrated/evidence",
+        "live-integrated/local-v1-proof.json",
+        "live-integrated/local-v2-preparation.json",
+        "live-integrated/missing-rule-proof.json",
+        "live-integrated/audit-before-cold-v2.md"
+      ]
+    },
+    "publication": {
+      "record": "published-surface-proof.json",
+      "observed": "Actual wide/narrow Dark/Sand views, keyboard skip and guide controls, exact native clipboard copy, both full-size figures, all five setup pages, raw-download byte matches, no-JavaScript content, actual print PDF, prefixed navigation/search, and private-route/search exclusion",
+      "browser": "HeadlessChrome/145.0.7632.6, isolated profile on macOS",
+      "limitation": "Browser rendering does not establish installation or GUI execution on another operating system."
+    },
+    "independent_reviews": {
+      "runtime_security": "EXCELLENT",
+      "learning_progression": "EXCELLENT",
+      "platform_publication": "EXCELLENT",
+      "material_findings_remaining": 0,
+      "records": ["FinalRuntimeReview.txt", "FinalLearningReview.txt", "FinalPlatformReview.txt"]
+    },
+    "integration_receipt": "final-integration.json",
+    "pushed_or_deployed": false
+  }
 }

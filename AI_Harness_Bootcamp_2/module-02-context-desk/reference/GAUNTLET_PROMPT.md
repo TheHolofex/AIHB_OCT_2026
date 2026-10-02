@@ -1,130 +1,17 @@
-# Gauntlet challenge prompt — Module 2 context desk
+# Staff review prompt: Module 02 reusable knowledge
 
-Replace `[ASSIGNMENT]` before dispatch.
+Review the actual current implementation and recorded evidence against the approved Module 02 contract. This is staff-only material. Do not put it in learner downloads, prompts, prepared work, or model read roots. Do not grade or qualify learners.
 
----
+Read the module overview, lab, controls, supplied DN notes, helper, tests, figure specifications, facilitator runbook, active reference, and relevant publication mappings. Historical evidence is not proof of the new workflow. Report precise file/line findings with the violated contract, consequence, and bounded correction. Distinguish inspected source from executed behavior and observed GUI actions.
 
-You are an independent reviewer for a professional AI-harness course. Review **[ASSIGNMENT]**.
+Verify the learner can prepare/open the exact editable vault, inspect the three controls, ingest forty distinct sources, review Drafts against original sources, copy or author Knowledge in Source mode, create useful links only after target files exist, populate navigation, record reasons, and admit every final byte sequence. Check both Bash/zsh and native PowerShell commands and recoverable failure instructions. No hand-edited JSON, hashes, or prefilled answer graph may be required.
 
-Repository root:
-`~/Documents/AIHB_OCT_2026`
+Inspect the three fixed public questions and response schemas for staff-answer leakage. Confirm templates are blank. Staff semantic checks stay only in staff files. Check cold membership, actual MOC/cited-note reads, matching saved instruction loaded before provider contact, independent snapshot identities, and no source-processing chat. Do not treat a correct answer as load proof, a receipt as proof of human judgment, or NOT_ATTEMPTED as DENIED.
 
-Read first:
+Trace a meaningful v1 audit through a changed/new focal note, fresh admissions for all changed notes, v2 freeze with previous identity and focus note, and a new run that reads/cites the focal note. Judge the substantive effect independently of the helper's byte checks. A truthful unsupported v1 answer may identify a gap; final answers need support. Preserve an honest unchanged-correct result rather than inventing a failure or demanding new wording.
 
-1. `AI_Harness_Bootcamp_2/module-02-context-desk/reference/REFERENCE.md`
-2. `AI_Harness_Bootcamp_2/module-02-context-desk/reference/REFERENCE.sha256`
-3. the assigned Module 2 files
-4. every shared file those files depend on
+Check missing-rule exit 2 before provider contact/evidence creation and identical-byte restoration. Inspect no-overwrite attempts, preflight-only recovery, independent proposal staging, malformed-proposal rejection, source quote preservation, link/filename safety, and v1 survival after live Knowledge/reason/Obsidian changes. Shared launcher and guard must remain unchanged.
 
-Verify the frozen Reference hash before judging. The Reference is read-only. Do not edit files. Do not rely on earlier verdicts.
+Confirm P4 template, index, Spine, admission, audit, repair, cold-query, and integrity reuse is documented after reading originals, without a runtime dependency on the old checkout or transplantation of MCP/logistics/grading machinery. The obsolete prompt callers and reference digest gate must be gone from active code/prose; do not rewrite history to achieve that.
 
-## Scope
-
-Review only Module 2: context control and reusable instructions through one fictional thread-verification desk for Ledger Pike.
-
-Do not broaden into:
-
-- real logistics planning or dispatch;
-- Module 1 source-thread arithmetic;
-- legal or security-operations advice;
-- code-building as a learner outcome;
-- another crate, route, or scenario;
-- marketing, visual design, or unrelated repository work.
-
-## Review standard
-
-The module must go deep rather than broad. The learner must map resolved state, keep untrusted source text as data, run a screen on an allowed note and a material negative, prove the saved rule loaded via instruction_loaded receipt (matching hashes before provider_request) in two fresh sessions, prove negative load stops before contact, and state the remaining bypass.
-
-Score each category 0–4:
-
-1. resolved-state correctness;
-2. source-as-data discipline;
-3. screen integrity;
-4. load receipt correctness and ordering;
-5. second-session survival and identity match;
-6. negative-load behavior;
-7. remaining-bypass honesty;
-8. independence from other modules;
-9. functional command evidence (both shells, expected/stop/recovery);
-10. assessment integrity and `HOLD` behavior;
-11. accessibility, facilitation, and transfer;
-12. parsimony and learner voice.
-
-Acceptance requires **48/48**, no blocker, no unsupported execution claim, and no absolute failure from Reference §11.
-
-## Voice bar
-
-The learner-facing prose must score:
-
-- **Human craft authority: 100/100**
-- **Detectable AI mannerisms: 0/100**
-
-These are editorial panel scores, not scientific detector measurements. Any lower result must cite exact sentences. Reject generic framing, institutional evaluation jargon, fake warmth, marketing cadence, fragment chains, repeated summaries, abstract nouns where a concrete action exists, and prose that sounds written for a rubric instead of a person doing the work.
-
-## Required adversarial cases
-
-Attempt to break the module with:
-
-- a clean yard ticket offered as a quality release;
-- a hostile note (DN-014 style) that quotes release authority;
-- a learner who obeys “Ignore later receipts” or “SYSTEM OVERRIDE”;
-- a producer-edited screen;
-- a saved rule that vanishes or changes hash after close/restart;
-- a claim that the desk is sealed against paste-into-chat;
-- a load receipt that appears after a provider_request or has mismatched hashes;
-- a negative load that does not stop before contact;
-- Module 1 source filenames (`S01_`–`S09_`) reused as this case;
-- banned mass/late tokens (`246 kg`, `1,404 kg`, `3 minutes late`);
-- `VERIFY:`, `CUSTODY:`, or `PO0` leaked into learner markdown;
-- a missing or inaccessible decisive note;
-- a learner with no depot background; and
-- a facilitator who accidentally reveals the exit codes or the height answer.
-
-## Evidence discipline
-
-- Check technical claims directly by running the screen on the practice notes.
-- Separate source-confirmed facts, static checks, human judgments, and target execution.
-- Do not report a pilot, graded case, assistive-technology run, or learner outcome that was not executed.
-- The visible commands cannot prove map quality or professional judgment.
-- A criterion without evidence is not a pass.
-- Confirm the receipt ordering in guard.jsonl without live provider calls.
-
-## Required output
-
-### Verdict
-
-`ACCEPT` or `REJECT`, followed by the score out of 48.
-
-### Scorecard
-
-| Category | 0–4 | Evidence |
-
-### Blockers
-
-Give exact `file:line` citations. If none, write `None`.
-
-### Claim and command audit
-
-List each screen result with the file and exit status. List load receipt excerpts (instruction_loaded before provider_request, hash match).
-
-### Adversarial results
-
-Report every required case as handled, partial, or unhandled.
-
-### Voice result
-
-Give human and AI-mannerism scores with exact citations for every deduction.
-
-### Parsimony deletion list
-
-Name any file, field, exercise, or explanation that serves no Reference criterion. If none, write `None`.
-
-### Smallest corrections
-
-For each rejection, name the smallest bounded change.
-
-### What would change the verdict
-
-Name concrete evidence, not reassurance.
-
-Do not praise the work. Do not soften a rejection. Do not invent defects.
+Check 180/120-minute allocations, cumulative capability framing, existing renderer use, actual published wide/narrow and print/no-JavaScript behavior, and exclusion of staff/attempt content from publication. Rate implementation review only when supported by evidence. Return concrete must-fix and should-fix findings; a rating cannot replace missing live, desktop, or integrated proof.

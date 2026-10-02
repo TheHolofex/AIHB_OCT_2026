@@ -200,7 +200,7 @@ def paid_batch_fail_closed():
             assert result.returncode == 2 and not destination.exists()
 
     token = "synthetic-private-value"
-    valid_usage = {"usage": 10, "byok_usage": 2, "limit": 3000, "limit_remaining": 2990}
+    valid_usage = {"usage": 10, "byok_usage": 2}
 
     class Response(io.BytesIO):
         status = 200
@@ -227,7 +227,7 @@ def paid_batch_fail_closed():
 
     handler = None
     bad_payloads = [b"x" * 65537, b"not JSON", b"{}", b'{"data":null}']
-    for field in ("usage", "byok_usage", "limit", "limit_remaining"):
+    for field in ("usage", "byok_usage"):
         for invalid in (True, -1, float("nan"), float("inf"), "12"):
             bad_payloads.append(json.dumps({"data": {**valid_usage, field: invalid}}).encode())
     bad_payloads.append(json.dumps({"data": {**valid_usage, "usage": None}}).encode())
@@ -241,11 +241,11 @@ def paid_batch_fail_closed():
                 raise AssertionError("invalid metadata accepted")
             except ValueError as error:
                 assert token not in str(error) and "key metadata" in str(error)
-    with patch.object(runner.urllib.request, "build_opener", return_value=Opener(body=json.dumps({"data": {**valid_usage, "limit": None, "limit_remaining": None, "label": token}}).encode())):
-        assert runner._read_key_usage(token) == {**valid_usage, "limit": None, "limit_remaining": None}
+    with patch.object(runner.urllib.request, "build_opener", return_value=Opener(body=json.dumps({"data": {**valid_usage, "label": token}}).encode())):
+        assert runner._read_key_usage(token) == valid_usage
 
     def observation(total):
-        return {"usage": total, "byok_usage": 0, "limit": 3000, "limit_remaining": 3000 - total}
+        return {"usage": total, "byok_usage": 0}
 
     real_run = subprocess.run
 
@@ -280,8 +280,6 @@ def paid_batch_fail_closed():
             report = json.loads((destination / "comparison.json").read_text())
             preregistration = json.loads((destination / "preregistration.json").read_text())
             assert report["recorded_attempts"] == len(calls)
-            assert preregistration["provider_key_spend_ceiling_usd_prerequisite"] is None
-            assert preregistration["provider_ceiling_verified_by_adapter"] is False
             assert report["provider_billed_usd"] is None
             for index in range(1, len(calls) + 1):
                 assert (destination / f"attempt-{index:02d}/work/brief.md").exists()

@@ -19,7 +19,7 @@ SHARED = {
     "09": ("case", "controls", "baseline"), "10": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
-    "02": (), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
+    "02": ("second_brain.py",), "03": (), "04": ("render_review.py", "restore.py"), "05": (),
     "06": (), "07": ("evaluate_pairs.py", "restore_baseline.py"),
     "08": (), "09": ("run_close.py", "check_package.py"),
     "10": ("chalk.py", "build_state.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
@@ -142,6 +142,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
 
 def next_arguments(module_id: str) -> list[str]:
     python = str(Path(sys.executable).resolve())
+    if module_id == "02":
+        return [python, "scripts/second_brain.py", "initialize", "--work", "."]
     if module_id == "03":
         return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "04":

@@ -26,7 +26,7 @@ The core runs as **four teaching days, Monday through Thursday: 30.5 facilitated
 |---:|---|---|
 | 00 | Select, screen, and direct bounded work | Delegate appropriately, check one useful result, screen responsibility, and turn a request into accepted direction with a communication artifact. |
 | 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
-| 02 | Control context and reusable instructions | Place information and rules where loading, precedence, survival, and bypass are observable. |
+| 02 | Module 2 · Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
 | 10 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
 | 04 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
@@ -38,9 +38,21 @@ The core runs as **four teaching days, Monday through Thursday: 30.5 facilitated
 
 Cases and evidence bundles are **independent**: no gate consumes an earlier module’s product. Capabilities are cumulative: earlier skills are assumed, not retaught as new objectives. Authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) owns the module contract.
 
+### Module 02 mastery
+
+Using verified sources and bounded direction, construct a small source-traceable knowledge vault, load its governing instruction explicitly, and demonstrate useful retrieval from that knowledge in a fresh session without the source-processing chat or raw packet.
+
+The three enabling objectives are:
+
+1. Select and relate source-backed claims while separating evidence from instructions.
+2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
+3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
+
+Source checking is an inherited quality bar from Module 01, and bounded direction is an earlier capability. Saved instructions and load proof are newly taught in Module 02. Its independent Ledger Pike case retains all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and inspects retrieval from a frozen copy containing only navigation and admitted knowledge. Hidden-fault diagnosis remains Module 04's capability; person-to-person transfer remains Module 09's.
+
 ## Core and advanced boundary
 
-A fixed workflow is the highest machinery every core learner operates. Persistent state operation, adaptive flow operation, and multi-agent operation are advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
+A fixed workflow is the highest machinery every core learner operates. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow operation, multi-agent operation or writing, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
 
 The core requires zero programming objectives. Dynamic checker implementation, API/MCP construction, custom RAG, agent-runtime development, and deployment remain adapter or builder work.
 
@@ -92,6 +104,8 @@ Appearance, reading mode, shell choice, explicitly selected reading positions, a
 
 Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. The only provider credential is `OPENROUTER_API_KEY`, supplied to the current process. Every live exercise selects **`openrouter/anthropic/claude-sonnet-4.6`** through `shared/run_omp.py`. The launcher creates fresh runtime state, exposes only course tools, disables retries and model fallback, and preserves evidence separately from work. The guard is an OMP tool boundary, not an operating-system sandbox.
 
+Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
+
 Modules 02–10 use `shared/prepare_work.py`; Module 01 retains its nine-source starter and Module 00 retains its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
 Module 6 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-06-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
@@ -103,6 +117,8 @@ The child working directory is inside its redirected, fresh HOME. In pinned OMP,
 Native OMP can exit 0 after an extension preparation error. The launcher still holds an attempt without exactly one completed terminal turn, the expected model identity, complete guard lifecycle, and matching tool/disk receipts. An offline host-invoked guard smoke verifies extension APIs and allow/deny behavior; it is not a model tool call or provider evidence. Runtime evidence files are local audit records, not cryptographic proof against an operator who can rewrite the whole evidence directory.
 
 The saved-evidence audit joins each successful call to its authorization, independent execution check, tool/path identity, and filesystem effect. It also binds `response.md` to the final assistant event; changing only the extracted answer cannot change the recorded model response.
+
+The MCP cutover retires the `hash_tool` policy field. Historical receipts containing that field require the launcher revision that produced them; the current auditor rejects the obsolete schema. Preserve those receipts unchanged rather than removing fields to make an old run pass a new auditor.
 
 Maintainers need Python 3.12+ and Node.js 22 to publish the course and run the offline checks. From the repository root, create the Python environment once if it does not already exist:
 

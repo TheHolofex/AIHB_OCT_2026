@@ -12,7 +12,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Practice included in seat-time | 22 of 30.5 hours (72.1%); minimum 60% | Design arithmetic; unmeasured until pilot |
 | First checked useful artifact | Within 60 minutes | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
-| Variable model/tool spend | Provisional ≤US$40 per learner, enforced by a provider-side per-key ceiling; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
+| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 07 stretch has 36 paired calls and two restored controls |
 | Independent-recipient session | One per learner, outside the facilitated hours | Provisional; requires recruitment and scheduling evidence |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
@@ -38,7 +38,7 @@ Modules 00–06 are 180 facilitated minutes each. Tuesday's third block allocate
 |---:|---|---|
 | 1 | Monday AM | 00 Select, screen, and direct bounded work |
 | 2 | Monday PM | 01 Verify sources and outputs |
-| 3 | Tuesday · Block 1 | 02 Control context and reusable instructions |
+| 3 | Tuesday · Block 1 | 02 Build and control a reusable second brain |
 | 4 | Tuesday · Block 2 | 03 Operate MCP tools under limited authority |
 | 5 | Tuesday · Block 3 | 10 Decide with typed questions |
 | 6 | Wednesday · Block 1 | 04 Diagnose and recover |
@@ -119,7 +119,7 @@ File presence cannot establish observed performance. An authored practice output
 |---:|---|---:|---|---|---|---|
 | 00 | Select, screen, and direct bounded work | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_ACCEPTANCE` | `FIRST_RESULT`; `MIN_SCREEN`; `DIRECTION`; `INTERNAL_ARTIFACT`; `PO00_RESULT` | **communication artifact** | Checked useful artifact within 60 minutes (design target); delegate/human/refuse choices and minimum screen support bounded internal acceptance; frozen direction and supplied changed-input check support internal accept/fix/hold |
 | 01 | Verify sources and outputs | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SOURCE_FIXTURES` | `SOURCE_EVIDENCE`; `DISCERNMENT_RESULT`; `STANDING_RULE`; `PO01_RESULT` | **research/source** work | Known-answer, source-trace, misleading-source, changed-source, and real-use checks support internal accept/revise/reject/hold |
-| 02 | Control context and reusable instructions | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `RELOAD_RESULT`; `PO02_RESULT` | Reusable instruction and guard | Loading, precedence, reset survival, and bypass are independently evidenced |
+| 02 | Build and control a reusable second brain | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT` | Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher | Source-traceable admitted knowledge and useful links; explicit saved-rule load and frozen-content identity; actual knowledge reads and citations without the source-processing chat or raw packet; one substantive improvement in a reviewed revision and fresh run, preserving earlier evidence |
 | 03 | Operate MCP tools under limited authority | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:MCP_SERVER` | `MCP_CONNECTION`; `HANDLING_REGISTER`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Read a server's contract, connect it with declared limits and prove them with a probe, check an AI's handling classifications against stated rules, and disconnect with proof |
 | 10 | Decide with typed questions | 2h 30m / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:QUESTION_SET`; `VERIFY:DECISION_CONTROLS` | `TYPED_ANSWERS`; `LABEL_AGREEMENT`; `CONFIDENCE_GATES`; `ROUTED_REQUIREMENT`; `PO10_RESULT` | Typed question set and code-owned router | Labels frozen before a read-only run; every typed answer validated against the question set; agreement and declared confidence measured on the sample; gates set from the measurement; routes and requirement recomputable from answers and gates; queues and the authority change decided by a person |
 | 04 | Diagnose and recover | 3h / 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO04_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
@@ -143,7 +143,9 @@ A refusal to connect, or an AI proposal accepted without checking, is not credit
 
 ## Complexity and implementation boundary
 
-Fixed workflow is the highest mandatory operation. Persistent state operation is advanced. Adaptive flow operation is advanced. Multi-agent operation is advanced.
+Fixed workflow is the highest mandatory operation. Core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure, and MCP construction remain advanced.
+
+Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 04's capability, and person-to-person transfer remains Module 09's.
 
 The learner specifies and configures bounded behavior in supplied controls. In Module 06, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. In Module 03 the learner also operates and configures a supplied MCP server and its limits; building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
 

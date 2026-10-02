@@ -2,7 +2,7 @@
 
 Direct Oh My Pi to draft an internal email, then check every material claim against the supplied North Shelf facts. You decide what to delegate, set the limits, and accept the email only for its stated use.
 
-First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Complete the local n8n setup in the same platform guide before Module 6. OMP readiness, n8n readiness, and a checked email are separate results.
+First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Complete local Obsidian setup before Module 2 and local n8n setup before Module 6 in the same platform guide. Keep OMP, Obsidian, and n8n readiness separate from each other and from the checked email.
 
 Allow 1–3 hours for setup. The bounded-work assignment has one three-hour facilitated session, including two hours of practice. These are planning allowances, not measured completion times.
 
@@ -25,13 +25,14 @@ If you are unsure which Windows path to use, choose WSL when your organization p
 - Git and a **checkout**: the local copy of the private course repository.
 - Python 3.12 or newer.
 - Oh My Pi (`omp`) pinned at version 18.3.5.
+- Local Obsidian for Module 2: a **vault** is a folder of linked Markdown notes on your laptop. Use the reference release **1.13.7** for a fresh install; preserve an existing installation and record its actual version.
 - Local n8n **2.41.5**, using the full official Docker stack and a working modern `docker compose` plugin. Each platform guide contains its complete n8n path.
 
 The platform steps preserve **PATH**, the saved list of folders your shell searches for commands. They check it in an independently opened terminal, not just the window that ran the installer.
 
 You need GitHub read access to `TheHolofex/AIHB_OCT_2026`. The hosted-course password does not provide it. Each path first checks existing approved Git credentials; GitHub CLI (`gh`) is a conditional browser-login helper only if that access check fails. It is not an AI runtime requirement.
 
-The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key with a US$40 per-key ceiling](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
+The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
 
 Module 6 uses the local visual workflow editor without a paid model call. No n8n Cloud signup or Assistant provider key is required. Keep Assistant off and workflows unpublished; do not copy the OpenRouter key into n8n.
 
@@ -90,6 +91,20 @@ The setup report records the version, path, repository and key-presence observat
 A **receipt** records what a run actually used and did: its inputs, tool calls, results, and file effects. Keep receipts and your **work folder**—the editable exercise copy—outside the checkout so a correction cannot overwrite the supplied inputs or an earlier attempt.
 
 Open the result file and read it back before you accept it: a tool saying “done” is not the same as a file on disk.
+
+## Set up local Obsidian
+
+Use Obsidian to follow links, edit local notes, and see changes made outside the app. Allow 15–30 minutes after installation for this practice check; this is a planning allowance. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+
+Complete **Set up local Obsidian** in your existing guide: [native Windows](platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](platforms/windows-wsl.md#set-up-local-obsidian), [macOS](platforms/macos.md#set-up-local-obsidian), [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian), or [Arch](platforms/arch-linux.md#set-up-local-obsidian). Follow its install, hash, display, and approval steps before opening the practice vault. The [release and asset table](shared/VERSIONS.md#local-obsidian-for-module-2) identifies the exact fresh downloads. Preserve personal vaults, installed versions, and application profiles.
+
+On the WSL route, run Linux Obsidian and the helper in the same Ubuntu Linux home as OMP. WSLg requires [Windows 10 build 19044+ or Windows 11 and WSL 2](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps). Do not open a WSL UNC path in native Windows Obsidian or copy the vault to `/mnt/c`. On the native PowerShell route, Obsidian and course work stay native to Windows; the separate Ubuntu bridge remains for n8n only.
+
+Keep **Settings → Community plugins → Restricted mode** on in the practice vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. No Obsidian account, community plugin, or MCP service is required. Keep the existing [hidden-input credential procedure](shared/CREDENTIALS.md); never put a key in a note or another secret file.
+
+Your platform guide contains the complete practice: create one fresh vault, follow its links, save an edit, observe an external file change, save again, and close and reopen the same vault. Keep that one attempt and its observations; do not create a second practice vault from another platform's instructions.
+
+Record **Obsidian READY** only with both disk passes and a separate observation of the actual Obsidian window: platform and architecture, actual app version, practice-vault location, link followed, first edit saved, externally changed token displayed, second edit saved, and same reply visible after reopening. Record the observer and date; keep any screenshot free of credentials. A disk PASS or an `.obsidian` folder does not prove those GUI actions. Missing or failed GUI observation means **Obsidian HOLD**; retain the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
 
 ## Local n8n readiness for Module 6
 

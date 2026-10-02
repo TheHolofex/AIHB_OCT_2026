@@ -13,7 +13,7 @@ The learner reads the server's contract before connecting it and finds the misma
 1. Run `python tests/test_module_03.py` and `python tests/test_adequacy.py` from this module's folder, and confirm every criterion passes and every mutation is killed.
 2. Run `python tests/test_runtime_launcher.py` and `python tests/test_runtime_guard.py` from the repository's `tests` folder and confirm both pass.
 3. Run the lab once on your own machine with a live key: prepare a work copy, inspect the contract, run both probes, and read the research run's `mcp-audit.jsonl` to see what the model actually did with the two notes addressed to automation. That behavior varies by run, so decide in advance how you will use it.
-4. Confirm Obsidian is installed on each class machine and opens a folder as a vault. Confirm each learner's process-local OpenRouter key is set, with its per-key ceiling, before the first live run.
+4. Confirm Obsidian is installed on each class machine and opens a folder as a vault. Confirm each learner's process-local OpenRouter key is set before the first live run.
 5. Open the verifier's source and confirm that its embedded key still matches `scripts/handling_key.json`; the oracle's corpus criterion fails when they differ.
 
 ## Tuesday delivery route

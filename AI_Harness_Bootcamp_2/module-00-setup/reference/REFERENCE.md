@@ -1,6 +1,6 @@
 # Reference: Module 0 and the initial course setup
 
-**Version:** 5 · **Frozen on:** 2026-10-02 · incorporates the v3 single-OMP/OpenRouter contract and recorded v4 ungraded amendment; adds native local n8n readiness
+**Version:** 6 · **Frozen on:** 2026-10-02 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling
 **Scope:** Module 0 learner material, shared setup contract, five platform setup paths, and the acceptance machinery that decides them
 **Supported paths:** Windows PowerShell with an n8n-only WSL bridge, Windows with WSL 2 and Ubuntu for course work, macOS, Ubuntu, Arch Linux
 **Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability or replace a named independent evaluator. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.
@@ -115,7 +115,7 @@ The stretch repairs the supplied count/staging-and-paperwork sentence without in
 
 ### Timing and availability
 
-The 180-minute facilitated session, 120-minute learner-work allocation, 60-minute first-result goal, and setup-duration ranges are **design targets, not measured performance or automatic qualification gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. A provider-side US$40 ceiling is a limit, not a promised cost. No automatic paid retries are permitted.
+The 180-minute facilitated session, 120-minute learner-work allocation, 60-minute first-result goal, and setup-duration ranges are **design targets, not measured performance or automatic qualification gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. No automatic paid retries are permitted.
 
 Report native platform execution separately for macOS, Ubuntu, Arch, Windows PowerShell and WSL. A parser run or PowerShell-on-macOS replay is not native Windows evidence. Browser, terminal and assistive-technology observations must identify the actual surface used.
 

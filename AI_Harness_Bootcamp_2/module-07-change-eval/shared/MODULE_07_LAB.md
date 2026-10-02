@@ -240,7 +240,7 @@ Compare the supplied baseline and checked instructions on PC-01–PC-06. Use thr
 
 Open both instruction files in your editor. Explain the single added check and predict where it might help, do nothing, or add work. Record that prediction in `decision.md` before running. Keep the model, source/form pair, prompt, and permissions fixed within each pair.
 
-This is paid work. Use only your process-local OpenRouter key and the pinned Sonnet model from setup, with the provider-side per-key spending ceiling set to US$40. The runner cannot verify your account's ceiling. It runs one call at a time, never retries a failed call, and never changes the provider or model. Missing key, credit, model availability, or budget leaves this lane blocked; it is not a reason to substitute a provider.
+This is paid work. Use only your process-local OpenRouter key and the pinned Sonnet model from setup. The runner runs one call at a time, never retries a failed call, and never changes the provider or model. Missing key, credit, or model availability leaves this lane blocked; it is not a reason to substitute a provider.
 
 Run this in the same window that holds `PY`, `W`, `E`, and `M`; if you opened a new terminal, use the re-entry block at the top of the page first.
 
@@ -310,9 +310,9 @@ The source-only runner freezes the schedule and identities before the first call
 
 **Expected:** With all prerequisites available, 38 independently checked attempts produce `comparison.json`, `attempts.csv`, raw receipts, tool-written briefs, and `restore.json`. `COMPLETE` means all planned observations exist, not that the checked instruction won. Without the key, the runner exits 2 before creating comparison attempts or contacting a provider.
 
-**Stop:** Any call is incomplete, a frozen identity changes, restoration fails, the provider rejects a request, or the spending ceiling stops work. A content-gate failure is an observation to retain, not an instruction to retry until the answer passes.
+**Stop:** Any call is incomplete, a frozen identity changes, restoration fails, the provider rejects a request, or the runner stops on its own cost estimate. A content-gate failure is an observation to retain, not an instruction to retry until the answer passes.
 
-**Recovery:** Preserve the entire comparison, including its first failure. Restore the missing prerequisite before considering a new preregistered attempt. Do not merge favorable rows from different attempts, exclude failures, or raise the spending ceiling to finish.
+**Recovery:** Preserve the entire comparison, including its first failure. Restore the missing prerequisite before considering a new preregistered attempt. Do not merge favorable rows from different attempts, exclude failures, or change the runner's stop to finish.
 
 ## Interpret the paired observations
 

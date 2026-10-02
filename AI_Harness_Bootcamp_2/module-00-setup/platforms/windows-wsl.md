@@ -2,7 +2,7 @@
 
 This path uses Windows Subsystem for Linux 2 with the Ubuntu distribution so that all course work happens inside the Linux filesystem under your Linux home directory. Plan for 90 to 180 minutes if any Windows feature enable or reboot is needed; this is a planning estimate, not a measured completion time. All course clone, work directories, evidence directories, and the Oh My Pi binary stay under the Linux `$HOME`. Never use `/mnt/c` for the course checkout or readiness-check work. Use the Linux `omp` binary and Linux configuration. Enter the provider key through the hidden prompt; investigate unexpected inherited key presence without displaying its value.
 
-You need Git, Python 3.12 or newer inside Ubuntu, a browser, an ordinary text editor, and Oh My Pi 18.3.5 for Linux. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 6 also requires local n8n 2.41.5 through Docker Desktop, using this same Ubuntu distribution and Linux home. You do not install Node, npm, Obsidian, or another agent.
+You need Git, Python 3.12 or newer inside Ubuntu, a browser, an ordinary text editor, Linux Obsidian through WSLg, and Oh My Pi 18.3.5 for Linux. WSLg displays Linux application windows on your Windows desktop. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 6 also requires local n8n 2.41.5 through Docker Desktop, using this same Ubuntu distribution and Linux home. You do not install Node, npm, or another agent.
 
 Keep an existing Ubuntu 24.04 or 26.04 WSL 2 installation. Do not unregister, reset, or replace it. The course checkout belongs at `$HOME/Documents/AIHB_OCT_2026`; work and evidence stay outside that checkout under the same Linux home.
 
@@ -532,8 +532,6 @@ course_checkout_wsl
 
 ## Enter the key without showing it
 
-Before any live turn, confirm the OpenRouter key has a provider-side **US$40 per-key spending cap** using [the credential setup](../shared/CREDENTIALS.md). Stop if that cap is not set.
-
 Enter the key at the hidden prompt. The next command does nothing except wait for the key. Type the key at that hidden prompt and press Enter. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
@@ -946,6 +944,237 @@ course_report_wsl_setup
 
 **Recovery:** fix the first failed prerequisite named in the report, then run this report command again after the timestamp changes so the report path is new. Keep the failed report. Do not reset, pull, or clean the checkout because the report mentions local changes. Proceed only when both the prerequisite report and the live readiness check pass.
 
+
+## Set up local Obsidian
+
+Obsidian lets you follow links and edit notes in a **vault**, an ordinary folder of Markdown text files. Allow about 25–40 minutes for the steps below; an approved host repair can take longer. Run Linux Obsidian through WSLg in the same selected Ubuntu distribution and Linux home as OMP, Python, and your checkout. [Obsidian reads local files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+
+Keep the vault outside the checkout and any synced folder. Do not open a `\\wsl$` or `\\wsl.localhost` vault in native Windows Obsidian, copy it to `/mnt/c`, or create another distribution for this step. Preserve existing installations, personal vaults, and profiles.
+
+### Confirm this host can display Linux applications
+
+The [Microsoft WSLg requirements](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) are Windows 10 build **19044+** or Windows 11, with the selected distribution running as **WSL 2**. Builds 19041–19043 can still satisfy the earlier command-line OMP floor, but they mean **Obsidian HOLD**. A version or display-variable check alone cannot prove an application window works.
+
+Open a separate ordinary PowerShell window from Start. Keep your Ubuntu proof window open. Re-select the exact Ubuntu name you used earlier; this does not change the default distribution.
+
+**Terminal: Windows PowerShell, ordinary user, separate Windows window.**
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$ObsidianHost = Get-CimInstance -ClassName Win32_OperatingSystem
+$ObsidianHost | Select-Object Caption, Version, BuildNumber
+if ([int]$ObsidianHost.BuildNumber -lt 19044) { throw 'Obsidian HOLD: WSLg needs Windows build 19044+ or Windows 11.' }
+wsl --list --verbose
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: cannot inspect distributions.' }
+$CourseDistroNames = @(wsl --list --quiet)
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: cannot read distribution names.' }
+$CourseDistroNames = @($CourseDistroNames | ForEach-Object { ($_ -replace "`0", '').Trim() } | Where-Object { $_ })
+$CourseDistro = Read-Host 'Enter the exact Ubuntu NAME used for your existing OMP proof'
+if ($CourseDistroNames -cnotcontains $CourseDistro) { throw 'Obsidian HOLD: exact distribution not installed.' }
+$CourseWslVersion = Read-Host 'Enter the VERSION shown for that exact NAME'
+if ($CourseWslVersion -ne '2') { throw 'Obsidian HOLD: this distribution must run as WSL 2.' }
+wsl --distribution $CourseDistro --exec printenv WSL_DISTRO_NAME HOME
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: selected distribution did not report its name and home.' }
+```
+
+**Expected:** a supported host at the GUI build floor, the exact selected entry at VERSION `2`, then its distribution name and Linux home. **HOLD:** wrong/missing distribution, old host, WSL 1, or command failure. **Recovery:** preserve the current distribution and OMP result. Have the device owner resolve host support, display drivers, or WSLg availability. Any WSL update/restart needs an approved window after saving work in all affected distributions and Docker applications. Do not reset, unregister, or run a global `wsl --shutdown` as a troubleshooting shortcut.
+
+Return to the existing Ubuntu proof window. Confirm its name and home match the selected distribution above. If that window was closed, use [the named Ubuntu launch](#launch-and-verify-ubuntu) and [restore the course paths](#set-the-course-paths-in-this-window) there first.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution and proof window.**
+
+```bash
+printf 'Distribution: %s\nHome: %s\n' "${WSL_DISTRO_NAME:-missing}" "$HOME"
+printf 'Display: %s\nWayland: %s\n' "${DISPLAY:-missing}" "${WAYLAND_DISPLAY:-missing}"
+uname -m
+if [ ! -d /mnt/wslg ] || { [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; }; then
+  printf 'Obsidian HOLD: WSLg display support is unavailable\n'
+else
+  printf 'WSLg display indicators present; actual Obsidian window still required\n'
+fi
+```
+
+**Expected:** the same distribution and `/home/` path as before, `x86_64` or `aarch64`, and display indicators present. **HOLD:** any mismatch, missing display support, or another processor. **Recovery:** stop Obsidian setup and keep the output for the owner. Do not invent display variables or launch a native Windows app as a substitute.
+
+### Preserve an existing Linux app, or download the matching asset
+
+Look for an existing **Obsidian** launcher under this Ubuntu distribution in Start, and inspect your known Linux application/AppImage location. In Ubuntu, `command -v obsidian` and `dpkg-query -W obsidian` can identify a command or Debian package; a missing result does not rule out an AppImage or another package route. If an existing Linux app is present, use its established ordinary-user launcher and skip both fresh-install routes. Record the actual version displayed in Obsidian’s Settings later. Preserve a Windows installation too, but do not use it for this Linux vault. If ownership, launch method, or installation state is uncertain, record **Obsidian HOLD** for owner review instead of installing another copy.
+
+Only after confirming Linux Obsidian is absent and obtaining device-owner installation approval, download into a new folder in this Linux home. The exact assets and SHA-256 values are from the [official 1.13.7 release metadata](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7). This block does not install or execute the download.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution and window.**
+
+```bash
+course_download_obsidian_wsl() {
+  local obsidian_expected
+  case "$(uname -m)" in
+    x86_64)
+      ObsidianAsset='obsidian_1.13.7_amd64.deb'
+      obsidian_expected='17dc33b49cb3e785ecc27edd2ea0c79e40207798b554fd2886e36ebee7af9ae0' ;;
+    aarch64)
+      ObsidianAsset='Obsidian-1.13.7-arm64.AppImage'
+      obsidian_expected='e286fd2bb2a5d346a35a577bd764c73fd5537dddec2b99a1a3e5e35974085203' ;;
+    *) printf 'Obsidian HOLD: no approved asset for this processor\n'; return 1 ;;
+  esac
+  case "$HOME" in /home/*) ;; *) printf 'Obsidian HOLD: use the existing Linux home\n'; return 1 ;; esac
+  ObsidianDownload="$(mktemp -d "$HOME/obsidian-download.XXXXXXXX")" || return 1
+  curl --fail --location --show-error \
+    "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/$ObsidianAsset" \
+    --output "$ObsidianDownload/$ObsidianAsset" || return 1
+  (cd "$ObsidianDownload" && printf '%s  %s\n' "$obsidian_expected" "$ObsidianAsset" | sha256sum --check -) || {
+    printf 'Obsidian HOLD: checksum mismatch; do not execute or install\n'; return 1;
+  }
+  printf 'Verified download: %s/%s\n' "$ObsidianDownload" "$ObsidianAsset"
+}
+course_download_obsidian_wsl
+```
+
+**Expected:** the selected filename followed by `OK`, then its verified path. Save this path for later launches. **HOLD:** any failed command or mismatch. **Recovery:** preserve the attempt; fix the named network/path issue and rerun this block for a new download folder. Do not proceed using a partial file.
+
+### Install and launch the x64 Debian package
+
+Use this route only for `x86_64`. With device-owner approval, install the verified local package using [Ubuntu apt](https://manpages.ubuntu.com/manpages/noble/man8/apt.8.html). Read the transaction before accepting; decline if it proposes replacing an existing Obsidian installation, removing packages, or other unapproved changes. The package manager checks downloaded repository dependencies through its normal signed metadata. Do not disable those checks.
+
+**Terminal: Ubuntu Bash, ordinary Linux user; sudo only for the approved apt operation.**
+
+```bash
+course_install_obsidian_deb() {
+  [ "$(uname -m)" = x86_64 ] && [ -n "${ObsidianDownload:-}" ] || {
+    printf 'Obsidian HOLD: wrong route or no verified download\n'; return 1;
+  }
+  if command -v obsidian >/dev/null 2>&1 || dpkg-query -W obsidian >/dev/null 2>&1; then
+    printf 'Obsidian HOLD: existing command or package; preserve it\n'; return 1
+  fi
+  (cd "$ObsidianDownload" &&
+    printf '%s  %s\n' '17dc33b49cb3e785ecc27edd2ea0c79e40207798b554fd2886e36ebee7af9ae0' 'obsidian_1.13.7_amd64.deb' | sha256sum --check - &&
+    sudo apt install ./obsidian_1.13.7_amd64.deb)
+}
+course_install_obsidian_deb
+```
+
+**Expected:** checksum `OK` and successful package installation. **HOLD:** denial, unexpected transaction, or failed command. **Recovery:** preserve the message and installation state for the owner; do not force replacement or attempt unrelated package repairs.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window; after successful x64 installation.**
+
+```bash
+obsidian &
+```
+
+**Expected:** an actual Linux Obsidian window appears on the Windows desktop. **HOLD:** display error, sandbox refusal, or no window. **Recovery:** keep the error for the owner; do not add sandbox flags to this package route or change kernel security settings.
+
+### Prepare and launch the ARM64 AppImage
+
+Use this route only for `aarch64` on the supported Ubuntu 24.04 or 26.04 you verified earlier. An AppImage is a single application file; keep it at the verified download path. It needs the FUSE compatibility library. [AppImage’s FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html) identifies `libfuse2t64` on Ubuntu 24.04 and explains preserving FUSE 3 alongside the older library. Do not install the obsolete `fuse` package or remove FUSE 3.
+
+Check the library first. If it is missing, the following function asks apt to install only the compatibility library. Obtain device-owner approval before that transaction and review its proposed changes at the prompt. Decline any removal or unapproved change.
+
+**Terminal: Ubuntu Bash, ordinary Linux user; sudo only for the approved apt transaction.**
+
+```bash
+course_obsidian_fuse() {
+  [ "$(uname -m)" = aarch64 ] || { printf 'Obsidian HOLD: ARM64 route only\n'; return 1; }
+  if [ "$(dpkg-query -W -f='${Status}' libfuse2t64 2>/dev/null)" = 'install ok installed' ]; then
+    printf 'libfuse2t64 already installed; preserving it\n'
+  else
+    sudo apt update || return 1
+    sudo apt install libfuse2t64 || return 1
+  fi
+  dpkg-query -W -f='${Package} ${Status}\n' libfuse2t64
+}
+course_obsidian_fuse
+```
+
+**Expected:** `libfuse2t64 install ok installed`. **HOLD:** missing library, denied approval, repository/signature error, or unexpected package changes. **Recovery:** preserve the error and ask the owner to resolve the approved dependency route. Do not replace FUSE 3 or improvise a privileged FUSE repair.
+
+Obtain **separate device-owner approval** before the next launch. The vendor’s [AppImage launch instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) include `--no-sandbox`. That flag disables Chromium’s renderer sandbox for Obsidian, reducing protection if renderer content is compromised. It does not strengthen or replace the course tool boundary. Use only the supplied local practice vault with community plugins restricted. No approval means **Obsidian HOLD**; do not run this block. Do not change kernel-wide security toggles, make the file world-writable, or add privileged sandbox fixes.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window; separately approved ARM64 launch only.**
+
+```bash
+course_launch_obsidian_arm64() {
+  [ "$(uname -m)" = aarch64 ] && [ -n "${ObsidianDownload:-}" ] || {
+    printf 'Obsidian HOLD: wrong route or missing verified path\n'; return 1;
+  }
+  [ "$(dpkg-query -W -f='${Status}' libfuse2t64 2>/dev/null)" = 'install ok installed' ] || {
+    printf 'Obsidian HOLD: libfuse2t64 is missing\n'; return 1;
+  }
+  (cd "$ObsidianDownload" &&
+    printf '%s  %s\n' 'e286fd2bb2a5d346a35a577bd764c73fd5537dddec2b99a1a3e5e35974085203' 'Obsidian-1.13.7-arm64.AppImage' | sha256sum --check - &&
+    chmod u+x ./Obsidian-1.13.7-arm64.AppImage &&
+    ./Obsidian-1.13.7-arm64.AppImage --no-sandbox) &
+}
+course_launch_obsidian_arm64
+```
+
+**Expected:** checksum `OK`, then an actual Linux Obsidian window. A background job number is not proof of launch. **HOLD:** checksum, FUSE, display, or security error; absent approval; or no window. **Recovery:** preserve the app and error for owner review. Do not extract it as an unapproved fallback or substitute another architecture.
+
+### Open the exact Linux-home vault and save a linked reply
+
+This creates a fresh practice vault using the existing Linux `$PY` and `$M`. It makes no provider call and needs no key entry. Run it only after an actual Obsidian window is available.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution and proof window.**
+
+```bash
+course_initialize_obsidian_wsl() {
+  [ -n "${PY:-}" ] && [ -n "${M:-}" ] || {
+    printf 'Obsidian HOLD: restore Linux Python and course paths first\n'; return 1;
+  }
+  ObsidianHelper="$M/scripts/obsidian_readiness.py"
+  [ -f "$ObsidianHelper" ] || { printf 'Obsidian HOLD: course helper missing\n'; return 1; }
+  ObsidianRoot="$HOME/obsidian-readiness-$("$PY" -c 'import uuid; print(uuid.uuid4().hex)')" || return 1
+  "$PY" "$ObsidianHelper" initialize --root "$ObsidianRoot" || return 1
+  ObsidianVault="$ObsidianRoot/vault"
+  printf 'Attempt root: %s\nVault to open: %s\n' "$ObsidianRoot" "$ObsidianVault"
+}
+course_initialize_obsidian_wsl
+```
+
+**Expected:** `Created practice vault:` and the exact Linux-home vault path. Save the printed root path for this attempt. **HOLD:** any error, redirected path, synced location, or wrong home. **Recovery:** preserve the attempt and restore the page’s Linux paths or ask the owner for a complete checkout. Do not initialize an existing vault or move it onto `/mnt/c`.
+
+**Window: Linux Obsidian displayed by WSLg, ordinary Linux user.**
+
+1. Use **Open folder as vault → Open** in the vault chooser. From an existing personal vault, use **Open another vault** first and preserve its settings. In the Linux folder chooser, press **Ctrl+L** if a location field is needed, enter the exact printed `$ObsidianVault` path, and select it. Do not select the attempt parent or checkout.
+2. In this practice vault’s **Settings → Community plugins**, leave **Restricted mode** on; turn it on for this vault if it is off. In **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in, connect a remote vault, install plugins, or configure MCP. Record the actual version from **Settings → General**, then close Settings.
+3. Open **Start** in the file list. Switch to **Reading view** through the note’s view control if necessary, then click **Token**. Read the token and follow **Reply** from Token.
+4. Switch Reply to **Editing view** with its view control. Enter only the observed token on one line. Add no heading, quotes, or explanation. Press **Ctrl+S** and wait for the note to save.
+
+**Expected:** both links open existing notes in the exact vault, and Reply contains the observed value. **HOLD:** wrong vault, unavailable GUI, missing links, or blocked editing. **Recovery:** inspect the exact path and named failure. Do not enter the reply from Bash or use another editor as GUI proof.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window.**
+
+```bash
+"$PY" "$ObsidianHelper" check --root "$ObsidianRoot"
+```
+
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, `PASS: Obsidian file round-trip; GUI observation still required`, and a new disk-observation path. **HOLD:** any failed check. **Recovery:** correct Reply in Obsidian to the current Token and save, then repeat `check`. Preserve all observations; never edit Start, Token, or expected-value records to force a pass.
+
+### Observe the outside edit and reopen the same vault
+
+Leave Token visible in Reading view in the open app. Change it from outside Obsidian using this command.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window.**
+
+```bash
+"$PY" "$ObsidianHelper" refresh --root "$ObsidianRoot"
+```
+
+**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.` **HOLD:** any error. **Recovery:** preserve the attempt and named failure for support. Do not reinitialize it or remove its records.
+
+**Window: Linux Obsidian, same practice vault.** Return to Token and observe its new value while the vault is still open. Follow Reply, replace the old value with the new value in Editing view, and press **Ctrl+S**. Close only this practice-vault window. Reopen using the same existing Linux launcher, `obsidian &` for the fresh x64 package, or `course_launch_obsidian_arm64` for the separately approved AppImage in the same Ubuntu shell. Open the exact `$ObsidianVault` again through the vault chooser if necessary. Open Reply and confirm the new value remains.
+
+**Expected:** you see the external change before closing the app, and the second saved reply survives reopening. **HOLD:** stale Token, wrong reopened vault, failed relaunch, or missing reply. **Recovery:** record the actual failure. Reopening to make a stale token appear does not prove live refresh. Resolve the cause, run another `refresh` with the correct vault open, and repeat observation/edit/save/reopen. Keep the same Linux home and preserve prior observations.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window.**
+
+```bash
+"$PY" "$ObsidianHelper" check --root "$ObsidianRoot"
+```
+
+**Expected:** a refreshed token generation, the qualified PASS line, and a new disk-observation path. **HOLD:** any mismatch or helper failure. **Recovery:** inspect the exact vault and saved Reply, preserve the failed observation, and repeat the failed step in Obsidian.
+
+Save a separate actual GUI record directly under the printed `$ObsidianRoot`, outside `vault`. In your ordinary text editor, create a new `gui-observation.txt` there without replacing an existing file. Record the date, Windows build, exact Ubuntu name and release, WSL VERSION, Linux architecture, actual Obsidian version, exact vault path, observed Start → Token → Reply navigation, both edits/saves, the live external refresh, and reopened Reply. Include both disk-observation paths and any remaining failure. On ARM64, record whether the separate sandbox exception was approved. Practice-vault screenshots can support the record; exclude keys and unrelated personal windows.
+
+Record **Obsidian READY** only after all these GUI actions were actually observed and both disk checks passed. Otherwise record **Obsidian HOLD** with the failed or unobserved action. Files and `.obsidian` settings alone cannot establish GUI readiness. Keep OMP, Obsidian, and n8n results separate; an Obsidian HOLD does not erase an OMP pass. WSLg GUI behavior must be observed on this distribution and laptop; native Windows or macOS results do not prove it.
 
 ## Prepare local n8n for Module 6
 

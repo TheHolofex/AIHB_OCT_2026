@@ -10,10 +10,10 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 
 ## Before learners arrive
 
-1. Run the relevant setup path on the actual classroom images, including its full local n8n path before Module 6.
+1. Run the relevant setup path on the actual classroom images, including local Obsidian before Module 2 and its full local n8n path before Module 6.
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
-4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, a participant-supplied process-local `OPENROUTER_API_KEY`, and the provider-side US$40 ceiling. There is no direct-provider login, model fallback, or automatic paid retry.
+4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic paid retry.
 5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. For a formal result, identify the real decision owner, custody location, control/version and original outcome record. If missing, mark HOLD and continue only reachable practice.
 7. Exercise genuine deciding controls on passing and failing specimens before any formal use; never substitute a public practice pass or agent role-play.
@@ -21,9 +21,32 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 9. Prepare a support owner for managed-machine and account problems.
 10. Put a visible clock where learners can observe the 60-minute first-result design target. Record actual timing and assistance; this target has not been validated with learners.
 
-## Keep three readiness results separate
+## Keep three readiness lanes separate
 
-Record the OMP prerequisite report, live OMP `READINESS CHECK PASS/HOLD`, and **n8n READY/HOLD** independently. Keep the existing report and live-proof mechanics unchanged. A passing OMP report does not replace the live tool-write proof or establish n8n readiness. An n8n HOLD does not erase an OMP pass; it blocks Module 6’s local operating path until resolved.
+Record **OMP**, **Obsidian**, and **n8n** separately. The OMP lane retains both its prerequisite report and live `READINESS CHECK PASS/HOLD`; a passing report never replaces the live tool-write proof. Record **Obsidian READY/HOLD** from its two disk checks plus separate actual GUI observation, and **n8n READY/HOLD** from its runtime, browser, and persistence checks. No lane establishes another. Preserve every earlier result when a different lane holds. Obsidian HOLD blocks Module 2's local vault operation; n8n HOLD blocks Module 6's local operating path.
+
+## Set up local Obsidian
+
+Allow 15–30 minutes after installation to observe the practice workflow; record actual time rather than treating that allowance as measured. Use the existing platform's **Set up local Obsidian** section: [native Windows](../platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](../platforms/windows-wsl.md#set-up-local-obsidian), [macOS](../platforms/macos.md#set-up-local-obsidian), [Ubuntu](../platforms/ubuntu.md#set-up-local-obsidian), or [Arch](../platforms/arch-linux.md#set-up-local-obsidian). Require local vault storage, Restricted community plugins, and Sync off. No account, community plugin, or MCP service is needed.
+
+Preserve the installed app, profile, and personal vaults. Fresh vendor installs use [1.13.7 and the exact asset hashes](../shared/VERSIONS.md#local-obsidian-for-module-2); an existing version may remain when its actual version and successful workflow are recorded. Arch uses its signed Extra package in the approved full-upgrade transaction, without a downgrade or partial upgrade. On WSL, require Linux Obsidian through WSLg in the same Ubuntu Linux home as OMP. The [Microsoft GUI floor](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) is build 19044+ or Windows 11 with WSL 2. Do not reset a distribution, use a native app on a WSL UNC vault, or move it to `/mnt/c`; coordinate any restart with owners of active distributions and Docker workloads.
+
+On Ubuntu/WSLg ARM64, require the approved `libfuse2t64` transaction while retaining FUSE 3, as described in the [AppImage FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html). Separately obtain device-owner approval for the vendor's [AppImage `--no-sandbox` launch](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md). Explain that it disables Chromium's renderer sandbox for Obsidian and does not replace the course tool guard. Missing approval or display support remains Obsidian HOLD; no kernel-wide toggles, world-writable binaries, or privileged sandbox repairs.
+
+Follow **Set up local Obsidian** in the learner's [platform guide](../README.md#set-up-local-obsidian) as an ordinary user with the platform-resolved Python 3.12+ executable. The overview links to the five routes; perform only the selected route's practice. The helper interface is `obsidian_readiness.py initialize|refresh|check --root PATH`; PATH must be a fresh external attempt directory. Open only its `vault` child. Observe this order:
+
+1. `initialize --root PATH` creates linked `Start.md`, `Token.md`, blank `Reply.md`, and external `expected`/`observations` directories without overwriting an attempt.
+2. In Obsidian, the learner opens `Start`, follows `Token`, follows `Reply`, enters the token on one line, and saves.
+3. `check --root PATH` records the first disk result. Require `PASS: Obsidian file round-trip; GUI observation still required` for generation 1.
+4. With the vault still open, `refresh --root PATH` rotates the token from outside Obsidian and preserves the old reply and observation.
+5. The learner observes the changed token in Obsidian, follows `Reply`, edits and saves the new token, closes the vault window, reopens the same vault, and inspects the saved reply.
+6. `check --root PATH` records the second disk result. Require the same qualified PASS for generation 2 and keep both check records and the refresh record.
+
+Record actual platform, architecture, app version, date, observer, attempt location, and the GUI actions seen separately from helper output. The helper deliberately records `gui_observed: false`; never edit that field to manufacture desktop evidence. A token copied by a script, a matching disk file, or `.obsidian` presence does not prove GUI operation. Capture only credential-free practice-window evidence. Preserve every HOLD and use [Obsidian troubleshooting](../shared/TROUBLESHOOTING.md#when-local-obsidian-stops).
+
+The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes remain unobserved in this record. Do not infer their success from the Mac observation or from shell parsing. Keep the learner's process-local hidden key entry, no-secret-files procedure, fixed provider/model, and no automatic paid retries unchanged; a maintainer credential exception grants no learner exception.
+
+## Local n8n readiness
 
 Before starting n8n, confirm device-owner approval for the full official six-service stack, privileged `sandbox-runner-1` Docker-in-Docker, ordinary-account Docker access, and applicable Docker Desktop licensing. Preserve existing contexts, containers, volumes, applications, destinations, and attempts. On native PowerShell, keep OMP, Git, Python, keys, checkout, and receipts native; the selected WSL Ubuntu is only the n8n bridge. If policy blocks WSL/Docker, preserve HOLD and arrange an approved operating machine.
 
@@ -115,6 +138,7 @@ do not rewrite the earlier result or reuse its output for the new readiness chec
 Collect or verify:
 
 - OMP setup report path and separate live readiness result;
+- Obsidian READY/HOLD, both disk-check paths, refresh record, actual version/platform, and separate GUI observations;
 - separate n8n READY/HOLD, observed platform/version/port/service state, workflow name, reload and stop/start persistence observations, and unresolved owner approvals;
 - `acceptance-control.md`;
 - first-checked-draft timestamp;

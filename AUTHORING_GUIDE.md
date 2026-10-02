@@ -37,13 +37,35 @@ A module has one primary outcome and at most three numbered enabling objectives.
 
 For each mastery claim, complete “Before this project, the learner could ___. After this project, the learner can ___.” A new file, scenario, tool installation, repetition count, or evidence log is not a new capability. Repeated skills are prerequisites or quality bars. Recover a missing prerequisite explicitly without relabeling it as the current objective.
 
+### Module 02 contract
+
+**Title:** Module 2 · Build and control a reusable second brain
+
+**Mastery:** Using verified sources and bounded direction, construct a small source-traceable knowledge vault, load its governing instruction explicitly, and demonstrate useful retrieval from that knowledge in a fresh session without the source-processing chat or raw packet.
+
+Use exactly three enabling objectives:
+
+1. Select and relate source-backed claims while separating evidence from instructions.
+2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
+3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
+
+Before this project, the learner could verify sources and give bounded direction. After this project, the learner can turn those sources into reviewed, linked knowledge governed by an explicitly loaded saved instruction and demonstrate its use in a fresh session. Source checking remains Module 01's inherited quality bar. Saved instructions and load proof are newly taught here. Hidden-fault diagnosis belongs to Module 04; person-to-person transfer belongs to Module 09.
+
+**Consumes:** `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD`
+
+**Produces:** `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT`
+
+The independent Ledger Pike case retains all forty DN sources unchanged. Use Obsidian for local Markdown editing, human admission, and useful links. Fresh retrieval reads only a frozen copy of the learner's navigation and admitted Knowledge notes; raw sources, proposed notes, review notes, and the source-processing chat stay outside that read root. Keep the saved governing instruction outside all model read roots and prove its explicit loading. Preserve earlier content revisions and run evidence when improving a substantive weakness. A reviewed content change and an actual read and citation of the focal note establish what was used; the operator judges the improvement. Changed answer wording alone does not establish improvement.
+
+Legacy P4 is an authoring source only. Record adaptation provenance in Module 02's active staff reference; do not create a runtime dependency on the old checkout or change the frozen historical research reference. Keep reuse rationale and curriculum handoffs out of learner prose.
+
 ## Single ownership
 
 | Sub-problem | Owner |
 |---|---|
 | Delegation, first-use limits, minimum screen, direction, bounded internal acceptance | 00 |
 | Source verification and output discernment | 01 |
-| Context, reusable instruction, source-as-data control | 02 |
+| Human-reviewed knowledge vault, saved instruction and load proof, source-as-data control, fresh-session retrieval | 02 |
 | MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
 | Hidden-fault diagnosis and recovery | 04 |
 | Observed-run analysis and predicate specification | 05 |
@@ -80,7 +102,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 The learner can specify a mechanically decidable predicate and configure it in a **supplied deterministic control**. The adapter implements any new checker and owns its identity. If the observed failure is an arbitrary semantic condition that cannot be represented in supplied controls, record the predicate, implementation dependency, owner, and `HOLD`; do not claim the control was implemented.
 
-The fixed workflow is the highest common-core machinery. Persistent state, adaptive flow, multi-agent operation, custom RAG, API/MCP construction, runtime development, and deployment are advanced. A learner who meets a trigger for one of them records the trigger, the simpler alternative, the added risk, and the escalation owner.
+The fixed workflow is the highest common-core machinery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, the simpler alternative, the added risk, and the escalation owner.
 
 ## Deterministic and stochastic evidence
 
@@ -129,6 +151,8 @@ Publication uses the existing environment from the repository root: `.venv/bin/p
 Use `shared/prepare_work.py` for Modules 02–10, Module 01’s starter for its fixed source boundary, and Module 00’s four-file case copy. Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
 
 Use the pinned shared OMP launcher rather than direct vendor logins or alternate harness branches. Require Git, Python 3.12+, Oh My Pi 18.3.5, a browser, and a text editor. The exact model is `openrouter/anthropic/claude-sonnet-4.6`; the only participant credential is `OPENROUTER_API_KEY`. Node is a maintainer-only figure prerequisite. Module 03 also uses the free Obsidian desktop application to open its supplied vault; it needs no account, Sync, or community plugin, and the module states the requirement itself. Keep hashing, arithmetic, predicates, routing, and comparisons deterministic.
+
+Module 02 also requires Obsidian for local Markdown editing. Do not add community plugins, Sync, a REST API, or an MCP service to its core workflow. Reuse `shared/run_omp.py` and `shared/course_guard.mjs` unchanged.
 
 Record observed exercise outcomes separately from editorial review. Keep live-provider, native-platform, peer-review, and person-to-person transfer observations explicit. Preserve historical evidence without treating an old assessment policy as a current requirement. The 15-minute/eight-term orientation, 120-minute unaided-work limit, and first-result timing remain design targets until measured with people.
 

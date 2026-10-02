@@ -1,25 +1,27 @@
-# Module 2 · Control context and reusable instructions
+# Module 2 · Build and control a reusable second brain
 
-Keep a desk rule available after the conversation ends. Save it in a file, load it through the harness, and use the run records to prove it loaded again in a completely fresh session. The rule tells the model to treat retrieved paperwork as data, not as an order to release a crate.
+Build a small knowledge vault in Obsidian, then prove that a fresh model session can use its reviewed notes without the source-processing chat or raw packet. You’ll select source-backed claims, connect them, and improve one substantive weakness after seeing what a cold run can retrieve.
 
-Plan for 3 facilitated hours on Tuesday morning, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
-
-The notes belong to Ledger Pike, a resupply of surgical instrument sets from Quarry Depot to Clinic P-4 on vehicle QP-17. The warehouse clerk is about to stamp crate C-44. Notes DN-001 through DN-040 are that shift's pile. Every fact you need is in this packet.
+Plan for 180 minutes with a facilitator, including 120 minutes of practice. These are planning allocations, not measured completion times. The exercise is ungraded.
 
 ## Start here
 
-1. [Place the desk rule and prove it loaded](shared/MODULE_02_LAB.md).
+Open the [Module 2 lab](shared/MODULE_02_LAB.md). Use the Python, OMP, and local Obsidian installation verified in Module 00.
 
-Use your source-verification skills to identify the applicable measurement and reject unsupported release claims. Check separately what information and instructions the model receives, what the saved rule tells it to do, and what the file screen actually blocks.
+You’ll learn to:
 
-## The packet
+- Select and relate source-backed claims while separating evidence from instructions.
+- Admit reviewed knowledge and prove that a fresh session used the saved rule and approved content.
+- Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Inspect all forty notes to find the requested measurement, its exact source, and any quoted instructions. Decide which statements describe evidence and which try to turn receipt, custody, or a measurement into release authority.
+## The working files
 
-The supplied **screen** checks files for fixed patterns of instruction-like language. Its result is separate from whether the model loaded or followed the saved rule. Pasting text directly into chat bypasses this file check.
+The forty Ledger Pike notes describe fictional paperwork for crate C-44 and vehicle QP-17. The supplied files contain sources and blank templates. You build the knowledge and its links yourself.
 
-Ask for the height and its source note after the harness has read all forty notes. Inspect the **load receipt**, the saved record that identifies the rule text loaded before the first request to the model provider. A correct height alone does not prove the rule loaded.
+Obsidian opens your editable `vault` folder. `Sources` contains the original evidence; `Drafts` contains model proposals; `Knowledge` contains notes you prepare and admit. Your short decisions stay in `Reviews`. A separate frozen copy contains only your navigation index and admitted Knowledge notes, so a cold run cannot reread the raw packet or earlier chat.
+
+The saved rule tells the model how to treat evidence. The file screen detects particular instruction-like phrases. The tool read boundary limits which files the model can read. Your admission decision determines which claims become reusable knowledge. Each has a different job.
 
 ## Class-only boundary
 
-All names, crates, offices, and quoted blocks are fictional course fixtures. Do not use this packet to plan, authorize, dispatch, or describe a real movement. A module result permits only class review.
+All names, crates, offices, and quoted blocks are fictional course fixtures. Results support bounded internal class review only. They do not authorize a release, assignment, dispatch, or real movement.

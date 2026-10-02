@@ -46,6 +46,18 @@
 - [OpenRouter authentication](https://openrouter.ai/docs/api-reference/authentication)
 - [Python downloads](https://www.python.org/downloads/)
 
+## Local Obsidian
+
+- [Official Obsidian 1.13.7 release](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7) and [release API metadata with asset digests](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7): the fresh reference assets and exact SHA-256 values are in [Required tool identities](VERSIONS.md#local-obsidian-for-module-2). Preserve an existing installed version and profile, then record its actual workflow result.
+- [Official installation instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md): universal macOS/Windows installers and the AppImage execute permission and `--no-sandbox` launch. The course requires separate device-owner approval for that renderer-sandbox exception; this is not permission to change system-wide security.
+- [Local Markdown storage and external-change refresh](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md): open the practice `vault` folder only. The course uses local storage, Restricted community plugins, and Sync off, without an Obsidian account, community plugin, or MCP service.
+- [Microsoft WSL GUI requirements](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps): Windows 10 build 19044+ or Windows 11, WSL 2, and working GUI support. The course uses Linux Obsidian in the existing Ubuntu Linux home, alongside OMP's files. A native Windows app on a WSL UNC vault is not the course route.
+- [AppImage FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html) and [Ubuntu `libfuse2t64`](https://packages.ubuntu.com/noble/libfuse2t64): the Ubuntu ARM64 route keeps FUSE 3 and adds only the approved compatibility library; obsolete `fuse` is not a replacement.
+- [Arch Extra Obsidian package](https://archlinux.org/packages/extra/x86_64/obsidian/) and [Arch full-upgrade requirement](https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported): use the signed distribution package in the existing approved `pacman -Syu` transaction. Reference package 1.13.7-2 is an observation, not a downgrade instruction.
+- [Supplied readiness helper](../scripts/obsidian_readiness.py): `initialize`, `refresh`, and `check` accept `--root` for a fresh external attempt. Its qualified disk PASS explicitly requires separate GUI observation; it cannot establish OMP or n8n readiness.
+
+Actual reference GUI observation covers **Obsidian 1.13.7, Darwin arm64** only. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes are unobserved in this record. Complete **Set up local Obsidian** in the learner's [platform guide](../README.md#set-up-local-obsidian), including link/edit/save/refresh/reopen observations on that device, before recording Obsidian READY. Official documentation and available binaries establish the intended route, not a successful local operation.
+
 ## Local n8n and Docker
 
 - [Official n8n one-line setup, flags, and Windows shell guidance](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup)

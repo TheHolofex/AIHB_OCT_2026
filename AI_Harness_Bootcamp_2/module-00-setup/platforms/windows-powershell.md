@@ -2,7 +2,7 @@
 
 This path installs the course tools on native Windows and runs a readiness check in which Oh My Pi writes one file. Plan for 60 to 120 minutes for the native setup; this is a planning estimate, and the n8n bridge may require additional installation and restart time. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
 
-You need Git, Python 3.12 or newer, a browser, an ordinary text editor, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 6 also requires local n8n 2.41.5 through Docker Desktop and a named Ubuntu WSL 2 bridge, described below. Keep OMP, Python, Git, the checkout, evidence, and credentials on native Windows. Use Ubuntu only for n8n installation and lifecycle commands. You do not install Node, npm, Obsidian, or another agent.
+You need Git, Python 3.12 or newer, a browser, an ordinary text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 6 also requires local n8n 2.41.5 through Docker Desktop and a named Ubuntu WSL 2 bridge, described below. Keep OMP, Python, Git, Obsidian and its vault, the checkout, evidence, and credentials on native Windows. Use Ubuntu only for n8n installation and lifecycle commands. You do not install Node, npm, or another agent.
 
 A checksum is a fingerprint of a file. You compare the fingerprint of the downloaded program with the fingerprint published beside it, and you do that before the program is allowed to run. PATH is the list of folders Windows searches when you type a command name.
 
@@ -449,8 +449,6 @@ Write-Output $M
 
 ## Enter the key without showing it
 
-Set and confirm a **US$40 per-key spending cap at OpenRouter** before any live turn, following [the account setup](../shared/CREDENTIALS.md). Stop if that provider-side cap is not confirmed.
-
 Type the key at the hidden prompt and press Enter. This command does nothing except wait for the key. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
@@ -823,6 +821,122 @@ Write-Output $report
 
 **Recovery:** fix the first failed prerequisite named in the report, then run this report command again only after choosing a new report path if the old file exists. Do not reset, pull, or clean the checkout because the report mentions local changes. Continue only after both `SETUP CHECK PASS` and `READINESS CHECK PASS`, plus the separate disk read-back.
 
+
+## Set up local Obsidian
+
+Obsidian lets you follow links and edit notes in a **vault**, an ordinary folder of Markdown text files. Allow about 20–30 minutes for installation and the file round-trip below; download time varies. Keep this vault on the native Windows disk alongside your native Python workflow, outside the checkout and any synced folder. It does not belong in n8n’s Ubuntu home. [Obsidian stores local files and refreshes external edits](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+
+### Preserve an existing app, or install the verified Windows release
+
+First look for **Obsidian** in **Start** and **Settings → Apps → Installed apps**. If it exists, open it normally, preserve its installation, profile, and personal vaults, and skip the download and installer blocks. Do not upgrade or downgrade it to match this guide. Record the actual version displayed in Obsidian’s Settings when you open the practice vault. If its origin or condition is unclear, record **Obsidian HOLD** and ask the device owner to resolve it without replacing it.
+
+Only when Obsidian is absent, obtain approval for a current-user installation. The reference download is the official universal Windows 1.13.7 EXE for x64 and ARM64. The fingerprint below comes from the [official release metadata](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7). The [vendor’s Windows instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) use the universal installer.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same native proof window.**
+
+```powershell
+$ErrorActionPreference = 'Stop'
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+if (-not $env:LOCALAPPDATA) { throw 'Obsidian HOLD: LOCALAPPDATA is missing.' }
+if ((Get-Item -LiteralPath $env:LOCALAPPDATA -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+  throw 'Obsidian HOLD: local app data is redirected; ask the owner for a local route.'
+}
+$ObsidianDownload = Join-Path $env:LOCALAPPDATA ('obsidian-download-' + [guid]::NewGuid().ToString('n'))
+New-Item -ItemType Directory -Path $ObsidianDownload -ErrorAction Stop | Out-Null
+$ObsidianInstaller = Join-Path $ObsidianDownload 'Obsidian-1.13.7.exe'
+Invoke-WebRequest -Uri 'https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/Obsidian-1.13.7.exe' -OutFile $ObsidianInstaller -UseBasicParsing
+$ObsidianHash = (Get-FileHash -LiteralPath $ObsidianInstaller -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($ObsidianHash -cne 'f233dc24896b3f2d5f9e4b01111181a561d0760b2105f0a474024c5f3143a9bc') {
+  throw 'Obsidian HOLD: checksum mismatch. Do not run this file.'
+}
+Write-Output $ObsidianInstaller
+Write-Output 'Obsidian download checksum matched; installer has not run.'
+```
+
+**Expected:** the fresh download path and checksum-match message. **HOLD:** failed download, redirected location, or fingerprint mismatch. **Recovery:** preserve that attempt and resolve the named failure; a retry uses a fresh folder. Never execute the failed download.
+
+After the match, run this separate installer step. Choose **Only for me** if the installer asks who should receive the installation, and use the offered current-user location only if it is empty. Cancel if it detects an existing installation, requests a replacement, or requires unapproved elevation. Do not select an all-users route to get around a policy denial. [Start-Process](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-5.1) starts this installer with your ordinary-user context.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same window; approved fresh install only.**
+
+```powershell
+if (-not $ObsidianInstaller) { throw 'Obsidian HOLD: verify the fresh download first.' }
+if ((Get-FileHash -LiteralPath $ObsidianInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -cne 'f233dc24896b3f2d5f9e4b01111181a561d0760b2105f0a474024c5f3143a9bc') {
+  throw 'Obsidian HOLD: installer bytes changed. Do not run it.'
+}
+$ObsidianInstallProcess = Start-Process -FilePath $ObsidianInstaller -PassThru -Wait
+if ($ObsidianInstallProcess.ExitCode -ne 0) { throw 'Obsidian HOLD: installer did not finish successfully.' }
+```
+
+**Expected:** the installer completes and **Start → Obsidian** opens a real application window. **HOLD:** refusal, an unexpected existing app, failed exit, or no window. **Recovery:** keep the message for the device owner. Do not delete a profile, reinstall over an existing app, or disable a Windows security control.
+
+### Open the exact practice vault and save a linked reply
+
+This creates a fresh vault and records expected values outside it. Use the native `$PY`, `$R`, and `$M` from this page. If you reopened PowerShell, rerun [the Python resolver](#resolve-the-real-python-312-executable) first. No provider call or key entry is needed here.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same native window.**
+
+```powershell
+if (-not $PY -or -not $M) { throw 'Obsidian HOLD: restore the native Python and course paths first.' }
+$ObsidianHelper = Join-Path $M 'scripts\obsidian_readiness.py'
+if (-not (Test-Path -LiteralPath $ObsidianHelper -PathType Leaf)) { throw 'Obsidian HOLD: course helper is missing.' }
+$ObsidianRoot = Join-Path $HOME ('obsidian-readiness-' + [guid]::NewGuid().ToString('n'))
+& $PY $ObsidianHelper initialize --root $ObsidianRoot
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: initialize failed; preserve this attempt.' }
+$ObsidianVault = Join-Path $ObsidianRoot 'vault'
+Write-Output $ObsidianRoot
+Write-Output $ObsidianVault
+```
+
+**Expected:** `Created practice vault:` names exactly the printed `$ObsidianVault`, with `Start`, `Token`, and a blank `Reply`. Save the printed root path for this attempt. **HOLD:** any helper error, missing helper, or redirected/synced home. **Recovery:** preserve the attempt; ask the owner to provide a complete checkout or an approved local, unsynced home location. Do not initialize inside an existing vault or copy the vault to WSL.
+
+**Window: native Windows Obsidian, ordinary user.**
+
+1. In the vault chooser, choose **Open folder as vault → Open**. If a personal vault is open, use **Open another vault** first; leave its files and settings intact. Select the exact folder printed as `$ObsidianVault`, not its parent or the course checkout.
+2. In this practice vault’s **Settings → Community plugins**, leave **Restricted mode** on; turn it on for this vault if it is off. Under **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in, connect a remote vault, install a plugin, or configure MCP. In **Settings → General**, record the installed version, then close Settings.
+3. Open **Start** in the file list. Switch to **Reading view** through the note’s view control if needed so the links are clickable. Click **Token**, read its current token, then follow **Reply** from Token.
+4. Switch Reply to **Editing view** using its view control. Enter only the observed token on one line, with no heading, quote marks, or explanation. Press **Ctrl+S** and wait for the note to save.
+
+**Expected:** both links open existing notes and Reply contains the token you saw. **HOLD:** wrong vault, missing note/link, blocked editing, or unavailable settings. **Recovery:** reopen the exact printed vault and inspect the named issue. Do not enter the reply from a terminal or substitute a text editor for GUI evidence.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same native window.**
+
+```powershell
+& $PY $ObsidianHelper check --root $ObsidianRoot
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: initial saved reply did not pass.' }
+```
+
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a new disk-observation path. **HOLD:** any other result. **Recovery:** in Obsidian, correct only Reply to the current Token, save, and rerun `check`; preserve all observations. Do not edit Start, Token, or the expected-value records to force a match.
+
+### Observe an outside edit, save again, and reopen
+
+Keep the practice vault open and show **Token** in Reading view. The next command changes Token on disk while preserving your old Reply.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same native window.**
+
+```powershell
+& $PY $ObsidianHelper refresh --root $ObsidianRoot
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: external refresh failed; preserve this attempt.' }
+```
+
+**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.` **HOLD:** a helper error. **Recovery:** preserve the attempt and the error for support; do not overwrite its records or reinitialize it.
+
+**Window: native Windows Obsidian, same practice vault.** Return to the still-open Token and observe its changed value before closing or reopening anything. Follow **Reply**, replace the old value with the new value in Editing view, and press **Ctrl+S**. Close only this practice-vault window. Open Obsidian from Start again and reopen the exact `$ObsidianVault` through the vault chooser if it did not reopen automatically. Open Reply and confirm the new value remains.
+
+**Expected:** the outside edit appears in the open app, and your second saved reply survives reopening. **HOLD:** stale Token, unsaved Reply, or a different reopened vault. **Recovery:** record the failed observation and exact path. A restart that makes a stale token appear does not prove live refresh; resolve the cause and perform another `refresh` while the correct vault is open, then repeat the GUI edit/save/reopen sequence.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, same native window.**
+
+```powershell
+& $PY $ObsidianHelper check --root $ObsidianRoot
+if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: reopened saved reply did not pass.' }
+```
+
+**Expected:** a refreshed token generation, the same qualified PASS line, and a new observation path. **HOLD:** mismatch or helper failure. **Recovery:** confirm the exact vault and saved Reply in Obsidian, preserve the failed observation, and repeat the failed step.
+
+Save a separate actual GUI observation in a new plain-text file named `gui-observation.txt` directly in the printed `$ObsidianRoot`, outside `vault`. Use Notepad **Save As**, choose **All files**, and do not replace an existing record. Write the date, native Windows build/architecture, actual Obsidian version, exact vault path, observed Start → Token → Reply navigation, both edits/saves, the visible outside refresh, and the reopened Reply. Include the two disk-observation paths and any remaining failure; attach screenshots only of the practice vault if useful. Do not include keys or unrelated personal windows.
+
+Record **Obsidian READY** only when those actions were actually observed and both disk checks passed. Otherwise record **Obsidian HOLD** with the failed or unobserved action. A helper PASS or an `.obsidian` folder alone is insufficient. Keep this result separate from OMP and n8n; an Obsidian HOLD does not erase either existing result. Native Windows GUI behavior must be observed on this laptop; a result from macOS or WSL is not its proof.
 
 ## Prepare local n8n for Module 6
 
