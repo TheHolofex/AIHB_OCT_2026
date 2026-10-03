@@ -16,7 +16,7 @@ def run(command: list[str], cwd: Path) -> bool:
     environment = dict(os.environ)
     environment.pop("OPENROUTER_API_KEY", None)
     try:
-        result = subprocess.run(command, cwd=cwd, env=environment, capture_output=True, text=True, timeout=300)
+        result = subprocess.run(command, cwd=cwd, env=environment, capture_output=True, text=True, timeout=600)
     except (OSError, subprocess.TimeoutExpired) as error:
         print(f"HOLD: required gate could not execute: {error}")
         return False

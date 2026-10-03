@@ -326,7 +326,7 @@ def main() -> int:
         check("M10-VERIFY", cli.returncode == 1 and "held launcher run" in cli.stderr and not (Path(tmp) / "unused.json").exists(), "the validator refuses a receipt the launcher held")
 
     # ---------------------------------------------------------------- publication boundary
-    with tempfile.TemporaryDirectory(dir="/tmp" if Path("/tmp").is_dir() else None) as tmp:
+    with tempfile.TemporaryDirectory(dir=scratch_parent()) as tmp:
         sys.path.insert(0, str(REPO / "shared"))
         import prepare_work  # noqa: E402
         work = prepare_work.prepare("10", Path(tmp) / "work", root=REPO)
@@ -351,6 +351,19 @@ def main() -> int:
 
     print(f"\n{len(PASS)} checks passed, {len(FAIL)} failed across {len({item.split(':')[0] for item in PASS + FAIL})} criteria")
     return 1 if FAIL else 0
+
+
+def scratch_parent() -> Path:
+    """A temporary parent that prepare_work accepts: it refuses any destination under the repository's parent folder,
+    and when this module is mirrored into the system temp directory (adequacy runs), that parent is the temp directory itself."""
+    neighborhood = REPO.resolve().parent
+    for base in (Path(tempfile.gettempdir()), Path.home() / ".cache" / "aihb-oracle"):
+        base = base.resolve() if base.exists() else base
+        if base.is_relative_to(neighborhood) or neighborhood.is_relative_to(base):
+            continue
+        base.mkdir(parents=True, exist_ok=True)
+        return base
+    raise RuntimeError("no scratch location outside the repository's parent folder")
 
 
 def chalk_ids_earlier(earlier: str, later: str) -> bool:
