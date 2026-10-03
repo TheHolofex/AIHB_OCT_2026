@@ -159,9 +159,9 @@
       "outcomes": {
         "can": "Build a small Obsidian vault of linked, source-backed notes, prove from the run records that a fresh session used your saved rule and only the notes you admitted, and improve one weakness you find in what that session can retrieve.",
         "will": [
-                "Select source-backed claims from the supplied notes, link them in your vault, and keep evidence separate from instructions quoted inside a note.",
-                "Admit only the notes you have reviewed, and check that a fresh session loaded your saved rule and read only that approved content, without your chat or the raw packet.",
-                "Improve one substantive weakness you find in what a cold run can retrieve, and show the effect in a new revision and a fresh run.",
+                "Choose claims backed by the supplied notes, link them in your vault, and keep evidence separate from instructions quoted inside a note.",
+                "Admit only notes you've reviewed, then check that a fresh session loaded your saved rule and read only the content you approved, without your chat or the raw packet.",
+                "Fix one substantive weakness you find in what a cold run can retrieve, then show the effect in a new revision and a fresh run.",
                 "Confirm that a run stops before it contacts the provider when the saved rule file is missing."
         ]
       },
