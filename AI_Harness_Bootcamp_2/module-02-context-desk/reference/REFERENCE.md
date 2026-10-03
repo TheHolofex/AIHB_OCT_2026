@@ -72,7 +72,7 @@ The audit must name one changed/new focal note, substantive weakness, before/aft
 
 Plan about three hours: a short orientation and walkthrough, six hands-on stages (setup/open, source pass, review/link/admit, first cold run, audit/improve/retest, missing-rule/identity/close), and a closing discussion. Review/link/admit and audit/improve/retest take the most time. These are planning estimates, not observed timing.
 
-Retain meaningful file-screen behavior and helper mutation/oracle checks. The live prose digest gate and reference sidecar are removed rather than repinned. Historical records naming an earlier digest remain historical. Independent review must inspect actual files and observed evidence. Staff answers, completed vaults, local receipts, and screenshots must not enter publication or model roots.
+Retain meaningful file-screen behavior and helper mutation/oracle checks. The live prose digest gate and reference sidecar are removed rather than repinned. Historical records naming an earlier digest remain historical. Independent review must inspect actual files and observed evidence. Staff answers, completed pilot vaults, local receipts, and private pilot screenshots must not enter publication or model roots. Publish only the separately prepared walkthrough screenshots listed in `course.json`; keep them outside the model's read roots.
 
 Actual Obsidian observation includes link following, externally staged Draft refresh, an edit saved to disk, and close/reopen. A file checker or automation pilot does not prove a human learner acted. Keep observed GUI/platform scope, runtime completion, provenance, semantic judgment, and human observation separate. No qualification or score is inferred.
 
@@ -88,3 +88,13 @@ Run `module02-obsidian-20261002T060403Z` is an automated maintainer pilot, not h
 - Both cold runs reported raw-source access **NOT_ATTEMPTED**, not DENIED. After the final GUI audit and context observations were saved, both frozen identities still passed. The audit retains the expected effect, actual effect, unchanged missing authorities, and bounded internal-use decision.
 
 The user explicitly authorized the credential source and paid maintainer runs; the historical authorization metadata is retained. No account setting was changed. Current learner instructions retain hidden-input handling, the fixed provider/model, and no automatic paid retries; they do not prescribe a per-key spending limit. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI execution is not established by this pilot. Hashes, runtime audits, actual GUI interaction, semantic review, and human learning remain separate kinds of evidence.
+
+## Walkthrough capture — 3 October 2026
+
+The lab publishes 32 authentic Obsidian 1.13.7 screenshots captured on Darwin arm64 in a separate disposable vault. Coverage across the six steps is 5, 5, 13, 2, 4, and 3 images. Captures show vault selection, local settings, Source mode, note placement, source comparison, links, review reasons, retrieval-observation fields, revision, and retained records. They do not reuse the completed pilot vault or its answers.
+
+The editing example uses the published DN-003 paper-arrival source. Templates and retrieval-observation fields remain blank where no model result was observed. File-screen observations, local review/freeze/check results, and the missing-rule exit were executed locally; the displayed snapshot checks establish frozen-byte identity, not correct model answers. No paid ingestion or positive retrieval was run for this capture session.
+
+Private originals and capture records are under `~/course-evidence/module02-screenshots-20261003/`. Only the curated PNGs are allowlisted. The generated lab was exercised at 1440px and 390px widths: all 32 images decoded, full-size viewing opened at both widths, and neither horizontal overflow nor browser console errors was observed. Screen captures were visually inspected in Dark and Sand appearances. The six main steps and all 28 Bash/PowerShell command blocks were preserved.
+
+This establishes the captured macOS UI and the website rendering, not human learner completion or native Windows, WSLg, Intel macOS, Ubuntu, or Arch GUI execution.
