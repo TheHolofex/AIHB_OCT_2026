@@ -1,10 +1,10 @@
 # Module 3 · Research through an MCP server, with limits you can prove
 
-Connect an AI assistant to an Obsidian research vault through an MCP server, use it to research a supply problem, judge the handling calls it proposes, and limit the connection so the actions you forbid cannot happen. You finish by removing the connection and showing that it is gone.
+Connect an AI assistant to an Obsidian research vault through an MCP server to research a supply problem. Judge the handling calls it proposes, and limit the connection so the actions you forbid can't happen. Finish by removing the connection and showing that it is gone.
 
 You are a staff action officer in Task Force Marlin at Forward Base Brandt. The base clinic, Clinic B-2, is running low on burn-dressing cases. The Base Medical Logistics Officer wants to know what is known about getting 40 cases from Mill Depot to the clinic by 100600Z October 2026, what blocks it, and what is still unknown. Forty notes in the vault's `Sources` folder hold the evidence. A partner medical liaison cell has also asked for a short extract about the delivery, and only the Release Authority may decide what leaves the task force. The case is fictional and stays inside the class.
 
-**MCP**, the Model Context Protocol, is the standard way an assistant's harness connects to a separate program, called a **server**, that offers it tools. The server here is a small Python program that reads and writes the notes in your vault. A connection entry in `mcp.json` names the program the machine will start, so adding an entry is agreeing to run that program with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes; Obsidian shows the links between them.
+**MCP**, the Model Context Protocol, is the standard way an assistant's harness connects to a separate program, called a **server**, that offers it tools. Here, the server is a small Python program that reads and writes notes in your vault. A connection entry in `mcp.json` names the program your machine will start. Adding the entry means agreeing to let that program run with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes, and Obsidian shows the links between them.
 
 Plan for about three hours on Tuesday. That is a rough estimate, not a measured time.
 
@@ -20,7 +20,7 @@ The work runs in seven steps:
 
 ## Prepare the work copy and open the vault
 
-Use the verified checkout, Python, OMP, and process-local OpenRouter key from [setup](../../module-00-setup/README.md). Open an ordinary terminal. The commands work from any directory. `W` is your work copy, and `E` holds your receipts: the probe results, your frozen calibration, your notes about the contract, and one folder per live run that the launcher creates itself.
+Use the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md), and your OpenRouter key, which you enter in the terminal rather than save in a file. Open an ordinary terminal. The commands work from any directory. `W` is your work copy, and `E` holds your receipts: the probe results, your frozen calibration, your notes about the contract, and one folder per live run that the launcher creates itself.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -54,17 +54,17 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` and this attempt's identifier, then `PASS: created` followed by the work path, then two `Next` commands that you can ignore because the next step runs the inspector itself. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`, and the vault's `Drafts` and `Estimate/Releasable` folders exist and are empty.
+**Expected:** The terminal prints `RUN=` and this attempt's identifier, followed by `PASS: created` and the work path. It then prints two `Next` commands; you can ignore them because the next step runs the inspector itself. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The vault's `Drafts` and `Estimate/Releasable` folders also exist and are empty.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
-**Recovery:** Preserve the existing attempt. Repair the prerequisite, then repeat this block to choose a fresh `RUN`. Never reset or clean the checkout to make an external attempt possible.
+**Recovery:** Keep the existing attempt. Repair the prerequisite, then repeat this block to choose a fresh `RUN`. Never reset or clean the checkout to make an external attempt possible.
 
-Obsidian is a separate application. If it is not on your computer, install it from [obsidian.md](https://obsidian.md); you need no account, no Sync, and no plugin. Open Obsidian, choose **Open folder as vault**, and select the `vault` folder inside `W`. Keep Restricted mode on, so no community plugin runs. If you cannot install Obsidian, open the same folder in a text editor and work from its file list; you lose the backlinks and the graph, and nothing else changes.
+Obsidian is a separate application. If it is not on your computer, install it from [obsidian.md](https://obsidian.md). You need no account, no Sync, and no plugin. Open Obsidian, choose **Open folder as vault**, and select the `vault` folder inside `W`. Keep Restricted mode on so no community plugin runs. If you cannot install Obsidian, open the same folder in a text editor and work from its file list. You will lose the backlinks and the graph, but nothing else changes.
 
-In the vault, read `Start here`, then `Handbook/Handling rules`. The rules are numbered H1 to H7 and use exercise categories, OPEN, PARTNER, and STAFF, that stand for real ideas and map to no real marking system. You will apply them to six notes yourself before the AI applies them to forty.
+In the vault, read `Start here`, then `Handbook/Handling rules`. The rules are numbered H1 to H7. They use the exercise categories OPEN, PARTNER, and STAFF, which stand for real ideas but do not map to any real marking system. Apply them to six notes yourself before the AI applies them to forty.
 
-Obsidian writes a hidden `.obsidian` folder into the vault. The server never serves it, and the launcher ignores it. Leave Obsidian idle during a live run: the launcher compares the vault before and after, and a note you edit mid-run appears as a change nobody explained.
+Obsidian writes a hidden `.obsidian` folder into the vault. The server never serves it, and the launcher ignores it. Leave Obsidian idle during a live run because the launcher compares the vault before and after. If you edit a note mid-run, it will show up as an unexplained change.
 
 ### If you open a new terminal
 
@@ -106,7 +106,7 @@ $E = "$BASE\receipts"
 
 ### Enter your key in this terminal
 
-The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+The launcher reads your OpenRouter key only from this terminal's environment, so a new terminal starts without it. Enter the key through a hidden prompt and make it available to the commands you run here. Paste the first command by itself and press Enter. Type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -148,7 +148,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+**Expected:** `SET` proves the key is present in this terminal, but not that it is valid or has credit.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
@@ -156,7 +156,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Read the server's contract before you connect it
 
-When a server connects, it describes itself: a name, a block of instructions for the model, and each tool with a description and a few hints, such as whether the tool only reads. The harness and the model take those descriptions at face value, which is why you read them first. The inspector starts only the supplied server from your work copy, because a connection entry is a program the machine will run, and it refuses any other.
+When a server connects, it describes itself: a name, a block of instructions for the model, and a description and hints for each tool, such as whether it only reads. The harness and the model take those descriptions at face value, so read them first. A connection entry tells the machine which program to run. The inspector starts only the supplied server from your work copy and refuses any other.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -171,11 +171,11 @@ When a server connects, it describes itself: a name, a block of instructions for
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the inspection failed; preserve this attempt.' }
 ```
 
-**Expected:** The server's instructions, a table of twelve tools with two columns that say whether each claims to be read-only and whether it can change notes, and a `FINDINGS` list with two entries. One names a tool marked read-only whose own description says it adds and removes tags. The other says the server's instructions steer the model toward changing the vault.
+**Expected:** The inspector prints the server's instructions and a table of twelve tools. Its two columns show whether each tool claims to be read-only and whether it can change notes. The `FINDINGS` list has two entries: one names a tool marked read-only whose own description says it adds and removes tags, and the other says the server's instructions steer the model toward changing the vault.
 
 **Stop:** The inspector prints `HOLD` or refuses the entry, or the findings list is empty.
 
-**Recovery:** A refusal means `mcp.json` points somewhere other than the supplied server in your work copy. Do not edit the inspector. Prepare a fresh work copy, because a connection entry that starts another program is exactly what this check exists to stop.
+**Recovery:** A refusal means `mcp.json` points to a program other than the supplied server in your work copy. Do not edit the inspector. Prepare a fresh work copy because this check is meant to stop a connection entry from starting another program.
 
 ![Inspect what the tool can change; a read-only annotation or a server's instructions do not enforce your authority boundary.](figures/m03-contract-authority.png)
 
@@ -184,15 +184,15 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the inspection failed; preserve this att
 <details markdown="1">
 <summary>Figure text</summary>
 
-The `manage_tags` tool claims to be read-only, but its described effect adds or removes tags: the claim and effect disagree. Inspect tool descriptions rather than treating an annotation as enforcement. Separately, server instructions can steer the model; they do not grant permission or enforce the connection's limits.
+The `manage_tags` tool says it is read-only, but its description says it adds or removes tags. Check what each tool does rather than relying on its read-only mark. The server's instructions can also steer the model, but they neither grant permission nor enforce the connection's limits.
 
 </details>
 
-Write `contract.md` in `E`, in your own words, answering three questions. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool's read-only mark does not match its description, and what could go wrong if a harness approved it because of that mark? Name `manage_tags` and the server's instructions in your answer, and write at least forty words, because the final check holds a shorter note. You'll decide in the next step whether the model receives those instructions at all.
+Write `contract.md` in `E` and answer three questions in your own words. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool has a read-only mark that disagrees with its description, and what could go wrong if a harness approved it on that basis? Name `manage_tags` and the server's instructions. Write at least forty words; the final check holds a shorter note. In the next step, you'll decide whether to give the model those instructions at all.
 
 ## Declare what the connection may do, then prove the limits
 
-A model might never attempt a forbidden action, so a clean transcript proves little about what the connection allows. A **probe** attempts each forbidden action itself, against a throwaway copy of the vault and without a model, and records what happened. Your declaration comes first because the probe judges the connection against it.
+A model might never try a forbidden action, so a clean transcript proves little about the connection's limits. A **probe** tries each forbidden action without a model, using a throwaway copy of the vault, and records what happens. Write your declaration first so the probe can judge the connection against it.
 
 ![Use separate tool, guard, and server limits, then inspect the evidence from the layer actually exercised; the server cannot log a call it never received.](figures/m03-authority-layers.png)
 
@@ -201,11 +201,11 @@ A model might never attempt a forbidden action, so a clean transcript proves lit
 <details markdown="1">
 <summary>Figure text</summary>
 
-A request first meets the tool offer or allow-list, then the guard, then server scope (including read-only or create-only limits), before any effect on files on disk. A tool excluded by the allow-list is not sent; a guard may block an offered call before the server; a call that reaches the server may receive a server denial instead of changing a file. These are separate exits, not steps through which a refused call continues. Use the harness or probe record for a call not sent or blocked before the server. For a call that reaches the server, inspect the server audit and disk effects, including when the server denies it; inspect those effects for an allowed call too. A server cannot audit a call it never received.
+A request meets the tool offer or allow-list first, then the guard, then server scope (including read-only or create-only limits) before it can affect files on disk. The allow-list does not send an excluded tool call. The guard may block an offered call before it reaches the server. A call that does reach the server may be denied there without changing a file. Once a call is refused, it goes no further. For calls not sent or blocked before the server, use the harness or probe record. For calls that reach the server, check the server audit and disk effects, even if the server denies them; check disk effects for allowed calls too. The server cannot audit a call it never received.
 
 </details>
 
-Open `W/shared/prompts/RESEARCH.md`. List every folder the prompt tells the AI to read and every folder it tells the AI to write. Those folders, and no others, are your scopes for the research phase. Take the tool names from the inspector's table and allow only the tools that work needs. Then open `W/AUTHORITY.md` and fill in its one JSON block with `"phase": "research"`, your tools, your two scopes, and `"create_only": true`, which means a note that already exists can never be changed. The file's own table shows which setting in `mcp.json` matches each field. Leave `mcp.json` unchanged for now.
+Open `W/shared/prompts/RESEARCH.md`. List every folder the prompt tells the AI to read and every folder it tells the AI to write. Use those folders, and no others, as your scopes for the research phase. From the inspector's table, allow only the tools needed for that work. Then open `W/AUTHORITY.md` and fill in its one JSON block with `"phase": "research"`, your tools, your two scopes, and `"create_only": true`. That last setting means an existing note can never be changed. The table in the file shows which setting in `mcp.json` matches each field. Leave `mcp.json` unchanged for now.
 
 Run the probe against the connection as it stands, with no limits yet.
 
@@ -222,13 +222,13 @@ Run the probe against the connection as it stands, with no limits yet.
 if ($LASTEXITCODE -ne 1) { throw 'HOLD: the unbounded probe was expected to report HOLD.' }
 ```
 
-**Expected:** The probe ends with `HOLD` and several attempts marked `BREACHED`: a source note overwritten, a note created outside your write folder, and a note read from a folder you did not declare. Attempts with tools you left off your list show `HELD` by the allow-list. The allow-list stops whole tools, but it cannot stop `write_note` from writing to the wrong place, because the server has no folder limit yet.
+**Expected:** The probe ends with `HOLD`. Several attempts show `BREACHED`: one overwrites a source note, one creates a note outside your write folder, and one reads a note from a folder you did not declare. Tools left off your list show `HELD` by the allow-list. The allow-list stops whole tools, but it cannot stop `write_note` from writing to the wrong folder while the server has no folder limit.
 
 **Stop:** The probe ends with `PASS`, or it refuses your declaration.
 
 **Recovery:** If the declaration is refused, the message names the field to fix. If the probe passes, `mcp.json` already carries limit arguments. Rename the result to `probe-raw-attempt-1.json` and keep it, remove those arguments so only the server script, `--root`, and the vault path remain, and run the probe again into `probe-raw.json`.
 
-Now make the connection match the declaration. In `W/mcp.json`, add the limit arguments to the server's `args` list, after the vault path that follows `--root`, using the table in `AUTHORITY.md`. Each limit that takes a folder is two list items, the flag and then the folder, each in its own quotes and separated by commas; a flag with no value is one item. For example, a connection that may read one folder named `Example/` and may never change an existing note would end its list with `"--read-prefix", "Example/", "--no-overwrite"`. Repeat a flag once for each folder. Decide whether `"instructions"` stays `true`. Then run the probe again.
+Now make the connection match the declaration. In `W/mcp.json`, use the table in `AUTHORITY.md` to add limit arguments to the server's `args` list, after the vault path that follows `--root`. A folder limit takes two list items: the flag and the folder, each in its own quotes, separated by commas. A flag with no value takes one item. For example, a connection that may read one folder named `Example/` and never change an existing note would end its list with `"--read-prefix", "Example/", "--no-overwrite"`. Repeat a flag once for each folder. Decide whether `"instructions"` stays `true`, then run the probe again.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -256,7 +256,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research limits did not hold; preser
 <details markdown="1">
 <summary>Figure text</summary>
 
-The normal probe compares four forbidden attempts against an open connection and a bounded connection. Reading outside scope, overwriting a source, and creating a note outside the write folder are each `BREACHED` on the open connection and `HELD` on the bounded one. Deleting a source is `HELD (allow-list)` in both configurations because deletion is excluded from the declaration. That delete call was not sent to the server: its `server.outcome` is `NOT_SENT`, so the printed result does not show how the server would respond. Only the server-only stretch, run with `--ignore-allow-list`, sends that call to the server; its evidence is the server denial plus a check that the files on disk are unchanged. Separately, permitted actions must work, so a limit that blocks needed work is too tight, not correct authority.
+The normal probe makes four forbidden attempts against both an open connection and a bounded connection. Reading outside scope, overwriting a source, and creating a note outside the write folder each return `BREACHED` on the open connection and `HELD` on the bounded one. Deleting a source returns `HELD (allow-list)` in both configurations because the declaration excludes deletion. The allow-list did not send that call to the server: `server.outcome` is `NOT_SENT`, so this result cannot tell you how the server would respond. Only the server-only stretch, run with `--ignore-allow-list`, sends the delete call to the server; its evidence is the server's denial and a check that the files on disk did not change. Permitted actions must still work; a limit that blocks needed work is too tight, not correct authority.
 
 </details>
 
@@ -279,17 +279,17 @@ The allow-list is one layer, and the server's own limits are another. Run the re
 & $PY "$W\shared\mcp\authority_probe.py" --config "$W\mcp.json" --authority "$W\AUTHORITY.md" --vault "$W\vault" --out "$E\probe-server-alone.json" --ignore-allow-list
 ```
 
-**Expected:** `PASS`, with every forbidden attempt `HELD` and `server` as the layer that stopped it, including patching, tagging, moving, and deleting notes that your allow-list never offered. Compare this with the unbounded probe, where the allow-list was doing that work alone.
+**Expected:** `PASS`, with every forbidden attempt marked `HELD` by the `server` layer. That includes patching, tagging, moving, and deleting notes, even though your allow-list never offered those tools. Compare the unbounded probe, where the allow-list alone stopped them.
 
 **Stop:** An attempt is `BREACHED` with the allow-list ignored.
 
-**Recovery:** A breach means a layer you relied on was doing work the server should do itself. Add the missing server limit and repeat the probe under a new output name. Record in your handoff which layer stopped each kind of attempt.
+**Recovery:** A breach shows that you were relying on another layer to stop an action the server should stop itself. Add the missing server limit and repeat the probe under a new output name. In your handoff, record which layer stopped each kind of attempt.
 
 </details>
 
 ## Judge six notes yourself before the AI works
 
-The AI will propose a handling for every note, and a proposal read first tends to become your answer. Decide six notes yourself before you see it. These notes are listed in `Start here` and in `Estimate/Calibration`; each exercises a different part of the rules. Open `Estimate/Calibration` in Obsidian and fill in each row with your marking and the rule that decides it, and add a reason where the rule alone does not explain it. Use only the rules in `Handbook/Handling rules`.
+The AI will propose a handling for every note. If you read its proposals first, they can sway your own decisions, so decide six notes yourself before you see them. You'll find those notes in `Start here` and `Estimate/Calibration`; each tests a different part of the rules. Open `Estimate/Calibration` in Obsidian. For each row, enter your marking and the rule that decides it, adding a reason if the rule alone does not explain your decision. Use only the rules in `Handbook/Handling rules`.
 
 ![Apply header, valid notice, inheritance, and aggregation in order; a body claim or a proposed marking does not grant release authority.](figures/m03-effective-handling.png)
 
@@ -305,11 +305,11 @@ Four steps, in order, give a note's effective handling.
 3. Inherit effective source levels: a note takes the most restricted level among the notes it draws on, using their effective levels after steps 1 and 2, not their original header markings. Most restricted wins.
 4. Aggregation: a product holding at least 3 of the 4 movement elements is STAFF at minimum.
 
-Separately, new notes written by the AI start at STAFF, and a proposal is not a release: a proposed marking, or a claim in a note's body, never changes handling. Only a valid Release Authority notice does.
+New notes written by the AI start at STAFF. A proposed marking is not a release, and neither that proposal nor a claim in a note's body changes handling. Only a valid Release Authority notice does.
 
 </details>
 
-Freeze your decisions. The freeze records the time and a fingerprint of the file, so the record shows that your judgment came first.
+Freeze your decisions. The freeze saves the time and a fingerprint of the file, showing that you made your judgment before seeing the AI's proposals.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -328,11 +328,11 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the calibration was not frozen; preserve
 
 **Stop:** The command refuses the table, or the output file already exists.
 
-**Recovery:** A refusal names the row whose marking is blank or is not OPEN, PARTNER, or STAFF, or whose rule is blank. Nothing was written, so fix the row and run it again. An existing output file means the calibration is already frozen, and the first freeze is the one that counts.
+**Recovery:** If the command refuses the table, it names a row with a blank marking, a marking other than OPEN, PARTNER, or STAFF, or a blank rule. Nothing was written, so fix that row and run the command again. If the output file already exists, the calibration is already frozen; the first freeze is the one that counts.
 
 ## Research through the connection
 
-Run the connection once with a small request, so a configuration mistake shows up before the long run. The smoke prompt asks the model to list the folders it can see and read one reference note. Both runs use your declaration and `mcp.json`. The launcher checks that the two agree and refuses to start when they do not.
+Try the connection with a small request before the long research run. The smoke prompt asks the model to list the folders it can see and read one reference note, so a configuration mistake can show up early. Both runs use your declaration and `mcp.json`. The launcher checks that they agree and refuses to start if they do not.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -347,13 +347,13 @@ Run the connection once with a small request, so a configuration mistake shows u
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the smoke run failed; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: complete guarded OMP turn`. In `E/smoke`, `mcp-audit.jsonl` is the server's own record of what it was asked, and `response.md` is the model's answer, which should name only folders you declared readable.
+**Expected:** `PASS: complete guarded OMP turn`. In `E/smoke`, `mcp-audit.jsonl` is the server's own record of what it was asked, and `response.md` holds the model's answer. That answer should name only folders you declared readable.
 
 **Stop:** The launcher prints `HOLD`, exits with 2, or the answer names a folder you did not declare.
 
-**Recovery:** A message beginning `read limits differ` or `write limits differ` names the field where `AUTHORITY.md` and `mcp.json` disagree. Change the file that is wrong, and because the probe fingerprints both files, rename `probe-research.json` to `probe-research-attempt-1.json`, run the research probe again into `probe-research.json`, and then run the smoke test again. After an incomplete run, rename the folder `smoke-attempt-1`, keep it, and run again into `E/smoke`.
+**Recovery:** A message beginning `read limits differ` or `write limits differ` points to the field where `AUTHORITY.md` and `mcp.json` disagree. Fix the wrong file. The probe fingerprints both files, so rename `probe-research.json` to `probe-research-attempt-1.json`, run the research probe again into `probe-research.json`, and then repeat the smoke test. If a run was incomplete, keep its folder by renaming it `smoke-attempt-1`, then run again into `E/smoke`.
 
-Now run the research. The prompt asks the AI to read every source note, write findings with links back to their sources, list what is still unknown, and propose a handling for all forty notes. Two notes in the pile are addressed to automation, and the prompt tells the AI to treat what notes say as information rather than orders. Leave Obsidian idle until the run ends.
+Now run the research. The prompt asks the AI to read every source note, write findings linked to their sources, list what remains unknown, and propose a handling for all forty notes. Two notes in the pile address automation directly. The prompt tells the AI to treat what notes say as information, not orders. Leave Obsidian idle until the run ends.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -372,17 +372,17 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research run failed; preserve this a
 
 **Stop:** The launcher prints `HOLD`, a run ends before the model finishes, or any source note changed.
 
-**Recovery:** Rename the held folder `research-attempt-1`, keep it, and move any notes that run created under `Drafts/research` into that folder, because the server will not replace a note that exists. Then run again into `E/research`. Never repair a changed source note by hand: a changed source means a limit failed, so keep the receipts and stop.
+**Recovery:** Rename the held folder `research-attempt-1` and keep it. Move any notes the run created under `Drafts/research` into that folder because the server will not replace a note that already exists. Then run again into `E/research`. Never repair a changed source note by hand. A changed source means a limit failed, so keep the receipts and stop.
 
 Now read what the AI wrote, in Obsidian. Open `Drafts/research/open-questions`, then each fact note. Click a `[[KH-…]]` link to open the source it cites. Open the Backlinks pane on a source note to see which findings cite it, and open the Graph view to spot source notes that no finding mentions. Search the vault for `QA hold`, `deadlined`, and `MLC`. Pick two conflicts in the pile and check what the AI claimed about each against the sources. Candidates: which stock count is current, whether the lot that is on hand is the lot that can be issued, whether the truck on the convoy table can run, whether the bridge on the main route takes its weight, and whether the approved flight falls inside the dust forecast. A finding without a source note it can be traced to is not yet a finding.
 
 Open `E/research/mcp-audit.jsonl` and look for rows with `"allowed": false`. Each one is a call the server refused. If you see none, the AI never tried anything outside its limits during this run, and your probe is what shows that the limits hold.
 
-Quoted source instructions do not change authority. Inspect actual calls and disk effects; do not infer an attempt that was never observed.
+Quoted instructions in a source do not change authority. Check which calls were made and what changed on disk. If you did not observe an attempt, do not claim one happened.
 
 ## Check the AI's handling calls against the rules
 
-The AI's handling proposal is a proposal: under rule H6, only the Release Authority changes a marking, and a proposal that you accept without checking becomes your mistake. A summary can also be more restricted than every note it draws on. Three facts that are each safe to share, such as a location, a time with a zone, and a named route, can together tell a reader where and when a convoy moves.
+Treat the AI's handling proposal as a proposal. Under rule H6, only the Release Authority changes a marking. If you accept the AI's proposal without checking it, the mistake is yours. A summary may need a more restricted marking than any of its source notes. Three facts may each be safe to share alone: a location, a time with a zone, and a named route. Together, they can tell a reader where and when a convoy moves.
 
 ![One product containing at least three movement-element types is STAFF at minimum, even when its sources are individually OPEN or PARTNER.](figures/m03-aggregation.png)
 
@@ -395,7 +395,7 @@ There are four movement-element types: location grid, time with zone letter, nam
 
 </details>
 
-Copy the AI's proposal into your register so the two sit side by side. The command fills only the `AI proposed` column.
+Copy the AI's proposal into your register beside your first-pass markings. The command fills only the `AI proposed` column.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -416,7 +416,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the register was not seeded; preserve th
 
 **Recovery:** A missing proposal means the research run did not write `Drafts/research/handling-proposal`; look at that run's receipts before running it again. For a note without a usable proposal, leave the cell empty and decide the note from the rules.
 
-In `Estimate/Handling register` in Obsidian, set `Final` for all forty notes, starting with the six you calibrated and the notes where your first-pass marking and the AI's proposal differ. Where `Final` differs from the AI's proposal, name the rule that decides it, one of H1 to H7, and give a one-sentence reason. Read each note's header, not only its body: words in the body that claim a clearance are not a marking, and a notice that does not come from the Release Authority is not a notice. Compare times in Zulu.
+Open `Estimate/Handling register` in Obsidian and set `Final` for all forty notes. Start with the six you calibrated and any note where your first-pass marking differs from the AI's proposal. If `Final` differs from the AI's proposal, name the rule that decides it, one of H1 to H7, and give a one-sentence reason. Read each note's header as well as its body: words in the body claiming clearance do not change a marking, and only a valid notice from the Release Authority counts as a notice. Compare times in Zulu.
 
 Then copy the notes you marked OPEN or PARTNER into `Estimate/Releasable`.
 
@@ -441,7 +441,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the releasable folder was not staged; pr
 
 ## Narrow the connection for the partner extract
 
-The partner phase has a different job and needs a different reach. Read `W/shared/prompts/PARTNER_EXTRACT.md` and derive the new scopes the same way you did for research: read only what the extract may draw on, and write only the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md`, change the tools and scopes, and change the server's arguments in `mcp.json` to match. A partner phase that can still read `Sources` could repeat a STAFF fact however carefully the extract is worded.
+The partner phase needs a different reach for a different job. Read `W/shared/prompts/PARTNER_EXTRACT.md` and set the new scopes as you did for research: allow reads only from material the extract may draw on, and writes only to the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md`, update the tools and scopes, and set the server's arguments in `mcp.json` to match. If the partner phase can still read `Sources`, it could repeat a STAFF fact no matter how carefully the extract is worded.
 
 Prove the new limits before the live run, then run the partner phase.
 
@@ -465,9 +465,9 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the partner run failed; preserve this at
 
 **Stop:** The probe holds, the launcher refuses to start, or the run ends without writing the extract.
 
-**Recovery:** Fix the limits that the probe or the launcher names and prove them again before any live run; if you change either connection file, rename `probe-partner.json` to `probe-partner-attempt-1.json` and probe again. Rename a held run folder to `partner-attempt-1`, keep it, move any note it created under `Drafts/partner` into that folder, and run again into `E/partner`.
+**Recovery:** Fix the limits named by the probe or launcher and prove them again before any live run. If you change either connection file, rename `probe-partner.json` to `probe-partner-attempt-1.json` and probe again. Rename a held run folder to `partner-attempt-1` and keep it. Move any note that run created under `Drafts/partner` into that folder, then run again into `E/partner`.
 
-The extract is a draft for the Release Authority, not a release. Scan it for what a program can check: that every line cites a note you may share, that it repeats no fact that lives only in notes you marked STAFF, and that it holds fewer than three movement elements.
+The extract is a draft for the Release Authority, not a release. Scan it for what a program can check: whether every line cites a note you may share, whether it repeats any fact found only in notes you marked STAFF, and whether it holds fewer than three movement elements.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -486,7 +486,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the extract needs work; preserve this at
 
 **Stop:** The scan prints `HOLD` with the rule that decides each finding.
 
-**Recovery:** A scan finds only what a program can find. Fix the cause: a line without a link, a note you should not have marked shareable, or an extract that joins too many movement elements. If you change your register, stage again. Then rename `E/partner` to `partner-attempt-1`, move `Drafts/partner/partner-extract.md` into that folder, and run the partner phase again into `E/partner`; the extract is a draft, so moving it loses no source. A wise sentence is still your decision.
+**Recovery:** The scan finds only what a program can find. Fix the cause: a line without a link, a note you should not have marked shareable, or an extract that joins too many movement elements. If you change your register, stage again. Then rename `E/partner` to `partner-attempt-1` and move `Drafts/partner/partner-extract.md` into that folder. Run the partner phase again into `E/partner`. The extract is a draft, so moving it loses no source. You still decide whether the wording is wise.
 
 ## Disconnect and prove it
 
@@ -536,15 +536,15 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the revoked run failed; preserve this at
 
 **Stop:** The launcher refuses the revoked declaration or the run offered a tool.
 
-**Recovery:** A revoked phase needs an empty server map and a declaration with no tools or folders; fix the file the message names and run again.
+**Recovery:** The revoked phase needs an empty server map and a declaration with no tools or folders. Fix the file named in the message, then run again.
 
 Your handoff describes the authority each phase held.
 
 ## Hand off and run the final check
 
-The next owner gets your finding, the limits that were in force, and what the probes showed, and then the verifier reads it all back. Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
+The next owner needs your finding, the limits that were in force, and what the probes showed. The verifier reads these back. Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
 
-Run the check. It reads your work copy and your receipts, joins the launcher's receipts to the server's own log and the files on disk, and compares your handling decisions with the rules.
+Run the check. It reads your work copy and receipts, matches the launcher's receipts against the server's own log and the files on disk, and checks your handling decisions against the rules.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -563,8 +563,8 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the receipts need attention; preserve th
 
 **Stop:** Any `HOLD` line.
 
-**Recovery:** Each `HOLD` names the claim and the reason. Preserve the attempt and fix the cause, not the evidence: a probe made after a live run, a note marked less restricted than the rules require, or a register that disagrees with the AI's own proposal. A `PASS` says the receipts agree with each other and with the rules. It does not say your reasoning was wise, so ask someone to read your handoff.
+**Recovery:** Each `HOLD` names the claim and the reason. Preserve the attempt and fix the cause rather than changing the evidence: a probe made after a live run, a note marked less restricted than the rules require, or a register that disagrees with the AI's own proposal. A `PASS` means the receipts agree with each other and with the rules, but it cannot judge whether your reasoning was wise. Ask someone to read your handoff.
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional course fixtures. Do not use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result permits only class review.
+All names, identifiers, places, and facts are fictional materials for this course. Do not use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.

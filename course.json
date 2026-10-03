@@ -219,11 +219,11 @@
       "summary": "Research an Obsidian vault through an MCP server, check the AI's handling calls against the rules, and prove the limits you set on the connection.",
       "nav_summary": "MCP operation · classification · limited authority",
       "outcomes": {
-        "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit it to the folders and actions one phase needs, prove those limits with a probe, and remove the connection with proof that nothing is left.",
+        "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit the connection to the folders and actions each phase needs, prove those limits with a probe, and remove the connection with proof that it is gone.",
         "will": [
                 "Read a server's self-description and catch a tool whose read-only label is false.",
-                "Check an AI's handling proposals against written rules, after making your own decisions first.",
-                "Narrow the assistant's reach between phases and show that every forbidden action was stopped, even the ones the model never tried."
+                "Make your own handling decisions first, then check the AI's handling proposals against written rules.",
+                "Narrow the assistant's reach between phases and use a probe to show that every forbidden action was stopped, even the ones the model never tried."
         ]
       },
       "pages": [
