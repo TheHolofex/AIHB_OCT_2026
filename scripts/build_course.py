@@ -926,7 +926,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
 <button type="button" class="sc-btn rf-btn sc-btn--secondary rf-course-trigger" data-course-open hidden>Course</button>{_appearance("rf-desktop-appearance")}</div></div>
 <details class="rf-course-fallback"><summary>Course</summary>{navigation}</details></header>{main}
 <div class="rf-status"><p id="copy-status" role="status" aria-live="polite"></p><p id="rf-state-status" role="status"></p></div>
-<footer class="rf-footer"><p class="rf-caveat">Fictional, class-only work. A passing check does not authorize a real movement.</p>
+<footer class="rf-footer"><p class="rf-caveat">Fictional cases, for class use only. A passing check does not authorize any real-world action.</p>
 <div class="rf-footer-tools">{_appearance()}{_reset_place()}</div>
 <p class="rf-print-note">Expand optional work and figure-text disclosures before printing if your browser does not expand them automatically.</p></footer>
 {_dialogs(navigation, home)}<script type="application/json" id="rf-page-data">{data}</script></body></html>

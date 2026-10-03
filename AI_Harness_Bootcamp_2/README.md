@@ -1,12 +1,12 @@
 # AI Harness Bootcamp
 
-Learn to operate AI harnesses by doing useful work: draft a document, check a claim, process a batch, and hand off a repeatable workflow. Run the tools yourself, inspect the result, and improve what happens next.
+Learn to operate AI harnesses by doing useful work: draft a document, check a claim, process a batch, and hand off a repeatable workflow. You run the tools yourself, check what they produce, and use what you find to improve the next run.
 
 ## Put an AI harness to work
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You’ll use Oh My Pi to work with files and supplied tools, Obsidian to review linked knowledge, and local n8n to build visual workflows in Module 7. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
+You'll use Oh My Pi to work with files and supplied tools, Obsidian to review and link notes, and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, test changes, diagnose failures, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
 
 <div data-photo-band="custody"></div>
 
@@ -14,17 +14,17 @@ You’ll use Oh My Pi to work with files and supplied tools, Obsidian to review 
 
 - **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
-- **A reusable knowledge vault.** Review source-backed notes in Obsidian, connect useful claims, and prove that a fresh model session uses the admitted knowledge and its saved instruction. Improve a substantive weakness and compare a fresh run.
-- **A repeatable batch workflow.** Build and save a visual n8n workflow that validates records, routes exceptions, and produces ordered receipts. Predict one policy change, compare every output row across two batches, and restore the original workflow to reproduce both results.
-- **An operable handoff.** Give another person the inputs, instructions, controls, and checks they need to run, stop, and restore the work without your chat history.
+- **A reusable knowledge vault.** Review source-backed notes in Obsidian, link the useful claims, and prove that a fresh model session uses your saved instruction and only the notes you approved. Then fix one weakness that matters and show the difference in another fresh run.
+- **A repeatable batch workflow.** Build and save a visual n8n workflow that validates records, routes exceptions, and produces ordered receipts. Predict which rows one policy change will alter, compare every output row in both batches, then restore the original workflow and reproduce its results exactly.
+- **A handoff someone else can run.** Give another person the inputs, instructions, controls, and checks they need to run, stop, and restore the work without you or your chat history.
 
-Keep the original workflow export and its separately recorded SHA-256 fingerprint before changing the policy. Save the changed export separately. Restore the verified original into a new blank workflow and compare both reruns byte-for-byte with their original receipts. Generated prose stays outside these deterministic checks, and outputs are never patched by hand.
+In the batch workflow, before you change the policy, you save the original workflow export along with a separate record of its SHA-256 fingerprint. The changed export goes in its own file. To restore, you check the original against its fingerprint, import it into a new, blank workflow, and compare both reruns byte for byte with their original receipts. No model-written text goes into these checks, and you never edit an output by hand to make it match.
 
-A fluent answer is not enough. Compare the actual output with the request and sources. When a check fails, preserve the failure, correct its cause, and check again. When a required fact or permission is missing, stop and name the gap.
+An answer can read well and still be wrong, so compare what the tool actually produced with the request and the sources. If a check fails, save the failed result, fix the cause, and check again. If you're missing a fact or permission you need, stop and say exactly what's missing.
 
 ## Four-day schedule
 
-The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours, and a few are shorter. These are rough estimates, not measured times, and your pace will vary with the group and the machine.
+The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours. Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times, and your pace will vary with the group and the machine.
 
 | Day | Assignments, in order | Roughly |
 |---|---|---:|
@@ -33,11 +33,9 @@ The course runs Monday through Thursday, and all of it is hands-on: you work alo
 | Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours |
 | Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Cold Foundry](module-10-capstone/README.md) | 7.5 hours |
 
-Each day also includes breaks and meals. Chalk Line runs closer to two and a half hours, and Slope Brief and Night Desk to a little over two; Cold Foundry runs about three hours.
+The hours in this table don't include breaks or meals.
 
 ### Tuesday timetable
-
-Tuesday starts around 08:00 and ends around 18:00. Times are approximate.
 
 | Roughly | Work |
 |---|---|
@@ -49,8 +47,6 @@ Tuesday starts around 08:00 and ends around 18:00. Times are approximate.
 
 ### Wednesday timetable
 
-Wednesday starts around 08:00 and ends around 18:30. Times are approximate.
-
 | Roughly | Work |
 |---|---|
 | 08:00–11:10 | Copper Span |
@@ -61,8 +57,6 @@ Wednesday starts around 08:00 and ends around 18:30. Times are approximate.
 
 ### Thursday timetable
 
-Thursday starts around 08:00 and ends around 16:00. Times are approximate.
-
 | Roughly | Work |
 |---|---|
 | 08:00–10:15 | Slope Brief |
@@ -71,15 +65,25 @@ Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 | 12:50–13:30 | Lunch |
 | 13:30–16:30 | Cold Foundry |
 
-Treat each break as a stopping point. Inside an assignment, the Ledger Pike break comes after the screen runs, the Kiln Hold break comes after the bounded probe, the Chalk Line break comes after the comparison has been printed and before you adjudicate it, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
+Some assignments also have a break partway through, at these points:
 
-**Cold Foundry's handoff happens outside the facilitated hours.** The assignment ends with a kit that another person should be able to bring up, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the kit yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
+- **Ledger Pike:** after you run the file screen.
+- **Kiln Hold:** after you probe the bounded connection.
+- **Chalk Line:** after the comparison prints and before you adjudicate the disagreements.
+- **Copper Span:** after you seal the first miss.
+- **Blue Gauge:** after you write your sixteen first-failure notes.
+- **White Rack:** after you've built and saved your workflow.
+- **Night Desk:** after the two supplied probes and before the planted-note run.
+
+Before any break, save your notes and receipts.
+
+**Cold Foundry's handoff happens outside class hours.** The assignment ends with a kit that another person should be able to start, stop, and restore from its saved files, without your chat history. Their attempt is scheduled separately, so line up that person before Thursday. Running the kit yourself in a fresh terminal shows that it restarts from its saved files, but not that someone else can use it, so you record the two results separately. If no one is available, record the other person's attempt as unobserved, not passed.
 
 <div data-photo-band="route"></div>
 
 ## Choose your assignment
 
-Start with setup, then work through the assignments in the order shown. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
+Start with setup, then work through the assignments in order. Each one comes with its own case and files and expects you to bring the skills you practiced in the earlier ones. Keep your work and evidence outside your checkout, the local copy of the course repository.
 
 <div data-course-map></div>
 
@@ -87,18 +91,18 @@ Start with setup, then work through the assignments in the order shown. Each sup
 
 ## Fictional cases, actual work
 
-Ten sessions run fictional cases; Cold Foundry runs real software under its own bounded-use rule. The tools you run, files you produce, checks you perform, and handoffs you attempt are real. Use the supplied data, not confidential workplace information. No exercise authorizes a real dispatch, release, or other operational decision, and no exercise publishes or serves a model beyond your own loopback interface.
+Ten of the eleven assignments use fictional cases. Cold Foundry doesn't: you run a real, uncensored model on your own laptop under its own usage rules. Either way, the tools, files, checks, and handoffs are real. Use the supplied data, not confidential information from your workplace. No exercise authorizes a real dispatch, release, or other operational decision, and none publishes a model or makes one reachable from outside your own machine.
 
-`PASS` and `HOLD` describe technical checks and work decisions. A successful execution does not prove that another person can operate your handoff; observe that separately.
+`PASS` and `HOLD` report the result of a technical check or a work decision: a check passes, or the work goes on hold until the problem is resolved.
 
 ## Before you start
 
-Choose the [setup path for Windows PowerShell, Windows with WSL 2, macOS, Ubuntu, or Arch Linux](module-00-setup/README.md). You need a browser, a plain-text editor, permission to install the required tools, and GitHub read access to the private course repository. The hosted-course password is separate from repository access.
+Choose the [setup path for Windows PowerShell, Windows with WSL 2, macOS, Ubuntu, or Arch Linux](module-00-setup/README.md). You need a browser, a plain-text editor, permission to install the required tools, and GitHub read access to the private course repository. The password for this course site doesn't give you repository access; you need both.
 
-Setup installs or checks Git, Python 3.12 or newer, Oh My Pi 18.3.5, local Obsidian, and local n8n 2.41.5 with its full official Docker stack. Live OMP work uses a [participant-supplied OpenRouter key](module-00-setup/shared/CREDENTIALS.md) and the pinned Sonnet 4.6 model. Do not save the key in course files or shell profiles.
+Setup installs or checks Git, Python 3.12 or newer, Oh My Pi (OMP) 18.3.5, Obsidian, and n8n 2.41.5 with its full official Docker stack, all on your own machine. For live work, OMP uses [your own OpenRouter key](module-00-setup/shared/CREDENTIALS.md) and one fixed model, Claude Sonnet 4.6. Don't save the key in course files or shell profiles.
 
-Module 2 requires local Obsidian with community plugins restricted and Sync off. Preserve an existing installation that passes readiness; fresh installs use the reference release in your platform guide. Open the practice vault, follow its links, save a reply, observe an external change, then close and reopen it. Keep the actual GUI observation separate from the disk check and from OMP and n8n readiness. The WSL route runs Linux Obsidian through WSLg against the same Linux-home files, not a native Windows app watching a network path.
+Module 2 needs Obsidian installed on your machine, with community plugins in Restricted mode and Sync turned off. If you already have Obsidian and it passes the readiness check, keep that installation; for a fresh install, use the release your platform guide names. The check has you open the practice vault, follow its links, save a reply, watch Obsidian pick up a change made outside the app, and then close and reopen the vault. Record what you saw in the Obsidian window separately from the disk check and from the OMP and n8n readiness results. On the WSL route, you run the Linux version of Obsidian through WSLg, on the same Linux home files that OMP uses, rather than pointing the Windows app at a network path.
 
-Module 7 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
+Module 7 has its own n8n readiness check: you open the local editor and confirm that a saved workflow survives stopping and restarting n8n. You don't need an n8n Cloud account, an Assistant key, or any paid model calls. Keep the Assistant off, leave workflows unpublished, and open n8n only at localhost in your browser. The device owner must approve the privileged Docker-in-Docker runner and any Docker Desktop licensing that applies. On the native Windows PowerShell route, n8n is the only part that runs through a WSL Ubuntu bridge; OMP, Python, Git, your credentials, and the rest of the course work stay native to Windows. If WSL or Docker is blocked, n8n stays on HOLD even when OMP passes.
 
-Allow roughly one to three hours for setup, and more if downloads, desktop readiness, or owner approvals take longer. The assignments run Monday through Thursday. These are rough estimates, not measured times.
+Allow roughly one to three hours for setup on top of the daily schedule, and longer if downloads are slow, the Obsidian or n8n checks take extra work, or you're waiting on the device owner's approval. That's a rough estimate, not a measured time.
