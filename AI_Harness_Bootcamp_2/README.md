@@ -24,7 +24,7 @@ A fluent answer is not enough. Compare the actual output with the request and so
 
 ## Four-day schedule
 
-The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours, and a few are shorter. These are rough estimates, not measured times. Pace varies with the group and the machine, and no assignment depends on finishing within a set time.
+The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours, and a few are shorter. These are rough estimates, not measured times, and your pace will vary with the group and the machine.
 
 | Day | Assignments, in order | Roughly |
 |---|---|---:|
@@ -101,4 +101,4 @@ Module 2 requires local Obsidian with community plugins restricted and Sync off.
 
 Module 7 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
 
-Allow roughly one to three hours for setup, and more if downloads, desktop readiness, or owner approvals take longer. The assignments run Monday through Thursday. These are estimates, not measured completion times, and no assignment depends on finishing within a set time.
+Allow roughly one to three hours for setup, and more if downloads, desktop readiness, or owner approvals take longer. The assignments run Monday through Thursday. These are rough estimates, not measured times.
