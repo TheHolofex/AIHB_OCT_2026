@@ -6,7 +6,7 @@ Unaided, in two hours, a clerk reading forty messages totals the gloves by hand,
 
 ## Session result
 
-The learner builds the state, writes and freezes labels for ten messages, runs the model once as a read-only decision function, validates 280 typed answers or preserves a held reply, measures agreement on the four labeled questions, adjudicates every disagreement against the desk rules, sets `min_confidence` from the highest declared confidence a wrong answer carried, routes the pile, decides the `REFER`, `REVIEW`, and `CLARIFY` queues, and hands the desk lead a requirement line with the authority change recorded as the lead's decision. The verifier confirms order and consistency; the learner's labels and reading judge the answers.
+The learner builds the state, writes and freezes labels for ten messages, runs the model once as a read-only decision function, validates 320 typed answers or preserves a held reply, measures agreement on the four labeled questions, adjudicates every disagreement against the desk rules, sets `min_confidence` from the highest declared confidence a wrong answer carried, routes the pile, decides the `REFER`, `REVIEW`, and `CLARIFY` queues, and hands the desk lead a requirement line with the authority change recorded as the lead's decision. The verifier confirms order and consistency; the learner's labels and reading judge the answers.
 
 ## Before class
 
@@ -18,20 +18,18 @@ The learner builds the state, writes and freezes labels for ten messages, runs t
 
 ## Tuesday delivery route
 
-Module 4 is the third Tuesday block: 150 facilitated minutes, with 30 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The break falls at minute 80, after the comparison has been printed and before adjudication; learners save `agreement-1.json` and step away.
+Module 4 is the third Tuesday block, about two and a half hours. Pacing marks below count minutes from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. The break falls after the comparison has been printed and before adjudication, roughly 80 minutes in; learners save `agreement-1.json` and step away.
 
-| Elapsed minutes | Mode | Action and result |
-|---|---|---|
-| 0–10 | Facilitation | A chat answer versus a typed answer: show one message, ask the room for a route, then ask the seven questions one at a time. Learner can say why the broad question hides five judgments and why code combines them. |
-| 10–30 | Practice | Prepare the work copy and enter the key, read `DESK_RULES.md`, build the state, read the question file, add one question of your own, and check the file. `state.json` holds forty messages and 68 candidates; `check_questions.py` passes. |
-| 30–50 | Practice | Label the ten sample messages and freeze them. `labels.sha256` exists before any run. |
-| 50–65 | Practice | Run the decision function once and validate; if the reply is held, run again into `decide-2`. A validated `answers-N.json` exists, or both receipts are held with their causes recorded. |
-| 65–75 | Facilitation | Read an agreement table live with your own receipt: a disagreement where the model was right, one where it was wrong, and the declared confidence on each. Learner can state the rule for setting `min_confidence` from a measurement. |
-| 75–110 | Practice | Compare, break at minute 80 with the comparison printed, adjudicate every disagreement in `adjudication.md`, set the gates, route, and read the routing table. A routing attempt exists whose gates match the measurement. |
-| 110–140 | Practice | Decide the three queues, write the handoff, run the verifier. Six `PASS` lines or a documented `HOLD`, and a handoff with all six sections. |
-| 140–150 | Facilitation | What the requirement line proves and what it does not: the picked messages, the authority change that only the lead may decide, the delegated requisitions waiting on it, and the ten-message sample's limits. Learner can name what a second run would add. |
-
-The rows total 30 facilitation minutes and 120 practice minutes.
+| Roughly (minutes in) | Action and result |
+|---|---|
+| 0–10 | A chat answer versus a typed answer: show one message, ask the room for a route, then ask the seven questions one at a time. Learner can say why the broad question hides five judgments and why code combines them. |
+| 10–30 | Prepare the work copy and enter the key, read `DESK_RULES.md`, build the state, read the question file, add one question of your own, and check the file. `state.json` holds forty messages and 68 candidates; `check_questions.py` passes. |
+| 30–50 | Label the ten sample messages and freeze them. `labels.sha256` exists before any run. |
+| 50–65 | Run the decision function once and validate; if the reply is held, run again into `decide-2`. A validated `answers-N.json` exists, or both receipts are held with their causes recorded. |
+| 65–75 | Read an agreement table live with your own receipt: a disagreement where the model was right, one where it was wrong, and the declared confidence on each. Learner can state the rule for setting `min_confidence` from a measurement. |
+| 75–110 | Compare, break about 80 minutes in with the comparison printed, adjudicate every disagreement in `adjudication.md`, set the gates, route, and read the routing table. A routing attempt exists whose gates match the measurement. |
+| 110–140 | Decide the three queues, write the handoff, run the verifier. Six `PASS` lines or a documented `HOLD`, and a handoff with all six sections. |
+| 140–150 | What the requirement line proves and what it does not: the picked messages, the authority change that only the lead may decide, the delegated requisitions waiting on it, and the ten-message sample's limits. Learner can name what a second run would add. |
 
 ## Coaching boundary
 

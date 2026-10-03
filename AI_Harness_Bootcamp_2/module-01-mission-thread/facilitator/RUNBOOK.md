@@ -18,9 +18,11 @@ Logistics knowledge outside the packet is not tested. If learners need facts tha
 8. Prepare a domain-novice observer to flag any instruction that requires unstated logistics knowledge.
 9. Inspect the generated `review.html` at a 390px viewport and 200% zoom. Long identifiers in notes must wrap without widening the page; ledgers may scroll inside their own containers. Check the keyboard decision link and the revealed-source link with JavaScript disabled.
 
-## Three-hour route
+## Route
 
-| Time | Facilitator action | Learner result |
+Clock marks are approximate planning guides: follow the learners' progress, not the clock.
+
+| Roughly | Facilitator action | Learner result |
 |---|---|---|
 | 0:00–0:15 | Introduce the question, class-only boundary, and eight-step thread | Learner can explain receipt versus release and delivery versus usable effect |
 | 0:15–0:35 | Learner confirms packet and source identities | Manifest passes; source register begins |

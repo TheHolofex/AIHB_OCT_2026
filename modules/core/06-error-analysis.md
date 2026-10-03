@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment, this module's supplied run corpus, and a supplied deterministic control  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:RUN_SAMPLE; VERIFY:DETERMINISTIC_CONTROL  
 **Produces:** SAMPLE_MANIFEST; PREDICATE_SPEC; DETERMINISTIC_CONTROL_RESULT; PO06_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Adversarial  
 **Work surface:** Observed-run corpus  
 **Practical work:** Confirm the supplied run sample and deterministic control, freeze an outcome-blind sample of 8–20 runs, record first material failures before categories, reconcile counts, infer two literal strings, and configure and validate them through the documented config interface.  

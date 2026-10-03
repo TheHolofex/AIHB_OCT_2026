@@ -6,7 +6,7 @@ You are the intake clerk at Ferry Depot. Vehicle `CL-9` leaves for Clinic K-3 at
 
 A **state** is the data the model is given: here the catalog, the desk rules in short form, and the forty messages. A **typed question** is a question with a fixed answer set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads a state and a question set and returns only typed answers, with no prose and no side effects. It never writes a sentence, never picks a route, and never changes a number, because the answer set does not allow it.
 
-Plan for 2 hours 30 minutes on Tuesday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about two and a half hours on Tuesday. That is a rough estimate, not a measured time.
 
 The work runs in eight steps:
 

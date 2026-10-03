@@ -6,8 +6,7 @@
 **Prerequisites:** Preflighted accessible environment, source verification and bounded direction, and this module's supplied case. Saved instructions and load proof are newly taught here.  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:SUPPLIED_GUARD  
 **Produces:** CONTEXT_MAP; SOURCE_AS_DATA_CONTROL; KNOWLEDGE_VAULT; RELOAD_RESULT; PO02_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Independent  
 **Work surface:** Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher  
 **Practical work:** Process the supplied forty-note packet once, review proposed claims against their sources, admit and link useful knowledge, freeze a reviewed content revision, and retrieve from it in a fresh session. Inspect the saved instruction's load proof. Improve one substantive weakness, review the changed content, and demonstrate the result in another revision and fresh run. Test the missing-rule prerequisite and preserve earlier evidence.  

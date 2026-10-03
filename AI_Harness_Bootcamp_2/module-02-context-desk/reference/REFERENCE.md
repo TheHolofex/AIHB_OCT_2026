@@ -70,7 +70,7 @@ The audit must name one changed/new focal note, substantive weakness, before/aft
 
 ## Delivery and evidence
 
-Use 180 facilitated minutes: 15 orientation, 15 walkthrough, 120 practice (10 setup/open, 15 source pass, 35 review/link/admit, 15 first cold, 30 audit/improve/retest, 15 missing-rule/identity/close), 30 discussion. These are planning allocations, not observed timing.
+Plan about three hours: a short orientation and walkthrough, six hands-on stages (setup/open, source pass, review/link/admit, first cold run, audit/improve/retest, missing-rule/identity/close), and a closing discussion. Review/link/admit and audit/improve/retest take the most time. These are planning estimates, not observed timing.
 
 Retain meaningful file-screen behavior and helper mutation/oracle checks. The live prose digest gate and reference sidecar are removed rather than repinned. Historical records naming an earlier digest remain historical. Independent review must inspect actual files and observed evidence. Staff answers, completed vaults, local receipts, and screenshots must not enter publication or model roots.
 

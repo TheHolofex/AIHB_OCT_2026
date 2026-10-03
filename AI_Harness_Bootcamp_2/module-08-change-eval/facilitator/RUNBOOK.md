@@ -18,29 +18,27 @@ The checked live instruction keeps the two clock values separate: UTC in `Gate t
 
 ## Thursday delivery route
 
-Module 8 is the first Thursday block: 135 facilitated minutes, with 15 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+Module 8 is the first Thursday block, a little over two hours. Pacing marks below count minutes from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. The day's clock is in `COURSE_MAP.md` and on the public homepage.
 
 Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, the supplied cases, controls, evaluator and restore scripts, and a work-copy preparation that runs. This verifies existing prerequisites. It adds no homework.
 
-| Elapsed minutes | Mode | Action and result |
-|---|---|---|
-| 0–10 | Facilitation | Fixed authored comparisons versus model variation, the pre-result policy, any-single-violation gates, and source-invalid versus candidate-invalid boundaries. Remind learners of their earlier comparison and restoration skills; do not reteach them. |
-| 10–30 | Practice | Learners prepare the independent attempt, write the decision rule, and freeze identities without opening candidates. |
-| 30–50 | Practice | Learners check all forty baselines. |
-| 50–85 | Practice | Learners evaluate all baseline/A/B pairs, inspect all 120 result rows, and trace material failures to their authoritative locators. |
-| 85–105 | Practice | Learners apply the frozen rule, record the distinct-failed-case repair proxy and the bounded decision, and recheck identities. |
-| 105–125 | Practice | Learners execute baseline restoration, rerun the evaluation, and compare the restored output bytes. |
-| 125–130 | Practice | Learners preserve the decision, raw evidence, restoration result, and handoff. |
-| 130–135 | Facilitation | Review the decision boundary and why deterministic reruns cannot prove a live-model improvement. |
-
-The rows total 15 facilitation minutes and 120 practice minutes.
+| Roughly (minutes in) | Action and result |
+|---|---|
+| 0–10 | Fixed authored comparisons versus model variation, the pre-result policy, any-single-violation gates, and source-invalid versus candidate-invalid boundaries. Remind learners of their earlier comparison and restoration skills; do not reteach them. |
+| 10–30 | Learners prepare the independent attempt, write the decision rule, and freeze identities without opening candidates. |
+| 30–50 | Learners check all forty baselines. |
+| 50–85 | Learners evaluate all baseline/A/B pairs, inspect all 120 result rows, and trace material failures to their authoritative locators. |
+| 85–105 | Learners apply the frozen rule, record the distinct-failed-case repair proxy and the bounded decision, and recheck identities. |
+| 105–125 | Learners execute baseline restoration, rerun the evaluation, and compare the restored output bytes. |
+| 125–130 | Learners preserve the decision, raw evidence, restoration result, and handoff. |
+| 130–135 | Review the decision boundary and why deterministic reruns cannot prove a live-model improvement. |
 
 Keep the format, mass, and time-zone gates separate; no average may erase a violation. The repeated live comparison (all 36 paired calls and the two restored controls) stays in the lab as an **optional** paid stretch. It has no time in this route, and the core authored-case comparison does not measure stochastic variation.
 
 Hold the clock without cutting the work:
 
 - Save time by shortening repeated plenaries, using the lab's existing prerequisite reminders, and coaching while learners operate. Do not remove a lab explanation or supply a defect name, row, or answer to meet the clock.
-- If a learner cannot finish a required operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move normal required practice into homework, or label an incomplete technical claim complete.
+- If a learner cannot finish a required operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move required hands-on work into homework, or label an incomplete technical claim complete.
 
 ## Coaching boundary
 You may point to a file or help run a supplied command. You may not supply the defect names, rewrite the policy after results, average the pairs, or tell the learner which rows to mark failed. If you cross that line, mark the work as guided practice.

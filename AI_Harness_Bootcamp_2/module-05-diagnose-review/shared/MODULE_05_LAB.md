@@ -2,7 +2,7 @@
 
 A Copper Span duty card could show a scanned load while hiding a condition that requires the movement to hold. Locate where the required information disappears before changing anything. Preserve the failure, use the supplied diagnostic check to distinguish possible causes, and make one authorized, reversible correction. Prove recovery with the original acceptance requirements still in force.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
 
@@ -157,7 +157,7 @@ The restore command checks the clean baseline renderer's **digest**, a fingerpri
 
 ## 3. Seal the first miss
 
-Break the work copy on purpose, then record exactly where the field first disappears before you fix anything. When the facilitator tells you to, place the practice fault in your own work copy with the supplied script. It changes only the work copy's renderer; the clean baseline stays untouched.
+Break the work copy on purpose, then record exactly where the field first disappears before you fix anything. When your instructor tells you to, place the practice fault in your own work copy with the supplied script. It changes only the work copy's renderer; the clean baseline stays untouched.
 
 **Terminal: Bash or zsh, ordinary user.**
 

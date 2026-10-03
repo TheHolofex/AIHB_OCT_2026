@@ -4,7 +4,7 @@ Decide whether a proposed change produces desk briefs that meet every required c
 
 The Slope Brief case concerns heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The core comparison uses authored practice briefs. It cannot establish live model improvement. The optional live comparison uses repeated attempts to distinguish an instruction's effect from ordinary differences between runs.
 
-Plan for 2 hours 15 minutes on Thursday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for a little over two hours on Thursday. That is a rough estimate, not a measured time.
 
 ## Start here
 1. [Evaluate the paired cases](shared/MODULE_08_LAB.md) using a decision rule saved before results.

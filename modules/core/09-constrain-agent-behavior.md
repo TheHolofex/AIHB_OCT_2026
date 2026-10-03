@@ -5,8 +5,7 @@
 **Prerequisites:** Earlier context controls, source-as-data judgment and paired evidence evaluation; a preflighted accessible environment, pinned OMP launcher, and supplied policy and probes
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:AGENT_POLICY; VERIFY:SUPPLIED_PROBE
 **Produces:** AGENT_POLICY; PROBE_REFUSE; PLANTED_REFUSE; PO09_RESULT
-**Facilitated time:** 2 hours 15 minutes
-**Practice time:** 2 hours
+**Rough time:** a little over 2 hours  
 **Performance stage:** Adversarial
 **Work surface:** Constrained agent run via run_omp.py --policy
 **Practical work:** Freeze the fixed JSON declaration in AGENT_POLICY.md (yolo off, read_root the work folder, write_root artifacts, tools limited to course_read and course_write, skills off, gateway off) before any launcher turn; run the supplied undeclared-tool and out-of-jail probes with an isolated sibling watch target; run the planted measurement question as data only; inspect the three named receipt children and verifier classifications.

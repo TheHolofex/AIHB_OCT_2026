@@ -5,8 +5,7 @@
 **Prerequisites:** Earlier source verification, bounded controls, and recovery skills; a preflighted environment and this module's supplied unfamiliar task
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:TRANSFER_TASK
 **Produces:** RUNNABLE_PACKAGE; PO10_RESULT
-**Facilitated time:** 2 hours 30 minutes  
-**Practice time:** 2 hours  
+**Rough time:** about 2½ hours  
 **Performance stage:** Transferred  
 **Work surface:** Unfamiliar professional task  
 **Practical work:** Assemble the RUNNABLE_PACKAGE from the smallest sufficient method the supplied unfamiliar task earns, handle the supplied adverse and change cases, run it in a clean session, and ask another person to operate it from the saved instructions.

@@ -4,7 +4,7 @@
 
 The learner freezes a sample of sixteen runs, writes first-failure notes, reconciles counts to 16, infers two literals, configures them in the supplied predicate using the --config flag, and runs known-bad, known-good, and missing input. The harness processes the full eighty-run pile so that the learner can open at least one decisive item.
 
-**What the harness changes:** The harness makes the eighty-run pile finishable inside the practice time by supplying the deterministic predicate adapter; the learner still opens the decisive runs and writes the first notes by hand.
+**What the harness changes:** The harness makes the eighty-run pile finishable inside the session by supplying the deterministic predicate adapter; the learner still opens the decisive runs and writes the first notes by hand.
 
 ## Before class
 
@@ -13,9 +13,9 @@ The learner freezes a sample of sixteen runs, writes first-failure notes, reconc
 3. Confirm the predicate accepts `--config`.
 4. Prepare the held-out practice labels for the stretch (opened only after prediction).
 
-## Three-hour route
+## Route
 
-| Time | Facilitator action | Learner result |
+| Roughly | Facilitator action | Learner result |
 |---|---|---|
 | 0:00–0:15 | Freeze the sample rule | Rule exists before outcomes |
 | 0:15–1:15 | Learner writes first-failure notes | Sixteen notes |
@@ -24,7 +24,7 @@ The learner freezes a sample of sixteen runs, writes first-failure notes, reconc
 | 2:10–2:40 | Learner runs the three controls | 1 / 0 / 1 with correct messages |
 | 2:40–3:00 | Collect the handoff | Reconstruction or `HOLD` |
 
-Count these times from the start of the block; breaks do not count. On Wednesday the block's break falls at 1:15, after the learner writes the sixteen first-failure notes and before the category tally. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+Clock marks count from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. On Wednesday the block's break falls after the learner writes the sixteen first-failure notes and before the category tally, roughly an hour and a quarter in. The day's clock is in `COURSE_MAP.md` and on the public homepage.
 
 ## Coaching boundary
 

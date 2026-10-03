@@ -115,7 +115,7 @@ The stretch repairs the supplied count/staging-and-paperwork sentence without in
 
 ### Timing and availability
 
-The 180-minute facilitated session, 120-minute learner-work allocation, 60-minute first-result goal, and setup-duration ranges are **design targets, not measured performance or automatic qualification gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. No automatic paid retries are permitted.
+The roughly three-hour session, the first-result goal of about the first hour, and the setup-duration ranges are **design targets, not measured performance or automatic qualification gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. No automatic paid retries are permitted.
 
 Report native platform execution separately for macOS, Ubuntu, Arch, Windows PowerShell and WSL. A parser run or PowerShell-on-macOS replay is not native Windows evidence. Browser, terminal and assistive-technology observations must identify the actual surface used.
 

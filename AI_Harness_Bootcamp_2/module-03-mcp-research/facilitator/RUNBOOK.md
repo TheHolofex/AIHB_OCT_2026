@@ -18,26 +18,24 @@ The learner reads the server's contract before connecting it and finds the misma
 
 ## Tuesday delivery route
 
-Module 3 is the second Tuesday block: 180 facilitated minutes, with 60 minutes of facilitation and 120 minutes of practice. Count elapsed minutes from the start of this block; breaks do not count. The break falls at minute 104, after the learner's calibration is frozen and before the first live run. The day's clock is in `COURSE_MAP.md`.
+Module 3 is the second Tuesday block, about three hours. Pacing marks below count minutes from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. The break falls after the learner's calibration is frozen and before the first live run, roughly 100 minutes in. The day's clock is in `COURSE_MAP.md`.
 
-| Elapsed minutes | Mode | Action and result |
-|---|---|---|
-| 0–10 | Facilitation | What an MCP server is, and why a connection entry is a program the machine will run. Learner can say what `mcp.json` decides. |
-| 10–20 | Facilitation | Read a contract live: run the inspector on the screen and point at the instructions, the tool table, and the two findings. Learner can name a claim to check rather than trust. |
-| 20–30 | Facilitation | The four layers: allow-list, guard, server limits, evidence. Learner can say which layer answers which question. |
-| 30–40 | Facilitation | The handling rules H1 to H7 with the two worked examples in `Handbook/Handling rules`. Learner predicts the level of a third example you make up, not from the vault. |
-| 40–50 | Facilitation | Aggregation and notes addressed to automation. Learner can explain why three shareable facts can make a STAFF summary, and why reading an instruction is not obeying it. |
-| 50–60 | Facilitation | What a probe proves that a transcript does not. Learner can state why a model that never attempted a forbidden action leaves the limit untested. |
-| 60–68 | Practice | Prepare the work copy and open the vault in Obsidian. Work copy exists and the vault opens. |
-| 68–76 | Practice | Inspect the contract and write `contract.md`. `contract-inspection.json` and `contract.md` exist. |
-| 76–96 | Practice | Declare the research limits, run the unbounded probe, set the server's limits, and run the bounded probe. `probe-raw.json` shows breaches and `probe-research.json` passes. |
-| 96–104 | Practice | Decide the six calibration notes and freeze them. `calibration-frozen.json` exists before any live run. |
-| 104–128 | Practice | Smoke run, research run, and review of the AI's notes in Obsidian. Two run folders pass; the learner has checked at least two claims against their sources. |
-| 128–150 | Practice | Fill the handling register for all forty notes and stage the releasable folder. The register is complete and the staged folder matches it. |
-| 150–168 | Practice | Narrow the connection, probe it, run the partner phase, and scan the extract. `probe-partner.json` passes before the run and the scan passes. |
-| 168–180 | Practice | Revoke, run once, write the handoff, and run the verifier. Verifier PASS or a documented HOLD, and a handoff with all six sections. |
-
-The rows total 60 facilitation minutes and 120 practice minutes.
+| Roughly (minutes in) | Action and result |
+|---|---|
+| 0–10 | What an MCP server is, and why a connection entry is a program the machine will run. Learner can say what `mcp.json` decides. |
+| 10–20 | Read a contract live: run the inspector on the screen and point at the instructions, the tool table, and the two findings. Learner can name a claim to check rather than trust. |
+| 20–30 | The four layers: allow-list, guard, server limits, evidence. Learner can say which layer answers which question. |
+| 30–40 | The handling rules H1 to H7 with the two worked examples in `Handbook/Handling rules`. Learner predicts the level of a third example you make up, not from the vault. |
+| 40–50 | Aggregation and notes addressed to automation. Learner can explain why three shareable facts can make a STAFF summary, and why reading an instruction is not obeying it. |
+| 50–60 | What a probe proves that a transcript does not. Learner can state why a model that never attempted a forbidden action leaves the limit untested. |
+| 60–68 | Prepare the work copy and open the vault in Obsidian. Work copy exists and the vault opens. |
+| 68–76 | Inspect the contract and write `contract.md`. `contract-inspection.json` and `contract.md` exist. |
+| 76–96 | Declare the research limits, run the unbounded probe, set the server's limits, and run the bounded probe. `probe-raw.json` shows breaches and `probe-research.json` passes. |
+| 96–104 | Decide the six calibration notes and freeze them. `calibration-frozen.json` exists before any live run. |
+| 104–128 | Smoke run, research run, and review of the AI's notes in Obsidian. Two run folders pass; the learner has checked at least two claims against their sources. |
+| 128–150 | Fill the handling register for all forty notes and stage the releasable folder. The register is complete and the staged folder matches it. |
+| 150–168 | Narrow the connection, probe it, run the partner phase, and scan the extract. `probe-partner.json` passes before the run and the scan passes. |
+| 168–180 | Revoke, run once, write the handoff, and run the verifier. Verifier PASS or a documented HOLD, and a handoff with all six sections. |
 
 Keep the order that the verifier checks: contract before any live run, declaration before the unbounded probe, bounded probe before each live run, calibration before the research run, and revocation last. A probe made after the run it describes is a HOLD, not an equivalent.
 
@@ -45,7 +43,7 @@ Hold the clock without cutting the work:
 
 - Save time by shortening plenaries, pointing to the lab's existing explanations, and coaching while learners operate. Do not remove a lab step or hand over a declaration or a register to meet the clock.
 - Live runs take minutes. Use that time to read the previous run's receipts with the learner rather than to start a second run.
-- If a learner cannot finish an operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move required practice into homework, or label an incomplete technical claim complete.
+- If a learner cannot finish an operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move required hands-on work into homework, or label an incomplete technical claim complete.
 
 ## Coaching boundary
 

@@ -1,6 +1,6 @@
 # Arch Linux setup for Module 0
 
-This takes an ordinary Arch Linux desktop account through a checked Oh My Pi install, a course checkout, and a live readiness check that writes a file. Plan for 45 to 90 minutes. Arch's package step can take longer than a single-package install because it updates the whole system. Wait for the prompt to return before you paste the next box.
+This takes an ordinary Arch Linux desktop account through a checked Oh My Pi install, a course checkout, and a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step can take longer than a single-package install because it updates the whole system. Wait for the prompt to return before you paste the next box.
 
 You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. This path does not install Node, npm, or a second AI tool, and it does not ask you to log in to a model vendor.
 
@@ -854,7 +854,7 @@ course_read_back_proof
 
 ## Set up local Obsidian
 
-Obsidian lets you edit and link local notes for Module 2. Allow 10–15 minutes for the practice below, plus any earlier package download time. Use the signed **Extra** `obsidian` package installed in this page’s full `pacman -Syu` transaction. This is an [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR package or an Obsidian-vendor binary. Pacman checks package integrity and signatures before installation; never disable signature checking to bypass a failure. Preserve existing app profiles and vaults.
+Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 15 minutes for the practice below, plus any earlier package download time. Use the signed **Extra** `obsidian` package installed in this page’s full `pacman -Syu` transaction. This is an [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR package or an Obsidian-vendor binary. Pacman checks package integrity and signatures before installation; never disable signature checking to bypass a failure. Preserve existing app profiles and vaults.
 
 If the package was missing and you skipped the earlier approved full-upgrade transaction, return to that step. Do not perform a partial upgrade, install through the AUR, or downgrade to match the reference release. The package reference observed for these instructions was 1.13.7-2; record what is actually installed on your machine.
 
@@ -876,7 +876,7 @@ obsidian &
 
 ### Open a fresh practice vault and follow its links
 
-This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow 10–15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
+This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
 
 Keep the same terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` is separate from the OMP attempt and the checkout. Run one box at a time; stop after any failure.
 
@@ -979,7 +979,7 @@ Write `Obsidian READY` only when both disk checks passed and every listed GUI ac
 
 ## 18. Inspect Docker before setting up local n8n
 
-Local n8n is required for Module 7. Keep its readiness separate from the OMP prerequisite report and live write above: none replaces another. Allow additional time for image downloads and owner approvals; the setup estimate is a planning target, not a measured completion time.
+Local n8n is required for Module 7. Keep its readiness separate from the OMP prerequisite report and live write above: none replaces another. Allow additional time for image downloads and owner approvals; the setup estimate is a rough estimate, not a measured time.
 
 Use your ordinary account. Preserve existing applications, Docker contexts, containers, volumes, and setup attempts. The destination is `$HOME/n8n-course`, outside the course checkout, and the browser address will be `http://localhost:5678`. An existing destination or occupied port is HOLD until its owner identifies it; do not delete it, stop another application, or run the installer over it.
 

@@ -6,7 +6,7 @@ You are a staff action officer in Task Force Marlin at Forward Base Brandt. The 
 
 **MCP**, the Model Context Protocol, is the standard way an assistant's harness connects to a separate program, called a **server**, that offers it tools. The server here is a small Python program that reads and writes the notes in your vault. A connection entry in `mcp.json` names the program the machine will start, so adding an entry is agreeing to run that program with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes; Obsidian shows the links between them.
 
-Plan for 3 facilitated hours on Tuesday afternoon, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours on Tuesday. That is a rough estimate, not a measured time.
 
 The work runs in seven steps:
 

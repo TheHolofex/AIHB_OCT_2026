@@ -4,7 +4,7 @@ Find a repeated failure in Blue Gauge's practice records and turn it into one ch
 
 The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or evidence of current model reliability. Freeze the sixteen-run sample before opening outcomes. Record each run's first failure, or that you found none, before grouping failures and reconciling the counts to sixteen.
 
-Plan for 3 facilitated hours, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 ## Start here
 

@@ -16,9 +16,9 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result design target is 60 minutes for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
+The first-result design target is about the first hour for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
-The core runs as **four teaching days, Monday through Thursday: 30.5 facilitated hours, including 22 practice hours**. Monday through Wednesday hold seven three-hour blocks and one 150-minute block; Thursday holds three blocks totaling seven facilitated hours. Every module keeps two hours of practice, owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside those hours.
+The core runs as **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours; Chalk Line and Last Count take about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside the four course days.
 
 ## Target sequence
 

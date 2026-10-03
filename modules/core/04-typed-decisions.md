@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment and this module's supplied case  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:QUESTION_SET; VERIFY:DECISION_CONTROLS  
 **Produces:** TYPED_ANSWERS; LABEL_AGREEMENT; CONFIDENCE_GATES; ROUTED_REQUIREMENT; PO04_RESULT  
-**Facilitated time:** 2 hours 30 minutes  
-**Practice time:** 2 hours  
+**Rough time:** about 2½ hours  
 **Performance stage:** Independent  
 **Work surface:** Typed question set, read-only decision run, and code-owned router  
 **Practical work:** Build the state from the supplied case, read the seven typed questions and state which judgment each isolates, add one yes-or-no question of your own and check the file, label a fixed ten-message sample and freeze it, run the pinned model once as a read-only decision function with the contract as the saved instruction, validate every typed answer against the question set, measure agreement with the frozen labels and adjudicate every disagreement against the desk rules, set the routing gates from the measurement, route all forty messages in the supplied router, decide the REFER, REVIEW, and CLARIFY queues, and hand off a requirement line that names the messages each count rests on. The stretch runs the function a second time and measures flipped answers.  

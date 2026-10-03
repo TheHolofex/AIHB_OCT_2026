@@ -2,7 +2,7 @@
 
 **Revision 3:** 2026-10-02 — native local n8n construction, exact comparisons, and verified export restoration.
 
-**Scope:** two fictional 80-lot waves, one three-hour facilitated session including two hours of practice. These are planning allowances, not measured learner-completion times. The course is ungraded.
+**Scope:** two fictional 80-lot waves, about three hours. This is a planning estimate, not a measured learner-completion time. The course is ungraded.
 
 **Capability delta:** a learner who can inspect sources and validate a bounded control can now assemble and operate a saved visual workflow, predict the complete effect of one policy change across batches, and recover the independently identified original workflow with byte-exact reruns. Earlier source inspection, prediction, validation, and evidence habits remain prerequisites, not new objectives.
 

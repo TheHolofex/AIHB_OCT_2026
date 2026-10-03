@@ -4,7 +4,7 @@ Give the Last Count closing desk a package another person can run, stop, and res
 
 Last Count carries oral rehydration salts from South Store to Clinic R-12 on movement W-9. The requirement names 120 sachets at decision time 2026-10-16T18:00:00Z. All times are UTC. The work is class-only.
 
-Plan for 2 hours 30 minutes on Thursday, including 2 hours of practice to prepare and check the package. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours. If no recipient is available, record independent-person operation as unobserved, not passed.
+Plan for about two and a half hours on Thursday to prepare and check the package. That is a rough estimate, not a measured time. The recipient's attempt takes place outside the four course days. If no recipient is available, record independent-person operation as unobserved, not passed.
 
 ## Start here
 

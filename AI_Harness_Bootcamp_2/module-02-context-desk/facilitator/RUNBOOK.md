@@ -14,21 +14,21 @@ Confirm the approved helper is copied by preparation, all forty unchanged source
 
 The file-screen observations are DN-003 exit 0; DN-014/015/016 exit 1 for hostile wording; deliberately absent DN-000 exit 1 for missing input. Teach the distinction once: this screen detects patterns, the saved instruction guides the model, and the tool read root enforces accessible paths. Human admission selects reusable claims. None grants real movement authority.
 
-## Planning allocation
+## Pacing
 
-| Minutes | Work | Observable result |
+| Roughly (minutes in) | Work | Observable result |
 |---|---|---|
 | 0–15 | Orientation | Learner understands the knowledge task and fictional boundary |
 | 15–30 | Walkthrough | Editable vault and separate source/cold read roots are clear |
-| 30–40 | Practice: setup/open, 10 minutes | Exact W/vault opened in Obsidian |
-| 40–55 | Practice: source pass, 15 minutes | Controls inspected; forty-source ingest and proposal report |
-| 55–90 | Practice: review/link/admit, 35 minutes | Human-prepared Knowledge, useful existing-file links, MOC, short reasons, matching admissions |
-| 90–105 | Practice: first cold run, 15 minutes | v1 frozen; fresh retrieval with rule/read evidence |
-| 105–135 | Practice: audit/improve/retest, 30 minutes | Substantive focal edit, all changed notes reviewed, v2 prepared, expected effect recorded |
-| 135–150 | Practice: missing-rule/identity/close, 15 minutes | Negative prerequisite stops; restored v2 run, actual effect and preserved v1 checked |
-| 150–180 | Discussion, 30 minutes | Evidence, useful relationships, remaining limits, bounded internal-use decision |
+| 30–40 | Set up and open the vault | Exact W/vault opened in Obsidian |
+| 40–55 | Source pass | Controls inspected; forty-source ingest and proposal report |
+| 55–90 | Review, link, and admit | Human-prepared Knowledge, useful existing-file links, MOC, short reasons, matching admissions |
+| 90–105 | First cold run | v1 frozen; fresh retrieval with rule/read evidence |
+| 105–135 | Audit, improve, and retest | Substantive focal edit, all changed notes reviewed, v2 prepared, expected effect recorded |
+| 135–150 | Missing rule, identity, and close | Negative prerequisite stops; restored v2 run, actual effect and preserved v1 checked |
+| 150–180 | Discussion | Evidence, useful relationships, remaining limits, bounded internal-use decision |
 
-Total: 180 facilitated minutes including 120 practice minutes. These are design allocations, not measurements. The positive v2 run follows missing-rule restoration so it also proves the restored rule works.
+The marks are approximate planning guides, not measurements: follow the learners' progress, not the clock. The positive v2 run follows missing-rule restoration so it also proves the restored rule works.
 
 ## Observe the human work
 

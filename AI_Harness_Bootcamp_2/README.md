@@ -24,76 +24,62 @@ A fluent answer is not enough. Compare the actual output with the request and so
 
 ## Four-day schedule
 
-The course runs Monday through Thursday: 30½ facilitated hours, which is the time you spend in sessions with an instructor, and 22 of those hours are hands-on practice at your own keyboard. Monday holds two three-hour assignments. Tuesday holds two three-hour assignments and a third of 2½ hours. Wednesday holds three three-hour assignments. Thursday holds three assignments that take seven hours together.
+The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours, and a few are shorter. These are rough estimates, not measured times. Pace varies with the group and the machine, and no assignment depends on finishing within a set time.
 
-| Day | Assignments, in order | Facilitated time | Practice included |
-|---|---|---:|---:|
-| Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours | 4 hours |
-| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [04 Chalk Line](module-04-typed-decisions/README.md) | 8½ hours | 6 hours |
-| Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours | 6 hours |
-| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Last Count](module-10-capstone/README.md) | 7 hours | 6 hours |
+| Day | Assignments, in order | Roughly |
+|---|---|---:|
+| Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours |
+| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [04 Chalk Line](module-04-typed-decisions/README.md) | 8 to 9 hours |
+| Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours |
+| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Last Count](module-10-capstone/README.md) | 7 hours |
 
-Every assignment includes two hours of practice. Tuesday's third assignment takes 2 hours 30 minutes. Thursday's three assignments take 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
+Each day also includes breaks and meals. Chalk Line and Last Count run closer to two and a half hours, and Slope Brief and Night Desk to a little over two.
 
 ### Tuesday timetable
 
-Tuesday starts at 08:00 and ends at 18:00 local time. Facilitated work adds up to 510 minutes; breaks and meals add another 90.
+Tuesday starts around 08:00 and ends around 18:00. Times are approximate.
 
-| Clock time | Work |
+| Roughly | Work |
 |---|---|
-| 08:00–09:20 | Ledger Pike, first 80 facilitated minutes |
-| 09:20–09:30 | Break |
-| 09:30–11:10 | Ledger Pike, remaining 100 facilitated minutes |
+| 08:00–11:10 | Ledger Pike |
 | 11:10–11:50 | Lunch |
-| 11:50–13:05 | Kiln Hold, first 75 facilitated minutes |
-| 13:05–13:15 | Break |
-| 13:15–15:00 | Kiln Hold, remaining 105 facilitated minutes |
+| 11:50–15:00 | Kiln Hold |
 | 15:00–15:20 | Meal break |
-| 15:20–16:40 | Chalk Line, first 80 facilitated minutes |
-| 16:40–16:50 | Break |
-| 16:50–18:00 | Chalk Line, remaining 70 facilitated minutes |
+| 15:20–18:00 | Chalk Line |
 
 ### Wednesday timetable
 
-Wednesday starts at 08:00 and ends at 18:30 local time. Facilitated work adds up to 540 minutes; breaks and meals add another 90.
+Wednesday starts around 08:00 and ends around 18:30. Times are approximate.
 
-| Clock time | Work |
+| Roughly | Work |
 |---|---|
-| 08:00–09:20 | Copper Span, first 80 facilitated minutes |
-| 09:20–09:30 | Break |
-| 09:30–11:10 | Copper Span, remaining 100 facilitated minutes |
+| 08:00–11:10 | Copper Span |
 | 11:10–11:50 | Lunch |
-| 11:50–13:05 | Blue Gauge, first 75 facilitated minutes |
-| 13:05–13:15 | Break |
-| 13:15–15:00 | Blue Gauge, remaining 105 facilitated minutes |
+| 11:50–15:00 | Blue Gauge |
 | 15:00–15:20 | Meal break |
-| 15:20–17:00 | White Rack, first 100 facilitated minutes |
-| 17:00–17:10 | Break |
-| 17:10–18:30 | White Rack, remaining 80 facilitated minutes |
+| 15:20–18:30 | White Rack |
 
 ### Thursday timetable
 
-Thursday starts at 08:00 and ends at 16:00 local time. Facilitated work adds up to 420 minutes; breaks and meals add another 60.
+Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 
-| Clock time | Work |
+| Roughly | Work |
 |---|---|
-| 08:00–10:15 | Slope Brief, 135 facilitated minutes |
+| 08:00–10:15 | Slope Brief |
 | 10:15–10:25 | Break |
-| 10:25–11:30 | Night Desk, first 65 facilitated minutes |
-| 11:30–11:40 | Break |
-| 11:40–12:50 | Night Desk, remaining 70 facilitated minutes |
+| 10:25–12:50 | Night Desk |
 | 12:50–13:30 | Lunch |
-| 13:30–16:00 | Last Count, 150 facilitated minutes |
+| 13:30–16:00 | Last Count |
 
 Treat each break as a stopping point. Inside an assignment, the Ledger Pike break comes after the screen runs, the Kiln Hold break comes after the bounded probe, the Chalk Line break comes after the comparison has been printed and before you adjudicate it, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
 
-**Last Count's handoff happens outside these hours.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
+**Last Count's handoff happens outside the four course days.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
 
 <div data-photo-band="route"></div>
 
 ## Choose your assignment
 
-Start with setup, then work through the assignments in the order shown, which is the teaching order; each number is that assignment's permanent ID. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
+Start with setup, then work through the assignments in the order shown. Each supplies its own case and files; bring the operating skills you have already practiced. Keep your work and evidence outside the source checkout.
 
 <div data-course-map></div>
 
@@ -115,4 +101,4 @@ Module 2 requires local Obsidian with community plugins restricted and Sync off.
 
 Module 7 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
 
-Allow 1–3 hours for setup, with additional time as needed for downloads, desktop readiness, and owner approvals. The 28 facilitated hours run Monday through Thursday, with two hours of practice in every assignment. These are planning allowances, not measured learner-completion guarantees.
+Allow roughly one to three hours for setup, and more if downloads, desktop readiness, or owner approvals take longer. The assignments run Monday through Thursday. These are estimates, not measured completion times, and no assignment depends on finishing within a set time.

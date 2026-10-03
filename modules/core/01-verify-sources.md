@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment and this module's supplied case  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:SOURCE_FIXTURES  
 **Produces:** SOURCE_EVIDENCE; DISCERNMENT_RESULT; STANDING_RULE; PO01_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Independent  
 **Work surface:** Research/source work  
 **Practical work:** Start a work folder with the supplied starter. Hash the inbox (nine sources). Freeze identity in the source register. Build the eight-step thread ledger and recompute the six required calculations from the sources. Write the challenge matrix rejecting misleading and hostile sources. Run the producer rebuttal with --fixture (prints PRACTICE warning and provenance; live path uses the shared launcher and write-only producer-rebuttal.md; a failed child is never success). Write the corrected brief and render the review surface. A classmate (not an agent) answers the five questions from the surface. Freeze baseline verdict and prediction. Reveal the sealed change. Update only dependent claims in the changed ledger, brief, and verdict. Defend one handoff and one claim. The stretch traces every material changed/unchanged claim after the sealed update and defends one unchanged claim with a counterfactual. All core actions use explicit workdir and absolute source helper paths in paired Bash/PowerShell examples with Expected, Stop, and Recovery after each group. 

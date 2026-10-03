@@ -2,7 +2,7 @@
 
 Build a local n8n workflow that routes White Rack's refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict a policy change from two source batches, run both batches, and compare every receipt row. Preserve the original workflow, change one saved value, then restore the original into a new blank workflow and reproduce both original receipts.
 
-Plan for 3 facilitated hours on Wednesday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee. All lots and movements are fictional. A receipt does not authorize a real movement or release product quality.
+Plan for about three hours on Wednesday. That is a rough estimate, not a measured time. All lots and movements are fictional. A receipt does not authorize a real movement or release product quality.
 
 You will use three named workflows: your router, a separate supplied checker, and a restored router. Keep all three unpublished. Use the local browser editor and test forms only. A **receipt** is a downloaded CSV with the columns `lot,route,status`. An **exact comparison** checks the whole file, including column order, quotes, separators, and line endings. A green workflow execution alone does not prove that files match.
 

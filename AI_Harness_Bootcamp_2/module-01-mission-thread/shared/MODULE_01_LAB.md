@@ -2,7 +2,7 @@
 
 Decide whether the polished Cold Lantern brief supports its `GO` recommendation. Open the applicable sources, reproduce the calculations, and write your own supported verdict: accept, revise, reject, or hold for internal class review. Use your existing bounded direction and source checks to determine whether the claims hold together across the movement. Every case fact you need is in the supplied packet.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
 
@@ -98,23 +98,9 @@ $env:W = "$HOME\course-evidence\module-01-$RUN\work"
 
 **Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
-## Timebox
+## Pacing
 
-| Work | Time |
-|---|---:|
-| Learn the thread | 15 minutes |
-| Open and hash the inbox | 20 minutes |
-| Freeze identity and source use | 20 minutes |
-| Build the thread ledger | 35 minutes |
-| Recompute the deterministic claims | 20 minutes |
-| Write the challenge matrix | 15 minutes |
-| Run the producer rebuttal (fixture or live) | 10 minutes |
-| Write the brief and desk packet | 15 minutes |
-| Freeze the baseline and predict the change | 10 minutes |
-| Apply the sealed change | 15 minutes |
-| Handoff and live defense | 15 minutes |
-
-At least two hours belong to your own inspection, calculation, writing, and decision.
+Most of the session is your own inspection, calculation, writing, and decision. Building the thread ledger takes the longest. Opening and hashing the inbox, freezing identity and source use, and recomputing the deterministic claims take a moderate amount of time each. The other steps are short.
 
 ## 1. Open and hash the inbox
 
@@ -135,7 +121,7 @@ Start at desk.md. Read REQUEST.md. Open every inbox file. Hash the inbox before 
 
 </details>
 
-Do not inspect facilitator fixture files. The supplied reveal command will copy the practice change into your work folder after the baseline is frozen.
+Do not inspect your instructor's fixture files. The supplied reveal command will copy the practice change into your work folder after the baseline is frozen.
 
 Run the content check. It confirms that the checkout you are working from is intact, and it works from any folder because it uses the absolute module path.
 
@@ -730,7 +716,7 @@ A classmate who did not watch you work should be able to reconstruct the verdict
 
 ## 13. Defend the thread, not the form
 
-The facilitator or a classmate chooses one handoff between two adjacent thread steps and one material claim row. You do not choose the easiest examples.
+Your instructor or a classmate chooses one handoff between two adjacent thread steps and one material claim row. You do not choose the easiest examples.
 
 For the **thread walk**, use the review page and explain:
 

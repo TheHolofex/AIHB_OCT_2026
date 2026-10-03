@@ -1,7 +1,7 @@
 # Reference: Module 4 — Decide with typed questions
 
 **Frozen on:** 2026-10-02 (revision 2, after the four-perspective review round)  
-**Scope:** one 150-minute Tuesday block built around forty fictional intake messages `CL-001`–`CL-040` for the Ferry Depot to Clinic K-3 glove run on vehicle `CL-9`  
+**Scope:** one Tuesday block of about two and a half hours built around forty fictional intake messages `CL-001`–`CL-040` for the Ferry Depot to Clinic K-3 glove run on vehicle `CL-9`  
 **Course objective:** work with atomic typed questions, state the judgment each isolates and add one of your own, run the pinned model once as a read-only decision function through the shared launcher, validate every typed answer mechanically, measure the answers against labels frozen before the run, set routing gates from the measurement, route forty messages in code, and hand a person the queue that only a person may decide
 
 ## 1. The need

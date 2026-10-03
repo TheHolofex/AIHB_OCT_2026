@@ -1,7 +1,7 @@
 # Reference: Module 10 — Transfer a runnable package
 
 **Frozen on:** 2026-09-30 (revision 2)  
-**Scope:** one three-hour transfer module built around Last Count movement close W-9  
+**Scope:** one transfer module built around Last Count movement close W-9  
 **Course objective:** assemble a runnable package on an unfamiliar desk and transfer it so another person can operate it on the supplied task
 
 This revision supersedes the thin K-4 adapter reference. The replacement packet, adapter, and package contract are adopted. Historical K-4 material remains in facilitator/cases/ and evidence/ as prior work.

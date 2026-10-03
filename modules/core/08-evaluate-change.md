@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment, this module's supplied baseline configuration, and supplied candidate briefs on frozen paired cases  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BASELINE_CONFIG; VERIFY:CANDIDATE  
 **Produces:** PRE_RESULT_POLICY; CHANGE_DECISION; COST_PROXY; RESTORED_BASELINE; PO08_RESULT  
-**Facilitated time:** 2 hours 15 minutes  
-**Practice time:** 2 hours  
+**Rough time:** a little over 2 hours  
 **Performance stage:** Adversarial  
 **Work surface:** Frozen paired cases  
 **Practical work:** Confirm the supplied baseline configuration and candidates, declare the variation rule and hard gates before any result, compare the candidates against the preserved baselines on 40 frozen paired cases using per-cell authoritative locator gates, make a narrow decision, and restore the baseline copies from stored hashes.  

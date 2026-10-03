@@ -1,6 +1,6 @@
 # Windows PowerShell setup
 
-This path installs the course tools on native Windows and runs a readiness check in which Oh My Pi writes one file. Plan for 60 to 120 minutes for the native setup; this is a planning estimate, and the n8n bridge may require additional installation and restart time. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
+This path installs the course tools on native Windows and runs a readiness check in which Oh My Pi writes one file. Plan for roughly 60 to 120 minutes for the native setup; this is a rough estimate, and the n8n bridge may require additional installation and restart time. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
 
 You need Git, Python 3.12 or newer, a browser, an ordinary text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 7 also requires local n8n 2.41.5 through Docker Desktop and a named Ubuntu WSL 2 bridge, described below. Keep OMP, Python, Git, Obsidian and its vault, the checkout, evidence, and credentials on native Windows. Use Ubuntu only for n8n installation and lifecycle commands. You do not install Node, npm, or another agent.
 

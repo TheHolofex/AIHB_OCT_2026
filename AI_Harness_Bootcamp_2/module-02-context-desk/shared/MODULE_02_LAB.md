@@ -4,15 +4,15 @@ Build linked knowledge in Obsidian, then use a fresh model session to answer que
 
 This is an ungraded exercise with fictional Ledger Pike paperwork. Your result supports internal class review only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
 
-## Timebox
+## The route
 
-Plan for 180 facilitated minutes: 15 orientation, 15 walkthrough, 120 learner practice, and 30 discussion. Practice uses 10 minutes for setup/open, 15 for the source pass, 35 for review/link/admit, 15 for the first cold run, 30 for audit/improve/retest, and 15 for missing-rule/identity/close. These are planning allocations, not measured learner times.
+Plan for about three hours. That is a rough estimate, not a measured time. Reviewing, linking, and admitting notes and auditing and improving the knowledge take the most time.
 
 The route is source → proposal → human review → frozen knowledge → fresh retrieval → substantive revision.
 
 ![Sources lead to human-reviewed Knowledge, a frozen copy, cold retrieval, and a reviewed repair.](figures/m02-reload.svg)
 
-## 1. Prepare and open your vault — 10 minutes
+## 1. Prepare and open your vault
 
 A **vault** is the folder of Markdown notes that Obsidian opens. Keep this editable folder separate from the frozen copies used by the model. Use the Python, OMP, and Obsidian environment you verified in [Module 00](../../module-00-setup/README.md). In this vault's Settings, keep community plugins in Restricted mode and turn Sync off if it is on. On WSL, open the Linux-home vault with Linux Obsidian under WSLg.
 
@@ -84,7 +84,7 @@ In Obsidian, use **Open folder as vault** and select exactly the printed `W` pat
 | `reviews`, `identities`, `source-manifest.json` | Machine receipts and identities outside the vault | Helper only |
 | `cold/v1`, `cold/v2` | Frozen MOC and admitted Knowledge | Helper only; keep unchanged |
 
-## 2. Inspect the controls and process sources — 15 minutes
+## 2. Inspect the controls and process sources
 
 Three controls do different jobs. A **saved instruction** is a rule the launcher loads before contacting the model. The **file screen** checks a chosen file for fixed instruction-like phrases. The **read root** is the folder the model's read tool is allowed to access. Human admission adds a fourth boundary: you decide which supported claims enter reusable Knowledge.
 
@@ -113,7 +113,7 @@ foreach ($note in @("DN-003", "DN-014", "DN-015", "DN-016", "DN-000")) {
 }
 ```
 
-**Expected:** DN-003 prints `PASS source-as-data` and exits 0. DN-014, DN-015, and DN-016 print `HOLD hostile-instruction` and exit 1. DN-000 is deliberately absent: it prints `HOLD: missing input` and exits 1. Record actual output and compare it with your prediction. An unexpected result means stop and check the file path and unchanged supplied screen with the facilitator. Do not create DN-000 or change the screen to make it pass.
+**Expected:** DN-003 prints `PASS source-as-data` and exits 0. DN-014, DN-015, and DN-016 print `HOLD hostile-instruction` and exit 1. DN-000 is deliberately absent: it prints `HOLD: missing input` and exits 1. Record actual output and compare it with your prediction. An unexpected result means stop and check the file path and unchanged supplied screen with your instructor. Do not create DN-000 or change the screen to make it pass.
 
 A screen acceptance does not establish truth or authority. A rejection flags wording; it does not erase useful evidence in the same source. The source pass still reads all forty notes under the saved rule. Manual paste bypasses this file screen. The read boundary is tool enforcement, not an operating-system sandbox.
 
@@ -145,9 +145,9 @@ Write-Output "ingest exit=$ingestExit"
 
 - **Runtime-proof failure:** Stop and preserve the terminal HOLD and runtime evidence. Do not continue because the response looks plausible.
 - **Per-proposal content HOLD after runtime proof passed:** Read `W/reviews/ingest-report.json`. Keep the valid Drafts. Invalid proposals already have a machine defect record in that report; do not run rejection against a Draft that does not exist. Repair or author replacement Markdown in Knowledge without another paid ingestion.
-- **Top-level response format failure after runtime proof passed:** No Drafts are staged and no `ingest-report.json` is written. Use the terminal HOLD and preserved `E/ingest/response.md` and runtime evidence to identify this failure. Author replacement Knowledge from the blank Markdown template in Step 3 without another paid ingestion. If you cannot establish that runtime proof passed, stop and ask the facilitator to inspect the evidence.
+- **Top-level response format failure after runtime proof passed:** No Drafts are staged and no `ingest-report.json` is written. Use the terminal HOLD and preserved `E/ingest/response.md` and runtime evidence to identify this failure. Author replacement Knowledge from the blank Markdown template in Step 3 without another paid ingestion. If you cannot establish that runtime proof passed, stop and ask your instructor to inspect the evidence.
 
-## 3. Review, link, and admit — 35 minutes
+## 3. Review, link, and admit
 
 Admission means you have checked a note and recorded why these exact bytes may be reused. The helper can verify quotations and record your decision; it cannot make your judgment for you.
 
@@ -205,7 +205,7 @@ These filenames illustrate commands, not required decisions. An existing staged 
 
 Before v1, check collective coverage of all three questions. If you find missing evidence, author the missing Knowledge note now, link it, and review every changed note. Do not seed answers into the MOC or prompt.
 
-## 4. Freeze and retrieve v1 — 15 minutes
+## 4. Freeze and retrieve v1
 
 A **cold snapshot** is a fixed copy containing only `MOC.md` and admitted `Knowledge/*.md`. Its identity record stays outside the model's read root. Obsidian remains open on the editable vault; you do not open or edit the cold folder as a vault.
 
@@ -249,7 +249,7 @@ Read call observations literally. `EXECUTED` means a tool call ran. `ALLOWED_ABS
 
 A truthful `unsupported` answer identifies a coverage gap. It is not a failed runtime merely because support is missing. A malformed response, unread or invented citation, changed identity, or failed run audit is a HOLD. Preserve all evidence and distinguish those conditions from the content weakness you will improve next.
 
-## 5. Audit and improve the knowledge — 30 minutes
+## 5. Audit and improve the knowledge
 
 Choose one substantive weakness: an unsupported claim, missing qualification, mishandled stale source, or consequential missing relationship. Copy `Templates/AUDIT_TEMPLATE.md` into `Reviews/audit-v2.md`. Record the revision, focal KB ID, weakness, before state, expected change, and expected retrieval effect.
 
@@ -295,7 +295,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Revision freeze held; inspect changed notes an
 
 Before the positive v2 retrieval, perform the missing-rule check below. Then compare all three new answers with the sources and your expected effect. Record the observed effect in `Reviews/audit-v2.md`, including unchanged correct wording when that is what happened. The helper requires the focal note to be read and cited; it cannot establish that your edit improved the meaning.
 
-## 6. Test the missing rule and close — 15 minutes
+## 6. Test the missing rule and close
 
 Temporarily rename only the work-copy rule. The negative retrieve must exit 2 before provider contact and before creating its evidence directory. The commands restore the original file, preserving its bytes. Do not edit the rule, initialize again, or substitute another rule.
 
@@ -344,7 +344,7 @@ try {
 }
 ```
 
-**If it differs:** Stop before the positive run. Preserve the actual exit and any evidence. If interrupted before restoration, inspect both paths and restore the held file to its original name without overwriting another file. Ask the facilitator to resolve an ambiguous state. A provider call or evidence directory in this negative case is not success.
+**If it differs:** Stop before the positive run. Preserve the actual exit and any evidence. If interrupted before restoration, inspect both paths and restore the held file to its original name without overwriting another file. Ask your instructor to resolve an ambiguous state. A provider call or evidence directory in this negative case is not success.
 
 With the identical rule restored, retrieve v2 into a fresh destination:
 
@@ -401,7 +401,7 @@ if ($LASTEXITCODE -ne 0) { throw 'v2 identity held; preserve and inspect the nam
 
 **Expected:** Both frozen identities still match. Later editable reasons, Knowledge changes, and Obsidian settings do not invalidate v1. A changed, added, or missing frozen file produces a named HOLD. Keep that snapshot and report the condition; do not rewrite its manifest or receipts. A digest detects byte changes; it does not prove truth, authority, human authorship, or tamper-proof custody.
 
-**Recovery:** Confirm the work and revision paths. If the mismatch remains, ask the facilitator to inspect the named frozen file and retain the HOLD; do not rewrite the identity to match changed content.
+**Recovery:** Confirm the work and revision paths. If the mismatch remains, ask your instructor to inspect the named frozen file and retain the HOLD; do not rewrite the identity to match changed content.
 
 Record the missing-rule exit code, absent evidence directory, and restored rule in `Reviews/context-map.md`.
 

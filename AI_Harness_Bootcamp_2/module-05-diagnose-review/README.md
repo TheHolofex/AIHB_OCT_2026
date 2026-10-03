@@ -2,7 +2,7 @@
 
 Find where required information disappears from a Copper Span duty card before changing the workflow. Preserve the failure, use a check that distinguishes missing source data from a display failure, and make one authorized, reversible correction. Prove recovery under the original requirements.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 The supplied ledger is the local record for this case. Current rows must supply `permit_status` and `gate_time_mdt`. These fields record permit status and the gate time in Mountain Daylight Time; they do not authorize movement.
 

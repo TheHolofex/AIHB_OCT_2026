@@ -4,7 +4,7 @@ A runnable package lets another person run, stop, and restore the Last Count clo
 
 The fictional Last Count movement carries oral rehydration salts from South Store to Clinic R-12 on movement W-9. A result showing that the required quantity is supported does not grant permission to release or dispatch anything.
 
-Plan for 2 hours 30 minutes on Thursday, including 2 hours of practice for preparation, source inspection, operation, and handoff preparation. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
+Plan for about two and a half hours on Thursday for preparation, source inspection, operation, and handoff preparation. That is a rough estimate, not a measured time. The recipient's attempt takes place outside the four course days.
 
 ## Prepare separate work and transfer locations
 
@@ -350,7 +350,7 @@ print('TRANSFER TECHNICAL CHECK PASS: bundle intact; three result files match')
 
 ## Hand the package to another person
 
-The other person's attempt takes place outside the facilitated hours, so your session ends with the package ready and the attempt arranged. Before you finish, write in `E/transfer-status.md` who will operate the package, where and when, which observations you already have from your own technical rerun, and which are still waiting on that attempt. Until the attempt takes place, independent-person operation stays **unobserved**.
+The other person's attempt takes place outside the four course days, so your session ends with the package ready and the attempt arranged. Before you finish, write in `E/transfer-status.md` who will operate the package, where and when, which observations you already have from your own technical rerun, and which are still waiting on that attempt. Until the attempt takes place, independent-person operation stays **unobserved**.
 
 Point `F` at a new, unused folder for the recipient, keeping `W` and the original `E/bundle-before.json`. Run this in the authoring terminal, where `W`, `E`, and `BASE` are still set; if you opened a new terminal, use the re-entry block at the top of the page first.
 

@@ -2,7 +2,7 @@
 
 Build a small knowledge vault in Obsidian, then prove that a fresh model session can use its reviewed notes without the source-processing chat or raw packet. You’ll select source-backed claims, connect them, and improve one substantive weakness after seeing what a cold run can retrieve.
 
-Plan for 180 minutes with a facilitator, including 120 minutes of practice. These are planning allocations, not measured completion times. The exercise is ungraded.
+Plan for about three hours. That is a rough estimate, not a measured time. The exercise is ungraded.
 
 ## Start here
 

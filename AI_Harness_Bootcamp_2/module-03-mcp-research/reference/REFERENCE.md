@@ -103,7 +103,7 @@ A clean model run proves that the model did not try. Only the probe shows that t
 
 ## 6. Learning workflow and time budget
 
-Facilitated time is 180 minutes: 60 minutes of facilitation and 120 minutes of practice, planned as eight practice blocks (prepare and open the vault 8, contract 8, declare and probe 20, calibrate 8, research 24, handling register 22, partner 18, disconnect and hand off 12). The allowance is a plan, not a measurement.
+Plan about three hours: short instructor briefings, then eight hands-on blocks (prepare and open the vault, contract, declare and probe, calibrate, research, handling register, partner, disconnect and hand off). The research run, the handling register, the declare-and-probe stage, and the partner phase take the longest. The allowance is a plan, not a measurement.
 
 ## 7. Technical checks
 

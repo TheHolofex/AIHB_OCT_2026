@@ -4,7 +4,7 @@ Turn a shift's pile of raw intake messages into typed answers that software can 
 
 Chalk Line is a vehicle resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9`. Forty messages reached the intake desk during one shift: requisitions, corrections, cancellations, resends, stock notes, a vendor's offer, a request meant for another clinic, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line the desk hands it. Every fact you need is in the packet, and the case is fictional.
 
-Plan for 2 hours 30 minutes on Tuesday, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about two and a half hours on Tuesday. That is a rough estimate, not a measured time.
 
 ## Start here
 

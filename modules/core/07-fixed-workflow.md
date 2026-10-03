@@ -5,8 +5,7 @@
 **Prerequisites:** Source verification, bounded-predicate validation, failure preservation, and reversible recovery; local n8n readiness; this module's supplied waves, validator, and independent checker  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BATCH_WORKLOAD; VERIFY:N8N_CONTROLS  
 **Produces:** FIXED_BASELINE; EXCEPTION_RULE; DETERMINISTIC_DELTA; CONFIG_ID; RESTORE_ACTION; PO07_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Adversarial  
 **Work surface:** Structured-data/batch work  
 **Practical work:** Build a native visual n8n graph from a blank canvas; save and run it on two waves; change only the saved `pending_status` value; prove the complete deterministic effect; restore the original export into a new blank workflow and reproduce both waves.  

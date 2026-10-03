@@ -2,7 +2,7 @@
 
 Challenge the polished Cold Lantern brief against the applicable sources and your own calculations. Decide whether to accept, revise, reject, or hold it for internal class review. A **mission thread** connects each step in the movement to what the next step needs.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 Every domain rule you need is in the packet. First confirm that each record concerns the right vehicle, route, cargo, and time. Then decide what that record can prove and whether its result is enough for the next step.
 

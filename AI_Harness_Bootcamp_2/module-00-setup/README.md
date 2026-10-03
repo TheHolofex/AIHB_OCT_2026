@@ -4,7 +4,7 @@ Direct Oh My Pi to draft an internal email, then check every material claim agai
 
 First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Complete local Obsidian setup before Module 2 and local n8n setup before Module 7 in the same platform guide. Keep OMP, Obsidian, and n8n readiness separate from each other and from the checked email.
 
-Allow 1–3 hours for setup. The bounded-work assignment has one three-hour facilitated session, including two hours of practice. These are planning allowances, not measured completion times.
+Allow roughly one to three hours for setup, and more if downloads, desktop readiness, or owner approvals take longer. The bounded-work assignment takes about three hours. These are rough estimates, not measured times.
 
 ## Start here
 
@@ -94,7 +94,7 @@ Open the result file and read it back before you accept it: a tool saying “don
 
 ## Set up local Obsidian
 
-Use Obsidian to follow links, edit local notes, and see changes made outside the app. Allow 15–30 minutes after installation for this practice check; this is a planning allowance. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+Use Obsidian to follow links, edit local notes, and see changes made outside the app. Allow roughly 15 to 30 minutes after installation for this check. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
 
 Complete **Set up local Obsidian** in your existing guide: [native Windows](platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](platforms/windows-wsl.md#set-up-local-obsidian), [macOS](platforms/macos.md#set-up-local-obsidian), [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian), or [Arch](platforms/arch-linux.md#set-up-local-obsidian). Follow its install, hash, display, and approval steps before opening the practice vault. The [release and asset table](shared/VERSIONS.md#local-obsidian-for-module-2) identifies the exact fresh downloads. Preserve personal vaults, installed versions, and application profiles.
 

@@ -121,7 +121,7 @@
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_01_LAB.md", "dest": "shared/MODULE_01_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox", "before-you-stop"], "optional_sections": []}},
+        {"source": "shared/MODULE_01_LAB.md", "dest": "shared/MODULE_01_LAB.html", "kind": "lab", "guide": {"context_sections": ["pacing", "before-you-stop"], "optional_sections": []}},
         {"source": "shared/MISSION_THREAD.md", "dest": "shared/MISSION_THREAD.html", "kind": "reference"},
         {"source": "shared/WHEN_EVIDENCE_BREAKS.md", "dest": "shared/WHEN_EVIDENCE_BREAKS.html", "kind": "reference"}
       ],
@@ -171,7 +171,7 @@
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox"], "optional_sections": []}}
+        {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["the-route"], "optional_sections": []}}
       ],
       "figures": [
         {"source": "shared/figures/m02-reload.svg", "dest": "shared/figures/m02-reload.svg"},
@@ -311,7 +311,7 @@
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["timebox", "before-you-stop"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
+        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["pacing", "before-you-stop"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
       ],
       "figures": [
         {"source": "shared/figures/m06-first-failure.svg", "dest": "shared/figures/m06-first-failure.svg"},

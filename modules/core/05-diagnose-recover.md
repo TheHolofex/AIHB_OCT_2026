@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment, this module's supplied ledger and hashed baseline renderer, and a verified restore path  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:RESTORE_PATH; VERIFY:FAULT_ENV
 **Produces:** LOCALIZATION_RESULT; RECOVERY_RESULT; PO05_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Adversarial  
 **Work surface:** Unfamiliar faulty harness (work-copy renderer after prepare)  
 **Practical work:** Verify restore before fault exposure using explicit ledger input, diagnose one material hidden fault in a harness the learner did not build, seal first divergence with a read-only probe before repair, make one authorized reversible correction from the hashed baseline, and repeat the original conditions cleanly with focused, end-to-end, and fresh-process runs from an external work root.  

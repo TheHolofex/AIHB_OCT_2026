@@ -3,7 +3,7 @@
 **Revision:** 2 (adopts replacement scenario)  
 **Frozen on:** 2026-09-30  
 **Supersedes:** thin two-brief adapter (pair-a / pair-b, invented-payload and 20:50Z collapse gates)  
-**Scope:** one three-hour change-evaluation module using 40 paired cases on a fictional Ridge Depot to Clinic T-8 heater-fuel movement on vehicle SB-4  
+**Scope:** one change-evaluation module using 40 paired cases on a fictional Ridge Depot to Clinic T-8 heater-fuel movement on vehicle SB-4  
 **Course objective:** declare hard gates before results, evaluate with per-cell authoritative locator gates, prove restore of baseline copies using stored hashes
 
 ## 1. The need

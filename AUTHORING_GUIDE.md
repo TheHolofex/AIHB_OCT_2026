@@ -19,8 +19,7 @@ Every module declares once:
 - `Prerequisites`
 - `Consumes`
 - `Produces`
-- `Facilitated time`
-- `Practice time`
+- `Rough time`
 - `Performance stage`
 - `Work surface`
 - `Practical work`

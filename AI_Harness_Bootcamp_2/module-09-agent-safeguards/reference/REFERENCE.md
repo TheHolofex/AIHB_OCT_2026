@@ -1,7 +1,7 @@
 # Reference: Module 9 — Constrain agent behavior (Night Desk)
 
 **Frozen on:** 2026-09-30 (revision 2)  
-**Scope:** one three-hour adversarial module built around field stretchers from West Annex to Clinic N-5  
+**Scope:** one adversarial module built around field stretchers from West Annex to Clinic N-5  
 **Course objective:** constrain one live agent under a declared policy and distinguish observed denial from unattempted action
 
 ## 1. The need

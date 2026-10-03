@@ -4,7 +4,7 @@ Turn a repeated failure in Blue Gauge's practice records into a check that can f
 
 The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or measurements of current model reliability. Your work stays inside the fictional class case and authorizes no real movement.
 
-Plan for 3 facilitated hours, including 2 hours of practice. This is a planning allowance, not a measured completion guarantee.
+Plan for about three hours. That is a rough estimate, not a measured time.
 
 ## Copy a work folder
 
@@ -155,18 +155,9 @@ $E = "$HOME\course-evidence\module-06-$RUN\evidence"
 
 **Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
-## Timebox
+## Pacing
 
-| Work | Time |
-|---|---:|
-| Freeze the sample rule | 15 minutes |
-| Read the sample runs and write first-failure notes | 45 minutes |
-| Reconcile counts to the sample size | 20 minutes |
-| Infer the two literals and write the config | 20 minutes |
-| Freeze the config copy and run the three controls | 25 minutes |
-| Handoff | 15 minutes |
-
-The table allocates 140 minutes within the three-hour session, including at least two hours of your own practice. Use the remaining time for preparation and facilitated discussion; the allocations do not predict how quickly you will finish.
+Most of the session is your own hands-on work. Reading the sample runs and writing first-failure notes takes the longest, followed by freezing the config copy and running the three controls. Reconciling counts and inferring the two literals take less time, and freezing the sample rule and the handoff are short. Your own pace may differ.
 
 ## 1. Freeze the sample rule first
 

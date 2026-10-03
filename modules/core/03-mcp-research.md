@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment, this module's supplied case, and the supplied MCP server  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:MCP_SERVER  
 **Produces:** MCP_CONNECTION; HANDLING_REGISTER; AUTHORITY_BOUNDARY; COMPOSED_NEGATIVE; REVOCATION_RESULT; PO03_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Independent  
 **Work surface:** Tool-assisted professional artifact  
 **Practical work:** In a supplied Obsidian research vault of forty notes, read the supplied MCP server's contract before connecting it, declare a minimal authority for the research phase and make the server enforce it, and prove the limits with a probe that attempts each forbidden action itself. Decide six notes' handling before any AI proposal, then connect the server, have the AI research the supplied question and propose a handling for every note, and check each proposal against the stated rules. Narrow the connection for a partner phase that reads only the notes you cleared, scan the AI's extract, and then disconnect and show that no tool is offered.  

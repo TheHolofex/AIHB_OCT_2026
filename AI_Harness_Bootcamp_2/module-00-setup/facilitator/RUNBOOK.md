@@ -65,25 +65,25 @@ The integration owner observed these runtime/UI/persistence results on Apple Sil
 
 ## Session shape
 
-Plan 180 minutes: 120 minutes of learner working time and 60 minutes you lead. These are allocations, not measured learner completion times. Preserve a HOLD rather than rushing a blocked action into a claimed pass.
+Plan about three hours. The clock marks below are approximate planning guides, not measured completion times: follow the learners' progress, not the clock. You are with the room throughout. The first table lists the moments when you address everyone; the second lists what learners work on and the evidence to look for. Preserve a HOLD rather than rushing a blocked action into a claimed pass.
 
-### Facilitator-led segments
+### When you address the room
 
-| Segment | Clock | What you do |
+| Segment | Roughly | What you do |
 |---|---|---|
 | Opening | 0:00–0:20 | Record setup state and route blocked learners. Name the fictional case and sharing limit. Distinguish the inspectable practice checker from any actually available independent assessment. Start the visible clock. |
 | Checkpoint | 1:15–1:35 | Record first-draft state and actual elapsed time. Confirm direction and responsibility records preceded the run. Preserve failures and stop after the stated correction limit; do not read drafts aloud. |
 | Close | 2:40–3:00 | Preserve original drafts, source/control identities and first failures. Hand over to the actual decision owner when available; otherwise retain HOLD. Name unresolved dependencies. |
 
-### Learner working time
+### What learners work on
 
-| Clock | Learner work | Evidence you should see |
+| Roughly | Learner work | Evidence you should see |
 |---|---|---|
 | 0:20–0:30 | Work folder created; practice status or HOLD recorded | `acceptance-control.md` distinguishes public checking from actual independent custody or its absence |
 | 0:30–0:40 | Case and practice checker read | The learner can name two things the checker cannot judge |
 | 0:40–0:50 | Delegation decision and responsibility screen | Both files saved, both before any AI run |
 | 0:50–1:00 | Direction brief frozen | Acceptance, falsifier, stop condition, and correction limit are all written |
-| 1:00–1:15 | First draft produced and practice check run | A file on disk and a check output, by minute 60 of learner time |
+| 1:00–1:15 | First draft produced and practice check run | A file on disk and a check output, within about the first hour |
 | 1:35–1:50 | Material claim checked against the source | Exact source text quoted by the learner, not by the model |
 | 1:50–2:00 | Falsifier run against a deliberately wrong copy | `falsifier-probe.md` plus the observed failure copied verbatim |
 | 2:00–2:10 | Capability-limit statement written | Model output, product surface, harness control, and human decision separated; one capability and one limitation from this run |

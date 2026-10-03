@@ -284,8 +284,7 @@ These are design targets until piloted.
 
 | Item | Budget |
 |---|---:|
-| Facilitated session | 3 hours |
-| Learner operation | 2 hours |
+| Session length | about 3 hours |
 | Mission/domain orientation | ≤15 minutes |
 | Arithmetic and time conversion | ≤20 minutes |
 | Source inspection and claim ledger | ≥60 minutes |
@@ -361,7 +360,7 @@ Kill the case or simplify it if novice pilots spend more than 25% of learner tim
 | ID | Criterion | Evidence |
 |---|---|---|
 | M1-29 | At least 80% of domain novices complete the practice case without logistics coaching. | Pilot, n≥10 |
-| M1-30 | Median time is ≤180 minutes, with ≥120 minutes of learner operation. | Timestamped pilot |
+| M1-30 | Median time is about three hours or less. | Timestamped pilot |
 | M1-31 | At least 90% of graders agree on all binary hard gates; ordinal rationale κ ≥0.70. | Double-scored pilot |
 | M1-32 | Median scoring time is ≤15 minutes and p90 ≤25 minutes. | Scorer telemetry |
 | M1-33 | Provider spend remains inside the course's declared learner budget. | Usage telemetry |

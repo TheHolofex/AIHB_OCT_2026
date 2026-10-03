@@ -1,6 +1,6 @@
 # Set up on macOS
 
-Use Git, Python 3.12 or newer, and standalone OMP 18.3.5 to read and write a file through the supplied launcher. Allow 45–90 minutes, plus any system download time. You need a browser, an ordinary text editor, 15 GB free under your home directory, and permission to install the missing tools. Keep work and evidence under your home directory outside the checkout. If device policy blocks an action, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
+Use Git, Python 3.12 or newer, and standalone OMP 18.3.5 to read and write a file through the supplied launcher. Allow roughly 45 to 90 minutes, plus any system download time. You need a browser, an ordinary text editor, 15 GB free under your home directory, and permission to install the missing tools. Keep work and evidence under your home directory outside the checkout. If device policy blocks an action, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
 
 ## Check the machine and existing prerequisites
 
@@ -618,7 +618,7 @@ bash "$M/scripts/verify-setup.sh" "$R" "$PROOF_RUN/setup-report.txt"
 
 ## Set up local Obsidian
 
-Obsidian lets you edit and link local notes for Module 2. Allow 10–20 minutes for a fresh installation, plus download time. Preserve any existing installation, profile, and vaults. In Finder, inspect **Applications** and your home folder’s **Applications**, and check whether you already launch Obsidian from another location. If it is installed, use that copy and skip the download and install blocks. Record its actual version in the GUI exercise below; do not replace it merely to match 1.13.7.
+Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 20 minutes for a fresh installation, plus download time. Preserve any existing installation, profile, and vaults. In Finder, inspect **Applications** and your home folder’s **Applications**, and check whether you already launch Obsidian from another location. If it is installed, use that copy and skip the download and install blocks. Record its actual version in the GUI exercise below; do not replace it merely to match 1.13.7.
 
 ### Install the verified universal DMG only if Obsidian is absent
 
@@ -672,7 +672,7 @@ course_download_obsidian
 
 ### Open a fresh practice vault and follow its links
 
-This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow 10–15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
+This checks that you can follow a note link, save an edit, and see a change made outside Obsidian. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder below; keep existing vaults and app profiles intact. No account, community plugin, Sync service, or MCP connection is needed. This exercise makes no provider call and needs no API key.
 
 Keep the same terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` is separate from the OMP attempt and the checkout. Run one box at a time; stop after any failure.
 
@@ -775,7 +775,7 @@ Write `Obsidian READY` only when both disk checks passed and every listed GUI ac
 
 ## Prepare local n8n for Module 7
 
-This gives you a local workflow editor and checks that a saved workflow survives a stop and start. Allow additional download and startup time; the setup estimate above is a planning allowance, not a measured completion time. Complete this n8n check before Module 7. Keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.
+This gives you a local workflow editor and checks that a saved workflow survives a stop and start. Allow additional download and startup time; the setup estimate above is a rough estimate, not a measured time. Complete this n8n check before Module 7. Keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.
 
 ### Inspect Docker and preserve existing work
 

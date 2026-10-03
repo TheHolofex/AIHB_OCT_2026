@@ -5,8 +5,7 @@
 **Prerequisites:** Preflighted accessible environment and this module's supplied case  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:SUPPLIED_ACCEPTANCE  
 **Produces:** FIRST_RESULT; MIN_SCREEN; DIRECTION; INTERNAL_ARTIFACT; PO00_RESULT  
-**Facilitated time:** 3 hours  
-**Practice time:** 2 hours  
+**Rough time:** about 3 hours  
 **Performance stage:** Guided to Independent  
 **Work surface:** Communication artifact  
 **Practical work:** Confirm the supplied acceptance control; produce and check a useful artifact against the 60-minute first-result design target; choose one use, one human-retained judgment, and one refusal; apply the minimum responsibility screen; then freeze accepted direction and rerun after one controlled input change.  

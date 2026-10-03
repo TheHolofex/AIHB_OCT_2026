@@ -4,7 +4,7 @@ Draft a checked internal email about North Shelf for the Field Clinic S-3 supply
 
 North Shelf is fictional. The email stays with named class participants. It is not a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite, material fact, or decision owner is unresolved.
 
-Plan for one three-hour facilitated session, including two hours of practice. This is a planning allowance, not a measured completion guarantee. Aim for a first checked draft within 60 minutes of practice. Use the remaining practice allowance to demonstrate a failing check, apply the changed input, compare the drafts, and record the handoff.
+Plan for about three hours. That is a rough estimate, not a measured time. Aim to have a first checked draft within roughly the first hour. Use the rest of your time to demonstrate a failing check, apply the changed input, compare the drafts, and record the handoff.
 
 ## 1. Create the four-file work folder
 
