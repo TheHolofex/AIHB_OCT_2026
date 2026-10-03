@@ -85,16 +85,15 @@
         {"source": "shared/SOURCES.md", "dest": "shared/SOURCES.html", "kind": "reference"}
       ],
       "figures": [
-        {"source": "shared/figures/m00-changed-input.svg", "dest": "shared/figures/m00-changed-input.svg"},
-        {"source": "shared/figures/m00-claim-to-source.svg", "dest": "shared/figures/m00-claim-to-source.svg"},
-        {"source": "shared/figures/m00-delegation.svg", "dest": "shared/figures/m00-delegation.svg"},
-        {"source": "shared/figures/m00-direction-contract.svg", "dest": "shared/figures/m00-direction-contract.svg"},
-        {"source": "shared/figures/m00-falsifier.svg", "dest": "shared/figures/m00-falsifier.svg"},
-        {"source": "shared/figures/m00-four-layers.svg", "dest": "shared/figures/m00-four-layers.svg"},
-        {"source": "shared/figures/m00-independent-accept.svg", "dest": "shared/figures/m00-independent-accept.svg"},
-        {"source": "shared/figures/m00-minimum-screen.svg", "dest": "shared/figures/m00-minimum-screen.svg"},
-        {"source": "shared/figures/m00-recovery.svg", "dest": "shared/figures/m00-recovery.svg"},
-        {"source": "shared/figures/m00-setup-chain.svg", "dest": "shared/figures/m00-setup-chain.svg"}
+        {"source": "shared/figures/m00-bounded-direction.png", "dest": "shared/figures/m00-bounded-direction.png"},
+        {"source": "shared/figures/m00-change-isolation.png", "dest": "shared/figures/m00-change-isolation.png"},
+        {"source": "shared/figures/m00-claim-check.png", "dest": "shared/figures/m00-claim-check.png"},
+        {"source": "shared/figures/m00-decision-owner.png", "dest": "shared/figures/m00-decision-owner.png"},
+        {"source": "shared/figures/m00-falsifier.png", "dest": "shared/figures/m00-falsifier.png"},
+        {"source": "shared/figures/m00-readiness-lanes.png", "dest": "shared/figures/m00-readiness-lanes.png"},
+        {"source": "shared/figures/m00-recovery-loop.png", "dest": "shared/figures/m00-recovery-loop.png"},
+        {"source": "shared/figures/m00-responsibility-screen.png", "dest": "shared/figures/m00-responsibility-screen.png"},
+        {"source": "shared/figures/m00-tool-layers.png", "dest": "shared/figures/m00-tool-layers.png"}
       ],
       "scripts": [
         {"source": "scripts/verify-setup.sh", "dest": "scripts/verify-setup.sh"},
@@ -126,18 +125,15 @@
         {"source": "shared/WHEN_EVIDENCE_BREAKS.md", "dest": "shared/WHEN_EVIDENCE_BREAKS.html", "kind": "reference"}
       ],
       "figures": [
-        {"source": "shared/figures/m01-challenge.svg", "dest": "shared/figures/m01-challenge.svg"},
-        {"source": "shared/figures/m01-changed-source.svg", "dest": "shared/figures/m01-changed-source.svg"},
-        {"source": "shared/figures/m01-claim-authority.svg", "dest": "shared/figures/m01-claim-authority.svg"},
-        {"source": "shared/figures/m01-desk-intake.svg", "dest": "shared/figures/m01-desk-intake.svg"},
-        {"source": "shared/figures/m01-eight-steps.svg", "dest": "shared/figures/m01-eight-steps.svg"},
-        {"source": "shared/figures/m01-handoff-break.svg", "dest": "shared/figures/m01-handoff-break.svg"},
-        {"source": "shared/figures/m01-ledger-row.svg", "dest": "shared/figures/m01-ledger-row.svg"},
-        {"source": "shared/figures/m01-rebuttal.svg", "dest": "shared/figures/m01-rebuttal.svg"},
-        {"source": "shared/figures/m01-recompute.svg", "dest": "shared/figures/m01-recompute.svg"},
-        {"source": "shared/figures/m01-register.svg", "dest": "shared/figures/m01-register.svg"},
-        {"source": "shared/figures/m01-statement-kinds.svg", "dest": "shared/figures/m01-statement-kinds.svg"},
-        {"source": "shared/figures/m01-verdict-packet.svg", "dest": "shared/figures/m01-verdict-packet.svg"}
+        {"source": "shared/figures/m01-atomic-ledger.png", "dest": "shared/figures/m01-atomic-ledger.png"},
+        {"source": "shared/figures/m01-broken-handoff.png", "dest": "shared/figures/m01-broken-handoff.png"},
+        {"source": "shared/figures/m01-byte-identity.png", "dest": "shared/figures/m01-byte-identity.png"},
+        {"source": "shared/figures/m01-change-isolation.png", "dest": "shared/figures/m01-change-isolation.png"},
+        {"source": "shared/figures/m01-recompute-feasibility.png", "dest": "shared/figures/m01-recompute-feasibility.png"},
+        {"source": "shared/figures/m01-source-authority.png", "dest": "shared/figures/m01-source-authority.png"},
+        {"source": "shared/figures/m01-statement-types.png", "dest": "shared/figures/m01-statement-types.png"},
+        {"source": "shared/figures/m01-supported-verdict.png", "dest": "shared/figures/m01-supported-verdict.png"},
+        {"source": "shared/figures/m01-thread-handoffs.png", "dest": "shared/figures/m01-thread-handoffs.png"}
       ],
       "scripts": [
         {"source": "scripts/start_work.py", "dest": "scripts/start_work.py"},
@@ -203,14 +199,12 @@
         {"source": "shared/MODULE_03_LAB.md", "dest": "shared/MODULE_03_LAB.html", "kind": "lab", "guide": {"context_sections": ["class-only-boundary"], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m03-mcp-layers.svg", "dest": "shared/figures/m03-mcp-layers.svg"},
-        {"source": "shared/figures/m03-contract-read.svg", "dest": "shared/figures/m03-contract-read.svg"},
-        {"source": "shared/figures/m03-handling-ladder.svg", "dest": "shared/figures/m03-handling-ladder.svg"},
-        {"source": "shared/figures/m03-aggregation.svg", "dest": "shared/figures/m03-aggregation.svg"},
-        {"source": "shared/figures/m03-phase-scope.svg", "dest": "shared/figures/m03-phase-scope.svg"},
-        {"source": "shared/figures/m03-probe-matrix.svg", "dest": "shared/figures/m03-probe-matrix.svg"},
-        {"source": "shared/figures/m03-instructions-lure.svg", "dest": "shared/figures/m03-instructions-lure.svg"},
-        {"source": "shared/figures/m03-revoke.svg", "dest": "shared/figures/m03-revoke.svg"}
+        {"source": "shared/figures/m03-aggregation.png", "dest": "shared/figures/m03-aggregation.png"},
+        {"source": "shared/figures/m03-authority-layers.png", "dest": "shared/figures/m03-authority-layers.png"},
+        {"source": "shared/figures/m03-contract-authority.png", "dest": "shared/figures/m03-contract-authority.png"},
+        {"source": "shared/figures/m03-effective-handling.png", "dest": "shared/figures/m03-effective-handling.png"},
+        {"source": "shared/figures/m03-phase-scope-revoke.png", "dest": "shared/figures/m03-phase-scope-revoke.png"},
+        {"source": "shared/figures/m03-probe-proof.png", "dest": "shared/figures/m03-probe-proof.png"}
       ],
       "scripts": [],
       "download_dirs": ["shared/vault", "shared/mcp", "shared/prompts"],
@@ -237,10 +231,12 @@
         {"source": "shared/MODULE_04_LAB.md", "dest": "shared/MODULE_04_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-you-stop", "class-only-boundary"], "optional_sections": ["stretch-measure-stability-across-a-second-run"]}}
       ],
       "figures": [
-        {"source": "shared/figures/m04-function-not-chat.svg", "dest": "shared/figures/m04-function-not-chat.svg"},
-        {"source": "shared/figures/m04-measure-before-trust.svg", "dest": "shared/figures/m04-measure-before-trust.svg"},
-        {"source": "shared/figures/m04-declared-vs-measured.svg", "dest": "shared/figures/m04-declared-vs-measured.svg"},
-        {"source": "shared/figures/m04-routes.svg", "dest": "shared/figures/m04-routes.svg"}
+        {"source": "shared/figures/m04-answer-types.png", "dest": "shared/figures/m04-answer-types.png"},
+        {"source": "shared/figures/m04-final-confidence.png", "dest": "shared/figures/m04-final-confidence.png"},
+        {"source": "shared/figures/m04-freeze-measure.png", "dest": "shared/figures/m04-freeze-measure.png"},
+        {"source": "shared/figures/m04-routing-order.png", "dest": "shared/figures/m04-routing-order.png"},
+        {"source": "shared/figures/m04-state-and-questions.png", "dest": "shared/figures/m04-state-and-questions.png"},
+        {"source": "shared/figures/m04-supersession.png", "dest": "shared/figures/m04-supersession.png"}
       ],
       "scripts": [
         {"source": "scripts/chalk.py", "dest": "scripts/chalk.py"},
@@ -277,13 +273,10 @@
         {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-you-stop"], "optional_sections": ["stretch-competing-causes-on-a-second-case"]}}
       ],
       "figures": [
-        {"source": "shared/figures/m05-boundaries.svg", "dest": "shared/figures/m05-boundaries.svg"},
-        {"source": "shared/figures/m05-first-miss.svg", "dest": "shared/figures/m05-first-miss.svg"},
-        {"source": "shared/figures/m05-no-hand-patch.svg", "dest": "shared/figures/m05-no-hand-patch.svg"},
-        {"source": "shared/figures/m05-preserve.svg", "dest": "shared/figures/m05-preserve.svg"},
-        {"source": "shared/figures/m05-probe.svg", "dest": "shared/figures/m05-probe.svg"},
-        {"source": "shared/figures/m05-restore-first.svg", "dest": "shared/figures/m05-restore-first.svg"},
-        {"source": "shared/figures/m05-three-reruns.svg", "dest": "shared/figures/m05-three-reruns.svg"}
+        {"source": "shared/figures/m05-authorized-correction.png", "dest": "shared/figures/m05-authorized-correction.png"},
+        {"source": "shared/figures/m05-first-divergence.png", "dest": "shared/figures/m05-first-divergence.png"},
+        {"source": "shared/figures/m05-recovery-proofs.png", "dest": "shared/figures/m05-recovery-proofs.png"},
+        {"source": "shared/figures/m05-restore-precondition.png", "dest": "shared/figures/m05-restore-precondition.png"}
       ],
       "scripts": [
         {"source": "scripts/render_review.py", "dest": "scripts/render_review.py"},
@@ -314,15 +307,11 @@
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["pacing", "before-you-stop"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
       ],
       "figures": [
-        {"source": "shared/figures/m06-first-failure.svg", "dest": "shared/figures/m06-first-failure.svg"},
-        {"source": "shared/figures/m06-label-history.svg", "dest": "shared/figures/m06-label-history.svg"},
-        {"source": "shared/figures/m06-population.svg", "dest": "shared/figures/m06-population.svg"},
-        {"source": "shared/figures/m06-predicate.svg", "dest": "shared/figures/m06-predicate.svg"},
-        {"source": "shared/figures/m06-reconcile.svg", "dest": "shared/figures/m06-reconcile.svg"},
-        {"source": "shared/figures/m06-sample-first.svg", "dest": "shared/figures/m06-sample-first.svg"},
-        {"source": "shared/figures/m06-semantic-vs-mechanical.svg", "dest": "shared/figures/m06-semantic-vs-mechanical.svg"},
-        {"source": "shared/figures/m06-then-categories.svg", "dest": "shared/figures/m06-then-categories.svg"},
-        {"source": "shared/figures/m06-three-case.svg", "dest": "shared/figures/m06-three-case.svg"}
+        {"source": "shared/figures/m06-control-boundaries.png", "dest": "shared/figures/m06-control-boundaries.png"},
+        {"source": "shared/figures/m06-first-failure-notes.png", "dest": "shared/figures/m06-first-failure-notes.png"},
+        {"source": "shared/figures/m06-freeze-sample.png", "dest": "shared/figures/m06-freeze-sample.png"},
+        {"source": "shared/figures/m06-predicate-boundary.png", "dest": "shared/figures/m06-predicate-boundary.png"},
+        {"source": "shared/figures/m06-reconcile-history.png", "dest": "shared/figures/m06-reconcile-history.png"}
       ],
       "scripts": [],
       "download_dirs": ["shared/controls", "shared/corpus", "shared/checks"],
@@ -420,15 +409,11 @@
         {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m08-any-single.svg", "dest": "shared/figures/m08-any-single.svg"},
-        {"source": "shared/figures/m08-bounded.svg", "dest": "shared/figures/m08-bounded.svg"},
-        {"source": "shared/figures/m08-diag-vs-confirm.svg", "dest": "shared/figures/m08-diag-vs-confirm.svg"},
-        {"source": "shared/figures/m08-invented.svg", "dest": "shared/figures/m08-invented.svg"},
-        {"source": "shared/figures/m08-paired.svg", "dest": "shared/figures/m08-paired.svg"},
-        {"source": "shared/figures/m08-pre-result.svg", "dest": "shared/figures/m08-pre-result.svg"},
-        {"source": "shared/figures/m08-restore.svg", "dest": "shared/figures/m08-restore.svg"},
-        {"source": "shared/figures/m08-timezone.svg", "dest": "shared/figures/m08-timezone.svg"},
-        {"source": "shared/figures/m08-variation.svg", "dest": "shared/figures/m08-variation.svg"}
+        {"source": "shared/figures/m08-bounded-decision.png", "dest": "shared/figures/m08-bounded-decision.png"},
+        {"source": "shared/figures/m08-evidence-lanes.png", "dest": "shared/figures/m08-evidence-lanes.png"},
+        {"source": "shared/figures/m08-freeze-before-results.png", "dest": "shared/figures/m08-freeze-before-results.png"},
+        {"source": "shared/figures/m08-paired-hard-gates.png", "dest": "shared/figures/m08-paired-hard-gates.png"},
+        {"source": "shared/figures/m08-restore-baseline.png", "dest": "shared/figures/m08-restore-baseline.png"}
       ],
       "scripts": [
         {"source": "scripts/restore_baseline.py", "dest": "scripts/restore_baseline.py"},
@@ -457,7 +442,13 @@
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_09_LAB.md", "dest": "shared/MODULE_09_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
       ],
-      "figures": [],
+      "figures": [
+        {"source": "shared/figures/m09-declared-versus-observed.png", "dest": "shared/figures/m09-declared-versus-observed.png"},
+        {"source": "shared/figures/m09-policy-declaration.png", "dest": "shared/figures/m09-policy-declaration.png"},
+        {"source": "shared/figures/m09-probe-outcomes.png", "dest": "shared/figures/m09-probe-outcomes.png"},
+        {"source": "shared/figures/m09-receipt-boundary.png", "dest": "shared/figures/m09-receipt-boundary.png"},
+        {"source": "shared/figures/m09-source-as-data.png", "dest": "shared/figures/m09-source-as-data.png"}
+      ],
       "scripts": [],
       "download_dirs": ["shared/case", "shared/controls"],
       "tests": ["tests/test_module_09.py"],
@@ -466,16 +457,16 @@
     {
       "id": "10",
       "directory": "module-10-capstone",
-      "title": "Module 10 · Transfer a runnable package",
-      "case_name": "Last Count",
-      "summary": "Transfer work another person can run, stop, and restore without your chat history.",
-      "nav_summary": "Runnable handoff · independent operation",
+      "title": "Module 10 · Stand up a local uncensored AI and hand it off",
+      "case_name": "Cold Foundry",
+      "summary": "Hand off a local uncensored AI service another person can run, stop, and restore without you.",
+      "nav_summary": "Local uncensored AI · cold handoff",
       "outcomes": {
-        "can": "Hand saved work to another person who can run, stop, and restore it without you or your chat history.",
+        "can": "Stand up an uncensored local model on my own laptop and hand the kit to a person who can run, stop, and restore it without me.",
         "will": [
-                "Assemble only the files and instructions the task needs, and freeze them.",
-                "Prove the package runs, stops, and restores from a fresh folder in a new terminal.",
-                "Keep your own rerun separate from another person's attempt, and record their questions and any help as evidence for the next version."
+                "Download and verify the pinned weights under my own account, and wire a loopback-only service.",
+                "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
+                "Freeze and transfer the kit, keep my replay separate from another person's attempt, and record their questions as evidence for the next version."
         ]
       },
       "pages": [
@@ -483,19 +474,16 @@
         {"source": "shared/MODULE_10_LAB.md", "dest": "shared/MODULE_10_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m10-adverse.svg", "dest": "shared/figures/m10-adverse.svg"},
-        {"source": "shared/figures/m10-clean-session.svg", "dest": "shared/figures/m10-clean-session.svg"},
-        {"source": "shared/figures/m10-earned.svg", "dest": "shared/figures/m10-earned.svg"},
-        {"source": "shared/figures/m10-escalate.svg", "dest": "shared/figures/m10-escalate.svg"},
-        {"source": "shared/figures/m10-independent.svg", "dest": "shared/figures/m10-independent.svg"},
-        {"source": "shared/figures/m10-package.svg", "dest": "shared/figures/m10-package.svg"},
-        {"source": "shared/figures/m10-restart-vs-transfer.svg", "dest": "shared/figures/m10-restart-vs-transfer.svg"},
-        {"source": "shared/figures/m10-six-dimensions.svg", "dest": "shared/figures/m10-six-dimensions.svg"},
-        {"source": "shared/figures/m10-unfamiliar.svg", "dest": "shared/figures/m10-unfamiliar.svg"}
+        {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},
+        {"source": "shared/figures/m10-independent-transfer.png", "dest": "shared/figures/m10-independent-transfer.png"},
+        {"source": "shared/figures/m10-launch-approval.png", "dest": "shared/figures/m10-launch-approval.png"},
+        {"source": "shared/figures/m10-operator-boundary.png", "dest": "shared/figures/m10-operator-boundary.png"},
+        {"source": "shared/figures/m10-package-boundary.png", "dest": "shared/figures/m10-package-boundary.png"},
+        {"source": "shared/figures/m10-stop-restore.png", "dest": "shared/figures/m10-stop-restore.png"}
       ],
       "scripts": [
-        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"},
-        {"source": "scripts/run_close.py", "dest": "scripts/run_close.py"}
+        {"source": "scripts/local_ai.py", "dest": "scripts/local_ai.py"},
+        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"}
       ],
       "download_dirs": ["shared/case", "shared/controls", "shared/baseline"],
       "raw_downloads": ["shared/PACKAGE.md"],

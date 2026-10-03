@@ -1,3 +1,13 @@
-# Bad package fixture
+# Runnable local AI service package
 
-This package cites S07_VENDOR_VX-240.md from module-01-mission-thread.
+## Purpose
+
+Bring the pinned local service up and prove it runs.
+
+## Inputs
+
+- `shared/PACKAGE.md`
+- `scripts/local_ai.py`
+- `shared/case/model-card.json`
+- The earlier case bundle for S07_MO-27 is retained for reference.
+- `shared/controls/run.json`

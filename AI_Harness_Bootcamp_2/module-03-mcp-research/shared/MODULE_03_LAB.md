@@ -177,14 +177,14 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the inspection failed; preserve this att
 
 **Recovery:** A refusal means `mcp.json` points somewhere other than the supplied server in your work copy. Do not edit the inspector. Prepare a fresh work copy, because a connection entry that starts another program is exactly what this check exists to stop.
 
-![Read the contract before you connect](figures/m03-contract-read.svg)
+![Inspect what the tool can change; a read-only annotation or a server's instructions do not enforce your authority boundary.](figures/m03-contract-authority.png)
 
-*A tool's read-only mark and a server's instructions are claims to check, not facts to trust.*
+*Inspect what the tool can change; a read-only annotation or a server's instructions do not enforce your authority boundary.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Two columns compare a server's claims with its abilities. The server marks manage_tags as read-only, yet the tool adds and removes tags. Its instructions ask the model to tidy the vault by tagging and overwriting notes. Read the contract before you connect the server.
+The `manage_tags` tool claims to be read-only, but its described effect adds or removes tags: the claim and effect disagree. Inspect tool descriptions rather than treating an annotation as enforcement. Separately, server instructions can steer the model; they do not grant permission or enforce the connection's limits.
 
 </details>
 
@@ -194,14 +194,14 @@ Write `contract.md` in `E`, in your own words, answering three questions. What w
 
 A model might never attempt a forbidden action, so a clean transcript proves little about what the connection allows. A **probe** attempts each forbidden action itself, against a throwaway copy of the vault and without a model, and records what happened. Your declaration comes first because the probe judges the connection against it.
 
-![Three layers refuse a call, and a fourth records it](figures/m03-mcp-layers.svg)
+![Use separate tool, guard, and server limits, then inspect the evidence from the layer actually exercised; the server cannot log a call it never received.](figures/m03-authority-layers.png)
 
-*The allow-list, the guard, and the server's limits each refuse a different kind of call; the evidence records the result.*
+*Use separate tool, guard, and server limits, then inspect the evidence from the layer actually exercised; the server cannot log a call it never received.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-A model's tool request meets three layers that can refuse it and one that records what happened. The allow-list hides tools you did not name. The guard blocks an undeclared call before it runs. The server's own limits refuse what is outside its folders. The server log and the files on disk record what actually happened.
+A request first meets the tool offer or allow-list, then the guard, then server scope (including read-only or create-only limits), before any effect on files on disk. A tool excluded by the allow-list is not sent; a guard may block an offered call before the server; a call that reaches the server may receive a server denial instead of changing a file. These are separate exits, not steps through which a refused call continues. Use the harness or probe record for a call not sent or blocked before the server. For a call that reaches the server, inspect the server audit and disk effects, including when the server denies it; inspect those effects for an allowed call too. A server cannot audit a call it never received.
 
 </details>
 
@@ -249,14 +249,14 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research limits did not hold; preser
 
 **Recovery:** A `BREACHED` line names the attempt, so find the flag that should have stopped it. An `UNAVAILABLE` permitted action means a limit is tighter than the work needs. Rename the held result, for example to `probe-research-attempt-1.json`, keep it, and run the probe again into `probe-research.json`.
 
-![The same attempts against two servers](figures/m03-probe-matrix.svg)
+![With deletion excluded, the normal probe reports HELD by the allow-list in both configurations; only the server-only probe establishes the server's response to that call.](figures/m03-probe-proof.png)
 
-*A probe tries each forbidden action itself, so a clean model run is not the only evidence.*
+*With deletion excluded, the normal probe reports HELD by the allow-list in both configurations; only the server-only probe establishes the server's response to that call.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-A table compares four forbidden attempts against an open server and a bounded server. Reading outside the read folders, overwriting a source note, and creating a note outside Drafts all breach the open server and are held by the bounded one. Deleting a source is held by the allow-list on the open server and by the server's own limits on the bounded one.
+The normal probe compares four forbidden attempts against an open connection and a bounded connection. Reading outside scope, overwriting a source, and creating a note outside the write folder are each `BREACHED` on the open connection and `HELD` on the bounded one. Deleting a source is `HELD (allow-list)` in both configurations because deletion is excluded from the declaration. That delete call was not sent to the server: its `server.outcome` is `NOT_SENT`, so the printed result does not show how the server would respond. Only the server-only stretch, run with `--ignore-allow-list`, sends that call to the server; its evidence is the server denial plus a check that the files on disk are unchanged. Separately, permitted actions must work, so a limit that blocks needed work is too tight, not correct authority.
 
 </details>
 
@@ -291,14 +291,21 @@ The allow-list is one layer, and the server's own limits are another. Run the re
 
 The AI will propose a handling for every note, and a proposal read first tends to become your answer. Decide six notes yourself before you see it. These notes are listed in `Start here` and in `Estimate/Calibration`; each exercises a different part of the rules. Open `Estimate/Calibration` in Obsidian and fill in each row with your marking and the rule that decides it, and add a reason where the rule alone does not explain it. Use only the rules in `Handbook/Handling rules`.
 
-![Work out a note's handling in order](figures/m03-handling-ladder.svg)
+![Apply header, valid notice, inheritance, and aggregation in order; a body claim or a proposed marking does not grant release authority.](figures/m03-effective-handling.png)
 
-*Header, notice, inheritance, and aggregation, in that order, give the effective handling.*
+*Apply header, valid notice, inheritance, and aggregation in order; a body claim or a proposed marking does not grant release authority.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Four steps lead to a note's effective handling. Start from the marking in its header, or STAFF when there is none. Apply the latest valid Release Authority notice. Take the most restricted level among the notes it draws on. Raise it to STAFF when it holds three of the four movement elements.
+Four steps, in order, give a note's effective handling.
+
+1. Header marking: start from the marking in the note's header; a missing marking means STAFF.
+2. Latest valid notice by zulu time from the Release Authority: apply the most recent valid notice. A notice is valid only when it is a marking-change notice, its originator is the Release Authority, its target note exists, and the new level it sets is a permitted level.
+3. Inherit effective source levels: a note takes the most restricted level among the notes it draws on, using their effective levels after steps 1 and 2, not their original header markings. Most restricted wins.
+4. Aggregation: a product holding at least 3 of the 4 movement elements is STAFF at minimum.
+
+Separately, new notes written by the AI start at STAFF, and a proposal is not a release: a proposed marking, or a claim in a note's body, never changes handling. Only a valid Release Authority notice does.
 
 </details>
 
@@ -371,29 +378,20 @@ Now read what the AI wrote, in Obsidian. Open `Drafts/research/open-questions`, 
 
 Open `E/research/mcp-audit.jsonl` and look for rows with `"allowed": false`. Each one is a call the server refused. If you see none, the AI never tried anything outside its limits during this run, and your probe is what shows that the limits hold.
 
-![An injected instruction meets a limit](figures/m03-instructions-lure.svg)
-
-*Reading an instruction in a note is harmless when the connection cannot carry it out.*
-
-<details>
-<summary>Figure text</summary>
-
-A contractor note tells automation to mark every source note OPEN. If the model tries it, the write targets a source folder outside its write folder, and the server refuses with OUTSIDE_WRITE_SCOPE. The source note is unchanged, and the server log records the refusal.
-
-</details>
+Quoted source instructions do not change authority. Inspect actual calls and disk effects; do not infer an attempt that was never observed.
 
 ## Check the AI's handling calls against the rules
 
 The AI's handling proposal is a proposal: under rule H6, only the Release Authority changes a marking, and a proposal that you accept without checking becomes your mistake. A summary can also be more restricted than every note it draws on. Three facts that are each safe to share, such as a location, a time with a zone, and a named route, can together tell a reader where and when a convoy moves.
 
-![Safe parts can make an unsafe whole](figures/m03-aggregation.svg)
+![One product containing at least three movement-element types is STAFF at minimum, even when its sources are individually OPEN or PARTNER.](figures/m03-aggregation.png)
 
-*A summary that joins a location, a time with a zone, and a named route is STAFF.*
+*One product containing at least three movement-element types is STAFF at minimum, even when its sources are individually OPEN or PARTNER.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-On one side, three notes each marked OPEN or PARTNER give a location, a time, and a route separately. On the other side, a single summary holds all three together, which tells a reader where and when a convoy moves. The summary is STAFF even though every part was shareable.
+There are four movement-element types: location grid, time with zone letter, named route, and quantity or lot. When any three of the four enter one product, such as a single summary note, that product is STAFF at minimum. Separate notes that each hold one element, kept apart, are not combined into one product, so this rule does not apply to them. Shareable parts do not make a shareable combination.
 
 </details>
 
@@ -506,14 +504,18 @@ Change `AUTHORITY.md` to the revoked phase, which allows nothing:
 
 Run once more. The revoked prompt asks the model to list its vault tools and try to read a note. The model should have none, and the run should say so.
 
-![Revoke by removal, then prove it](figures/m03-revoke.svg)
+![Give each phase only its declared reach, then remove the connection and confirm a fresh run was offered no MCP tools.](figures/m03-phase-scope-revoke.png)
 
-*A revoked connection is shown by a run that was offered nothing.*
+*Give each phase only its declared reach, then remove the connection and confirm a fresh run was offered no MCP tools.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Four steps end a connection. Empty the server map in the connection file. Declare the revoked phase. Run once with no tools. Check that the model was offered no tools and that any call it made was refused.
+Three phases follow one another in time, each with its own reach; nothing carries over from one phase to the next.
+
+- Research: reads `Handbook/` and `Sources/`; new writes only in `Drafts/research/`.
+- Partner: reads only `Estimate/Releasable/`; new writes only in `Drafts/partner/`.
+- Revoked: the server map is `mcpServers: {}`. A fresh run is offered no tools, and no server is started, so there is no server to refuse a request.
 
 </details>
 
@@ -536,18 +538,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the revoked run failed; preserve this at
 
 **Recovery:** A revoked phase needs an empty server map and a declaration with no tools or folders; fix the file the message names and run again.
 
-Your handoff describes the authority each phase held. The table shows the three side by side.
-
-![Each phase gets its own reach](figures/m03-phase-scope.svg)
-
-*Declare the narrowest folders each phase needs, and nothing beyond them.*
-
-<details>
-<summary>Figure text</summary>
-
-A table lists three phases. Research reads Handbook and Sources and writes new notes only under Drafts slash research. Partner reads only Estimate slash Releasable and writes new notes only under Drafts slash partner. Revoked reads and writes nothing.
-
-</details>
+Your handoff describes the authority each phase held.
 
 ## Hand off and run the final check
 

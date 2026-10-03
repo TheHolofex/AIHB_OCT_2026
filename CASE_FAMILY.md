@@ -32,3 +32,7 @@ System, then owner:
 - Learner-facing files never contain `246 kg`, `1,404 kg`, or `3 minutes late`, except Module 01 staff, reference, and calculator paths already allowed to carry those tokens.
 - No module teaches cyber mission-thread defense or real dispatch.
 - New packets follow [MISSION_THREAD_SCENARIOS.md](MISSION_THREAD_SCENARIOS.md). Replacement specs for Modules 02–10 are adopted in the shipped labs; retired thin-adapter inputs are not active work.
+
+## Real-software exception
+
+Module 10 runs real software instead of a fictional logistics movement. Its independence rule is unchanged: it supplies its own case and does not import another module's product or identifiers. Its safety rule is the bounded-use rule that governs the pinned model: the service binds loopback only, the weights stay on the learner's machine and are never re-uploaded or served to another person, and guardrails belong to the operator because the model's refusal direction was removed. The other ten sessions keep the fictional, class-only boundary above.

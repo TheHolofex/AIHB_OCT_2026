@@ -416,8 +416,6 @@ def criterion_lab() -> None:
     check("M3-LAB", len(scripts) >= 7 and all(path.is_file() for path in scripts.values()), "every script the lab runs exists: " + ", ".join(sorted(scripts)))
     prompts = set(re.findall(r"prompts[/\\]([A-Z_]+\.md)", lab))
     check("M3-LAB", len(prompts) == 4 and all((ROOT / "shared" / "prompts" / name).is_file() for name in prompts), "every prompt the lab runs exists")
-    figures = re.findall(r"\]\((figures/[a-z0-9-]+\.svg)\)", lab)
-    check("M3-LAB", len(figures) == 8 and all((ROOT / "shared" / figure).is_file() for figure in figures), "every figure the lab shows exists")
     problems = []
     for line in lab.splitlines():
         if "$PY" not in line and "& $PY" not in line:

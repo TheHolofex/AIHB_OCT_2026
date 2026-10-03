@@ -6,14 +6,14 @@ A polished brief can cite true facts and still recommend a movement those facts 
 
 A **mission thread** is the ordered path from a request to a result. It shows what must happen, in what order, and what each step must hand to the next.
 
-![Eight steps from request to usable effect](figures/m01-eight-steps.svg)
+![Evidence must support each required handoff to the decision point; expected arrival does not establish delivery or usable effect.](figures/m01-thread-handoffs.png)
 
-*Delivery and clinic receipt have not occurred at 14:05.*
+*Evidence must support each required handoff to the decision point; expected arrival does not establish delivery or usable effect.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-The thread is Requirement defined, Cargo received, Cargo released, Vehicle made ready, Movement authorized, Route window met, Cargo delivered, Usable effect confirmed. Delivery and clinic receipt have not occurred at 14:05.
+The required path runs in order: 1. Requirement defined; 2. Cargo received; 3. Cargo released; 4. Vehicle made ready; 5. Movement authorized; 6. Route window met; 7. Cargo delivered; 8. Usable effect confirmed. Each output must meet the next step's entry condition. Each link is a required handoff, not a completed check. Delivery and usable effect are not yet observed.
 
 </details>
 
@@ -67,14 +67,14 @@ The same pattern repeats inside every step. Check these seven parts when they ma
 
 Use one label for every **material statement** in the AI brief: a statement that could change the decision.
 
-![Five kinds of statement](figures/m01-statement-kinds.svg)
+![Split a mixed sentence until each material statement has one kind and its own support.](figures/m01-statement-types.png)
 
-*Label each material statement as one of these five kinds.*
+*Split a mixed sentence until each material statement has one kind and its own support.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Label each material statement as SOURCE FACT, CALCULATION, INFERENCE, DECISION, or UNSUPPORTED.
+A compound statement splits into separate rows, one kind per row. A SOURCE FACT needs an applicable source that states it. A CALCULATION needs supported values and units. An INFERENCE needs an interpretation and its reason. A DECISION needs a named human owner. UNSUPPORTED means adequate support is absent. These are alternative classifications, not steps that turn a fact into an approval.
 
 </details>
 
@@ -90,14 +90,14 @@ A sentence can contain more than one kind. Split it until each row has one kind.
 
 A source is not trustworthy for everything.
 
-![Authority belongs to the claim](figures/m01-claim-authority.svg)
+![A genuine source may still be the wrong authority for this claim, entity, route, or decision time.](figures/m01-source-authority.png)
 
-*Ask which file is allowed to establish this claim.*
+*A genuine source may still be the wrong authority for this claim, entity, route, or decision time.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-A genuine file can still be the wrong authority for the claim in front of you.
+Match each claim to its authority: the warehouse establishes custody; the quality office establishes release; Fleet Engineering establishes payload; the Road Authority establishes the gate window; and the Movement Registry establishes permit status. A warehouse record does not establish release, even if the record is genuine. For every match, check the exact entity and current version: genuine does not necessarily mean applicable.
 
 </details>
 
@@ -113,14 +113,14 @@ A genuine warehouse receipt can be the wrong source for usability. A current com
 
 One step can be correct while the overall conclusion is still wrong, because the next step may require something that the first one did not establish.
 
-![The next step can still fail](figures/m01-handoff-break.svg)
+![Check what the next step requires; the earlier true statement cannot supply missing authority or observation.](figures/m01-broken-handoff.png)
 
-*Check the next step. Expected arrival is not delivery.*
+*Check what the next step requires; the earlier true statement cannot supply missing authority or observation.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-One step can be correct while the next step still fails. Expected arrival is not delivery.
+Four earlier states each face a separate unmet requirement rather than automatically passing into the next state: recorded custody still requires release; a received permit still requires approval; expected arrival still requires delivery evidence; and delivery still requires confirmation of usable quantity. Being true at one step is not sufficient for the next.
 
 </details>
 

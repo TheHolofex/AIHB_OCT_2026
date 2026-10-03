@@ -14,6 +14,17 @@ Plan for a little over two hours on Thursday. That is a rough estimate, not a me
 
 Save the supplied declaration as `AGENT_POLICY.md` in the work copy before the first agent command. Keep its fixed settings: `yolo` is off, reads are limited to the work folder, writes are limited to `artifacts` inside it, and only `course_read` and `course_write` are allowed. Skills and the gateway remain off.
 
+![Freeze the supplied tool and path declaration before the turn; it defines course-tool permissions, not an operating-system sandbox.](shared/figures/m09-policy-declaration.png)
+
+*Freeze the supplied tool and path declaration before the turn; it defines course-tool permissions, not an operating-system sandbox.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Freeze and hash the declaration before the first agent turn. `read_root: .` permits `course_read` within the work root. Inside that region, `write_root: artifacts` limits `course_write` to the artifacts folder. The other settings are off: `yolo: false`, `skills: false`, and `gateway: false`. This is a course-tool boundary, not an operating-system sandbox.
+
+</details>
+
 The launcher passes the policy through `--policy`. The guard extension checks tool calls against it before execution. This boundary controls the supplied tools; it is not an operating-system sandbox.
 
 ## Probes and planted text

@@ -1,10 +1,10 @@
-# Module 10 · Transfer a runnable package
+# Module 10 · Stand up a local uncensored AI and hand it off
 
-A runnable package lets another person run, stop, and restore the Last Count closing task without your chat history. Use your source checks, saved controls, and recovery procedures to assemble the smallest sufficient set of instructions and files. Freeze those files, move only the declared bundle to a fresh location, and operate it from a new terminal. Keep this restart check separate from observing another person use the package.
+A complete kit lets another person bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it without your chat history. Assemble the smallest sufficient set of files and instructions, freeze it, move only the declared bundle to a fresh location, and operate it from a new terminal. Keep your own rerun separate from observing another person use the kit.
 
-The fictional Last Count movement carries oral rehydration salts from South Store to Clinic R-12 on movement W-9. A result showing that the required quantity is supported does not grant permission to release or dispatch anything.
+The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it will answer bluntly and apply no judgment of its own. The service binds `127.0.0.1` only, the weights stay on this laptop, and prompts are recorded by the harness.
 
-Plan for about two and a half hours on Thursday for preparation, source inspection, operation, and handoff preparation. That is a rough estimate, not a measured time. The recipient's attempt takes place outside the four course days.
+Plan for 3 hours on Thursday. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
 
 ## Prepare separate work and transfer locations
 
@@ -91,56 +91,324 @@ $F = "$BASE/received package"
 
 **Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
 
-## Inspect the authority behind the result
+## Read the boundary before the first launch
 
 Open these files in your editor:
 
-- `W/shared/case/task-practice.json`
-- `W/shared/case/DESK_RULES.md`
-- all forty rows in `W/shared/case/shipments.csv`
-- `W/shared/case/closures.json`
-- `W/shared/case/hostile-paperwork.md`
-- the active and baseline controls and baseline digest
+- `W/shared/case/SERVICE_RULES.md`
+- `W/shared/case/model-card.json`
+- `W/shared/case/task.json`
+- `W/shared/case/hostile-note.md`
 - `W/shared/PACKAGE.md`
 
-In `E/pre-run.md`, record the exact task identity, required quantity, decision time, and units. Explain the conditions for destination custody and for usable quantity, including what makes an unknown state different from a known held state. Identify almost-matching IDs and rows that are outdated or later than the decision time. Check when a newer record may supersede, or replace, an earlier one and which identities that replacement covers. Quote the hostile instruction as data and explain why it supplies no authority.
+In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it does not. Quote the community note's two suggestions — the `0.0.0.0` bind and the skipped digest check — and state why each supplies no authority here. Name what the uncensored model will not do for you: refuse, warn, or apply judgment.
 
-Predict which classes of rows can contribute, which must remain explicit exclusions or holds, and what the closure records can establish. Derive any quantities from the actual rows, not from an answer fixture. The records are authored practice data, not historical model receipts.
+![Loopback limits network reach, and the identity check identifies the checked weight file; neither establishes the model's safety, accuracy, or fitness for publication.](figures/m10-operator-boundary.png)
 
-**Expected:** Every material prediction has a source locator and a reason. Receipt, release, confirmation, and usable effect remain distinct.
+*Loopback limits network reach, and the identity check identifies the checked weight file; neither establishes the model's safety, accuracy, or fitness for publication.*
 
-**Stop:** A source is missing, a near match is being counted, a current unknown is silently dropped, or a closure is being used as release authority.
+<details markdown="1">
+<summary>Figure text</summary>
 
-**Recovery:** Reopen the exact row or document. Narrow the claim and preserve unresolved conditions rather than inventing permission.
+The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requests and replies with the local weights, and prompts and replies are recorded. Output from the local weights goes to the operator, who reviews it; it does not go straight to publishing. Two things are blocked at the boundary: no shared endpoint, and no traffic for other people. A separate note attached to the local weights reads: identity ≠ safety or accuracy. The identity check is a limited check of the weight file, not a safety guarantee around the service.
 
-## Check and run the authoring copy
+</details>
 
-Confirm the package text is correct and produces a result before you freeze anything. The package has eleven named fields: purpose, bounds, inputs, controls/config identity, run, check, stop, restore, strongest evidence, limitations, and next owner. The supplied package already contains all eleven fields. Check each one against the sources and your pre-run notes. Edit only a field that is wrong for this task, and record each edit in `E/pre-run.md` before you freeze the bundle. Identify the exact controls and configuration used, retain unresolved limits, and provide commands the recipient can run from the package alone. The structural check checks the document's required form; it does not operate the package or show whether another person can use it.
+**Expected:** Every material statement has a file and line behind it. The loopback bind and the pinned identity are the only operating truth.
+
+**Stop:** A rule is unclear, the note is being treated as guidance, or the boundary feels optional.
+
+**Recovery:** Reopen `SERVICE_RULES.md` and the note. The boundary is not negotiable by anyone, including you.
+
+## Gain account access and download the pinned weights
+
+The repository is access-gated. Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB and resumable.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-"$PY" "$W/scripts/check_package.py" "$W/shared/PACKAGE.md" &&
-"$PY" "$W/scripts/run_close.py" "$W/shared/case/task-practice.json" "$W/shared/case/shipments.csv" "$W/out/result.json" --closures "$W/shared/case/closures.json" --control "$W/shared/controls/run.json"
+hf auth login
+hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-27B-Uncensored.gguf" --local-dir "$W/weights"
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
-& $PY "$W/scripts/check_package.py" "$W/shared/PACKAGE.md"
-if ($LASTEXITCODE -ne 0) { throw 'Package structure held; do not transfer it.' }
-& $PY "$W/scripts/run_close.py" "$W/shared/case/task-practice.json" "$W/shared/case/shipments.csv" "$W/out/result.json" --closures "$W/shared/case/closures.json" --control "$W/shared/controls/run.json"
+hf auth login
+hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-27B-Uncensored.gguf" --local-dir "$W/weights"
 ```
 
-**Expected:** The structure check prints `PASS: package structure checked`. The practice run then prints five lines, `status: PASS`, `custody_quantity:`, `usable_quantity:`, `shortfall:`, and `class_only: true`, and exits 0. Check each value against `W/out/result.json` and your prediction, and inspect every line and closure disposition, the cited revisions, packet-note treatment, input/control hashes, reasons, and `class_only` in the actual file.
+**Expected:** One file, `OrcaSAQ-2-27B-Uncensored.gguf`, at exactly 15,676,553,472 bytes when complete. Record the account name in `E/pre-run.md`; never record a token.
 
-**Stop:** A required field, command, or dependency is missing; the adapter holds malformed input; an output already exists; or the result cannot be reconstructed from the sources.
+**Stop:** The conditions are not accepted, the download is interrupted, or the byte size differs.
 
-**Recovery:** Preserve the first error and any result. Repair an authoring defect in a new package version before freezing it. Do not edit result bytes or change a source state to obtain PASS.
+**Recovery:** `hf download` resumes. Never accept a wrong-size file and never continue without the conditions accepted.
+
+## Verify the pinned identity
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && "$PY" scripts/local_ai.py verify --model weights/OrcaSAQ-2-27B-Uncensored.gguf --control shared/controls/run.json
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py verify --model weights/OrcaSAQ-2-27B-Uncensored.gguf --control shared/controls/run.json
+```
+
+**Expected:** `PASS: pinned weight identity verified` with the identity card: model id, weight file, exact size, digest, license, and base model.
+
+**Stop:** The adapter reports a size or digest mismatch by name.
+
+**Recovery:** Re-download and re-verify. Never edit `model-card.json` or force a pass. Return to the repository root with `cd "$BASE"` after this step.
+
+## Wire OMP to the loopback service
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && "$PY" scripts/local_ai.py wire --port 8080 --control shared/controls/run.json --work-dir . && cd "$BASE"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py wire --port 8080 --control shared/controls/run.json --work-dir .
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** `WIRED loopback service at 127.0.0.1:8080` and the two outputs `omp-local.yml` and `omp-launch.json`. The overlay names no address other than `127.0.0.1`. Read `omp-launch.json`: it records the exact OMP argv for the live interaction.
+
+**Stop:** The adapter refuses the port, the outputs exist, or the control is disabled.
+
+**Recovery:** The refusal names the reason. Preserve the outputs; never overwrite them.
+
+## Bring the service up under OMP orchestration
+
+OMP drafts the launch line and drives bring-up; you approve and observe each step. Open OMP in `W` and give it the orchestration brief below, then run the line it proposes after checking it against the pinned boundary.
+
+![OMP drafts the launch line, but you check it against the pinned boundary and start the server; reachability is a separate probe.](figures/m10-launch-approval.png)
+
+*OMP drafts the launch line, but you check it against the pinned boundary and start the server; reachability is a separate probe.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+1. Checked weights and the wired loopback config both feed into: OMP drafts launch line.
+2. Check the drafted line: `127.0.0.1` + context `32768`.
+3. If the bind is wrong, reject the line and go back to OMP for a new draft. A rejected line is never launched.
+4. If the check passes, the operator starts the server.
+5. A health probe then checks whether the service is reachable. A drafted line is not a running service.
+6. If the probe finds the service unreachable, the result is HOLD.
+
+</details>
+
+```text
+Read shared/case/SERVICE_RULES.md, shared/case/model-card.json, and shared/case/task.json.
+Draft the exact llama-server launch line for the pinned weight file: loopback bind on port 8080, context 32768, no other flags that widen the boundary. Print the line and each flag's purpose. Do not run it yourself; I approve and run it.
+```
+
+Check the proposed line against `SERVICE_RULES.md`: the host must be `127.0.0.1`, the context must be 32768, and nothing else may widen the boundary. Run the approved line in a terminal reserved for the server:
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+llama-server -m "$W/weights/OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+llama-server -m "$W\weights\OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
+```
+
+Load takes minutes on most laptops. When the server reports loading complete, prove reachability from a second terminal:
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json && cd "$BASE"
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** The probe prints `PASS: local service reachable on loopback`. Record the load time and the probe result in `E/pre-run.md`.
+
+**Stop:** The proposed line binds anything except `127.0.0.1`, loading fails, or the probe reports unreachable.
+
+**Recovery:** Reject the drafted line and ask again if the bind is wrong; free memory and re-probe if loading failed. Do not change the bind address or the context.
+
+## Prove one live interaction
+
+![Each check supports a narrow claim; neither a health probe nor a package-structure pass proves model quality or another person's operation.](figures/m10-evidence-boundaries.png)
+
+*Each check supports a narrow claim; neither a health probe nor a package-structure pass proves model quality or another person's operation.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Each kind of evidence supports one narrow claim. None ranks above the others:
+
+- Size + digest → weight identity.
+- Health probe → reachable at probe time.
+- Live transcript → recorded interaction.
+- Structure check → named fields + local paths.
+
+None of these checks establishes any of the following: not safety, not model quality, not production readiness, and not independent transfer.
+
+</details>
+
+Run the exact argv from `omp-launch.json`:
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-session --no-title --no-skills --no-rules --no-extensions --no-lsp --no-prewalk --mode json -p "Answer in one sentence: what are you?" > "$E/live-interaction.jsonl"; cd "$BASE"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+Set-Location -LiteralPath $W
+omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-session --no-title --no-skills --no-rules --no-extensions --no-lsp --no-prewalk --mode json -p "Answer in one sentence: what are you?" > "$E/live-interaction.jsonl"
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** The saved stream contains a real assistant reply, names `llama.cpp` as the provider, and reports zero cost. A refusal to answer would be surprising from this model; a connection failure is the failure mode to watch.
+
+**Stop:** A context-size refusal or connection failure appears.
+
+**Recovery:** Re-probe, then retry once. If the context is exceeded, the server context stays at the pinned value; do not widen it.
+
+## Observe the uncensored behaviour
+
+Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften. Save the exchange to `E/observations.md`. The model will not refuse and will not warn; that is the capability you chose, and the guardrail is you. Record what you would not put your name on and why you would not send it anywhere.
+
+**Expected:** A recorded exchange showing the model answering without refusal, and your named boundary for using its output.
+
+**Stop:** The exchange is not saved, or the observation reads like an endorsement of unlimited use.
+
+**Recovery:** Save the transcript first, then write the boundary.
+
+## Stop the service and prove the stopped state
+
+Interrupt the server process in its terminal with Ctrl+C. Then prove the stopped state and record it:
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json && cd "$BASE"
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** The probe exits 1 with `HOLD: service is not reachable`; the service is down.
+
+Write the stop receipt in `W` naming the port and the action:
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" -c "import json; print(json.dumps({'action':'stop','port':8080,'stopped_by':'operator Ctrl+C at the server terminal'}))" > "$W/stop-receipt.json" && cat "$W/stop-receipt.json"
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+"$PY" -c "import json; print(json.dumps({'action':'stop','port':8080,'stopped_by':'operator Ctrl+C at the server terminal'}))" > "$W/stop-receipt.json"; Get-Content "$W/stop-receipt.json"
+```
+
+Then confirm it:
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+cd "$W" && "$PY" scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json && cd "$BASE"
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** `PASS: service is stopped and unreachable on loopback`. Copy the receipt to `E/`.
+
+**Stop:** The probe still reports the service reachable, or the receipt does not name this port.
+
+**Recovery:** Terminate the server and re-probe. Never record a stop that did not happen.
+
+## Disable the control and prove the refusal
+
+Disable the active control, attempt each adapter command, and restore from the validated baseline:
+
+![The operator stops the process; the adapter verifies the stopped state. Restoring an enabled control does not itself restart the service.](figures/m10-stop-restore.png)
+
+*The operator stops the process; the adapter verifies the stopped state. Restoring an enabled control does not itself restart the service.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Stopping the service and the control are separate.
+
+Stopping, from the step before: the operator stops the process → the probe reports unreachable → stop receipt → the adapter verifies the stopped state. The operator ends the process; the adapter only verifies that it stopped.
+
+Control: control disabled → every adapter command returns `HOLD: control disabled`. The disabled-control check runs before anything else, so this refusal is not a health observation and cannot prove the service stopped. Only the stop evidence shows that. Separately: validate the baseline digest → restore the control from that baseline.
+
+Restoring the control does not restart the service automatically, and a restored control is not evidence of a running service. To claim the service is running again, launch it and probe it again.
+
+</details>
+
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" -c "from pathlib import Path; import json; Path('$W/shared/controls/run.json').write_text(json.dumps({'enabled': False})+'\n')" && cd "$W" && "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json; cd "$BASE"
+```
+
+
+**Terminal: PowerShell, ordinary user.**
+```powershell
+& $PY -c "from pathlib import Path; import json; Path('$W/shared/controls/run.json').write_text(json.dumps({'enabled': False})+'\n')"
+Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
+Set-Location -LiteralPath $BASE
+```
+
+**Expected:** `HOLD: control disabled` and exit 1 for every adapter command; no command acts while the control is off.
+
+Restore from the baseline by rerunning the package's own restore commands, then confirm the wire outputs are unchanged before proceeding.
+
+**Stop:** Any adapter command acts while the control is disabled, or the baseline digest fails.
+
+**Recovery:** Preserve the refusal as evidence. Restore only through the validated baseline.
 
 ## Freeze the declared bundle before copying
 
-Keep only the thirteen files listed under Inputs in `PACKAGE.md`. Do not add the authoring result, evidence folder, repository, private assessment material, or conversation history. The following command freezes the file identities and the original result identity outside `W`.
+Keep only the eleven files the package declares. Do not add the weights, the evidence folder, the repository, private material, or conversation history. Freeze the identities outside `W`:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -149,9 +417,9 @@ Keep only the thirteen files listed under Inputs in `PACKAGE.md`. Do not add the
 from pathlib import Path
 import hashlib, json, sys
 w,e = map(Path,sys.argv[1:])
-names = ['shared/PACKAGE.md','scripts/run_close.py','scripts/check_package.py','shared/case/task-practice.json','shared/case/shipments.csv','shared/case/closures.json','shared/case/hostile-paperwork.md','shared/case/DESK_RULES.md','shared/case/shipments-changed.csv','shared/case/closures-changed.json','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
+names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
 files = {name:hashlib.sha256((w/name).read_bytes()).hexdigest() for name in names}
-record = {'files':files,'original_result_sha256':hashlib.sha256((w/'out/result.json').read_bytes()).hexdigest()}
+record = {'files':files,'stop_receipt_sha256':hashlib.sha256((w/'stop-receipt.json').read_bytes()).hexdigest()}
 with (e/'bundle-before.json').open('x',encoding='utf-8') as output:
     json.dump(record,output,indent=2,sort_keys=True)
 print('FROZEN BUNDLE',len(files),'files')
@@ -165,24 +433,25 @@ PY
 from pathlib import Path
 import hashlib, json, sys
 w,e = map(Path,sys.argv[1:])
-names = ['shared/PACKAGE.md','scripts/run_close.py','scripts/check_package.py','shared/case/task-practice.json','shared/case/shipments.csv','shared/case/closures.json','shared/case/hostile-paperwork.md','shared/case/DESK_RULES.md','shared/case/shipments-changed.csv','shared/case/closures-changed.json','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
+names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
 files = {name:hashlib.sha256((w/name).read_bytes()).hexdigest() for name in names}
-record = {'files':files,'original_result_sha256':hashlib.sha256((w/'out/result.json').read_bytes()).hexdigest()}
+record = {'files':files,'stop_receipt_sha256':hashlib.sha256((w/'stop-receipt.json').read_bytes()).hexdigest()}
 with (e/'bundle-before.json').open('x',encoding='utf-8') as output:
     json.dump(record,output,indent=2,sort_keys=True)
 print('FROZEN BUNDLE',len(files),'files')
 '@ | & $PY - "$W" "$E"
 ```
 
-**Expected:** A new record contains thirteen path/digest pairs and the original result digest. Compare its names with the package's Inputs list before transfer.
+**Expected:** A new record with ten path/digest pairs and the stop-receipt digest.
 
-**Stop:** A file is missing, a record already exists, or the listed files differ from the package's declared dependencies.
+**Stop:** A file is missing, a record already exists, or the set differs from the package's declared inputs.
 
-**Recovery:** Keep the discrepancy. Correct the bundle before creating a new freeze record in a new attempt; do not overwrite the existing record.
+**Recovery:** Correct the bundle and freeze again into a new record; never overwrite the old one.
 
 ## Copy only the frozen members
 
-The copy validates every source digest before creating the received folder. It preserves the relative layout and checks copied bytes. Its empty `out` directory contains no inherited result.
+The weights stay out: the colleague downloads them under their own account against the pinned identity. Copy with digest validation exactly as the package's freeze step prescribes:
+
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -196,10 +465,9 @@ record = json.loads(record_path.read_text())
 if f.exists() or f.is_symlink() or f.resolve().is_relative_to(w):
     raise SystemExit('HOLD: received destination exists or overlaps work')
 for name,digest in record['files'].items():
-    relative = Path(name)
-    source = w/relative
-    if relative.is_absolute() or '..' in relative.parts or not source.resolve().is_relative_to(w) or name.startswith('out/'):
-        raise SystemExit('HOLD: undeclared or escaping bundle path')
+    source = w/Path(name)
+    if not source.resolve().is_relative_to(w):
+        raise SystemExit('HOLD: escaping bundle path: '+name)
     if hashlib.sha256(source.read_bytes()).hexdigest()!=digest:
         raise SystemExit('HOLD: frozen source changed: '+name)
 f.mkdir(parents=True,exist_ok=False)
@@ -209,9 +477,8 @@ for name,digest in record['files'].items():
     shutil.copyfile(w/name,target)
     if hashlib.sha256(target.read_bytes()).hexdigest()!=digest:
         raise SystemExit('HOLD: copied bytes differ: '+name)
-(f/'out').mkdir()
 print('FRESH PACKAGE',f.resolve())
-print('NO RESULT COPIED')
+print('NO WEIGHTS COPIED')
 PY
 ```
 
@@ -227,10 +494,9 @@ record = json.loads(record_path.read_text())
 if f.exists() or f.is_symlink() or f.resolve().is_relative_to(w):
     raise SystemExit('HOLD: received destination exists or overlaps work')
 for name,digest in record['files'].items():
-    relative = Path(name)
-    source = w/relative
-    if relative.is_absolute() or '..' in relative.parts or not source.resolve().is_relative_to(w) or name.startswith('out/'):
-        raise SystemExit('HOLD: undeclared or escaping bundle path')
+    source = w/Path(name)
+    if not source.resolve().is_relative_to(w):
+        raise SystemExit('HOLD: escaping bundle path: '+name)
     if hashlib.sha256(source.read_bytes()).hexdigest()!=digest:
         raise SystemExit('HOLD: frozen source changed: '+name)
 f.mkdir(parents=True,exist_ok=False)
@@ -240,159 +506,40 @@ for name,digest in record['files'].items():
     shutil.copyfile(w/name,target)
     if hashlib.sha256(target.read_bytes()).hexdigest()!=digest:
         raise SystemExit('HOLD: copied bytes differ: '+name)
-(f/'out').mkdir()
 print('FRESH PACKAGE',f.resolve())
-print('NO RESULT COPIED')
+print('NO WEIGHTS COPIED')
 '@ | & $PY - "$W" "$F" "$E/bundle-before.json"
 ```
 
-**Expected:** The exact printed destination contains only the declared bundle and an empty output directory. Keep the printed path for the next terminal; do not search for a vaguely "latest" attempt.
+**Expected:** The printed destination contains only the declared bundle. The weights are absent by design.
 
-**Stop:** The destination exists, a source changed after freezing, copying fails, or a result was copied.
+**Stop:** The destination exists, a frozen source changed, or the weights were copied.
 
-**Recovery:** Keep the failed received folder. Resolve the cause before a fresh transfer with a new destination and record; never patch a partially received bundle in place and call it the original transfer.
-
-## Operate from a new terminal using the received package
-
-Open a genuinely new terminal. Enter the exact received-folder path printed above, without surrounding quotes. The read is isolated so another pasted command cannot become part of the path.
-
-**Terminal: Bash or zsh, ordinary user, new terminal.**
-
-```bash
-IFS= read -r F
-```
-
-**Terminal: PowerShell, ordinary user, new terminal.**
-
-```powershell
-$F = Read-Host 'Paste the exact received-folder path, without surrounding quotes'
-```
-
-**Expected:** The terminal waits for one line; after you paste the printed path and press Enter, `F` holds it. The command does not search for or choose an attempt for you.
-
-**Stop:** You pasted a command, a different attempt, or an uncertain path.
-
-**Recovery:** Repeat only this entry with the exact printed destination. Do not select a folder by modification time, and do not enter an API key here.
-
-Enter that folder and confirm the package is present.
-
-**Terminal: Bash or zsh, ordinary user, new terminal.**
-
-```bash
-cd "$F" && test -f shared/PACKAGE.md && pwd
-```
-
-**Terminal: PowerShell, ordinary user, new terminal.**
-
-```powershell
-Set-Location -LiteralPath $F -ErrorAction Stop
-if (-not (Test-Path -LiteralPath 'shared/PACKAGE.md' -PathType Leaf)) { throw 'HOLD: package missing.' }
-(Get-Location).Path
-```
-
-**Expected:** The displayed directory is the received folder, not `W` or the repository. It has no result yet.
-
-**Stop:** Location change fails, the package is missing, or an old result exists.
-
-**Recovery:** Preserve that state and verify which folder you received. Do not delete an old result to imitate a fresh session.
-
-Open the received `shared/PACKAGE.md`. From this point, use its Run, Check, Stop, and Restore commands and its stated observations, without the authoring terminal or chat history. Both terminal families are supplied there. Record every command, first error, actual result, disabled-control refusal, restore digest, and byte comparison in `E/recipient-technical.md` when you return to the evidence terminal. If author help was needed, retain the question and repair; do not call that first attempt independent operation.
-
-If you operate this fresh session yourself, identify yourself as the operator. A successful rerun shows restartability from saved files. It does not show that another person could operate them independently.
-
-The core operation must show a fresh result, the structural-check limit, a disabled-control exit 1 with no new output or prior-result mutation, validated restoration, and a new restored result that matches the fresh result byte for byte.
-
-## Compare the received run with the retained original
-
-Return to the authoring terminal, where `W`, `E`, `F`, and `PY` are still set. The comparison checks every frozen bundle member, the original result identity, and both received result files. The restored active control must again match the frozen enabled bytes.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" - "$W" "$F" "$E/bundle-before.json" <<'PY'
-from pathlib import Path
-import hashlib, json, sys
-w,f,record_path = map(Path,sys.argv[1:])
-record = json.loads(record_path.read_text())
-changed = [name for name,digest in record['files'].items() if hashlib.sha256((f/name).read_bytes()).hexdigest()!=digest]
-original = (w/'out/result.json').read_bytes()
-if changed or hashlib.sha256(original).hexdigest()!=record['original_result_sha256']:
-    raise SystemExit('HOLD: frozen bundle or original result changed: '+', '.join(changed))
-if original!=(f/'out/result.json').read_bytes() or original!=(f/'out/result-restored.json').read_bytes():
-    raise SystemExit('HOLD: received result bytes differ')
-print('TRANSFER TECHNICAL CHECK PASS: bundle intact; three result files match')
-PY
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-@'
-from pathlib import Path
-import hashlib, json, sys
-w,f,record_path = map(Path,sys.argv[1:])
-record = json.loads(record_path.read_text())
-changed = [name for name,digest in record['files'].items() if hashlib.sha256((f/name).read_bytes()).hexdigest()!=digest]
-original = (w/'out/result.json').read_bytes()
-if changed or hashlib.sha256(original).hexdigest()!=record['original_result_sha256']:
-    raise SystemExit('HOLD: frozen bundle or original result changed: '+', '.join(changed))
-if original!=(f/'out/result.json').read_bytes() or original!=(f/'out/result-restored.json').read_bytes():
-    raise SystemExit('HOLD: received result bytes differ')
-print('TRANSFER TECHNICAL CHECK PASS: bundle intact; three result files match')
-'@ | & $PY - "$W" "$F" "$E/bundle-before.json"
-```
-
-**Expected:** The frozen bundle remains intact, the original result has not changed, and all three independently created result files match. This is technical repeatability.
-
-**Stop:** Any source/control/script/package identity changed, a result is missing, or a byte comparison fails.
-
-**Recovery:** Keep every difference. Identify the exact dependency or decision that changed before starting another transfer; do not patch received results or quietly repair the frozen package.
+**Recovery:** Keep the failed folder; use a fresh destination for a corrected transfer.
 
 ## Hand the package to another person
 
-The other person's attempt takes place outside the four course days, so your session ends with the package ready and the attempt arranged. Before you finish, write in `E/transfer-status.md` who will operate the package, where and when, which observations you already have from your own technical rerun, and which are still waiting on that attempt. Until the attempt takes place, independent-person operation stays **unobserved**.
+The colleague receives the fresh folder, the pinned identity, and the boundary. Let them run it from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, observed outcomes, and any help in `E/transfer-status.md`. A technical replay, including an agent replay, is not an observation of another person's operation. If no person is available, retain the technical results and record independent-person operation as **unobserved**, with the missing prerequisite. It is not a pass.
 
-Point `F` at a new, unused folder for the recipient, keeping `W` and the original `E/bundle-before.json`. Run this in the authoring terminal, where `W`, `E`, and `BASE` are still set; if you opened a new terminal, use the re-entry block at the top of the page first.
+If the colleague needs help, record what they did before and after; do not relabel an assisted attempt as independent. Use their questions to improve a new package version while preserving the observed attempt.
 
-**Terminal: Bash or zsh, ordinary user.**
+![Keep technical replay separate from another person's attempt, record every intervention, and mark human transfer unobserved when no recipient has operated the kit.](figures/m10-independent-transfer.png)
 
-```bash
-F="$BASE/received package for recipient"
-```
+*Keep technical replay separate from another person's attempt, record every intervention, and mark human transfer unobserved when no recipient has operated the kit.*
 
-**Terminal: PowerShell, ordinary user.**
+<details markdown="1">
+<summary>Figure text</summary>
 
-```powershell
-$F = "$BASE/received package for recipient"
-```
+Three separate kinds of evidence:
 
-**Expected:** No output. The folder does not exist yet; the copy creates it.
+- Author rerun.
+- Fresh-session technical replay. It is not passed by substitution: it does not count as another person's operation.
+- Different person → package alone → questions / actions / outcomes → record any help → assisted stays assisted.
 
-**Stop:** The folder already exists, or `BASE` is empty.
-
-**Recovery:** Use the re-entry block to restore the variables, then choose a name under `BASE` that is not in use.
-
-Repeat [Copy only the frozen members](#copy-only-the-frozen-members) to create that fresh received folder with an empty `out/` directory. Preserve the earlier received copy and its results; do not delete them or copy files back into the checkout.
-
-Give the fresh folder and the supplied task to another person. Let them try the saved instructions first. Ask them to recover the purpose and bounds, run the commands, reconstruct custody and usable quantity from the cited rows, name the human decision still required, show stop and restore, and name the next owner. Record their questions, commands, observed outcomes, and any help you provide in `E/transfer-status.md`.
-
-A model's authorship, hashes, or a structural pass cannot replace another person's operation of the package. If no person or supplied task is available, retain the technical results and record independent-person operation as **unobserved**, with the missing prerequisite. It is not a pass. If a recipient needs help, record what they did before and after that help; do not relabel an assisted attempt as independent. Use their questions and the assistance record to improve a new package version while preserving the observed attempt.
-
-<details class="rf-stretch" markdown="1">
-<summary>Optional stretch: preserve custody while reassessing usable effect</summary>
-
-In the received folder, compare both shipment snapshots and closure files. Before the changed run, write `E/stretch-prediction.md` with the changed line and source revision, the receipt fact that remains true, the quality state that changes, and the identity/time test for the newer closure. Predict the effects on custody, usable quantity, shortfall, and the unresolved human decision from those sources.
-
-Use the received package's Changed-snapshot operation, not a repaired authoring copy. Retain the resulting `out/result-changed.json` and the original practice and restored results. Inspect the changed line's dispositions and the newer closure's reason. Exit 1 with a retained supported HOLD is the expected negative outcome; do not change a source or result to obtain PASS.
-
-Run the complete changed-snapshot stop/restore block immediately below that operation in the received package. It fingerprints `out/result-changed.json`, disables the active control, checks that `out/result-changed-stopped.json` is absent, validates and restores the baseline, then compares `out/result-changed-restored.json` with the original changed result. Both adapter calls must exit 1 for different reasons: disabled control first, supported quantity HOLD after restoration. The enclosing proof exits 0 only after both checks. Keep both HOLD results; do not treat a legitimate HOLD as a failed restoration.
-
-**Expected:** Destination custody is not silently revoked merely because quality release changed. Usable effect follows the release and confirmation evidence. The newer wrong-family closure supplies no usable-effect authority. Stop prevents mutation, and restored operation reproduces the same supported HOLD.
-
-**Stop:** An unsupported usable contribution appears, the closure is promoted into release authority, a stopped result is created, or restored bytes differ.
-
-**Recovery:** Preserve the original prediction, every attempt, and the actual discrepancy. Name the evidence and human decision still needed. Do not ask the author to rescue the received package during an independent attempt.
-
-Record the observed quantities and dispositions in `E/stretch-decision.md`, together with the stop/restore proof and the exact decision the adapter cannot make. The class-only boundary remains unchanged.
+If there is no recipient, the different person's operation is UNOBSERVED. No agent or checker result counts as a different person's operation.
 
 </details>
+
+## Close the session
+
+In `E/close-out.md`, record the verified identity, the live interaction, the stop receipt, the restore comparison, and the transfer status. State plainly which parts ran and which did not. Then shut the service down if it is still running, and keep the evidence bundle for staff review.

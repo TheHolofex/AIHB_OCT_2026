@@ -31,9 +31,9 @@ The course runs Monday through Thursday, and all of it is hands-on: you work alo
 | Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours |
 | Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [04 Chalk Line](module-04-typed-decisions/README.md) | 8 to 9 hours |
 | Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours |
-| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Last Count](module-10-capstone/README.md) | 7 hours |
+| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Cold Foundry](module-10-capstone/README.md) | 7.5 hours |
 
-Each day also includes breaks and meals. Chalk Line and Last Count run closer to two and a half hours, and Slope Brief and Night Desk to a little over two.
+Each day also includes breaks and meals. Chalk Line runs closer to two and a half hours, and Slope Brief and Night Desk to a little over two; Cold Foundry runs about three hours.
 
 ### Tuesday timetable
 
@@ -69,11 +69,11 @@ Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 | 10:15–10:25 | Break |
 | 10:25–12:50 | Night Desk |
 | 12:50–13:30 | Lunch |
-| 13:30–16:00 | Last Count |
+| 13:30–16:30 | Cold Foundry |
 
 Treat each break as a stopping point. Inside an assignment, the Ledger Pike break comes after the screen runs, the Kiln Hold break comes after the bounded probe, the Chalk Line break comes after the comparison has been printed and before you adjudicate it, the Copper Span break comes after you seal the first miss, the Blue Gauge break comes after you write your sixteen first-failure notes, and the White Rack break comes after you have built and saved your workflow. On Thursday, the Night Desk break comes after the two supplied probes and before the planted-note run. Save your notes and receipts before you step away.
 
-**Last Count's handoff happens outside the four course days.** The assignment ends with a package that another person should be able to run, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the package yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
+**Cold Foundry's handoff happens outside the facilitated hours.** The assignment ends with a kit that another person should be able to bring up, stop, and restore from its saved files, without your chat history. That person's attempt is scheduled separately, so arrange who it will be before Thursday. Running the kit yourself in a fresh terminal shows that it restarts from saved files. It doesn't show that someone else can use it, so the course records the two observations separately. If no one is available, record the independent-person attempt as unobserved, not passed.
 
 <div data-photo-band="route"></div>
 
@@ -87,7 +87,7 @@ Start with setup, then work through the assignments in the order shown. Each sup
 
 ## Fictional cases, actual work
 
-The cases are fictional. The tools you run, files you produce, checks you perform, and handoffs you attempt are real. Use the supplied data, not confidential workplace information. No exercise authorizes a real dispatch, release, or other operational decision.
+Ten sessions run fictional cases; Cold Foundry runs real software under its own bounded-use rule. The tools you run, files you produce, checks you perform, and handoffs you attempt are real. Use the supplied data, not confidential workplace information. No exercise authorizes a real dispatch, release, or other operational decision, and no exercise publishes or serves a model beyond your own loopback interface.
 
 `PASS` and `HOLD` describe technical checks and work decisions. A successful execution does not prove that another person can operate your handoff; observe that separately.
 

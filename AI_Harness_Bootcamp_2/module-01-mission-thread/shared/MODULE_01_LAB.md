@@ -110,14 +110,14 @@ Record the exact identity of every file you are judging, so that no one can late
 - every file under `inbox/`
 - [the mission-thread guide](MISSION_THREAD.md)
 
-![Open the desk, then hash the inbox](figures/m01-desk-intake.svg)
+![A hash identifies the bytes you used; source authority and applicability still require inspection.](figures/m01-byte-identity.png)
 
-*Start at desk.md, open every inbox file, and hash before you trust a name.*
+*A hash identifies the bytes you used; source authority and applicability still require inspection.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Start at desk.md. Read REQUEST.md. Open every inbox file. Hash the inbox before you trust a filename.
+Two separate checks meet at a traceable evidence record. In the identity check, the file bytes produce a hash, and the hash establishes byte identity. In the applicability check, the issuer, the version and time, the exact entity, and the allowed use together establish whether the source fits the claim. Byte identity and claim fit both lead to traceable evidence. A hash does not establish truth or authority.
 
 </details>
 
@@ -237,6 +237,17 @@ Label `statement_type` with exactly one of: SOURCE FACT, CALCULATION, INFERENCE,
 
 A compound sentence needs several rows. "All 216 kits are ready" contains a scanned count, a release state, and a decision about readiness. Do not let one citation stand in for all three.
 
+![Give each action-changing claim its own support, dependency, and uncertainty instead of letting one citation carry a compound conclusion.](figures/m01-atomic-ledger.png)
+
+*Give each action-changing claim its own support, dependency, and uncertainty instead of letting one citation carry a compound conclusion.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+One compound assertion splits into three separate rows: a count claim, a state claim, and a decision claim. Each row has its own entries for source, version, and locator; statement kind; warrant; units and calculation; dependency and handoff; and uncertainty. Stop splitting a row when it reaches a fact, a calculation, an assumption, a HOLD, or a human decision.
+
+</details>
+
 ## 4. Trace all eight thread steps
 
 Follow the cargo through every handoff from origin to clinic, so that a gap in the thread shows up as a gap in the ledger. Your ledger must contain these step names exactly:
@@ -278,6 +289,17 @@ In the calculation column, show the source values you start from, the arithmetic
 Keep feasibility separate from arithmetic. A computed arrival is achievable only when the supported departure and gate conditions permit it. Label a time that assumes a blocked condition as **counterfactual**: it describes what would happen if that condition were satisfied. It is not an observed arrival or an available estimated time of arrival (ETA).
 
 The script is a calculator, not evidence. The source rows establish the premises. Your ledger shows whether each premise belongs in the calculation.
+
+![Recompute from supported premises and units, then check feasibility separately; a valid calculation does not establish that the handoff can occur.](figures/m01-recompute-feasibility.png)
+
+*Recompute from supported premises and units, then check feasibility separately; a valid calculation does not establish that the handoff can occur.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Source values and their units lead to the question: are the premises supported? If no, the claim is UNSUPPORTED and leads to HOLD. If yes, a visible operation produces an independent result; do not copy the producer's result. The result then faces a second question: are the required entry conditions met? If no, the result is counterfactual, not observed. If yes, the result is feasible at this boundary only; it is not observed delivery.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -400,14 +422,14 @@ Turn your findings into a brief another person can act on without having watched
 
 The review page must let a classmate who did not watch you work understand the decision and its evidence. Having an AI agent inspect it supplies technical observations only; it does not replace that person's review.
 
-![Verdict, blockers, then the five questions](figures/m01-verdict-packet.svg)
+![A defensible verdict names its evidence, blockers, uncertainty, and next evidence; a producer's rebuttal is not independent verification.](figures/m01-supported-verdict.png)
 
-*A classmate who did not watch you work should answer the five questions from the page.*
+*A defensible verdict names its evidence, blockers, uncertainty, and next evidence; a producer's rebuttal is not independent verification.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-A classmate who did not watch you work should answer the five questions from the page.
+A producer rebuttal is another claim: it is sorted like any other claim into supported, contradicted, or unresolved. Supported, contradicted, and unresolved claims all point to the exact sources and calculations behind them. Those lead to a class-only decision: ACCEPT, REVISE, REJECT, or HOLD, stated with the current blockers and the next evidence and its owner. Unresolved claims lead directly to the next evidence and the owner who can supply it.
 
 </details>
 
@@ -543,14 +565,14 @@ Condition that would still block the overall verdict:
 Unexpected change that would cause HOLD:
 ```
 
-![Predict, freeze, then open the new bulletin](figures/m01-changed-source.svg)
+![Predict the update's reach before seeing it, change only dependent claims, and keep unrelated blockers visible.](figures/m01-change-isolation.png)
 
-*Write the prediction before the reveal command. Update only dependent rows.*
+*Predict the update's reach before seeing it, change only dependent claims, and keep unrelated blockers visible.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-The prediction must exist before the reveal command. Update only claims that depend on the current gate closure.
+In order: start from the frozen baseline; predict first, naming what may change and what must not change; then reveal the source update. After the reveal, update the dependent claims and preserve unrelated blockers. Both paths lead to recomputing the verdict. New evidence does not produce an automatic GO.
 
 </details>
 

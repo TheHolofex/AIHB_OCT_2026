@@ -95,6 +95,27 @@ Create `W/decision.md` in your editor. Before opening any candidate, state what 
 
 Freeze the bytes without displaying the candidate contents. The record includes the policy, manifests, cases, gates, instructions, and restore copies.
 
+![Freeze the rule, cases, and input identities before opening candidates; a manifest identifies supplied files, not a model execution.](figures/m08-freeze-before-results.png)
+
+*Freeze the rule, cases, and input identities before opening candidates; a manifest identifies supplied files, not a model execution.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Fix the rule before seeing results.
+
+1. Four inputs go into one frozen record:
+   - the rejection rule, `any_violation_rejects`
+   - the 40 case IDs
+   - the input and configuration hashes
+   - the batch manifests. A manifest is not a model call. It names a supplied file, and it is no evidence that a model produced that file.
+2. Freeze: the record is sealed.
+3. Only then are the candidates inspected.
+
+Nothing goes back from the candidates or their results to change the rule or the record.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -120,6 +141,28 @@ Confirm all forty baseline briefs pass, then score every baseline, A, and B brie
 A malformed source packet or one for the wrong case stops the comparison. Do not count it as a candidate failure. A malformed candidate under valid sources remains in the comparison as a format failure.
 
 Run every baseline first. Both shell versions retain a failure even if a later case passes.
+
+![Compare each candidate against its own same-case baseline and check each material value and locator; an average cannot erase a failed gate.](figures/m08-paired-hard-gates.png)
+
+*Compare each candidate against its own same-case baseline and check each material value and locator; an average cannot erase a failed gate.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+A single violation still counts.
+
+- One case's `sources.json` feeds three briefs: the baseline, candidate A, and candidate B.
+- Each brief faces four separate checks:
+  - format
+  - mass with its `#payload` locator
+  - UTC time with its `#gate` locator
+  - MDT time with its `#gate` locator
+- Each value is checked together with its own locator.
+- The baseline must pass every check. If any baseline fails, the comparison is on HOLD: do not evaluate adoption. A baseline failure is not a candidate rejection.
+- For candidates A and B, any one failed check rejects that candidate. A failed check is never averaged with other checks or other cases.
+- Every result is kept.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -176,6 +219,25 @@ For each candidate, report the number of distinct cases requiring repair. This *
 
 Check that your frozen inputs still match before accepting the comparison.
 
+![State only what the observed comparison supports, and keep the failed-case repair proxy separate from measured time, token usage, and cost estimates.](figures/m08-bounded-decision.png)
+
+*State only what the observed comparison supports, and keep the failed-case repair proxy separate from measured time, token usage, and cost estimates.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Keep the claim inside the evidence.
+
+Four things set the limit of the bounded decision: the observed cases, the frozen rule, the named configuration, and the actual repetitions. Anything about unseen cases, including general superiority, is outside that limit: make no unseen-case claim.
+
+Three measurements stay separate:
+
+- The failed-case count is a repair proxy, not repair time.
+- Elapsed time, tokens, and the SDK estimate are recorded on their own.
+- The provider bill is unobserved unless you check it in your account.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -197,6 +259,24 @@ Check that your frozen inputs still match before accepting the comparison.
 ## Demonstrate restoration
 
 Swap in the candidate instruction, restore the baseline from its stored fingerprints, and prove the rerun is byte-identical. Select the checked instruction as the active condition, retaining the previous active file, then invoke the supplied restore. This deliberately changes a control; it does not edit a candidate brief.
+
+![Restore the hash-identified baseline, retain candidate attempts, and prove the rerun matches the original result bytes.](figures/m08-restore-baseline.png)
+
+*Restore the hash-identified baseline, retain candidate attempts, and prove the rerun matches the original result bytes.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Restore identity, then repeat.
+
+1. The stored hashes identify the frozen copies.
+2. Restore the baseline control and briefs from those copies. The candidate attempts are retained, not deleted.
+3. Rerun the evaluation.
+4. Compare the original and restored result bytes.
+   - Match: required before the restoration counts as complete.
+   - Mismatch: HOLD.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 

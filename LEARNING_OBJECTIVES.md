@@ -82,11 +82,11 @@ Using least-authority tool operation and frozen comparison criteria, the learner
 **Evidence:** frozen declared policy and per-run resolved policy; complete raw events and guard lifecycle; matched assistant calls/execution results; before/after snapshots; grounded planted-note measurement; observed enforcement classification; and the remaining limits of an OMP tool boundary.
 **Owner:** Module 09
 
-## PO-10 — Transfer a runnable package
+## PO-10 — Stand up a local uncensored AI and hand it off
 
-On unfamiliar work, the learner assembles the smallest sufficient method, verifies a clean-session rerun, and enables another person to operate, stop, and restore the package from saved instructions rather than the author's chat history.
+The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and hands the complete kit to another person who repeats bring-up from the saved kit alone rather than the author's chat history.
 
-**Evidence:** unfamiliar-work artifact, runnable package, clean-session receipt, recipient observations and questions, any assistance given, stop/restore demonstration, and final handoff. Record a missing recipient as an unobserved attempt.
+**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, recipient observations and questions, any assistance given, and final handoff. Record a missing recipient as an unobserved attempt.
 **Owner:** Module 10
 ## Required workplace surfaces
 

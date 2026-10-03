@@ -71,8 +71,8 @@ Legacy P4 is an authoring source only. Record adaptation provenance in Module 02
 | Fixed workflow and deterministic outer-state change | 06 |
 | Variation-aware candidate comparison and rollback | 07 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 08 |
-| Restartability and person-to-person transfer | 09 |
-| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 10 |
+| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 09 |
+| Restartability and person-to-person transfer | 10 |
 
 ## Responsibility before release
 

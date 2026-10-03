@@ -140,9 +140,16 @@ A check can report a result, but only a named person can accept the email for it
 
 Create `W/acceptance-control.md` in your editor. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
 
-![The draft producer and acceptance decision have different roles](figures/m00-independent-accept.svg)
+![The checker reports mechanical results; a named person owns the supported decision about the email's stated use.](figures/m00-decision-owner.png)
 
-**Figure text:** The producer supplies a draft. You inspect its evidence; an independent review is needed for any separate use decision.
+*The checker reports mechanical results; a named person owns the supported decision about the email's stated use.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+An AI draft goes through two separate checks. The practice checker tests mechanical conditions. Human review tests the draft against its sources and its meaning. Both results go to the named decision owner, who chooses PASS FOR CLASS REVIEW or HOLD. Neither choice is operational permission. The checker does not approve the draft and does not take the place of the owner.
+
+</details>
 
 **Expected:** Your record distinguishes a mechanical practice result from a supported use decision.
 
@@ -168,10 +175,6 @@ In `acceptance-control.md`, add one example of a claim that still needs your rea
 
 Decide in writing what the tool may do, what stays with you, and what it must never do, so the limits exist before the first draft. Create `W/direction-brief.md`. State what AI may draft, what judgment remains yours, and what it must not do. The AI may reorganize supplied facts into the requested email. You retain source interpretation, acceptance, disclosure, and the sharing decision. A real send, release, or invented service is outside scope.
 
-![Separate delegated work from retained judgment and prohibited action](figures/m00-delegation.svg)
-
-**Figure text:** Delegate the bounded draft. Keep acceptance and consequential decisions with the named human owner. Refuse invented authority and external action.
-
 **Expected:** The three responsibilities are explicit and fit this request.
 
 **Stop:** Your delegation would let the model authorize a movement or decide a real operational policy.
@@ -181,6 +184,17 @@ Decide in writing what the tool may do, what stays with you, and what it must ne
 ## 5. Complete the minimum responsibility screen
 
 Answer the questions that decide whether this job is safe to delegate at all, from what you inspected rather than from habit. Create `W/minimum-screen.md` and answer each line from what you inspected:
+
+![Resolve data authority and decision ownership before drafting, and name who could be affected by an unsupported implication.](figures/m00-responsibility-screen.png)
+
+*Resolve data authority and decision ownership before drafting, and name who could be affected by an unsupported implication.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+The screen has two gates: source and data authority, and the human decision owner. Four other questions sit around the drafting job: sensitive data, affected people, disclosure, and consequential action. When authority and ownership are both resolved, only a class draft may proceed. Wider use stays closed. When either is unresolved, the job goes to HOLD, and you resolve it before drafting.
+
+</details>
 
 ```text
 Source and data authority:
@@ -202,6 +216,17 @@ Decision to proceed with a class draft, or HOLD:
 ## 6. Freeze a testable direction
 
 Write the direction so that a finished draft can be checked against it line by line. Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
+
+![Give the model a limited drafting job, name the evidence that could defeat acceptance, and keep consequential decisions with their owner.](figures/m00-bounded-direction.png)
+
+*Give the model a limited drafting job, name the evidence that could defeat acceptance, and keep consequential decisions with their owner.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Three responsibilities feed one direction. The AI drafts from the supplied facts. The person interprets and decides. External action is refused. The direction names the outcome and audience, the allowed sources and constraints, precedence, the acceptance condition, the falsifier, the stop condition, and the decision owner. Freeze all of it before the run. The direction defines the job; it does not approve the draft.
+
+</details>
 
 Set a limit of two deliberate correction attempts before `HOLD`. A correction requires a diagnosed cause and a fresh retained attempt; this is not permission for automatic retries until a favorable answer appears.
 
@@ -269,6 +294,17 @@ Judge the file on disk, not the assistant's description of it. Open `W/artifact.
 
 Every claim that could change a reader's action needs a source you can point to; the checker cannot do this part. Create `W/source-check.md`. Quote each material statement about quantity, custody, paperwork timing, authority, and prohibited clinic action, then give its exact supporting packet line or paragraph. Mark unsupported implications as well as plainly wrong facts.
 
+![A source can support the stated fact without supporting the action a reader might infer from it.](figures/m00-claim-check.png)
+
+*A source can support the stated fact without supporting the action a reader might infer from it.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+A material claim leads to its source and locator, and then to the quoted support. Sort the support into what it establishes and what it does not establish. Anything it does not establish is blocked from becoming an unsupported implication. Both sides go to human interpretation. Mechanical checks run separately and also inform human interpretation. They do not validate an implication.
+
+</details>
+
 **Expected:** The email's material claims are supported, and the distinctions between custody/release and paperwork/pickup remain explicit.
 
 **Stop:** A statement is true but is being used to justify a different action, or no exact support exists.
@@ -278,6 +314,17 @@ Every claim that could change a reader's action needs a source you can point to;
 ## 10. Make a failing copy without changing the original
 
 Test whether the visible check can reject a known wrong count. The following block changes the original on-hand number only in a separate falsifier file. It also records the original draft's **hash**, a fingerprint calculated from its bytes, so you can check later that the original stayed unchanged.
+
+![A rejected known-bad copy shows that this check catches that defect; it does not certify the original draft's meaning.](figures/m00-falsifier.png)
+
+*A rejected known-bad copy shows that this check catches that defect; it does not certify the original draft's meaning.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Keep the original and the test copy separate. Preserve the original and record its hash; later, confirm that the original hash is unchanged. Separately, make a copy, add one deliberate error, and run the same checker on it. Expect a rejection. The rejection shows that the check can detect that error. Check sensitivity is not full correctness: the rejection says nothing about whether the original is correct.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -303,6 +350,17 @@ if ($LASTEXITCODE -ne 0) { throw 'Falsifier preparation stopped.' }
 ## 11. Describe an observed capability and limit
 
 Record what you saw the tool do and fail to do, so the next person inherits observations rather than opinions. Create `W/capability-limit.md`. Distinguish the model's text, the terminal/file interface, the harness's enforced permissions and recorded checks, and the human decision. Name one capability and one limitation supported by this attempt's evidence.
+
+![Distinguish the model's words, the actual file, the harness's recorded behavior, and the decision a person owns.](figures/m00-tool-layers.png)
+
+*Distinguish the model's words, the actual file, the harness's recorded behavior, and the decision a person owns.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Each of four layers has its own evidence. The model produces generated text. The interface produces a file on disk. The harness keeps permissions and receipts. The person owns interpretation and the use decision. Text is not fact, and a receipt is not correctness. No layer's success carries over to the next. Evidence from any layer can support either a recorded capability or a recorded limit.
+
+</details>
 
 **Expected:** Your claims refer to actual behavior rather than a general claim that AI is reliable or unreliable.
 
@@ -333,6 +391,17 @@ unknowns, and authority/sharing limits. Write the revised 130–190-word email t
 artifact-changed.md using course_write. Leave artifact.md and every other file
 unchanged. After writing, report the new path only.
 ```
+
+![Predict the changed fact's effects before rerunning, preserve unrelated constraints, and explain the original checker's stale-count failure.](figures/m00-change-isolation.png)
+
+*Predict the changed fact's effects before rerunning, preserve unrelated constraints, and explain the original checker's stale-count failure.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Preserve the baseline, predict first, and then apply the one changed fact. The change splits two ways. The statements that depend on that fact change. Other constraints stay fixed. Then compare both drafts. On a separate branch, the original checker still expects the old count, so the changed draft fails that check. Do not edit away the failure.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 

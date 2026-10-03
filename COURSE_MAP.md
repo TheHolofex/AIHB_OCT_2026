@@ -9,7 +9,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Budget | Standard | Evidence status |
 |---|---:|---|
 | Course length | Four teaching days, Monday–Thursday; every module is instructor-led and hands-on | Structural |
-| Module time | About three hours for most modules; about two and a half for Chalk Line and Last Count; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
+| Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
 | Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 08 stretch has 36 paired calls and two restored controls |
@@ -22,14 +22,14 @@ Time estimates exclude meals and breaks, setup, optional stretches, and the sepa
 
 ## Schedule and independence
 
-Eleven instructor-led, hands-on module blocks run across four teaching days, Monday–Thursday. Most take about three hours; Chalk Line and Last Count take about two and a half, and Slope Brief and Night Desk a little over two.
+Eleven instructor-led, hands-on module blocks run across four teaching days, Monday–Thursday. Most take about three hours, including Cold Foundry; Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two.
 
 | Day | Modules, in order | Roughly |
 |---|---|---:|
 | Monday | 00 North Shelf; 01 Cold Lantern | 6 hours |
 | Tuesday | 02 Ledger Pike; 03 Kiln Hold; 04 Chalk Line | 8 to 9 hours |
 | Wednesday | 05 Copper Span; 06 Blue Gauge; 07 White Rack | 9 hours |
-| Thursday | 08 Slope Brief; 09 Night Desk; 10 Last Count | 7 hours |
+| Thursday | 08 Slope Brief; 09 Night Desk; 10 Cold Foundry | 7.5 hours |
 
 | Session | Day | Module |
 |---:|---|---|
@@ -43,7 +43,7 @@ Eleven instructor-led, hands-on module blocks run across four teaching days, Mon
 | 8 | Wednesday · Block 3 | 07 Build and control a fixed workflow through change |
 | 9 | Thursday · Block 1 | 08 Evaluate a change with variation controls |
 | 10 | Thursday · Block 2 | 09 Constrain agent behavior |
-| 11 | Thursday · Block 3 | 10 Transfer a runnable package |
+| 11 | Thursday · Block 3 | 10 Stand up a local uncensored AI and hand it off |
 
 ### Tuesday timetable
 
@@ -83,7 +83,7 @@ Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 | 10:15–10:25 | Break |
 | 10:25–12:50 | Night Desk |
 | 12:50–13:30 | Lunch |
-| 13:30–16:00 | Last Count |
+| 13:30–16:30 | Cold Foundry |
 
 The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its pacing route.
 
@@ -116,7 +116,7 @@ File presence cannot establish observed performance. An authored practice output
 | 07 | Build and control a fixed workflow through change | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO07_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
 | 08 | Evaluate a change with variation controls | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO08_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
 | 09 | Constrain agent behavior | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO09_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
-| 10 | Transfer a runnable package | about 2½h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `RUNNABLE_PACKAGE`; `PO10_RESULT` | Unfamiliar professional task | Supplied challenge, clean-session run, recipient observations and questions, stop/restore, and a handoff that names unresolved limits |
+| 10 | Stand up a local uncensored AI and hand it off | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live interaction, stop/restore receipts, recipient observations and questions, and a handoff that names unresolved limits |
 ## Minimum screen and release authority
 
 `MIN_SCREEN` covers source/data authority, sensitive-data boundary, affected audience/person, disclosure need, consequential authority, and human decision owner. It is a standing rule: every module applies it to its own supplied case, and an unresolved item is `HOLD`. Modules 00–02 can claim only bounded internal acceptance.

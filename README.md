@@ -18,7 +18,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 The first-result design target is about the first hour for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
 
-The core runs as **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours; Chalk Line and Last Count take about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside the four course days.
+The core runs as **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry; Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside the four course days.
 
 ## Target sequence
 
@@ -34,7 +34,7 @@ The core runs as **four teaching days, Monday through Thursday, instructor-led a
 | 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
 | 08 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 10 | Transfer a runnable package | Assemble the smallest sufficient method, pass clean-session restart and stop/restore, and enable an independent person to operate the package. |
+| 10 | Stand up a local uncensored AI and hand it off | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, and enable another person to repeat bring-up from the kit alone. |
 
 Cases and evidence bundles are **independent**: no gate consumes an earlier module’s product. Capabilities are cumulative: earlier skills are assumed, not retaught as new objectives. Authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) owns the module contract.
 
@@ -87,7 +87,7 @@ The 32 instructional destinations share the local Sirocco reader. Edit `ui/cours
 - Each page has a `kind`: `home`, `overview`, `lab`, `setup`, or `reference`. Each module declares `case_name`, `summary`, `nav_summary`, `outcomes`, and exactly one overview and lab page. `summary` describes the work on the homepage card; `nav_summary` concisely names the main tool or skills beneath the case name in the desktop rail, mobile Course menu, and no-JavaScript navigation. `outcomes.can` is one learner-language sentence (at most 320 characters) completing "After this assignment you can"; `outcomes.will` lists two to four "You will…" items. The publisher rejects staff tokens in either. Keep these labels grounded in the module's distinct learning objectives; they wrap naturally rather than truncating.
 - Lab `guide` objects list `context_sections` and `optional_sections` by existing H2 ID. Platform setup pages use `guide: {}`. Other page kinds omit `guide`.
 - `ui_assets` explicitly maps each UI source to its published destination. Local CSS dependencies must also be declared. The publisher rejects missing dependencies, external CSS resources, unsafe paths, and unexpected output files.
-- Figure entries accept SVGs and PNGs. PNGs use standard-library IHDR validation for intrinsic dimensions and the same full-size dialog as SVGs; keep authentic n8n captures under the owning module's `shared/figures/`. Do not feed screenshots into the SVG renderer.
+- Figure entries accept SVGs and PNGs. PNGs use standard-library IHDR validation for intrinsic dimensions and the same full-size dialog as SVGs. Instructional PNGs live under the owning module's `shared/figures/`; their complete generation prompts and provenance stay unpublished in that module's `figures/RASTER_PROMPTS.md`, which is never listed in `course.json`. Keep authentic n8n captures under the owning module's `shared/figures/` as well. Do not feed screenshots or instructional PNGs into the SVG renderer.
 - The homepage hero is the first `.webp` in `ui_assets` and must be exactly 1672×941. Optional photo bands map an id to a declared 1672×716 `.webp` under the top-level `home_bands` key, and each id appears exactly once on the home page as an empty `<div data-photo-band="ID"></div>`. An unknown, repeated, unused, non-empty, or non-home placeholder fails the build. Bands render as decorative, lazy-loaded figures outside search, the outline, and the figure dialog. The publisher reads WebP dimensions from the file header. Course-owned photographs live in `ui/images/`, not in the vendored Sirocco directory; `ui/images/ART_DIRECTION.md` holds their style contract, exact prompts, encode budgets, and provenance.
 - The generated `assets/search-index.json` contains instructional prose and heading targets, not fenced commands, raw exercise contents, staff sources, or evidence. Search loads it only when opened.
 
@@ -127,7 +127,7 @@ python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements-dev.txt
 ```
 
-Reuse that environment for publication and checks. Run `node scripts/render_figures.mjs` only when figure sources change; a reader UI change does not require regenerating figures.
+Reuse that environment for publication and checks. `node scripts/render_figures.mjs --check` verifies every local image link and the bytes of the remaining spec-owned SVGs (Module 02); run `node scripts/render_figures.mjs` without `--check` only to regenerate those SVGs after their `figures/spec.json` changes. Instructional PNGs are not rendered by that script. A reader UI change does not require regenerating figures.
 
 ```bash
 .venv/bin/python scripts/build_course.py

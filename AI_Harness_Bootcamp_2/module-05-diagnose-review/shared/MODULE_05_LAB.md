@@ -137,6 +137,17 @@ Read the one-page duty card for the rules:
 
 The restore command checks the clean baseline renderer's **digest**, a fingerprint of its file bytes, before copying it onto the work version. It first preserves the existing renderer and `out/` files under `attempts/`. Confirm that this recovery path works before placing the fault.
 
+![Confirm the restore reproduces the clean renderer before placing a fault, while preserving the existing attempt and output.](figures/m05-restore-precondition.png)
+
+*Confirm the restore reproduces the clean renderer before placing a fault, while preserving the existing attempt and output.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Start with the clean baseline renderer and check its digest. If the digest does not match, stop at `Mismatch → HOLD` before replacing the work copy. If it matches, preserve the current renderer and output as a retained attempt, then restore the work copy from the clean baseline. Confirm `RESTORE OK`; only then place the practice fault.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -199,6 +210,17 @@ Render with the now-faulty work copy:
 
 Before running the diagnostic check, record how you would distinguish a missing source field from a field lost while rendering. Use the read-only **probe**, which compares required fields in the selected source rows with the rendered card, to examine that distinction. Run the probe from the source module path so the faulty work copy cannot disable it:
 
+![Compare the selected source and rendered card, preserve the first mismatch, and read the probe's classifications before replacing anything.](figures/m05-first-divergence.png)
+
+*Compare the selected source and rendered card, preserve the first mismatch, and read the probe's classifications before replacing anything.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Start with the selected source rows and check each required field in order. If its source value is absent, the ordinary probe reports `source_omission`; otherwise, check whether the selected rows agree. Conflicting values produce `source_conflict`. If the values agree, check whether the rendered card exists. No card produces `output_absent`. If the card exists, check whether it contains the field: yes produces `rendered`, and no produces `renderer_omission`. Stop at the first failing boundary. Record the expected result, observed result, and exact command; seal that evidence before changing anything. Probe exit status 0 means the diagnosis ran, not that the card is complete. The ordinary probe does not detect a wrong input version: `wrong_input_version` requires the optional `--intended` comparison and is not one of these core outcomes.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -237,6 +259,17 @@ Still present:
 
 After the probe isolates the renderer as the first failing boundary, authorize one replacement of the work-copy renderer with the clean baseline. Record why that correction addresses the observed cause. The restore command preserves the failed renderer and `out/` in `attempts/` first. Do not hand-edit the card or remove a required field from the acceptance requirements.
 
+![Replace the renderer only when the evidence isolates it; preserve the failed attempt instead of patching the card or relaxing acceptance.](figures/m05-authorized-correction.png)
+
+*Replace the renderer only when the evidence isolates it; preserve the failed attempt instead of patching the card or relaxing acceptance.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Start from the sealed diagnosis. If it shows that the renderer is the failing boundary, make one authorized replacement. Before the clean renderer is restored, the failed attempt (the failed renderer and its output) is preserved in a retained archive. Then restore the clean renderer. If the diagnosis points to any other cause, stop at `Other cause → HOLD`; do not replace the renderer. Two actions are forbidden and do not count as recovery: hand-patching the output card, and weakening the acceptance requirements.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -260,6 +293,17 @@ Write `$E/replace-record.md` with the command and the `RESTORE OK` line.
 ## 5. Prove recovery three ways
 
 Check the repair three ways: inspect the previously missing field, render the complete card from the ledger, and repeat the run in a fresh folder with a new process. For the last check, start from an unrelated **working directory**, the folder from which commands run. Keep both required fields in every acceptance check; finding the cause alone does not establish recovery.
+
+![Prove the focused repair, the complete result, and fresh-process recovery without dropping either required field.](figures/m05-recovery-proofs.png)
+
+*Prove the focused repair, the complete result, and fresh-process recovery without dropping either required field.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Recovery needs three separate proofs. First, a focused field probe of a newly rendered card. Second, a complete render from the explicit ledger. Third, a fresh-process run in a fresh folder, started from an unrelated working directory. Each proof must show both required fields, `permit_status` and `gate_time_mdt`. All three proofs meet the same acceptance requirements; no proof drops or relaxes a field.
+
+</details>
 
 1. For the focused check, render a new card and use the probe to inspect its required fields.
 

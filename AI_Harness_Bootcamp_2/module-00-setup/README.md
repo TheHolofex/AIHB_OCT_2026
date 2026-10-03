@@ -52,14 +52,14 @@ Module 7 uses the local visual workflow editor without a paid model call. No n8n
 
 Save the first error message before you change anything, then work from [When setup stops](shared/TROUBLESHOOTING.md). Change one thing, and run the check that failed again.
 
-![Save the first error, change one thing, rerun](shared/figures/m00-recovery.svg)
+![Save the first error before changing anything, change one thing, and rerun the same check.](shared/figures/m00-recovery-loop.png)
 
-*Save the first error, change one thing, and rerun the same check.*
+*Save the first error before changing anything, change one thing, and rerun the same check.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Save the first error message. Change one thing. Run the same check again.
+Preserve the first error and do not overwrite the first attempt. Change one thing, run the same check, then compare its evidence with the saved first error. If the problem is still unresolved, use the recovery guidance. If it is resolved, record what changed. Neither outcome starts an automatic retry.
 
 </details>
 
@@ -67,14 +67,14 @@ Save the first error message. Change one thing. Run the same check again.
 
 The OMP setup check requires a terminal you opened after the last install to show these values:
 
-![Check readiness in a newly opened terminal](shared/figures/m00-setup-chain.svg)
+![A prerequisite report, a live tool write, and the two application checks establish different readiness claims; one does not prove the others.](shared/figures/m00-readiness-lanes.png)
 
-*Run the readiness check from a terminal you opened after the last install.*
+*A prerequisite report, a live tool write, and the two application checks establish different readiness claims; one does not prove the others.*
 
-<details>
+<details markdown="1">
 <summary>Figure text</summary>
 
-Install the tools. Open a new terminal. Set the OpenRouter key in that terminal. Run the readiness check and read its file from disk. A tool saying done is not the same as a file on disk.
+Readiness has separate evidence paths. In a new terminal, inspect the prerequisite report. A live OMP call must produce a written file, a receipt, and a disk readback; a setup report marked PASS does not prove this live readiness. Obsidian needs both a disk and GUI observation. n8n needs both its stack and browser persistence check. These checks provide separate readiness evidence, not one all-clear inherited from another tool.
 
 </details>
 

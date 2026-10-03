@@ -165,6 +165,26 @@ Write `sample-rule.md` before you open any run that shows an outcome or a stamp 
 
 This makes the sample **outcome-blind**: you fix membership without choosing records because they passed or failed. Use the declaration below only if you have not opened the run files. If you have already seen outcomes, preserve that fact; a fresh folder cannot make them unseen. Record the earlier exposure rather than claim an outcome-blind attempt.
 
+![Freeze the sample before reading outcomes; if you already saw results, record that exposure rather than claim an outcome-blind attempt.](figures/m06-freeze-sample.png)
+
+*Freeze the sample before reading outcomes; if you already saw results, record that exposure rather than claim an outcome-blind attempt.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Freeze eligibility before outcomes.
+
+1. Save eligibility rule: a written rule comes first.
+2. The rule fixes the sample as R-001–R-016, sixteen runs, locked in place. Keep every eligible run.
+3. Then open outcomes: the same sixteen runs, now with their results visible. Membership stays locked.
+
+Exceptions:
+
+- Do not add or drop by result. Nothing seen in an outcome may change which runs are in the sample.
+- If outcomes were seen before the rule was saved, Record prior exposure instead of claiming an outcome-blind attempt.
+
+</details>
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -272,6 +292,25 @@ Open the sixteen sample files under `shared/corpus/`. For each run, write one fi
 
 Name the earliest concrete problem you can support from that run's text, with the line or passage that shows it. Do not start with a category name. If you find no failure, record that observation instead of inventing one. Keep uncertain cases explicit.
 
+![Record each run's earliest supported problem, no failure, or uncertainty before assigning categories.](figures/m06-first-failure-notes.png)
+
+*Record each run's earliest supported problem, no failure, or uncertainty before assigning categories.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Observe before categorizing.
+
+One note per run. Each note starts with the Run ID, then records exactly one of three outcomes:
+
+- Earliest supported problem, tied to its Evidence passage from the run text.
+- No failure found.
+- Uncertain.
+
+Every run's note feeds a single gate: All notes first. Only after the complete set of notes exists does work move on to Categories later, where the notes are grouped.
+
+</details>
+
 **Expected:** The file `first-failures.md` contains sixteen entries, one per sample run. Each begins with the run identifier and records the earliest supported problem, an unresolved observation, or that no failure was found.
 
 **Stop:** If you wrote a category count before every run has its note, the counts are not evidence.
@@ -297,6 +336,23 @@ The total must be 16. Each category count must agree with its listed runs, and p
 
 Keep the original first-failure notes visible next to any revised category label.
 
+![Reconcile pass, fail, and other to all sixteen runs once, and keep each original first-failure note beside any revised category.](figures/m06-reconcile-history.png)
+
+*Reconcile pass, fail, and other to all sixteen runs once, and keep each original first-failure note beside any revised category.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Account for each run once.
+
+1. Run IDs: each run ID connects to exactly one bucket. Each run once.
+2. The three buckets are pass, fail by category, and other.
+3. Inside fail by category, each Original note sits beside its Revised category. Original notes stay; revising a category never replaces the note.
+4. All three buckets add into Total = 16.
+5. Exception: Counts do not close → HOLD. If the buckets do not add to sixteen, or a run is missing or counted twice, record HOLD.
+
+</details>
+
 **Expected:** The counts file shows totals that add to 16, and the first-failure notes remain the source of truth.
 
 **Stop:** The totals add to any number other than 16.
@@ -316,6 +372,25 @@ The configuration is a JSON object with exactly one key, `all_present`. Its valu
 Choose the literals from your first-failure notes to identify one repeated failure category. A **literal** is an exact piece of text. The predicate matches only when both literals occur in the same file; either one may also occur alone in a passing run. This is a substring search, so text inside a longer word also matches. Capital letters and lowercase letters are different. The control does not interpret meaning, calculate values, or use pattern rules called regular expressions.
 
 The characters `RELEASED` occur inside `UNRELEASED`. A config that uses `RELEASED` therefore matches a hold stamp written as `UNRELEASED` when the other literal is also present. This is a limit of a pure text check. Measure that limit honestly.
+
+![Derive two exact literals from your notes; the supplied condition checks their co-occurrence, not the meaning or truth of the run.](figures/m06-predicate-boundary.png)
+
+*Derive two exact literals from your notes; the supplied condition checks their co-occurrence, not the meaning or truth of the run.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Test text, not meaning.
+
+1. Your failure notes supply two different exact strings: Literal A and Literal B.
+2. Each literal is searched in One run file as a Case-sensitive substring, so a literal inside a longer word still counts as present and can cause a false positive.
+3. The two presence checks meet at all_present, which requires both.
+4. Two outcomes: Either absent, or Both present.
+5. Both present is Not release authority.
+
+Separately, Semantic judgment stays a note: what the run means, and whether its claims are true, stays in your retained failure notes and never enters the check.
+
+</details>
 
 Start from the template:
 
@@ -442,6 +517,24 @@ Write-Output "exit $LASTEXITCODE"
 - The missing path prints `HOLD: missing input`, then `exit 1`.
 
 The exit lines read `exit 1`, `exit 0`, `exit 1` in that order.
+
+![MATCH and HOLD both exit 1; use the output text to distinguish a matched condition from a run the control could not decide.](figures/m06-control-boundaries.png)
+
+*MATCH and HOLD both exit 1; use the output text to distinguish a matched condition from a run the control could not decide.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Read the result, not just the exit. Four separate cases, each an input with its output and exit code:
+
+- Known bad: `MATCH: both literals present`, `exit 1`.
+- Known good: `PASS: at least one literal absent`, `exit 0`.
+- Missing run: `HOLD: missing input`, `exit 1`.
+- Malformed config: `HOLD: malformed config`, `exit 1`.
+
+The three `exit 1` cases share one exit code: HOLD also exits 1. The exit code alone cannot tell a match from a refusal; read the output line.
+
+</details>
 
 Copy the three command lines and their output into `$E/predicate-results.md`.
 

@@ -20,9 +20,21 @@ Each time value must carry its required zone label in the correct cell. A UTC la
 
 A malformed source packet or one belonging to a different case stops the whole comparison before results are written. It is not a candidate failure or a repair-cost observation. A malformed candidate brief under valid sources is a format-gate failure and remains in the comparison.
 
-![Four kinds of evidence, not a blend](shared/figures/m08-variation.svg)
+![Supplied-file checks do not measure model variation; repeated live pairs separate observed between-instruction disagreements from within-instruction variation.](shared/figures/m08-evidence-lanes.png)
 
-*Keep exact file-check results, repeated live observations, hard-gate violations, and differences between model runs in separate columns.*
+*Supplied-file checks do not measure model variation; repeated live pairs separate observed between-instruction disagreements from within-instruction variation.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Separate change from variation. There are two evidence lanes, and their results are never pooled.
+
+- **Supplied files.** The same 40 cases each have a baseline, A, and B brief. Deterministic checks read these fixed files. Repeating those checks gives the same answer, so they do not measure model variation. One violation rejects a candidate.
+- **Optional live comparison.** Six cases (PC-01 to PC-06) are planned. Each case has three repeat slots for the baseline instruction and three for the checked instruction. Same-case pairs join a baseline attempt to a checked attempt on the same case. Within-instruction variation compares the repeats of one instruction on one case. Every attempt is retained. One violation rejects adoption.
+
+The live lane follows a sequence recorded before any call runs. Calls alternate the order of baseline and checked instructions. Within each pair, the model, source/form pair, prompt, and permissions stay fixed. That makes 36 comparison calls. After them, the baseline is restored and two restored controls run on PC-01 and PC-02. These are planned observations, not results. A finished sequence does not prove that either instruction is better.
+
+</details>
 
 ## Class-only boundary
 All names, hours, and masses used as defects are fictional course fixtures. Do not use this packet to plan, authorize, dispatch, or describe a real movement. A module result permits only class review.

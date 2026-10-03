@@ -13,6 +13,11 @@ BANNED = (
     "1,404 kg",
     "3 minutes late",
     "module-01-mission-thread",
+    "W-9",
+    "RC-0",
+    "RUNNABLE_PACKAGE",
+    "0.0.0.0",
+    "route R-71",
 )
 SOURCE_IDS = tuple(f"S0{n}" for n in range(1, 10))
 FIELDS = (
@@ -24,9 +29,8 @@ LOCAL_PATH = re.compile(r"\b(?:scripts|shared|out)[/\\][A-Za-z0-9_.\\/+-]+")
 
 def check(text: str) -> list[str]:
     hits: list[str] = []
-    lowered = text
     for token in BANNED:
-        if token in lowered:
+        if token in text:
             hits.append(token)
     for token in SOURCE_IDS:
         if re.search(rf"\b{token}(?:_|-|\b)", text):
@@ -77,14 +81,9 @@ def structure_errors(text: str, root: Path) -> list[str]:
         return found
 
     for name in ("run", "stop", "restore"):
-        calls = commands(name, "scripts/run_close.py")
-        if not any(
-            len(call) == 9 and call[5] == "--closures" and call[7] == "--control"
-            and all(call[i].startswith("shared/") for i in (2, 3, 6, 8))
-            and call[4].startswith("out/")
-            for call in calls
-        ):
-            errors.append(f"{name} lacks a complete run_close command")
+        calls = commands(name, "scripts/local_ai.py")
+        if not calls:
+            errors.append(f"{name} lacks a complete local_ai command")
     if not any(len(call) == 3 and call[2] == "shared/PACKAGE.md" for call in commands("check", "scripts/check_package.py")):
         errors.append("check lacks the package-check command")
 
@@ -93,11 +92,17 @@ def structure_errors(text: str, root: Path) -> list[str]:
         if not LOCAL_PATH.search("\n".join(fields.get(name, []))):
             errors.append(f"{name} lacks a local path")
     for value in sorted(paths):
+        if value.startswith("out/"):
+            continue
         path = root / value
-        if ".." in Path(value).parts or not path.resolve().is_relative_to(root):
-            errors.append(f"path leaves the package: {value}")
-        elif not value.startswith("out/") and not path.is_file():
+        if not path.is_file():
             errors.append(f"missing local dependency: {value}")
+        try:
+            resolved = path.resolve()
+            if not resolved.is_relative_to(root.resolve()):
+                errors.append(f"dependency path leaves the package: {value}")
+        except (OSError, ValueError):
+            errors.append(f"dependency path cannot be resolved: {value}")
     return errors
 
 

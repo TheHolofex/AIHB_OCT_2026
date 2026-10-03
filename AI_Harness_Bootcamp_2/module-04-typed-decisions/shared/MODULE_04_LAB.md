@@ -155,9 +155,16 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 Software, not the model, assembles what the model will see, so you know exactly what it saw. The builder copies the catalog and desk rules, lists the forty messages in arrival order, and finds each number in a message that is followed by more words in the same sentence, together with those words, as a **quantity candidate**; the number words one to ten count as numbers. The model will later pick a candidate instead of typing a number, so a quantity can never be invented.
 
-![State, typed questions, typed answers, then code routes](figures/m04-function-not-chat.svg)
+![Software supplies bounded state and answer choices; the model returns typed proposals, while code validates and routes and people retain consequential decisions.](figures/m04-state-and-questions.png)
 
-**Figure text:** The state and the question set go in; typed answers come out; code and people route from the answers.
+*Software supplies bounded state and answer choices; the model returns typed proposals, while code validates and routes and people retain consequential decisions.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Software supplies the model with state made from the catalog, rules, and messages, including candidate IDs, and a fixed set of seven supplied questions plus one learner question. The model has no side effects and returns only typed answers. Those answers go through validation, then measurement; code routes the messages, and people make the consequential decisions. There is no model-to-dispatch path.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -182,6 +189,17 @@ Open `W/out/state.json` and `W/shared/controls/questions.json` in your editor, s
 - A **yes-or-no** question is answered with `p`, the probability that the answer is yes. `0.95` means almost certainly yes; `0.5` means the model cannot tell. Wherever this page compares or gates a yes-or-no answer, its declared confidence is the distance of `p` from `0.5`, doubled: `p` of `0.85` or `0.15` both count as confidence `0.7`.
 - A **choice** question is answered with one option from its list, exactly as written, plus a **declared confidence** from 0 to 1. For `quantity` the options are that message's candidate IDs plus `NONE`; for `replaces` they are the IDs of earlier messages plus `NONE`.
 - A **score** question is answered with one level index from its ordered list, plus a declared confidence.
+
+![Fixed answer shapes constrain what the model can return; they do not establish that its interpretation is correct.](figures/m04-answer-types.png)
+
+*Fixed answer shapes constrain what the model can return; they do not establish that its interpretation is correct.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Three question types have distinct answer shapes. YES / NO returns `p`, the model's probability of YES. CHOICE returns a listed value and confidence; its `quantity` value is a candidate ID or `NONE`, and its `replaces` value is an earlier message ID or `NONE`. SCORE returns an ordered level index and confidence. An answer satisfying its schema does not establish that the model interpreted the message correctly.
+
+</details>
 
 Declared confidence is a number the model writes about itself. Nothing on this page treats it as true until step 6 measures it.
 
@@ -211,9 +229,16 @@ Each of the seven questions isolates one judgment the desk needs: whether anythi
 
 Your own reading is the only measure you will have of the model's answers, and it only counts if it exists before you see the model's answers. Ten messages are fixed as the sample. Write your answers for four of the questions on each of them, then freeze the file so its contents and time are recorded.
 
-![Label the sample first, then run, then compare](figures/m04-measure-before-trust.svg)
+![Freeze your labels before the run, adjudicate disagreements, and use the observed mistakes without treating a small sample as a general reliability estimate.](figures/m04-freeze-measure.png)
 
-**Figure text:** Labels are written and frozen before the run. The comparison afterwards is what tells you whether to trust the answers.
+*Freeze your labels before the run, adjudicate disagreements, and use the observed mistakes without treating a small sample as a general reliability estimate.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Start with a ten-message sample, write human labels, and freeze their digest and UTC time before running the model once. The run produces eight typed answers for each of forty messages, or 320 answers. Bring the frozen labels and the model answers together to compare four labeled fields, then adjudicate disagreements. The model's declared confidence is not measured agreement, and agreement on this sample is not a general reliability rate.
+
+</details>
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -332,27 +357,66 @@ For each disagreement, open the message in the state and decide who read it corr
 
 Then read the last line again. If any disagreement where the model was wrong carried a declared confidence at or above `0.7`, the number did not protect you: a gate at `0.7` would have let that answer through. Note the highest such value; the next step uses it.
 
-![Declared confidence is a claim; measured agreement is the evidence](figures/m04-declared-vs-measured.svg)
+![Only requests reaching the final gate use these five confidences; a threshold equal to an observed wrong answer's confidence does not exclude it.](figures/m04-final-confidence.png)
 
-**Figure text:** The declared number comes from the model. The measured number comes from your frozen labels. Only the measured one earns a gate.
+*Only requests reaching the final gate use these five confidences; a threshold equal to an observed wrong answer's confidence does not exclude it.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+After earlier routing gates, only a remaining usable, authorized request reaches this final check. Take the declared confidences for `request`, `authority`, and `instructs_desk` as `abs(2p - 1)`, and those for `line` and `quantity` from their typed answers. The weakest of these five confidences determines the route: below `min_confidence` is `REVIEW`; at or above it is `PICK`. Equality passes. Replacement-link confidence is handled separately before routing and does not enter this five-answer minimum. To exclude an observed wrong answer reaching this gate, the threshold must be strictly higher than its confidence. No observed wrong answers means there is no observed maximum, not perfect reliability. A threshold cannot exceed 1, so a wrong answer with confidence 1 cannot be excluded by this gate alone.
+
+</details>
 
 ## Set the gates and route the pile
 
-Code owns the routes. A **gate** is a threshold your code applies to a typed answer: above it, the answer may act; below it, a person reads the message. The supplied router reads four gates from `W/shared/controls/gates.json` and applies these rules, in this order, to every message:
+Code owns the routes. A **gate** is a threshold the supplied router compares with a typed answer; the rule using it determines the route. The router first builds replacement links, ignoring `NONE` and referred replacers, then applies the following first-match rules. A replacer is referred when its `instructs_desk` probability meets its gate, or its `request` probability meets its gate while its `authority` probability is below its gate.
 
-1. A message that a later message replaces is `SUPERSEDED`, provided the later message is not itself referred (it instructs the desk, or it is a request without authority) and the model's declared confidence in the link reaches `min_confidence`. A referred message replaces nothing; an uncertain link sends both messages to `REVIEW`.
-2. A message whose `instructs_desk` probability reaches the gate is `REFER`.
-3. A message whose `request` probability is below the gate is `IGNORE`.
-4. A request with `MIXED` sizes is `REVIEW`; one with no usable size or quantity, or whose chosen quantity is not in boxes or cases, is `CLARIFY`.
-5. A request whose `authority` probability is below the gate is `REFER`.
-6. A request whose weakest declared confidence, across `request`, `line`, `quantity`, `authority`, and `instructs_desk`, is below `min_confidence` is `REVIEW`.
-7. What remains is `PICK`, and its boxes join the requirement line.
+![A referred message cannot replace another; uncertain links mark both endpoints for the later routing checks, whose earlier rules still take precedence.](figures/m04-supersession.png)
 
-![Routes drawn from typed answers and gates](figures/m04-routes.svg)
+*A referred message cannot replace another; uncertain links mark both endpoints for the later routing checks, whose earlier rules still take precedence.*
 
-**Figure text:** Supersession first, then the instruction gate, then the request gate, then usability, authority, and confidence. Only a message that passes every gate is picked.
+<details markdown="1">
+<summary>Figure text</summary>
 
-Open `W/shared/controls/gates.json` in your editor. The router sends a message to `REVIEW` when its weakest declared confidence is below `min_confidence`, so set that gate from what you measured: if a wrong answer in the sample carried declared confidence `0.85`, any gate of `0.85` or lower lets it through; set the gate above the highest declared confidence any wrong answer carried, or set it to `1.0` if you decide declared confidence earned no trust at all. Leave the three probability gates at `0.5` unless a disagreement showed a reason to move one. Save the file, then route.
+Before routing, each proposed `replaces` link is resolved. If the link is `NONE`, or the replacer is referred, the link is ignored. A replacer is referred when its `instructs_desk` probability meets its gate, or when its `request` probability meets its gate while its `authority` probability is below its gate. Otherwise, if the link confidence is below `min_confidence`, both endpoints are flagged as uncertain. Otherwise the replacement is recorded and the target is superseded. These flags enter the routing order rather than deciding routes on their own: an endpoint that a valid replacement supersedes is `SUPERSEDED` before an uncertain-link `REVIEW`, and an endpoint whose `instructs_desk` probability meets its gate is `REFER` before an uncertain-link `REVIEW`.
+
+</details>
+
+1. A message replaced by a later, unreferred message whose link confidence meets `min_confidence` is `SUPERSEDED`.
+2. Otherwise, a message whose `instructs_desk` probability meets its gate is `REFER`.
+3. Otherwise, either endpoint of a replacement link below `min_confidence` is `REVIEW`.
+4. Otherwise, a message whose `request` probability is below its gate is `IGNORE`.
+5. Otherwise, a request with `MIXED` sizes is `REVIEW`.
+6. Otherwise, a request with line `UNSTATED` or `NONE`, or quantity `NONE`, is `CLARIFY`.
+7. Otherwise, a chosen quantity that cannot convert from boxes or cases to a positive whole number of boxes is `CLARIFY`.
+8. Otherwise, a request whose `authority` probability is below its gate is `REFER`.
+9. Otherwise, the weakest declared confidence across `request`, `line`, `quantity`, `authority`, and `instructs_desk` determines the final route: below `min_confidence` is `REVIEW`; at or above it is `PICK`, and the boxes join the requirement line.
+
+![Code applies the rules in this order; earlier routes take precedence, and only a remaining usable, authorized request reaches the final confidence check.](figures/m04-routing-order.png)
+
+*Code applies the rules in this order; earlier routes take precedence, and only a remaining usable, authorized request reaches the final confidence check.*
+
+<details markdown="1">
+<summary>Figure text</summary>
+
+Nine rules are checked in order for each message; the first matching rule sets the route, and a message that does not match a rule moves on to the next one.
+
+1. A replaced target is `SUPERSEDED`.
+2. A desk instruction, where the `instructs_desk` probability is at or above its gate, is `REFER`.
+3. An endpoint of an uncertain replacement link is `REVIEW`.
+4. A message that is not a request, where the `request` probability is below its gate, is `IGNORE`.
+5. A request with `MIXED` size is `REVIEW`.
+6. A request with missing size or quantity, where the line is `UNSTATED` or `NONE` or the quantity is `NONE`, is `CLARIFY`.
+7. A request with an invalid converted box count is `CLARIFY`. The chosen candidate must start with a number followed by a box or case unit; cases convert at ten boxes each, and the converted box count must be positive and whole. The case number itself need not be whole if the converted box count is.
+8. A request with insufficient authority, where the `authority` probability is below its gate, is `REFER`.
+9. Otherwise, the request goes to the final confidence gate, which routes it to `REVIEW` or `PICK`.
+
+`PICK` places the boxes in the requirement queue; it does not release stock or authorize dispatch.
+
+</details>
+
+Open `W/shared/controls/gates.json` in your editor. The router sends a message to `REVIEW` when its weakest declared confidence is below `min_confidence`, so set that gate from what you measured. To exclude an observed wrong answer that reaches the final confidence gate, `min_confidence` must be strictly higher than its confidence. Equality passes. A wrong answer at confidence 1 cannot be excluded by this gate alone; record that limit rather than treating 1.0 as a no-trust switch. If no wrong answers were observed, there is no observed highest-wrong value, and the sample still does not establish general reliability. Leave the three probability gates at `0.5` unless a disagreement showed a reason to move one. Save the file, then route.
 
 **Terminal: Bash or zsh, ordinary user.**
 

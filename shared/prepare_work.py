@@ -21,7 +21,7 @@ SHARED = {
 SCRIPTS = {
     "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
     "07": (), "08": ("evaluate_pairs.py", "restore_baseline.py"),
-    "09": (), "10": ("run_close.py", "check_package.py"),
+    "09": (), "10": ("local_ai.py", "check_package.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_07_DOWNLOADS = (
@@ -153,7 +153,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "08":
         code = 'from pathlib import Path; print(Path("shared/controls/policy.json").read_text(encoding="utf-8"))'
     elif module_id == "10":
-        code = 'from pathlib import Path; print(Path("shared/case/task-practice.json").read_text(encoding="utf-8"))'
+        code = 'from pathlib import Path; print(Path("shared/case/model-card.json").read_text(encoding="utf-8"))'
     else:
         folder = "shared/corpus" if module_id == "06" else "shared/case"
         code = f'from pathlib import Path; print("\\n".join(p.as_posix() for p in sorted(Path("{folder}").rglob("*")) if p.is_file()))'
