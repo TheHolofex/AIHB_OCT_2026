@@ -1,6 +1,6 @@
 # Windows WSL 2 with Ubuntu setup
 
-This path uses Windows Subsystem for Linux 2 with the Ubuntu distribution so that all course work happens inside the Linux filesystem under your Linux home directory. Plan for roughly 90 to 180 minutes if any Windows feature enable or reboot is needed; this is a rough estimate, not a measured time. All course clone, work directories, evidence directories, and the Oh My Pi binary stay under the Linux `$HOME`. Never use `/mnt/c` for the course checkout or readiness-check work. Use the Linux `omp` binary and Linux configuration. Enter the provider key through the hidden prompt; investigate unexpected inherited key presence without displaying its value.
+Windows Subsystem for Linux 2 runs Ubuntu on your Windows computer. Keep all course work in the Linux filesystem under your Linux home directory. Plan for roughly 90 to 180 minutes if you need to enable a Windows feature or restart; that is an estimate, not a measured time. Keep the course clone, work directories, evidence directories, and Oh My Pi binary under the Linux `$HOME`. Never use `/mnt/c` for the course checkout or readiness-check work. Use the Linux `omp` binary and Linux configuration. Enter the provider key at the hidden prompt, and if a key appears unexpectedly in a new window, investigate without showing its value.
 
 You need Git, Python 3.12 or newer inside Ubuntu, a browser, an ordinary text editor, Linux Obsidian through WSLg, and Oh My Pi 18.3.5 for Linux. WSLg displays Linux application windows on your Windows desktop. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 7 also requires local n8n 2.41.5 through Docker Desktop, using this same Ubuntu distribution and Linux home. You do not install Node, npm, or another agent.
 
@@ -8,7 +8,7 @@ Keep an existing Ubuntu 24.04 or 26.04 WSL 2 installation. Do not unregister, re
 
 ## Check Windows and inspect distributions
 
-Confirm the host is Windows 10 build 19041 or newer, or Windows 11, and still receives supported security updates under your device policy. The build floor alone does not establish current host support. Obtain device-owner approval before enabling features, installing software, or converting a distribution. Keep any policy-denial message and stop; do not bypass it. See [Microsoft's WSL installation requirements](https://learn.microsoft.com/en-us/windows/wsl/install).
+Check that your computer runs Windows 10 build 19041 or newer, or Windows 11, and still gets supported security updates under your device policy. Meeting the build number alone does not mean the host is still supported. Get device-owner approval before enabling features, installing software, or converting a distribution. If policy denies a change, keep the message and stop rather than bypassing it. See [Microsoft's WSL installation requirements](https://learn.microsoft.com/en-us/windows/wsl/install).
 
 Read the host build and both distribution lists before making changes.
 
@@ -24,19 +24,19 @@ wsl --list --online
 if ($LASTEXITCODE -ne 0) { throw 'STOP: save the online-list error before any installation.' }
 ```
 
-**Expected:** WSL component versions (record the package version separately from each distribution’s VERSION), a supported host meeting the Microsoft installation floor, either an installed-distribution list or an explicit message that no distributions are installed, and a successful online list. Record the exact name and VERSION of any existing Ubuntu you intend to use. A name alone does not establish its Ubuntu release; the Linux check below does that.
+**Expected:** WSL component versions (record the package version separately from each distribution's VERSION), a supported host that meets Microsoft's installation minimum, either a list of installed distributions or a clear message that none are installed, and a successful online list. Record the exact name and VERSION of any existing Ubuntu you plan to use. The name alone won't tell you its Ubuntu release; check that inside Linux below.
 
 **Stop:** unsupported host, an unavailable WSL command, policy denial, an installed-list error other than the explicit no-distributions state, or an online-list failure.
 
-**Recovery:** If the only finding is that no distributions are installed, use the approved named installation below. For a different failure, preserve the output and ask the device owner to resolve that specific prerequisite using [Microsoft's installation troubleshooting](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues). Manual Windows-feature recovery belongs with the owner; do not paste feature-enabling commands from another route.
+**Recovery:** If no distributions are installed and nothing else failed, use the approved named installation below. Otherwise, keep the output and ask the device owner to fix the specific problem using [Microsoft's installation troubleshooting](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues). Leave manual Windows-feature repair to the owner; don't paste feature-enabling commands from another route.
 
-The Microsoft simplified-install floor above does not establish Docker Desktop eligibility. The separate n8n host check below applies Docker’s stricter requirements. Missing package-version output needs owner review before Docker setup; keep the existing distributions.
+Meeting Microsoft's simplified-install minimum above does not mean your computer meets Docker Desktop's requirements. Check the stricter Docker requirements at the n8n host check below. If the package version did not print, ask the owner to review it before Docker setup, and keep the existing distributions.
 
 ## Install Ubuntu only when a suitable distribution is absent
 
-Skip this section for an existing suitable Ubuntu. If an installed Ubuntu release is unknown, use the exact selection and named launch below to inspect it before deciding to install anything. For a new install, first confirm that the online list contains the exact NAME `Ubuntu-24.04`. Do not substitute the moving `Ubuntu` alias. Open PowerShell with **Run as administrator** after the owner approves the install.
+If you already have a suitable Ubuntu, skip this section. If you don't know an installed Ubuntu's release, select it by its exact name and launch it using the steps below before you decide to install anything. For a new install, first check that the online list includes the exact NAME `Ubuntu-24.04`; don't use the changing `Ubuntu` alias. After the owner approves the install, open PowerShell with **Run as administrator**.
 
-Install that named release. Microsoft's `--install` route creates new distributions as WSL 2. Setting a default with `wsl --set-default-version 2` affects **new** distributions only; it does not convert an existing WSL 1 installation.
+Install the named release. Microsoft's `--install` command creates new distributions as WSL 2. The command `wsl --set-default-version 2` sets the default for **new** distributions only; it won't convert an existing WSL 1 installation.
 
 **Terminal: Windows PowerShell, elevated, newly opened for the approved installation.**
 
@@ -53,11 +53,11 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: preserve the install message; complete a
 
 **Stop:** the exact release is unavailable, help text appears instead of installation, or installation fails.
 
-**Recovery:** keep the message and use the linked Microsoft troubleshooting with the owner. After a requested restart, inspect the installed list again before doing anything else. Do not reinstall an existing distribution.
+**Recovery:** Keep the message and work through the linked Microsoft troubleshooting with the owner. If Windows asked you to restart, check the installed list again before doing anything else. Don't reinstall a distribution that's already there.
 
 ## Select the exact distribution
 
-Open ordinary PowerShell after any restart. Enter the exact installed NAME at the prompt, even if it differs from `Ubuntu-24.04`. This preserves an existing Ubuntu 26.04 or a differently named valid Ubuntu installation.
+After any restart, open a regular Windows PowerShell window. At the prompt, enter the exact installed NAME, even if it isn't `Ubuntu-24.04`. That way you keep an existing Ubuntu 26.04 or another valid Ubuntu installation with a different name.
 
 **Terminal: Windows PowerShell, ordinary user, newly opened from Start.**
 
@@ -77,11 +77,11 @@ if ($CourseWslVersion -notin @('1', '2')) { throw 'STOP: inspect the VERSION col
 
 **Stop:** the selected name is absent, its release is unknown, or its VERSION is `1`.
 
-**Recovery:** an unknown release can be inspected with the named launch below, but do not continue to packages until the Linux release check passes. A VERSION `1` entry requires the separate approved conversion below. Do not assume setting the default converted it.
+**Recovery:** You can launch the named distribution below to check an unknown release, but don't continue to packages until the Linux release check passes. If its VERSION is `1`, use the separate approved conversion below. Setting a default doesn't convert an existing distribution.
 
 ### Convert an existing WSL 1 distribution only with approval
 
-Skip this step when the selected entry already shows VERSION `2`. Conversion can take time and can fail. Ask the owner to approve it and make a recoverable backup first using [Microsoft's export and import commands](https://learn.microsoft.com/en-us/windows/wsl/basic-commands#export-a-distribution). The owner chooses a new backup destination with enough space, exports the exact selected distribution, and confirms the backup is usable before conversion. Preserve the original and the backup.
+If the selected entry already shows VERSION `2`, skip this step. Conversion can take time or fail, so ask the owner to approve it and make a backup you can restore first, using [Microsoft's export and import commands](https://learn.microsoft.com/en-us/windows/wsl/basic-commands#export-a-distribution). The owner picks a new destination with enough space, exports the exact selected distribution, and checks that the backup can be used before conversion. Keep both the original and the backup.
 
 Convert only the name validated in the preceding block, after backup confirmation.
 
@@ -105,7 +105,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: could not verify the converted distribut
 
 ## Launch and verify Ubuntu
 
-Confirm the exact selected NAME shows VERSION `2` in the Windows list before launching. If a first launch asks for a Linux username and password, complete those prompts now. Choose an ordinary username; the password entry shows no characters. Existing installations should retain their existing user.
+Before launching, check that the exact selected NAME shows VERSION `2` in the Windows list. If Ubuntu asks for a Linux username and password on first launch, enter them now. Choose a regular username; no characters appear as you type the password. If this installation already has a user, keep that user.
 
 Launch the selected distribution by name, starting at its Linux home.
 
@@ -121,7 +121,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: the named Ubuntu session returned an err
 
 **Stop:** launch fails or first-user setup does not finish.
 
-**Recovery:** preserve the error and ask the owner to repair the selected distribution without resetting it.
+**Recovery:** keep the error and ask the owner to repair the selected distribution without resetting it.
 
 Check the user, home, release, shell, and processor inside that Ubuntu window.
 
@@ -142,15 +142,15 @@ course_check_wsl_host() {
 course_check_wsl_host
 ```
 
-**Expected:** your ordinary username, a writable `/home/` path, Ubuntu `24.04` or `26.04`, and `x86_64` or `aarch64`/`arm64`. Read `df` only for available space: you need at least 25 GB. Its mount-point column need not start with `/home`.
+**Expected:** Your regular username, a writable `/home/` path, Ubuntu `24.04` or `26.04`, and `x86_64` or `aarch64`/`arm64`. Use `df` to check available space only: you need at least 25 GB. The mount-point column does not have to start with `/home`.
 
 **Stop:** root user, unsupported release/processor, redirected home, failed command, or less than 25 GB available.
 
-**Recovery:** select the correct existing Ubuntu/user or ask the owner to provision a supported one. Free space in the Linux filesystem if needed; do not move course work under `/mnt/`.
+**Recovery:** Choose the correct existing Ubuntu user and distribution, or ask the owner to set up a supported one. If space is low, free space in the Linux filesystem; don't move course work under `/mnt/`.
 
 ## Check Git, Python, curl, and certificates
 
-Check existing prerequisites before installing packages. Ubuntu's `python3` package supplies a supported interpreter on [24.04](https://packages.ubuntu.com/noble/python3) and [26.04](https://packages.ubuntu.com/resolute/python3).
+Before installing packages, check what's already in Ubuntu. Its `python3` package provides a supported Python version on [24.04](https://packages.ubuntu.com/noble/python3) and [26.04](https://packages.ubuntu.com/resolute/python3).
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -170,11 +170,11 @@ course_check_wsl_packages() {
 course_check_wsl_packages
 ```
 
-**Expected:** Git and curl versions, then the certificate confirmation. Also run the Python check below. Skip package installation only when all these checks pass, including Python 3.12 or newer.
+**Expected:** Git and curl show their versions, followed by the certificate confirmation. Run the Python check below too. Skip package installation only if all these checks pass, including Python 3.12 or newer.
 
 **Stop:** any prerequisite is absent or resolves to Windows.
 
-**Recovery:** install the missing prerequisites with the following package step after device-owner approval. Do not bypass certificate verification.
+**Recovery:** After device-owner approval, install any missing packages in the next step. Keep certificate verification on.
 
 Install the prerequisites only if the checks found something missing. At a `sudo` password prompt, enter your Linux password; no characters appear.
 
@@ -188,11 +188,11 @@ sudo apt-get update && sudo apt-get install -y git python3 curl ca-certificates
 
 **Stop:** a package has no candidate, a source is unavailable, or permission is denied.
 
-**Recovery:** keep the apt output and ask the owner to repair the approved Ubuntu sources. Do not add sources or upgrade the whole system to get past this check.
+**Recovery:** Keep the apt output and ask the owner to fix the approved Ubuntu package sources. Don't add other sources or upgrade the whole system to pass this check.
 
 ## Choose the Python interpreter
 
-Later steps call one real Python executable by its absolute path. That path is `PY`. This step keeps the first of `python3.12`, `python3`, or `python` that reports version 3.12 or newer through `sys.executable`. A version line from an older interpreter is not a pass. Resolve and execute the first suitable Linux interpreter.
+Later steps use one Python program at its full path, stored as `PY`. This step tries `python3.12`, `python3`, then `python`, and keeps the first Linux interpreter that reports version 3.12 or newer through `sys.executable`. An older interpreter's version line doesn't pass the check. Find and run the first suitable Linux interpreter.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -223,9 +223,9 @@ course_resolve_python
 
 ## Put the user bin on PATH inside Ubuntu
 
-PATH is the list of folders this terminal searches when you type a command name. The export in this window lasts only until you close it. A later window finds `omp` only if a startup file that window actually reads contains the same line.
+PATH lists the folders this Ubuntu terminal searches when you type a command name. The export in this window lasts only until you close it. A later window will find `omp` only if it reads a startup file with the same line.
 
-Bash login shells read the first available file in this order: `.bash_profile`, `.bash_login`, `.profile`. Interactive non-login shells read `.bashrc`. Preserve that [Bash startup-file precedence](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html); do not create a new override file. Add the nonsecret PATH line to `.profile`, `.bashrc`, and an existing login override, if present.
+A Bash login shell reads the first file it finds in this order: `.bash_profile`, `.bash_login`, `.profile`. An interactive non-login shell reads `.bashrc`. Follow that [Bash startup-file precedence](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html) rather than creating a new override file. Add the nonsecret PATH line to `.profile`, `.bashrc`, and any existing login override.
 
 Save the PATH line without replacing existing contents or following profile links.
 
@@ -268,15 +268,15 @@ PY
 course_persist_wsl_path
 ```
 
-**Expected:** each selected startup file prints `PATH_LINE already present` or `PATH_LINE added`. Existing bytes remain intact, including a last line that lacked a newline. Only this setup window receives an immediate PATH export.
+**Expected:** Each selected startup file prints `PATH_LINE already present` or `PATH_LINE added`. The file's existing bytes stay in place, even if its last line had no newline. Only this Ubuntu setup window gets an immediate PATH export.
 
 **Stop:** a link, non-file, redirected home/bin, or permission error appears.
 
-**Recovery:** preserve the files and ask the device owner to resolve the named path. Do not replace a linked profile. After correction, save PATH here and prove it in a separate new Ubuntu window.
+**Recovery:** Keep the files and ask the device owner to fix the named path. Don't replace a linked profile. After it's fixed, save PATH here and check it in a new Ubuntu window opened separately.
 
 ## Download Oh My Pi and verify it before it can run
 
-You download the selected Linux binary and `SHA256SUMS.txt` from the pinned release into a new directory that belongs only to this attempt. The published file lists a lowercase SHA-256 fingerprint, two spaces, then the exact filename. Nothing is moved into place and nothing is made executable unless that exact line matches the downloaded file.
+Download the chosen Linux binary and `SHA256SUMS.txt` from the pinned release into a new directory for this attempt alone. The published file gives a lowercase SHA-256 fingerprint, followed by two spaces and the exact filename. Don't move the binary into place or make it executable unless that line matches the file you downloaded.
 
 Download and verify the matching asset from [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5).
 
@@ -338,15 +338,15 @@ PY
 course_install_wsl_omp
 ```
 
-**Expected:** `SHA256 VERIFIED` identifies the selected Linux asset before first execution, followed by `omp/18.3.5`. The download folder remains as evidence. Only verified bytes become executable.
+**Expected:** `SHA256 VERIFIED` names the chosen Linux file before you run it for the first time, followed by `omp/18.3.5`. Keep the download folder as evidence. Only a file that passed this check becomes executable.
 
-**Stop:** A download, checksum, destination, permission, or execution check fails. The function returns to your prompt without enabling persistent shell error-exit behavior.
+**Stop:** A download, checksum, destination, permission, or run check fails. The function returns you to the prompt without leaving the shell set to exit on later errors.
 
-**Recovery:** Keep the failed directory and existing installation. Resolve the specific error before using a new attempt; do not disable certificate checks, delete evidence, or run an unverified file.
+**Recovery:** Keep the failed directory and the existing installation. Fix the reported error before making a new attempt; don't turn off certificate checks, delete evidence, or run a file that hasn't passed verification.
 
 ## See the binary in this window
 
-The export above is only for this window. It does not establish that a new window will find `omp`. Check that in the independent terminal later, without exporting PATH first. Check the selected binary here.
+The export above applies only to this Ubuntu window. It doesn't show whether a new window will find `omp`. Check that later in a new terminal window without exporting PATH first. For now, check the selected binary here.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -364,7 +364,7 @@ command -v omp &&
 
 ## Confirm private GitHub access
 
-Check whether your existing Git credentials can read the course repository. A failed access check is an account or repository-access prerequisite, not a folder-permission problem.
+Check whether the Git credentials you already have can read the course repository. If this access check fails, check your account or repository access, not folder permissions.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -372,11 +372,11 @@ Check whether your existing Git credentials can read the course repository. A fa
 GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
 ```
 
-**Expected:** a commit hash followed by `HEAD`, with no credential prompt. If it succeeds, skip all GitHub CLI steps below and proceed to the checkout without changing helpers or login.
+**Expected:** A commit hash followed by `HEAD`, without a credential prompt. If you see it, skip all GitHub CLI steps below and go to the checkout without changing credential helpers or signing in again.
 
 **Stop:** access fails or no HEAD is returned.
 
-**Recovery:** preserve the error. Confirm network access and your repository invitation. Use the fallback below only if credentials need setup.
+**Recovery:** Keep the error and check your network access and repository invitation. Use the steps below only if you need to set up credentials.
 
 ### Use GitHub CLI only for the access fallback
 
@@ -398,7 +398,7 @@ course_check_wsl_gh
 
 **Stop:** gh is absent or resolves to Windows.
 
-**Recovery:** ask the owner to approve installation from Ubuntu's [Universe gh package](https://packages.ubuntu.com/noble/gh). Universe must already be an approved configured source. If it is unavailable or unapproved, stop for the owner; do not silently enable it or add another source.
+**Recovery:** Ask the owner to approve installation from Ubuntu's [Universe gh package](https://packages.ubuntu.com/noble/gh). Universe must already be set up as an approved source. If it isn't available or approved, stop and ask the owner; don't enable it or add another source yourself.
 
 Install the fallback package only after that source approval. Enter your Linux password at the hidden `sudo` prompt if asked.
 
@@ -414,7 +414,7 @@ sudo apt-get update && sudo apt-get install -y gh
 
 **Recovery:** keep the apt message and have the owner resolve the approved source. Do not add a repository.
 
-Sign in with the invited GitHub account. The next command presents a device code and browser authorization. Open the displayed GitHub page, enter that code, and verify the account before authorizing. GitHub credentials are separate from your course-site password and OpenRouter key. [GitHub CLI login](https://cli.github.com/manual/gh_auth_login) prefers an OS credential store but can fall back to a plaintext file; do not use `--insecure-storage`. If asked to configure Git during login, decline that change until storage has been reviewed below.
+Sign in with the GitHub account invited to the repository. The next command shows a device code for browser sign-in. Open the GitHub page it shows, enter the code, and check the account before you authorize access. GitHub credentials are separate from your course-site password and OpenRouter key. [GitHub CLI login](https://cli.github.com/manual/gh_auth_login) prefers an OS credential store but may use a plaintext file instead; don't use `--insecure-storage`. If login asks to configure Git, decline until you've checked storage below.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window; interactive login.**
 
@@ -426,9 +426,9 @@ gh auth login --hostname github.com --git-protocol https --web
 
 **Stop:** denied authorization, wrong account, or login failure.
 
-**Recovery:** preserve the nonsecret error and ask the repository owner to confirm the account/invitation before trying again.
+**Recovery:** keep the nonsecret error and ask the repository owner to confirm the account/invitation before trying again.
 
-Inspect account and storage status locally; do not share this output or request token display. See [gh auth status](https://cli.github.com/manual/gh_auth_status).
+Check the account and credential storage status in this Ubuntu window. Don't share the output or ask to see the token. See [gh auth status](https://cli.github.com/manual/gh_auth_status).
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -438,11 +438,11 @@ gh auth status --hostname github.com
 
 **Expected:** successful status for the intended account, with storage approved by your device policy.
 
-**Stop:** status fails, the account is wrong, or reported storage is not approved. If the storage location is unclear, stop for owner review.
+**Stop:** Status fails, the account is wrong, or your device policy doesn't approve the reported storage. If you can't tell where the credentials are stored, stop and ask the owner to review it.
 
-**Recovery:** have the device owner provision approved storage or credentials. Do not continue merely because browser login succeeded.
+**Recovery:** Ask the device owner to set up approved storage or credentials. A successful browser login alone isn't enough to continue.
 
-Configure the credential helper for only github.com after storage approval, then repeat the disabled-prompt repository check. [Host-specific setup](https://cli.github.com/manual/gh_auth_setup-git) does not grant repository access.
+After storage approval, set up the credential helper for github.com only, then repeat the repository check with prompts disabled. [Host-specific setup](https://cli.github.com/manual/gh_auth_setup-git) doesn't give you repository access on its own.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -455,11 +455,11 @@ gh auth setup-git --hostname github.com &&
 
 **Stop:** either command fails.
 
-**Recovery:** preserve the error and ask the repository owner to confirm your invitation and access. Do not clone until this exact access check succeeds.
+**Recovery:** Keep the error and ask the repository owner to check your invitation and access. Don't clone until this access check succeeds.
 
 ## Use the course checkout, or clone it once
 
-The course lives at `$HOME/Documents/AIHB_OCT_2026`. An existing checkout of the course origin is used as it is. A different folder at that path is left alone. All paths stay inside the Linux home. Validate the destination and reuse or clone the course checkout.
+Keep the course checkout at `$HOME/Documents/AIHB_OCT_2026` inside your Linux home. If the course checkout is already there with the right origin, use it as it is. If that path holds a different folder, leave it alone. Check the destination, then use the existing checkout or clone it.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -526,13 +526,13 @@ course_checkout_wsl
 
 **Stop:** the folder exists but is not the course origin, Git cannot read the origin, the clone fails, or any required course file is missing, redirected, or has CRLF line endings.
 
-**Recovery:** leave the existing folder in place. If it is the wrong project, choose a different computer folder only with the person who supports your machine; do not delete, reset, pull, or clean this one. For a clone failure, resolve the recorded access or network error first. Preserve partial folders; do not retry over them. The command follows GitHub’s instructions for [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+**Recovery:** Leave the existing folder in place. If it holds the wrong project, choose a different computer folder only with the person who supports your machine; don't delete, reset, pull, or clean this one. If cloning failed, fix the recorded access or network error first. Keep partial folders and don't retry over them. The command follows GitHub's instructions for [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-`$R` and `$M` belong to this shell. The new window used for the readiness check sets `R`, `M`, and `PY` again. It cannot use a function that existed only here.
+`$R` and `$M` exist only in this shell. In the new window for the readiness check, set `R`, `M`, and `PY` again. A function defined only in this shell won't be available there either.
 
 ## Enter the key without showing it
 
-Enter the key at the hidden prompt. The next command does nothing except wait for the key. Type the key at that hidden prompt and press Enter. Do not paste the key into the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
+At the hidden prompt in Ubuntu, type the key and press Enter. The next command only waits for your input; don't put the key in the command, a file, a profile, or a chat. The rules for where a key must not go are in [Connect the course account without leaking a key](../shared/CREDENTIALS.md).
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -548,9 +548,9 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 ## Load the key into this process only
 
-This second command exports the variable for the current process and prints only `SET` or `MISSING`. The export happens in a separate command from the read. A child shell may inherit an exported variable, but `SET` alone never proves the key was persisted to a profile or leaked. `MISSING` means only that this process has no nonempty key variable; it does not prove that no file elsewhere contains a key.
+The next command makes the key available to programs started from this Ubuntu terminal and prints only `SET` or `MISSING`. Run it separately after the hidden-read command. A child shell can inherit the key, so `SET` alone doesn't mean the key was saved in a profile or leaked. `MISSING` means this process has no nonempty key variable; it doesn't tell you whether a key exists in a file elsewhere.
 
-Export the entered key for this process after the hidden prompt returns.
+After the hidden prompt returns, export the key so programs started from this process can use it.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -563,13 +563,13 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 **Stop:** `MISSING`, or any output that contains the key.
 
-**Recovery:** run the hidden-read command again in this same shell, then run this export again. Do not check the key by printing the variable. Do not save it to `.profile` or any other file.
+**Recovery:** Run the hidden-read command again in this same shell, then run the export again. Don't print the variable to check the key, and don't save it to `.profile` or any other file.
 
 ## Open an independent terminal and read the difference
 
-Open a new Windows PowerShell window from Start, independently of the Ubuntu window that held the key. Do not type `bash` or launch PowerShell inside that Ubuntu process. A child may inherit its key; an independent window ordinarily prints `MISSING`, but an approved parent environment or a startup profile can still supply a value.
+Open a new Windows PowerShell window from Start, separate from the Ubuntu window that holds the key. Don't type `bash` or start PowerShell inside that Ubuntu process. A child process can inherit its key. A new window opened separately normally prints `MISSING`, though an approved parent environment or startup profile may still provide a value.
 
-Launch the same selected distribution explicitly. Enter its recorded exact name again; this window has no variables from the previous PowerShell session.
+In the new Windows PowerShell window, launch the same distribution by its exact name. Enter the name you recorded again, because this window doesn't have variables from the earlier PowerShell session.
 
 **Terminal: Windows PowerShell, ordinary user, newly opened independently from Start.**
 
@@ -589,9 +589,9 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: named Ubuntu session returned an error.'
 
 **Stop:** the name/version differs or launch fails.
 
-**Recovery:** preserve the error and select the recorded name. Do not use the default distribution as a substitute.
+**Recovery:** keep the error and select the recorded name. Do not use the default distribution as a substitute.
 
-Check the saved OMP path without exporting or repairing PATH in this block.
+Check the saved OMP path in this Ubuntu window. Don't export PATH or try to repair it in this block.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, newly opened independent window.**
 
@@ -628,9 +628,9 @@ course_confirm_wsl_terminal
 
 **Stop:** `OMP_PATH` is `missing` or any other path, the version is not `omp/18.3.5`, `omp exit` is not 0, or the key line is `SET`.
 
-**Recovery:** If the path or version is wrong, do not export PATH in this window. That would hide the miss. Leave every folder under `$HOME/course-evidence` in place, including download logs. Run the path-miss block below, then open another new Ubuntu window and paste this check again. If this independent window prints `SET`, run the profile check before you enter a key. Do not print the variable. Do not upgrade packages.
+**Recovery:** If the path or version is wrong, don't export PATH in this window; that would hide the problem. Keep every folder under `$HOME/course-evidence`, including download logs. Run the path-miss block below, then open another new Ubuntu window and run this check again. If this separately opened window prints `SET`, check the profile before entering a key. Don't print the variable or upgrade packages.
 
-Repair only the startup file that this Bash window reads, then reopen the named distribution independently.
+Fix only the startup file this Bash window reads. Then reopen the named Ubuntu distribution in a separate window.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same independent window, recovery only after the path check stopped.**
 
@@ -680,15 +680,15 @@ course_note_wsl_path_miss() {
 course_note_wsl_path_miss
 ```
 
-**Expected:** You see `selected omp/18.3.5`, whether this window is a login shell, and either `PATH_LINE added` or a STOP line that says the line is already present. Nothing under `$HOME/course-evidence` is deleted.
+**Expected:** You see `selected omp/18.3.5`, a message telling you whether this window is a login shell, and either `PATH_LINE added` or a STOP line saying the line is already present. Nothing under `$HOME/course-evidence` is deleted.
 
 **Stop:** The selected binary is missing, the startup file is not a regular file, this window is not Bash, or the line is already present and `omp` is still not on this window's own PATH.
 
-**Recovery:** Do not export PATH in this window, and do not delete download folders. If the line was just added, close this window, use the independent named-distribution launch block again, and run the path check again with no PATH export. If the line was already present, save the printed lines and stop. Do not upgrade Ubuntu and do not change security settings.
+**Recovery:** Don't export PATH in this window or delete the download folders. If you just added the line, close this window, run the independent named-distribution launch block again, then check the path again without exporting PATH. If the line was already there, save the printed lines and stop. Don't upgrade Ubuntu or change security settings.
 
 ## Set the course paths in this window
 
-The earlier Ubuntu window kept `R`, `M`, and `PY`. This window does not have those variables, and it does not have the functions from the earlier window. Set them here before any readiness-check command. This block does not clone, reset, pull, or clean.
+The earlier Ubuntu window had `R`, `M`, and `PY`, along with functions that are not available in this new window. Set the paths here before running any readiness-check command. This block does not clone, reset, pull, or clean.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, newly opened independent window.**
 
@@ -737,11 +737,11 @@ course_assign_wsl_paths
 
 **Stop:** A STOP line appears, a path starts with `/mnt/` or ends in `.exe`, or the Python version is below 3.12.
 
-**Recovery:** If the lab file is missing, preserve the checkout and ask the owner to supply a complete course checkout. Do not delete or replace the home folder. If Python is missing, return to the package step. Do not call a function that existed only in the closed window.
+**Recovery:** If the lab file is missing, keep the checkout and ask the owner for a complete course checkout. Don't delete or replace the home folder. If Python is missing, return to the package step. Don't call a function from the closed window.
 
 ## Investigate unexpected key presence without displaying it
 
-Run this only when the independent terminal printed `SET` before you typed a key. It looks for the variable name in shell profiles and does not print a value.
+Run this only if the independent terminal printed `SET` before you entered a key. It checks shell profiles for the variable name without printing its value.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -758,15 +758,15 @@ if [ "$found" -eq 0 ]; then
 fi
 ```
 
-**Expected:** only profile names containing a reference, or `No profile reference was found.` A reference can be a check, comment, or approved parent-variable use; it does not establish a saved secret or exposure.
+**Expected:** only the names of profiles containing a reference, or `No profile reference was found.` The reference might be a check, a comment, or an approved use of a parent variable; its presence does not tell you whether a secret was saved or exposed.
 
 **Stop:** the independent window's unexpected `SET` remains unexplained.
 
-**Recovery:** review the named file privately with the device owner and check how the parent application supplies variables. Do not print profile lines, dump the environment, or share values. If an actual secret assignment was saved unintentionally, remove it with owner guidance and assess exposure; revoke only when exposed or required by policy. If inheritance is approved and understood, proceed to the hidden-input step. Presence alone proves neither persistence nor successful authentication.
+**Recovery:** Review the named file privately with the device owner, and check how the parent application passes variables to this window. Don't print profile lines, dump the environment, or share values. If someone unintentionally saved a secret assignment, remove it with the owner's guidance and check whether the secret was exposed; revoke it only if it was exposed or policy requires it. If you understand and have approval for the inherited variable, continue to the hidden-input step. The reference alone does not tell you whether the key persists or authentication works.
 
 ## Enter the key again in the new window
 
-The readiness check runs in this independent window, after that window has printed the persisted `omp` path without an extra PATH export. The key is ordinarily missing unless a reviewed parent environment supplies it. Repeat the hidden read, then the separate export. Do not skip the read and paste the key into the export command.
+Run the readiness check in this independent window only after it has printed the saved `omp` path without another PATH export. The key is usually missing unless a reviewed parent environment passes it in. Enter it through the hidden prompt again, then export it separately. Don't paste the key into the export command instead of using the hidden prompt.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -780,7 +780,7 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 **Recovery:** revoke a displayed key, then run this read again.
 
-Export the entered key for this process after the hidden prompt returns.
+After the hidden prompt returns, export the key so programs started from this process can use it.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -797,7 +797,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 ## Prepare a fresh readiness check
 
-The work folder is outside the course checkout. This window must already have printed `R`, `M`, and `PY`. The token is created by Python's secrets module and stored outside the work folder, then copied in so the model has to read it. The evidence folder is only a path at this point. You do not create it. You also do not create `from-omp.txt`. Create the new attempt and its input token now.
+Keep the work folder outside the course checkout. Before you start, this window must have printed `R`, `M`, and `PY`. Python's secrets module creates the token outside the work folder, then copies it in so the model must read it. At this point, the evidence folder is only a path: don't create it or `from-omp.txt` yourself. Create the new attempt and its input token now.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -843,11 +843,11 @@ course_prepare_wsl_proof
 
 **Stop:** `PY` is unset, Python is missing, a path already exists, a file cannot be written, or `prepare exit` is not 0.
 
-**Recovery:** Leave any partial attempt in place. Correct the reported path or permission failure, then run the block again with new paths. Do not delete the course checkout or the download logs, and do not create the evidence folder or `from-omp.txt` by hand. If the STOP line says `PY` is unset, paste the path-assignment block in this window first.
+**Recovery:** Keep any partial attempt. Fix the reported path or permission problem, then run the block again with new paths. Don't delete the course checkout or download logs, and don't create the evidence folder or `from-omp.txt` yourself. If the STOP line says `PY` is unset, paste the path-assignment block in this window first.
 
 ## Ask for the one permitted write
 
-The launcher runs the pinned Oh My Pi binary with permission to write only `from-omp.txt`. It reads the key from this process. Exit 2 means a prerequisite failed before the evidence folder was created. The `HOLD:` line names which prerequisite. A missing key is only one of those holds. Exit 1 means the live attempt failed after work began. Keep every failed live attempt as HOLD. Do not retry the launcher in that attempt, switch providers, or use a fallback model. After a targeted correction, create a new attempt. Run the supplied launcher once against the fresh paths.
+The launcher runs the pinned Oh My Pi binary and lets it write only `from-omp.txt`. It reads the key from this process. Exit 2 means a prerequisite failed before the evidence folder was created; the `HOLD:` line tells you which one, and a missing key is only one possibility. Exit 1 means the live attempt failed after work began. Keep every failed live attempt as HOLD. Don't rerun the launcher in that attempt, change providers, or use a fallback model. Fix the named problem, then create a new attempt. Run the supplied launcher once against the fresh paths.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -868,13 +868,13 @@ course_run_wsl_proof
 
 **Expected:** The launcher's own output appears, and the last line is `launcher exit 0`. The evidence folder now exists because the launcher created it. That status does not yet complete the readiness check.
 
-**Stop:** `launcher exit 2` with a `HOLD:` line means a prerequisite failed. The evidence folder should still be absent, and you must not invent the result file. `launcher exit 1` means the live attempt failed. Exit 0 with no evidence folder is also a stop.
+**Stop:** If you see `launcher exit 2` and a `HOLD:` line, a prerequisite failed. The evidence folder should still be absent; don't make the result file yourself. `launcher exit 1` means the live attempt failed. Stop too if exit 0 appears without an evidence folder.
 
-**Recovery:** Read the `HOLD:` line. Do not treat every exit 2 as a missing key. If that line says `OPENROUTER_API_KEY unavailable`, repeat the hidden read and the separate export in this window, then return to “Prepare a fresh readiness check” so the paths are new. If it says `omp is not on PATH`, or that the pinned version did not match, return to the independent-terminal check. Do not export PATH here, and do not enter the key as that fix. If it says a directory is missing, already exists, or overlaps, keep the attempt, correct the named path problem, and prepare a fresh readiness check. If it says `course_guard.mjs` is missing, the checkout is incomplete; do not reset, pull, or clean it. Exit 1 is a failed live attempt, not an authentication prompt. Do not delete `$HOME/course-evidence`, and do not write `from-omp.txt` yourself.
+**Recovery:** Read the `HOLD:` line to find out what failed; exit 2 does not always mean the key is missing. If it says `OPENROUTER_API_KEY unavailable`, enter the key through the hidden prompt and export it separately in this window. Then return to “Prepare a fresh readiness check” for new paths. If it says `omp is not on PATH` or the pinned version did not match, return to the independent-terminal check. Don't export PATH here or enter the key to fix that problem. If a directory is missing, already exists, or overlaps, keep the attempt, fix the named path problem, and prepare a fresh readiness check. If `course_guard.mjs` is missing, the checkout is incomplete; don't reset, pull, or clean it. Exit 1 means the live attempt failed; it is not an authentication prompt. Don't delete `$HOME/course-evidence` or write `from-omp.txt` yourself.
 
 ## Check the write against the token and the receipt
 
-The checker takes the work folder, the token file outside that folder, and the evidence folder. It passes only when `from-omp.txt` contains the words `omp works`, one space, and this run's token, and a `course_write` receipt matches the file on disk. Run the checker to verify the token, receipts, and pinned identities.
+The checker uses the work folder, the token file outside it, and the evidence folder. It passes only if `from-omp.txt` contains `omp works`, one space, and this run's token, and the `course_write` receipt agrees with the file on disk. Run it to check the token, receipts, and pinned identities.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -896,13 +896,13 @@ course_check_wsl_proof
 
 **Expected:** the checker's last result line is `READINESS CHECK PASS`, and the last line is `checker exit 0`.
 
-**Stop:** the last result line is `READINESS CHECK HOLD`, `checker exit` is not 0, or the result file is missing. A file you create by hand is not a pass.
+**Stop:** The last result line is `READINESS CHECK HOLD`, `checker exit` is not 0, or the result file is missing. Creating the file yourself does not count as a pass.
 
-**Recovery:** keep this failed attempt as HOLD. Correct the specific checker failure before returning to “Prepare a fresh readiness check” with new folders. Do not edit `from-omp.txt` to make the words match. If the STOP line says `PY` or `M` is missing, paste the path-assignment block in this window first.
+**Recovery:** Keep this failed attempt as HOLD. Fix the specific checker failure before returning to “Prepare a fresh readiness check” with new folders. Don't edit `from-omp.txt` to make the words match. If the STOP line says `PY` or `M` is missing, paste the path-assignment block in this window first.
 
 ## Read the actual result file
 
-Read the file on disk separately after `READINESS CHECK PASS`; this command does not construct the expected answer.
+After `READINESS CHECK PASS`, read the file from disk yourself. This command does not build the expected answer.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same independent window.**
 
@@ -918,7 +918,7 @@ cat -- "$proof/from-omp.txt"
 
 ## Record prerequisites, not the live turn
 
-This report checks that Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report does not prove the live write. A dirty checkout is not a reason to reset, pull, or clean. The readiness check you already ran checks the live write. Save the separate prerequisite report now.
+This report checks whether Git, Python, Oh My Pi, the checkout, and the key are present in this process. A passing report checks those prerequisites, not the live write; the readiness check you already ran checks the write. Local changes in the checkout are no reason to reset, pull, or clean it. Save the separate prerequisite report now.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
 
@@ -940,20 +940,20 @@ course_report_wsl_setup
 
 **Expected:** a report file path, a last report line beginning `SETUP CHECK PASS`, and `report exit 0`. The report does not contain the key. The shell stays open.
 
-**Stop:** `SETUP CHECK HOLD`, any nonzero report exit, the report path already exists, the report contains the key, or the command says `R` or `M` is missing. A hold in this report is a prerequisite hold. It is not repaired by editing the result file, and a pass in this report does not replace `READINESS CHECK PASS`.
+**Stop:** `SETUP CHECK HOLD` appears, the report exits nonzero, the report path already exists, the report contains the key, or the command says `R` or `M` is missing. A hold here means a prerequisite failed, so editing the result file won't fix it. A pass here also does not replace `READINESS CHECK PASS`.
 
-**Recovery:** fix the first failed prerequisite named in the report, then run this report command again after the timestamp changes so the report path is new. Keep the failed report. Do not reset, pull, or clean the checkout because the report mentions local changes. Proceed only when both the prerequisite report and the live readiness check pass.
+**Recovery:** Fix the first failed prerequisite named in the report. Once the timestamp changes, run this report command again so it uses a new path, and keep the failed report. Don't reset, pull, or clean the checkout because the report lists local changes. Continue only after both the prerequisite report and the live readiness check pass.
 
 
 ## Set up local Obsidian
 
-Obsidian lets you follow links and edit notes in a **vault**, an ordinary folder of Markdown text files. Allow about 25–40 minutes for the steps below; an approved host repair can take longer. Run Linux Obsidian through WSLg in the same selected Ubuntu distribution and Linux home as OMP, Python, and your checkout. [Obsidian reads local files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+Obsidian lets you follow links and edit notes in a **vault**, an ordinary folder of Markdown text files. Allow about 25–40 minutes for Obsidian setup; an approved host repair can take longer. Run Linux Obsidian through WSLg in the same selected Ubuntu distribution and Linux home as OMP, Python, and your checkout. [Obsidian reads local files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
 
-Keep the vault outside the checkout and any synced folder. Do not open a `\\wsl$` or `\\wsl.localhost` vault in native Windows Obsidian, copy it to `/mnt/c`, or create another distribution for this step. Preserve existing installations, personal vaults, and profiles.
+Keep the vault outside the checkout and any synced folder. Don't open a `\\wsl$` or `\\wsl.localhost` vault in native Windows Obsidian, copy it to `/mnt/c`, or create another distribution for this step. Keep existing installations, personal vaults, and profiles.
 
 ### Confirm this host can display Linux applications
 
-The [Microsoft WSLg requirements](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) are Windows 10 build **19044+** or Windows 11, with the selected distribution running as **WSL 2**. Builds 19041–19043 can still satisfy the earlier command-line OMP floor, but they mean **Obsidian HOLD**. A version or display-variable check alone cannot prove an application window works.
+[Microsoft WSLg requirements](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) call for Windows 10 build **19044+** or Windows 11, with your selected distribution running as **WSL 2**. Builds 19041–19043 may meet the earlier command-line OMP requirement, but Obsidian remains at **Obsidian HOLD**. Even if the version and display variables look right, you still need to see an application window open.
 
 Open a separate ordinary PowerShell window from Start. Keep your Ubuntu proof window open. Re-select the exact Ubuntu name you used earlier; this does not change the default distribution.
 
@@ -977,7 +977,7 @@ wsl --distribution $CourseDistro --exec printenv WSL_DISTRO_NAME HOME
 if ($LASTEXITCODE -ne 0) { throw 'Obsidian HOLD: selected distribution did not report its name and home.' }
 ```
 
-**Expected:** a supported host at the GUI build floor, the exact selected entry at VERSION `2`, then its distribution name and Linux home. **HOLD:** wrong/missing distribution, old host, WSL 1, or command failure. **Recovery:** preserve the current distribution and OMP result. Have the device owner resolve host support, display drivers, or WSLg availability. Any WSL update/restart needs an approved window after saving work in all affected distributions and Docker applications. Do not reset, unregister, or run a global `wsl --shutdown` as a troubleshooting shortcut.
+**Expected:** a supported host at the GUI build floor, the exact selected entry at VERSION `2`, then its distribution name and Linux home. **HOLD:** wrong or missing distribution, old host, WSL 1, or command failure. **Recovery:** Keep the current distribution and OMP result. Ask the device owner to resolve host support, display drivers, or WSLg availability. Before any WSL update or restart, save work in all affected distributions and Docker applications, and get approval for the window. Don't reset or unregister the distribution, or use a global `wsl --shutdown` as a quick fix.
 
 Return to the existing Ubuntu proof window. Confirm its name and home match the selected distribution above. If that window was closed, use [the named Ubuntu launch](#launch-and-verify-ubuntu) and [restore the course paths](#set-the-course-paths-in-this-window) there first.
 
@@ -994,11 +994,11 @@ else
 fi
 ```
 
-**Expected:** the same distribution and `/home/` path as before, `x86_64` or `aarch64`, and display indicators present. **HOLD:** any mismatch, missing display support, or another processor. **Recovery:** stop Obsidian setup and keep the output for the owner. Do not invent display variables or launch a native Windows app as a substitute.
+**Expected:** the same distribution and `/home/` path as before, `x86_64` or `aarch64`, and display indicators present. **HOLD:** any mismatch, missing display support, or another processor. **Recovery:** Stop Obsidian setup and keep the output for the owner. Don't invent display variables or substitute a native Windows app.
 
 ### Preserve an existing Linux app, or download the matching asset
 
-Look for an existing **Obsidian** launcher under this Ubuntu distribution in Start, and inspect your known Linux application/AppImage location. In Ubuntu, `command -v obsidian` and `dpkg-query -W obsidian` can identify a command or Debian package; a missing result does not rule out an AppImage or another package route. If an existing Linux app is present, use its established ordinary-user launcher and skip both fresh-install routes. Record the actual version displayed in Obsidian’s Settings later. Preserve a Windows installation too, but do not use it for this Linux vault. If ownership, launch method, or installation state is uncertain, record **Obsidian HOLD** for owner review instead of installing another copy.
+Look for an existing **Obsidian** launcher under this Ubuntu distribution in Start, and check the Linux application/AppImage location you already know. In Ubuntu, `command -v obsidian` and `dpkg-query -W obsidian` may find a command or Debian package, but no result does not rule out an AppImage or another package route. If you find an existing Linux app, launch it the usual way as an ordinary user and skip both new-install routes. Later, record the version shown in Obsidian’s Settings. Keep any Windows installation too, but don't use it for this Linux vault. If you're unsure who owns the installation, how to launch it, or whether it is installed, record **Obsidian HOLD** for owner review rather than installing another copy.
 
 Only after confirming Linux Obsidian is absent and obtaining device-owner installation approval, download into a new folder in this Linux home. The exact assets and SHA-256 values are from the [official 1.13.7 release metadata](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7). This block does not install or execute the download.
 
@@ -1029,11 +1029,11 @@ course_download_obsidian_wsl() {
 course_download_obsidian_wsl
 ```
 
-**Expected:** the selected filename followed by `OK`, then its verified path. Save this path for later launches. **HOLD:** any failed command or mismatch. **Recovery:** preserve the attempt; fix the named network/path issue and rerun this block for a new download folder. Do not proceed using a partial file.
+**Expected:** the selected filename followed by `OK`, then its verified path. Save that path for later launches. **HOLD:** any failed command or mismatch. **Recovery:** Keep this download attempt. Fix the named network or path problem, then run the block again with a new download folder. Don't use a partial file.
 
 ### Install and launch the x64 Debian package
 
-Use this route only for `x86_64`. With device-owner approval, install the verified local package using [Ubuntu apt](https://manpages.ubuntu.com/manpages/noble/man8/apt.8.html). Read the transaction before accepting; decline if it proposes replacing an existing Obsidian installation, removing packages, or other unapproved changes. The package manager checks downloaded repository dependencies through its normal signed metadata. Do not disable those checks.
+Use this route only for `x86_64`. With device-owner approval, install the verified local package using [Ubuntu apt](https://manpages.ubuntu.com/manpages/noble/man8/apt.8.html). Read the proposed changes before accepting, and decline if apt would replace an existing Obsidian installation, remove packages, or make other unapproved changes. The package manager checks downloaded repository dependencies against its usual signed metadata; don't disable those checks.
 
 **Terminal: Ubuntu Bash, ordinary Linux user; sudo only for the approved apt operation.**
 
@@ -1052,7 +1052,7 @@ course_install_obsidian_deb() {
 course_install_obsidian_deb
 ```
 
-**Expected:** checksum `OK` and successful package installation. **HOLD:** denial, unexpected transaction, or failed command. **Recovery:** preserve the message and installation state for the owner; do not force replacement or attempt unrelated package repairs.
+**Expected:** checksum `OK` and successful package installation. **HOLD:** denial, unexpected transaction, or failed command. **Recovery:** keep the message and installation state for the owner; do not force replacement or attempt unrelated package repairs.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window; after successful x64 installation.**
 
@@ -1064,7 +1064,7 @@ obsidian &
 
 ### Prepare and launch the ARM64 AppImage
 
-Use this route only for `aarch64` on the supported Ubuntu 24.04 or 26.04 you verified earlier. An AppImage is a single application file; keep it at the verified download path. It needs the FUSE compatibility library. [AppImage’s FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html) identifies `libfuse2t64` on Ubuntu 24.04 and explains preserving FUSE 3 alongside the older library. Do not install the obsolete `fuse` package or remove FUSE 3.
+Use this route only for `aarch64` on the supported Ubuntu 24.04 or 26.04 you checked earlier. An AppImage is a single application file; keep it at the verified download path. It needs the FUSE compatibility library. [AppImage’s FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html) names `libfuse2t64` for Ubuntu 24.04 and explains how the older library can stay alongside FUSE 3. Don't install the obsolete `fuse` package or remove FUSE 3.
 
 Check the library first. If it is missing, the following function asks apt to install only the compatibility library. Obtain device-owner approval before that transaction and review its proposed changes at the prompt. Decline any removal or unapproved change.
 
@@ -1084,9 +1084,9 @@ course_obsidian_fuse() {
 course_obsidian_fuse
 ```
 
-**Expected:** `libfuse2t64 install ok installed`. **HOLD:** missing library, denied approval, repository/signature error, or unexpected package changes. **Recovery:** preserve the error and ask the owner to resolve the approved dependency route. Do not replace FUSE 3 or improvise a privileged FUSE repair.
+**Expected:** `libfuse2t64 install ok installed`. **HOLD:** missing library, denied approval, repository/signature error, or unexpected package changes. **Recovery:** Keep the error and ask the owner to resolve how to install the approved dependency. Don't replace FUSE 3 or try a privileged FUSE repair on your own.
 
-Obtain **separate device-owner approval** before the next launch. The vendor’s [AppImage launch instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) include `--no-sandbox`. That flag disables Chromium’s renderer sandbox for Obsidian, reducing protection if renderer content is compromised. It does not strengthen or replace the course tool boundary. Use only the supplied local practice vault with community plugins restricted. No approval means **Obsidian HOLD**; do not run this block. Do not change kernel-wide security toggles, make the file world-writable, or add privileged sandbox fixes.
+Get **separate device-owner approval** before this launch. The vendor’s [AppImage launch instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) include `--no-sandbox`. This flag turns off Chromium’s renderer sandbox for Obsidian, which lowers protection if renderer content is compromised. It does not improve or replace the course tool boundary. Use only the supplied local practice vault, and keep community plugins restricted. Without approval, record **Obsidian HOLD** and do not run this block. Don't change kernel-wide security toggles, make the file world-writable, or add privileged sandbox fixes.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window; separately approved ARM64 launch only.**
 
@@ -1106,7 +1106,7 @@ course_launch_obsidian_arm64() {
 course_launch_obsidian_arm64
 ```
 
-**Expected:** checksum `OK`, then an actual Linux Obsidian window. A background job number is not proof of launch. **HOLD:** checksum, FUSE, display, or security error; absent approval; or no window. **Recovery:** preserve the app and error for owner review. Do not extract it as an unapproved fallback or substitute another architecture.
+**Expected:** checksum `OK`, then a Linux Obsidian window. A background job number alone does not mean the app opened. **HOLD:** checksum, FUSE, display, or security error; absent approval; or no window. **Recovery:** Keep the app and error for owner review. Don't extract it as an unapproved fallback or substitute another architecture.
 
 ### Open the exact Linux-home vault and save a linked reply
 
@@ -1129,16 +1129,16 @@ course_initialize_obsidian_wsl() {
 course_initialize_obsidian_wsl
 ```
 
-**Expected:** `Created practice vault:` and the exact Linux-home vault path. Save the printed root path for this attempt. **HOLD:** any error, redirected path, synced location, or wrong home. **Recovery:** preserve the attempt and restore the page’s Linux paths or ask the owner for a complete checkout. Do not initialize an existing vault or move it onto `/mnt/c`.
+**Expected:** `Created practice vault:` and the exact Linux-home vault path. Save the printed root path for this attempt. **HOLD:** any error, redirected path, synced location, or wrong home. **Recovery:** Keep the attempt and restore the page’s Linux paths, or ask the owner for a complete checkout. Don't initialize an existing vault or move it onto `/mnt/c`.
 
 **Window: Linux Obsidian displayed by WSLg, ordinary Linux user.**
 
-1. Use **Open folder as vault → Open** in the vault chooser. From an existing personal vault, use **Open another vault** first and preserve its settings. In the Linux folder chooser, press **Ctrl+L** if a location field is needed, enter the exact printed `$ObsidianVault` path, and select it. Do not select the attempt parent or checkout.
+1. Use **Open folder as vault → Open** in the vault chooser. From an existing personal vault, use **Open another vault** first and leave its settings as they are. In the Linux folder chooser, press **Ctrl+L** if a location field is needed, enter the exact printed `$ObsidianVault` path, and select it. Do not select the attempt parent or checkout.
 2. In this practice vault’s **Settings → Community plugins**, leave **Restricted mode** on; turn it on for this vault if it is off. In **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in, connect a remote vault, install plugins, or configure MCP. Record the actual version from **Settings → General**, then close Settings.
 3. Open **Start** in the file list. Switch to **Reading view** through the note’s view control if necessary, then click **Token**. Read the token and follow **Reply** from Token.
-4. Switch Reply to **Editing view** with its view control. Enter only the observed token on one line. Add no heading, quotes, or explanation. Press **Ctrl+S** and wait for the note to save.
+4. Switch Reply to **Editing view** with its view control. Enter only the token you read, on one line. Add no heading, quotes, or explanation. Press **Ctrl+S** and wait for the note to save.
 
-**Expected:** both links open existing notes in the exact vault, and Reply contains the observed value. **HOLD:** wrong vault, unavailable GUI, missing links, or blocked editing. **Recovery:** inspect the exact path and named failure. Do not enter the reply from Bash or use another editor as GUI proof.
+**Expected:** both links open existing notes in the exact vault, and Reply contains the value you saw. **HOLD:** wrong vault, unavailable GUI, missing links, or blocked editing. **Recovery:** Check the exact path and the named failure. Don't enter the reply from Bash or use another editor to stand in for what you saw in Obsidian.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -1146,7 +1146,7 @@ course_initialize_obsidian_wsl
 "$PY" "$ObsidianHelper" check --root "$ObsidianRoot"
 ```
 
-**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, `PASS: Obsidian file round-trip; GUI observation still required`, and a new disk-observation path. **HOLD:** any failed check. **Recovery:** correct Reply in Obsidian to the current Token and save, then repeat `check`. Preserve all observations; never edit Start, Token, or expected-value records to force a pass.
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, `PASS: Obsidian file round-trip; GUI observation still required`, and a new disk-record path. **HOLD:** any failed check. **Recovery:** Correct Reply in Obsidian to match the current Token and save, then repeat `check`. Keep every record; never edit Start, Token, or expected-value records to force a pass.
 
 ### Observe the outside edit and reopen the same vault
 
@@ -1158,11 +1158,11 @@ Leave Token visible in Reading view in the open app. Change it from outside Obsi
 "$PY" "$ObsidianHelper" refresh --root "$ObsidianRoot"
 ```
 
-**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.` **HOLD:** any error. **Recovery:** preserve the attempt and named failure for support. Do not reinitialize it or remove its records.
+**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.` **HOLD:** any error. **Recovery:** keep the attempt and named failure for support. Do not reinitialize it or remove its records.
 
-**Window: Linux Obsidian, same practice vault.** Return to Token and observe its new value while the vault is still open. Follow Reply, replace the old value with the new value in Editing view, and press **Ctrl+S**. Close only this practice-vault window. Reopen using the same existing Linux launcher, `obsidian &` for the fresh x64 package, or `course_launch_obsidian_arm64` for the separately approved AppImage in the same Ubuntu shell. Open the exact `$ObsidianVault` again through the vault chooser if necessary. Open Reply and confirm the new value remains.
+**Window: Linux Obsidian, same practice vault.** Return to Token and watch for its new value while the vault is still open. Follow Reply, replace the old value with the new one in Editing view, and press **Ctrl+S**. Close only this practice-vault window. Reopen it with the same existing Linux launcher, `obsidian &` for the fresh x64 package, or `course_launch_obsidian_arm64` for the separately approved AppImage in the same Ubuntu shell. If needed, use the vault chooser to open the exact `$ObsidianVault` again. Open Reply and check that the new value is still there.
 
-**Expected:** you see the external change before closing the app, and the second saved reply survives reopening. **HOLD:** stale Token, wrong reopened vault, failed relaunch, or missing reply. **Recovery:** record the actual failure. Reopening to make a stale token appear does not prove live refresh. Resolve the cause, run another `refresh` with the correct vault open, and repeat observation/edit/save/reopen. Keep the same Linux home and preserve prior observations.
+**Expected:** you see the outside change before closing the app, and the second saved reply remains after reopening. **HOLD:** stale Token, wrong reopened vault, failed relaunch, or missing reply. **Recovery:** Record what failed. Reopening to make a stale token appear does not show that Obsidian refreshed while open. Fix the cause, run another `refresh` with the right vault open, then watch the change, edit, save, and reopen again. Keep the same Linux home and all earlier records.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -1170,23 +1170,23 @@ Leave Token visible in Reading view in the open app. Change it from outside Obsi
 "$PY" "$ObsidianHelper" check --root "$ObsidianRoot"
 ```
 
-**Expected:** a refreshed token generation, the qualified PASS line, and a new disk-observation path. **HOLD:** any mismatch or helper failure. **Recovery:** inspect the exact vault and saved Reply, preserve the failed observation, and repeat the failed step in Obsidian.
+**Expected:** a refreshed token generation, the qualified PASS line, and a new disk-record path. **HOLD:** any mismatch or helper failure. **Recovery:** inspect the exact vault and saved Reply, keep the record of what failed, and repeat the failed step in Obsidian.
 
-Save a separate actual GUI record directly under the printed `$ObsidianRoot`, outside `vault`. In your ordinary text editor, create a new `gui-observation.txt` there without replacing an existing file. Record the date, Windows build, exact Ubuntu name and release, WSL VERSION, Linux architecture, actual Obsidian version, exact vault path, observed Start → Token → Reply navigation, both edits/saves, the live external refresh, and reopened Reply. Include both disk-observation paths and any remaining failure. On ARM64, record whether the separate sandbox exception was approved. Practice-vault screenshots can support the record; exclude keys and unrelated personal windows.
+Keep a separate record of what you saw in the Obsidian window directly under the printed `$ObsidianRoot`, outside `vault`. In your usual text editor, create a new `gui-observation.txt` there, but don't replace an existing file. Write down the date, Windows build, exact Ubuntu name and release, WSL VERSION, Linux architecture, Obsidian version you're running, exact vault path, Start → Token → Reply navigation you saw, both edits and saves, the live external refresh, and Reply after reopening. Include the two disk-record paths and any remaining failure. On ARM64, record whether the separate sandbox exception was approved. Screenshots of the practice vault can support your record, but leave out keys and unrelated personal windows.
 
-Record **Obsidian READY** only after all these GUI actions were actually observed and both disk checks passed. Otherwise record **Obsidian HOLD** with the failed or unobserved action. Files and `.obsidian` settings alone cannot establish GUI readiness. Keep OMP, Obsidian, and n8n results separate; an Obsidian HOLD does not erase an OMP pass. WSLg GUI behavior must be observed on this distribution and laptop; native Windows or macOS results do not prove it.
+Record **Obsidian READY** only after you've seen all these actions in the Obsidian window and both checks of the files on disk have passed. Otherwise, record **Obsidian HOLD** and name the action that failed or was unobserved. Files and `.obsidian` settings alone cannot show that Obsidian works in its window. Keep OMP, Obsidian, and n8n results separate; an Obsidian HOLD does not erase an OMP pass. Check WSLg in this distribution on this laptop: results from native Windows or macOS cannot stand in for what happens here.
 
 ## Prepare local n8n for Module 7
 
-This check opens the local visual workflow editor and proves that a saved workflow survives a stop and start. Keep its result separate from `SETUP CHECK PASS` and the live OMP `READINESS CHECK PASS`. An n8n HOLD does not erase an OMP pass, but Module 7 needs n8n ready. Installation and image-download time depends on the device and network.
+Open the local visual workflow editor and confirm that a saved workflow remains after you stop and restart it. Keep this result separate from `SETUP CHECK PASS` and the live OMP `READINESS CHECK PASS`. An n8n HOLD does not erase an OMP pass, but Module 7 needs n8n ready. The time needed for installation and image downloads varies with the device and network.
 
 ### Check the Windows host and approvals
 
 [Microsoft’s simplified WSL installation](https://learn.microsoft.com/en-us/windows/wsl/install) requires Windows 10 build 19041+ or Windows 11. Docker’s current WSL backend requirements are stricter: WSL package 2.1.5+, Windows 10 22H2 build 19045 or Windows 11 23H2 build 22631+, a supported edition and servicing status, 8 GB RAM, SLAT, hardware virtualization enabled, and the Windows Server service (`LanmanServer`) enabled with Automatic startup. Docker lists Enterprise, Pro, and Education in its requirements and separately discusses Home for Linux containers; have the owner confirm eligibility for the exact host. Windows Server is unsupported. See [Docker’s current Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/) before downloading. Passing the earlier native-tool or Microsoft WSL floor alone is insufficient.
 
-On Windows Arm, select the **Arm (Early Access)** download only with owner approval for that status; Windows containers are unsupported. Published arm64 images do not prove this course stack works on a Windows Arm laptop. Keep n8n on HOLD until this device completes the checks below. An x64 host also needs those checks.
+On Windows Arm, choose the **Arm (Early Access)** download only if the owner approves its Early Access status; Windows containers are unsupported. Published arm64 images do not show that this course stack works on a Windows Arm laptop. Keep n8n on HOLD until this device passes the checks below. An x64 host must pass them too.
 
-Have the device owner confirm [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/). Personal use, education, non-commercial open source, and qualifying small businesses (fewer than 250 employees AND under $10 million revenue) are free; professional use outside those limits and government entities require a paid subscription. Do not assume a work laptop qualifies because this is a class.
+Ask the device owner to confirm [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/). It's free for personal use, education, non-commercial open source, and qualifying small businesses (fewer than 250 employees AND under $10 million revenue). Professional use outside those limits and use by government entities require a paid subscription. Don't assume a work laptop qualifies because this is a class.
 
 The [official stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml) includes `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. The sandbox runner uses privileged Docker-in-Docker. Obtain owner approval for that privilege and ordinary-user Docker access before starting it. Keep Assistant off; do not enter a provider key into n8n.
 
@@ -1211,13 +1211,13 @@ if (Get-Command docker -CommandType Application -ErrorAction SilentlyContinue) {
 Get-NetTCPConnection -State Listen -ErrorAction Stop | Where-Object LocalPort -eq 5678 | Select-Object LocalAddress, LocalPort, OwningProcess
 ```
 
-**Expected:** recorded host and WSL versions, distributions preserved, Desktop recorded as absent, already running, or installed but stopped, Docker inventory from the approved running engine, and no listener on 5678 for a fresh installation. An existing course instance may already own that port.
+**Expected:** you've recorded the host and WSL versions without changing the distributions. You've noted whether Desktop is absent, already running, or installed but stopped, and recorded the Docker inventory from the approved running engine. For a fresh installation, nothing is listening on port 5678. An existing course instance may already use that port.
 
 **Stop:** licensing, privileges, host support, virtualization, or WSL approval is unresolved; Docker points to an unexpected/remote engine; existing applications or port ownership are unclear; any inspection fails.
 
-**Recovery:** resolve the specific finding with the owner. Keep all applications, containers, volumes, checkouts, and earlier attempts. Do not kill a process, prune Docker, reset Desktop, or change contexts blindly. A denied WSL/Docker prerequisite is **n8n HOLD**, separate from OMP readiness.
+**Recovery:** work through the specific finding with the owner. Keep all applications, containers, volumes, checkouts, and earlier attempts. Don't kill a process, prune Docker, reset Desktop, or change contexts without knowing their effects. If a WSL/Docker prerequisite is denied, record **n8n HOLD** separately from OMP readiness.
 
-Reuse the exact Ubuntu distribution and ordinary user selected earlier. Keep the existing course checkout at `$HOME/Documents/AIHB_OCT_2026` and its work/evidence paths intact. n8n belongs separately at `$HOME/n8n-course`; do not clone or relocate the course. If conversion or installation is needed, use the owner-approved sections above with their backup and restart boundaries.
+Reuse the exact Ubuntu distribution and ordinary user selected earlier. Keep the existing course checkout at `$HOME/Documents/AIHB_OCT_2026` and its work/evidence paths intact. n8n belongs separately at `$HOME/n8n-course`; do not clone or relocate the course. If conversion or installation is needed, use the owner-approved sections above with their backup and restart steps.
 
 ### Update WSL only if Docker requires it
 
@@ -1257,7 +1257,7 @@ dpkg-query -W -f='${binary:Package} ${Status}\n' docker-ce docker-ce-cli docker.
 pgrep -a dockerd
 ```
 
-**Expected:** no independently installed Docker Engine/CLI packages and no Ubuntu `dockerd`; absent packages/processes can return nonzero here. **Stop:** any installed package, daemon, or unclear result suggests an existing installation. **Recovery:** have the owner inspect custom installations too and preserve their containers/volumes before resolving the conflict. These probes alone do not prove absence of a manually installed daemon.
+**Expected:** Ubuntu has no separately installed Docker Engine/CLI packages and no `dockerd`; the checks can return nonzero when packages or processes are absent. **Stop:** an installed package, daemon, or unclear result may mean Docker is already installed. **Recovery:** ask the owner to check for custom installations too and keep their containers and volumes while resolving the conflict. These checks cannot rule out a daemon installed by hand.
 
 Check `curl --version` and the certificate bundle in the inspection block below. If either is missing, use this package step only after owner approval; skip it when both are present.
 
@@ -1267,7 +1267,7 @@ Check `curl --version` and the certificate bundle in the inspection block below.
 sudo apt-get update && sudo apt-get install --no-upgrade curl ca-certificates
 ```
 
-**Expected:** the missing download prerequisites are installed; existing packages are not upgraded by the install command. **Stop:** policy denial, package failure, or a proposal to remove existing software. **Recovery:** preserve the message and resolve it with the owner; do not weaken certificate verification or install a Docker daemon. Then repeat the following inspection.
+**Expected:** the missing download prerequisites are installed; existing packages are not upgraded by the install command. **Stop:** policy denial, package failure, or a proposal to remove existing software. **Recovery:** keep the message and resolve it with the owner; do not weaken certificate verification or install a Docker daemon. Then repeat the following inspection.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, selected WSL 2 distribution.**
 
@@ -1299,15 +1299,15 @@ course_n8n_inspect() {
 course_n8n_inspect
 ```
 
-**Expected:** `docker info` succeeds for the approved Docker Desktop Linux engine as this ordinary user, and `docker compose version` succeeds. The modern plugin may report version 5; it need not start with `2.`. Inventory matches the owner’s known work, the destination is outside the checkout, and port 5678 is free for a fresh instance in both Windows and Ubuntu.
+**Expected:** `docker info` works for the approved Docker Desktop Linux engine when you run it as this ordinary user, and `docker compose version` works too. The modern plugin may report version 5; it doesn't have to start with `2.`. The Docker inventory matches the owner's known work, the destination is outside the checkout, and port 5678 is free for a fresh instance in both Windows and Ubuntu.
 
-**Stop:** any command fails, Linux-home identity differs, an engine/context is unexpected, a Docker override is set, an unknown port listener exists, or storage is insufficient for the full stack.
+**Stop:** any command fails, Linux-home identity differs, an engine/context is unexpected, a Docker override is set, an unknown port listener exists, or there isn't enough storage for the full stack.
 
-**Recovery:** review integration and context with the owner, then repeat in the intended Ubuntu shell. Never use `sudo` for the n8n installer, make the Docker socket world-writable, or start a second Ubuntu daemon. A CLI version alone does not prove daemon access. Preserve an existing destination even if incomplete. Have its owner identify its actual Compose project, data, version, and port. An existing installation must retain that identity and its owner-managed lifecycle; do not run fresh identity creation or rename it. For an installation already created with the recorded identity below, confirm that identity with the owner before reusing the helper. A different version is HOLD pending owner resolution, not permission to repin or upgrade.
+**Recovery:** review the integration and context with the owner, then try again in the intended Ubuntu shell. Never use `sudo` for the n8n installer, make the Docker socket world-writable, or start a second Ubuntu daemon. Seeing a CLI version doesn't show that you can reach the daemon. Keep an existing destination, even if incomplete, and ask its owner to identify its actual Compose project, data, version, and port. An existing installation must keep that identity and its owner-managed lifecycle; don't create a fresh identity or rename it. If the installation was already created with the recorded identity below, confirm that identity with the owner before reusing the helper. A different version means HOLD until the owner resolves it; it isn't permission to repin or upgrade.
 
 ### Create the fresh n8n configuration
 
-Choose one installation method below, only after the preceding checks pass and `$HOME/n8n-course` is absent. The [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) accepts the course’s explicit `2.41.5` version and `--no-start`. Its [reviewed installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh) is version `1.4.0`; the live URL can change. Prefer download-and-review to check that version before execution. The installer’s “existing install” message proves neither version nor readiness.
+Choose one installation method below only if the earlier checks passed and `$HOME/n8n-course` does not exist. The [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) accepts the course's specified version `2.41.5` and `--no-start`. The [reviewed installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh) is version `1.4.0`, but the live URL can change. Prefer downloading and reviewing it so you can check the version before running it. If the installer says “existing install”, that message tells you neither the version nor whether n8n is ready.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution; one-line option.**
 
@@ -1325,7 +1325,7 @@ Choose one installation method below, only after the preceding checks pass and `
 
 **Stop:** any download/installer failure, changed installer version, missing configuration, or existing-install notice. A streamed script can partially execute before a download failure.
 
-**Recovery:** preserve partial files and messages for owner review. Do not rerun over them, delete them, or use upgrade/uninstall flags. The following alternative downloads completely before execution; use it instead of the one-line option, not afterward.
+**Recovery:** keep partial files and messages for owner review. Do not rerun over them, delete them, or use upgrade/uninstall flags. The following alternative downloads completely before execution; use it instead of the one-line option, not afterward.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution; download-and-review alternative.**
 
@@ -1361,11 +1361,11 @@ course_n8n_review_install
 
 In your normal text editor, use **File → Open** to open the selected distro’s Linux `$HOME/n8n-course/compose.yml` (Windows editors can reach it through `\\wsl.localhost\<exact-distro-name>\home\<linux-user>\n8n-course\compose.yml`). Under the `n8n` service’s `ports`, change only `'5678:5678'` to `'127.0.0.1:5678:5678'`, then **File → Save**. Keep all six services. Do not open/share `.env`, paste it into chat, or run a resolved `docker compose config` dump; it contains secrets. No course checkout file or provider key belongs in this n8n configuration.
 
-**Expected:** the saved n8n port is exactly `127.0.0.1:5678:5678`; no other service publishes a port. **Stop:** the file differs from the expected stack, already belongs to another installation, or cannot be saved. **Recovery:** preserve it and review with the owner before starting; do not replace a preexisting Compose file.
+**Expected:** the saved n8n port is exactly `127.0.0.1:5678:5678`; no other service publishes a port. **Stop:** the file differs from the expected stack, already belongs to another installation, or cannot be saved. **Recovery:** keep it and review with the owner before starting; do not replace a preexisting Compose file.
 
 ### Record the fresh project name
 
-A Compose project name identifies this stack’s containers, volumes, and networks. The Compose file path alone does not fix that identity; see [Docker project names](https://docs.docker.com/compose/how-tos/project-name/). For the genuinely fresh configuration you just generated and bound to localhost, agree on an unused name with the owner before the first start. Use only lowercase ASCII letters, digits, underscores, and hyphens, beginning with a letter or digit. Do not use this step for an existing installation.
+A Compose project name ties this stack to its containers, volumes, and networks. The Compose file path alone does not set that name; see [Docker project names](https://docs.docker.com/compose/how-tos/project-name/). If you've just created a fresh configuration and bound it to localhost, agree on a name with the owner that isn't in use before starting it for the first time. Use only lowercase ASCII letters, digits, underscores, and hyphens, and start with a letter or digit. Don't use this step for an existing installation.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution; fresh configuration only.**
 
@@ -1401,11 +1401,11 @@ course_n8n_identify() {
 course_n8n_identify
 ```
 
-**Expected:** all three Docker inspections succeed without finding resources for the approved name, then `.course-project` is created privately without overwriting a file or symlink. **Stop:** an invalid name, existing resource or record, failed inspection, or failed write. **Recovery:** preserve all resources and files. Review the finding with the owner; do not remove resources or rename an existing installation to make the check pass.
+**Expected:** all three Docker inspections succeed without finding resources for the approved name, then `.course-project` is created privately without overwriting a file or symlink. **Stop:** an invalid name, existing resource or record, failed inspection, or failed write. **Recovery:** keep all resources and files. Review the finding with the owner; do not remove resources or rename an existing installation to make the check pass.
 
 ### Use the recorded project and configuration
 
-Define this helper in the same Ubuntu shell. It uses the recorded name, `.env`, and `compose.yml` for every stack command. Exported variables can override `.env` even with an explicit file path; see [Docker interpolation precedence](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/). The helper stops if any listed override is exported, including an empty value. It prints only the variable name and HOLD, never its value.
+Define this helper in the same Ubuntu shell. It uses the saved name, `.env`, and `compose.yml` each time you run a stack command. Exported variables can take priority over `.env` even when you give its file path; see [Docker interpolation precedence](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/). If any listed override is exported, even with an empty value, the helper stops. It prints the variable name and HOLD, but never its value.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution.**
 
@@ -1431,7 +1431,7 @@ course_n8n() {
 }
 ```
 
-**Expected:** the helper is defined; it starts nothing until called. **Stop:** any later call reports HOLD or fails. **Recovery:** have the owner resolve exported overrides in a clean shell, then inspect the approved Docker engine/context and define the helper there again. Do not automatically unset variables or rewrite configuration. Preserve a missing, damaged, or unexpected project record for owner review; do not recreate it for an existing installation.
+**Expected:** the helper is defined but starts nothing until you call it. **Stop:** any later call reports HOLD or fails. **Recovery:** ask the owner to resolve exported overrides in a clean shell. Then check the approved Docker engine/context and define the helper there again. Don't automatically unset variables or rewrite configuration. If the project record is missing, damaged, or unexpected, keep any existing record and the finding for owner review; don't recreate the record for an existing installation.
 
 Start the confirmed project only after identity creation succeeds.
 
@@ -1451,17 +1451,17 @@ course_n8n port n8n 5678
 course_n8n exec n8n n8n --version
 ```
 
-**Expected:** all six services are present. `sandbox-certs` is a successful one-shot, `Exited (0)`; the other five services are running, with health checks healthy where shown. The port output is exactly `127.0.0.1:5678` and n8n reports `2.41.5`. **Stop:** missing/restarting/unhealthy services, failed certificate exit, a public binding, failed command, or another n8n version. **Recovery:** allow initialization to finish and repeat inspection; persistent failures stay HOLD. Review errors privately without exposing secrets. Do not change the pin, delete volumes, or disable services to force a pass.
+**Expected:** all six services appear. `sandbox-certs` has finished successfully as a one-shot service, `Exited (0)`; the other five are running, with healthy status wherever health checks are shown. The port output is exactly `127.0.0.1:5678`, and n8n reports `2.41.5`. **Stop:** a service is missing, restarting, or unhealthy; the certificate service failed; the port is public; a command failed; or n8n reports another version. **Recovery:** give initialization time to finish, then check again. If the problem persists, keep the result at HOLD. Review errors privately without exposing secrets, and don't change the pinned version, delete volumes, or disable services to force a pass.
 
 ### Save a blank workflow and prove it persists
 
 In the Windows browser, open **http://localhost:5678**. For a fresh instance, complete **Set up owner account** with local credentials and select **Next**. This creates the local instance owner, not an n8n Cloud account. If a login page appears for an existing instance, use its existing owner login; do not reset it. Skip optional offers and surveys where offered. No external account, provider key, or paid activation is required. Leave **n8n Assistant** off.
 
-Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 7 Readiness**, and press **Enter**. The editor saves automatically; do not look for a required Save button. Leave the canvas blank and do not select **Publish**. Reload the browser page and confirm the name and blank canvas remain. Preserve an existing workflow with that name; choose a distinct readiness name if it contains work.
+Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 7 Readiness**, and press **Enter**. The editor saves automatically; do not look for a required Save button. Leave the canvas blank and do not select **Publish**. Reload the browser page and confirm the name and blank canvas remain. Keep an existing workflow with that name; choose a distinct readiness name if it contains work.
 
-**Expected:** local owner access, saved blank workflow, Assistant off, and workflow unpublished/inactive. **Stop:** Cloud signup, provider-key/payment request, wrong instance, missing saved workflow, or unavailable editor. **Recovery:** check the address and the inspected port/project with the owner. Preserve the existing account and workflows; do not create another instance to hide a failure.
+**Expected:** local owner access, saved blank workflow, Assistant off, and workflow unpublished/inactive. **Stop:** Cloud signup, provider-key/payment request, wrong instance, missing saved workflow, or unavailable editor. **Recovery:** check the address and the inspected port/project with the owner. Keep the existing account and workflows; do not create another instance to hide a failure.
 
-Stop only this confirmed course Compose project. This retains its named volumes and workflow data.
+Stop only this confirmed course Compose project. This keeps its named volumes and workflow data.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution.**
 
@@ -1469,7 +1469,7 @@ Stop only this confirmed course Compose project. This retains its named volumes 
 course_n8n down
 ```
 
-**Expected:** this project’s containers stop and are removed; volumes remain. **Stop:** command failure or evidence this is another owner’s project. **Recovery:** preserve the output and confirm project ownership. Never add `-v` or run a volume prune.
+**Expected:** this project’s containers stop and are removed; volumes remain. **Stop:** command failure or evidence this is another owner’s project. **Recovery:** keep the output and confirm project ownership. Never add `-v` or run a volume prune.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same selected distribution.**
 
@@ -1477,6 +1477,6 @@ course_n8n down
 course_n8n up -d
 ```
 
-**Expected:** the same project starts again using its saved data. **Stop:** startup failure. **Recovery:** preserve files/volumes, resolve the specific error, and repeat the service/version/port inspection above.
+**Expected:** the same project starts again using its saved data. **Stop:** startup failure. **Recovery:** keep files/volumes, resolve the specific error, and repeat the service/version/port inspection above.
 
-Repeat that inspection after restart. Reload **http://localhost:5678**, sign in with the same local owner if needed, and reopen **Module 7 Readiness**. Record **n8n READY** only when the correct version, localhost-only port, six-service state, and saved workflow all survive the restart. Otherwise record **n8n HOLD** with the failed check, separately from both OMP results. For later sessions, inspect Desktop’s running state first. If it is stopped, obtain owner approval for startup effects on existing work before launching it. Open the same Ubuntu distribution as the same ordinary user, inspect the approved Docker engine/context and access, and define `course_n8n` again from the block above. Reuse the recorded `.course-project`; never rerun `course_n8n_identify`. Use `course_n8n up -d`, the same helper inspection commands, and `course_n8n down`. No reset, uninstall, or upgrade is part of this path.
+Repeat the service, version, and port inspection after restart. Reload **http://localhost:5678**, sign in with the same local owner if needed, and reopen **Module 7 Readiness**. Record **n8n READY** only if the correct version, localhost-only port, six-service state, and saved workflow all survive the restart. Otherwise, record **n8n HOLD** with the failed check, separately from both OMP results. In later sessions, check whether Desktop is running first. If it's stopped, get owner approval for the effects of starting it on existing work before launching it. Open the same Ubuntu distribution as the same ordinary user, inspect the approved Docker engine/context and your access to it, and define `course_n8n` again from the block above. Reuse the saved `.course-project`; never rerun `course_n8n_identify`. Use `course_n8n up -d`, the same helper inspection commands, and `course_n8n down`. Don't reset, uninstall, or upgrade as part of these steps.

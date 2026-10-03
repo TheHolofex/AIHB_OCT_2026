@@ -1,22 +1,22 @@
 # Use one OpenRouter key without putting it in your work
 
-Use your participant-supplied OpenRouter key for `openrouter/anthropic/claude-sonnet-4.6`. A local script cannot turn an SDK cost estimate into a bill.
+Use the OpenRouter key you were given for `openrouter/anthropic/claude-sonnet-4.6`. An SDK cost estimate is not a bill, even when a local script reports it.
 
-Keep the key in your approved password manager. Do not put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The course launcher receives it through the current process environment and gives OMP an isolated configuration; it does not need another provider login.
+Keep the key in your approved password manager. Do not put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The course launcher reads it from the current process environment and gives OMP its own isolated configuration; you do not need another provider login.
 
 ## Keep repository access separate from model access
 
 Three kinds of access serve different purposes:
 
-- The **hosted-course password** opens the website. It does not grant GitHub repository access.
-- Your **GitHub account** needs read permission for the private `TheHolofex/AIHB_OCT_2026` repository. Accept the owner's invitation with the account you intend to use.
-- Your **OpenRouter key** authorizes provider-billed model requests. It does not authenticate Git or GitHub.
+- The **hosted-course password** opens the website but does not give you GitHub repository access.
+- Your **GitHub account** needs read permission for the private `TheHolofex/AIHB_OCT_2026` repository. Accept the owner's invitation with the account you plan to use.
+- Your **OpenRouter key** lets you send model requests, which OpenRouter bills to the key's account. It does not log you in to Git or GitHub.
 
-Each platform first checks whether existing approved Git credentials can read the exact repository, with terminal prompting disabled. If that works, keep the existing credentials. If it fails, the platform's conditional GitHub CLI (`gh`) steps provide browser login. `gh` is an access helper, not another AI tool or a runtime prerequisite.
+Each platform first checks whether your existing approved Git credentials can read the exact repository without prompting in the terminal. If they can, keep using them. If they cannot, follow the platform's GitHub CLI (`gh`) steps to log in through your browser. `gh` helps with repository access; it is not another AI tool or needed to run OMP.
 
-During browser login, verify the GitHub hostname, device code, and invited account before authorizing. A successful login is not proof of repository permission; the exact repository read check must also succeed. If it still fails, resolve the invitation, organization approval, or network error with the responsible owner. Repeating login cannot grant permission.
+Before authorizing browser login, check the GitHub hostname, device code, and invited account. Then check that you can read the exact repository; login alone does not show you have permission. If the read check still fails, work with the responsible owner to fix the invitation, organization approval, or network error. Logging in again cannot grant permission.
 
-[GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Inspect the storage reported by `gh auth status --hostname github.com` without adding `--show-token`. Do not copy authentication output into shared evidence. If that storage is not permitted by device policy, stop and have the device owner provision approved storage or Git credentials; do not request insecure storage. The platform steps configure GitHub CLI as a Git credential helper only for `github.com`, and only after the fallback is needed and its storage is approved.
+[GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Check where `gh auth status --hostname github.com` says the credentials are stored, but do not add `--show-token` or copy authentication output into shared evidence. If device policy does not allow that storage, stop and ask the device owner to set up approved storage or Git credentials; do not ask to use insecure storage. The platform steps set up GitHub CLI as a Git credential helper only for `github.com`, after you need the fallback and its storage is approved.
 
 ## Enter the key through a hidden prompt
 
@@ -42,7 +42,7 @@ $secret = Read-Host 'OpenRouter key' -AsSecureString
 
 ## Make it available only to this process and its children
 
-Run the matching block only after the hidden-input command has finished. PowerShell briefly converts the secure string to the environment value required by the client, then zero-frees its unmanaged buffer and disposes the secure-string object.
+Wait for the hidden-input command to finish before running the matching block. In PowerShell, the block briefly converts the secure string into the environment value the client needs, then clears and frees its unmanaged buffer and disposes of the secure-string object.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -66,7 +66,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** Only `SET` is printed. That proves presence in this process, not validity, credit, model availability, or a successful provider call.
+**Expected:** Only `SET` is printed. This means the key is present in this process; it does not check whether the key is valid, you have credit, the model is available, or a provider call succeeded.
 
 **Stop:** The result is `MISSING`, conversion fails, or any key value appears in output.
 
@@ -74,7 +74,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Check a separately opened terminal
 
-An independently opened terminal should not inherit a key from a terminal you previously used. A child shell started from that terminal can inherit its exported environment. Seeing `SET` alone therefore does not prove that a key was written to a profile or leaked.
+A new terminal window opened fresh should not inherit a key from one you used earlier. A child shell started from that earlier window can inherit its exported environment, though. Seeing `SET` by itself does not mean the key was saved in a profile or leaked.
 
 **Terminal: Bash or zsh, ordinary user, independently opened window.**
 
@@ -90,7 +90,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 **Expected:** `MISSING` in an independent window. Enter the key again there when you need a paid turn.
 
-**Stop:** An unexpected `SET` needs an explanation before you claim that the lifecycle is process-only.
+**Stop:** If a new terminal window unexpectedly shows `SET`, find out why before describing the key as process-only.
 
 **Recovery:** Check how the terminal was launched and whether an approved parent process supplied the variable. Do not dump profiles or environment values into evidence. Revoke the key if you find an exposed or unauthorized persisted copy.
 
@@ -112,10 +112,10 @@ Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue
 
 **Expected:** The presence-only check now reports `MISSING` in that process.
 
-**Stop:** A child process that already inherited the key may still hold its own copy. Environment removal does not revoke provider access.
+**Stop:** A child process that already inherited the key may still hold its own copy. Removing the key from the environment doesn't revoke it at the provider.
 
 **Recovery:** Close those processes. Revoke the provider key when access must end everywhere or a value was exposed.
 
-Save provider/model identity, `omp/18.3.5`, `SET` or `MISSING`, and redacted run outcomes. Never save any part of the key. Process-local environment storage limits persistence; it is not protection from every other process running under your account.
+Save the provider/model identity, `omp/18.3.5`, whether the check showed `SET` or `MISSING`, and redacted run outcomes. Never save any part of the key. Keeping it in the current process environment limits persistence, but it does not shield it from every other process running under your account.
 
 Sources: [OpenRouter key settings](https://openrouter.ai/settings/keys), [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6), and [OMP model resolution at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/models.md).

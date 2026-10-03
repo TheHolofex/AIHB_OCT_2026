@@ -303,7 +303,7 @@ Before returning the PNG path, check that every title and required label is pres
 - Title: `READY MEANS OBSERVED`
 - Publication path: `shared/figures/m00-readiness-lanes.png`
 - Anchor: Overview `## Ready means observable`; replace `m00-setup-chain.svg`.
-- Caption: A prerequisite report, a live tool write, and the two application checks establish different readiness claims; one does not prove the others.
+- Caption: The prerequisite report, live tool write, and two application checks each show something different. One check cannot stand in for another.
 - Native size: 1536×1024; published SHA-256: `b7a91c0c6ed247cbfc2a710afd8c676e239c5ca146e17e694c12c4369b16564b`
 - Iteration history:
   - attempt-01: full generation; session `01a1004d-6c72-7863-a1f4-006549ae3cf2`; raw SHA-256 `8586e815b4f69548…`; superseded — review: m00-readiness-lanes: re-render bloomed title and dim footer
