@@ -2,7 +2,7 @@
 
 This path installs the course tools on native Windows and runs a readiness check in which Oh My Pi writes one file. Plan for 60 to 120 minutes for the native setup; this is a planning estimate, and the n8n bridge may require additional installation and restart time. Open **Windows PowerShell 5.1** on native Windows from the Start menu, as an ordinary user. Installers may need an approved elevation prompt; use the device owner’s approved route if administrator credentials are required.
 
-You need Git, Python 3.12 or newer, a browser, an ordinary text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 6 also requires local n8n 2.41.5 through Docker Desktop and a named Ubuntu WSL 2 bridge, described below. Keep OMP, Python, Git, Obsidian and its vault, the checkout, evidence, and credentials on native Windows. Use Ubuntu only for n8n installation and lifecycle commands. You do not install Node, npm, or another agent.
+You need Git, Python 3.12 or newer, a browser, an ordinary text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`. The course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Module 7 also requires local n8n 2.41.5 through Docker Desktop and a named Ubuntu WSL 2 bridge, described below. Keep OMP, Python, Git, Obsidian and its vault, the checkout, evidence, and credentials on native Windows. Use Ubuntu only for n8n installation and lifecycle commands. You do not install Node, npm, or another agent.
 
 A checksum is a fingerprint of a file. You compare the fingerprint of the downloaded program with the fingerprint published beside it, and you do that before the program is allowed to run. PATH is the list of folders Windows searches when you type a command name.
 
@@ -375,7 +375,7 @@ Use or clone the course at `$HOME\Documents\AIHB_OCT_2026` after repository acce
 
 Git can rewrite line endings while it copies text files. A line ending is the hidden character at the end of a line. Later checks compare exact bytes, so a rewritten ending makes a frozen control look changed even when the words are the same. The copy command below turns that rewrite off for this one command. It does not save a Git setting, and it does not reset, clean, pull, or renormalize a folder that is already there. The published course also marks these text files to keep their published line endings on a later fresh copy.
 
-After the copy is found or made, this step reads three frozen controls: the Module 1 source manifest, the Module 7 policy file, and the Module 9 restore control. A carriage return in any of them means this copy was already rewritten. That result is a hold. Leave the folder untouched and get an intact fresh copy. This step does not give permission to repair the existing files.
+After the copy is found or made, this step reads three frozen controls: the Module 1 source manifest, the Module 8 policy file, and the Module 10 restore control. A carriage return in any of them means this copy was already rewritten. That result is a hold. Leave the folder untouched and get an intact fresh copy. This step does not give permission to repair the existing files.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**
 
@@ -412,8 +412,8 @@ if (-not (Test-Path -LiteralPath $lab)) {
 }
 $frozen = @(
   'AI_Harness_Bootcamp_2\module-01-mission-thread\shared\case\SOURCE_MANIFEST.json',
-  'AI_Harness_Bootcamp_2\module-07-change-eval\shared\controls\policy.json',
-  'AI_Harness_Bootcamp_2\module-09-capstone\shared\baseline\run.json'
+  'AI_Harness_Bootcamp_2\module-08-change-eval\shared\controls\policy.json',
+  'AI_Harness_Bootcamp_2\module-10-capstone\shared\baseline\run.json'
 )
 foreach ($rel in $frozen) {
   $path = Join-Path $R $rel
@@ -642,8 +642,8 @@ $R = Join-Path $HOME 'Documents\AIHB_OCT_2026'
 $M = Join-Path $R 'AI_Harness_Bootcamp_2\module-00-setup'
 $frozen = @(
   'AI_Harness_Bootcamp_2\module-01-mission-thread\shared\case\SOURCE_MANIFEST.json',
-  'AI_Harness_Bootcamp_2\module-07-change-eval\shared\controls\policy.json',
-  'AI_Harness_Bootcamp_2\module-09-capstone\shared\baseline\run.json'
+  'AI_Harness_Bootcamp_2\module-08-change-eval\shared\controls\policy.json',
+  'AI_Harness_Bootcamp_2\module-10-capstone\shared\baseline\run.json'
 )
 foreach ($rel in $frozen) {
   $path = Join-Path $R $rel
@@ -938,9 +938,9 @@ Save a separate actual GUI observation in a new plain-text file named `gui-obser
 
 Record **Obsidian READY** only when those actions were actually observed and both disk checks passed. Otherwise record **Obsidian HOLD** with the failed or unobserved action. A helper PASS or an `.obsidian` folder alone is insufficient. Keep this result separate from OMP and n8n; an Obsidian HOLD does not erase either existing result. Native Windows GUI behavior must be observed on this laptop; a result from macOS or WSL is not its proof.
 
-## Prepare local n8n for Module 6
+## Prepare local n8n for Module 7
 
-This check opens the local visual workflow editor and proves that a saved workflow survives a stop and start. Keep its result separate from `SETUP CHECK PASS` and the live OMP `READINESS CHECK PASS`. An n8n HOLD does not erase an OMP pass, but Module 6 needs n8n ready. Installation and image-download time depends on the device and network.
+This check opens the local visual workflow editor and proves that a saved workflow survives a stop and start. Keep its result separate from `SETUP CHECK PASS` and the live OMP `READINESS CHECK PASS`. An n8n HOLD does not erase an OMP pass, but Module 7 needs n8n ready. Installation and image-download time depends on the device and network.
 
 ### Check the Windows host and approvals
 
@@ -1338,7 +1338,7 @@ course_n8n exec n8n n8n --version
 
 In the Windows browser, open **http://localhost:5678**. For a fresh instance, complete **Set up owner account** with local credentials and select **Next**. This creates the local instance owner, not an n8n Cloud account. If a login page appears for an existing instance, use its existing owner login; do not reset it. Skip optional offers and surveys where offered. No external account, provider key, or paid activation is required. Leave **n8n Assistant** off.
 
-Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 6 Readiness**, and press **Enter**. The editor saves automatically; do not look for a required Save button. Leave the canvas blank and do not select **Publish**. Reload the browser page and confirm the name and blank canvas remain. Preserve an existing workflow with that name; choose a distinct readiness name if it contains work.
+Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 7 Readiness**, and press **Enter**. The editor saves automatically; do not look for a required Save button. Leave the canvas blank and do not select **Publish**. Reload the browser page and confirm the name and blank canvas remain. Preserve an existing workflow with that name; choose a distinct readiness name if it contains work.
 
 **Expected:** local owner access, saved blank workflow, Assistant off, and workflow unpublished/inactive. **Stop:** Cloud signup, provider-key/payment request, wrong instance, missing saved workflow, or unavailable editor. **Recovery:** check the address and the inspected port/project with the owner. Preserve the existing account and workflows; do not create another instance to hide a failure.
 
@@ -1360,7 +1360,7 @@ course_n8n up -d
 
 **Expected:** the same project starts again using its saved data. **Stop:** startup failure. **Recovery:** preserve files/volumes, resolve the specific error, and repeat the service/version/port inspection above.
 
-Repeat that inspection after restart. Reload **http://localhost:5678**, sign in with the same local owner if needed, and reopen **Module 6 Readiness**. Record **n8n READY** only when the correct version, localhost-only port, six-service state, and saved workflow all survive the restart. Otherwise record **n8n HOLD** with the failed check, separately from both OMP results.
+Repeat that inspection after restart. Reload **http://localhost:5678**, sign in with the same local owner if needed, and reopen **Module 7 Readiness**. Record **n8n READY** only when the correct version, localhost-only port, six-service state, and saved workflow all survive the restart. Otherwise record **n8n HOLD** with the failed check, separately from both OMP results.
 
 For later sessions, inspect Desktop’s running state first. If it is stopped, obtain owner approval for startup effects on existing work before launching it. Open the same Ubuntu distribution as the same ordinary user, inspect the approved Docker engine/context, and define `course_n8n` again. Reuse `.course-project`; never rerun `course_n8n_identify` or create another project for a restart. No reset, uninstall, or upgrade is part of this path.
 

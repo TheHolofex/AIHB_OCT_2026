@@ -56,7 +56,7 @@ Use an ordinary-user terminal for the helper and the actual Obsidian window for 
 
 ## When local n8n stops
 
-Keep **n8n READY/HOLD** separate from the OMP setup report and live OMP readiness result. Module 6 requires n8n READY; its checks need no paid model call, n8n Cloud signup, or Assistant key. Use the complete n8n section in your chosen platform guide after resolving the first failure.
+Keep **n8n READY/HOLD** separate from the OMP setup report and live OMP readiness result. Module 7 requires n8n READY; its checks need no paid model call, n8n Cloud signup, or Assistant key. Use the complete n8n section in your chosen platform guide after resolving the first failure.
 
 | Observation | Next action |
 |---|---|

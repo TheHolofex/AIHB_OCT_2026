@@ -137,8 +137,8 @@ def source_path(base: Path, rel: str) -> Path:
 def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, PurePosixPath], set[Path]]:
     course = json.loads((root / "course.json").read_text(encoding="utf-8"))
     modules = course.get("modules", [])
-    if sorted(module.get("id") for module in modules) != [f"{i:02d}" for i in range(11)]:
-        raise ValueError("manifest must enumerate exactly the eleven modules 00–10, each once, in teaching order")
+    if [module.get("id") for module in modules] != [f"{i:02d}" for i in range(11)]:
+        raise ValueError("manifest must enumerate exactly the eleven modules 00–10 in order")
     if course.get("schema_version") != 1 or course.get("site_dir") != "site" or course.get("course_id") != "AI_Harness_Bootcamp_2":
         raise ValueError("unsupported course manifest identity")
     boot = root / safe_relative(course["source_root"])

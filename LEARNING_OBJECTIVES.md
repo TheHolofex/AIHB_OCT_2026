@@ -28,7 +28,7 @@ The learner completes research from bounded sources, verifies a material claim a
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 04; person-to-person transfer belongs to Module 09.
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; person-to-person transfer belongs to Module 10.
 
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
@@ -40,60 +40,60 @@ Using verified sources and a placed guard, the learner connects a supplied MCP s
 **Evidence:** the server's contract inspection with the learner's reading of it; a declared authority that matches the server's arguments; a probe of the unbounded connection that breaches and probes of each bounded phase that hold; six frozen calibration decisions and a forty-note handling register that sets the AI's proposals beside the final decisions; a partner extract that cites only cleared notes; a revoked run that was offered no tool; and the verifier's joined result.  
 **Owner:** Module 03
 
-## PO-10 — Decide with typed questions
+## PO-04 — Decide with typed questions
 
 Using bounded direction, source verification, a saved instruction, and the rule-based judgment practiced with an assistant's proposals, the learner works with atomic typed questions with fixed answer sets, states which judgment each isolates and adds one of their own, runs a general model once as a read-only decision function, validates every typed answer mechanically, measures the answers and their declared confidence against labels written and frozen before the run, sets routing gates from that measurement, routes a pile in code, and hands a person the decisions that only a person may make. Labels frozen before the run are this module's method; later modules assume it.
 
 **Evidence:** the supplied question set with the learner's added question and the judgment each question isolates; labels digest frozen before the run and bound to the run's input snapshot; a read-only receipt that read the state and the questions; validated typed answers or a preserved held reply; agreement table with adjudicated disagreements and the highest declared confidence among wrong answers; gate settings tied to that measurement; routing table and requirement line recomputable from the answers and gates; queue decisions and the authority change recorded as the desk lead's; and the stated limit that declared confidence is the model's claim.  
-**Owner:** Module 10
+**Owner:** Module 4
 
-## PO-04 — Diagnose and recover
+## PO-05 — Diagnose and recover
 
 The learner preserves a material hidden failure, identifies the last passing and first failing boundary, runs a discriminating probe, makes one authorized reversible correction or verified revert, and proves recovery without weakening acceptance.
 
 **Evidence:** sealed localization, supplied diagnostic comparison, probe result, correction/revert record, focused and end-to-end reruns, and clean-condition recurrence result. Localization alone does not establish recovery.
-**Owner:** Module 04
+**Owner:** Module 05
 
-## PO-05 — Improve from observed failures
+## PO-06 — Improve from observed failures
 
 Using preserved failures, source distinctions, and the freeze-before-outcome discipline, the learner fixes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
 
 **Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
-**Owner:** Module 05
+**Owner:** Module 06
 
-## PO-06 — Build and control a fixed workflow
+## PO-07 — Build and control a fixed workflow
 
 Using source-verification and bounded-predicate validation skills, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
 
 **Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
-**Owner:** Module 06
+**Owner:** Module 07
 
-## PO-07 — Evaluate a change with variation controls
+## PO-08 — Evaluate a change with variation controls
 
 Using exact workflow comparisons and the freeze-before-outcome discipline, the learner fixes cases, configurations and hard gates before outcomes, evaluates authored paired practice outputs without averaging away a violation, and verifies baseline restoration. A live instruction comparison controls the provider, model, sources, form, prompt and permissions while preserving run-to-run variation.
 
 **Evidence:** pre-result policy, all paired case results, separate format/mass/time-zone gates, failed-case repair proxy, bounded recommendation and restored-baseline identities. Live stretch evidence retains every preregistered repeat, paired disagreement, observed latency and costs, with SDK estimates separated from provider billing.
-**Owner:** Module 07
+**Owner:** Module 08
 
-## PO-08 — Constrain agent behavior
+## PO-09 — Constrain agent behavior
 
 Using least-authority tool operation and frozen comparison criteria, the learner enforces a declared tool/write policy in a fresh live OMP session, distinguishes guard denial, runtime denial and an unattempted prohibited action, and checks both permitted extraction and unchanged forbidden targets under supplied probes.
 
 **Evidence:** frozen declared policy and per-run resolved policy; complete raw events and guard lifecycle; matched assistant calls/execution results; before/after snapshots; grounded planted-note measurement; observed enforcement classification; and the remaining limits of an OMP tool boundary.
-**Owner:** Module 08
+**Owner:** Module 09
 
-## PO-09 — Transfer a runnable package
+## PO-10 — Transfer a runnable package
 
 On unfamiliar work, the learner assembles the smallest sufficient method, verifies a clean-session rerun, and enables another person to operate, stop, and restore the package from saved instructions rather than the author's chat history.
 
 **Evidence:** unfamiliar-work artifact, runnable package, clean-session receipt, recipient observations and questions, any assistance given, stop/restore demonstration, and final handoff. Record a missing recipient as an unobserved attempt.
-**Owner:** Module 09
+**Owner:** Module 10
 ## Required workplace surfaces
 
 Every learner completes:
 
 - a **communication artifact** in Module 00;
 - **research/source work** in Module 01; and
-- **structured-data/batch work** in Module 06.
+- **structured-data/batch work** in Module 07.
 
 Domains, products, and supplied cases may change. The named learner action and decisive evidence may not be removed.

@@ -773,9 +773,9 @@ In an ordinary text editor, create a new `gui-observation.txt` beside the vault 
 
 Write `Obsidian READY` only when both disk checks passed and every listed GUI action was observed. Otherwise write `Obsidian HOLD` and the missing action or exact error. File existence and the `.obsidian` folder do not prove GUI use. Keep this record separate from OMP and n8n readiness; a failure in one does not erase a result in another. Actual reference GUI observation is limited to Obsidian 1.13.7 on Darwin arm64; Intel GUI behavior remains unobserved until you perform and record it.
 
-## Prepare local n8n for Module 6
+## Prepare local n8n for Module 7
 
-This gives you a local workflow editor and checks that a saved workflow survives a stop and start. Allow additional download and startup time; the setup estimate above is a planning allowance, not a measured completion time. Complete this n8n check before Module 6. Keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.
+This gives you a local workflow editor and checks that a saved workflow survives a stop and start. Allow additional download and startup time; the setup estimate above is a planning allowance, not a measured completion time. Complete this n8n check before Module 7. Keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.
 
 ### Inspect Docker and preserve existing work
 
@@ -1031,7 +1031,7 @@ course_n8n exec -T n8n n8n --version
 
 1. Open **http://localhost:5678** in your browser. For a genuinely fresh instance, complete **Set up owner account** and select **Next**. These credentials belong to this local n8n instance. If a sign-in screen appears, use the existing local login; do not reset its owner or create another instance.
 2. Finish any local onboarding questions. Skip optional offers for a license key or external signup. No n8n Cloud account, external account, or provider API key is required for this readiness check. Leave **n8n Assistant** off, and do not copy your OpenRouter key into n8n.
-3. Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name the blank workflow **Module 6 readiness**, and press **Enter**. The editor saves automatically. Leave the canvas empty and do not select **Publish**. Preserve an existing workflow with that name; choose a distinct readiness name if it contains work.
+3. Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name the blank workflow **Module 7 readiness**, and press **Enter**. The editor saves automatically. Leave the canvas empty and do not select **Publish**. Preserve an existing workflow with that name; choose a distinct readiness name if it contains work.
 4. Reload the browser page. Confirm the workflow title and empty canvas remain, and that the workflow is unpublished. This reload checks saved state rather than an unsaved tab.
 
 **Expected:** The local editor opens and the named blank workflow survives reload without an external account or key.
@@ -1063,12 +1063,12 @@ course_n8n up -d &&
 course_n8n ps --all
 ```
 
-**Expected:** After startup settles, the same service-state expectations apply. Repeat the port/version check above, reload **http://localhost:5678**, sign in if needed, and open **Module 6 readiness** from the workflow list. Its name and empty canvas remain saved and unpublished; no new owner setup is required.
+**Expected:** After startup settles, the same service-state expectations apply. Repeat the port/version check above, reload **http://localhost:5678**, sign in if needed, and open **Module 7 readiness** from the workflow list. Its name and empty canvas remain saved and unpublished; no new owner setup is required.
 
 **Stop:** Data is missing, owner setup returns, the version/mapping changes, or services fail.
 
 **Recovery:** Keep both the directory and volumes. Ask the owner to inspect whether the engine or Compose project changed before taking further action. Do not create a replacement workflow to disguise a persistence failure.
 
-Record n8n readiness only after you observe the correct version, local-only mapping, full stack state, saved workflow after reload, and persistence after this stop/start. If any observation is missing, keep n8n readiness on **HOLD** for Module 6. This does not change either OMP readiness result.
+Record n8n readiness only after you observe the correct version, local-only mapping, full stack state, saved workflow after reload, and persistence after this stop/start. If any observation is missing, keep n8n readiness on **HOLD** for Module 7. This does not change either OMP readiness result.
 
 In a later shell, inspect the approved Docker engine/context and define `course_n8n` again. Reuse `.course-project`; do not rerun `course_n8n_identify` or create another project for a restart. If Docker Desktop is stopped, obtain owner approval for effects on existing work before launching it.

@@ -26,15 +26,15 @@ The core runs as **four teaching days, Monday through Thursday: 30.5 facilitated
 |---:|---|---|
 | 00 | Select, screen, and direct bounded work | Delegate appropriately, check one useful result, screen responsibility, and turn a request into accepted direction with a communication artifact. |
 | 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
-| 02 | Module 2 · Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
+| 02 | Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
-| 10 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
-| 04 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
-| 05 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
-| 06 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
-| 07 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
-| 08 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 09 | Transfer a runnable package | Assemble the smallest sufficient method, pass clean-session restart and stop/restore, and enable an independent person to operate the package. |
+| 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
+| 05 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
+| 06 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
+| 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
+| 08 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
+| 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
+| 10 | Transfer a runnable package | Assemble the smallest sufficient method, pass clean-session restart and stop/restore, and enable an independent person to operate the package. |
 
 Cases and evidence bundles are **independent**: no gate consumes an earlier module’s product. Capabilities are cumulative: earlier skills are assumed, not retaught as new objectives. Authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) owns the module contract.
 
@@ -48,7 +48,7 @@ The three enabling objectives are:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source checking is an inherited quality bar from Module 01, and bounded direction is an earlier capability. Saved instructions and load proof are newly taught in Module 02. Its independent Ledger Pike case retains all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and inspects retrieval from a frozen copy containing only navigation and admitted knowledge. Hidden-fault diagnosis remains Module 04's capability; person-to-person transfer remains Module 09's.
+Source checking is an inherited quality bar from Module 01, and bounded direction is an earlier capability. Saved instructions and load proof are newly taught in Module 02. Its independent Ledger Pike case retains all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and inspects retrieval from a frozen copy containing only navigation and admitted knowledge. Hidden-fault diagnosis remains Module 05's capability; person-to-person transfer remains Module 10's.
 
 ## Core and advanced boundary
 
@@ -108,7 +108,7 @@ Module 02 also uses Obsidian to edit the local Markdown vault. It requires no co
 
 Modules 02–10 use `shared/prepare_work.py`; Module 01 retains its nine-source starter and Module 00 retains its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
-Module 6 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-06-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
+Module 7 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
 
 The child working directory is inside its redirected, fresh HOME. In pinned OMP, `--no-rules` does not disable [ancestor context-file discovery](https://github.com/can1357/oh-my-pi/blob/v18.3.5/packages/coding-agent/src/discovery/helpers.ts); placing cwd beside HOME allowed an outside ancestor's instructions to load. An actual offline OMP replay observed the leak before this placement fix and its absence afterward, with zero provider requests.
 
@@ -158,7 +158,7 @@ The hands-on language/setup revision passed all 28 offline gates and publication
 
 Release evidence remains incomplete: native Windows/WSL, Intel macOS, the other Ubuntu combinations, independent desktop-terminal transitions, GitHub browser authentication, and authorized paid readiness checks remain unobserved for the revised routes. The emulated Arch container could not initialize pacman's syscall sandbox; no sandbox bypass was used to claim an upgrade. A representative nondeveloper's homepage/setup attempt is also unobserved. Browser navigation, clipboard, saved place, keyboard, search, no-script reading, print, and prefixed publication were exercised; narrow DOM checks passed, but narrow screen capture failed in the browser tooling. Keep those limits separate from passed checks. Preserve transcripts and visual evidence outside the checkout; do not describe the five routes as natively verified or the revision as unqualified “S-tier.”
 
-The native Module 6 cutover passed all 27 current scoped gates: 32 instructional pages, 692 raw downloads, and 38 UI/generated assets. n8n 2.41.5 ran in the approved isolated six-service stack on Apple Silicon Docker Desktop. Native form submissions produced both 80-row baselines, the predicted three-lot policy change, and byte-identical restored receipts; independent downloaded checker reports also cover revised inputs, malformed batches, empty routes, and tampered evidence. See `AI_Harness_Bootcamp_2/module-06-batch-workflow/evidence/REVIEW_VERDICT.md` for execution IDs and limits. Bash/zsh and PowerShell parsing plus controlled shell-boundary checks cover all five authored setup routes; they are not native Windows/WSL/Linux runs.
+The native Module 7 cutover passed all 27 current scoped gates: 32 instructional pages, 692 raw downloads, and 38 UI/generated assets. n8n 2.41.5 ran in the approved isolated six-service stack on Apple Silicon Docker Desktop. Native form submissions produced both 80-row baselines, the predicted three-lot policy change, and byte-identical restored receipts; independent downloaded checker reports also cover revised inputs, malformed batches, empty routes, and tampered evidence. See `AI_Harness_Bootcamp_2/module-07-batch-workflow/evidence/REVIEW_VERDICT.md` for execution IDs and limits. Bash/zsh and PowerShell parsing plus controlled shell-boundary checks cover all five authored setup routes; they are not native Windows/WSL/Linux runs.
 
 ## Netlify deployment
 

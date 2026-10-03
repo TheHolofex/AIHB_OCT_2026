@@ -40,7 +40,7 @@ Check OS and architecture before installation. A binary's availability does not 
 
 The launcher isolates runtime configuration, exposes only declared course tools, and disables automatic retries, model fallback, cache warming, unrelated extensions, skills, and persistent sessions. Use that launcher for exercises rather than a personal OMP profile. A prerequisite report alone does not establish that these controls acted during a model turn; inspect the readiness check's receipts.
 
-No additional model-provider key or agent CLI is required. Local Obsidian is required for Module 2, with Sync off and community plugins restricted; no account, plugin, or MCP service is required. Local n8n is required for Module 6, with a local instance-owner login. No n8n Cloud signup, Assistant key, or paid model call is required for that module. If the pinned release or model is unavailable, retain the failure and hold that lane. Do not choose an unreviewed substitute to obtain a passing label.
+No additional model-provider key or agent CLI is required. Local Obsidian is required for Module 2, with Sync off and community plugins restricted; no account, plugin, or MCP service is required. Local n8n is required for Module 7, with a local instance-owner login. No n8n Cloud signup, Assistant key, or paid model call is required for that module. If the pinned release or model is unavailable, retain the failure and hold that lane. Do not choose an unreviewed substitute to obtain a passing label.
 
 ## Local Obsidian for Module 2
 

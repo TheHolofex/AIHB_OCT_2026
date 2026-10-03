@@ -1080,7 +1080,7 @@ Write `Obsidian READY` only when both disk checks passed and every listed GUI ac
 
 ## 18. Inspect Docker before setting up local n8n
 
-Local n8n is required for Module 6. Keep its readiness separate from the OMP prerequisite report and live write above: none replaces another. Allow additional time for image downloads and owner approvals; the setup estimate is a planning target, not a measured completion time.
+Local n8n is required for Module 7. Keep its readiness separate from the OMP prerequisite report and live write above: none replaces another. Allow additional time for image downloads and owner approvals; the setup estimate is a planning target, not a measured completion time.
 
 Use your ordinary account. Preserve existing applications, Docker contexts, containers, volumes, and setup attempts. The destination is `$HOME/n8n-course`, outside the course checkout, and the browser address will be `http://localhost:5678`. An existing destination or occupied port is HOLD until its owner identifies it; do not delete it, stop another application, or run the installer over it.
 
@@ -1463,7 +1463,7 @@ course_n8n exec -T n8n n8n --version
 
 Open `http://localhost:5678` in your browser. For a fresh instance only, complete **Set up owner account** with your name, email, and a local password, then select **Next**. These credentials belong to this local instance. For an existing instance, use its existing login; do not create a replacement owner. No n8n Cloud account, external account, or API key is required. Skip optional registration or license offers. Keep n8n Assistant off and do not enter the OpenRouter key here.
 
-Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 6 readiness**, and press **Enter**. The editor saves automatically. Keep the canvas blank and do not select **Publish**. Reload the page and confirm the same name and empty canvas remain. If that name already exists, open it rather than overwriting it; if it contains work, preserve it and choose a distinct readiness name.
+Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 7 readiness**, and press **Enter**. The editor saves automatically. Keep the canvas blank and do not select **Publish**. Reload the page and confirm the same name and empty canvas remain. If that name already exists, open it rather than overwriting it; if it contains work, preserve it and choose a distinct readiness name.
 
 **Expected:** You can reopen the named blank workflow after reload, and it remains unpublished.
 
@@ -1499,4 +1499,4 @@ course_n8n up -d
 
 **Stop:** Missing data, a new owner-setup screen, wrong version, wrong port mapping, or failed services is HOLD.
 
-**Recovery:** Keep the directory and volumes intact and ask the owner to inspect the project and data volume. Do not create a replacement account or workflow to disguise a persistence failure. Module 6 n8n readiness passes only after the saved workflow survives this restart; the earlier OMP checks must also retain their own passing results.
+**Recovery:** Keep the directory and volumes intact and ask the owner to inspect the project and data volume. Do not create a replacement account or workflow to disguise a persistence failure. Module 7 n8n readiness passes only after the saved workflow survives this restart; the earlier OMP checks must also retain their own passing results.

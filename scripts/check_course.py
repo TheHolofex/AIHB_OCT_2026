@@ -30,8 +30,8 @@ def main() -> int:
     try:
         course = json.loads((ROOT / "course.json").read_text(encoding="utf-8"))
         modules = course["modules"]
-        if sorted(module["id"] for module in modules) != [f"{i:02d}" for i in range(11)]:
-            raise ValueError("manifest must enumerate all eleven module IDs, each once")
+        if [module["id"] for module in modules] != [f"{i:02d}" for i in range(11)]:
+            raise ValueError("manifest must enumerate all eleven module IDs in order")
         commands: list[tuple[list[str], Path]] = []
         for module in modules:
             directory = (ROOT / "AI_Harness_Bootcamp_2" / module["directory"]).resolve()
@@ -39,13 +39,13 @@ def main() -> int:
                 raise ValueError(f"missing or escaped module directory: {directory}")
             module_id = module["id"]
             required = {f"tests/test_module_{module_id}.py"}
-            if module_id == "06":
+            if module_id == "07":
                 required = {"tests/test_controls.mjs"}
             elif module_id == "00":
                 required.add("tests/test_checker.py")
             elif module_id == "01":
                 required.update({"tests/test_workflow.py", "tests/test_adequacy.py"})
-            elif module_id != "08":
+            elif module_id != "09":
                 required.add("tests/test_adequacy.py")
             listed = module["tests"]
             if len(listed) != len(set(listed)) or not required.issubset(listed):
@@ -54,7 +54,7 @@ def main() -> int:
                 script = (directory / relative).resolve()
                 if not script.is_relative_to(directory):
                     raise ValueError(f"escaped test path: {relative}")
-                runner = ["node", "--test"] if module_id == "06" else [sys.executable]
+                runner = ["node", "--test"] if module_id == "07" else [sys.executable]
                 commands.append((runner + [str(script)], directory))
         for relative in ("tests/test_core_standard.py", "tests/test_publication.py", "tests/test_build_course.py", "tests/test_runtime_launcher.py", "tests/test_runtime_guard.py", "AI_Harness_Bootcamp_2/tests/test_module_figures.py"):
             commands.append(([sys.executable, str(ROOT / relative)], ROOT))

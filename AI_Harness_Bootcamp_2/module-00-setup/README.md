@@ -2,7 +2,7 @@
 
 Direct Oh My Pi to draft an internal email, then check every material claim against the supplied North Shelf facts. You decide what to delegate, set the limits, and accept the email only for its stated use.
 
-First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Complete local Obsidian setup before Module 2 and local n8n setup before Module 6 in the same platform guide. Keep OMP, Obsidian, and n8n readiness separate from each other and from the checked email.
+First make the tools ready: install what is missing, reopen your terminal, and run a readiness check in which the model reads a fresh token and writes a real file through the course launcher. Complete local Obsidian setup before Module 2 and local n8n setup before Module 7 in the same platform guide. Keep OMP, Obsidian, and n8n readiness separate from each other and from the checked email.
 
 Allow 1–3 hours for setup. The bounded-work assignment has one three-hour facilitated session, including two hours of practice. These are planning allowances, not measured completion times.
 
@@ -34,7 +34,7 @@ You need GitHub read access to `TheHolofex/AIHB_OCT_2026`. The hosted-course pas
 
 The readiness check runs a small, provider-billed task through `shared/run_omp.py`, using OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. Use an account you are authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md). The provider and model are fixed; if you lack account or repository access, resolve that prerequisite with its owner before continuing.
 
-Module 6 uses the local visual workflow editor without a paid model call. No n8n Cloud signup or Assistant provider key is required. Keep Assistant off and workflows unpublished; do not copy the OpenRouter key into n8n.
+Module 7 uses the local visual workflow editor without a paid model call. No n8n Cloud signup or Assistant provider key is required. Keep Assistant off and workflows unpublished; do not copy the OpenRouter key into n8n.
 
 ## Before the first command
 
@@ -106,7 +106,7 @@ Your platform guide contains the complete practice: create one fresh vault, foll
 
 Record **Obsidian READY** only with both disk passes and a separate observation of the actual Obsidian window: platform and architecture, actual app version, practice-vault location, link followed, first edit saved, externally changed token displayed, second edit saved, and same reply visible after reopening. Record the observer and date; keep any screenshot free of credentials. A disk PASS or an `.obsidian` folder does not prove those GUI actions. Missing or failed GUI observation means **Obsidian HOLD**; retain the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
 
-## Local n8n readiness for Module 6
+## Local n8n readiness for Module 7
 
 Complete your platform guide’s n8n path as an ordinary user. On the native PowerShell route, run only the n8n steps in the selected WSL Ubuntu; keep the earlier OMP environment intact. The fresh destination is `$HOME/n8n-course` in the intended shell, outside the checkout.
 
@@ -118,6 +118,6 @@ Record **n8n READY** only after observing all of these separately from the OMP r
 - At `http://localhost:5678`, the local owner can reopen a named blank, unpublished readiness workflow after reload. Assistant remains off.
 - The same workflow survives the course stack’s ordinary `down` then `up -d`, using the same approved engine, directory, recorded project name, and named data volumes. Use the guide’s `course_n8n` helper; preserve `.course-project` across restarts. Never use `down -v`.
 
-For the observed fresh-instance UI, complete **Set up owner account → Next**. If the optional survey appears, continue with **Get started**; choose **Skip** on the free-license offer and **Set up later in Settings** on the Assistant screen. From **Overview**, select **Build a workflow** on an empty instance. Click the workflow title, enter **Module 6 readiness**, and press **Enter**. The editor saves automatically; no mandatory **Saved** label is needed. Reload and confirm the name and blank canvas remain. Use an existing local login for an existing instance; never reset its owner. Preserve an existing workflow with that name and use a distinct name if it contains work.
+For the observed fresh-instance UI, complete **Set up owner account → Next**. If the optional survey appears, continue with **Get started**; choose **Skip** on the free-license offer and **Set up later in Settings** on the Assistant screen. From **Overview**, select **Build a workflow** on an empty instance. Click the workflow title, enter **Module 7 readiness**, and press **Enter**. The editor saves automatically; no mandatory **Saved** label is needed. Reload and confirm the name and blank canvas remain. Use an existing local login for an existing instance; never reset its owner. Preserve an existing workflow with that name and use a distinct name if it contains work.
 
 These UI and runtime observations come from Apple Silicon only. They do not establish execution on other platforms; each learner must complete the checks on their own device. If the UI differs or any check fails, record **n8n HOLD** and use [When setup stops](shared/TROUBLESHOOTING.md). An n8n HOLD does not erase an OMP pass, and an OMP pass does not establish n8n readiness.

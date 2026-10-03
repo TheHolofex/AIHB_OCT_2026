@@ -30,8 +30,8 @@ class WorkspaceBehavior(unittest.TestCase):
             directory = module / "shared" / sub
             directory.mkdir(parents=True)
             (directory / "input.txt").write_text("original input\n", encoding="utf-8")
-        if module_id == "06":
-            for relative in prepare_work.MODULE_06_DOWNLOADS:
+        if module_id == "07":
+            for relative in prepare_work.MODULE_07_DOWNLOADS:
                 (module / relative).write_bytes(b"exercise input\r\n")
         (module / "scripts").mkdir()
         for script in prepare_work.SCRIPTS[module_id]:
@@ -51,27 +51,27 @@ class WorkspaceBehavior(unittest.TestCase):
         self.assertFalse((self.root.parent / "unrelated-new-work").exists())
 
     def test_filters_staff_history_and_verifier_from_all_depths(self):
-        module = self.module("08")
+        module = self.module("09")
         for relative in ("shared/case/verify_safeguards.py", "shared/case/tests/test.py", "shared/case/history/old.txt", "shared/case/__pycache__/old.pyc", "shared/case/assessment/private.json"):
             target = module / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text("must not enter W", encoding="utf-8")
-        work = prepare_work.prepare("08", self.base / "attempt/deep/work", self.root)
+        work = prepare_work.prepare("09", self.base / "attempt/deep/work", self.root)
         self.assertEqual((work / "shared/case/input.txt").read_text(), "original input\n")
         self.assertEqual({path.relative_to(work).as_posix() for path in work.rglob("*") if path.is_file()}, {"shared/case/input.txt", "shared/controls/input.txt"})
 
     def test_missing_control_holds_before_destination_creation(self):
-        module = self.module("04")
+        module = self.module("05")
         (module / "scripts/restore.py").unlink()
         work = self.base / "attempt/work"
         with self.assertRaisesRegex(ValueError, "required source"):
-            prepare_work.prepare("04", work, self.root)
+            prepare_work.prepare("05", work, self.root)
         self.assertFalse(work.exists())
         self.assertFalse(work.parent.exists())
 
     def test_frozen_renderer_remains_distinct_after_work_control_changes(self):
-        self.module("04")
-        work = prepare_work.prepare("04", self.base / "work with spaces", self.root)
+        self.module("05")
+        work = prepare_work.prepare("05", self.base / "work with spaces", self.root)
         original = (work / "baseline/render_review.py").read_bytes()
         frozen = (work / "baseline/render_review.py.sha256").read_text().strip()
         (work / "scripts/render_review.py").write_text("faulty replacement", encoding="utf-8")
@@ -106,31 +106,31 @@ class WorkspaceBehavior(unittest.TestCase):
         self.assertEqual((work / "AUTHORITY.md").read_text(), "# Authority\n")
         self.assertEqual(prepare_work.next_arguments("03")[1:], ["shared/mcp/mcp_inspect.py", "--config", "mcp.json"])
 
-    def test_module_06_copies_only_browser_inputs_without_changing_bytes(self):
-        module = self.module("06")
+    def test_module_07_copies_only_browser_inputs_without_changing_bytes(self):
+        module = self.module("07")
         for relative in ("shared/controls/CONTRACT.md", "shared/controls/router-private.json",
                          "shared/controls/compare-receipts.js", "shared/batch/answer.csv"):
             (module / relative).write_text("private", encoding="utf-8")
-        work = prepare_work.prepare("06", self.base / "browser work", self.root)
+        work = prepare_work.prepare("07", self.base / "browser work", self.root)
         copied = {p.relative_to(work).as_posix() for p in work.rglob("*") if p.is_file()}
-        self.assertEqual(copied, set(prepare_work.MODULE_06_DOWNLOADS))
+        self.assertEqual(copied, set(prepare_work.MODULE_07_DOWNLOADS))
         for relative in copied:
             self.assertEqual((work / relative).read_bytes(), (module / relative).read_bytes())
         self.assertTrue((work / "out").is_dir())
         self.assertEqual(list((work / "out").iterdir()), [])
-        self.assertEqual(prepare_work.next_arguments("06"), [])
+        self.assertEqual(prepare_work.next_arguments("07"), [])
 
-    def test_module_06_missing_or_linked_download_holds_before_creation(self):
-        module = self.module("06")
+    def test_module_07_missing_or_linked_download_holds_before_creation(self):
+        module = self.module("07")
         source = module / "shared/controls/receipt-checker.json"
         source.unlink()
         work = self.base / "attempt/work"
         with self.assertRaises(ValueError):
-            prepare_work.prepare("06", work, self.root)
+            prepare_work.prepare("07", work, self.root)
         self.assertFalse(work.parent.exists())
         source.symlink_to(module / "shared/controls/validate-batch.js")
         with self.assertRaises(ValueError):
-            prepare_work.prepare("06", work, self.root)
+            prepare_work.prepare("07", work, self.root)
         self.assertFalse(work.parent.exists())
 
     def test_noncanonical_module_ids_refuse(self):

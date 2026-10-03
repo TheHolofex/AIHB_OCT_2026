@@ -6,7 +6,7 @@ Learn to operate AI harnesses by doing useful work: draft a document, check a cl
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You’ll use Oh My Pi to work with files and supplied tools, Obsidian to review linked knowledge, and local n8n to build visual workflows in Module 6. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
+You’ll use Oh My Pi to work with files and supplied tools, Obsidian to review linked knowledge, and local n8n to build visual workflows in Module 7. You’ll save instructions, test changes, diagnose failures, and decide whether an output is supported. No programming experience is required. You will paste supplied commands, edit instructions and settings, and inspect actual files.
 
 <div data-photo-band="custody"></div>
 
@@ -29,9 +29,9 @@ The course runs Monday through Thursday: 30½ facilitated hours, which is the ti
 | Day | Assignments, in order | Facilitated time | Practice included |
 |---|---|---:|---:|
 | Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours | 4 hours |
-| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [10 Chalk Line](module-10-typed-decisions/README.md) | 8½ hours | 6 hours |
-| Wednesday | [04 Copper Span](module-04-diagnose-review/README.md), then [05 Blue Gauge](module-05-run-corpus/README.md), then [06 White Rack](module-06-batch-workflow/README.md) | 9 hours | 6 hours |
-| Thursday | [07 Slope Brief](module-07-change-eval/README.md), then [08 Night Desk](module-08-agent-safeguards/README.md), then [09 Last Count](module-09-capstone/README.md) | 7 hours | 6 hours |
+| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [04 Chalk Line](module-04-typed-decisions/README.md) | 8½ hours | 6 hours |
+| Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours | 6 hours |
+| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Last Count](module-10-capstone/README.md) | 7 hours | 6 hours |
 
 Every assignment includes two hours of practice. Tuesday's third assignment takes 2 hours 30 minutes. Thursday's three assignments take 2 hours 15 minutes, 2 hours 15 minutes, and 2 hours 30 minutes.
 
@@ -113,6 +113,6 @@ Setup installs or checks Git, Python 3.12 or newer, Oh My Pi 18.3.5, local Obsid
 
 Module 2 requires local Obsidian with community plugins restricted and Sync off. Preserve an existing installation that passes readiness; fresh installs use the reference release in your platform guide. Open the practice vault, follow its links, save a reply, observe an external change, then close and reopen it. Keep the actual GUI observation separate from the disk check and from OMP and n8n readiness. The WSL route runs Linux Obsidian through WSLg against the same Linux-home files, not a native Windows app watching a network path.
 
-Module 6 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
+Module 7 requires a separate n8n readiness check: local editor access and a saved workflow that survives a stop and start. It needs no n8n Cloud signup, Assistant key, or paid model call. Keep Assistant off, workflows unpublished, and browser access on localhost. The device owner must approve the privileged Docker-in-Docker runner and applicable Docker Desktop licensing. On the native Windows PowerShell path, only n8n uses a WSL Ubuntu bridge. OMP, Python, Git, credentials, and other course work stay native to Windows. A blocked WSL or Docker prerequisite leaves n8n on HOLD even if OMP passes.
 
 Allow 1–3 hours for setup, with additional time as needed for downloads, desktop readiness, and owner approvals. The 28 facilitated hours run Monday through Thursday, with two hours of practice in every assignment. These are planning allowances, not measured learner-completion guarantees.

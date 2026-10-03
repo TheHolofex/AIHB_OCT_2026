@@ -71,7 +71,7 @@ def cold_answers(work, status='supported'):
 
 
 class Sealed:
-    """Module 08's locally sealed synthetic pattern, using the real shared auditor."""
+    """Module 09's locally sealed synthetic pattern, using the real shared auditor."""
     def __init__(self, work, evidence, root, prompt, actions=(), response='{}'):
         self.work, self.evidence, self.root = work, evidence, root
         evidence.mkdir()
