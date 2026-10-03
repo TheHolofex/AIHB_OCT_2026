@@ -113,7 +113,7 @@
       "outcomes": {
         "can": "Test a polished AI recommendation against its sources and your own arithmetic, and give a supported accept, revise, reject, or hold verdict.",
         "will": [
-                "Sort each claim into source fact, calculation, inference, or human decision, and trace the deciding claim to its exact source line.",
+                "Sort each claim as a source fact, calculation, inference, or human decision, then trace the claim that drives the decision to its exact source line.",
                 "Set aside misleading or irrelevant sources and say what each one can and cannot prove.",
                 "Predict how one new source should change the result, then revise only the claims that depend on it."
         ]

@@ -36,14 +36,14 @@ Do not include credentials, unrelated local files, or outside operational inform
 
 ## Make one correction
 
-Correct the source selection, premise, or calculation where the mismatch first appears:
+When you find the first mismatch, correct the source selection, premise, or calculation that caused it:
 
 - wrong identity → select the exact entity;
 - wrong authority → use the source of record for that claim;
-- stale version → restore the current source and preserve the old citation as rejected;
+- stale version → restore the current source and keep the old citation, marked as rejected;
 - wrong premise → correct the source fact before recalculating;
 - wrong operator → correct the arithmetic operation while keeping the supported starting values;
 - missing source → `HOLD` until the supplied source is restored;
 - inaccessible source → use the approved same-text alternative or `HOLD`.
 
-Then repeat the failed check and follow its result through the full decision. Record whether the correction changes the verdict or leaves another blocker. Do not make several silent corrections at once.
+Repeat the failed check, then trace its result through the full decision. Record whether the correction changes the verdict or leaves another blocker. Don't make several silent corrections at once.

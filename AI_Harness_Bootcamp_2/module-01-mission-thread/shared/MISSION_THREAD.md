@@ -1,6 +1,6 @@
 # Read a mission thread without getting lost in it
 
-A polished brief can cite true facts and still recommend a movement those facts do not support. Check what each step establishes and what the next step needs before accepting Cold Lantern's `GO`. Allow about 15 minutes to examine the eight steps.
+A polished brief can cite true facts and still recommend a movement those facts don't support. Before accepting Cold Lantern's `GO`, check what each step shows and what the next step needs. Allow about 15 minutes to examine the eight steps.
 
 ## What a mission thread is
 
@@ -13,7 +13,7 @@ A **mission thread** is the ordered path from a request to a result. It shows wh
 <details markdown="1">
 <summary>Figure text</summary>
 
-The required path runs in order: 1. Requirement defined; 2. Cargo received; 3. Cargo released; 4. Vehicle made ready; 5. Movement authorized; 6. Route window met; 7. Cargo delivered; 8. Usable effect confirmed. Each output must meet the next step's entry condition. Each link is a required handoff, not a completed check. Delivery and usable effect are not yet observed.
+Follow the required path in order: 1. Requirement defined; 2. Cargo received; 3. Cargo released; 4. Vehicle made ready; 5. Movement authorized; 6. Route window met; 7. Cargo delivered; 8. Usable effect confirmed. Each step's output must meet the next step's entry condition. The links show required handoffs, not checks already completed. Delivery and usable effect are not yet observed.
 
 </details>
 
@@ -28,11 +28,11 @@ Cold Lantern uses eight steps:
 7. **Cargo delivered** — the route can reach the clinic by the deadline, and later evidence records actual delivery.
 8. **Usable effect confirmed** — the clinic records receipt of the required released quantity.
 
-The decision is whether the supplied evidence supports a `GO` brief at step 6. Expected arrival does not prove delivery or clinic use.
+At step 6, decide whether the supplied evidence supports the brief's `GO`. Expected arrival does not prove delivery or clinic use.
 
 ## Why a thread becomes difficult
 
-Check the exact meaning of the recorded state. A record of custody, for example, does not by itself show permission to use the cargo.
+Check what each recorded state means. For example, a custody record alone doesn't show permission to use the cargo.
 
 “Cargo received” opens into smaller questions:
 
@@ -65,7 +65,7 @@ The same pattern repeats inside every step. Check these seven parts when they ma
 
 ## Five kinds of statement
 
-Use one label for every **material statement** in the AI brief: a statement that could change the decision.
+Give each **material statement** in the AI brief one label. These are the statements that could change the decision.
 
 ![Split a mixed sentence until each material statement has one kind and its own support.](figures/m01-statement-types.png)
 
@@ -74,7 +74,7 @@ Use one label for every **material statement** in the AI brief: a statement that
 <details markdown="1">
 <summary>Figure text</summary>
 
-A compound statement splits into separate rows, one kind per row. A SOURCE FACT needs an applicable source that states it. A CALCULATION needs supported values and units. An INFERENCE needs an interpretation and its reason. A DECISION needs a named human owner. UNSUPPORTED means adequate support is absent. These are alternative classifications, not steps that turn a fact into an approval.
+Split a compound statement into separate rows so each row has one kind. A SOURCE FACT needs an applicable source that states it; a CALCULATION needs supported values and units; an INFERENCE needs an interpretation with a reason; and a DECISION needs a named human owner. Mark a statement UNSUPPORTED when adequate support is absent. These are different kinds of statements, not steps that turn a fact into an approval.
 
 </details>
 
@@ -97,7 +97,7 @@ A source is not trustworthy for everything.
 <details markdown="1">
 <summary>Figure text</summary>
 
-Match each claim to its authority: the warehouse establishes custody; the quality office establishes release; Fleet Engineering establishes payload; the Road Authority establishes the gate window; and the Movement Registry establishes permit status. A warehouse record does not establish release, even if the record is genuine. For every match, check the exact entity and current version: genuine does not necessarily mean applicable.
+For custody, use the warehouse; for release, the quality office; for payload, Fleet Engineering; for the gate window, the Road Authority; and for permit status, the Movement Registry. Even a genuine warehouse record cannot establish release. Check the exact entity and current version for every claim: a genuine record may still be the wrong one.
 
 </details>
 
@@ -111,7 +111,7 @@ A genuine warehouse receipt can be the wrong source for usability. A current com
 
 ## The handoff rule
 
-One step can be correct while the overall conclusion is still wrong, because the next step may require something that the first one did not establish.
+Even when one step is correct, the overall conclusion can be wrong if that step hasn't established what the next step requires.
 
 ![Check what the next step requires; the earlier true statement cannot supply missing authority or observation.](figures/m01-broken-handoff.png)
 
@@ -120,7 +120,7 @@ One step can be correct while the overall conclusion is still wrong, because the
 <details markdown="1">
 <summary>Figure text</summary>
 
-Four earlier states each face a separate unmet requirement rather than automatically passing into the next state: recorded custody still requires release; a received permit still requires approval; expected arrival still requires delivery evidence; and delivery still requires confirmation of usable quantity. Being true at one step is not sufficient for the next.
+Recorded custody does not remove the need for release, and a received permit still needs approval. Expected arrival still needs delivery evidence, while delivery still needs confirmation of usable quantity. Each state can be true without meeting the next requirement.
 
 </details>
 
@@ -129,4 +129,4 @@ Four earlier states each face a separate unmet requirement rather than automatic
 - A permit application can be received while the permit remains pending.
 - The clinic can be reachable by 16:00 while the gate closes before the truck arrives.
 
-The thread passes only when every required handoff to the decision point passes. Keep later states honest: an estimated clinic arrival is not delivery, and delivery is not yet clinic confirmation.
+The thread passes only when every required handoff to the decision point passes. An estimated clinic arrival is not delivery, and delivery is not yet clinic confirmation.
