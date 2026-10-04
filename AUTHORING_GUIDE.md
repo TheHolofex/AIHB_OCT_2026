@@ -99,7 +99,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 ## Nondeveloper and dynamic-check boundary
 
-The learner can specify a mechanically decidable predicate and configure it in a **supplied deterministic control**. The adapter implements any new checker and owns its identity. If the observed failure is an arbitrary semantic condition that cannot be represented in supplied controls, record the predicate, implementation dependency, owner, and `HOLD`; do not claim the control was implemented.
+The learner specifies and configures bounded behavior in **supplied controls**: questions, thresholds, policies, and rules written in the formats those controls read. The adapter implements any new checker, router, or runner and owns its identity. If a needed behavior can't be expressed in a supplied control, record the behavior, implementation dependency, owner, and `HOLD`; do not claim the control was implemented. A model-backed control is pinned to one model and version, and its evidence records the build that answered.
 
 The fixed workflow is the highest common-core machinery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, the simpler alternative, the added risk, and the escalation owner.
 

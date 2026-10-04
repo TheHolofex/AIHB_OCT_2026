@@ -64,3 +64,7 @@ Adjudication points the facilitator should expect: `CL-026` (a status question, 
 - The review round of 2026-10-02 (adversarial, curriculum, technical, voice) found and closed: a forgeable freeze record, unpinned case and prompt files, a hard-coded `answers-1.json` that broke the documented recovery path, supersession by referred or uncertain links, the instruction answer missing from the confidence set, unit words matched anywhere in a candidate, delegated requisitions counted before the lead's decision, and an inverted gate example in the lab.
 - The router's unit arithmetic recognizes boxes and cases only. A chosen candidate with any other unit is routed to `CLARIFY`, never counted.
 - No gate consumes another module's product; the case names no other movement.
+
+## 2026-10-04 amendment — Jev is now reachable
+
+§1.1 said Jev was not usable from the course stack. That changed: OpenRouter serves `typesafe/jev-1.13` under the course key, and pinned OMP 18.3.5 can set it as the judge role. Module 06 now uses it. Module 04 keeps the pinned chat model as its decision function; its capability, giving an AI judgment a typed shape and measuring declared confidence against labels frozen before the run, is unchanged and is Module 06's prerequisite. The phrase "the Wednesday modules that build predicates" in §1 refers to the retired Module 06 design. The digest is recomputed for this amendment.

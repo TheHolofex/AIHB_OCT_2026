@@ -7,6 +7,7 @@ export const digest = bytes => crypto.createHash("sha256").update(bytes).digest(
 const sourceFile = fileURLToPath(import.meta.url);
 const modelId = "anthropic/claude-sonnet-4.6";
 const toolNames = new Set(["course_read", "course_write"]);
+const evalKeys = new Set(["language", "code", "title", "timeout", "reset"]);
 const inside = (root, target) => { const rel = path.relative(root, target); return rel !== ".." && !rel.startsWith(`..${path.sep}`) && !path.isAbsolute(rel); };
 
 export function resolveCoursePath(raw, root) {
@@ -89,13 +90,17 @@ export default function courseGuard(pi) {
   const policyBytes = fs.readFileSync(policyFile);
   const policyHash = digest(policyBytes);
   const policy = JSON.parse(policyBytes.toString("utf8"));
-  if (policy.schema_version !== 1 || policy.provider !== "openrouter" || policy.model !== modelId || policy.omp_version !== "omp/18.3.5" || !Array.isArray(policy.tools) || policy.tools.some(name => !toolNames.has(name))) throw new Error("invalid frozen course policy");
+  const judge = policy.judge || null;
+  const declaredTools = judge ? JSON.stringify(policy.tools) === JSON.stringify(["eval"]) : Array.isArray(policy.tools) && policy.tools.every(name => toolNames.has(name));
+  if (policy.schema_version !== 1 || policy.provider !== "openrouter" || policy.model !== modelId || policy.omp_version !== "omp/18.3.5" || !Array.isArray(policy.tools) || !declaredTools) throw new Error("invalid frozen course policy");
+  if (judge && (typeof judge.cell_code !== "string" || !judge.cell_code || judge.selector !== "openrouter/typesafe/jev-1.13")) throw new Error("invalid frozen judge policy");
   if (digest(fs.readFileSync(sourceFile)) !== policy.guard_source_sha256) throw new Error("guard source identity changed");
   const mcp = policy.mcp || null;
   if (mcp && (!Array.isArray(mcp.allow_names) || !Array.isArray(mcp.known_names) || mcp.allow_names.some(name => !mcp.known_names.includes(name)))) throw new Error("invalid frozen MCP policy");
   const mcpFiles = mcp ? [mcp.script, mcp.config, mcp.authority].filter(Boolean) : [];
+  const judgeFiles = judge ? [judge.config, judge.questions, judge.frozen_questions, judge.runner, judge.plan, ...Object.values(judge.states)] : [];
   const wantedTools = [...policy.tools, ...(mcp ? mcp.allow_names : [])];
-  const state = { ready: false, sessionReady: false, protected: initialFiles(policy.work_root), created: new Set(), requests: 0, failed: false };
+  const state = { ready: false, sessionReady: false, protected: initialFiles(policy.work_root), created: new Set(), requests: 0, failed: false, evalUsed: false };
   const log = row => fs.appendFileSync(policy.guard_log, JSON.stringify({ run_id: policy.run_id, ...row }) + "\n", { encoding: "utf8" });
   const identity = ctx => {
     if (!ctx.model || ctx.model.provider !== policy.provider || ctx.model.id !== policy.model) throw new Error("provider/model identity drift");
@@ -104,6 +109,9 @@ export default function courseGuard(pi) {
     if (digest(fs.readFileSync(path.join(path.dirname(policyFile), "runtime-config.yml"))) !== policy.runtime_config_sha256) throw new Error("runtime configuration changed");
     for (const descriptor of [policy.instruction, policy.declaration, ...mcpFiles]) {
       if (descriptor && digest(fs.readFileSync(descriptor.path)) !== descriptor.sha256) throw new Error("saved instruction, declared policy, or MCP connection file changed");
+    }
+    for (const descriptor of judgeFiles) {
+      if (digest(fs.readFileSync(descriptor.path)) !== descriptor.sha256) throw new Error(`judge input changed: ${descriptor.path}`);
     }
   };
   const fail = (ctx, error) => {
@@ -174,12 +182,28 @@ export default function courseGuard(pi) {
       if (!declared) return { block: true, reason: "HOLD: MCP tool is not declared" };
       return;
     }
+    if (event.toolName === "eval") {
+      const input = event.input && typeof event.input === "object" && !Array.isArray(event.input) ? event.input : {};
+      let reason = "eval is not declared";
+      if (judge && state.ready) {
+        if (state.evalUsed) reason = "the judge cell already ran once";
+        else if (Object.keys(input).some(name => !evalKeys.has(name))) reason = "unexpected eval arguments";
+        else if (input.language !== "js") reason = "the judge cell runs only as js";
+        else if (input.code !== judge.cell_code) reason = "eval code differs from the frozen judge cell";
+        else reason = "frozen judge cell";
+      }
+      const allow = reason === "frozen judge cell";
+      if (allow) state.evalUsed = true;
+      log({ type: "decision", call_id: event.toolCallId, tool: "eval", arguments: event.input, allow, resolved_path: null, relative_path: null, reason });
+      if (!allow) return { block: true, reason: `HOLD: ${reason}` };
+      return;
+    }
     const decision = authorize(policy, state, event.toolName, event.input);
     log({ type: "decision", call_id: event.toolCallId, tool: event.toolName, arguments: event.input, ...decision });
     if (!decision.allow) return { block: true, reason: `HOLD: ${decision.reason}` };
   });
   const z = pi.zod;
-  for (const name of policy.tools) {
+  for (const name of policy.tools.filter(name => toolNames.has(name))) {
     pi.registerTool({
       name, label: name,
       description: name === "course_read" ? "Read UTF-8 files or list relative names/types inside the declared work root." : "Save UTF-8 text only to an authorized output inside the work root. Existing inputs are protected.",

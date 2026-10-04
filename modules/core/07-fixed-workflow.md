@@ -2,7 +2,7 @@
 
 **Serves oracle:** S04, S08, S13, S14, S17, S19  
 **Primary objective:** PO-07 — Build and control a fixed workflow  
-**Prerequisites:** Source verification, bounded-predicate validation, failure preservation, and reversible recovery; local n8n readiness; this module's supplied waves, validator, and independent checker  
+**Prerequisites:** Source verification, rules kept in code and tested against frozen expectations, failure preservation, and reversible recovery; local n8n readiness; this module's supplied waves, validator, and independent checker
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BATCH_WORKLOAD; VERIFY:N8N_CONTROLS  
 **Produces:** FIXED_BASELINE; EXCEPTION_RULE; DETERMINISTIC_DELTA; CONFIG_ID; RESTORE_ACTION; PO07_RESULT  
 **Rough time:** about 3 hours  
@@ -17,7 +17,7 @@
 
 ## Capability added
 
-Before this project, the learner can verify a source claim, specify and validate a bounded predicate, and recover a reversible change. After it, the learner can compose those controls into a reusable batch process with explicit branch precedence, complete record accounting, and a proven policy-change boundary. Installing n8n and retaining files support that capability; they are not learning objectives.
+Before this project, the learner can verify a source claim, keep a decision rule in code and test it against frozen expectations, and recover a reversible change. After it, the learner can compose those controls into a reusable batch process with explicit branch precedence, complete record accounting, and a proven policy-change boundary. Installing n8n and retaining files support that capability; they are not learning objectives.
 
 ## Enabling objectives
 

@@ -54,16 +54,16 @@ The learner preserves a material hidden failure, identifies the last passing and
 **Evidence:** sealed localization, supplied diagnostic comparison, probe result, correction/revert record, focused and end-to-end reruns, and clean-condition recurrence result. Localization alone does not establish recovery.
 **Owner:** Module 05
 
-## PO-06 — Improve from observed failures
+## PO-06 — Design a workflow for a decision model
 
-Using preserved failures, source distinctions, and the freeze-before-outcome discipline, the learner fixes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
+Using bounded direction, source verification, and typed questions with labels frozen before a run, the learner selects and pins a structured decision model as the harness judge through OpenRouter, designs the question set and code split around that model's documented weak spots, sets thresholds from its probabilities on tuning notes by the cost of each error, freezes them with a review ceiling, and measures the frozen screen once on held-out notes. Typed questions and frozen labels are this module's prerequisites; selection, design for the model class, risk-weighted thresholds, and held-out proof are its new capability.
 
-**Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
+**Evidence:** saved judge candidate list and selection record naming the decision point, data boundary, and weak spots; the pinned two-line judge setting; a question set that passes the router check; every tuning run with launcher receipts, served build, and cost; first-miss notes recorded before revision; thresholds and review ceiling frozen before the held-out run; a held-out measurement with error counts, review share, served build, and cost per 1,000 notes; a handoff; and the verifier's joined result.
 **Owner:** Module 06
 
 ## PO-07 — Build and control a fixed workflow
 
-Using source-verification and bounded-predicate validation skills, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
+Using source verification and the practice of keeping decision rules in code and testing them against frozen expectations, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
 
 **Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
 **Owner:** Module 07
