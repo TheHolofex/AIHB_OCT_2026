@@ -1,29 +1,21 @@
-# Module 7 · Operate a fixed workflow through change
+# Module 7 · Automate a spreadsheet with an agent
 
-Build a local visual n8n workflow to route White Rack's fictional shipment of refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict how one saved policy change will affect two batches of 80 lots. Compare every receipt row, whether it changed or not. Then restore the saved original workflow into a new blank canvas and use it to reproduce both original files exactly.
+You are going to make a local n8n workflow whose job is to turn a batch into a spreadsheet. The heart of that workflow is the AI Agent node, the agent widget on the canvas. You connect that agent to OpenRouter with your own key, and the agent calls a tool that writes the spreadsheet. You download the file to your computer and check it. A reply in the agent panel is not the spreadsheet.
 
-Plan for about three hours on Wednesday (a rough estimate).
+White Rack is a fictional shipment of refrigerated reagent kits from Icehouse Depot to Clinic I-6. The batch has 80 lots. The agent writes one row per lot. You still decide whether a row is fit to keep. The file does not authorize a real movement, and it is not a quality release.
 
-## Before you begin
+Plan for about three hours on Wednesday. That is a rough estimate. Use the local n8n you already checked in [setup](../module-00-setup/README.md). Keep n8n Assistant off, and don't publish the workflows. Assistant is n8n's built-in helper. The agent in this assignment is a node you add.
 
-Complete [local n8n readiness](../module-00-setup/README.md), then open [Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). Start with a blank router canvas. Download the two input waves, validator, and separate receipt checker from the lab. Save your prediction files before running the router.
+## Start here
 
-Use n8n 2.41.5 on the approved full official local stack, with the editor on localhost. Check the sources, freeze your predictions before runs, validate with bounded controls like Blue Gauge's predicate, and keep all your evidence, as you did earlier. Have a plain text editor ready and know where your browser saves downloads. Keep Assistant off and workflows unpublished. Use test forms only, without model calls or provider credentials.
+1. [Build the agent and download the sheet](shared/MODULE_07_LAB.md) from the first folder through the file check.
+2. Read [the sheet rules](shared/SHEET_RULES.md) before you give them to the agent. A note inside a lot is not a rule.
+3. Download [wave1.csv](shared/batch/wave1.csv) and keep it unchanged. That file is the source the sheet has to cover.
 
-## The saved change
+## Your key
 
-The router checks exact, case-sensitive values. `RACK_CONFLICT` takes priority and produces `hold,RESOURCE_CONFLICT`. Otherwise, `AUTHORIZED` produces `pass,READY`. Exact `PENDING` uses the saved `pending_status`: `OPEN` produces `hold,OPEN`; `NOT_AUTHORIZED` produces `reject,NOT_AUTHORIZED`. Other permit strings, including `WITHDRAWN`, fall back to `hold,OPEN`. Gate-window text and input disposition don't choose a route. A pending decision isn't a quality release.
+Setup told you not to put the OpenRouter key into n8n during readiness. This assignment is the step that uses it. Paste the key only into the OpenRouter credential form inside local n8n. Don't put it in the prompt, the workflow export, a screenshot, or your notes. After you export anything, open the file and confirm the key is not in it. If it is, delete that copy.
 
-Change only the Pending rule's String value from `OPEN` to `NOT_AUTHORIZED`. Keep every other node setting, wire, and input unchanged. Before editing, save the original JSON export and its separately downloaded SHA256 report. Save the changed export as a separate file.
+## What the file proves
 
-Import the checker into its own new blank workflow; importing JSON adds nodes to the open canvas. To restore the original, check its export against the saved digest again, then import it into another new blank workflow. Don't change the policy back by hand.
-
-## Retain the evidence
-
-Keep each wave's frozen delta CSV, the baseline and changed exports, the original and rechecked identity reports, six receipts, the baseline exact comparison, two predicted-change reports, and two restored exact reports. Record each workflow's name and URL and every execution ID. Read the checker's `PASS` or `HOLD` report and full row counts; a successful execution doesn't tell you whether the files match. Keep every held attempt. Never edit a receipt by hand.
-
-For the optional revised-wave stretch, first change the input with the policy fixed. Then change the policy with the revised input fixed. Freeze a separate prediction and download a report for each comparison.
-
-## Class-only boundary
-
-All lots, permits, windows, and notes are fictional practice data. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+The downloaded spreadsheet proves the agent called the tool and a file landed on your computer. It does not prove every row is right. The checker tells you whether all 80 source lots are present. You compare the rows with the rules and write down what the sheet got wrong.
