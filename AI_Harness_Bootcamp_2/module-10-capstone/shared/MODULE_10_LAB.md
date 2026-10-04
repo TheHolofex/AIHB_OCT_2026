@@ -1,14 +1,14 @@
-# Module 10 · Stand up a local uncensored AI and hand it off
+# Module 10 · Stand up and package a local uncensored AI
 
-Build the smallest kit of files and instructions that lets a colleague bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it, all without your chat history. Freeze only the declared bundle, copy it to a new location, and run from a new terminal. Keep your own rerun separate from watching another person use the kit.
+Build a kit of files and instructions for bringing the pinned uncensored model up as a loopback-only service, proving one live interaction, stopping it, and restoring it without your chat history. Freeze only the declared bundle, copy the ten files to a fresh location on your machine, and check the copy's structure from a new terminal.
 
 The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
 
-Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours.
+Plan for about three hours on Thursday (a rough estimate). Work individually and complete every step, including shutdown and close-out, within this session. If a required step cannot finish, record the reason for `HOLD` and close the attempt before the session ends.
 
-## Prepare separate work and transfer locations
+## Prepare separate work and copy locations
 
-Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work folder for the kit. `E` is the evidence folder. `F` is the received package location. Commands work from any directory. Don't create `F` until the transfer step.
+Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work folder for the kit. `E` is the evidence folder. `F` is the fresh-copy folder on the same laptop. Commands work from any directory. Don't create `F` until you copy the package.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -443,7 +443,7 @@ print('FROZEN BUNDLE',len(files),'files')
 
 ## Copy only the frozen members
 
-Leave the weights out; your colleague downloads them under their own account and checks them against the pinned identity. Copy the files with digest checks against the record in `E/bundle-before.json`:
+Leave the weights out at their original location on this laptop. The final fresh-copy structure check (run from a new terminal) uses only the copied files and requires neither re-downloading the weights nor launching the service. Copy the files with digest checks against the record in `E/bundle-before.json`:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -508,31 +508,32 @@ print('NO WEIGHTS COPIED')
 
 **Stop:** The destination exists, a frozen source changed, or the weights were copied.
 
-**Recovery:** Keep the failed folder, and use a new destination for the corrected transfer.
+**Recovery:** Keep the failed folder, and use a new destination for the corrected copy.
 
-## Hand the package to another person
+## Check the fresh copy from a new terminal
 
-Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, the outcomes you saw, and any help they got in `E/transfer-status.md`. A technical replay, even one run by an agent, doesn't count as watching another person operate the kit. If no one is available, keep the technical results and record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
+Open a new terminal and run the block under [If you open a new terminal](#if-you-open-a-new-terminal). Then check the copy using only its own files. The check reads the package's named fields and confirms that every file it names is inside the fresh copy folder. It doesn't run the package's commands.
 
-If your colleague needs help, record what they did before and after it; don't relabel an assisted attempt as independent. Use their questions to improve a new version of the package, and keep the observed attempt as it was.
+**Terminal: Bash or zsh, ordinary user.**
 
-![Keep technical replay separate from another person's attempt, record every intervention, and mark human transfer unobserved when no recipient has operated the kit.](figures/m10-independent-transfer.png)
+```bash
+cd "$F" && "$PY" scripts/check_package.py shared/PACKAGE.md; cd "$BASE"
+```
 
-*Keep technical replay separate from another person's attempt, record every intervention, and mark human transfer unobserved when no recipient has operated the kit.*
+**Terminal: PowerShell, ordinary user.**
 
-<details markdown="1">
-<summary>Figure text</summary>
+```powershell
+Set-Location -LiteralPath $F
+& $PY scripts/check_package.py shared/PACKAGE.md
+Set-Location -LiteralPath $BASE
+```
 
-Three separate kinds of evidence:
+**Expected:** `PASS: package structure checked`.
 
-- Author rerun.
-- Fresh-session technical replay. It is not passed by substitution: it does not count as another person's operation.
-- Different person → package alone → questions / actions / outcomes → record any help → assisted stays assisted.
+**Stop:** A `HOLD:` line names a missing field or a file the fresh copy folder doesn't hold.
 
-If there is no recipient, the different person's operation is UNOBSERVED. No agent or checker result counts as a different person's operation.
-
-</details>
+**Recovery:** Keep the failed copy. Fix the package in `W`, then freeze it into a new record and copy it to a new destination.
 
 ## Close the session
 
-In `E/close-out.md`, record the verified identity, the live interaction, the stop receipt, the restore comparison, and the transfer status. State plainly which parts ran and which didn't. Then shut the service down if it's still running, and keep the evidence bundle for staff review.
+In `E/close-out.md`, record the verified identity, the live interaction, the stop receipt, the restore comparison, and the fresh copy check. State plainly which parts ran, which didn't, and what the checks don't show. Then shut the service down if it's still running, and keep the evidence folder.

@@ -28,7 +28,7 @@ The learner completes research from bounded sources, verifies a material claim a
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; person-to-person transfer belongs to Module 10.
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
@@ -82,11 +82,11 @@ Using least-authority tool operation and frozen comparison criteria, the learner
 **Evidence:** frozen declared policy and per-run resolved policy; complete raw events and guard lifecycle; matched assistant calls/execution results; before/after snapshots; grounded planted-note measurement; observed enforcement classification; and the remaining limits of an OMP tool boundary.
 **Owner:** Module 09
 
-## PO-10 — Stand up a local uncensored AI and hand it off
+## PO-10 — Stand up and package a local uncensored AI
 
-The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and hands the complete kit to another person who repeats bring-up from the saved kit alone rather than the author's chat history.
+Using earlier source-verification, bounded-control, and recovery skills, the learner operates the pinned uncensored model on their own laptop as a loopback-only service and packages its instructions and controls without undeclared dependencies or reliance on chat history. The learner completes the live interaction, stop/restore, and fresh-copy structure check individually within Thursday's session.
 
-**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, recipient observations and questions, any assistance given, and final handoff. Record a missing recipient as an unobserved attempt.
+**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out naming unresolved limits.
 **Owner:** Module 10
 ## Required workplace surfaces
 

@@ -1,27 +1,18 @@
-# Module 10 · Stand up a local uncensored AI and hand it off
+# Module 10 · Stand up and package a local uncensored AI
 
-Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line and the bring-up steps and fills in package fields; you approve and run the server line, and the adapter scripts check the package's claims.
+Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then freeze a ten-file kit and check a fresh copy of it from a new terminal. OMP drafts the launch line and the bring-up steps and fills in package fields; you approve and run the server line, and the adapter scripts check the package's claims.
 
 The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. You must keep every boundary.
 
-Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
+Plan for about three hours on Thursday (a rough estimate). Work individually on your own laptop and finish within this session, including shutdown and close-out. If access, hardware, or time prevents a required step, record the reason for `HOLD` and close the attempt before the session ends.
 
 ## Start here
 
-1. [Stand the service up and transfer it](shared/MODULE_10_LAB.md) end to end.
+1. [Stand the service up and package it](shared/MODULE_10_LAB.md) end to end.
 2. Read the [service rules](shared/case/SERVICE_RULES.md) before the first launch.
-3. Transfer the [runnable package](shared/PACKAGE.md) only after your own run is complete.
+3. Freeze and copy the ten-file [runnable package](shared/PACKAGE.md) only after your own run is complete. Check the copy's structure from a fresh terminal without copying or downloading the weights again.
 
-![Transfer only the declared, digest-checked files; the recipient downloads weights separately, and evidence and conversation history stay outside the kit.](shared/figures/m10-package-boundary.png)
-
-*Transfer only the declared, digest-checked files; the recipient downloads weights separately, and evidence and conversation history stay outside the kit.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-The declared kit lists `shared/PACKAGE.md` (instructions), `scripts/` (adapters), `shared/case/` (case and rules), `shared/controls/` (active control), `shared/baseline/` (baseline). Freeze the declared paths, then make a digest-checked copy into a fresh received folder. Only those declared members travel. Not in the kit: model weights (recipient downloads them separately), run evidence including the stop receipt (kept separately), and conversation history.
-
-</details>
+The copy contains only the ten declared, digest-checked files: the package instructions, adapters, case and rules, active control, and baseline. Keep the weights at their original work location on this laptop; evidence (including the stop receipt) and conversation history stay outside the copy. The fresh-copy check reads fields and local paths, but neither executes the package commands nor repeats the live runtime proof.
 
 ## Bounded use
 

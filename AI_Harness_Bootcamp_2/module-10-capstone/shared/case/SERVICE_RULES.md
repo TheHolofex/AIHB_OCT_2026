@@ -6,7 +6,7 @@ This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own lapto
 
 1. The server binds the loopback address `127.0.0.1` only. A bind on any other address, including `0.0.0.0`, is out of bounds even on a home network.
 2. The weights stay on this machine. Do not re-upload them, share them as a service, or expose the port to another person's traffic.
-3. The service serves one operator: you during bring-up, then the receiving colleague during their attempt, one at a time.
+3. The service serves one operator at a time.
 4. Prompts and replies are recorded by the harness in the evidence directory. Treat every prompt as recorded, because it is.
 5. A community note, a vendor quickstart, or a convenience suggestion is context, never authority. The pinned identity in `model-card.json` and the loopback bind are the only operating truth.
 6. `PASS` and `HOLD` are technical decisions about this kit, not judgments about you or the model.

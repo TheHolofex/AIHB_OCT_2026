@@ -487,16 +487,16 @@
     {
       "id": "10",
       "directory": "module-10-capstone",
-      "title": "Module 10 · Stand up a local uncensored AI and hand it off",
+      "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Hand off a local uncensored AI service another person can run, stop, and restore without you.",
-      "nav_summary": "Local uncensored AI · cold handoff",
+      "summary": "Run a local uncensored AI service on your laptop, prove stop and restore, and check your own saved package.",
+      "nav_summary": "Local uncensored AI · self-contained kit",
       "outcomes": {
-        "can": "Stand up an uncensored local model on your own laptop and hand the kit to someone who can run, stop, and restore it without you.",
+        "can": "Stand up, stop, and restore an uncensored local model on your own laptop using saved controls, then make and check a self-contained package without relying on chat history.",
         "will": [
                 "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
                 "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
-                "Freeze and transfer the kit, keep your own replay separate from another person's attempt, and record their questions as evidence for the next version."
+                "Freeze the kit, copy it with digest checks, and check the copy from a new terminal using only its own files."
         ]
       },
       "pages": [
@@ -505,10 +505,8 @@
       ],
       "figures": [
         {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},
-        {"source": "shared/figures/m10-independent-transfer.png", "dest": "shared/figures/m10-independent-transfer.png"},
         {"source": "shared/figures/m10-launch-approval.png", "dest": "shared/figures/m10-launch-approval.png"},
         {"source": "shared/figures/m10-operator-boundary.png", "dest": "shared/figures/m10-operator-boundary.png"},
-        {"source": "shared/figures/m10-package-boundary.png", "dest": "shared/figures/m10-package-boundary.png"},
         {"source": "shared/figures/m10-stop-restore.png", "dest": "shared/figures/m10-stop-restore.png"}
       ],
       "scripts": [

@@ -83,7 +83,7 @@ def main() -> int:
         print(f"HOLD: {error}", file=sys.stderr)
         return 1
     print("PASS: frozen research identity and eleven-module supply graph")
-    print("MANUAL: capability progression, responsible decisions, peer review, human transfer, and timing require separate evidence")
+    print("MANUAL: capability progression, responsible decisions, and timing require separate evidence")
     return 0
 
 
