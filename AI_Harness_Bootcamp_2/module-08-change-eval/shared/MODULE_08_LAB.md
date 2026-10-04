@@ -1,18 +1,18 @@
 # Module 8 · Evaluate a change with variation controls
 
-Decide whether a proposed change to Slope Brief can be used without losing a required source check. Use your existing comparison and restoration skills to freeze the cases, configurations, and decision rule before inspecting outcomes. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate even when its other results look better.
+Decide whether a proposed change to Slope Brief can be adopted without losing a required source check. Using the comparison and restoration skills you already have, freeze the cases, configurations, and decision rule before you look at any outcomes. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate, even when its other results look better.
 
-The fictional movement carries heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The forty case packets and their three briefs are authored practice data, not records of OpenRouter calls. Nothing here authorizes a real load sheet or movement.
+The fictional movement carries heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The forty case packets, each with three briefs, are practice data written in advance, not records of OpenRouter calls. Nothing here authorizes a real load sheet or movement.
 
-A **hard gate** is a condition that every result must meet. Keep the format check, mass gate, and time-zone gate separate: malformed output, an unsourced mass, or a missing time-zone label can each defeat a candidate. A **paired comparison** uses the same source packet for the baseline and candidate.
+A **hard gate** is a condition every result must meet. Keep the format check, the mass gate, and the time-zone gate separate: malformed output, an unsourced mass, or a missing time-zone label can each reject a candidate on its own. A **paired comparison** gives the baseline and the candidate the same source packet.
 
-The core comparison checks fixed authored outputs. Repeating that file check does not measure model variation. In the optional live comparison, repeated model calls show how outputs differ under the same conditions, so you can judge whether an apparent improvement holds across those attempts.
+The core comparison checks fixed outputs written in advance, so running that check again tells you nothing about model variation. In the optional live comparison, repeated model calls show how outputs differ under the same conditions, so you can judge whether an apparent improvement holds up across attempts.
 
-Plan for a little over two hours on Thursday. That is a rough estimate, not a measured time.
+Plan for a little over two hours on Thursday. That's a rough estimate, not a measured time.
 
 ## Prepare a separate attempt
 
-Create a fresh work folder and a separate evidence folder so that this attempt cannot overwrite an earlier one. Use the verified Python and checkout from [setup](../../module-00-setup/README.md). Open an ordinary terminal. These commands work from any directory and leave earlier attempts intact. `W` is your work folder; `E` holds your records outside it. Do not open candidate briefs yet.
+Create a new work folder and a separate evidence folder so this attempt can't overwrite an earlier one. Use the Python and checkout you verified in [setup](../../module-00-setup/README.md). Open an ordinary terminal. These commands work from any folder and leave earlier attempts alone. `W` is your work folder; `E` holds your records outside it. Don't open the candidate briefs yet.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -45,15 +45,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier, then `PASS: created` followed by your work path, then two `Next` commands that display the policy file; you may skip them, because the next step opens that file in your editor. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two operational scripts. Your evidence folder is separate.
+**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by your work path, then two `Next` commands that display the policy file. You can skip those, because the next step opens that file in your editor. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two scripts you'll run, `scripts/evaluate_pairs.py` and `scripts/restore_baseline.py`. Your evidence folder is separate.
 
-**Stop:** A command fails, a destination already exists, or Python is not the verified 3.12-or-newer interpreter.
+**Stop:** A command fails, a destination already exists, or Python isn't the verified 3.12-or-newer interpreter.
 
-**Recovery:** Keep the existing attempt. Correct the prerequisite through setup, then repeat this block with a new `RUN`; do not reset the checkout or delete an old work folder.
+**Recovery:** Keep the existing attempt. Fix the prerequisite through setup, then repeat this block with a new `RUN`. Don't reset the checkout or delete an old work folder.
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+Every command on this page uses the variables you set above, and a terminal forgets them when it closes. In a new terminal, run this block to get back to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -89,11 +89,11 @@ $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 
 ## Freeze your rule and input identities
 
-In your editor, open `W/shared/controls/policy.json` and the three adjacent batch manifests. A manifest names which existing brief the evaluator will read; it is not evidence that a model generated that brief. The policy lists the forty case IDs, the three form rows whose values must be sourced (mass, gate time UTC, gate time MDT), the format, mass, and time-zone gates, no exclusions, and `any_violation_rejects`.
+In your editor, open `W/shared/controls/policy.json` and the three batch manifests next to it. A manifest names the existing brief the evaluator will read; it isn't evidence that a model wrote that brief. The policy lists the forty case IDs, the three form rows whose values need a source (mass, gate time UTC, gate time MDT), the mass and time-zone gates, no exclusions, and `any_violation_rejects`.
 
-Create `W/decision.md` in your editor. Before opening any candidate, state what would reject either candidate, what counts as a failed case, and why a faster result cannot excuse an unsupported material claim. Do not enter an adoption decision yet.
+Create `W/decision.md` in your editor. Before you open any candidate, write down what would reject either candidate, what counts as a failed case, and why a faster result can't excuse an unsupported material claim. Don't write an adoption decision yet.
 
-Freeze the bytes without displaying the candidate contents. The record includes the policy, manifests, cases, gates, instructions, and restore copies.
+Freeze the file bytes without displaying the candidates. The record covers the policy, manifests, cases, gates, instructions, and restore copies.
 
 ![Freeze the rule, cases, and input identities before opening candidates; a manifest identifies supplied files, not a model execution.](figures/m08-freeze-before-results.png)
 
@@ -128,19 +128,19 @@ Nothing goes back from the candidates or their results to change the rule or the
 & $PY -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); files=sorted(p for p in (w/'shared').rglob('*') if p.is_file() and p.suffix in ('.json','.md','.py')); hashes={p.relative_to(w).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}; f=Path(sys.argv[2]).open('x',encoding='utf-8'); json.dump({'rule':'any_violation_rejects','sha256':hashes},f,indent=2); f.close(); print('FROZEN',len(hashes),'input/control files')" "$W" "$E\pre-result.json"
 ```
 
-**Expected:** `E/pre-result.json` contains the identities of the files you are about to compare. Your decision rule was recorded before outcomes.
+**Expected:** The terminal prints `FROZEN`, a file count, and `input/control files`. `E/pre-result.json` now holds the fingerprints of the files you're about to compare, and your decision rule was written before you saw any outcomes.
 
-**Stop:** The record already exists, an input is missing, or you have already selected cases based on their results.
+**Stop:** The record already exists, an input is missing, or you've already picked cases based on their results.
 
-**Recovery:** Preserve the first attempt and begin a new one. A new filename does not turn a post-result decision rule into a pre-result rule.
+**Recovery:** Keep the first attempt and start a new one. A new filename doesn't turn a rule written after you saw results into one written before.
 
 ## Check the baseline, then evaluate every pair
 
-Confirm all forty baseline briefs pass, then score every baseline, A, and B brief on the same cases. Each case has `sources.json`, a three-row form, and baseline/A/B briefs. A **locator** identifies the exact source record supporting a value. The mass and time-zone gates check each value and its own locator; the format check records whether the brief follows the required form. A zone word elsewhere cannot repair an unlabeled clock value. Judge a number by its source support, not by whether you have seen that number in a previous failure.
+First confirm that all forty baseline briefs pass, then score every baseline, A, and B brief on the same cases. Each case has `sources.json`, a three-row form, and three briefs: baseline, A, and B. A **locator** identifies the exact source record that supports a value. The mass and time-zone gates check each value together with its own locator; the format check records whether the brief follows the required form. A zone word somewhere else can't fix a clock value that has no label. Judge a number by whether a source supports it, not by whether you've seen it in an earlier failure.
 
-A malformed source packet or one for the wrong case stops the comparison. Do not count it as a candidate failure. A malformed candidate under valid sources remains in the comparison as a format failure.
+A malformed source packet, or one for the wrong case, stops the comparison. Don't count it as a candidate failure. A malformed candidate with valid sources stays in the comparison as a format failure.
 
-Run every baseline first. Both shell versions retain a failure even if a later case passes.
+Run every baseline first. In both shells, the loop remembers a failure even if a later case passes.
 
 ![Compare each candidate against its own same-case baseline and check each material value and locator; an average cannot erase a failed gate.](figures/m08-paired-hard-gates.png)
 
@@ -185,11 +185,11 @@ foreach ($caseDir in Get-ChildItem "$W\shared\cases" -Directory -Filter 'PC-*') 
 if ($baselineFailed) { throw 'HOLD: a baseline failed; do not evaluate adoption.' } else { 'BASELINE PASS' }
 ```
 
-**Expected:** Forty `PASS` lines, then `BASELINE PASS`. This establishes a usable reference, not a claim that either candidate is good.
+**Expected:** Forty `PASS` lines, then `BASELINE PASS`. That gives you a usable reference; it says nothing about whether either candidate is good.
 
 **Stop:** Any line starting `HOLD:`, or fewer than forty `PASS` lines.
 
-**Recovery:** Save the failed output. Check the named input against your frozen record; do not hand-repair a brief to force a passing baseline.
+**Recovery:** Save the failed output. Check the named input against your frozen record; don't fix a brief by hand to force the baseline to pass.
 
 Now run the supplied evaluator from any directory.
 
@@ -205,19 +205,19 @@ Now run the supplied evaluator from any directory.
 & $PY "$W\scripts\evaluate_pairs.py" "$W\shared\cases" "$W\shared\controls\policy.json" "$W\out\results.csv"
 ```
 
-**Expected:** `EVALUATED 120` means all forty cases have a baseline, A, and B row. It does not mean the candidates passed. Open `W/out/results.csv` in your editor or a spreadsheet. Inspect `format_ok`, `mass_gate`, `zone_gate`, `passed`, `reason`, and the three identity columns.
+**Expected:** `EVALUATED 120`, meaning all forty cases have a baseline, A, and B row. It doesn't mean the candidates passed. Open `W/out/results.csv` in your editor or a spreadsheet and look at `format_ok`, `mass_gate`, `zone_gate`, `passed`, `reason`, and the three identity columns.
 
 **Stop:** A case is missing, an identity differs, the evaluator holds, or the output destination already exists.
 
-**Recovery:** Preserve the output and error. Resolve the input problem before starting a fresh attempt. Do not drop the difficult case or replace a previous result.
+**Recovery:** Keep the output and the error. Fix the input problem before you start a new attempt. Don't drop the difficult case or replace an earlier result.
 
 ## Make the bounded adoption decision
 
-For each failed row, open that brief and its adjacent `sources.json`. Trace the material value to its exact authoritative locator. Record the case, candidate, gate, and source evidence in `decision.md`. Apply your original rule even if most cases pass.
+For each failed row, open that brief and the `sources.json` beside it. Trace the material value back to its exact authoritative locator. Record the case, candidate, gate, and source evidence in `decision.md`. Apply your original rule even if most cases pass.
 
-For each candidate, report the number of distinct cases requiring repair. This **cost proxy** is a count of failed cases used to indicate possible repair work; it is not measured repair time or expense. Keep it separate from observed time, tokens, and money. These authored outputs provide no observed API cost or evidence that one live model is better than another.
+For each candidate, report how many distinct cases would need repair. This **cost proxy** is a count of failed cases that hints at possible repair work; it isn't measured repair time or expense. Keep it separate from observed time, tokens, and money. These prewritten outputs tell you nothing about real API cost, and they don't show that one live model is better than another.
 
-Check that your frozen inputs still match before accepting the comparison.
+Before you accept the comparison, check that your frozen inputs still match.
 
 ![State only what the observed comparison supports, and keep the failed-case repair proxy separate from measured time, token usage, and cost estimates.](figures/m08-bounded-decision.png)
 
@@ -250,15 +250,15 @@ Three measurements stay separate:
 & $PY -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); record=json.loads(Path(sys.argv[2]).read_text()); changed=[name for name,digest in record['sha256'].items() if hashlib.sha256((w/name).read_bytes()).hexdigest()!=digest]; print('FROZEN IDENTITY PASS' if not changed else 'HOLD: '+', '.join(changed)); sys.exit(bool(changed))" "$W" "$E\pre-result.json"
 ```
 
-**Expected:** `FROZEN IDENTITY PASS` supports comparison under the recorded inputs and rule. Your decision cites the actual failures without averaging them away.
+**Expected:** `FROZEN IDENTITY PASS`, which means every file you froze still matches the fingerprint you recorded before results. Your decision cites the actual failures instead of averaging them away.
 
-**Stop:** The identity check fails or the decision depends on a rule changed after inspection.
+**Stop:** The identity check fails, or your decision depends on a rule you changed after looking at results.
 
-**Recovery:** Hold adoption and retain the mismatch. Repair the process in a new attempt, not the already observed result.
+**Recovery:** Hold the adoption decision and keep the mismatch. Fix the process in a new attempt; don't change the result you've already seen.
 
 ## Demonstrate restoration
 
-Swap in the candidate instruction, restore the baseline from its stored fingerprints, and prove the rerun is byte-identical. Select the checked instruction as the active condition, retaining the previous active file, then invoke the supplied restore. This deliberately changes a control; it does not edit a candidate brief.
+Swap in the candidate instruction, restore the baseline from its stored fingerprints, and prove the rerun is byte-identical. The block below makes the checked instruction the active one, saving a copy of the previous active file first, then runs the supplied restore. This changes a control on purpose; it doesn't edit a candidate brief.
 
 ![Restore the hash-identified baseline, retain candidate attempts, and prove the rerun matches the original result bytes.](figures/m08-restore-baseline.png)
 
@@ -299,15 +299,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Restored evaluation held.' }
 & $PY -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); same=(w/'out/results.csv').read_bytes()==(w/'out/restored-results.csv').read_bytes(); print('RESTORED RESULTS MATCH' if same else 'HOLD: results differ'); sys.exit(not same)" "$W"
 ```
 
-**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs by hash and bytes; the second evaluation matches the first byte for byte; candidate attempts remain intact.
+**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs against their hashes and bytes, the second evaluation matches the first byte for byte, and the candidate attempts are untouched.
 
-**Stop:** The frozen restore source changed, any restore check holds, or comparison bytes differ.
+**Stop:** The frozen restore source changed, a restore check holds, or the compared bytes differ.
 
-**Recovery:** Preserve both results and the control backup. Do not reconstruct a baseline from memory or patch a candidate. Start a fresh prepared copy only after recording what broke.
+**Recovery:** Keep both results and the control backup. Don't rebuild a baseline from memory or patch a candidate. Record what broke before you prepare a fresh copy.
 
 ## Write the handoff
 
-Give the next owner everything needed to repeat or reverse your decision. In `W/handoff.md`, name the frozen policy record, comparison results, your adoption decision, the repair proxy, and restore evidence. State the limit: a deterministic comparison of supplied briefs does not measure how a live instruction behaves over repeated runs.
+Give the next owner everything they need to repeat or reverse your decision. In `W/handoff.md`, name the frozen policy record, the comparison results, your adoption decision, the repair proxy, and the restore evidence. State the limit: comparing fixed, supplied briefs doesn't measure how a live instruction behaves over repeated runs.
 
 Before you stop, check that `handoff.md` names `pre-result.json`, `results.csv`, `restored-results.csv`, your decision, the failed-case counts for A and B, and the stated limit.
 
@@ -316,17 +316,17 @@ Before you stop, check that `handoff.md` names `pre-result.json`, `results.csv`,
 
 ## Preregister and run the live comparison
 
-Compare the supplied baseline and checked instructions on PC-01–PC-06. Use three fresh repeats per instruction and case, alternating order. After those 36 calls, restore the baseline and run two fresh controls on PC-01 and PC-02. Do not choose replacements after seeing results.
+Compare the supplied baseline and checked instructions on PC-01–PC-06, with three fresh repeats per instruction and case, alternating which goes first. After those 36 calls, restore the baseline and run two fresh controls on PC-01 and PC-02. Don't choose replacements after you see results.
 
-Open both instruction files in your editor. Explain the single added check and predict where it might help, do nothing, or add work. Record that prediction in `decision.md` before running. Keep the model, source/form pair, prompt, and permissions fixed within each pair.
+Open both instruction files in your editor. Explain the one check the candidate adds, and predict where it might help, make no difference, or add work. Record that prediction in `decision.md` before you run anything. Keep the model, source/form pair, prompt, and permissions the same within each pair.
 
-This is paid work. Use only your process-local OpenRouter key and the pinned Sonnet model from setup. The runner runs one call at a time, never retries a failed call, and never changes the provider or model. Missing key, credit, or model availability leaves this lane blocked; it is not a reason to substitute a provider.
+This stretch costs money. Use only your OpenRouter key, which you enter in the terminal rather than save in a file, and the pinned Sonnet model from setup. The runner makes one call at a time, never retries a failed call, and never switches provider or model. If your key, credit, or the model isn't available, this stretch is blocked; that's not a reason to use a different provider.
 
-Run this in the same window that holds `PY`, `W`, `E`, and `M`; if you opened a new terminal, use the re-entry block at the top of the page first.
+Run this in the same terminal window that holds `PY`, `W`, `E`, and `M`. If you opened a new terminal, run the block under "If you open a new terminal" first.
 
 ### Enter your key in this terminal
 
-The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+The launcher reads your OpenRouter key only from this terminal's environment, so a new terminal starts without it. Enter the key through a hidden prompt and make it available to the commands you run here. Paste the first command by itself and press Enter. Type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -342,7 +342,7 @@ $secret = Read-Host 'OpenRouter key' -AsSecureString
 
 **Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
 
-**Stop:** Characters appear as you type, or you are not sure which program is reading the input.
+**Stop:** Characters appear as you type, or you're not sure which program is reading the input.
 
 **Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
 
@@ -368,13 +368,13 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid or has credit.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
 **Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
 
-The source-only runner freezes the schedule and identities before the first call. Each model attempt receives only `sources.json` and `form.md`, with permission to create `brief.md`. The launcher, not the batch runner, creates each receipt directory.
+Before the first call, the runner freezes the schedule and the file identities. Each model attempt gets only `sources.json` and `form.md`, plus permission to create `brief.md`. The launcher, not the batch runner, creates each receipt folder.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -388,18 +388,18 @@ The source-only runner freezes the schedule and identities before the first call
 & $PY "$M\scripts\stretch_runner.py" "$W" "$E\live-comparison"
 ```
 
-**Expected:** With all prerequisites available, 38 independently checked attempts produce `comparison.json`, `attempts.csv`, raw receipts, tool-written briefs, and `restore.json`. `COMPLETE` means all planned observations exist, not that the checked instruction won. Without the key, the runner exits 2 before creating comparison attempts or contacting a provider.
+**Expected:** With everything in place, 38 attempts, each checked on its own, produce `comparison.json`, `attempts.csv`, raw receipts, the briefs the tool wrote, and `restore.json`. `COMPLETE` means every planned observation exists, not that the checked instruction won. Without the key, the runner exits 2 before it creates any comparison attempt or contacts a provider.
 
-**Stop:** Any call is incomplete, a frozen identity changes, restoration fails, the provider rejects a request, or the runner stops on its own cost estimate. A content-gate failure is an observation to retain, not an instruction to retry until the answer passes.
+**Stop:** Any call is incomplete, a frozen identity changes, restoration fails, the provider rejects a request, or the runner stops on its own cost estimate. A content-gate failure is an observation to keep, not a cue to retry until the answer passes.
 
-**Recovery:** Preserve the entire comparison, including its first failure. Restore the missing prerequisite before considering a new preregistered attempt. Do not merge favorable rows from different attempts, exclude failures, or change the runner's stop to finish.
+**Recovery:** Keep the whole comparison, including its first failure. Fix the missing prerequisite before you consider a new preregistered attempt. Don't merge favorable rows from different attempts, leave out failures, or change the runner so it doesn't stop.
 
 ## Interpret the paired observations
 
-Open `comparison.json` and `attempts.csv`. For each case, compare the three baseline outcomes with the three checked outcomes. Report each paired disagreement, where a baseline and checked attempt have different outcomes, and the differences among repeats of the same instruction. Keep all preregistered attempts visible. A single better answer cannot separate an instruction's effect from ordinary variation. Any single checked-instruction violation rejects adoption under the frozen rule. You may find no observed improvement.
+Open `comparison.json` and `attempts.csv`. For each case, compare the three baseline outcomes with the three checked outcomes. Report every paired disagreement (a baseline attempt and a checked attempt with different outcomes) and any differences among repeats of the same instruction. Keep every preregistered attempt visible. One better answer can't separate an instruction's effect from ordinary variation. Under the frozen rule, a single violation by the checked instruction rejects adoption. You may see no improvement at all.
 
-Report the failed-case repair count separately from elapsed time, raw token usage, and the software library's cost estimate, labeled as an SDK estimate in the receipts. Provider-billed cost remains unknown unless you independently observe it in your account; do not rename an estimate as a bill. Inspect the two restored controls and the actual restored instruction hash.
+Report the failed-case repair count separately from elapsed time, raw token usage, and the software library's cost estimate, which the receipts label as an SDK estimate. You don't know what the provider billed unless you check it in your account yourself; don't call an estimate a bill. Check the two restored controls and the hash of the instruction that was actually restored.
 
-Your stretch conclusion should explain what these six cases support, what they do not establish, and what uncertainty remains. A completed model comparison does not certify a human operator or establish general superiority.
+In your stretch conclusion, explain what these six cases support, what they don't show, and what's still uncertain. A finished model comparison doesn't certify a human operator, and it doesn't prove one instruction is better in general.
 
 </details>
