@@ -293,6 +293,84 @@ def check_change(work: Path, check) -> None:
     print("REVIEW: check current claims against their sources; quoted history and rejected identities are not automatically stale support.")
 
 
+def _label_value(text: str, label: str) -> str:
+    match = re.search(rf"^{re.escape(label)}\s*(.*)$", text, re.M)
+    return match.group(1).strip() if match else ""
+
+
+def _receipt_matches(evidence: Path, name: str, file_digest: str) -> bool:
+    result_path = evidence / "result.json"
+    guard_path = evidence / "guard.jsonl"
+    if not result_path.is_file() or not guard_path.is_file():
+        return False
+    try:
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return False
+    if result.get("status") != "PASS" or (result.get("output_sha256") or {}).get(name) != file_digest:
+        return False
+    for line in guard_path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            return False
+        if row.get("type") == "executed" and row.get("tool") == "course_write" and row.get("output_sha256") == file_digest:
+            return True
+    return False
+
+
+def check_handoff(work: Path, check) -> None:
+    """Bind the handoff to two different live sessions. Do not grade the conclusion."""
+    import run_handoff
+
+    handoff = work / "handoff.md"
+    scrutiny = work / "handoff-scrutiny.md"
+    decision = work / "handoff-scrutiny-decision.md"
+    writer_path = work / "handoff-session.json"
+    scrutiny_path = work / "handoff-scrutiny-session.json"
+    check("handoff is not the starter", handoff.is_file() and not run_handoff.is_starter(handoff))
+    try:
+        writer = json.loads(writer_path.read_text(encoding="utf-8"))
+        scrutiny_session = json.loads(scrutiny_path.read_text(encoding="utf-8"))
+        selector = run_handoff.pinned_selector()
+    except (OSError, json.JSONDecodeError, FileNotFoundError, ImportError):
+        check("handoff session records readable", False)
+        return
+    handoff_digest = hashlib.sha256(handoff.read_bytes()).hexdigest() if handoff.is_file() else ""
+    scrutiny_digest = hashlib.sha256(scrutiny.read_bytes()).hexdigest() if scrutiny.is_file() else ""
+    check("writer receipt matches handoff", writer.get("live_model_evidence") is True and writer.get("model") == selector and writer.get("output_sha256") == handoff_digest)
+    writer_evidence = Path(str(writer.get("evidence", "")))
+    scrutiny_evidence = Path(str(scrutiny_session.get("evidence", "")))
+    check("writer evidence receipt", _receipt_matches(writer_evidence, "handoff.md", handoff_digest))
+    check("scrutiny is a different session", writer_evidence != scrutiny_evidence and scrutiny_session.get("live_model_evidence") is True and scrutiny_session.get("model") == selector)
+    check("scrutiny tested this handoff", scrutiny_session.get("tested_handoff_sha256") == handoff_digest and scrutiny_session.get("output_sha256") == scrutiny_digest)
+    check("scrutiny evidence receipt", _receipt_matches(scrutiny_evidence, "handoff-scrutiny.md", scrutiny_digest))
+    packet = Path(str(scrutiny_session.get("packet", "")))
+    excluded_hit = []
+    if packet.is_dir():
+        excluded_hit = sorted(path.name for path in packet.rglob("*") if path.name in run_handoff.EXCLUDED_NAMES)
+    packet_handoff = packet / "handoff.md"
+    check("scrutiny packet excludes working notes", packet.is_dir() and not excluded_hit and packet_handoff.is_file() and hashlib.sha256(packet_handoff.read_bytes()).hexdigest() == handoff_digest)
+    handoff_text = handoff.read_text(encoding="utf-8") if handoff.is_file() else ""
+    scrutiny_text = scrutiny.read_text(encoding="utf-8") if scrutiny.is_file() else ""
+    decision_text = decision.read_text(encoding="utf-8") if decision.is_file() else ""
+    check("handoff labels present", all(label in handoff_text for label in run_handoff.HANDOFF_LABELS))
+    changed = (work / "changed-verdict.md").read_text(encoding="utf-8") if (work / "changed-verdict.md").is_file() else ""
+    verdict_match = re.search(r"^Verdict:\s*(ACCEPT|REVISE|REJECT|HOLD)\b", changed, re.M)
+    current_match = re.search(r"^Current verdict:\s*(ACCEPT|REVISE|REJECT|HOLD)\b", handoff_text, re.M)
+    check("handoff verdict matches changed verdict", bool(verdict_match and current_match and verdict_match.group(1) == current_match.group(1)))
+    conclusion_match = re.search(r"^Conclusion:\s*(STOOD|DID NOT STAND|HOLD)\b", scrutiny_text, re.M)
+    check("scrutiny names one conclusion", bool(conclusion_match))
+    conclusion = conclusion_match.group(1) if conclusion_match else ""
+    check("you recorded the scrutiny result", _label_value(decision_text, "Scrutiny result:") == conclusion and conclusion != "")
+    check("you rechecked a claim", bool(_label_value(decision_text, "Claim rechecked:")) and bool(_label_value(decision_text, "Source opened:")))
+    check("you judged the scrutiny", _label_value(decision_text, "Scrutiny holds:") in {"YES", "NO"})
+    check("you kept your own verdict", bool(_label_value(decision_text, "What stays unchanged:")))
+
+
+
 PHASE_CHECKS = {
     "ingest": check_ingest,
     "register": check_register,
@@ -307,7 +385,7 @@ PHASE_CHECKS = {
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workdir", type=Path)
-    parser.add_argument("--phase", choices=[*PHASES, "all"], default="all")
+    parser.add_argument("--phase", choices=[*PHASES, "handoff", "all"], default="all")
     args = parser.parse_args()
     work = args.workdir.resolve()
     failed: list[str] = []
@@ -316,23 +394,25 @@ def main() -> int:
     def check(name: str, condition: bool) -> None:
         (passed if condition else failed).append(name)
 
-    selected = list(PHASES) if args.phase == "all" else [args.phase]
-    if args.phase == "all":
-        for name in REQUIRED_FILES:
-            check(f"file:{name}", (work / name).exists())
-        check_ingest(work, check)
-        if failed:
-            for name in failed:
-                print(f"FAIL: {name}")
-            print("HOLD: required practice files are missing")
+    if args.phase == "handoff":
+        check_handoff(work, check)
+    else:
+        selected = list(PHASES) if args.phase == "all" else [args.phase]
+        if args.phase == "all":
+            for name in REQUIRED_FILES:
+                check(f"file:{name}", (work / name).exists())
+            check_ingest(work, check)
+            if failed:
+                for name in failed:
+                    print(f"FAIL: {name}")
+                print("HOLD: required practice files are missing")
+                return 1
+            selected = [phase for phase in PHASES if phase != "ingest"]
+        try:
+            for phase in selected:
+                PHASE_CHECKS[phase](work, check)
+        except Exception:
             return 1
-        selected = [phase for phase in PHASES if phase != "ingest"]
-
-    try:
-        for phase in selected:
-            PHASE_CHECKS[phase](work, check)
-    except Exception:
-        return 1
 
     for name in passed:
         print(f"PASS: {name}")

@@ -30,8 +30,8 @@ Clock marks are approximate planning guides: follow the learners' progress, not 
 | 1:20–1:45 | Learner recomputes and challenges the brief | Calculations and six rejection reasons |
 | 1:45–2:05 | Learner writes and inspects corrected brief | Review surface answers five decision questions |
 | 2:05–2:20 | Learner freezes baseline verdict and source-change prediction | Hashes and timestamps precede reveal |
-| 2:20–2:45 | Release v6; learner updates dependent claims | Preserved baseline and exact changed-source delta |
-| 2:45–3:00 | Select one handoff and one claim for live defense | Thread-walk and claim-defense result or `HOLD` |
+| 2:20–2:40 | Release v6; learner updates dependent claims | Preserved baseline and exact changed-source delta |
+| 2:40–3:00 | Learner runs two fresh sessions with their own AI: one writes the handoff, the next tests that handoff against the sources only | Receipted handoff, a separate scrutiny session, and the learner's own reading of that scrutiny |
 
 ## Coaching boundary
 
@@ -53,16 +53,12 @@ You may not supply:
 - the baseline or changed verdict; or
 - wording for the standing rule.
 
-If you cross that line, mark the work as guided practice. Select the examples yourself when you ask a learner to defend.
+Do not sit in as the second reader of the handoff, and do not ask a classmate to do it. The learner's new session does that check.
+If you cross that line, mark the work as guided practice.
 
-## Thread walk and claim defense
+## After the two sessions
 
-After the handoff is complete, select the examples yourself.
-
-- Choose one adjacent pair from the eight-step thread. Ask the learner to show the first step's output, the next step's entry condition, whether the handoff passes, its evidence, and one break condition.
-- Choose one material claim row. Ask the learner to open the exact source, identify the current entity/version, explain the warrant or calculation, reject one plausible competing source, and name a falsifier.
-- Use an unseen selection for the practice case. Do not allow the learner to choose a rehearsed row.
-- Review the explanation for inspectable support and reasoning.
+Do not choose a handoff or a claim for the learner to defend out loud. Step 12 is their model writing `handoff.md` from the files they saved. Step 13 is a new session that sees only that handoff and the source files. You may help them run the supplied commands. You do not supply the scrutiny, and you do not treat either model's text as the verdict.
 
 ## Domain-overload check
 

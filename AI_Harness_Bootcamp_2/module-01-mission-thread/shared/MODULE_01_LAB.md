@@ -99,7 +99,7 @@ $env:W = "$HOME\course-evidence\module-01-$RUN\work"
 
 ## Pacing
 
-Filling in the ledger takes the longest. Fingerprinting the inbox, writing down what each file is allowed to prove, and redoing the calculations each take a while. The other steps are short.
+Filling in the ledger takes the longest. Fingerprinting the inbox, writing down what each file is allowed to prove, and redoing the calculations each take a while. The other steps are short. At the end, your AI writes the handoff, and a second new session tests that handoff against the sources.
 
 ## 1. Open the inbox and fingerprint the files
 
@@ -707,33 +707,136 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 & "$env:PY" "$env:M\scripts\check_work.py" "$env:W"
 ```
 
-**Expected:** All seven visible practice phases pass. The checker compares both verdict lines with the practice case's known answer. If yours differs, it prints `FAIL: baseline verdict is HOLD` or `FAIL: changed verdict is HOLD`. Go back to the sources and recheck your blockers. Don't change your judgment just to match the checker. In `handoff.md`, record a verdict you still stand behind. The checker's result doesn't replace your reading of the sources.
+**Expected:** All seven visible practice phases pass. The checker compares both verdict lines with the practice case's known answer. If yours differs, it prints `FAIL: baseline verdict is HOLD` or `FAIL: changed verdict is HOLD`. Go back to the sources and recheck your blockers. Don't change your judgment just to match the checker. The checker's result doesn't replace your reading of the sources.
 
 **Stop:** Old values, or errors about a change that doesn't belong.
 
 **Recovery:** Fix only the parts that depend on the new source, and run both commands again.
 
-## 12. Finish the handoff
+## 12. Have your AI write the handoff
 
-Write `handoff.md` so the next person can find your verdict, the evidence, and what to look at first.
+This step takes the verdict you already saved and has your AI write `handoff.md` from those files. You don't write it, and you don't edit it afterward. The run is a new session. It does not have your earlier chat. It is one model call, and it needs your OpenRouter key in this terminal.
 
-```markdown
-# Module 1 handoff
+Enter the key with the hidden prompt on [the credentials page](../../module-00-setup/shared/CREDENTIALS.md) first. Without the key, the command exits 2 and leaves the handoff untouched.
 
-Question reviewed:
-Exact entities and as-of time:
-Current verdict:
-Eight-step thread location:
-Material traced claim:
-Sources of record:
-Rejected sources and reasons:
-Baseline-to-change delta:
-Current unresolved condition:
-Standing rule:
-What the next person should inspect first:
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/run_handoff.py" write "$W"
 ```
 
-Write it so the handoff alone is enough to reconstruct the verdict, without you there to explain it.
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\run_handoff.py" write "$env:W"
+```
+
+**Expected:** The last lines read `PASS: your AI wrote` followed by the path of `handoff.md`, then `Evidence:` and a receipt folder. That folder is outside your work folder.
+
+**Stop:** `HOLD: OPENROUTER_API_KEY unavailable; enter and export the key in this terminal`, or `HOLD: handoff.md already has work in it; keep it`, or a remaining file after a failed run.
+
+**Recovery:** If the key is missing, enter it and run the command again. If a failed run left a file, keep that file. Use the retire command below, then run the writer again. Don't delete the retired copy, and don't edit `handoff.md` by hand.
+
+Open `handoff.md`. The current verdict has to be the one in `changed-verdict.md`. The blockers and the sources have to be the ones you saved. If the file invents a route, a permit approval, or a delivery, it does not carry your work.
+
+If it does not carry your verdict, retire it and run the writer again:
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/run_handoff.py" retire "$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\run_handoff.py" retire "$env:W"
+```
+
+**Expected:** The last lines read `PASS: retired handoff kept at` followed by a folder under `handoff-retired`. The old file is still there. `handoff.md` is the empty starter again.
+
+**Stop:** `HOLD: there is no AI handoff to retire`.
+
+**Recovery:** If you already retired this file, don't retire the starter. Run the writer again.
+
+Build the review page again so it shows this handoff.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/render_review.py" "$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\render_review.py" "$env:W"
+```
+
+**Expected:** The last line reads `PASS: wrote` followed by the path of `review.html`, and the page includes the handoff.
+
+**Stop:** The page still shows the empty starter, or the command names a missing file.
+
+**Recovery:** Finish the writer command first, then build the page again.
+
+## 13. Have a new session test the handoff
+
+This is a second model call, in a new session. It does not see your ledgers, your briefs, your verdict files, or the chat from step 12. It sees the handoff and the source files, and it tests whether the handoff's conclusion holds up. You still read the result. The second session does not replace your judgment.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/run_handoff.py" scrutinize "$W"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\run_handoff.py" scrutinize "$env:W"
+```
+
+**Expected:** The last lines read `PASS: a new session wrote` followed by the path of `handoff-scrutiny.md`, then `Evidence:` and a receipt folder. That folder is not the one from step 12.
+
+**Stop:** `HOLD: handoff.md is not a receipted AI handoff`, `HOLD: handoff-scrutiny.md already exists; keep it`, or the missing-key hold from step 12.
+
+**Recovery:** If you retired the handoff, run step 12 again before this command. If a failed scrutiny left a file, run the retire command from step 12, then run step 12 and this command again. Don't edit the scrutiny file to make the conclusion stand.
+
+Open `handoff-scrutiny.md`. The conclusion is one of `STOOD`, `DID NOT STAND`, or `HOLD`. Open the source line it cites. If it didn't open the source that actually decides the claim, the scrutiny itself doesn't hold.
+
+Write `handoff-scrutiny-decision.md` yourself. This file is yours, not the model's.
+
+```text
+Scrutiny result:
+Claim rechecked:
+Source opened:
+Scrutiny holds:
+What stays unchanged:
+```
+
+After `Scrutiny result:`, copy the conclusion word from the scrutiny file. After `Scrutiny holds:`, write `YES` or `NO`. `NO` means the second session missed something or cited the wrong line. After `What stays unchanged:`, name the verdict you are not handing to either session to rewrite. Don't change `changed-verdict.md` to match the second session.
+
+Build the review page again, then run the handoff check.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/render_review.py" "$W" &&
+"$PY" "$M/scripts/check_work.py" "$W" --phase handoff
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& "$env:PY" "$env:M\scripts\render_review.py" "$env:W"
+if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
+& "$env:PY" "$env:M\scripts\check_work.py" "$env:W" --phase handoff
+```
+
+**Expected:** `PASS: phase handoff`. The review page shows the handoff, the scrutiny, and your reading of it.
+
+**Stop:** `FAIL` on a hash, a missing label, a verdict that doesn't match `changed-verdict.md`, or a scrutiny packet that can see your working notes.
+
+**Recovery:** If you edited `handoff.md` after the session, retire it and run both sessions again. If the packet check fails, keep the files and run scrutiny again only after retire. Don't copy your ledger into the packet.
 
 ## Before you stop
 
@@ -749,7 +852,9 @@ Check that:
 - the brief shows up on the review page;
 - the baseline ledger, the prediction, and the verdict were saved before the sealed change;
 - the changed ledger changes only what depends on the new source, and it doesn't keep an old route value;
-- the handoff alone is enough to reconstruct the verdict; and
+- `handoff.md` was written by your AI, and its hash still matches that session's receipt;
+- a second session, with a different receipt folder, tested that exact handoff against the sources and not against your working notes;
+- you wrote the scrutiny decision yourself, and you did not change your verdict to match the second session; and
 - the work stays inside the fictional class case.
 
 

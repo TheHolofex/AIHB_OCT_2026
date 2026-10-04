@@ -140,6 +140,7 @@
         {"source": "scripts/verify_content.py", "dest": "scripts/verify_content.py"},
         {"source": "scripts/compute_thread.py", "dest": "scripts/compute_thread.py"},
         {"source": "scripts/run_producer_rebuttal.py", "dest": "scripts/run_producer_rebuttal.py"},
+        {"source": "scripts/run_handoff.py", "dest": "scripts/run_handoff.py"},
         {"source": "scripts/render_review.py", "dest": "scripts/render_review.py"},
         {"source": "scripts/freeze_baseline.py", "dest": "scripts/freeze_baseline.py"},
         {"source": "scripts/reveal_change.py", "dest": "scripts/reveal_change.py"}

@@ -438,6 +438,98 @@ print(classify_live(1, target, Path("dummy")))
         files_after = {p.relative_to(self.work): p.read_bytes() for p in self.work.rglob("*") if p.is_file()}
         self.assertEqual(files_before, files_after)
 
+    def test_handoff_write_keeps_existing_work_without_a_key(self) -> None:
+        target = self.work / "handoff.md"
+        target.write_text("# Module 1 handoff\n\nCurrent verdict: HOLD\n", encoding="utf-8")
+        before = target.read_bytes()
+        env = os.environ.copy()
+        env.pop("OPENROUTER_API_KEY", None)
+        result = subprocess.run([sys.executable, str(SCRIPTS / "run_handoff.py"), "write", str(self.work)], env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("already has work in it", result.stderr)
+        self.assertEqual(target.read_bytes(), before)
+
+    def test_handoff_write_missing_key_leaves_starter(self) -> None:
+        target = self.work / "handoff.md"
+        before = target.read_bytes()
+        env = os.environ.copy()
+        env.pop("OPENROUTER_API_KEY", None)
+        result = subprocess.run([sys.executable, str(SCRIPTS / "run_handoff.py"), "write", str(self.work)], env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn("OPENROUTER_API_KEY unavailable", result.stderr)
+        self.assertEqual(target.read_bytes(), before)
+
+    def test_scrutiny_packet_excludes_working_notes(self) -> None:
+        sys.path.insert(0, str(SCRIPTS))
+        import run_handoff
+        (self.work / "REVEALED_CHANGE.md").write_text("# S10\nNorth Gate closes at 21:20Z.\n", encoding="utf-8")
+        (self.work / "thread-ledger.csv").write_text("working notes\n", encoding="utf-8")
+        (self.work / "changed-verdict.md").write_text("Verdict: HOLD\n", encoding="utf-8")
+        handoff = self.work / "handoff.md"
+        handoff.write_text("# Module 1 handoff\n\nCurrent verdict: HOLD\n", encoding="utf-8")
+        packet = self.work.parent / "packet"
+        run_handoff.build_packet(self.work, packet)
+        names = {path.name for path in packet.rglob("*")}
+        self.assertIn("handoff.md", names)
+        self.assertIn("REVEALED_CHANGE.md", names)
+        self.assertIn("SOURCE_INDEX.txt", names)
+        self.assertNotIn("thread-ledger.csv", names)
+        self.assertNotIn("changed-verdict.md", names)
+        self.assertEqual((packet / "handoff.md").read_bytes(), handoff.read_bytes())
+        self.assertTrue((packet / "inbox").is_dir())
+        self.assertEqual(len(list((packet / "inbox").glob("*.md"))), 9)
+
+    def test_handoff_phase_binds_two_sessions_and_rejects_a_visible_ledger(self) -> None:
+        sys.path.insert(0, str(SCRIPTS))
+        import run_handoff
+        self.prepare()
+        handoff = self.work / "handoff.md"
+        handoff.write_text(
+            "# Module 1 handoff\n\n"
+            + "".join(f"{label} recorded\n" for label in run_handoff.HANDOFF_LABELS).replace(
+                "Current verdict: recorded", "Current verdict: HOLD"
+            ),
+            encoding="utf-8",
+        )
+        scrutiny = self.work / "handoff-scrutiny.md"
+        scrutiny.write_text("Conclusion: DID NOT STAND\nClaim tested: permit\n", encoding="utf-8")
+        (self.work / "handoff-scrutiny-decision.md").write_text(
+            "Scrutiny result: DID NOT STAND\nClaim rechecked: permit pending\nSource opened: S06\nScrutiny holds: YES\nWhat stays unchanged: HOLD\n",
+            encoding="utf-8",
+        )
+        packet = self.work.parent / "packet"
+        run_handoff.build_packet(self.work, packet)
+        handoff_digest = hashlib.sha256(handoff.read_bytes()).hexdigest()
+        scrutiny_digest = hashlib.sha256(scrutiny.read_bytes()).hexdigest()
+        writer_evidence = self.work.parent / "writer-evidence"
+        scrutiny_evidence = self.work.parent / "scrutiny-evidence"
+        self._receipt(writer_evidence, "handoff.md", handoff_digest, handoff)
+        self._receipt(scrutiny_evidence, "handoff-scrutiny.md", scrutiny_digest, packet / "handoff-scrutiny.md")
+        (packet / "handoff-scrutiny.md").write_bytes(scrutiny.read_bytes())
+        selector = run_handoff.pinned_selector()
+        (self.work / "handoff-session.json").write_text(json.dumps({
+            "live_model_evidence": True, "model": selector, "output_sha256": handoff_digest, "evidence": str(writer_evidence),
+        }), encoding="utf-8")
+        (self.work / "handoff-scrutiny-session.json").write_text(json.dumps({
+            "live_model_evidence": True, "model": selector, "tested_handoff_sha256": handoff_digest,
+            "output_sha256": scrutiny_digest, "evidence": str(scrutiny_evidence), "packet": str(packet),
+        }), encoding="utf-8")
+        passed = run("check_work.py", self.work, "--phase", "handoff")
+        self.assertEqual(passed.returncode, 0, passed.stdout + passed.stderr)
+        (packet / "thread-ledger.csv").write_text("working notes\n", encoding="utf-8")
+        leaked = run("check_work.py", self.work, "--phase", "handoff")
+        self.assertEqual(leaked.returncode, 1)
+        self.assertIn("FAIL: scrutiny packet excludes working notes", leaked.stdout)
+
+    def _receipt(self, evidence: Path, name: str, file_digest: str, target: Path) -> None:
+        evidence.mkdir()
+        (evidence / "result.json").write_text(json.dumps({
+            "status": "PASS", "output_sha256": {name: file_digest},
+        }), encoding="utf-8")
+        (evidence / "guard.jsonl").write_text(json.dumps({
+            "type": "executed", "tool": "course_write", "output_sha256": file_digest, "resolved_path": str(target),
+        }) + "\n", encoding="utf-8")
+
 
 if __name__ == "__main__":
     unittest.main()
