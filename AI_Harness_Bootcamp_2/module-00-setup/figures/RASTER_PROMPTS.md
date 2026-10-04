@@ -262,45 +262,52 @@ Before returning, check every text element is present, spelled exactly, and noth
 ## m00-recovery-loop
 
 - Title: Recover from a failed step
-- Native size: 1536×1024; published SHA-256: `fc46cc117a748cabf0422e40d4b4c1057e722ce22ef4edf89931d011e467f999`
-- Accepted attempt: 02 of 2
-- Earlier attempts were rejected in review for relationship or layout defects; the last revision requirements are included at the end of the prompt.
+- Native size: 1536×1024; published SHA-256: `fab611f950c431908f7f8c613f4b1f55bb4e0fcb01476315cc8ab696c87df29d`
+- Accepted replacement: 01 of 1, generated with Codex CLI 0.154.0 through its built-in `image_gen` tool.
+- Reference image: the prior `m00-recovery-loop.png` at commit `c87f7d9`, SHA-256 `fc46cc117a748cabf0422e40d4b4c1057e722ce22ef4edf89931d011e467f999`.
+- Review: all thirteen labels are present and correctly spelled. The Yes branch returns new evidence to the harness; the No branch records the result. The existing light course-figure style is retained.
 
 ### Final prompt
 
 ````text
 $imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
+Use the built-in image_gen tool to generate exactly ONE PNG instructional flow diagram. Do not write code or SVG. Save the finished PNG as /tmp/aihb-m00-recovery.VPoavF/recovery-loop.png and return that absolute path. Do not edit repository sources. Do not run tests, builds, linters, or formatters.
 
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
+This is a revision of the attached course diagram, not a new visual identity. Preserve the existing course figure's light, clean style. The subject is a learner using an AI harness to solve a setup error. Teach the work itself: no curriculum rationale, making-of commentary, grades, scores, or qualification claims.
 
-TITLE (top-left): "Recover from a failed step"
+VISUAL STYLE:
+- 1536x1024 landscape, opaque warm off-white background #FAF7F0.
+- Match the attached figure: white panels #FFFFFF, thin border #C9C1B0, small corner radius, deep ink text #2B2A27, muted ochre #9A7B3C arrows and key borders. No new style, scene, photographic effects, decorative icons, gradients, texture, glow, shadows, 3D, logos, or invented data.
+- One clean sans-serif; sentence case; title 44px semibold at top-left; labels 26-30px, generous padding, aligned layout. Make every label legible.
+- Render every label below exactly once, except that Yes and No label their respective decision edges. Do not invent, abbreviate, or add any labels.
 
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Save the first error message"
-- "Do not overwrite the first attempt"
-- "Change one thing"
-- "Run the same check again"
-- "Compare with the saved first error"
-- "Still failing?"
-- "Yes"
-- "No"
-- "Use the recovery guidance"
-- "Record what you changed"
-- "Neither outcome starts an automatic retry"
+TITLE:
+"Recover from a failed step"
+
+LABEL SET:
+Main instruction panel:
+"Ask the harness"
+"Copy and paste the error"
+"Describe what you were doing"
+"Describe what you are trying to accomplish"
+"Fix this issue."
+Other flow nodes:
+"Review and apply the fix"
+"Run the same check again"
+"Still failing?"
+"Paste the new error and describe what you tried"
+"Record the result"
+Decision edges:
+"Yes"
+"No"
 
 LAYOUT AND RELATIONSHIPS:
-Top row, left to right, solid arrows meaning 'then': box 'Save the first error message' (sub-line 'Do not overwrite the first attempt') → 'Change one thing' → 'Run the same check again' → 'Compare with the saved first error'. A separate dashed line runs from the first box along the bottom of the row into 'Compare with the saved first error', meaning 'used as the reference'. It is the only other link to the saved error, so the error stays outside the correction path. From the compare box, a solid arrow goes down to the diamond 'Still failing?'. Orthogonal branches: 'Yes' to 'Use the recovery guidance', 'No' to 'Record what you changed', side by side. No arrow returns from either outcome to the check. A small footnote centred under both outcomes reads 'Neither outcome starts an automatic retry'. Same neutral style for all boxes; no red emphasis border; no grid.
+The dominant panel occupies the upper-left half. Its heading is Ask the harness; the next three lines are equally readable supporting instructions; Fix this issue. is the final emphasized line inside that same panel. Do not draw arrows between the lines: they are parts of one request, not separate actions.
+A single right-pointing arrow leaves this panel to Review and apply the fix in the upper-right. A down arrow leads to Run the same check again, then another down arrow to the diamond Still failing?. The Yes edge leaves the LEFT vertex of the diamond for a lower-left box reading Paste the new error and describe what you tried; a clear return arrow from that box goes back to the main Ask the harness panel. This is the learner returning with new evidence. The No edge leaves a DIFFERENT vertex for Record the result, at the lower-right, with no return arrow from success. Place Yes and No on their own distinct edges. Keep connectors outside boxes, uncrossed, and away from text. Use the available canvas evenly with generous margins.
 
-REVISION REQUIREMENTS (a previous attempt was rejected; fix all of these):
-- Both outcome branches leave the bottom vertex of 'Still failing?' as one shared vertical stem. The stem splits about 40 px below the diamond. The 'No' label sits beside that shared stem (x≈1393, y≈655), so it labels a segment that the Yes path also uses. The decision therefore has no unambiguous Yes exit and No exit. The bottom-left half of the canvas is also empty, which leaves the layout weighted to the right. Regenerate with 'Yes' leaving the diamond's left vertex and dropping to 'Use the recovery guidance'. 'No' should leave the bottom vertex straight down to 'Record what you changed', with each label on its own edge. Optionally shift the diamond and the outcome pair left so they sit under the middle of the top row. Keep all text, the dashed reference line and the footnote unchanged.
+Do not retain any old labels such as Change one thing, Use the recovery guidance, or Neither outcome starts an automatic retry. The revised diagram must visibly include the full error + action + goal + explicit fix request, not just generic troubleshooting advice.
 
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
+Before returning, inspect all labels and arrows. Every stated label must appear, spelled exactly. The two decision edges must be unambiguous. Do not report an image as completed without actually generating it.
 ````
 
 ## m00-responsibility-screen

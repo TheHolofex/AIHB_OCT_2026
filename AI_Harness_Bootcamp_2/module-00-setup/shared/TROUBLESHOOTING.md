@@ -1,6 +1,8 @@
 # When setup stops
 
-Start with the first failed action. Save its exact error and last good observation before changing anything. Don't reinstall tools or discard the checkout.
+Start with the first failed action. Copy and paste its error into the harness, describe what you were doing when it appeared, and explain what you are trying to accomplish. Finish with **“Fix this issue.”**
+
+Review and apply the fix, then rerun the failed check. If it still fails, paste the new error into the same conversation and describe what you tried. Keep the earlier error so you can compare the results. If the harness itself cannot start, find the symptom below.
 
 ## Choose the next action from the observed failure
 
@@ -131,4 +133,4 @@ Whether any output or forbidden effect appeared:
 
 Redact personal paths, account IDs, internal hosts, and credentials from what you share. Keep command names, versions, exit codes, and the first error. An exposed key must be revoked; deleting it from a screenshot does not revoke access.
 
-Make one targeted correction, then repeat the failed check. If you cannot explain a correction, a rollback fails, or device policy blocks the action, record `HOLD` and contact the responsible owner. Do not disable certificate checks, Gatekeeper, antivirus, or protected filesystem permissions to force progress.
+Give the harness the support packet along with your goal and the request **“Fix this issue.”** After you review and apply the fix, repeat the failed check and report the result in the same conversation. If you cannot explain a correction, a rollback fails, or device policy blocks the action, record `HOLD` and contact the responsible owner. Do not disable certificate checks, Gatekeeper, antivirus, or protected filesystem permissions to force progress.

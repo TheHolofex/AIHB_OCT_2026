@@ -40,23 +40,31 @@ Module 7 uses the local visual workflow editor. You don't need n8n Cloud or an A
 
 - Keep at least 15 GB free; WSL should have 25 GB.
 - Get administrator approval for operating-system packages.
-- Keep existing Docker contexts, containers, volumes, applications, and setup attempts. Resolve an occupied port 5678 or existing `$HOME/n8n-course` with its owner before installation.
-- Keep credentials in the approved password manager or secure handoff.
-- **Do not paste a key into a command, Markdown file, shell profile, screenshot, ticket, or repository.**
-- If policy blocks a step on a managed laptop, stop and save the exact message for device support.
+
 
 ## When a step fails
 
-Save the first error before changing anything. Follow [When setup stops](shared/TROUBLESHOOTING.md), change one thing, and rerun the failed check.
+Copy and paste the error into the harness. Describe what you were doing when the error appeared and what you are trying to accomplish, then ask it to fix the issue:
 
-![Save the first error before changing anything, change one thing, and rerun the same check.](shared/figures/m00-recovery-loop.png)
+```text
+I'm trying to: [describe the outcome you want].
+I was doing this when the error appeared: [describe the command or action].
+Here is the error:
+[paste the error message]
 
-*Save the first error before changing anything, change one thing, and rerun the same check.*
+Fix this issue.
+```
+
+Review and apply the fix, then rerun the failed check. If it still fails, paste the new error into the same conversation and explain what you tried. If the harness itself cannot start, use [When setup stops](shared/TROUBLESHOOTING.md).
+
+![Give the harness the error, what you were doing, and your goal. Ask it to fix the issue, then check the result.](shared/figures/m00-recovery-loop.png)
+
+*Give the harness the error, what you were doing, and your goal. Ask it to fix the issue, then check the result.*
 
 <details markdown="1">
 <summary>Figure text</summary>
 
-Keep the first error and do not overwrite the first attempt. Change one thing, run the same check, then compare the result with the saved first error. If the problem remains, use the recovery guidance; if it is resolved, record what changed. Neither outcome starts an automatic retry.
+Copy and paste the error into the harness, describe what you were doing and what you are trying to accomplish, and ask “Fix this issue.” Review and apply the fix, then run the same check again. If it still fails, return to the harness with the new error and what you tried. If it succeeds, record the result.
 
 </details>
 
