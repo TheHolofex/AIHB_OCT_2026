@@ -1,12 +1,12 @@
 # Module 8 · Control hallucinations
 
-Produce a corrected Slope Brief that preserves the useful facts without filling gaps by guesswork. Check the claims against structured source data, run two independent reviewer agents, have another agent correct the draft, and review the correction afresh. You own the final decision.
+Correct the Slope Brief claims without filling gaps by guesswork. Check each claim against its own source packet, run two reviewer agents separately, have another agent correct the claims, and review the correction afresh. You own the final decision.
 
-Plan for a little over two hours (a rough estimate). The complete sequence makes five paid model turns. You need the Python, pinned Oh My Pi, and OpenRouter access verified in [setup](../../module-00-setup/README.md). You won't write code or connect Jev's API.
+Plan for a little over two hours (a rough estimate). The complete sequence makes five paid agent sessions, each of which may make several provider requests. You need the Python, pinned Oh My Pi, and OpenRouter access verified in [setup](../../module-00-setup/README.md). The supplied commands use Sonnet 4.6, not Jev's API.
 
 ## The decision rule
 
-The fictional packet concerns heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. Three source packets support seven material claims. The starting draft contains deliberate defects; it is authored practice data, not evidence of a live model's behavior.
+Slope Brief concerns fictional heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. Treat PC-01, PC-02, and PC-03 as three separate cases, even though the names repeat. Each of the seven claims names its own `case_id`; only that packet can establish the claim. Don't combine masses or clocks from different packets into one shipment record. The starting claims contain deliberate defects; they are authored practice data, not evidence of a live model's behavior.
 
 Apply this rule throughout: **a claim needs the right source, not enough agreeing reviewers.** Code checks what can be checked exactly. Agents judge the relationship between a claim and its evidence. You inspect that relationship before using the result.
 
@@ -61,7 +61,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 
 ### If you open a new terminal
 
-A closed terminal forgets the variables. Reload the existing attempt without preparing another copy.
+A closed terminal forgets the variables. Reload the existing attempt without preparing another copy. Resume at the first unfinished stage; don't repeat commands that already succeeded. If the report exists, open it and complete the human decision instead of running `report` again.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -101,7 +101,11 @@ Open `W/shared/case/LEGEND.txt`, `claims.json`, and the three `PC-*/sources.json
 
 In your editor, create `W/notes.md`. Pick one claim you would use, one you would stop, and one whose evidence needs a closer look. For each, record the claim ID, source locator, and reason. Distinguish an unsupported assertion from a false one: missing permission is not proof that permission was denied.
 
-Open `W/shared/controls/schema.json` and the two `review-*.txt` instructions. Each reviewer answers the same narrow question for every claim with `supported`, `contradicted`, or `unknown`. A review also carries a locator, an exact source quotation, and a reason. The supplied checker rejects missing fields, extra claims, duplicate IDs, and invented quotations. It cannot establish that a real quotation logically supports the model's conclusion; you still need to read it.
+Open `W/shared/controls/schema.json` and the two `review-*.txt` instructions. Apply the [typed-question discipline](../../module-04-typed-decisions/README.md) you already used: the state contains the claims and sources, and the narrow question is **“Does this claim's own packet establish it?”** This follows [Jev's state-and-typed-question pattern](https://docs.typesafe.ai/introduction), using the course's pinned model.
+
+Each answer uses `supported`, `contradicted`, or `unknown` and includes `locator`, `quote`, and `reason` fields. Supported and contradicted judgments need a real source locator and exact quotation. An unknown may leave both locator and quote `null`; its reason must still explain what the packet cannot establish. Unknown does not mean false.
+
+The supplied checker rejects missing fields, extra claims, duplicate IDs, and invented quotations. It cannot establish that a real quotation logically supports the model's conclusion; you still need to read it.
 
 Consider this counterexample before any call: two agents approve `2255 kg` for the PC-01 shipment and quote the near-miss yard note. The quote is real. Open `SB-PC-01#payload-s14` and `SB-PC-01#payload`. Which shipment does each concern? Record which value can enter the brief and why agreement cannot resolve the mismatch.
 
@@ -138,7 +142,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Freeze stopped; preserve this attempt.' }
 
 Run the source reviewer and the skeptical reviewer in separate fresh sessions. Each gets the same frozen claims and sources. Neither gets the other review, your notes, or the deterministic findings. The first checks exact support; the second looks for wrong-case evidence and conclusions that go beyond the source.
 
-All calls use `openrouter/anthropic/claude-sonnet-4.6` through the pinned launcher. Different roles are not different model families. The supplied controls allow reads only; the agents cannot edit the packet or authorize a movement. Calls are not retried or replaced with another model. Check your provider account's available credit and spending limit before starting; five turns is a call count, not a price guarantee.
+All sessions use `openrouter/anthropic/claude-sonnet-4.6` through the pinned launcher. Different roles are not different model families. The supplied controls allow reads only; the agents cannot edit the packet or authorize a movement. Sessions are not automatically retried or replaced with another model. Check your provider account's available credit and spending limit before starting; five sessions is not a price cap.
 
 ### Enter your key in this terminal
 
@@ -301,22 +305,32 @@ if ($LASTEXITCODE -ne 0) { throw 'Report holds; retain all findings and inspect 
 
 **Expected:** With complete valid execution evidence, the command writes `E/report.json`, `report.md`, and `human-decision.json`. A completed report can print a line beginning `PASS: report written; operational dispatch HOLD`. That means the report was assembled; inspect its claim findings before accepting even an internal summary. Operational dispatch remains on hold because the packet doesn't establish the required authority.
 
-**Stop:** A source or control changed, receipts are incomplete, a material fact still fails its exact check, or a previously supported claim regressed. Don't treat a favorable review as a substitute for the missing evidence.
+**Stop:** A source or control changed, receipts are incomplete, or the report command returns `HOLD:`. Don't treat a favorable review as a substitute for missing execution evidence.
 
-**Recovery:** Keep the report and failed attempt. Name the unresolved claim, missing fact or authority, and person who could resolve it. A fresh attempt is separate evidence, not a replacement for this one.
+**Recovery:** Preserve the attempt and the error. If the report already exists, inspect it instead of rerunning the command. If no complete report was created, record the blocked stage and overall `HOLD` in `W/notes.md`; don't invent missing results or a human-decision file. Resolve the named prerequisite before starting a separate attempt.
 
-Open `report.md` beside the original sources and complete `human-decision.json` in your editor. Inspect all seven claims; don't accept only the ones highlighted as changed. In each claim's `disposition`, record `USE`, `KEEP_UNKNOWN`, or `HOLD`; put the exact source locator and your explanation in `reason`. Complete `internal_summary_decision` and `unresolved_evidence_and_owner` for the brief as a whole. Keep `operational_dispatch` at `HOLD` and keep your human decision separate from the model receipts.
+If the report was created, finish your decision even when it contains a content hold. Open `E/report.json` and read these fields separately:
+
+- **`technical_complete`:** All five runs and their required evidence passed the audit. Still inspect the claims and quotations; this is not factual acceptance.
+- **`content_holds`:** When `true`, an exact failure, reviewer conflict, disagreement, or changed supported claim remains. Find the affected claims and record a source-backed resolution or `HOLD`. When `false`, still inspect their support. Don't edit the report to clear the flag.
+- **`operational_dispatch`:** The case does not establish dispatch authority. Leave it at `HOLD`, even if an internal summary is usable.
+
+Open `report.md` beside the original sources and complete `human-decision.json` in your editor. Inspect all seven claims, including unchanged ones, within their own case packets. Use `USE` for a supported corrected claim, `KEEP_UNKNOWN` when the unsupported assertion has been withdrawn to an explicit unknown, and `HOLD` when a claim remains wrong or unresolved. Put the source locator and your explanation in `reason`. For an absent fact, name the packet you checked and the missing evidence; don't invent a locator.
+
+A material fact that still fails its exact check, or a previously supported claim damaged by correction, stays on hold. A reviewer disagreement can be resolved by the original source, not by a vote. Keep that reasoning in the human decision while leaving the model outputs and report unchanged.
+
+Complete `internal_summary_decision` and `unresolved_evidence_and_owner` for the claim set as a whole. If the packet doesn't identify the responsible owner, record that the owner is not identified rather than inventing a person. Keep `operational_dispatch` at `HOLD` and your decision separate from the model receipts.
 
 Your final decision must answer:
 
 1. Which corrected claims are supported, and by which exact records? Did the supported controls remain intact?
 2. Which reviewer judgments did you reject or leave unresolved? What evidence outweighs their agreement or explains their disagreement?
-3. Is the corrected brief usable as a bounded internal source summary? If so, which unknowns must travel with it? If not, what holds it?
+3. Is the corrected claim set usable as a bounded internal source summary, with its case boundaries intact? If so, which unknowns must travel with it? If not, what holds it?
 4. What prevents dispatch, and who would need to supply the missing fact or authorization?
 
-Keep the whole evidence folder and your notes. A useful handoff lets someone inspect the original failure, independent reviews, correction, full recheck, and your source-backed decision without the chat.
+Keep the whole evidence folder `E` and `W/notes.md` together. A useful handoff lets someone inspect the original failure, separate reviews, correction, full recheck, and your source-backed decision without the chat.
 
-Five calls on one small packet do not establish a hallucination rate, calibrated confidence, or superiority over another model. Separate sessions do not remove shared model or source errors. The useful result is narrower: an inspectable correction with explicit limits.
+Five sessions on these three small case packets do not establish a hallucination rate, calibrated confidence, or superiority over another model. Separate sessions do not remove shared model or source errors. The useful result is narrower: an inspectable correction with explicit limits.
 
 ## Class-only boundary
 

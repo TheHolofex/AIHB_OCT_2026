@@ -312,7 +312,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Restore:** Historical router contract, not the active path. The active close is the downloaded spreadsheet, the structure check, and the learner's note of rows the rules reject.
 
-**Optional revision:** Freeze and prove the input effect separately (wave-two baseline versus revised-wave baseline) and the policy effect separately (revised-wave baseline versus revised-wave changed policy). Each has its own source-derived prediction; neither comparison may hide the other effect.
+**Historical optional revision (retired router):** Freeze and prove the input effect separately (wave-two baseline versus revised-wave baseline) and the policy effect separately (revised-wave baseline versus revised-wave changed policy). Each has its own source-derived prediction; neither comparison may hide the other effect. This is not an optional step in the current agent-spreadsheet lab.
 
 **Independence:** Not `L-11`–`L-13`. Not Module 08's Slope Brief movement, Ridge Depot, that module's clinic, or its vehicle. Not Monday's payload arithmetic.
 

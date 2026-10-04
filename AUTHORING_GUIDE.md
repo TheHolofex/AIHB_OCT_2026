@@ -69,7 +69,7 @@ Legacy P4 is an authoring source only. Record adaptation provenance in Module 02
 | Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 04 |
 | Hidden-fault diagnosis and recovery | 05 |
 | Observed-run analysis and predicate specification | 06 |
-| Fixed workflow and deterministic outer-state change | 07 |
+| Model-driven tool use that produces a real structured-data artifact, with observed execution and downloaded-file inspection | 07 |
 | Hallucination control with structured claim checks, isolated reviewer agents, correction, re-review and human disposition | 08 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 09 |
 | Package local-runtime instructions/controls (no undeclared deps) for fresh-terminal structure verification | 10 |
@@ -101,7 +101,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 The learner can specify a mechanically decidable predicate and configure it in a **supplied deterministic control**. The adapter implements any new checker and owns its identity. If the observed failure is an arbitrary semantic condition that cannot be represented in supplied controls, record the predicate, implementation dependency, owner, and `HOLD`; do not claim the control was implemented.
 
-The fixed workflow is the highest common-core machinery. Core permits a local, human-reviewed Markdown knowledge vault and a bounded human-started read-only ensemble for Module 08. Reviewers receive isolated inputs; the correction stage sees completed reviews as evidence, and fresh reviewers recheck the entire correction. No model vote grants authority. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, simpler alternative, added risk, and escalation owner.
+Core automation is task-bounded. Module 07 connects one n8n agent to one spreadsheet-writing tool; it does not grant arbitrary file access or make a chat reply proof of an artifact. Core also permits a local, human-reviewed Markdown knowledge vault and a bounded human-started read-only ensemble for Module 08. Reviewers receive isolated inputs; the correction stage sees completed reviews as evidence, and fresh reviewers recheck the entire correction. No model vote grants authority. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, simpler alternative, added risk, and escalation owner.
 
 ## Deterministic and stochastic evidence
 

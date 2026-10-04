@@ -1,63 +1,42 @@
-# Module 07 — Build and control a fixed workflow through change
+# Module 07 — Automate a spreadsheet with an agent
 
 **Serves oracle:** S04, S08, S13, S14, S17, S19  
-**Primary objective:** PO-07 — Build and control a fixed workflow  
-**Prerequisites:** Source verification, bounded-predicate validation, failure preservation, and reversible recovery; local n8n readiness; this module's supplied waves, validator, and independent checker  
-**Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BATCH_WORKLOAD; VERIFY:N8N_CONTROLS  
-**Produces:** FIXED_BASELINE; EXCEPTION_RULE; DETERMINISTIC_DELTA; CONFIG_ID; RESTORE_ACTION; PO07_RESULT  
-**Rough time:** about 3 hours  
+**Primary objective:** PO-07 — Automate a batch into a spreadsheet  
+**Prerequisites:** Source verification, bounded tool use, typed-output inspection, failure preservation, and local n8n readiness; this module's supplied batch and sheet rules  
+**Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:BATCH_WORKLOAD  
+**Produces:** AGENT_SHEET; PO07_RESULT  
+**Rough time:** about 3 hours (planning estimate, unmeasured)  
 **Performance stage:** Adversarial  
 **Work surface:** Structured-data/batch work  
-**Practical work:** Build a native visual n8n graph from a blank canvas; save and run it on two waves; change only the saved `pending_status` value; prove the complete deterministic effect; restore the original export into a new blank workflow and reproduce both waves.  
-**Performance evidence:** Saved graph, ordered branch map, frozen source-based predictions, all-row comparison reports, original export with independent pre-edit SHA-256 record, changed export, verified original-export identity, and both restored receipts.  
-**Failure / HOLD:** Missing local runtime or supplied controls, malformed input, altered checker or validator, unexpected route/status/serialization, missing or duplicated rows, manual record repair, lost original digest, import onto a populated canvas, or failed restoration. A green execution alone does not establish a comparison PASS.  
-**Scope boundary:** Generated prose is excluded from deterministic acceptance before execution. No programming objective, model-based routing, persistent state, adaptive flow, multi-agent operation, or deployment.  
-**Handoff:** Preserve the graph identities, inputs, frozen predictions, complete reports, original and changed exports, and the verified restore path.
-**Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module does not consume another module's product.
+**Practical work:** Connect an AI Agent in local n8n to OpenRouter, give it one spreadsheet-writing tool, run the supplied batch, download the actual XLSX file, and inspect the file against the source and sheet rules.  
+**Performance evidence:** AGENT_SHEET includes the downloaded spreadsheet and its source batch, unpublished agent and tool workflow exports without key material, the tool-call and download execution identity, the structure-check result, and observations identifying any incorrect routes or statuses. PO07_RESULT records what the run produced, the learner's decision, and unresolved limits.  
+**Failure / HOLD:** Missing local runtime, wrong model or tool, no observed tool call, absent download, missing or invented source lots, key material in an artifact, or unsupported routing. A chat reply and a green execution are not evidence that the spreadsheet exists or is correct. Preserve failed executions and downloads, except exposed key material, which must be removed and the credential revoked.  
+**Scope boundary:** One human-started agent workflow and one supplied-purpose file-writing tool. No programming objective, cloud n8n deployment, published production workflow, arbitrary host-file access, autonomous collaboration, or multi-agent writing. The model chooses row values; the converter does not prove their correctness.  
+**Handoff:** Keep the source batch, actual download, execution identity, checker result, observations, and secret-free exports. Record wrong rows instead of hand-editing the model's spreadsheet into a passing result.
+**Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). White Rack is independent of other modules' cases and consumes none of their products.
 
 ## Capability added
 
-Before this project, the learner can verify a source claim, specify and validate a bounded predicate, and recover a reversible change. After it, the learner can compose those controls into a reusable batch process with explicit branch precedence, complete record accounting, and a proven policy-change boundary. Installing n8n and retaining files support that capability; they are not learning objectives.
+Before this project, the learner can bound a tool's authority, inspect model outputs, and check claims against sources. After it, the learner can connect a model's tool call to the production of a real structured-data artifact, then distinguish the observed file and its correctness from what the model says it produced. Source checking and credential hygiene remain prerequisites, not new objectives.
 
 ## Enabling objectives
 
-- Compose validation, first-match branching, exception handling, rejoining, source-order recovery, and terminal serialization into one saved native visual workflow.
-- Predict and prove the complete effect of a single policy change across repeated batches, including every unaffected row and the exact serialized representation.
-- Recover the original executable graph from an independently identified export and establish repeatability on both waves in a fresh workflow.
+- Compose an agent, a pinned chat model, and one callable tool workflow so a supplied batch produces a downloadable spreadsheet rather than a chat-only answer.
+- Trace the observed tool call through the sub-execution to the downloaded artifact, keeping the credential in the local n8n credential store.
+- Inspect complete lot coverage separately from route and status correctness, using the source batch and first-match rules to identify model errors without repairing the evidence by hand.
 
-## Saved graph contract
+## Active execution contract
 
-Use local n8n 2.41.5 with the full official six-service Docker setup from the platform guide. Keep workflows unpublished and browser access on localhost. Native Windows PowerShell learners use WSL Ubuntu only for the n8n bridge; OMP, Python, Git, credentials, and other course work stay on their selected native path. n8n readiness is separate from OMP readiness.
+Use local n8n 2.41.5, localhost browser access, and unpublished workflows. The agent uses OpenRouter's `anthropic/claude-sonnet-4.6` with the learner's own credential. n8n Assistant remains off; it is not the AI Agent node.
 
-The learner constructs the router from blank using native nodes: Form Trigger (`wave` file upload) → Extract from File (CSV) → Edit Fields (`Pending rule`, string `pending_status=OPEN`) → supplied batch validator in Code → Switch → four Edit Fields branches → Merge (Append) → Sort → Edit Fields → Convert to File (CSV). Paste the supplied validator unchanged; do not supply a completed router import or write routing code. n8n autosaves the graph; name it distinctly and confirm it persists when reopened. Import the supplied `receipt-checker.json` into a separate new blank workflow.
+The agent workflow is Upload wave → Extract from File → One batch → AI Agent. One batch collects all extracted rows into a single item. The agent has an OpenRouter Chat Model and a Call n8n Workflow Tool connected to a separate unpublished workflow. That tool accepts `sheet_csv`, parses it with the supplied Code body, and uses Convert to File to produce `white-rack.xlsx`. The learner pastes the supplied bodies; writing a new parser or runtime is not an objective.
 
-Retain all input fields through `Pending rule` and the branches. The validator checks the complete batch before routing and preserves source order in `_row`. Enable Always Output Data on CSV extraction so an empty/header-only file reaches validation; keep it off on branch nodes. Invalid inputs HOLD without trimming, coercing, repairing, or inventing records.
+The instruction requests one tool call containing every lot. Inspect intermediate steps to establish what actually happened; the request alone does not prove one call occurred. Download the XLSX from that sub-execution. Docker-hosted n8n does not place it directly in the learner's Documents folder. Retain each execution and download separately.
 
-The Switch uses first match, case-sensitive exact equality, with Ignore Case OFF and Send data to all matching outputs OFF. Its ordered branches are:
+## Artifact and evidence contract
 
-| Condition | Route | Status |
-|---|---|---|
-| `resource_exception` exactly `RACK_CONFLICT` | `hold` | `RESOURCE_CONFLICT` |
-| `permit` exactly `AUTHORIZED` | `pass` | `READY` |
-| `permit` exactly `PENDING` | `hold` when `pending_status` is `OPEN`; `reject` when it is `NOT_AUTHORIZED` | saved `pending_status` |
-| Fallback: every other permit | `hold` | `OPEN` |
+The supplied `wave1.csv` contains 80 White Rack lots, `LW-01`–`LW-80`, carrying refrigerated reagent kits from Icehouse Depot to Clinic I-6. The spreadsheet columns are `lot,route,status,reason`. Apply the first matching rule from `shared/SHEET_RULES.md`: exact RACK_CONFLICT holds with RESOURCE_CONFLICT; otherwise exact AUTHORIZED passes with READY; otherwise exact WITHDRAWN rejects with NOT_AUTHORIZED; every other permit holds with OPEN. Batch notes, gate-window text, and input dispositions do not override those rules. The rack pair stays held; this exercise does not choose which cold lot travels.
 
-Append the four branches, sort by `_row` ascending, then emit only `lot,route,status` in that order. Keep source strings unchanged. Upload waves through the current workflow's armed Form Trigger Test URL and download receipts from the binary output. Do not use production URLs, terminal routing, host/container file paths, or an AI Assistant.
+Run the supplied `scripts/check_sheet.py` against the downloaded file and the unchanged source batch. Its PASS establishes that each source lot is present once, not that the routes and statuses are correct. The learner compares those fields with the rules and records incorrect rows in `observations.md`. If XLSX reading is unavailable, preserve the original download and check a CSV copy exported from it; identify that copy rather than claiming it is the original binary.
 
-## Complete comparison and restoration
-
-Before any routing execution, predict the policy effect from each wave's source cells. Freeze one delta CSV per wave with header `lot,before_route,before_status,after_route,after_status`, one row per actual predicted change, no duplicates, and no unchanged rows. State explicitly that every other serialized row stays byte-identical and rack precedence holds. Use a header-only delta for zero predicted changes. Generated explanations cannot amend these predictions or determine routes.
-
-Run both original waves through the saved graph. The supplied checker in `exact` mode must compare their complete receipts: 80 rows each, identical raw bytes, and identical structure. Download and inspect its report; a successful execution can still return HOLD. Retain all receipts and reports in a unique attempt folder without editing or overwriting their bytes.
-
-Before editing the policy, export the original workflow JSON. In the independent checker, use `file-identity` with that export in both upload fields and leave `expected_sha256` empty only for this initial record. Preserve the downloaded `initial_record_only` SHA-256 report separately from the export. Change only the `Pending rule` string from `OPEN` to `NOT_AUTHORIZED`, run both unchanged input waves, and export the changed graph separately.
-
-For each wave, use `predicted-change` against its retained baseline receipt and its frozen delta. Require comparison of every row, all declared changes and all unaffected fields, exact order/count/header, BOM, newlines, quotes, and serialization outside declared changed fields. Counts or selected-row checks alone are insufficient. No human output patch is allowed.
-
-Recheck the preserved original export in `file-identity` mode using the original retained digest as `expected_sha256`; require PASS and `identity_check: matched`. Do not replace that expected digest with a newly calculated value. Import that exact original export into a new blank workflow: n8n import adds nodes to the current canvas. Give baseline, changed, and restored workflows distinct names. Run both waves through the restored graph, then require `exact` PASS against each corresponding retained baseline receipt, all 80 rows and raw bytes equal. Merely changing the visible value back is not restoration proof.
-
-## Supplied-case domain (adapter)
-
-White Rack moves refrigerated reagent kits from Icehouse Depot to Clinic I-6. Each wave contains 80 lots `LW-01`–`LW-80` with columns `lot,permit,gate_window,input_disposition,resource_exception`. Gate windows and input dispositions are provenance only. CANCELLED rows carry `WITHDRAWN` and remain `hold,OPEN`; permit lookalikes use the fallback. Rack conflicts hold before any permit rule. The baseline and second wave have identical permit and exception values, so their original receipts are byte-identical despite provenance changes.
-
-Optional revised-input practice separates two effects: compare revised-wave baseline to wave-two baseline using a separately frozen input-change prediction, then compare revised-wave changed policy to revised-wave baseline using its own frozen policy-change prediction. Never combine membership changes with the policy delta.
+The retired 13-node deterministic router, policy-change comparisons, and exact restoration remain historical evidence. They are not current requirements or products. No result from this fictional case authorizes a real movement, and no learner score or peer sign-off is required.

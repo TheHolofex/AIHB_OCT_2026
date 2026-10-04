@@ -2,7 +2,7 @@
 
 Turn a plausible brief into a claim-by-claim account of what the sources support, what needs correction, and what remains unknown. Have separate agents challenge the claims, then check their corrections yourself. A clean JSON response can contain a false fact. Two reviewers can agree and still be wrong.
 
-Plan for a little over two hours on Thursday (a rough estimate). The work uses five paid model turns: two initial reviews, one correction, and two fresh reviews of the correction.
+Plan for a little over two hours on Thursday (a rough estimate). The work uses five paid agent sessions: two initial reviews, one correction, and two fresh reviews of the correction. Each session may make several provider requests.
 
 [Open the hallucination-control lab](shared/MODULE_08_LAB.md).
 
@@ -10,7 +10,7 @@ Plan for a little over two hours on Thursday (a rough estimate). The work uses f
 
 Slope Brief concerns heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. A desk brief gives the mass, gate times, and a claim about permission to depart. If an unsupported number or an unlabeled clock reaches the next desk as fact, a fluent answer has become a bad operating instruction.
 
-You have three source packets and seven material claims—claims that could change a decision. The draft is authored practice data with deliberate defects, not a recorded model failure. Your agents' reviews and corrections are live outputs. Keep those two kinds of evidence separate.
+You have seven material claims—claims that could change a decision—across three separate case packets, PC-01, PC-02, and PC-03. Keep each claim with its own packet; don't combine their masses or clocks into one shipment record. The draft is authored practice data with deliberate defects, not a recorded model failure. Your agents' reviews and corrections are live outputs. Keep those two kinds of evidence separate.
 
 The supplied sources can establish facts about a shipment. They don't supply every fact or permission needed to dispatch it. An honest brief must preserve that gap.
 

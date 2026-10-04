@@ -16,7 +16,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates a fixed workflow, controls hallucinations through structured checks and independent agent review, and transfers the method.
+The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, has an agent write a spreadsheet, controls hallucinations through structured checks and independent agent review, and transfers the method.
 
 The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
@@ -31,7 +31,7 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 | 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
 | 05 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
 | 06 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
-| 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
+| 07 | Automate a spreadsheet with an agent | Connect an n8n agent to a spreadsheet-writing tool, trace its call to an actual download, and inspect the file against the source and rules. |
 | 08 | Control hallucinations | Operate a source-bound review-and-correction loop; prevent schema-valid or unanimously endorsed errors from entering accepted work, and retain unknowns in the human decision. |
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
 | 10 | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions/controls (weights excluded) so fresh-terminal structure check passes, and close out distinguishing live runtime proof from structure-only evidence. All work individual in the Thursday session. |
@@ -52,7 +52,7 @@ Module 01 already established source checking as a quality bar, and bounded dire
 
 ## Core and advanced boundary
 
-A fixed workflow is the highest machinery every core learner operates. The core permits a local, human-reviewed Markdown knowledge vault and a bounded, human-started, read-only review ensemble. Module 08's agents work in isolated sessions; a person starts each fixed stage and owns acceptance. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, and custom retrieval infrastructure remain advanced. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
+Core automation is task-bounded. Module 07 uses one n8n agent and one spreadsheet-writing tool; Module 08 uses a human-started read-only review ensemble. The core also permits a local, human-reviewed Markdown knowledge vault. Module 08's agents work in isolated sessions; a person starts each fixed stage and owns acceptance. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, and custom retrieval infrastructure remain advanced. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
 
 The core requires zero programming objectives. Dynamic checker implementation, API/MCP construction, custom RAG, agent-runtime development, and deployment remain adapter or builder work.
 
