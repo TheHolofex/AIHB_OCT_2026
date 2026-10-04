@@ -117,7 +117,7 @@ class Bundle:
         self.write(self.work / "out" / f"requirement-{attempt}.json", summary)
         self.rows = rows
 
-    def write_handoff(self, decision: str = "PASS FOR CLASS REVIEW", omit: str | None = None) -> None:
+    def write_handoff(self, decision: str = "READY FOR SIGNATURE", omit: str | None = None) -> None:
         queue = [row["id"] for row in self.rows if row["route"] in ("REFER", "REVIEW", "CLARIFY") and row["id"] != omit]
         sections = {
             "Requirement line": "GL-65 12 boxes, GL-70 12 boxes, GL-75 28 boxes, GL-80 6 boxes, from the picked messages with the gates on disk; the delegated requisitions wait on the lead.",

@@ -257,7 +257,7 @@ def main() -> int:
         check("M4-VERIFY", holds == 1 and "does not mention every queued message: ['CL-014']" in out, "a handoff that skips a queued message is held")
 
         def two_decisions(b: Bundle):
-            b.write_handoff(decision="HOLD, or PASS FOR CLASS REVIEW once the lead signs")
+            b.write_handoff(decision="HOLD, or READY FOR SIGNATURE once the lead signs")
         holds, out = variant("decision", two_decisions)
         check("M4-VERIFY", holds == 1 and "exactly one of" in out, "a handoff with two decisions is held")
 

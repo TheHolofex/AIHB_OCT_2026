@@ -92,3 +92,15 @@ The obsolete A1/A4 source scans misread `printf '%s/get-n8n.sh'` as an executed 
 There is no per-key spending limit. Reference §4 called a provider-side US$40 ceiling "a limit, not a promised cost," and the setup guides, credentials page, troubleshooting table, facilitator runbooks, and Module 08 and 09 instructions told learners to set and confirm a per-key spending cap before paid work and to stop if they could not. None of that describes a control that exists, so it is removed rather than reworded.
 
 The reference now states only the paid-work controls that do exist: the fixed provider and model, process-local key handling, and no automatic paid retries. Module 08's stretch runner no longer records a provider-ceiling prerequisite or the key's reported limit; its own cost stops, the SDK-estimate stop and the optional staff-only local budget, are unchanged. Historical evidence that records a provider key limit during a past staff campaign is unchanged. The digest is re-frozen for this explicit amendment.
+
+## v7 amendment — no peer review, instructor grading, or outside-class work, 2026-10-04
+
+Owner direction (2026-10-04): "We will not be doing any exercises like this: Your instructor or a classmate will choose one handoff and one material claim row. Remove that and any other case where a classmate or instructor grades work. The entire course is hands-on, individual effort. There is no graded exercise or homework."
+
+The header's artifact-type line no longer refers to an independent evaluator. §4's timing note and §5 drop the remaining qualification wording. §7's evidence lanes drop peer review and human qualification, and its closing paragraph no longer contrasts agent operation with an independent classmate or qualifying human. The facilitator runbook drops the formal-result path that required an independent decision owner; in Module 0 the learner owns the class-review decision. The digest is re-frozen for this explicit amendment; historical records remain unchanged.
+
+## v8 amendment — a send-or-hold decision instead of class review, 2026-10-04
+
+Owner direction (2026-10-04): eliminate `PASS FOR CLASS REVIEW`, the phrase "Neither outcome is operational permission," and the abstract "named decision owner"; North Shelf is an individual exercise.
+
+The learner is the Harbor Depot inventory clerk who would send the email, so the final decision is `READY TO SEND` or `HOLD`, backed by the source check, the checker result, and the falsifier. §4's stage list and §6's decision row now name that decision. In the lab, step 2 becomes writing down what the email must do (`email-requirements.md` replaces `acceptance-control.md`), the step 5 screen and step 6 direction ask who decides whether the email goes out, and the decision-owner figure is removed. The case packet, checker, and changed input are unchanged: the email still states its class-participant readership, and Ivo Marsh still owns any release. The digest is re-frozen for this amendment.
