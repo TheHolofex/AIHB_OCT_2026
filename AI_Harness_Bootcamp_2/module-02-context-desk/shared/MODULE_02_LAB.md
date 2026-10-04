@@ -25,7 +25,7 @@ The process has five steps joined by then arrows. 1. Sources: the model reads th
 
 A **vault** is the folder of Markdown notes that Obsidian opens. Keep this editable folder separate from the frozen copies used by the model. Use the Python, OMP, and Obsidian you verified in [Module 00](../../module-00-setup/README.md). On WSL, open the Linux-home vault with Linux Obsidian under WSLg.
 
-Set `R` to your course checkout. Change only that assignment if yours is elsewhere. `PY` finds a Python 3.12+ executable. `W` holds one fresh work attempt, and `E` holds its run evidence. These are sibling directories outside the checkout. Keep using the same terminal so the variables remain available.
+Set `R` to your course checkout. The examples use the standard Documents location; change only that assignment if yours is elsewhere. `PY` finds a Python 3.12+ executable. `W` holds one fresh work attempt, and `E` holds its run evidence. These are sibling directories outside the checkout. Keep using the same terminal so the variables remain available.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -171,7 +171,8 @@ foreach ($note in @("DN-003", "DN-014", "DN-015", "DN-016", "DN-000")) {
 
 **Expected:** DN-003 prints `PASS source-as-data` and exits 0. DN-014, DN-015, and DN-016 print `HOLD hostile-instruction` and exit 1. DN-000 is deliberately absent: it prints `HOLD: missing input` and exits 1. Write down the output you get and compare it with your prediction. If a result is unexpected, stop and check the file path and unchanged supplied screen with your instructor. Do not create DN-000 or change the screen to make it pass.
 
-Passing the file screen doesn't tell you whether a source is true or authoritative. A flagged phrase does not remove useful evidence from the same source. Pasting bypasses the file screen; the read boundary is enforced by the tool.
+Passing the file screen doesn't tell you whether a source is true or authoritative. A flagged phrase doesn't remove useful evidence from the same source. Pasting text bypasses the file screen. The tool enforces the read boundary; it isn't an operating-system sandbox.
+
 Return to `Reviews/context-map.md` and append the output and exit code you actually observed for each file. Keep the earlier predictions. Obsidian stores your record; the terminal ran the screen.
 
 ![File-screen observations recorded in the context map, with separate exits for the clean, hostile, and missing files.](figures/m02-obsidian-10-screen-observations.png)
@@ -182,7 +183,7 @@ Open `W/shared/controls/INGEST_PROMPT.md`. It asks the model to read all forty s
 2. At 12:15 MDT, what evidence exists for quality release, vehicle assignment, permit approval, and the crate's stamp status? Keep those states separate.
 3. Does paper arriving at 11:40 MDT establish that this movement can start at 12:15? Explain the relevant sequence and missing authority from the available knowledge.
 
-Using the Module 00 provider setup, run one ingest for this work attempt (ingest and retrieve call the model; other helpers are local).
+Run one ingest for this work attempt with your Module 00 provider setup. Ingest and retrieve call the model; the other helpers are local.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
@@ -222,7 +223,7 @@ If the note is in Reading view, click the pencil at the top right to edit. Open 
 
 ![The Obsidian command palette offers Toggle Live Preview/Source mode while a source note is open.](figures/m02-obsidian-06-source-mode-menu.png)
 
-For each note you want to keep, create `Knowledge/KB-NNN.md` using the proposed ID, then copy the promising text from its Draft in **Source mode**. To write a missing note yourself, choose an unused three-digit KB ID and copy `Templates/NOTE_TEMPLATE.md` into a new Knowledge note. Keep the original Draft as the proposal record. Open the blank note template (or copy from Draft) in Source mode and copy its body into the new Knowledge note, not over the template. Check the destination breadcrumb before pasting so the original stays intact.
+For each note you want to keep, create `Knowledge/KB-NNN.md` using the proposed ID, then copy the promising text from its Draft in **Source mode**. To write a missing note yourself, choose an unused three-digit KB ID, open `Templates/NOTE_TEMPLATE.md` in Source mode, and copy its body into the new Knowledge note, not over the template. Use the same review process for either origin. Keep the original Draft as the proposal record. Check the destination breadcrumb before pasting so the original stays intact.
 
 ![The unchanged note template contains a bare title marker and the four required section headings.](figures/m02-obsidian-12-note-template.png)
 
@@ -267,6 +268,7 @@ Switch MOC to Reading view and follow every entry. Use the back arrow above the 
 ### Write the reason before admitting a note
 
 Finish all note and link edits before admission. Copy `Templates/REVIEW_TEMPLATE.md` into a short reason note under `Reviews`, such as `Reviews/KB-001-v1.md`. Fill the decision, decisive reason (including a competing DN when relevant), and remaining limit. Do not repeat the entire claim and evidence in the reason. Name the new reason for the note and revision, then move it to **Reviews**. Check that the reason is in `Reviews` and that its **Note** field names the exact `Knowledge/KB-NNN.md` you reviewed. Save all edits. Obsidian saves edits automatically; **Ctrl+S** or **Command+S** also saves the current note.
+
 ![The blank review template separates the note, decision, decisive reason, competing source, and remaining limit.](figures/m02-obsidian-20-review-template.png)
 
 ![An admission reason under Reviews names Knowledge/KB-001.md and states a bounded reason and remaining limit.](figures/m02-obsidian-21-admission-reason.png)
@@ -313,7 +315,7 @@ Before v1, check whether your Knowledge notes together cover all three questions
 
 ## 4. Freeze and retrieve v1
 
-A **cold snapshot** is a fixed copy containing only `MOC.md` and admitted `Knowledge/*.md`. Do not open or edit the cold folder as a vault.
+A **cold snapshot** is a fixed copy containing only `MOC.md` and admitted `Knowledge/*.md`. Its identity record stays outside the model's read root. Keep Obsidian open on the editable vault; don't open or edit the cold folder as a vault.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
@@ -330,7 +332,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Freeze held; resolve the named admission, link
 
 **Expected:** The helper creates `cold/v1` and `identities/v1.json`. If any note lacks admission for its current bytes, freeze holds and lists each affected note with full Bash/zsh and PowerShell review commands. Reopen those notes and inspect the changes. Before running a recovery command, create and fill the reason file named by `--reason-file`, or replace that argument with the path to the reason you wrote under `vault/Reviews`. Use the command for your shell and review every named note before retrying freeze. Don't edit a receipt to bypass this check. An existing revision stays intact; never overwrite it.
 
-Run a fresh retrieve against that frozen root. Keep the same saved instruction and three questions.
+Run a fresh session against that frozen root. The helper starts a new model process; it doesn't continue the ingest chat. Keep the same saved instruction and three questions.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
@@ -347,7 +349,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Cold run held; preserve its evidence and read 
 
 **Expected:** The helper prints readable answers and citations and preserves the captured response. Check the evidence for the rule load and reads. The non-null instruction identity must match the initialized rule, and the rule must load before provider contact. The read root must be `cold/v1`, and MOC and every cited Knowledge note must have been read. Input identity must match the snapshot, with no output file changes. A plausible answer alone doesn't show that these checks passed.
 
-Open the files under `E/cold-v1` in a text viewer. `policy.json` names the root, prompt, tools, and instruction. `guard.jsonl` records `instruction_loaded` before `provider_request` and records the tool observations. `result.json` and `snapshots.json` record input/output identities. Read the records to find the proof, but don't edit them or copy their JSON into a note. In `Reviews/context-map.md`, briefly explain what you saw. Use the corresponding `E/ingest` records to find the forty-source read proof and the first rule load.
+Open the files under `E/cold-v1` in a text viewer. `policy.json` names the root, prompt, tools, and instruction. `guard.jsonl` records `instruction_loaded` before `provider_request` and records the tool observations. `result.json` and `snapshots.json` record input/output identities. The helper audits these records and compares the hashes for you. Read the records to find the proof, but don't edit them or copy their JSON into a note. In `Reviews/context-map.md`, briefly explain what you saw. Use the corresponding `E/ingest` records to find the forty-source read proof and the first rule load.
 
 **Record run proof, then check the cited source**
 
@@ -355,7 +357,7 @@ Return to **Reviews / context-map** and add a section for the cold run. Fill eac
 
 ![A fresh-run section in the context map leaves fields for rule loading, executed reads, identities, output changes, and the human source check.](figures/m02-obsidian-23-record-cold-proof.png)
 
-Open the cited **Knowledge** note, switch it to Reading view, and click its **Sources/DN-NNN** link. Check that the breadcrumb changes to **Sources** and the intended DN. Open the cited Knowledge and original Sources in Obsidian yourself to judge each material answer. Keep the model's retrieval separate from your source check. This is your inspection in the editable vault, not a new source file available to the cold model.
+The snapshot's source links point to originals in your editable vault, not to more cold files. Open the cited **Knowledge** note, switch it to Reading view, and click its **Sources/DN-NNN** link. Check that the breadcrumb changes to **Sources** and the intended DN. Judge each material answer against those originals yourself, and keep the model's retrieval separate from your source check.
 
 ![Following a source citation opens the original DN-003 under Sources for the human check.](figures/m02-obsidian-24-follow-original-source.png)
 
@@ -365,9 +367,13 @@ A truthful `unsupported` answer points to a gap in coverage, not a failed runtim
 
 ## 5. Audit and improve the knowledge
 
-Choose one substantive weakness: an unsupported claim, missing qualification, mishandled stale source, or consequential missing relationship. Copy `Templates/AUDIT_TEMPLATE.md` into `Reviews/audit-v2.md`. Open **Templates / AUDIT_TEMPLATE** in Source mode, copy its body into a new note named `audit-v2`, and move the new note to **Reviews**. Keep the template unchanged. Record the revision, focal KB ID, weakness, before state, expected change, and expected retrieval effect. Fill the revision, focal note, weakness, before state, and expected effect before editing Knowledge. Leave **Observed retrieval effect** unfilled until you have a fresh run to inspect.
+Choose one substantive weakness: an unsupported claim, missing qualification, mishandled stale source, or consequential missing relationship.
 
 ### Record the weakness and expected effect
+
+Open **Templates / AUDIT_TEMPLATE** in Source mode, copy its body into a new note, and move it to **Reviews** as `Reviews/audit-v2.md`. Keep the template unchanged.
+
+Fill the revision, focal KB ID, weakness, before state, expected change, and expected retrieval effect before editing Knowledge. Leave **Observed retrieval effect** unfilled until you have a fresh run to inspect.
 
 ![The blank audit template separates the revision, focal note, before and after states, expected effect, observed effect, remaining gap, and decision.](figures/m02-obsidian-25-audit-template.png)
 

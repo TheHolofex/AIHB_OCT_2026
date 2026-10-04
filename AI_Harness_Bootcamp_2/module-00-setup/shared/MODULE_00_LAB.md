@@ -8,9 +8,9 @@ Plan for about three hours (rough estimate). Get a first checked draft in the fi
 
 ## 1. Create the four-file work folder
 
-Finish the [setup path](../README.md) first. Create the work folder and evidence folder outside the checkout with these commands. Use your ordinary user terminal and the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs. `W` names the work folder; `E` names the evidence folder. A **terminal** is the text window where you enter commands. A **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt.
+Finish your [setup path](../README.md) and its checks first. A **terminal** is the text window where you enter commands; use it as your ordinary user, with the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs. A **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create the work folder `W` and the evidence folder `E` beside it, outside the checkout. Earlier attempts stay untouched.
 
-Live drafting needs your OpenRouter key in this terminal. An API key is the credential the launcher uses to reach the account that pays for the model call. You enter your OpenRouter key, which you enter in the terminal rather than save in a file. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. Enter the key after the folder exists.
+Live drafting needs your OpenRouter key, which you enter in the terminal rather than save in a file. An API key is the credential the launcher uses to reach the account that pays for the model call. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -84,7 +84,7 @@ $E = "$HOME\course-evidence\module-00-$RUN\evidence"
 
 ### Enter your key in this terminal
 
-The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+The launcher reads your OpenRouter key only from this terminal's environment, so a new terminal starts without it. Enter the key through a hidden prompt and make it available to the commands you run here. Paste the first command by itself and press Enter. Type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -100,7 +100,7 @@ $secret = Read-Host 'OpenRouter key' -AsSecureString
 
 **Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
 
-**Stop:** Characters appear as you type, or you are not sure which program is reading the input.
+**Stop:** Characters appear as you type, or you're not sure which program is reading the input.
 
 **Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
 
@@ -126,7 +126,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid or has credit.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
@@ -134,7 +134,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## 2. Identify who decides acceptance
 
-Open `W/check_artifact.py` in your editor. Create `W/acceptance-control.md`. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
+A check reports a result; only a named person can accept the email for its use. Settle who that is before any draft exists. Open `W/check_artifact.py` in your editor. Create `W/acceptance-control.md`. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
 
 ![The checker reports mechanical results; a named person owns the supported decision about the email's stated use.](figures/m00-decision-owner.png)
 

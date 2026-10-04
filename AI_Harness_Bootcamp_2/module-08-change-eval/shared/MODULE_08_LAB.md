@@ -45,7 +45,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier, then `PASS: created` followed by your work path, then two `Next` commands that display the policy file. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two scripts you'll run, `scripts/evaluate_pairs.py` and `scripts/restore_baseline.py`. Your evidence folder is separate.
+**Expected:** `RUN=` and this attempt's identifier (record it), then `PASS: created` followed by your work path, then two `Next` commands that display the policy file. You can skip those; the next step opens that file. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two scripts you'll run, `scripts/evaluate_pairs.py` and `scripts/restore_baseline.py`. Your evidence folder is separate.
 
 **Stop:** A command fails, a destination already exists, or Python isn't the verified 3.12-or-newer interpreter.
 
@@ -91,7 +91,7 @@ $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 
 In your editor, open `W/shared/controls/policy.json` and the three batch manifests next to it. The policy lists the forty case IDs, the three form rows whose values need a source (mass, gate time UTC, gate time MDT), the mass and time-zone gates, no exclusions, and `any_violation_rejects`.
 
-Create `W/decision.md` in your editor. Before you open any candidate, write down what would reject either candidate, what counts as a failed case, and that a faster result can't excuse an unsupported material claim. Don't write an adoption decision yet.
+Create `W/decision.md` in your editor. Before you open any candidate, write down what would reject either candidate, what counts as a failed case, and why a faster result can't excuse an unsupported material claim. Don't write an adoption decision yet.
 
 Freeze the file bytes without displaying the candidates. The record covers the policy, manifests, cases, gates, instructions, and restore copies.
 
@@ -205,7 +205,7 @@ Now run the supplied evaluator from any directory.
 & $PY "$W\scripts\evaluate_pairs.py" "$W\shared\cases" "$W\shared\controls\policy.json" "$W\out\results.csv"
 ```
 
-**Expected:** `EVALUATED 120`. It doesn't mean the candidates passed. Open `W/out/results.csv` in your editor or a spreadsheet and look at `format_ok`, `mass_gate`, `zone_gate`, `passed`, `reason`, and the three identity columns.
+**Expected:** `EVALUATED 120`, meaning all forty cases have a baseline, A, and B row. It doesn't mean the candidates passed. Open `W/out/results.csv` in your editor or a spreadsheet and look at `format_ok`, `mass_gate`, `zone_gate`, `passed`, `reason`, and the three identity columns.
 
 **Stop:** A case is missing, an identity differs, the evaluator holds, or the output destination already exists.
 
@@ -215,7 +215,7 @@ Now run the supplied evaluator from any directory.
 
 For each failed row, open that brief and the `sources.json` beside it. Trace the material value back to its exact authoritative locator. Record the case, candidate, gate, and source evidence in `decision.md`. Apply your original rule even if most cases pass.
 
-For each candidate, report how many distinct cases would need repair. This **cost proxy** is a count of failed cases. Keep it separate from observed time, tokens, and money. These prewritten outputs tell you nothing about real API cost, and they don't show that one live model is better than another.
+For each candidate, report how many distinct cases would need repair. This **cost proxy** is a count of failed cases that hints at repair work; it isn't measured repair time or expense. Keep it separate from observed time, tokens, and money. These prewritten outputs tell you nothing about real API cost, and they don't show that one live model is better than another.
 
 Before you accept the comparison, check that your frozen inputs still match.
 
@@ -300,7 +300,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Restored evaluation held.' }
 & $PY -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); same=(w/'out/results.csv').read_bytes()==(w/'out/restored-results.csv').read_bytes(); print('RESTORED RESULTS MATCH' if same else 'HOLD: results differ'); sys.exit(not same)" "$W"
 ```
 
-**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs, the second evaluation matches the first byte for byte, and the candidate attempts are untouched.
+**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs against their hashes and bytes, the second evaluation matches the first byte for byte, and the candidate attempts are untouched.
 
 **Stop:** The frozen restore source changed, a restore check holds, or the compared bytes differ.
 

@@ -2,7 +2,7 @@
 
 Turn a shift's messages into typed answers that software can route. Compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets; your code and the desk lead make the decisions.
 
-You are the intake clerk at Ferry Depot. Chalk Line is a fictional resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages arrived during the shift: requisitions, corrections, cancellations, resends, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it. The case is fictional and stays inside the class.
+You are the intake clerk at Ferry Depot. Chalk Line is a fictional resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages arrived during the shift: requisitions, corrections, cancellations, resends, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it, which states how many boxes of each size the clinic asked for with authority. The case stays inside the class.
 
 A **state** is the data the model sees: the catalog, a short version of the desk rules, and the forty messages. A **typed question** limits the answer to a fixed set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads the state and returns only typed answers, with no prose or side effects.
 
@@ -10,7 +10,7 @@ Plan for about two and a half hours on Tuesday (a rough estimate).
 
 ## Prepare the work copy
 
-Open an ordinary terminal and run this block. It uses the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md) and your OpenRouter key, which you enter in the terminal rather than save in a file. `W` is your work copy. `E` holds your evidence.
+Open an ordinary terminal and run this block. It uses the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md) and your OpenRouter key, which you enter in the terminal rather than save in a file. `W` is your work copy. `E` holds your frozen labels, the handoff, and a folder per live run that the launcher creates itself.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -44,7 +44,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` with this attempt's identifier and `PASS: created` with the work path. It also prints two `Next` commands. In your file browser, `W` contains `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
+**Expected:** The terminal prints `RUN=` with this attempt's identifier and `PASS: created` with the work path. It also prints two `Next` commands; ignore them. In your file browser, `W` contains `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
@@ -200,7 +200,7 @@ Add an eighth question of your own for one judgment the desk needs and the seven
 
 In `questions.json`, copy the `instructs_desk` entry to the end of the `questions` list. Give it a short key of lowercase letters and underscores such as `names_a_deadline`. Keep `"type": "yes_no"` and `"answer": "p"`. Write its `instructions` as one question of at least eight words that a careful reader could answer from the message alone. The model will answer it for every message. The router will not use it. You'll read its answers on the sample later.
 
-Save the file, then check it.
+Save the file, then check it before anything is paid for.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -282,7 +282,7 @@ Judge each message by its own words, without looking ahead to the model's opinio
 
 ## Run the decision function once
 
-Run the decision function once. The model answers all eight questions for all forty messages (320 typed answers) in one call. The run is read-only: the model reads the state and questions but writes nothing.
+Run the decision function once. In one paid call lasting about two to four minutes, the model answers all eight questions for all forty messages (320 typed answers). The launcher sends the contract as the saved instruction and records that the model received it before the first provider request. The run is read-only: the model reads the state and questions but writes nothing.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -369,7 +369,7 @@ After earlier routing gates, only a remaining usable, authorized request reaches
 
 ## Set the gates and route the pile
 
-The supplied router sets each route. A **gate** is a threshold it compares with a typed answer; the matching rule sets the route. Before the rules, the router builds replacement links, leaving out `NONE` links and referred replacers.
+The supplied router sets each route. A **gate** is a threshold it compares with a typed answer; the matching rule sets the route. Before the rules, the router builds replacement links, leaving out `NONE` links and referred replacers. A replacer is referred when its `instructs_desk` probability meets its gate, or its `request` probability meets its gate while its `authority` probability is below its gate.
 
 ![A referred message cannot replace another; uncertain links mark both endpoints for the later routing checks, whose earlier rules still take precedence.](figures/m04-supersession.png)
 
@@ -439,7 +439,7 @@ Open `W/out/routing-1.csv`. Every message has a route and a reason. If you chang
 
 ## Decide the queue and write the handoff
 
-The router does not make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. Record in the handoff that the desk lead decides any change to who may approve.
+The router doesn't make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One queued message changes who may approve; the desk lead makes that decision. Record it in the handoff as the lead's, not yours.
 
 Then write `E/handoff.md` with these six headings, each followed by complete sentences or a table:
 

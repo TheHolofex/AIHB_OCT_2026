@@ -8,7 +8,7 @@ Allow roughly one to three hours for setup, more if downloads, desktop readiness
 
 ## Start here
 
-Choose one platform path. A **terminal** is the text window where you enter commands; the **shell** is the program, such as PowerShell or Bash, that runs them.
+Choose one platform path and stay in it. A **terminal** is the text window where you enter commands; the **shell** is the program, such as PowerShell or Bash, that runs them.
 
 | Your machine | Use this guide |
 |---|---|

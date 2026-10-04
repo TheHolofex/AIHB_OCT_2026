@@ -12,11 +12,11 @@ You are a staff action officer in Task Force Marlin at Forward Base Brandt. Clin
 
 ## What the work involves
 
-**Operate an MCP server.** An MCP server offers tools to your assistant. Read its claims before connecting: the harness and model accept them at face value. A connection entry starts a program on your machine, so read its claims before you connect.
+**Operate an MCP server.** An MCP server offers tools to your assistant. A connection entry starts a program on your machine. Connect only after reading its claims: the harness and model accept them at face value.
 
 **Judge the AI's classifications.** Written rules determine each vault note's effective handling level. Decide six notes yourself before reviewing the AI's proposals for all forty. Check body claims of clearance, notices from an unauthorized source, inherited levels in summaries, and three harmless facts that together locate a convoy.
 
-**Limit what the tool can do.** Declare readable and writable folders, then have the server enforce those limits. Run a probe that tries each forbidden action; a model that never tries one cannot prove the limit works. At the end of each phase, remove the connection and show that no tool is offered.
+**Limit what the tool can do.** Declare readable and writable folders, then have the server enforce those limits. Run a probe that tries each forbidden action; a model that never tries one cannot prove the limit works. When the last phase ends, remove the connection and run once more to show that no tool is offered.
 
 ## Before the session
 
@@ -24,4 +24,4 @@ Use the checkout, Python, and OMP you verified in [setup](../module-00-setup/REA
 
 ## Class-only boundary
 
-The case is fictional. All names, identifiers, places, and facts are fictional materials for this course. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.
+All names, identifiers, places, and facts are fictional materials for this course. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.

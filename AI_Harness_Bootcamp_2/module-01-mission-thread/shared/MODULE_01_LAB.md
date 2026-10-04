@@ -287,7 +287,7 @@ In the calculation column, show the source values you start from, the arithmetic
 
 Check whether a computed arrival is possible, not just whether the arithmetic works. It is achievable only when the supported departure and gate conditions permit it. Label a time that assumes a blocked condition as **counterfactual**: it shows what would happen if that condition were satisfied. It is neither an observed arrival nor an available estimated time of arrival (ETA).
 
-The script helps calculate; it is not evidence.
+The script helps you calculate; it isn't evidence.
 
 ![Recompute from supported premises and units, then check feasibility separately; a valid calculation does not establish that the handoff can occur.](figures/m01-recompute-feasibility.png)
 
@@ -320,7 +320,7 @@ Start with source values and their units, then ask whether the premises are supp
 
 ## 6. Challenge the files you will not use for `GO`
 
-For each source you set aside, explain why it does not support the recommendation. After hashing, write `challenge-matrix.md`.
+For each source you set aside, explain why it doesn't support the recommendation. After hashing, write `challenge-matrix.md`.
 
 Write one block for each source you will not use. In each block state:
 

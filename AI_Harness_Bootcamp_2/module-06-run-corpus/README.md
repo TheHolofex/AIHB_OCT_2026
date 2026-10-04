@@ -1,12 +1,12 @@
 # Module 6 · Improve from observed failures
 
-Find a repeated failure in Blue Gauge's practice records. Choose two exact pieces of text from your notes, configure the supplied check, and test what it catches and misses. Freeze the sixteen-run sample before you read outcomes. Record each run's first failure or no failure, then group the failures and check that the counts add up to sixteen.
+Find a repeated failure in Blue Gauge's practice records. Freeze the sixteen-run sample before you look at any outcomes, then record each run's first failure or no failure and check that the category counts add up to sixteen. Choose two exact pieces of text from those notes, configure the supplied check, and test what it catches and misses.
 
 Plan for about three hours (a rough estimate, not a measured time).
 
 ## Start here
 
-1. [Improve from observed failures](shared/MODULE_06_LAB.md): start with the sample rule, then build and test one narrow check.
+1. [Improve from observed failures](shared/MODULE_06_LAB.md): prepare a work folder, then build one narrow check from the practice runs and test its limits.
 
 ## The supplied check
 

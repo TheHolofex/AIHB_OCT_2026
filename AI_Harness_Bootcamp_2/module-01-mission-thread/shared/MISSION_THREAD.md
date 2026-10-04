@@ -1,6 +1,6 @@
 # Read a mission thread without getting lost in it
 
-A brief can cite true facts and still recommend a movement those facts don't support. Before you accept Cold Lantern's `GO`, check what each of the eight steps shows and what the next requires. Allow about 15 minutes.
+A brief can cite true facts and still recommend a movement those facts don't support. Before you accept Cold Lantern's `GO`, check what each of the eight steps shows and what the next step needs. Allow about 15 minutes.
 
 ## What a mission thread is
 

@@ -1,6 +1,6 @@
 # Module 4 · Decide with typed questions
 
-Turn a shift's messages into typed answers that software can route. Compare the answers with your own reading, then give the desk lead a requirement line backed by messages with authority. The model answers fixed questions; it cannot write prose, pick routes, or invent numbers.
+Turn a shift's messages into typed answers that software can route. Compare the answers with your own reading, then give the desk lead a requirement line where every number is backed by a message with authority. The model answers fixed questions; it cannot write prose, pick routes, or invent numbers.
 
 Plan for about two and a half hours on Tuesday (a rough estimate).
 
@@ -8,7 +8,7 @@ Plan for about two and a half hours on Tuesday (a rough estimate).
 
 1. [Decide with typed questions](shared/MODULE_04_LAB.md): build the state, label a sample, run the model once, validate and measure its answers, set the gates, route the messages, and decide the queue.
 
-Chalk Line is a fictional vehicle resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages reached the intake desk during one shift: requisitions, corrections, cancellations, resends, stock notes, a vendor's offer, a request for another clinic, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it. Every fact you need is in the packet.
+Chalk Line is a fictional vehicle resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9`. Forty messages reached the intake desk during one shift: requisitions, corrections, cancellations, resends, stock notes, a vendor's offer, a request for another clinic, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it. Every fact you need is in the packet.
 
 ## The shape of the work
 

@@ -54,7 +54,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` and this attempt's identifier, followed by `PASS: created` and the work path. It then prints two `Next` commands. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The vault's `Drafts` and `Estimate/Releasable` folders also exist and are empty.
+**Expected:** The terminal prints `RUN=` and this attempt's identifier, followed by `PASS: created` and the work path. It then prints two `Next` commands; you can ignore them because the next step runs the inspector itself. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The vault's `Drafts` and `Estimate/Releasable` folders also exist and are empty.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
@@ -69,6 +69,7 @@ Obsidian writes a hidden `.obsidian` folder into the vault. The server never ser
 ### If you open a new terminal
 
 A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one. It reads the attempt identifier that the first block saved.
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -155,7 +156,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Read the server's contract before you connect it
 
-Read the contract before connecting. When a server connects, it describes itself: a name, instructions for the model, and a description for each tool. The harness and the model take those descriptions at face value. The inspector starts only the supplied server from your work copy.
+Read the contract before connecting. When a server connects, it describes itself: a name, a block of instructions for the model, and a description and hints for each tool, such as whether it only reads. The harness and the model take those descriptions at face value. The inspector starts only the supplied server from your work copy and refuses any other.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -331,7 +332,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the calibration was not frozen; preserve
 
 ## Research through the connection
 
-Try the connection with a small request first. The smoke prompt lists the folders the model can see and reads one reference note. A configuration mistake shows up early. Both runs use your declaration and `mcp.json`. The launcher checks that they agree and refuses to start if they do not.
+Try the connection with a small request first. The smoke prompt asks the model to list the folders it can see and read one reference note, so a configuration mistake can show up early. Both runs use your declaration and `mcp.json`. The launcher checks that they agree and refuses to start if they do not.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -378,6 +379,7 @@ Now read what the AI wrote in Obsidian. Open `Drafts/research/open-questions`, t
 Open `E/research/mcp-audit.jsonl` and look for rows with `"allowed": false`. Each one is a call the server refused. If you see none, the AI never tried anything outside its limits during this run, and your probe is what shows that the limits hold.
 
 Quoted instructions in a source do not change authority. Check which calls were made and what changed on disk. If you did not observe an attempt, do not claim one happened.
+
 ## Check the AI's handling calls against the rules
 
 Treat the AI's handling proposal as a proposal. Under rule H6, only the Release Authority changes a marking. If you accept the AI's proposal without checking it, the mistake is yours. A summary may need a more restricted marking than any of its source notes. Three facts may each be safe to share alone: a location, a time with a zone, and a named route. Together, they can tell a reader where and when a convoy moves.
@@ -543,6 +545,7 @@ Your handoff describes the authority each phase held.
 The next owner needs your finding, the limits that were in force, and what the probes showed. The verifier reads these back. Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
 
 Run the check. It reads your work copy and receipts, matches the launcher's receipts against the server's own log and the files on disk, and checks your handling decisions against the rules.
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash

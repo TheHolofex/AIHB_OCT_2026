@@ -25,4 +25,4 @@ The declared kit lists `shared/PACKAGE.md` (instructions), `scripts/` (adapters)
 
 ## Bounded use
 
-Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. The case is fictional and class-only; it isn't for real movements or operations. Results are for class review only. This kit is a limited local service, not a deployment; completing the run authorizes nothing beyond its evidence bundle.
+Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. Results are for class review only. This kit is a limited local service, not a deployment; completing the run authorizes nothing beyond its evidence bundle.

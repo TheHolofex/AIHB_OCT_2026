@@ -8,7 +8,7 @@ Plan for about three hours on Wednesday. That's a rough estimate, not a measured
 
 Complete [local n8n readiness](../module-00-setup/README.md), then open [Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). Start with a blank router canvas. Download the two input waves, validator, and separate receipt checker from the lab. Save your predictions before running the router.
 
-Use n8n 2.41.5 on the approved full official local stack, with the editor on localhost. Inspect sources, freeze predictions before runs, validate with bounded controls like Blue Gauge's predicate, and keep evidence as you did earlier. Have a plain text editor ready and know where your browser saves downloads. Keep Assistant off and workflows unpublished. Use test forms only, without model calls or provider credentials.
+Use n8n 2.41.5 on the approved full official local stack, with the editor on localhost. Inspect sources, freeze predictions before runs, validate with bounded controls like Blue Gauge's predicate, and keep every piece of evidence, as you did earlier. Have a plain text editor ready and know where your browser saves downloads. Keep Assistant off and workflows unpublished. Use test forms only, without model calls or provider credentials.
 
 ## The saved change
 
@@ -16,7 +16,7 @@ The router checks exact, case-sensitive values. `RACK_CONFLICT` takes priority a
 
 Change only Pending rule's String value from `OPEN` to `NOT_AUTHORIZED`. Keep every other node setting, wire, and input unchanged. Before editing, keep the original JSON export and its separately downloaded SHA256 report. Save the changed export separately.
 
-Import the checker into its own new blank workflow; importing JSON adds nodes to the open canvas. To restore, check the original export against its saved digest, then import it into another new blank workflow. Don't change the policy back by hand.
+Import the checker into its own new blank workflow; importing JSON adds nodes to the open canvas. To restore, recheck the original export against its saved digest, then import it into another new blank workflow. Don't change the policy back by hand.
 
 ## Retain the evidence
 

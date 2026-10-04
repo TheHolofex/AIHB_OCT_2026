@@ -5,6 +5,7 @@ Build the smallest kit of files and instructions that lets a colleague bring the
 The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
 
 Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours.
+
 ## Prepare separate work and transfer locations
 
 Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work copy for the kit; `E` is the evidence folder; `F` is the received package location. Commands work from any directory. Don't create `F` until the transfer step.
@@ -44,7 +45,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; e,f=map(Path,sys.argv[1:]); (f.exists() or f.is_symlink()) and sys.exit('HOLD: received destination exists'); e.mkdir(); print('EVIDENCE',e); print('FRESH DESTINATION',f)" "$E" "$F"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. The block prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
+**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. Ignore the printed `Next` suggestion; this lab gives you the next command. The block then prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
 
 **Stop:** A destination exists, a prerequisite is missing, or preparation fails.
 
@@ -286,7 +287,7 @@ Set-Location -LiteralPath $BASE
 
 ## Observe the uncensored behaviour
 
-Ask the model for one deliberately blunt answer and save the exchange to `E/observations.md`. The model won't refuse or warn you; the guardrail is you. Record what you wouldn't put your name on, and why.
+Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften, and save the exchange to `E/observations.md`. The model won't refuse and won't warn you; that's the capability you chose, so the guardrail is you. Record what you wouldn't put your name on, and why you wouldn't send it anywhere.
 
 **Expected:** A saved exchange where the model answers without refusing, and the boundary you've set on using its output.
 
@@ -511,7 +512,7 @@ print('NO WEIGHTS COPIED')
 
 ## Hand the package to another person
 
-Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, outcomes, and any help in `E/transfer-status.md`. A technical replay doesn't count as watching another person operate the kit. If no one is available, record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
+Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, the outcomes you saw, and any help they got in `E/transfer-status.md`. A technical replay, even one run by an agent, doesn't count as watching another person operate the kit. If no one is available, keep the technical results and record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
 
 If your colleague needs help, record what they did before and after it; don't relabel an assisted attempt as independent. Use their questions to improve a new version of the package, and keep the observed attempt as it was.
 

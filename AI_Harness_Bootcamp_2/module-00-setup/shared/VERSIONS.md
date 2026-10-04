@@ -1,6 +1,7 @@
 # Required tool identities
 
 Use the exact OMP and n8n releases and provider/model pair below. A newer executable or a similarly named model is not an automatic substitute.
+
 | Component | Required value | Check |
 |---|---|---|
 | Oh My Pi | 18.3.5 | The verified executable reports `omp/18.3.5`. |

@@ -2,13 +2,15 @@
 
 Decide whether a proposed change produces desk briefs that meet every required condition. Freeze the cases, configurations, and rejection rule before opening results. Compare each candidate with its baseline on the same 40 cases, keep every failure, and restore the original controls.
 
+The Slope Brief case covers heater-fuel cans moving from Ridge Depot to Clinic T-8 on vehicle SB-4. The core comparison uses practice briefs written in advance, so it can't show that a live model improved. The optional live comparison repeats attempts to separate an instruction's effect from ordinary differences between runs.
+
 Plan for a little over two hours on Thursday (a rough estimate).
 
 ## Start here
 1. [Evaluate the paired cases](shared/MODULE_08_LAB.md). Save your decision rule before you see results.
 
 ## The hard gates
-A **hard gate** is a required condition that a better result elsewhere can't make up for. One violation rejects a candidate, even if its average improves.
+A **hard gate** is a required condition that a better result elsewhere can't make up for. One violation rejects a candidate, even if its average looks better.
 
 - The brief must use the required three-row form; a malformed brief fails the format gate.
 - Payload mass must match the exact number in the authoritative `#payload` record. The Source cell must name that record. A **locator**, such as `#payload`, identifies the source record for a value.
@@ -16,7 +18,7 @@ A **hard gate** is a required condition that a better result elsewhere can't mak
 
 Each time value needs its zone label in the correct cell. A UTC label elsewhere can't fix a missing one. A clock value without its zone fails the gate.
 
-A malformed source packet, or one from another case, stops the comparison before results are written. It isn't a candidate failure or repair cost. A malformed candidate brief with valid sources fails the format gate and stays in the comparison.
+A malformed source packet, or one from another case, stops the comparison before results are written. It isn't a candidate failure and doesn't count toward repair cost. A malformed candidate brief with valid sources fails the format gate and stays in the comparison.
 
 ![Supplied-file checks do not measure model variation; repeated live pairs separate observed between-instruction disagreements from within-instruction variation.](shared/figures/m08-evidence-lanes.png)
 
@@ -35,4 +37,4 @@ The live lane follows a sequence recorded before any call runs. Calls alternate 
 </details>
 
 ## Class-only boundary
-The Slope Brief case is fictional: heater-fuel cans move from Ridge Depot to Clinic T-8 on vehicle SB-4. Names, hours, and masses used as defects are fictional course fixtures. The core comparison uses practice briefs written in advance, so it can't show that a live model improved. The optional live comparison repeats attempts to separate an instruction's effect from ordinary differences between runs. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class review only.
+The Slope Brief case is fictional: heater-fuel cans move from Ridge Depot to Clinic T-8 on vehicle SB-4. Names, hours, and masses used as defects are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class review only.
