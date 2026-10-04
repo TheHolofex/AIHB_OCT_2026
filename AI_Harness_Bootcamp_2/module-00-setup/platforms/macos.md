@@ -1,1036 +1,825 @@
 # Set up on macOS
 
-Use Git, Python 3.12 or newer, and standalone OMP 18.3.5 with the supplied launcher to read and write a file. Plan for roughly 45 to 90 minutes, plus any system download time. You need a browser, an ordinary text editor, 15 GB free under your home directory, and permission to install any missing tools. Keep your work and evidence under your home directory, outside the checkout. If device policy blocks a step, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
+This setup takes your Mac from a fresh Terminal window to a working Oh My Pi (OMP) install that reads and writes a file through the course launcher. Plan for 45 to 90 minutes, plus download time. You need the Terminal app, a browser, a plain text editor, 15 GB free in your home folder, and permission to install missing tools. Keep your work under your home folder and outside the course checkout. If device policy blocks a step, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
 
-## Check the machine and existing prerequisites
+The work has three parts. Steps 1 to 9 install the tools and run the OMP readiness check. **Set up local Obsidian** prepares the note app for Module 2. **Prepare local n8n for Module 7** prepares the local workflow editor. Every box is meant to be pasted whole into Terminal. Your Mac's default shell is zsh, and every box also works in Bash. If a box prints a `STOP` or `HOLD` line, read its **Recovery** note, and use [If a step stops](#if-a-step-stops) for the less common cases.
 
-Open the Terminal app while signed in to your ordinary user account, and check your macOS version, native architecture, and current shell. This Homebrew route needs macOS 15 or newer on supported hardware. Apple Silicon is the supported Homebrew setup; Intel is **Tier 3**, which means reduced support and possible source builds, not the same level of support. See [Homebrew requirements](https://docs.brew.sh/Installation).
+## 1. Check this Mac
 
-**Terminal: macOS Terminal app, Bash or zsh, ordinary user, initial window.**
+Open **Terminal** from **Applications → Utilities** while you're signed in to your ordinary account. This box checks your macOS version, chip, shell, and free space. It also shows which tools are missing. It doesn't install anything, and it won't run Apple's `git` or `python3` placeholders, which would otherwise open an install dialog.
+
+This setup needs macOS 15 or newer, the same minimum as [Homebrew](https://docs.brew.sh/Installation). Apple silicon is fully supported. Homebrew treats Intel Macs as [Tier 3](https://docs.brew.sh/Support-Tiers), which means they may work but get less support.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, first window.**
 
 ```bash
-mac_preflight() {
-  sw_vers || return
-  MACOS_VERSION="$(sw_vers -productVersion)" || return
-  [ "${MACOS_VERSION%%.*}" -ge 15 ] || { printf 'HOLD: this route requires macOS 15+.\n'; return 1; }
-  ARCH="$(uname -m)" || return
+course_find_python() {
+  local candidate found
+  for candidate in python3.12 python3 python; do
+    case "$(command -v "$candidate" 2>/dev/null)" in
+      '') continue ;;
+      /usr/bin/*) xcode-select -p >/dev/null 2>&1 || continue ;;
+    esac
+    found="$("$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))' 2>/dev/null)" || continue
+    printf '%s\n' "$found"
+    return 0
+  done
+  return 1
+}
+course_git_works() {
+  if xcode-select -p >/dev/null 2>&1 || [ "$(command -v git)" != /usr/bin/git ]; then
+    git --version 2>/dev/null
+  else
+    return 1
+  fi
+}
+course_check_mac() {
+  local free_kb todo
+  MACOS_VERSION="$(sw_vers -productVersion)" || return 1
+  ARCH="$(uname -m)"
+  printf 'MACOS %s\nARCH %s\n' "$MACOS_VERSION" "$ARCH"
+  if [ "${MACOS_VERSION%%.*}" -lt 15 ]; then
+    printf 'STOP: this setup needs macOS 15 or newer\n' >&2
+    return 1
+  fi
   if [ "$(sysctl -in sysctl.proc_translated 2>/dev/null)" = 1 ]; then
-    printf 'HOLD: Terminal is running through Rosetta; reopen it natively.\n'
+    printf 'STOP: Terminal is running through Rosetta; reopen it natively\n' >&2
     return 1
   fi
   case "$ARCH" in
-    arm64) BREW=/opt/homebrew/bin/brew ;;
-    x86_64) BREW=/usr/local/bin/brew ;;
-    *) printf 'HOLD: unsupported architecture.\n'; return 1 ;;
+    arm64) BREW=/opt/homebrew/bin/brew; ASSET=omp-darwin-arm64 ;;
+    x86_64) BREW=/usr/local/bin/brew; ASSET=omp-darwin-x64 ;;
+    *) printf 'STOP: unsupported architecture\n' >&2; return 1 ;;
   esac
-  if [ -n "${ZSH_VERSION-}" ]; then
+  if [ -n "${ZSH_VERSION:-}" ]; then
     SETUP_SHELL=zsh
-  elif [ -n "${BASH_VERSION-}" ]; then
+  elif [ -n "${BASH_VERSION:-}" ]; then
     SETUP_SHELL=bash
   else
-    printf 'HOLD: use Bash or zsh.\n'; return 1
+    printf 'STOP: use zsh or Bash\n' >&2
+    return 1
   fi
-  printf 'ARCH %s; SHELL %s; BREW %s\n' "$ARCH" "$SETUP_SHELL" "$BREW"
-  df -h "$HOME" || return
-  [ -w "$HOME" ] || { printf 'HOLD: home directory is not writable.\n'; return 1; }
-  printf 'PREFLIGHT OBSERVED\n'
+  printf 'SHELL %s\nACCOUNT %s\n' "$SETUP_SHELL" "$(id -un)"
+  if [ ! -d "$HOME" ] || [ ! -w "$HOME" ]; then
+    printf 'STOP: your home folder is not writable\n' >&2
+    return 1
+  fi
+  free_kb="$(df -Pk "$HOME" | awk 'NR==2 {print $4}')"
+  if [ -z "$free_kb" ] || [ "$free_kb" -lt 15728640 ]; then
+    printf 'STOP: less than 15 GB is free in your home folder\n' >&2
+    return 1
+  fi
+  printf 'FREE_GB %s\n' "$((free_kb / 1048576))"
+  if [ -x "$BREW" ]; then
+    eval "$("$BREW" shellenv "$SETUP_SHELL")" || return 1
+    printf 'HOMEBREW %s\n' "$BREW"
+  else
+    printf 'HOMEBREW not installed\n'
+  fi
+  todo=
+  course_git_works || todo="git"
+  if PY="$(course_find_python)"; then
+    printf 'PYTHON %s\n' "$PY"
+  else
+    PY=
+    todo="${todo:+$todo }python"
+  fi
+  if [ -n "$todo" ]; then
+    printf 'TO INSTALL: %s\n' "$todo"
+  else
+    printf 'NOTHING TO INSTALL\n'
+  fi
 }
-mac_preflight
+course_check_mac
 ```
 
-**Expected:** `sw_vers` shows macOS 15+, your architecture is `arm64` or native Intel `x86_64`, and your shell is Bash or zsh. Check the available-space column: at least 15 GB must remain. `PREFLIGHT OBSERVED` does not mean a device-policy exception has been approved.
+**Expected:** Lines for `MACOS`, `ARCH`, `SHELL`, `ACCOUNT`, and `FREE_GB`, then a Git version and a `PYTHON` path if those work. The last line is `NOTHING TO INSTALL` or `TO INSTALL:` followed by `git`, `python`, or both.
 
-**Stop:** The OS, architecture, shell, storage, or permissions do not meet those conditions.
+**Stop:** Any `STOP` line.
 
-**Recovery:** Keep the first failure and work with the device owner to resolve it. If Terminal is running through Rosetta, close Terminal, clear **Open using Rosetta** in Terminal's Finder **Get Info**, then reopen Terminal through the app before running this check again.
+**Recovery:** Fix the condition it names, then paste this box again. For Rosetta, an old macOS, or low space, see [Tools and Homebrew](#tools-and-homebrew).
 
-Run Python candidates until one meets the version requirement, continuing past older ones. Keep existing Git and Python if they work. Apple's Git stub may open a developer-tools dialog; cancel it if you lack permission, or complete the authorized tools step below.
+## 2. Install missing tools
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
+Skip this step if step 1 printed `NOTHING TO INSTALL`. Otherwise, this box installs [Homebrew](https://brew.sh/), a package manager for macOS, if it isn't already there. It then uses Homebrew for any missing Git or [Python 3.12](https://formulae.brew.sh/formula/python@3.12). If Apple's Command Line Tools are missing, the Homebrew installer installs them too, and they include Git.
+
+The Homebrew installer lists what it will change, asks you to press **Return**, and asks for your administrator password. Terminal doesn't show the password as you type. If an Apple dialog opens, click **Install**, wait for it to finish, then return to Terminal and press a key. The installer needs an administrator account. Never run `sudo brew`.
+
+On an Intel Mac, Homebrew no longer publishes ready-built Python packages, so `python@3.12` compiles from source and can take a long time. Intel users can [install Python from python.org instead](#tools-and-homebrew).
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window; the installer may ask for administrator approval.**
 
 ```bash
-resolve_python() {
-  for candidate in python3.12 python3 python; do
-    "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))' 2>/dev/null && return 0
+course_install_missing() {
+  if [ -z "${BREW:-}" ] || [ -z "${SETUP_SHELL:-}" ]; then
+    printf 'STOP: paste the step 1 box in this window first\n' >&2
+    return 1
+  fi
+  if [ ! -x "$BREW" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+      printf 'STOP: the Homebrew installer did not finish\n' >&2
+      return 1
+    }
+  fi
+  if [ ! -x "$BREW" ]; then
+    printf 'STOP: Homebrew is not at %s\n' "$BREW" >&2
+    return 1
+  fi
+  eval "$("$BREW" shellenv "$SETUP_SHELL")" || return 1
+  "$BREW" --version || return 1
+  if ! course_git_works >/dev/null; then
+    "$BREW" install git || return 1
+  fi
+  course_git_works || { printf 'STOP: Git still does not run\n' >&2; return 1; }
+  if ! PY="$(course_find_python)"; then
+    "$BREW" install python@3.12 || return 1
+    PY="$(course_find_python)" || { printf 'STOP: Python 3.12 or newer still does not run\n' >&2; return 1; }
+  fi
+  "$PY" --version || return 1
+  printf 'TOOLS READY %s\n' "$PY"
+}
+course_install_missing
+```
+
+**Expected:** A Homebrew version, a Git version, a Python version of 3.12 or newer, and then `TOOLS READY` with the Python path.
+
+**Stop:** The installer fails or you can't approve it, or any `STOP` line appears.
+
+**Recovery:** Keep the first error and don't install anything else by hand. If you don't have an administrator account, ask the device owner to finish this step; see [Tools and Homebrew](#tools-and-homebrew).
+
+## 3. Install Oh My Pi
+
+This box downloads OMP 18.3.5 and its checksum list into a new folder under `~/course-evidence`. A **checksum** is a fingerprint for a file. The box installs the file only when its SHA-256 fingerprint, computed with macOS's `shasum -a 256`, matches the one line in `SHA256SUMS.txt` that names your Mac's file. It copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
+
+The box then updates your shell's startup files so new windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line, and both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they are your login file and `.bashrc`. The box leaves your existing lines in place and adds each line only once. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5).
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
+
+```bash
+course_add_line() {
+  if [ -f "$1" ] && grep -qxF -e "$2" "$1"; then
+    return 0
+  fi
+  if [ -s "$1" ] && [ -n "$(tail -c 1 "$1")" ]; then
+    printf '\n' >> "$1" || return 1
+  fi
+  printf '%s\n' "$2" >> "$1"
+}
+course_install_omp() {
+  local download expected actual dest version profile login candidate
+  case "${ASSET:-}" in
+    omp-darwin-arm64|omp-darwin-x64) ;;
+    *) printf 'STOP: paste the step 1 box in this window first\n' >&2; return 1 ;;
+  esac
+  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
+    printf 'STOP: a course folder is a symlink; nothing was changed\n' >&2
+    return 1
+  fi
+  mkdir -p "$HOME/course-evidence" || return 1
+  download="$HOME/course-evidence/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  mkdir "$download" || { printf 'STOP: could not create a fresh download folder\n' >&2; return 1; }
+  curl --fail --location --output "$download/$ASSET" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$ASSET" || return 1
+  curl --fail --location --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt" || return 1
+  expected="$(awk -v asset="$ASSET" '$2 == asset { count++; hash = $1; fields = NF } END { if (count == 1 && fields == 2 && length(hash) == 64 && hash ~ /^[0-9a-f]+$/) print hash; else exit 1 }' "$download/SHA256SUMS.txt")" || {
+    printf 'STOP: SHA256SUMS.txt has no single valid entry for %s\n' "$ASSET" >&2
+    return 1
+  }
+  actual="$(shasum -a 256 "$download/$ASSET" | awk '{ print $1 }')"
+  if [ "$actual" != "$expected" ]; then
+    printf 'STOP: checksum mismatch; the file was not installed or run\n' >&2
+    return 1
+  fi
+  printf 'SHA256 VERIFIED %s %s\n' "$ASSET" "$actual"
+  mkdir -p "$HOME/.local/bin" || return 1
+  dest="$HOME/.local/bin/omp"
+  if [ -L "$dest" ]; then
+    printf 'STOP: %s is a symlink; it was not replaced\n' "$dest" >&2
+    return 1
+  elif [ -e "$dest" ]; then
+    if [ ! -f "$dest" ] || ! cmp -s "$download/$ASSET" "$dest"; then
+      printf 'STOP: a different %s already exists; it was not replaced\n' "$dest" >&2
+      return 1
+    fi
+    printf 'KEEP: %s already matches the verified download\n' "$dest"
+  else
+    cp "$download/$ASSET" "$dest" && cmp -s "$download/$ASSET" "$dest" || {
+      printf 'STOP: the copy does not match the verified download\n' >&2
+      return 1
+    }
+    printf 'INSTALLED %s\n' "$dest"
+  fi
+  chmod u+x "$dest" || return 1
+  if [ "$SETUP_SHELL" = zsh ]; then
+    set -- "${ZDOTDIR:-$HOME}/.zprofile" "${ZDOTDIR:-$HOME}/.zshrc"
+  else
+    login="$HOME/.bash_profile"
+    for candidate in "$HOME/.bash_profile" "$HOME/.bash_login" "$HOME/.profile"; do
+      if [ -e "$candidate" ] || [ -L "$candidate" ]; then
+        login="$candidate"
+        break
+      fi
+    done
+    set -- "$login" "$HOME/.bashrc"
+  fi
+  for profile in "$@"; do
+    if [ -L "$profile" ] || { [ -e "$profile" ] && [ ! -f "$profile" ]; } || [ -e "$profile.zwc" ]; then
+      printf 'STOP: %s is linked, compiled, or not a file; it was not changed\n' "$profile" >&2
+      return 1
+    fi
+    if [ -x "$BREW" ] && [ "$profile" = "$1" ]; then
+      course_add_line "$profile" "eval \"\$($BREW shellenv $SETUP_SHELL)\"" || return 1
+    fi
+    course_add_line "$profile" 'case ":$PATH:" in ":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac' || return 1
+    printf 'PROFILE READY %s\n' "$profile"
   done
-  if [ -x "$BREW" ]; then
-    PY_PREFIX="$("$BREW" --prefix python@3.12)" || return
-    "$PY_PREFIX/bin/python3.12" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))'
+  case ":$PATH:" in ":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac
+  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: the installed omp did not run\n' >&2; return 1; }
+  printf 'OMP_VERSION %s\n' "$version"
+  if [ "$version" != omp/18.3.5 ]; then
+    printf 'STOP: expected omp/18.3.5\n' >&2
+    return 1
+  fi
+}
+course_install_omp
+```
+
+**Expected:** `SHA256 VERIFIED` with your file name and its digest, then `INSTALLED` or `KEEP:`, two `PROFILE READY` lines, and `OMP_VERSION omp/18.3.5`.
+
+**Stop:** Any `STOP` line, including a checksum mismatch or a different existing `omp`.
+
+**Recovery:** Keep the download folder and any existing `omp`, and don't delete or replace them to get past this step. Fix the cause, then paste the box again; it uses a new folder each time. See [Oh My Pi install](#oh-my-pi-install).
+
+## 4. Get the course files
+
+This box first checks that your existing Git credentials can read the private course repository. It doesn't prompt for a login or change credential settings. If access works, it clones the repository to `~/Documents/AIHB_OCT_2026`, or it reuses an existing checkout of the same repository without pulling, resetting, or cleaning it.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
+
+```bash
+course_get_checkout() {
+  R="$HOME/Documents/AIHB_OCT_2026"
+  M="$R/AI_Harness_Bootcamp_2/module-00-setup"
+  if ! GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD; then
+    printf 'ACCESS HOLD: set up GitHub access below, then paste this box again\n' >&2
+    return 1
+  fi
+  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then
+    printf 'STOP: the checkout path is a symlink; nothing was changed\n' >&2
+    return 1
+  fi
+  if [ ! -e "$R" ]; then
+    git clone https://github.com/TheHolofex/AIHB_OCT_2026.git "$R" || return 1
+  elif [ -d "$R/.git" ] && [ "$(git -C "$R" remote get-url origin 2>/dev/null)" = https://github.com/TheHolofex/AIHB_OCT_2026.git ] && git -C "$R" rev-parse --verify HEAD >/dev/null 2>&1; then
+    printf 'KEEP: using the existing checkout without changing it\n'
+  else
+    printf 'STOP: %s holds other or incomplete work; it was not changed\n' "$R" >&2
+    return 1
+  fi
+  if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ] || [ ! -f "$M/scripts/verify-setup.sh" ]; then
+    printf 'STOP: the checkout is missing course files\n' >&2
+    return 1
+  fi
+  printf 'CHECKOUT READY %s\n' "$R"
+}
+course_get_checkout
+```
+
+**Expected:** A commit ID followed by `HEAD`, then clone progress or `KEEP:`, and finally `CHECKOUT READY` with the checkout path.
+
+**Stop:** `ACCESS HOLD`, a clone failure, or any `STOP` line.
+
+**Recovery:** For `ACCESS HOLD`, use the GitHub CLI boxes below. For an occupied path, see [GitHub access and the checkout](#github-access-and-the-checkout).
+
+### If GitHub access fails
+
+Use these three boxes only after `ACCESS HOLD`. The [GitHub CLI](https://cli.github.com/manual/gh_auth_login), `gh`, signs you in through your browser and lets Git use that sign-in for github.com. Your GitHub account is separate from your course-site password and your OpenRouter key. If Homebrew isn't installed, paste the step 2 box first; it installs Homebrew even when nothing else is missing.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
+
+```bash
+course_get_gh() {
+  if command -v gh >/dev/null 2>&1; then
+    gh --version
     return
   fi
-  return 1
-}
-NEED_GIT=yes
-if git --version; then NEED_GIT=no; fi
-PY=
-if PY="$(resolve_python)"; then
-  "$PY" --version
-else
-  PY=
-  printf 'MISSING: usable Python 3.12+.\n'
-fi
-printf 'Git installation needed: %s\n' "$NEED_GIT"
-```
-
-**Expected:** Git prints its version if usable; Python prints 3.12 or newer if usable. `PY` holds its absolute executable path.
-
-**Stop:** An unexpected permission or policy prompt appears.
-
-**Recovery:** Keep the error. Install only the missing prerequisite below; if both work, skip installation and go to the OMP download.
-
-## Install missing Git or Python only when needed
-
-Install Apple's Command Line Tools first if you use Intel Homebrew, need a source build, or Git/Homebrew says developer tools are missing. On Apple Silicon, skip both developer-tools blocks if none of these applies. If your tools already work, leave them in place. [Homebrew documents these requirements](https://docs.brew.sh/Installation).
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window; approve Apple's GUI only if authorized.**
-
-```bash
-if xcode-select -p; then
-  printf 'Developer tools path found.\n'
-else
-  xcode-select --install && printf 'Wait for the Apple installation dialog to finish before continuing.\n'
-fi
-```
-
-**Expected:** You see an existing tools path or an Apple installation dialog. If the dialog opens, click **Install**, accept the license if authorized, and wait until installation finishes. A return to the prompt does not mean the download has finished.
-
-**Stop:** Installation fails, authorization is unavailable, or the dialog is still running.
-
-**Recovery:** Keep the error and ask the device owner to complete the permitted installation. Then confirm the tools are available.
-
-Confirm the selected developer tools after the GUI finishes, or check the existing installation.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window after the GUI finishes.**
-
-```bash
-xcode-select -p && xcrun --find clang
-```
-
-**Expected:** Both commands succeed and print developer-tool paths.
-
-**Stop:** Either command fails.
-
-**Recovery:** Keep the failure and have the device owner repair the selected tools installation before continuing.
-
-After installing Apple tools, run the existing-prerequisites block again. If Git and Python now work, skip Homebrew and package installation. Install Homebrew only if a missing tool needs it and the native prefix has no `brew` executable. The official installer changes the system prefix: `/opt/homebrew` on Apple Silicon or `/usr/local` on Intel. Read its proposed changes and confirmation prompts. It may ask for an administrator password, which Terminal will not display. Stop if you cannot authorize the changes. Use the full [official installer](https://brew.sh/); never run `sudo brew install`.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window; installer may request authorized administrator approval.**
-
-```bash
-ensure_brew() {
-  if [ ! -x "$BREW" ]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || return
+  if [ ! -x "${BREW:-}" ]; then
+    printf 'STOP: install Homebrew with the step 2 box first\n' >&2
+    return 1
   fi
-  [ -x "$BREW" ] || { printf 'HOLD: expected native Homebrew executable is absent.\n'; return 1; }
-  BREW_ENV="$("$BREW" shellenv "$SETUP_SHELL")" || return
-  eval "$BREW_ENV" || return
-  "$BREW" --version
-}
-ensure_brew
-```
-
-**Expected:** The installer exits successfully and the expected native Homebrew executable prints its version. `shellenv` makes that installation available in this window.
-
-**Stop:** The installer, `shellenv`, or version check fails, or policy prevents approval.
-
-**Recovery:** Keep the first error and work with the device owner to resolve it. Do not install packages after the installer fails. Stay in this window until the step that tells you to reopen Terminal, because a fresh Terminal window will not inherit these shell variables.
-
-Install only the tools you are missing, and check Git again after installing any Apple tools. Find a usable [versioned Python executable](https://formulae.brew.sh/formula/python@3.12) by running it; having the formula installed is not enough.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-install_missing_tools() {
-  if ! git --version; then
-    "$BREW" install git || return
-  fi
-  if ! PY="$(resolve_python)"; then
-    "$BREW" install python@3.12 || return
-    PY="$(resolve_python)" || return
-  fi
-  git --version || return
-  "$PY" --version || return
-  printf 'PREREQUISITES READY: %s\n' "$PY"
-}
-install_missing_tools
-```
-
-**Expected:** `PREREQUISITES READY` follows successful Git and Python 3.12+ execution.
-
-**Stop:** Either installation or version check fails. Intel source builds may need additional owner support.
-
-**Recovery:** Keep the first error and fix the tool that failed. Do not use `sudo` to install a formula or replace a tool that already meets the requirements.
-
-## Download the exact OMP release into a new directory
-
-Select the native macOS asset. Keep its checksum file beside it. The download block does not execute the downloaded program.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
-DOWNLOAD="$HOME/course-evidence/setup-macos-$RUN/download"
-DEST="$HOME/.local/bin/omp"
-case "$(uname -m)" in
-  arm64) ASSET=omp-darwin-arm64 ;;
-  x86_64) ASSET=omp-darwin-x64 ;;
-  *) ASSET= ;;
-esac
-if [ -n "$ASSET" ]; then
-  "$PY" - "$DOWNLOAD" <<'PY'
-from pathlib import Path
-import sys
-folder = Path(sys.argv[1])
-if folder.is_symlink() or any(parent.is_symlink() for parent in folder.parents):
-    raise SystemExit('HOLD: linked download path; preserve it and resolve the path.')
-folder.mkdir(parents=True, exist_ok=False)
-PY
-  if [ "$?" -ne 0 ]; then
-    false
-  else
-  curl --fail --location --output "$DOWNLOAD/$ASSET" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$ASSET" &&
-  curl --fail --location --output "$DOWNLOAD/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt"
-  fi
-else
-  printf 'HOLD: unsupported macOS architecture.\n' >&2
-  false
-fi
-```
-
-**Expected:** Both downloads succeed, and both files are in the new download directory. Finding the files there does not mean they have passed the checksum check.
-
-**Stop:** Either download fails, the destination exists, or a certificate/proxy error appears.
-
-**Recovery:** Keep the failed directory. Fix the network or path issue before choosing a new `RUN`. Never disable certificate checks or run a partial download.
-
-## Verify before installation or first execution
-
-This script checks the exact selected filename against its unique SHA-256 entry and installs only verified bytes. It refuses a symlink or anything different already at the destination, but it can reuse an identical verified file without replacing it.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" - "$DOWNLOAD" "$ASSET" "$DEST" <<'PY'
-from pathlib import Path
-import hashlib, re, sys
-folder, asset, target = Path(sys.argv[1]), sys.argv[2], Path(sys.argv[3])
-entries = [line.split() for line in (folder / 'SHA256SUMS.txt').read_text().splitlines()]
-expected = [parts[0] for parts in entries if len(parts) == 2 and parts[1] in (asset, '*' + asset)]
-if len(expected) != 1 or not re.fullmatch(r'[0-9a-fA-F]{64}', expected[0]):
-    raise SystemExit('HOLD: selected asset has no unique valid checksum entry.')
-raw = (folder / asset).read_bytes()
-actual = hashlib.sha256(raw).hexdigest()
-if actual != expected[0].lower():
-    raise SystemExit('HOLD: checksum mismatch; do not install or execute this file.')
-if target.is_symlink() or (target.exists() and (not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != actual)):
-    raise SystemExit('HOLD: a different destination exists; preserve it and resolve the installation conflict.')
-if any(parent.is_symlink() for parent in target.parents):
-    raise SystemExit('HOLD: destination parent is a symlink; preserve it and resolve the path.')
-target.parent.mkdir(parents=True, exist_ok=True)
-if not target.exists():
-    with target.open('xb') as output:
-        output.write(raw)
-target.chmod(target.stat().st_mode | 0o100)
-print('SHA256 VERIFIED', asset, actual)
-print('USER EXECUTABLE', target)
-PY
-```
-
-**Expected:** `SHA256 VERIFIED` names the selected asset and actual digest. Only then does the script make the verified executable runnable.
-
-**Stop:** Any checksum, destination, write, or permission check fails.
-
-**Recovery:** Keep the failure. Do not delete or replace another installation to make this script succeed. Resolve the conflict deliberately or ask for support.
-
-## Keep the verified executable available in a new terminal
-
-Save non-secret command paths for the shell you checked. `PATH` lists the directories your shell searches for commands. This step keeps what is already in your startup files, adds each missing line once, and handles a file with no final newline. It refuses linked files or linked parent directories. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), it uses the first existing login file in `.bash_profile`, `.bash_login`, `.profile` order, plus `.bashrc` for regular interactive shells. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), it uses `.zprofile` and `.zshrc` under `ZDOTDIR` or your home directory. Ask the owner to review any custom startup setup that skips these files.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" - "$SETUP_SHELL" "$BREW" "${ZDOTDIR:-$HOME}" <<'PY'
-from pathlib import Path
-import shlex, sys
-shell, brew_name, zdotdir = sys.argv[1:]
-home = Path.home()
-brew = Path(brew_name)
-if shell == 'zsh':
-    base = Path(zdotdir)
-    if not base.is_absolute() or not base.is_dir():
-        raise SystemExit('HOLD: inspect ZDOTDIR before editing startup files.')
-    profiles = [base / '.zprofile', base / '.zshrc']
-elif shell == 'bash':
-    choices = [home / name for name in ('.bash_profile', '.bash_login', '.profile')]
-    login = next((path for path in choices if path.exists() or path.is_symlink()), choices[0])
-    profiles = [login, home / '.bashrc']
-else:
-    raise SystemExit('HOLD: use Bash or zsh.')
-lines = []
-if brew.is_file():
-    lines.append(f'eval "$({shlex.quote(str(brew))} shellenv {shell})"')
-python_bin = str(Path(sys.executable).absolute().parent)
-lines.append(f'case ":$PATH:" in *:{shlex.quote(python_bin)}:*) ;; *) export PATH={shlex.quote(python_bin)}"${{PATH:+:$PATH}}" ;; esac')
-lines.append('case "$PATH" in "$HOME/.local/bin"|"$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac')
-updates = []
-for profile in profiles:
-    if profile.is_symlink() or any(parent.is_symlink() for parent in profile.parents):
-        raise SystemExit(f'HOLD: linked startup path; preserve {profile}')
-    if profile.exists() and not profile.is_file():
-        raise SystemExit(f'HOLD: startup path is not a file: {profile}')
-    if Path(str(profile) + '.zwc').exists():
-        raise SystemExit(f'HOLD: compiled zsh startup file needs owner review: {profile}')
-    existing = profile.read_bytes() if profile.exists() else b''
-    missing = [line.encode() for line in lines if line.encode() not in existing.splitlines()]
-    updates.append((profile, existing, missing))
-for profile, existing, missing in updates:
-    if missing:
-        with profile.open('ab') as stream:
-            stream.write((b'\n' if existing and not existing.endswith(b'\n') else b'') + b'\n'.join(missing) + b'\n')
-    print('PROFILE READY', profile)
-PY
-```
-
-**Expected:** You see two `PROFILE READY` paths for the shell checked in preflight. Your existing file content stays in place; only non-secret Homebrew, Python, and user-bin paths are added.
-
-**Stop:** A file is linked, compiled, unreadable, unwritable, or has startup errors.
-
-**Recovery:** Keep the file and the error, and ask its owner to fix the startup problem shown. Do not replace profiles or create a higher-priority login file that would skip settings in `.profile`.
-
-Check the verified executable directly before reopening.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-OMP_VERSION="$("$HOME/.local/bin/omp" --version)" &&
-if [ "$OMP_VERSION" = omp/18.3.5 ]; then
-  printf '%s\n%s\n' "$HOME/.local/bin/omp" "$OMP_VERSION"
-else
-  printf 'HOLD: unexpected OMP version: %s\n' "$OMP_VERSION" >&2
-  false
-fi
-```
-
-**Expected:** The absolute user executable prints exactly `omp/18.3.5`.
-
-**Stop:** The version differs, execution fails, or macOS blocks it.
-
-**Recovery:** Keep the error and follow authorized [Gatekeeper guidance](https://support.apple.com/en-us/102445) with the device owner. Do not disable Gatekeeper or strip quarantine attributes to bypass the block.
-
-## Confirm private repository access
-
-Check existing Git credentials before installing a login tool or changing a credential helper.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
-```
-
-**Expected:** A commit ID followed by `HEAD`, with exit status zero. If this succeeds, skip the entire GitHub CLI fallback below and use the checkout step.
-
-**Stop:** Authentication fails or you cannot read the repository. You need access to the repository; changing local-directory permissions will not fix this.
-
-**Recovery:** Keep the error. If credentials are missing, use the GitHub fallback. If the network failed, fix that connection; if access is missing, ask the repository owner to confirm your invitation.
-
-### GitHub CLI fallback — only after the access check fails
-
-Install `gh` only if it is missing. If Homebrew is missing too, complete the authorized Homebrew and applicable Apple tools steps above first. If you skipped those steps because Git and Python already worked, preflight still set `BREW` and `SETUP_SHELL`. After installing Homebrew here, repeat the startup-path saving block so you can use it after reopening Terminal.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-if command -v gh >/dev/null 2>&1; then
+  "$BREW" install gh || return 1
+  eval "$("$BREW" shellenv "$SETUP_SHELL")" || return 1
   gh --version
-elif [ -x "$BREW" ]; then
-  BREW_ENV="$("$BREW" shellenv "$SETUP_SHELL")" &&
-  eval "$BREW_ENV" &&
-  "$BREW" install gh && gh --version
-else
-  printf 'HOLD: complete the authorized Homebrew installation first.\n' >&2
-  false
-fi
+}
+course_get_gh
 ```
 
-**Expected:** Existing `gh` prints its version, or Homebrew installs the official [GitHub CLI formula](https://formulae.brew.sh/formula/gh) successfully. The earlier Homebrew `shellenv` step must have succeeded in this window.
+**Expected:** A `gh version` line.
 
-**Stop:** Installation fails or `gh` remains unavailable.
+**Stop:** The install fails or `gh` still isn't found.
 
-**Recovery:** Keep the error and correct the Homebrew prerequisite; never install the formula with `sudo`.
+**Recovery:** Correct the Homebrew problem the error names; never install with `sudo`.
 
-Sign in with the GitHub account invited to the private repository. The command displays a device code and opens a browser; enter the code at GitHub and authorize that account. GitHub credentials are separate from your course-site password and OpenRouter key. [GitHub CLI prefers the system credential store but may fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login).
+Sign in with the GitHub account that was invited to the course repository. The command first asks **Authenticate Git with your GitHub credentials?**; press **Return** to accept. It then shows a one-time code and waits at **Press Enter to open github.com in your browser**. Press **Return**, enter the code in the browser, and approve the sign-in.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window; interactive browser login.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window; interactive browser login.**
 
 ```bash
 gh auth login --hostname github.com --git-protocol https --web
 ```
 
-**Expected:** The browser authorization and CLI login both finish successfully.
+**Expected:** The browser approval finishes, and Terminal reports that you're logged in.
 
-**Stop:** Login fails, the wrong account is selected, or policy forbids the requested storage.
+**Stop:** The login fails, or the wrong account is signed in.
 
-**Recovery:** Keep the error privately and ask the device owner to provision approved credentials. Do not use `--insecure-storage`.
+**Recovery:** Keep the error private and ask the device owner for approved credentials. Don't use `--insecure-storage`.
 
-Check the account and reported credential storage before setting up Git. Keep the [authentication status](https://cli.github.com/manual/gh_auth_status) output private; do not add `--show-token` or share the output.
+Check the signed-in account, let Git use it for github.com, and test access again. Keep this output private.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-gh auth status --hostname github.com
-```
-
-**Expected:** Exit zero, the invited account active, and storage approved by your device policy.
-
-**Stop:** Status fails or the reported storage is not approved, including an unapproved plaintext fallback.
-
-**Recovery:** Ask the device owner to set up approved credential storage and credentials before you continue. Signing in does not by itself give you access to the repository.
-
-Configure the credential helper for [github.com only](https://cli.github.com/manual/gh_auth_setup-git), then repeat the access check with terminal prompting disabled.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
 ```bash
+gh auth status --hostname github.com &&
 gh auth setup-git --hostname github.com &&
 GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
 ```
 
-**Expected:** The helper succeeds, followed by the repository commit ID and `HEAD`.
+**Expected:** The invited account shows as active, followed by a commit ID and `HEAD`. Now paste the step 4 box again.
 
-**Stop:** Either command fails. Do not clone yet.
+**Stop:** Any command fails, or `gh auth status` reports plaintext storage that your device policy doesn't allow.
 
-**Recovery:** Keep the error and ask the repository owner to confirm your invited account and any required approval. Do not force helper setup or retry login without finding the cause.
+**Recovery:** Ask the repository owner to confirm your invitation, or ask the device owner to set up approved credential storage. Don't run `--show-token` or share the output.
 
-## Use the intended checkout without replacing existing work
+## 5. Open a new terminal and confirm
 
-Use one checkout location that you can keep using. Even if you have related work, do not reset, pull, or clean it.
+A new window shows whether your startup files work on their own. In Terminal, choose **Shell → New Window**. Don't type `zsh` or `bash` in the old window, because a shell started there inherits the old settings. This box sets `R`, `M`, and `PY` again, finds Python, Git, and `omp` by name, and checks that no key is present yet.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-R="$HOME/Documents/AIHB_OCT_2026"
-"$PY" - "$R" <<'PY'
-from pathlib import Path
-import sys
-root = Path(sys.argv[1])
-if root.is_symlink() or any(parent.is_symlink() for parent in root.parents):
-    raise SystemExit('HOLD: linked checkout path; preserve it and resolve the path.')
-PY
-if [ "$?" -ne 0 ]; then
-  false
-elif [ ! -e "$R" ] && [ ! -L "$R" ]; then
-  git clone https://github.com/TheHolofex/AIHB_OCT_2026.git "$R"
-elif [ -d "$R/.git" ] && [ ! -L "$R/.git" ] &&
-  git -C "$R" rev-parse --verify HEAD >/dev/null 2>&1 &&
-  [ "$(git -C "$R" rev-parse --show-toplevel)" = "$R" ] &&
-  [ "$(git -C "$R" remote get-url origin)" = https://github.com/TheHolofex/AIHB_OCT_2026.git ]; then
-  printf 'Using the existing course checkout without changing it.\n'
-else
-  printf 'HOLD: the checkout path is occupied by unrelated or incomplete work.\n' >&2
-  false
-fi &&
-M="$R/AI_Harness_Bootcamp_2/module-00-setup" &&
-[ -f "$R/shared/run_omp.py" ] &&
-[ -f "$M/shared/case/verify_tool_proof.py" ] &&
-[ -f "$M/scripts/verify-setup.sh" ] &&
-printf 'CHECKOUT READY %s\n' "$R"
-```
-
-**Expected:** `CHECKOUT READY` names the intended checkout at `R`, with the required launcher and Module 0 files under `M`.
-
-**Stop:** Cloning fails or the existing path is unrelated/incomplete.
-
-**Recovery:** Keep that directory and ask the owner to resolve the path conflict. Do not hide a clone failure with `|| true` or discard local changes.
-
-## Reopen independently and check actual tools
-
-In the Terminal app, open **Terminal → Shell → New Window** with the same Bash or zsh profile. Do not start a child shell at the old prompt. Set `R`, `M`, and `PY` again because the new window does not inherit your earlier shell variables. This check does not fix PATH or enter a key.
-
-**Terminal: macOS Terminal app, same declared Bash or zsh, ordinary user, independently opened window.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, new window opened from the Shell menu.**
 
 ```bash
-fresh_tools() {
+course_confirm_new_terminal() {
+  local candidate found omp_path version
   R="$HOME/Documents/AIHB_OCT_2026"
   M="$R/AI_Harness_Bootcamp_2/module-00-setup"
-  case "$(uname -m)" in
-    arm64) BREW=/opt/homebrew/bin/brew ;;
-    x86_64) BREW=/usr/local/bin/brew ;;
-    *) printf 'HOLD: unsupported architecture.\n'; return 1 ;;
-  esac
   PY=
   for candidate in python3.12 python3 python; do
-    if PY="$("$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))' 2>/dev/null)"; then
-      break
-    fi
-    PY=
+    case "$(command -v "$candidate" 2>/dev/null)" in
+      '') continue ;;
+      /usr/bin/*) xcode-select -p >/dev/null 2>&1 || continue ;;
+    esac
+    found="$("$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))' 2>/dev/null)" || continue
+    PY="$found"
+    break
   done
-  if [ -z "$PY" ] && [ -x "$BREW" ]; then
-    PY_PREFIX="$("$BREW" --prefix python@3.12)" || return
-    PY="$("$PY_PREFIX/bin/python3.12" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.abspath(sys.executable))')" || return
+  if [ -z "$PY" ]; then
+    printf 'STOP: no Python 3.12 or newer is on PATH in this window\n' >&2
+    return 1
   fi
-  [ -n "$PY" ] || { printf 'HOLD: Python 3.12+ is unavailable.\n'; return 1; }
-  command -v git || return
-  git --version || return
   printf 'PYTHON %s\n' "$PY"
-  "$PY" -c 'import sys; print(sys.version); sys.exit(0 if sys.version_info >= (3, 12) else 1)' || return
-  [ "$(command -v omp)" = "$HOME/.local/bin/omp" ] || { printf 'HOLD: OMP PATH differs.\n'; return 1; }
-  OMP_VERSION="$("$HOME/.local/bin/omp" --version)" || return
-  [ "$OMP_VERSION" = omp/18.3.5 ] || { printf 'HOLD: OMP version differs: %s\n' "$OMP_VERSION"; return 1; }
-  printf 'OMP %s %s\n' "$HOME/.local/bin/omp" "$OMP_VERSION"
-  [ -f "$R/shared/run_omp.py" ] && [ -f "$M/shared/case/verify_tool_proof.py" ] || return
-  if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
-  printf 'FRESH TOOLS READY\n'
+  "$PY" --version || return 1
+  printf 'GIT_PATH %s\n' "$(command -v git)"
+  git --version || return 1
+  omp_path="$(command -v omp)"
+  printf 'OMP_PATH %s\n' "${omp_path:-missing}"
+  if [ "$omp_path" != "$HOME/.local/bin/omp" ]; then
+    printf 'STOP: omp is not found at %s\n' "$HOME/.local/bin/omp" >&2
+    return 1
+  fi
+  case ":$PATH:" in
+    ":$HOME/.local/bin:"*) printf 'PATH_FIRST %s\n' "$HOME/.local/bin" ;;
+    *) printf 'STOP: %s is not first on PATH\n' "$HOME/.local/bin" >&2; return 1 ;;
+  esac
+  version="$(omp --version 2>/dev/null)"
+  printf 'OMP_VERSION %s\n' "${version:-missing}"
+  if [ "$version" != omp/18.3.5 ]; then
+    printf 'STOP: expected omp/18.3.5\n' >&2
+    return 1
+  fi
+  if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ] || [ ! -f "$M/scripts/verify-setup.sh" ]; then
+    printf 'STOP: the course checkout is missing or incomplete\n' >&2
+    return 1
+  fi
+  printf 'CHECKOUT %s\n' "$R"
+  if [ -n "${OPENROUTER_API_KEY:-}" ]; then
+    printf 'SET\n'
+    printf 'STOP: this window already has a key; open a new window from the Shell menu\n' >&2
+    return 1
+  fi
+  printf 'MISSING\n'
 }
-fresh_tools
+course_confirm_new_terminal
 ```
 
-**Expected:** You see the Git path and version, an absolute Python path with version 3.12+, and `$HOME/.local/bin/omp` with exactly `omp/18.3.5`, followed by `FRESH TOOLS READY`. An installed formula may not put its executable on PATH; Python is chosen only after it runs successfully. The prerequisite report below also checks whether commands can be found by name.
+**Expected:** `PYTHON` with an absolute path and version 3.12 or newer, a Git path and version, `OMP_PATH` ending in `/.local/bin/omp`, `PATH_FIRST`, `OMP_VERSION omp/18.3.5`, `CHECKOUT`, and `MISSING` as the last line.
 
-**Stop:** Any tool fails, the OMP path/version changes, or the checkout files are absent.
+**Stop:** Any `STOP` line, or `SET`.
 
-**Recovery:** Keep the failed check, fix the non-secret startup setting that caused it in the earlier window, then open another Terminal window from the app, not from a shell in the earlier window. Do not add an export to this check to make it pass.
+**Recovery:** Correct the startup setting in your earlier window, then open another new window and paste this box again. Don't add an `export` here to make it pass; see [New terminal and key](#new-terminal-and-key).
 
-Check whether the key is set before entering it. A Terminal window opened from the app normally reports `MISSING`, but a shell started from a window that already has the key can inherit `SET`. Seeing `SET` doesn't tell you whether the key persists, has been exposed, or works for authentication. If `SET` surprises you, stop and check how you opened this window and whether credentials were configured earlier, without printing the key. Do not save a key in startup files. You can enter it for the first time now; you didn't need to enter it earlier.
+## 6. Enter your OpenRouter key
 
-## Enter the key only after the hidden prompt is ready
+Use the OpenRouter key you were given for this course. The next box reads the key without showing it. Paste the box and press **Return**. Terminal is now waiting for the key, even though nothing seems to happen. Paste the key and press **Return** again. The characters won't appear. The key stays in this window only and isn't saved to a file.
 
-Use your participant-supplied OpenRouter key. The supplied `shared/run_omp.py` uses only `openrouter/anthropic/claude-sonnet-4.6`. Do not use a vendor login or another model. Paste this one command, press Enter, then enter the key without echo and press Enter again.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same new window.**
 
 ```bash
 IFS= read -r -s OPENROUTER_API_KEY
 ```
 
-**Expected:** The prompt returns without displaying the key.
+**Expected:** The prompt returns, and the key doesn't appear on screen.
 
-**Stop:** The key appears, focus is uncertain, or hidden entry is inaccessible.
+**Stop:** The key appears on screen, or you aren't sure where the typing went.
 
-**Recovery:** Cancel and use the [credential handling procedure](../shared/CREDENTIALS.md). Revoke any exposed key. Do not paste the next block while the hidden read is waiting.
+**Recovery:** Press **Control-C** and follow the [credential handling procedure](../shared/CREDENTIALS.md). Revoke any key that was shown. Don't paste the next box while this one is still waiting.
 
-Export the value only after the hidden prompt has returned, and check presence without printing it.
+## 7. Confirm the key is loaded
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same fresh window.**
+`export` lets programs started from this window, such as the readiness check, use the key. `SET` shows that the key is present. It doesn't show that the key works.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
 ```bash
 export OPENROUTER_API_KEY
 if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
 ```
 
-**Expected:** Only `SET` is printed. This check shows the key is present, not whether authentication or a model call works.
+**Expected:** Only `SET`.
 
-**Stop:** The variable is missing or a secret value appears in output.
+**Stop:** `MISSING`, or the key itself appears on screen.
 
-**Recovery:** Re-enter it through the isolated hidden prompt. Never save the key in a profile, command argument, or evidence file.
+**Recovery:** Paste the step 6 box again, then this box. Never save the key in a startup file, command, or evidence file.
 
-## Run a readiness check
+## 8. Run the readiness check
 
-Create a fresh readiness-check attempt. The random token marks this attempt; it is not a credential. The prompt gets the token only from a file inside the work root you set.
+This box makes a fresh attempt folder under `~/course-evidence`, with a random token and a prompt. The token marks this attempt; it isn't a credential. The box then runs the course launcher, which uses only OpenRouter and `openrouter/anthropic/claude-sonnet-4.6` and lets the model write only `from-omp.txt`. Last, the checker confirms that the file holds `omp works` plus this attempt's token and that the saved receipts show `course_write` wrote it. This step is a paid model call.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-PROOF_RUN="$HOME/course-evidence/setup-proof-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-W="$PROOF_RUN/proof"
-E="$PROOF_RUN/receipts"
-TOKEN="$PROOF_RUN/run-token.txt"
-"$PY" - "$PROOF_RUN" <<'PY'
-from pathlib import Path
-import secrets, sys
-run = Path(sys.argv[1])
-if run.is_symlink() or any(parent.is_symlink() for parent in run.parents):
-    raise SystemExit('HOLD: linked readiness-check path; preserve it and resolve the path.')
-run.mkdir(parents=True, exist_ok=False)
-work = run / 'proof'
-work.mkdir()
-token = secrets.token_hex(16)
-(run / 'run-token.txt').write_text(token + '\n', encoding='utf-8')
-(work / 'run-token.txt').write_text(token + '\n', encoding='utf-8')
-(run / 'prompt.txt').write_text('Read run-token.txt with course_read. Use course_write to create from-omp.txt containing only omp works followed by one space and the exact token. Do not write another file.\n', encoding='utf-8')
-print('FRESH READINESS WORK', work)
-PY
-```
-
-**Expected:** `FRESH READINESS WORK` names the new work folder. Its token and prompt exist. `E` does not exist yet.
-
-**Stop:** The attempt already exists or preparation fails.
-
-**Recovery:** Keep the failed attempt. Fix the reported path or permission problem before creating a new `PROOF_RUN`, and never reuse an old result file as a new result.
-
-Run the paid readiness check only after the checks in the new terminal window and the credential checks pass. The launcher writes receipts in the new evidence directory.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
 ```bash
-"$PY" "$R/shared/run_omp.py" --workdir "$W" --prompt "$PROOF_RUN/prompt.txt" --evidence "$E" --allow-write from-omp.txt &&
-"$PY" "$M/shared/case/verify_tool_proof.py" "$W" "$TOKEN" "$E"
+course_readiness_check() {
+  local course_exit
+  unset COURSE_PROOF_VERIFIED
+  if [ -z "${PY:-}" ] || [ -z "${R:-}" ] || [ -z "${M:-}" ]; then
+    printf 'STOP: paste the step 5 box in this window first\n' >&2
+    return 1
+  fi
+  if [ -z "${OPENROUTER_API_KEY:-}" ]; then
+    printf 'STOP: the key is MISSING; repeat steps 6 and 7\n' >&2
+    return 1
+  fi
+  if [ -L "$HOME/course-evidence" ]; then
+    printf 'STOP: course-evidence is a symlink\n' >&2
+    return 1
+  fi
+  BASE="$HOME/course-evidence/setup-proof-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  EVIDENCE="$BASE/receipts"
+  mkdir -p "$HOME/course-evidence" && mkdir "$BASE" && mkdir "$BASE/proof" || {
+    printf 'STOP: could not create a fresh attempt folder\n' >&2
+    return 1
+  }
+  "$PY" -c 'import secrets; print(secrets.token_hex(16))' > "$BASE/run-token.txt" || return 1
+  cp "$BASE/run-token.txt" "$BASE/proof/run-token.txt" || return 1
+  printf '%s\n' 'Read run-token.txt with the course_read tool. Then write only from-omp.txt with the course_write tool. The file contents must be the words omp works, one space, and the exact token text from run-token.txt. Do not write any other file.' > "$BASE/proof/prompt.txt" || return 1
+  printf 'READINESS_WORK %s\n' "$BASE/proof"
+  "$PY" "$R/shared/run_omp.py" --workdir "$BASE/proof" --prompt "$BASE/proof/prompt.txt" --evidence "$EVIDENCE" --allow-write from-omp.txt
+  course_exit="$?"
+  printf 'LAUNCH_EXIT %s\n' "$course_exit"
+  if [ "$course_exit" -ne 0 ]; then
+    printf 'STOP: the launcher did not finish; keep this attempt\n' >&2
+    return "$course_exit"
+  fi
+  "$PY" "$M/shared/case/verify_tool_proof.py" "$BASE/proof" "$BASE/run-token.txt" "$EVIDENCE"
+  course_exit="$?"
+  printf 'VERIFY_EXIT %s\n' "$course_exit"
+  if [ "$course_exit" -eq 0 ]; then COURSE_PROOF_VERIFIED="$BASE"; fi
+  return "$course_exit"
+}
+course_readiness_check
 ```
 
-**Expected:** A completed paid turn shows the pinned identities, a successful `course_write`, the exact required file contents on disk, and `READINESS CHECK PASS`. The verifier also checks the receipts, so the assistant saying it worked or a file you made by hand is not enough.
+**Expected:** `READINESS_WORK` with the attempt path, the launcher's output, `LAUNCH_EXIT 0`, then `READINESS CHECK PASS` and `VERIFY_EXIT 0`.
 
-**Stop:** If the key is missing, the launcher exits with status 2 before contacting the provider. An incomplete turn or a failed readiness check remains on hold. A file left behind by a failed child does not mean the check passed.
+**Stop:** `LAUNCH_EXIT 2` means a prerequisite such as the key is missing. `LAUNCH_EXIT 1` means the live run failed. `READINESS CHECK HOLD` or a nonzero `VERIFY_EXIT` means the result didn't pass.
 
-**Recovery:** Keep all output and receipts. Fix the missing prerequisite before creating a fresh readiness-check attempt. Do not switch providers, turn on automatic retries, or reuse a partly written output.
+**Recovery:** Keep the attempt folder, and don't write `from-omp.txt` yourself. Fix the first reported problem, then paste this box again; it makes a new attempt. See [Readiness check and report](#readiness-check-and-report).
 
-Read the actual output file from disk in a separate command and compare it with this attempt's token.
+## 9. Save the setup report and read the result
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same fresh window.**
+The setup report checks your tools, checkout, and key presence, and it saves what it found beside your attempt. The report can't replace the readiness check, so this box reads the result file only after step 8 passed in this window. Changed files in the checkout are reported for your information; don't clean them up.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
 ```bash
-"$PY" - "$W/from-omp.txt" "$TOKEN" <<'PY'
-from pathlib import Path
-import sys
-output, token_file = map(Path, sys.argv[1:])
-if output.is_symlink() or not output.is_file():
-    raise SystemExit('HOLD: readiness-check output is missing or linked.')
-raw = output.read_bytes()
-token = token_file.read_text(encoding='utf-8').strip()
-expected = ('omp works ' + token).encode('utf-8')
-if raw not in (expected, expected + b'\n'):
-    raise SystemExit('HOLD: actual disk bytes differ from this attempt token.')
-print('DISK FILE', output.resolve())
-print(raw.decode('utf-8'), end='' if raw.endswith(b'\n') else '\n')
-print('DISK READBACK PASS')
-PY
+course_report_and_read() {
+  local course_exit
+  if [ -z "${BASE:-}" ] || [ -z "${M:-}" ] || [ -z "${R:-}" ]; then
+    printf 'STOP: run step 8 in this window first\n' >&2
+    return 1
+  fi
+  bash "$M/scripts/verify-setup.sh" "$R" "$BASE/setup-report.txt"
+  course_exit="$?"
+  printf 'REPORT_EXIT %s\n' "$course_exit"
+  if [ "${COURSE_PROOF_VERIFIED:-}" != "$BASE" ]; then
+    printf 'STOP: this attempt has not passed the readiness check\n' >&2
+    return 1
+  fi
+  if [ ! -f "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
+    printf 'STOP: the result file is missing or linked\n' >&2
+    return 1
+  fi
+  printf 'FILE %s\n' "$BASE/proof/from-omp.txt"
+  cat "$BASE/proof/from-omp.txt" || return 1
+  printf '\nEND OF FILE\n'
+  return "$course_exit"
+}
+course_report_and_read
 ```
 
-**Expected:** You see the absolute path of the file, `omp works` followed by this attempt's token, and `DISK READBACK PASS`. Along with `READINESS CHECK PASS`, the receipts link that file to the completed pinned turn.
+**Expected:** `SETUP CHECK PASS` with the report path and `REPORT_EXIT 0`, then `FILE`, the line `omp works` followed by this attempt's token, and `END OF FILE`. The report doesn't contain your key.
 
-**Stop:** Reading the file from disk, the prerequisite report, or the readiness check fails. Finding a file alone does not mean the readiness check was completed.
+**Stop:** `SETUP CHECK HOLD`, a nonzero `REPORT_EXIT`, or any `STOP` line.
 
-**Recovery:** Keep the attempt and receipts as `HOLD`. Fix the failed prerequisite before creating a new attempt; do not write the result file yourself, reuse evidence, change providers, or turn on retries. If you cannot use an operation on your device or cannot access it, record that limit and leave the readiness check incomplete.
-
-## Save the prerequisite report separately
-
-Save what you saw in the prerequisite checks in a separate report. That report checks your tools and whether configuration is present; it does not replace the live readiness check or reading the file from disk.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-bash "$M/scripts/verify-setup.sh" "$R" "$PROOF_RUN/setup-report.txt"
-```
-
-**Expected:** The command exits with status zero and shows `SETUP CHECK PASS` with what it found. A dirty checkout is information, not a request to discard your work. Key or prerequisite failures still show `SETUP CHECK HOLD`.
-
-**Stop:** A required check fails or the report destination already exists.
-
-**Recovery:** Follow the action given for the failure and keep the report. After fixing the problem, use a new report filename. Keep a failed model call, missing prerequisites, and unavailable native or accessible operations as separate limits in your evidence.
+**Recovery:** Read the first `FAIL` line in the report and correct only that item. If you need another report, run step 8 again so the report goes into a new attempt folder. A passing report doesn't make a failed readiness check pass.
 
 ## Set up local Obsidian
 
-Obsidian lets you edit and link local notes for Module 2. Plan for roughly 10 to 20 minutes for a fresh installation, plus download time. Keep any existing installation, profile, and vaults. In Finder, check **Applications** and your home folder's **Applications**, and see whether you already open Obsidian from another location. If it is installed, use that copy and skip the download and install blocks. Record the version it shows when you do the Obsidian check below; don't replace it only to match 1.13.7.
+Obsidian is the note app you'll use in Module 2. Allow 20 to 35 minutes. You'll install it if needed, then show in the app that you can follow links, save an edit, see a change made outside the app, and reopen the same vault. A **vault** is a folder of notes. This work uses no API key and makes no model call.
 
-### Install the verified universal DMG only if Obsidian is absent
+If Obsidian is already installed in **Applications** or in your home folder's **Applications**, use that copy, skip the download box, and record its version later. Don't replace it only to match 1.13.7, and leave its existing vaults and settings alone.
 
-If Obsidian is not installed, use the official universal **1.13.7** DMG for Apple Silicon and Intel. This block downloads it to a new folder outside the checkout, checks its approved SHA-256, and opens the disk image only if the hash matches. It uses `PY` from the earlier Python step. See the [official installation instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) and [release assets](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7).
+### Install Obsidian if it is missing
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window; no sudo. Run only if no existing installation was found.**
+This box downloads the official universal 1.13.7 disk image for Apple silicon and Intel into a new folder. It checks the image against its published SHA-256 fingerprint and opens it only if the fingerprints match. See the [release assets](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7) and the [installation instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md).
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, no sudo; only when Obsidian is not installed.**
 
 ```bash
-course_download_obsidian() {
-  [ -n "${PY:-}" ] || { printf 'HOLD: restore PY first.\n'; return 1; }
+course_get_obsidian() {
+  local app folder dmg actual
   for app in /Applications/Obsidian.app "$HOME/Applications/Obsidian.app"; do
     if [ -e "$app" ] || [ -L "$app" ]; then
-      printf 'HOLD: preserve and use existing %s\n' "$app"; return 1
+      printf 'STOP: Obsidian is already at %s; use that copy\n' "$app" >&2
+      return 1
     fi
   done
-  OBS_DOWNLOAD="$HOME/course-evidence/obsidian-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-  "$PY" - "$OBS_DOWNLOAD" <<'PYOBS'
-from pathlib import Path
-import sys
-folder = Path(sys.argv[1])
-if folder.is_symlink() or any(p.is_symlink() for p in folder.parents):
-    raise SystemExit('HOLD: linked download path; preserve it.')
-folder.mkdir(parents=True, exist_ok=False)
-PYOBS
-  [ "$?" -eq 0 ] || return 1
-  curl --fail --location --output "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg" 'https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/Obsidian-1.13.7.dmg' || return 1
-  "$PY" - "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg" <<'PYOBS'
-from pathlib import Path
-import hashlib, sys
-asset = Path(sys.argv[1])
-expected = '05daa54f5e1a4458f75da29f8faaa17e8e37ae16998432537f674c626db99bce'
-if asset.is_symlink() or hashlib.sha256(asset.read_bytes()).hexdigest() != expected:
-    raise SystemExit('HOLD: DMG checksum mismatch; do not open or install it.')
-print('SHA256 VERIFIED', asset.name, expected)
-PYOBS
-  [ "$?" -eq 0 ] || return 1
-  open "$OBS_DOWNLOAD/Obsidian-1.13.7.dmg"
+  if [ -L "$HOME/course-evidence" ]; then
+    printf 'STOP: course-evidence is a symlink\n' >&2
+    return 1
+  fi
+  mkdir -p "$HOME/course-evidence" || return 1
+  folder="$HOME/course-evidence/obsidian-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  mkdir "$folder" || return 1
+  dmg="$folder/Obsidian-1.13.7.dmg"
+  curl --fail --location --output "$dmg" 'https://github.com/obsidianmd/obsidian-releases/releases/download/v1.13.7/Obsidian-1.13.7.dmg' || return 1
+  actual="$(shasum -a 256 "$dmg" | awk '{ print $1 }')"
+  if [ "$actual" != 05daa54f5e1a4458f75da29f8faaa17e8e37ae16998432537f674c626db99bce ]; then
+    printf 'STOP: checksum mismatch; the disk image was not opened\n' >&2
+    return 1
+  fi
+  printf 'SHA256 VERIFIED Obsidian-1.13.7.dmg %s\n' "$actual"
+  open "$dmg"
 }
-course_download_obsidian
+course_get_obsidian
 ```
 
-**Expected:** `SHA256 VERIFIED` prints the exact DMG digest, then Finder opens the disk image.
+**Expected:** `SHA256 VERIFIED` with the digest, and then a Finder window for the Obsidian disk image.
 
-**Stop:** the download, hash check, or disk-image opening fails; an app already exists; or device policy refuses installation.
+**Stop:** The download or checksum fails, or Obsidian is already installed.
 
-**Recovery:** Keep the failed download. Fix the network or path problem, then use a new download folder. Never bypass a hash mismatch, Gatekeeper, or certificate checks. If an app exists elsewhere, use it instead.
+**Recovery:** Keep the download folder, fix the network problem, then paste the box again. If Obsidian is already installed, use that copy.
 
-**Window: Finder, verified Obsidian disk image.** Drag **Obsidian** to **Applications** only when that destination is absent and installation is authorized. If Finder asks to replace or merge an existing app, cancel. If administrator approval is required, proceed only with the device owner’s approval. Eject the disk image when copying finishes. Open the installed **Obsidian** from Finder’s Applications folder; for an existing installation, open its known location.
+**Window: Finder, Obsidian disk image.** Drag **Obsidian** onto **Applications**. If Finder offers to replace an existing app, click **Stop**. When copying finishes, eject the disk image, then open **Obsidian** from **Applications**. If macOS asks whether to open an app downloaded from the internet, click **Open**.
 
-**Expected:** The installed app opens. **Stop:** Copying is refused, or a permission or security setting blocks it. **Recovery:** Keep the existing app and profile, and ask the device owner to resolve the specific refusal. Do not strip quarantine or disable Gatekeeper.
+**Expected:** Obsidian opens. **Stop:** The copy is refused or a security setting blocks the app. **Recovery:** Ask the device owner to resolve the specific message; don't disable Gatekeeper or remove quarantine flags.
 
-### Open a fresh practice vault and follow its links
+### Practice in a fresh vault
 
-Use Obsidian to follow a note link, save an edit, and see a change made outside the app. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder, and leave existing vaults and app profiles intact. You don't need an account, community plugin, Sync service, or MCP connection. This work makes no provider call and needs no API key.
+Use the window from step 9. If you closed it, open a new window and paste the step 5 box first, which sets `PY`, `R`, and `M` again. This box makes a fresh practice vault under `~/course-evidence`, outside the checkout.
 
-Stay in the terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` sits outside both the OMP attempt and the checkout. Run one box at a time and stop if any box fails.
-
-**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, no sudo.**
 
 ```bash
-course_initialize_obsidian() {
-  [ -n "${PY:-}" ] && [ -n "${R:-}" ] && [ -n "${M:-}" ] || {
-    printf 'HOLD: restore this page’s Python and checkout variables first.\n' >&2; return 1;
-  }
-  [ "$M" = "$R/AI_Harness_Bootcamp_2/module-00-setup" ] || return 1
-  [ -f "$M/scripts/obsidian_readiness.py" ] && [ ! -L "$M/scripts/obsidian_readiness.py" ] || {
-    printf 'HOLD: course readiness helper is missing or linked.\n' >&2; return 1;
-  }
+course_start_vault() {
+  if [ -z "${PY:-}" ] || [ -z "${M:-}" ] || [ ! -f "$M/scripts/obsidian_readiness.py" ]; then
+    printf 'STOP: paste the step 5 box in this window first\n' >&2
+    return 1
+  fi
   OBS_ROOT="$HOME/course-evidence/obsidian-macos-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   "$PY" "$M/scripts/obsidian_readiness.py" initialize --root "$OBS_ROOT" || return 1
   printf 'OPEN EXACT VAULT: %s\n' "$OBS_ROOT/vault"
 }
-course_initialize_obsidian
+course_start_vault
 ```
 
-**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` name the same absolute folder ending in `/vault`. Keep that path visible.
+**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` both name the same folder ending in `/vault`. Keep that path visible.
 
-**Stop:** Any HOLD or error, an existing destination, or a missing variable.
+**Stop:** Any `HOLD`, `STOP`, or error.
 
-**Recovery:** Keep the attempt. If you closed the terminal, restore `PY`, `R`, and `M` using the earlier Python and checkout instructions. If initialization succeeded, set `OBS_ROOT` to the parent path that was printed and continue with that vault; don't initialize it again. If initialization failed, correct the named problem and use a fresh attempt. If a helper is missing, ask the checkout owner to resolve it; don't reset or update their checkout.
+**Recovery:** Fix the problem it names, then paste the box again for a fresh vault. If initialization succeeded but you lost the window, see [Obsidian](#obsidian).
 
-**Window: Obsidian, ordinary desktop account.**
+**Window: Obsidian.**
 
-1. Open Obsidian using the platform launch step above. If another vault opens, leave its files and settings alone. Open the vault switcher, choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
-2. Select exactly the printed `OBS_ROOT/vault` folder. Press **Cmd+Shift+G** in the folder picker and paste the printed absolute path, then open that folder. Do not select the checkout, the parent `OBS_ROOT`, or an existing personal vault.
-3. In this practice vault, open **Settings → Community plugins** and leave **Restricted mode** on. If it is off, turn it on for this vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in or install a plugin. Open **Settings → General**, note the actual app version, then close Settings.
-4. Open `Start` from the file list. Use Cmd+E to switch to Reading view if needed, then click its **Token** link. Read the token displayed in `Token`; this random text is an exercise identifier, not a credential.
-5. Click **Reply** in `Token`. Switch to editing view with Cmd+E if needed. Paste only the token on one line, without a heading, quotation marks, or backticks. Press Cmd+S to save. Obsidian also saves edits automatically; the next command checks the actual saved bytes.
+1. If another vault opens, leave it alone. Open the vault switcher and choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
+2. In the folder picker, press **Cmd-Shift-G**, paste the printed `OPEN EXACT VAULT` path, and open that folder. Don't choose the checkout, its parent folder, or a personal vault.
+3. Open **Settings → Community plugins** and make sure **Restricted mode** is on. Under **Settings → Core plugins**, turn **Sync** off if it is on. Don't sign in or install a plugin. In **Settings → General**, note the app version, then close Settings.
+4. Open `Start` from the file list. Press **Cmd-E** for Reading view if needed, then click its **Token** link. The token is an exercise marker, not a credential.
+5. Click **Reply** in `Token`. Switch to editing with **Cmd-E** if needed, paste only the token on one line, and press **Cmd-S**.
 
-**Expected:** The links open the existing `Token` and `Reply` notes, and `Reply` shows the token you read in the app.
+**Expected:** The links open the existing `Token` and `Reply` notes, and `Reply` shows the token. **Stop:** The wrong vault opens, a link creates an empty note, or you can't edit and save. **Recovery:** Leave `Start` and `Token` unchanged, reopen the exact printed folder, and follow its links again. Editing in another editor doesn't replace doing it in Obsidian.
 
-**Stop:** The wrong vault opens, a link creates an empty note, settings cannot remain local and restricted, or you cannot edit/save through the GUI.
+Keep `Token` open in Obsidian. This box checks your saved reply, then changes `Token` from outside the app while keeping your reply.
 
-**Recovery:** Leave `Start` and `Token` unchanged. Reopen the vault at the printed path and follow its existing links. If a policy or display failure stops you from using the Obsidian window, record `Obsidian HOLD` with the error. Editing in a text editor doesn't replace seeing and editing the note in Obsidian.
-
-**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window; no sudo.**
 
 ```bash
-"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
-```
-
-**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, followed by `PASS: Obsidian file round-trip; GUI observation still required`. The command prints the path to the saved record of what it read from disk.
-
-**Stop:** HOLD or any nonzero exit. A PASS here covers only the initial saved token.
-
-**Recovery:** Read the named failure. If the reply doesn't match, return to `Token` in Obsidian, copy its current token into `Reply`, save, and run this check again. Keep all the records from each check. Don't edit the helper's `expected` records or fix a reply through the shell.
-
-### Observe an external change, save, and reopen
-
-Keep the practice vault open with `Token` visible. This command changes that note from the terminal while leaving the old reply in place.
-
-**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
-
-```bash
+"$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT" &&
 "$PY" "$M/scripts/obsidian_readiness.py" refresh --root "$OBS_ROOT"
 ```
 
-**Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.`
+**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, then `PASS: Obsidian file round-trip; GUI observation still required` and a record path, then `Source token rotated outside Obsidian; your saved reply was preserved.`
 
-**Stop:** Any HOLD or error. Do not continue using an old token after a failed refresh.
+**Stop:** `HOLD` or any error.
 
-**Recovery:** Keep the attempt and the exact error. Work with support to fix the named file or permission problem. If the refresh was interrupted, use a fresh attempt; don't edit expected values or remove a lock to force a pass.
+**Recovery:** If the check says the reply doesn't match, copy the current token into `Reply` in Obsidian, save, and paste this box again. If the refresh fails, see [Obsidian](#obsidian). Don't edit the helper's records.
 
 **Window: Obsidian, same practice vault.**
 
-1. Return to `Token` in the app, which is still open, and look for its new text. If needed, select `Start` and follow **Token** again. Confirm that the token differs from the one still saved in `Reply`.
-2. Follow **Reply**, replace the old line with the new token you just saw, and press Cmd+S. Do not run refresh again.
-3. Close the practice vault’s window with its window-close control; leave unrelated vault windows open. Launch Obsidian again using the same platform launch step. If it restores the practice vault, confirm its folder is the exact printed `OBS_ROOT/vault`. Otherwise use the vault switcher’s **Manage vaults → Open folder as vault → Open** to select that exact folder again.
-4. Open `Start`, follow **Token**, then **Reply**. Confirm that the new token is still saved after reopening.
+1. Look at `Token` again. Its text should change to a new token that differs from the one in `Reply`. If it doesn't update, open `Start` and follow **Token** again.
+2. Follow **Reply**, replace the old line with the new token, and press **Cmd-S**. Don't run the refresh again.
+3. Close the practice vault's window, then open Obsidian again from **Applications**. If it reopens the practice vault, confirm the folder matches the printed path. Otherwise use **Manage vaults → Open folder as vault → Open** to choose it again.
+4. Open `Start`, follow **Token**, then **Reply**, and confirm the new token is still saved.
 
-**Expected:** You see the external change, save the new reply in Obsidian, and see that reply again after reopening the same folder.
+**Expected:** You see the outside change, save the new reply, and see it again after reopening. **Stop:** The app doesn't show the change, the edit disappears, or you can't tell which vault reopened. **Recovery:** Record `Obsidian HOLD` with the action that failed and ask for help; a match found only by the shell doesn't show that the app worked.
 
-**Stop:** The app doesn't show the changed token, the edit disappears, or you can't tell which vault reopened.
-
-**Recovery:** Record `Obsidian HOLD` and the action that failed in the Obsidian window. Keep the files and the records from each check; a match found only in the shell doesn't show that the app worked. Check the exact folder and display/session permissions with support before trying that action again.
-
-**Terminal: macOS Terminal, Bash or Zsh, ordinary user, same window; no sudo.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window; no sudo.**
 
 ```bash
 "$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
 ```
 
-**Expected:** `Token generation 2: refreshed token; GUI observation still required` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a new path to the saved record of what the command read from disk. If you refreshed more than once on purpose, the generation is higher; record the value you see.
+**Expected:** `Token generation 2: refreshed token; GUI observation still required` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a second record path.
 
-**Stop:** HOLD, a token that has not been refreshed, or a GUI action you could not see in the Obsidian window.
+**Stop:** `HOLD`, or a token that wasn't refreshed.
 
-**Recovery:** Keep the attempt. If the saved reply does not match, correct it in Obsidian, save it, close and reopen that vault, then check again. Obsidian stays on HOLD if you could not see the GUI actions, even when the files on disk match.
+**Recovery:** Correct `Reply` in Obsidian, save, close and reopen the vault, then paste this box again.
 
-### Record actual Obsidian readiness
+### Record your Obsidian result
 
-Use an ordinary text editor to create `gui-observation.txt` beside the vault at the `OBS_ROOT` path you used. Record the date, operating system and architecture, app version, exact vault path, and the two disk-record paths the checks printed. Describe how you followed the links, made and saved the first edit, saw the token change made outside Obsidian, made and saved the second edit, then closed and reopened the vault. Record that Restricted mode was on and Sync was off. You may include a screenshot of the practice vault, but leave out credentials and unrelated personal notes.
+In a text editor, create `gui-observation.txt` in the `OBS_ROOT` folder, beside `vault`. Record the date, macOS version, chip, Obsidian version, the exact vault path, and the two record paths the checks printed. Describe how you followed the links, saved the first reply, saw the outside change, saved the second reply, and reopened the vault. Note that Restricted mode was on and Sync was off. Leave out credentials and personal notes.
 
-Write `Obsidian READY` only if both disk checks passed and you saw every listed GUI action in the Obsidian window. Otherwise write `Obsidian HOLD` and name the missing action or exact error. A file or `.obsidian` folder alone cannot show that you used the app. Keep this record separate from OMP and n8n readiness; a failure in one does not cancel a result in another. These Obsidian GUI actions were checked only with Obsidian 1.13.7 on Darwin arm64. If you use Intel, perform the actions and record what happens on your machine.
+Write `Obsidian READY` only if both checks passed and you did every action in the Obsidian window. Otherwise write `Obsidian HOLD` and name the missing action or error. This result is separate from your OMP and n8n results. These app steps were checked with Obsidian 1.13.7 on Apple silicon; on Intel, record what you see.
 
 ## Prepare local n8n for Module 7
 
-You'll use a local workflow editor and check whether a saved workflow survives a stop and start. Allow extra time for downloads and startup; the setup estimate above is rough, not measured. Finish this n8n readiness check before Module 7, and keep its result separate from both the OMP prerequisite report and the live OMP readiness check above.
+n8n is a workflow editor that you'll run on this Mac for Module 7. It runs in Docker, a tool that runs software in isolated containers. Allow extra time for downloads. You'll check Docker, generate the n8n files without starting them, limit the browser port to this Mac, start n8n, save a blank workflow, and confirm it survives a restart. Keep this result separate from your OMP and Obsidian results.
 
-### Inspect Docker and preserve existing work
+The [official n8n stack](https://github.com/n8n-io/n8n/blob/master/docker/get-n8n-compose.yml) runs six services: `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. `sandbox-runner-1` runs privileged Docker-in-Docker inside Docker's Linux virtual machine. Get the device owner's approval for that privilege, and for Docker Desktop itself, before you continue. Without approval, record n8n as `HOLD`.
 
-A Docker **context** tells Docker which engine receives your commands. Before you install or launch anything, check the selected context, containers (including stopped ones), volumes, destination, and port. Keep the output private if it shows names or addresses from other work. Don't switch contexts, clear Docker environment variables, or stop an existing application to make room.
+### 1. Check Docker
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user.**
+A Docker **context** names the engine your `docker` commands reach. This box shows the engine, its existing containers and volumes, the `~/n8n-course` destination, and port 5678. It changes nothing. Keep the output private if it shows other work.
 
-```bash
-if [ -d /Applications/Docker.app ]; then
-  printf 'Docker Desktop is already installed.\n'
-fi
-if command -v docker >/dev/null 2>&1; then
-  command -v docker
-  docker context show
-  docker context ls
-  docker info
-  docker compose version
-  docker ps -a
-  docker volume ls
-else
-  printf 'Docker CLI is not on PATH; inspect installed applications before installing.\n'
-fi
-if [ -n "${DOCKER_HOST:-}${DOCKER_CONTEXT:-}" ]; then
-  printf 'HOLD: Docker environment overrides exist; have their owner inspect the destination.\n'
-fi
-if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-  printf 'HOLD: preserve the existing n8n-course destination.\n'
-else
-  printf 'Proposed fresh destination: %s/n8n-course\n' "$HOME"
-fi
-lsof -nP -iTCP:5678 -sTCP:LISTEN
-```
-
-**Expected:** You can identify the engine and its existing work, or tell that Docker is missing. If `lsof` shows no listener (normally exit 1), none was found; a permission error does not mean the port is free. The destination is `$HOME/n8n-course`, outside the checkout.
-
-**Stop:** A Docker command fails, the selected engine is remote or unfamiliar, environment overrides exist, port 5678 is occupied, or the destination already exists—even if it is empty or an earlier incomplete attempt.
-
-**Recovery:** Ask the device/work owner to resolve the specific condition, and keep every application, container, volume, directory, and failed attempt. If Docker is installed but stopped, review with the owner how starting it will affect existing work before you launch it. Starting Docker Desktop can select `desktop-linux`, so record the previous context and have the owner keep its intended routing. Reuse an approved existing course instance only after you check its version and configuration below; skip both installer alternatives and the fresh-file edit. If the installation is elsewhere, have the owner review its Compose path before you use any lifecycle command. Never silently migrate, repin, reset, uninstall, or upgrade it.
-
-### Install Docker Desktop only if it is missing and approved
-
-Use **Apple menu → About This Mac** to check the macOS release, memory, and **Chip** (Apple Silicon) or **Processor** (Intel). Docker requires at least **4 GB RAM** and supports the current and two preceding major macOS releases; check the current [Mac requirements and downloads](https://docs.docker.com/desktop/setup/install/mac-install/) against your machine. That is Docker's minimum, not a guarantee that this stack plus your other applications fits available memory. The earlier macOS 15+ Homebrew gate does not replace this check. [Intel Homebrew Tier 3](https://docs.brew.sh/Support-Tiers) describes Homebrew support, not Docker's separate Intel support policy.
-
-Have the device owner approve installation, resource use, and the Docker Desktop subscription terms. Education and personal use can qualify for free use; larger commercial organizations and government entities may require a paid subscription. Use the terms on Docker's installation page to determine eligibility before accepting.
-
-1. On that official page, select **Docker Desktop for Mac with Apple silicon** for an Apple chip, or **Docker Desktop for Mac with Intel chip** for an Intel processor. Do not choose based on a Rosetta-translated shell. Rosetta is not strictly required by Docker Desktop; optional tools may need it. Keep the course Terminal native.
-2. After saving any open work, close tools that call Docker as the installation page directs. Double-click the downloaded **Docker.dmg**, then drag **Docker** into **Applications**. Keep the installer volume mounted until copying completes. Do not replace an existing Docker.app without owner review.
-3. In **Applications**, double-click **Docker.app**. Select **Accept** for the subscription agreement only with owner approval. Follow approved macOS security prompts; do not bypass device controls.
-4. Follow the [Docker CLI location options](https://docs.docker.com/desktop/setup/install/mac-permission-requirements/). Current releases default to `$HOME/.docker/bin` and add it to PATH. **Settings → Advanced** allows user or system CLI locations; the system location is `/usr/local/bin` and may require administrator authorization. Releases 4.88.0 and earlier offer **Use recommended settings** or **Use advanced settings** during installation, followed by **Finish**. Choose the owner-approved option. Port 5678 does not require privileged low-port mapping or a default socket symlink.
-5. Leave Docker open and wait until its engine is running. A visible application window alone is not readiness. The terminal check below must succeed.
-
-If `docker` is missing in a new terminal, check the chosen CLI location. For the user option, use your normal text editor to add `export PATH="$HOME/.docker/bin:$PATH"` only where needed: for zsh, the applicable `.zprofile` and `.zshrc` under `ZDOTDIR` or home; for Bash, the first existing login file in `.bash_profile`, `.bash_login`, `.profile` order and `.bashrc`. Keep their existing contents and the earlier OMP/Python/Homebrew lines. Have the owner review startup files that are linked, compiled, or managed. Don't create a higher-priority Bash file that hides an existing login file. For system CLI tools, check that `/usr/local/bin` is on PATH without replacing existing PATH entries.
-
-Open **Terminal → Shell → New Window** through the app, using the intended Bash or zsh profile. Keep the earlier OMP window and its variables; use the new terminal window for all remaining n8n commands. Don't fix PATH inside this check.
-
-**Terminal: macOS Terminal app, Bash or zsh, ordinary user, independently opened window.**
+**Terminal: macOS Terminal, zsh or Bash, ordinary user.**
 
 ```bash
-command -v docker &&
-docker context show &&
-docker context ls &&
-docker info &&
-docker compose version &&
-docker ps -a &&
-docker volume ls
-```
-
-**Expected:** Docker is found at the approved CLI location, the approved local engine answers `docker info`, and the Compose plugin runs as `docker compose`. A newer plugin may report version 5, so don't insist on a literal `2.x` version or use legacy `docker-compose` instead. Compare the context and existing work with what you saw earlier.
-
-**Stop:** A command fails, the engine/context differs unexpectedly, or startup changed access to existing work.
-
-**Recovery:** Work with the owner to fix the specific PATH, engine, or context issue. Then open another new terminal window and repeat the check. Don't reinstall Docker, reset its data, or run commands against an unapproved engine.
-
-### Generate a fresh course stack without starting it
-
-The [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) uses Docker Compose. The [installer source](https://github.com/n8n-io/n8n/blob/master/docker/get-n8n.sh) reviewed here reports installer **1.4.0**, and the command below requests n8n **2.41.5**. The live download can change, so use the download-and-review alternative if you need to see precisely what will run.
-
-Before you use either route, have the owner approve the full [official stack](https://github.com/n8n-io/n8n/blob/master/docker/get-n8n-compose.yml): `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. `sandbox-runner-1` runs privileged Docker-in-Docker inside Docker's Linux environment. Its supporting services run even when n8n Assistant is off. If that privilege is not allowed, hold here. Having amd64/arm64 images does not show that they run natively on your Mac; only seeing the stack work on your Mac shows that it's ready.
-
-Check the destination and port again immediately before installing. Choose **one** route below. Both refuse to reuse `$HOME/n8n-course`, and neither should run with `sudo`. Don't set installer source overrides. The `--no-start` option lets you restrict the browser port before any service starts.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, new Docker-verified window.**
-
-```bash
-(
-  set -o pipefail
+course_check_docker() {
+  local ready=yes
+  if [ -d /Applications/Docker.app ]; then printf 'Docker Desktop app found\n'; fi
+  if command -v docker >/dev/null 2>&1; then
+    printf 'DOCKER_CLI %s\n' "$(command -v docker)"
+    docker context show || ready=no
+    docker context ls || ready=no
+    docker info --format 'ENGINE {{.Name}} {{.OperatingSystem}} {{.ServerVersion}}' || ready=no
+    docker compose version || ready=no
+    docker ps -a || ready=no
+    docker volume ls || ready=no
+  else
+    printf 'DOCKER_CLI missing\n'
+    ready=no
+  fi
+  if [ -n "${DOCKER_HOST:-}${DOCKER_CONTEXT:-}" ]; then
+    printf 'HOLD: DOCKER_HOST or DOCKER_CONTEXT is set in this shell\n'
+    ready=no
+  fi
   if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-    printf 'HOLD: destination exists; preserve it.\n' >&2
-    exit 1
+    printf 'HOLD: %s already exists; keep it\n' "$HOME/n8n-course"
+    ready=no
   fi
-  curl -fsSL https://get.n8n.io | N8N_DIR="$HOME/n8n-course" sh -s -- --version 2.41.5 --no-start
-)
-```
-
-**Expected:** The command exits with zero and creates `compose.yml`, `.env`, and `searxng-settings.yml` under `$HOME/n8n-course` without starting services. `pipefail` catches a failed download, but piping may run some bytes before the download finishes. Use the alternative below to avoid that risk.
-
-**Stop:** any failure, an unexpected installer version, or an “existing install” message. That message does not confirm the requested version or readiness.
-
-**Recovery:** Keep the partial directory and output. Work with the owner to fix the failure before a fresh attempt; don't rerun into or delete that directory.
-
-Alternatively, download the installer into a new temporary directory. The `&&` chain stops an unsuccessful or empty download from becoming the script you review.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same Docker-verified window; alternative to the pipeline.**
-
-```bash
-N8N_REVIEW_DIR="$(mktemp -d "${TMPDIR:-/tmp}/n8n-review.XXXXXX")" &&
-curl -fsSL https://get.n8n.io -o "$N8N_REVIEW_DIR/get-n8n.sh.part" &&
-[ -s "$N8N_REVIEW_DIR/get-n8n.sh.part" ] &&
-mv "$N8N_REVIEW_DIR/get-n8n.sh.part" "$N8N_REVIEW_DIR/get-n8n.sh" &&
-printf 'Review this script in your editor: %s/get-n8n.sh\n' "$N8N_REVIEW_DIR"
-```
-
-**Expected:** The full download is saved as `get-n8n.sh`, but no script has run. Use **File → Open** in your normal text editor to open the printed path. Review the script with the owner, including `SCRIPT_VERSION="1.4.0"`, its source URLs, and what it will do during installation.
-
-**Stop:** Download failure, a remaining `.part` file, unexpected version, or unapproved actions.
-
-**Recovery:** Keep the failed download and fix the problem. Never run the `.part` file. For a later successful download, use a new temporary directory and review the new file.
-
-After review and approval, run the downloaded file.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window as the alternative download.**
-
-```bash
-if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-  printf 'HOLD: destination exists; preserve it.\n' >&2
-  false
-elif [ -n "${N8N_REVIEW_DIR:-}" ] && [ -s "$N8N_REVIEW_DIR/get-n8n.sh" ]; then
-  N8N_DIR="$HOME/n8n-course" sh "$N8N_REVIEW_DIR/get-n8n.sh" --version 2.41.5 --no-start
-else
-  printf 'HOLD: complete and review the download first.\n' >&2
-  false
-fi
-```
-
-**Expected:** The same three configuration files are generated without starting services.
-
-**Stop:** Any failure or existing-install message.
-
-**Recovery:** Keep all files and ask the owner to resolve the specific failure. Don't upgrade or overwrite this attempt.
-
-### Restrict access, start, and inspect
-
-For a fresh install, use **File → Open** in your normal text editor to open `$HOME/n8n-course/compose.yml` (replace `$HOME` with your home-folder path in the file dialog). Under the `n8n` service's `ports`, change only `'5678:5678'` to `'127.0.0.1:5678:5678'`. Keep the indentation and quotes, then use **File → Save**. Leave all other services, settings, and volumes unchanged. Don't open or display `.env`, paste it into evidence, or run unfiltered `docker compose config`, which can reveal resolved secrets.
-
-**Expected:** The saved file binds n8n only to this Mac's loopback address. No other service publishes a host port.
-
-**Stop:** The expected line is absent, the file differs from the reviewed stack, or this is an existing installation whose settings have not been approved.
-
-**Recovery:** Keep the file and have the owner review it before starting. Do not replace the whole file with a downloaded template.
-
-### Record the fresh project name
-
-A Compose project name tells Docker which containers, volumes, and networks belong to this stack. The file path alone doesn't set that name; see [Docker project names](https://docs.docker.com/compose/how-tos/project-name/). For a genuinely fresh configuration, agree on an unused name with the owner before starting. Use lowercase ASCII letters, digits, underscores, and hyphens, beginning with a letter or digit. If an installation already exists, keep its actual project identity and leave its lifecycle with the owner; don't register it as a fresh project.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same approved engine; fresh configuration only.**
-
-```bash
-course_n8n_identify() {
-  local project containers volumes networks
-  local LC_ALL=C
-  if [ -e "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record exists; preserve it\n'; return 1
+  if lsof -nP -iTCP:5678 -sTCP:LISTEN; then
+    printf 'HOLD: something is already listening on port 5678\n'
+    ready=no
   fi
-  printf 'Enter the owner-approved unused project name: '
-  IFS= read -r project || return 1
-  case "$project" in
-    ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid project name\n'; return 1 ;;
-  esac
-  containers="$(docker ps -aq --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: container inspection failed\n'; return 1;
-  }
-  volumes="$(docker volume ls -q --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: volume inspection failed\n'; return 1;
-  }
-  networks="$(docker network ls -q --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: network inspection failed\n'; return 1;
-  }
-  if [ -n "$containers" ] || [ -n "$volumes" ] || [ -n "$networks" ]; then
-    printf 'HOLD: project name already has Docker resources\n'; return 1
+  if [ "$ready" = yes ]; then
+    printf 'DOCKER READY FOR N8N\n'
+  else
+    printf 'DOCKER NOT READY\n'
+    return 1
   fi
-  (umask 077; set -o noclobber; printf '%s\n' "$project" > "$HOME/n8n-course/.course-project") || {
-    printf 'HOLD: could not create project record; preserve existing files\n'; return 1;
-  }
-  printf 'Project name recorded\n'
 }
-course_n8n_identify
+course_check_docker
 ```
 
-**Expected:** all three inspections succeed without finding resources for the approved name, and `.course-project` is created without overwriting a file or symlink. **Stop:** an invalid name, existing resource or record, inspection failure, or failed write. **Recovery:** keep the resources and files and review the finding with the owner. Do not remove resources or rename an existing installation.
+**Expected:** The context is `desktop-linux` or another local engine you recognize, `ENGINE` names Docker Desktop, `docker compose version` prints a version, and the last line is `DOCKER READY FOR N8N`. Compose version 2 or 5 both work.
 
-### Use the recorded project and configuration
+**Stop:** `DOCKER_CLI missing`, a failed Docker command, any `HOLD` line, or an engine you don't recognize.
 
-Define this helper in the same shell. It explicitly selects the recorded project, `.env`, and `compose.yml`. [Exported variables override `.env`](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/), even when you give the file path. If any listed override is exported, even with an empty value, the helper stops and prints only its name, not its value.
+**Recovery:** If Docker is missing, install Docker Desktop as described below. For anything else, see [Docker and n8n](#docker-and-n8n). Don't stop other containers or delete anything to make room.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same approved engine.**
+**Install Docker Desktop only if it is missing.** Check the official [Mac requirements](https://docs.docker.com/desktop/setup/install/mac-install/): at least 4 GB of RAM and one of the three most recent major macOS releases. Docker Desktop is free for personal use, education, and small businesses; larger companies and government bodies need a paid subscription, so confirm with the device owner before you accept.
+
+1. On Docker's page, choose **Docker Desktop for Mac with Apple silicon** or **Docker Desktop for Mac with Intel chip** to match the `ARCH` line from step 1 (`arm64` or `x86_64`).
+2. Quit apps that use Docker, open `Docker.dmg`, and drag **Docker** onto **Applications**. Keep the disk image open until copying finishes.
+3. Open **Docker** from **Applications** and select **Accept** for the subscription agreement if the device owner approved it. Docker Desktop installs its command-line tools in `~/.docker/bin` and adds that folder to your PATH.
+4. Wait until Docker Desktop reports that the engine is running. Then open a new Terminal window from the **Shell** menu and paste the box above again.
+
+### Optional: review the installer script before it runs
+The installer script is downloaded live from the network and can change. To see exactly what it will do, download it first, read it with less, then let the next box use the reviewed copy.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, Docker-checked window.**
+
+```bash
+N8N_REVIEW_DIR="$(mktemp -d "${TMPDIR:-/tmp}/n8n-r.XXXX")" &&
+curl -fsSL https://get.n8n.io -o "$N8N_REVIEW_DIR/get-n8n.sh" &&
+[ -s "$N8N_REVIEW_DIR/get-n8n.sh" ] &&
+less "$N8N_REVIEW_DIR/get-n8n.sh" &&
+N8N_REVIEWED_INSTALLER="$N8N_REVIEW_DIR/get-n8n.sh"
+```
+
+**Expected:** The script opens in less. It reports SCRIPT_VERSION near the top. After you press q, the variable is set for the generate box.
+
+**Stop:** The download fails or the script contains actions the owner did not approve.
+
+**Recovery:** Keep the directory and show it to the owner. Use a new directory for a later attempt.
+
+### 2. Generate the n8n files and limit the port
+This box runs the official one-line setup for n8n 2.41.5 with --no-start. It creates compose.yml, .env, and searxng-settings.yml without starting services. It then changes only the one browser port line in compose.yml from '5678:5678' to '127.0.0.1:5678:5678'. It refuses to run if the destination already exists or if Docker already has resources for the project name. If you reviewed the installer above, it uses that copy.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the Docker check passed.**
+
+```bash
+course_n8n_generate() {
+  local dir containers volumes networks count
+  dir="$HOME/n8n-course"
+  if [ -e "$dir" ] || [ -L "$dir" ]; then printf 'HOLD: %s already exists; keep it\n' "$dir"; return 1; fi
+  containers="$(docker ps -aq --filter label=com.docker.compose.project=n8n-course)" || return 1
+  volumes="$(docker volume ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
+  networks="$(docker network ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
+  if [ -n "$containers$volumes$networks" ]; then printf 'HOLD: Docker already has resources for project n8n-course\n'; return 1; fi
+  if [ -n "${N8N_REVIEWED_INSTALLER:-}" ]; then
+    N8N_DIR="$dir" sh "$N8N_REVIEWED_INSTALLER" --version 2.41.5 --no-start
+  else
+    ( set -o pipefail; curl -fsSL https://get.n8n.io | N8N_DIR="$dir" sh -s -- --version 2.41.5 --no-start )
+  fi || { printf 'HOLD: the n8n installer failed; keep %s for review\n' "$dir"; return 1; }
+  if [ ! -f "$dir/compose.yml" ] || [ ! -f "$dir/.env" ]; then printf 'HOLD: the installer did not create compose.yml and .env\n'; return 1; fi
+  count="$(grep -oF -e "- '5678:5678'" "$dir/compose.yml" | wc -l)"
+  if [ "$count" != 1 ]; then printf 'HOLD: expected one 5678 port line in compose.yml, found %s\n' "$count"; return 1; fi
+  cp "$dir/compose.yml" "$dir/compose.yml.orig" || return 1
+  sed "s/- '5678:5678'/- '127.0.0.1:5678:5678'/" "$dir/compose.yml.orig" > "$dir/compose.yml.new" || return 1
+  if [ "$(grep -oF -e "- '127.0.0.1:5678:5678'" "$dir/compose.yml.new" | wc -l)" != 1 ] || [ "$(grep -oF -e "- '5678:5678'" "$dir/compose.yml.new" | wc -l)" != 0 ]; then printf 'HOLD: the port change did not apply cleanly; compose.yml is unchanged\n'; return 1; fi
+  mv "$dir/compose.yml.new" "$dir/compose.yml" || return 1
+  printf 'PORT BOUND 127.0.0.1:5678\n'
+  (umask 077; set -o noclobber; printf '%s\n' n8n-course > "$dir/.course-project") || { printf 'HOLD: could not record the project name\n'; return 1; }
+  printf 'PROJECT n8n-course\n'
+}
+course_n8n_generate
+```
+
+**Expected:** The installer reports that it created the three configuration files without starting services. Then you see `PORT BOUND 127.0.0.1:5678` and `PROJECT n8n-course`.
+
+**Stop:** Any HOLD line, an installer error, or an "existing install" message.
+
+**Recovery:** Keep `~/n8n-course` and its output. Work with the owner to fix the specific failure. Do not delete the directory or run the installer into it again.
+
+### 3. Start n8n and check it
+This box defines two helpers and then starts the stack. `course_n8n` runs Docker Compose with the recorded project name, .env, and compose.yml. It stops if any variable that would override .env is exported in this shell. `course_n8n_check` shows the services, the published port, and the running n8n version.
+
+If you opened a new Terminal window since the n8n generate step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first; it defines the helpers and is safe to repeat.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
 
 ```bash
 course_n8n() {
-  local variable project
-  local LC_ALL=C
+  local variable
   for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then
-      printf '%s HOLD\n' "$variable"; return 1
-    fi
+    if printenv "$variable" >/dev/null 2>&1; then printf '%s HOLD\n' "$variable"; return 1; fi
   done
-  if [ ! -f "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record missing or not a regular file\n'; return 1
-  fi
-  project="$(cat "$HOME/n8n-course/.course-project")" || {
-    printf 'HOLD: could not read project record\n'; return 1;
-  }
-  case "$project" in
-    ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid project record\n'; return 1 ;;
-  esac
-  docker compose -p "$project" --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
+  if [ ! -f "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ] || [ "$(cat "$HOME/n8n-course/.course-project")" != n8n-course ]; then printf 'HOLD: project record\n'; return 1; fi
+  docker compose -p n8n-course --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
 }
+course_n8n_check() {
+  course_n8n ps --all && course_n8n port n8n 5678 && course_n8n exec -T n8n n8n --version
+}
+docker context show && course_n8n up -d && course_n8n_check
 ```
 
-**Expected:** the helper is defined but starts nothing until you call it. **Stop:** a later call reports HOLD or fails. **Recovery:** ask the owner to resolve exported overrides in a clean shell. Then check the approved Docker engine/context and define the helper again. Don't automatically unset variables, rewrite configuration, or recreate a missing project record for an existing installation.
+**Expected:** Images download and the services start. The list shows all six services: `sandbox-certs` shows `Exited (0)`, `sandbox-api` becomes healthy, and the rest are running. The port line is exactly `127.0.0.1:5678`, and the version is exactly `2.41.5`.
 
-Confirm the engine still matches your approved local context, then start the course stack.
+**Stop:** A service is missing, restarting, or failed; the port shows something other than `127.0.0.1:5678`; or the version differs.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, Docker-verified window.**
+**Recovery:** If a service still shows starting, wait a minute and paste the box again; `up -d` leaves running services alone. If the port is exposed, run `course_n8n down` to stop only this stack, keep its volumes, and ask the owner to review the bind. See [Docker and n8n](#docker-and-n8n).
 
-```bash
-docker context show &&
-course_n8n up -d
-```
-
-**Expected:** Images download and the course services start. Existing unrelated containers remain unchanged. Wait for startup to settle before the next check.
-
-**Stop:** Pull, resource, privilege, or port errors; an unexpected context; or a failed service.
-
-**Recovery:** Keep the error and configuration, and have the owner resolve the specific network, memory, policy, or port problem. Don't stop unrelated containers, switch engines, or reinstall the stack.
-
-Check which services are running and which n8n executable is running; the image tag alone isn't enough.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same window.**
-
-```bash
-course_n8n ps --all &&
-course_n8n port n8n 5678 &&
-course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** You can see all six services. `sandbox-certs` finishes with `Exited (0)`; the others keep running, and `sandbox-api` is healthy. The host mapping is exactly `127.0.0.1:5678`, and the running n8n version is exactly `2.41.5`. Images on disk, a successful `up -d`, or an installer that recognizes the directory do not confirm these results.
-
-**Stop:** Wrong version, missing/restarting/failed services, or a mapping such as `0.0.0.0:5678` or `[::]:5678`. Leave wrong-version instances on **HOLD** pending owner resolution; do not repin them.
-
-**Recovery:** Keep a record of what you saw. If the course stack is exposed unintentionally, stop only this identified stack with the `down` command below, keep its volumes, and work with the owner to fix its configuration. If startup is slow, wait and check again; don't hide a failure that persists by installing repeatedly.
-
-### Save a workflow and prove it persists
-
-1. Open **http://localhost:5678** in your browser. For a genuinely fresh instance, complete **Set up owner account** and select **Next**. These credentials belong to this local n8n instance. If a sign-in screen appears, use the existing local login; do not reset its owner or create another instance.
-2. Finish any local onboarding questions. Skip optional offers for a license key or external signup. No n8n Cloud account, external account, or provider API key is required for this readiness check. Leave **n8n Assistant** off, and do not copy your OpenRouter key into n8n.
+### 4. Save a blank workflow
+1. Open **http://localhost:5678** in your browser. On a fresh instance, complete **Set up owner account** and select **Next**. These credentials belong only to this local n8n instance. If a sign-in screen appears, use the existing local login; do not reset its owner or create another instance.
+2. Finish any local onboarding questions. Skip optional offers for a license key or external signup. No n8n Cloud account, external account, or provider API key is required. Leave **n8n Assistant** off, and do not copy your OpenRouter key into n8n.
 3. Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name the blank workflow **Module 7 readiness**, and press **Enter**. The editor saves automatically. Leave the canvas empty and do not select **Publish**. Keep an existing workflow with that name; choose a distinct readiness name if it contains work.
 4. Reload the browser page. Confirm the workflow title and empty canvas remain, and that the workflow is unpublished. This reload checks saved state rather than an unsaved tab.
 
@@ -1040,30 +829,20 @@ course_n8n exec -T n8n n8n --version
 
 **Recovery:** Keep the instance and ask for help with the specific state. Do not clear volumes, reset accounts, publish a workflow, or enable Assistant to work around it.
 
+### 5. Confirm the workflow survives a restart
 Stop only the course stack you identified. Compose `down` removes its containers and network but keeps its named data volumes, so never add `-v`.
 
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same approved engine.**
+If you opened a new Terminal window since the n8n start step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first so the helpers are defined.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
 
 ```bash
-course_n8n down
-```
-
-**Expected:** Course containers stop and are removed; the data volumes remain. Reloading the local page cannot reach the stopped instance.
-
-**Stop:** The command fails, targets unexpected resources, or the browser still reaches another n8n instance.
-
-**Recovery:** Keep the output and resolve the context/project identity with the owner. Do not remove volumes or other containers.
-
-Start the same stack again using the same directory and engine.
-
-**Terminal: macOS Terminal, Bash or zsh, ordinary user, same approved engine.**
-
-```bash
+course_n8n down &&
 course_n8n up -d &&
-course_n8n ps --all
+course_n8n_check
 ```
 
-**Expected:** Once startup settles, check the same service states again. Repeat the port/version check above, reload **http://localhost:5678**, sign in if needed, and open **Module 7 readiness** from the workflow list. Its name and empty canvas are still saved, it remains unpublished, and you don't need to set up the owner account again.
+**Expected:** Course containers stop and are removed; the data volumes remain. Then images are already present so start is fast. The check shows the same six services, `127.0.0.1:5678`, and `2.41.5`. Reload **http://localhost:5678**, sign in if needed, and open **Module 7 readiness** from the workflow list. Its name and empty canvas are still saved, it remains unpublished, and you don't need to set up the owner account again.
 
 **Stop:** Data is missing, owner setup returns, the version/mapping changes, or services fail.
 
@@ -1071,4 +850,55 @@ course_n8n ps --all
 
 Record n8n readiness only after you observe the correct version, local-only mapping, the full stack state, the saved workflow after reload, and the workflow still there after this stop/start. If you can't confirm any of these, keep n8n readiness on **HOLD** for Module 7. This does not change either OMP readiness result.
 
-In a later shell, check the approved Docker engine/context and define `course_n8n` again. Reuse `.course-project`; don't rerun `course_n8n_identify` or create another project for a restart. If Docker Desktop is stopped, get the owner's approval for any effects on existing work before starting it.
+## If a step stops
+
+Keep the first error and attempt folder. See [shared/TROUBLESHOOTING.md](../shared/TROUBLESHOOTING.md) and [shared/CREDENTIALS.md](../shared/CREDENTIALS.md).
+
+### Tools and Homebrew
+Rosetta: close Terminal completely. In Finder, go to Applications > Utilities, select Terminal, choose File > Get Info, clear the checkbox **Open using Rosetta**, then reopen Terminal from the app and re-run step 1. Old macOS or <15 GB free: update or free space with the owner, then re-run step 1. No administrator account: ask the owner to run step 2 or provision Homebrew for your account.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user; Apple's dialog may ask for administrator approval.**
+
+```bash
+xcode-select --install
+```
+
+**Expected:** An Apple dialog opens. Click **Install**, accept the license if authorized, wait for completion, then re-run step 1. **Stop:** The dialog reports an error or you cannot authorize it. **Recovery:** Ask the device owner to complete the permitted installation, then re-run step 1.
+
+Intel Python: download the current macOS installer from https://www.python.org/downloads/macos/, open the .pkg, follow the installer, then open a new Terminal window and re-run step 1.
+
+### Oh My Pi install
+Checksum mismatch or conflicting destination: keep the prior file and start a fresh download attempt (the box uses a new RUN each time). Linked startup file or .zwc: ask the owner to add the two lines by hand (you can copy them from your other startup file after the box adds them there). macOS blocks the binary: follow Apple's Gatekeeper guidance at https://support.apple.com/en-us/102445 with the owner; do not disable Gatekeeper or remove quarantine attributes.
+
+### GitHub access and the checkout
+Occupied Documents/AIHB_OCT_2026 that is not a checkout of the course repository: ask its owner to move the work elsewhere; do not overwrite it. gh plaintext storage not approved by device policy: ask the device owner to set up approved credential storage before continuing.
+
+### New terminal and key
+Tools not found after reopening: re-add the exact lines from step 3 in the first window (Homebrew shellenv only in the login file, PATH case forcing ~/.local/bin first), then open another new window from the Shell menu and re-run step 5. SET in a new window: close that window and open a fresh one directly from the Shell menu; do not add an export here.
+
+### Readiness check and report
+LAUNCH_EXIT 2: the key is missing in this window; repeat steps 6 and 7 in this same window, then paste step 8 again. LAUNCH_EXIT 1 or READINESS CHECK HOLD or SETUP CHECK HOLD: keep the attempt folder and all receipts, read the first named failure, correct only that item, then create a new attempt with step 8. Do not edit from-omp.txt by hand or reuse an old result file.
+
+### Obsidian
+Lost the exact printed vault path: in the terminal, set `OBS_ROOT` to the printed parent path without the trailing `/vault`. Replace the example folder name with yours:
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, the window used for the vault steps.**
+
+```bash
+OBS_ROOT="$HOME/course-evidence/obsidian-macos-20261003T120000-1234"
+```
+
+**Expected:** The prompt returns with no output.
+
+**Stop:** The folder you named doesn't exist or doesn't contain `vault`.
+
+**Recovery:** Copy the exact path printed by the initialize box, without `/vault`, and paste this box again. If a refresh failed, start a fresh vault with the initialize box and repeat the GUI steps. If the app is blocked or you couldn't complete the link, edit, save, and reopen sequence, record `Obsidian HOLD` with the exact message or missing action.
+
+### Docker and n8n
+docker CLI missing after Docker Desktop install: add the export for the user CLI location to your login startup file only. For zsh use `~/.zprofile` (or the file under `ZDOTDIR`); for Bash use the first existing login file among `~/.bash_profile`, `~/.bash_login`, `~/.profile` and also `~/.bashrc`. Add exactly this line in a text editor:
+
+```text
+export PATH="$HOME/.docker/bin${PATH:+:$PATH}"
+```
+
+Then open a new Terminal window from the Shell menu and re-run the Docker check. Wrong context or exported Compose override: ask the owner, then use a clean shell that does not have those variables exported. Existing `~/n8n-course`, port 5678 in use, or project resources for n8n-course: preserve everything; reuse an existing course instance only after the owner confirms its version and settings (skip the generate box). Slow startup: wait for the engine to settle and re-run the check box. Port exposed beyond 127.0.0.1: run `course_n8n down` (this stack only), keep the volumes, and ask the owner to correct the bind in compose.yml before restarting. To review the installer script before execution: use the optional review box that appears before the generate step (it runs `less` on the downloaded file before any execution).

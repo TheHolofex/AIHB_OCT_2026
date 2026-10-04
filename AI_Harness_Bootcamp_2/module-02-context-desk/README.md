@@ -1,8 +1,8 @@
 # Module 2 · Build and control a reusable second brain
 
-Build a small knowledge vault in Obsidian, then use a fresh model session to show it can answer from reviewed notes without the source-processing chat or raw packet. You'll choose claims backed by sources, link them, and fix one substantive weakness you find in a cold run.
+Build a knowledge vault in Obsidian. Choose and link source-backed claims, then use a fresh model session to answer from reviewed notes without the earlier chat or raw packet. Fix one substantive weakness found in the cold run.
 
-Plan for about three hours. That is a rough estimate, not a measured time. The exercise is ungraded.
+Plan for about three hours (a rough estimate). The exercise is ungraded.
 
 ## Start here
 
@@ -10,18 +10,18 @@ Open the [Module 2 lab](shared/MODULE_02_LAB.md). Use the Python, OMP, and local
 
 You’ll learn to:
 
-- Choose claims backed by sources and link them without treating instructions inside the evidence as orders.
-- Admit knowledge you've reviewed and verify that a fresh session used the saved rule and approved content.
-- Fix one substantive weakness, then show the result in a new content revision and fresh run.
+- Choose and link source-backed claims without treating instructions in evidence as orders.
+- Admit reviewed knowledge and check that a fresh session used the saved rule and approved content.
+- Fix one substantive weakness and show the result in a new content revision and fresh run.
 
 ## The working files
 
-The forty Ledger Pike notes describe fictional paperwork for crate C-44 and vehicle QP-17. The supplied files contain sources and blank templates. You build the knowledge and its links yourself.
+The forty Ledger Pike notes describe fictional paperwork for crate C-44 and vehicle QP-17. The supplied files contain sources and blank templates. You build and link the knowledge.
 
-Obsidian opens your editable `vault` folder. The original evidence stays in `Sources`, model proposals in `Drafts`, and the notes you prepare and admit in `Knowledge`. Keep your short decisions in `Reviews`. A separate frozen copy contains only your navigation index and admitted Knowledge notes. The cold run cannot reread the raw packet or earlier chat.
+Open your editable `vault` folder in Obsidian. Keep original evidence in `Sources`, model proposals in `Drafts`, admitted notes in `Knowledge`, and short decisions in `Reviews`. The frozen copy contains only your navigation index and admitted Knowledge notes. The cold run cannot reread the raw packet or earlier chat.
 
-The saved rule tells the model how to treat evidence, while the file screen flags particular instruction-like phrases in a file. The tool read boundary limits which files the model can read. Your admission decision determines which claims become reusable knowledge. These controls do different jobs.
+The saved rule tells the model how to treat evidence. The file screen flags instruction-like phrases in a file. The tool read boundary limits which files the model can read. You decide which claims become reusable knowledge.
 
 ## Class-only boundary
 
-All names, crates, offices, and quoted blocks are fictional course fixtures. Results support bounded internal class review only. They do not authorize a release, assignment, dispatch, or real movement.
+The names, crates, offices, and quoted blocks are fictional. Results are for internal class review only; they don't authorize a release, assignment, dispatch, or real movement.

@@ -1,14 +1,14 @@
 # Module 3 · Research through an MCP server, with limits you can prove
 
-Connect an AI assistant to an Obsidian research vault through an MCP server to research a supply problem. Judge the handling calls it proposes, and limit the connection so the actions you forbid can't happen. Finish by removing the connection and showing that it is gone.
+Connect an AI assistant to an Obsidian research vault through an MCP server. Research a supply problem, judge the handling calls it proposes, limit the connection so forbidden actions can't happen, then remove the connection and show the tools are gone.
 
 You are a staff action officer in Task Force Marlin at Forward Base Brandt. The base clinic, Clinic B-2, is running low on burn-dressing cases. The Base Medical Logistics Officer wants to know what is known about getting 40 cases from Mill Depot to the clinic by 100600Z October 2026, what blocks it, and what is still unknown. Forty notes in the vault's `Sources` folder hold the evidence. A partner medical liaison cell has also asked for a short extract about the delivery, and only the Release Authority may decide what leaves the task force. The case is fictional and stays inside the class.
 
-**MCP**, the Model Context Protocol, is the standard way an assistant's harness connects to a separate program, called a **server**, that offers it tools. Here, the server is a small Python program that reads and writes notes in your vault. A connection entry in `mcp.json` names the program your machine will start. Adding the entry means agreeing to let that program run with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes, and Obsidian shows the links between them.
+**MCP** (Model Context Protocol) is the standard way an assistant's harness connects to a separate program (**server**) that offers tools. The server here is a small Python program that reads and writes notes in your vault. A connection entry in `mcp.json` names the program your machine will start; adding the entry means agreeing to let that program run with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes; Obsidian shows the links between them.
 
-Plan for about three hours on Tuesday. That is a rough estimate, not a measured time.
+Plan for about three hours on Tuesday (a rough estimate).
 
-The work runs in seven steps:
+The work has seven steps:
 
 1. Prepare a work copy and open its vault.
 2. Read the server's contract before you connect it.
@@ -54,13 +54,13 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` and this attempt's identifier, followed by `PASS: created` and the work path. It then prints two `Next` commands; you can ignore them because the next step runs the inspector itself. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The vault's `Drafts` and `Estimate/Releasable` folders also exist and are empty.
+**Expected:** The terminal prints `RUN=` and this attempt's identifier, followed by `PASS: created` and the work path. It then prints two `Next` commands. In your file browser, `W` holds `vault`, `mcp.json`, `AUTHORITY.md`, `shared/mcp`, and `shared/prompts`. The vault's `Drafts` and `Estimate/Releasable` folders also exist and are empty.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
 **Recovery:** Keep the existing attempt. Repair the prerequisite, then repeat this block to choose a fresh `RUN`. Never reset or clean the checkout to make an external attempt possible.
 
-Obsidian is a separate application. If it is not on your computer, install it from [obsidian.md](https://obsidian.md). You need no account, no Sync, and no plugin. Open Obsidian, choose **Open folder as vault**, and select the `vault` folder inside `W`. Keep Restricted mode on so no community plugin runs. If you cannot install Obsidian, open the same folder in a text editor and work from its file list. You will lose the backlinks and the graph, but nothing else changes.
+Install Obsidian from [obsidian.md](https://obsidian.md) if needed. You need no account, no Sync, and no plugin. Open Obsidian, choose **Open folder as vault**, and select the `vault` folder inside `W`. Keep Restricted mode on so no community plugin runs. If you cannot install Obsidian, open the same folder in a text editor and work from its file list. You will lose the backlinks and the graph, but nothing else changes.
 
 In the vault, read `Start here`, then `Handbook/Handling rules`. The rules are numbered H1 to H7. They use the exercise categories OPEN, PARTNER, and STAFF, which stand for real ideas but do not map to any real marking system. Apply them to six notes yourself before the AI applies them to forty.
 
@@ -68,8 +68,7 @@ Obsidian writes a hidden `.obsidian` folder into the vault. The server never ser
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
-
+A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one. It reads the attempt identifier that the first block saved.
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -106,7 +105,7 @@ $E = "$BASE\receipts"
 
 ### Enter your key in this terminal
 
-The launcher reads your OpenRouter key only from this terminal's environment, so a new terminal starts without it. Enter the key through a hidden prompt and make it available to the commands you run here. Paste the first command by itself and press Enter. Type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+Enter the key through a hidden prompt. The launcher reads your OpenRouter key only from this terminal's environment. Paste the first command, press Enter, type or paste the key (it shows nothing), press Enter, then paste the second block.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -156,7 +155,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Read the server's contract before you connect it
 
-When a server connects, it describes itself: a name, a block of instructions for the model, and a description and hints for each tool, such as whether it only reads. The harness and the model take those descriptions at face value, so read them first. A connection entry tells the machine which program to run. The inspector starts only the supplied server from your work copy and refuses any other.
+Read the contract before connecting. When a server connects, it describes itself: a name, instructions for the model, and a description for each tool. The harness and the model take those descriptions at face value. The inspector starts only the supplied server from your work copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -188,11 +187,11 @@ The `manage_tags` tool says it is read-only, but its description says it adds or
 
 </details>
 
-Write `contract.md` in `E` and answer three questions in your own words. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool has a read-only mark that disagrees with its description, and what could go wrong if a harness approved it on that basis? Name `manage_tags` and the server's instructions. Write at least forty words; the final check holds a shorter note. In the next step, you'll decide whether to give the model those instructions at all.
+Write `contract.md` in `E` and answer three questions in your own words. What will the model be told if you forward the server's instructions? Which tools can change a note? Which tool has a read-only mark that disagrees with its description, and what could go wrong if a harness approved it on that basis? Name `manage_tags` and the server's instructions. Write at least forty words; the final check holds a shorter note.
 
 ## Declare what the connection may do, then prove the limits
 
-A model might never try a forbidden action, so a clean transcript proves little about the connection's limits. A **probe** tries each forbidden action without a model, using a throwaway copy of the vault, and records what happens. Write your declaration first so the probe can judge the connection against it.
+A model might never try a forbidden action, so a clean transcript proves little. A **probe** tries each forbidden action without a model, using a throwaway copy of the vault, and records what happens. Write your declaration first so the probe can judge the connection against it.
 
 ![Use separate tool, guard, and server limits, then inspect the evidence from the layer actually exercised; the server cannot log a call it never received.](figures/m03-authority-layers.png)
 
@@ -332,7 +331,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the calibration was not frozen; preserve
 
 ## Research through the connection
 
-Try the connection with a small request before the long research run. The smoke prompt asks the model to list the folders it can see and read one reference note, so a configuration mistake can show up early. Both runs use your declaration and `mcp.json`. The launcher checks that they agree and refuses to start if they do not.
+Try the connection with a small request first. The smoke prompt lists the folders the model can see and reads one reference note. A configuration mistake shows up early. Both runs use your declaration and `mcp.json`. The launcher checks that they agree and refuses to start if they do not.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -353,7 +352,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the smoke run failed; preserve this atte
 
 **Recovery:** A message beginning `read limits differ` or `write limits differ` points to the field where `AUTHORITY.md` and `mcp.json` disagree. Fix the wrong file. The probe fingerprints both files, so rename `probe-research.json` to `probe-research-attempt-1.json`, run the research probe again into `probe-research.json`, and then repeat the smoke test. If a run was incomplete, keep its folder by renaming it `smoke-attempt-1`, then run again into `E/smoke`.
 
-Now run the research. The prompt asks the AI to read every source note, write findings linked to their sources, list what remains unknown, and propose a handling for all forty notes. Two notes in the pile address automation directly. The prompt tells the AI to treat what notes say as information, not orders. Leave Obsidian idle until the run ends.
+Now run the research. The prompt asks the AI to read every source note, write findings linked to their sources, list what remains unknown, and propose a handling for all forty notes. Two notes address automation directly. The prompt tells the AI to treat what notes say as information, not orders. Leave Obsidian idle until the run ends.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -374,12 +373,11 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research run failed; preserve this a
 
 **Recovery:** Rename the held folder `research-attempt-1` and keep it. Move any notes the run created under `Drafts/research` into that folder because the server will not replace a note that already exists. Then run again into `E/research`. Never repair a changed source note by hand. A changed source means a limit failed, so keep the receipts and stop.
 
-Now read what the AI wrote, in Obsidian. Open `Drafts/research/open-questions`, then each fact note. Click a `[[KH-…]]` link to open the source it cites. Open the Backlinks pane on a source note to see which findings cite it, and open the Graph view to spot source notes that no finding mentions. Search the vault for `QA hold`, `deadlined`, and `MLC`. Pick two conflicts in the pile and check what the AI claimed about each against the sources. Candidates: which stock count is current, whether the lot that is on hand is the lot that can be issued, whether the truck on the convoy table can run, whether the bridge on the main route takes its weight, and whether the approved flight falls inside the dust forecast. A finding without a source note it can be traced to is not yet a finding.
+Now read what the AI wrote in Obsidian. Open `Drafts/research/open-questions`, then each fact note. Click a `[[KH-…]]` link to open the source it cites. Open the Backlinks pane on a source note to see which findings cite it. Open the Graph view to spot source notes that no finding mentions. Search the vault for `QA hold`, `deadlined`, and `MLC`. Pick two conflicts and check what the AI claimed against the sources. Candidates: which stock count is current, whether the lot on hand is the lot that can be issued, whether the truck on the convoy table can run, whether the bridge on the main route takes its weight, and whether the approved flight falls inside the dust forecast. A finding without a source note it can be traced to is not yet a finding.
 
 Open `E/research/mcp-audit.jsonl` and look for rows with `"allowed": false`. Each one is a call the server refused. If you see none, the AI never tried anything outside its limits during this run, and your probe is what shows that the limits hold.
 
 Quoted instructions in a source do not change authority. Check which calls were made and what changed on disk. If you did not observe an attempt, do not claim one happened.
-
 ## Check the AI's handling calls against the rules
 
 Treat the AI's handling proposal as a proposal. Under rule H6, only the Release Authority changes a marking. If you accept the AI's proposal without checking it, the mistake is yours. A summary may need a more restricted marking than any of its source notes. Three facts may each be safe to share alone: a location, a time with a zone, and a named route. Together, they can tell a reader where and when a convoy moves.
@@ -441,7 +439,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the releasable folder was not staged; pr
 
 ## Narrow the connection for the partner extract
 
-The partner phase needs a different reach for a different job. Read `W/shared/prompts/PARTNER_EXTRACT.md` and set the new scopes as you did for research: allow reads only from material the extract may draw on, and writes only to the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md`, update the tools and scopes, and set the server's arguments in `mcp.json` to match. If the partner phase can still read `Sources`, it could repeat a STAFF fact no matter how carefully the extract is worded.
+Read `W/shared/prompts/PARTNER_EXTRACT.md` and set the new scopes as you did for research: allow reads only from material the extract may draw on, and writes only to the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md`, update the tools and scopes, and set the server's arguments in `mcp.json` to match. If the partner phase can still read `Sources`, it could repeat a STAFF fact no matter how carefully the extract is worded.
 
 Prove the new limits before the live run, then run the partner phase.
 
@@ -545,7 +543,6 @@ Your handoff describes the authority each phase held.
 The next owner needs your finding, the limits that were in force, and what the probes showed. The verifier reads these back. Write `handoff.md` in `E` with these six headings, each followed by a few specific sentences: `# Handoff`, `## Finding`, `## Authority in force`, `## What the probes showed`, `## Classification decisions and overrides`, and `## Residual risk and owner`. In the finding, answer the Base Medical Logistics Officer's question with what the sources support and what they don't. In the residual-risk section, say what the limits do not prevent and who owns it. A connection that can only create notes in one folder can still create a misleading note there.
 
 Run the check. It reads your work copy and receipts, matches the launcher's receipts against the server's own log and the files on disk, and checks your handling decisions against the rules.
-
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash

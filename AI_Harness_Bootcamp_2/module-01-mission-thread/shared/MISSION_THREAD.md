@@ -1,6 +1,6 @@
 # Read a mission thread without getting lost in it
 
-A polished brief can cite true facts and still recommend a movement those facts don't support. Before accepting Cold Lantern's `GO`, check what each step shows and what the next step needs. Allow about 15 minutes to examine the eight steps.
+A brief can cite true facts and still recommend a movement those facts don't support. Before you accept Cold Lantern's `GO`, check what each of the eight steps shows and what the next requires. Allow about 15 minutes.
 
 ## What a mission thread is
 
@@ -13,11 +13,11 @@ A **mission thread** is the ordered path from a request to a result. It shows wh
 <details markdown="1">
 <summary>Figure text</summary>
 
-Follow the required path in order: 1. Requirement defined; 2. Cargo received; 3. Cargo released; 4. Vehicle made ready; 5. Movement authorized; 6. Route window met; 7. Cargo delivered; 8. Usable effect confirmed. Each step's output must meet the next step's entry condition. The links show required handoffs, not checks already completed. Delivery and usable effect are not yet observed.
+Follow the required path in order: 1. Requirement defined; 2. Cargo received; 3. Cargo released; 4. Vehicle made ready; 5. Movement authorized; 6. Route window met; 7. Cargo delivered; 8. Usable effect confirmed. Each step's output must meet the next step's entry condition. The arrows show required handoffs, not checks already completed. The decision point falls after step 6. Delivery and usable effect are not yet observed.
 
 </details>
 
-Cold Lantern uses eight steps:
+The eight steps are:
 
 1. **Requirement defined** — the destination, usable quantity, route, and deadline are clear.
 2. **Cargo received** — the warehouse records the exact totes and lots in its custody.
@@ -28,11 +28,11 @@ Cold Lantern uses eight steps:
 7. **Cargo delivered** — the route can reach the clinic by the deadline, and later evidence records actual delivery.
 8. **Usable effect confirmed** — the clinic records receipt of the required released quantity.
 
-At step 6, decide whether the supplied evidence supports the brief's `GO`. Expected arrival does not prove delivery or clinic use.
+At step 6, decide whether the evidence supports the `GO`. Expected arrival does not prove delivery or clinic use.
 
 ## Why a thread becomes difficult
 
-Check what each recorded state means. For example, a custody record alone doesn't show permission to use the cargo.
+Check what each recorded state means. A custody record alone doesn't show permission to use the cargo.
 
 “Cargo received” opens into smaller questions:
 
@@ -43,7 +43,7 @@ Check what each recorded state means. For example, a custody record alone doesn'
 - Was the record current at the decision time?
 - What does the next step require?
 
-The same pattern repeats inside every step. Check these seven parts when they matter:
+The same pattern repeats in every step. When they matter, check these seven parts:
 
 | Part | Plain question |
 |---|---|
@@ -55,7 +55,7 @@ The same pattern repeats inside every step. Check these seven parts when they ma
 | Handoff | Does this step's output meet the next step's entry condition? |
 | Uncertainty | What is unknown, assumed, contradicted, or not yet observed? |
 
-**Stop decomposing**—splitting a claim into smaller claims to check—when you reach one of these:
+**Stop decomposing** (splitting a claim into smaller claims to check) when you reach one of these:
 
 - a fact you can read directly in an applicable source;
 - a calculation you can reproduce from supported facts and units;
@@ -65,7 +65,7 @@ The same pattern repeats inside every step. Check these seven parts when they ma
 
 ## Five kinds of statement
 
-Give each **material statement** in the AI brief one label. These are the statements that could change the decision.
+A **material statement** could change the decision. Label each one in the AI brief with exactly one kind.
 
 ![Split a mixed sentence until each material statement has one kind and its own support.](figures/m01-statement-types.png)
 
@@ -74,7 +74,7 @@ Give each **material statement** in the AI brief one label. These are the statem
 <details markdown="1">
 <summary>Figure text</summary>
 
-Split a compound statement into separate rows so each row has one kind. A SOURCE FACT needs an applicable source that states it; a CALCULATION needs supported values and units; an INFERENCE needs an interpretation with a reason; and a DECISION needs a named human owner. Mark a statement UNSUPPORTED when adequate support is absent. These are different kinds of statements, not steps that turn a fact into an approval.
+Split a mixed sentence into separate rows until each row has one kind. A SOURCE FACT needs an applicable source that states it directly; a CALCULATION needs supported values and units that produce it; an INFERENCE needs an interpretation with a stated reason; and a DECISION needs a named person who owns the choice. Mark a statement UNSUPPORTED when no applicable source or sound calculation supports it. These are different kinds of statements, not steps that turn a fact into an approval.
 
 </details>
 
@@ -88,7 +88,7 @@ A sentence can contain more than one kind. Split it until each row has one kind.
 
 ## Source authority belongs to the claim
 
-A source is not trustworthy for everything.
+A source is not trustworthy for every claim.
 
 ![A genuine source may still be the wrong authority for this claim, entity, route, or decision time.](figures/m01-source-authority.png)
 
@@ -97,7 +97,7 @@ A source is not trustworthy for everything.
 <details markdown="1">
 <summary>Figure text</summary>
 
-For custody, use the warehouse; for release, the quality office; for payload, Fleet Engineering; for the gate window, the Road Authority; and for permit status, the Movement Registry. Even a genuine warehouse record cannot establish release. Check the exact entity and current version for every claim: a genuine record may still be the wrong one.
+For custody of scanned totes, use the warehouse; for which lots are released, the quality office; for payload and required equipment, Fleet Engineering; for the gate window, the Road Authority; and for permit status, the Movement Registry. Even a genuine warehouse record is the wrong authority for release. For every claim, also check the exact entity and the current version.
 
 </details>
 
@@ -111,7 +111,7 @@ A genuine warehouse receipt can be the wrong source for usability. A current com
 
 ## The handoff rule
 
-Even when one step is correct, the overall conclusion can be wrong if that step hasn't established what the next step requires.
+Even when one step is correct, the conclusion can be wrong if that step hasn't established what the next step requires.
 
 ![Check what the next step requires; the earlier true statement cannot supply missing authority or observation.](figures/m01-broken-handoff.png)
 

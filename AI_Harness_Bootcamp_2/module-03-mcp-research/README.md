@@ -1,10 +1,10 @@
 # Module 3 · Operate MCP tools under limited authority
 
-Connect an AI assistant to an Obsidian research vault through an MCP server to research a supply problem. Judge the handling calls it proposes, and limit the connection so the actions you forbid can't happen. Finish by disconnecting the server and showing that it is gone.
+Connect an AI assistant to an Obsidian vault through an MCP server. Research a supply problem, check the AI's handling calls, and limit what the connection can do. Disconnect it and prove the tools are gone.
 
-Plan for about three hours on Tuesday. That is a rough estimate, not a measured time.
+Plan for about three hours on Tuesday (a rough estimate).
 
-You are a staff action officer in Task Force Marlin at Forward Base Brandt. The base's burn-care clinic, Clinic B-2, is running low on burn-dressing cases, and you have been asked what is known about getting 40 cases from Mill Depot to the clinic, what blocks it, and what is still unknown. Forty notes in an Obsidian vault hold the evidence. A partner medical liaison cell has also asked for a short extract, and only the Release Authority may decide what leaves the task force. The case is fictional and stays inside the class.
+You are a staff action officer in Task Force Marlin at Forward Base Brandt. Clinic B-2 needs burn-dressing cases. Find out what is known about moving 40 cases from Mill Depot to the clinic, what blocks the move, and what remains unknown. Forty Obsidian notes hold the evidence. A partner medical liaison cell wants a short extract; only the Release Authority decides what leaves the task force.
 
 ## Start here
 
@@ -12,16 +12,16 @@ You are a staff action officer in Task Force Marlin at Forward Base Brandt. The 
 
 ## What the work involves
 
-**Operate an MCP server.** An MCP server is a program that offers tools to your assistant. Read what it says about itself before connecting, because the harness and the model both take its claims at face value. A connection entry names a program your machine will run, so connect only one whose claims you've read.
+**Operate an MCP server.** An MCP server offers tools to your assistant. Read its claims before connecting: the harness and model accept them at face value. A connection entry starts a program on your machine, so read its claims before you connect.
 
-**Judge the AI's classifications.** Every note in the vault carries a handling level, and written rules determine each note's effective level. Decide six notes yourself before you see the AI's proposed levels for all forty, then check those proposals against the rules. The cases call for the same care you'd use at work: a note that claims its own clearance, a notice from someone who has no authority to issue one, a summary that inherits the level of its sources, and three harmless facts that together locate a convoy.
+**Judge the AI's classifications.** Written rules determine each vault note's effective handling level. Decide six notes yourself before reviewing the AI's proposals for all forty. Check body claims of clearance, notices from an unauthorized source, inherited levels in summaries, and three harmless facts that together locate a convoy.
 
-**Limit what the tool can do.** Declare what the connection may read and where it may write. Have the server enforce those limits, then prove them with a probe that tries each forbidden action itself. If the model never attempts a forbidden action, that tells you nothing about whether the limit works. When a phase ends, remove the connection and run once more to show that no tool is offered.
+**Limit what the tool can do.** Declare readable and writable folders, then have the server enforce those limits. Run a probe that tries each forbidden action; a model that never tries one cannot prove the limit works. At the end of each phase, remove the connection and show that no tool is offered.
 
 ## Before the session
 
-Use the checkout, Python, and OMP you verified in [setup](../module-00-setup/README.md), and your OpenRouter key, which you enter in the terminal rather than save in a file. Install the free [Obsidian](https://obsidian.md) application if it is not already on your computer. You need no account, no Sync, and no community plugin.
+Use the checkout, Python, and OMP you verified in [setup](../module-00-setup/README.md), and your OpenRouter key, which you enter in the terminal rather than save in a file. Install free [Obsidian](https://obsidian.md) if needed. You don't need an account, Sync, or a community plugin.
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional materials for this course. Do not use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.
+The case is fictional. All names, identifiers, places, and facts are fictional materials for this course. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.

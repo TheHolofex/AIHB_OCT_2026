@@ -1,20 +1,20 @@
 # Arch Linux setup for Module 0
 
-With an ordinary Arch Linux desktop account, you'll install and verify Oh My Pi, get the course checkout, and run a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step may take longer than a single-package install because it updates the whole system, so wait for the prompt to return before you paste the next box.
+With an ordinary Arch Linux desktop account, you'll install and verify Oh My Pi, get the course checkout, and run a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step performs a full system upgrade, so wait for the prompt to return before you paste the next box.
 
 You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. This path does not install Node, npm, or a second AI tool, and it does not ask you to log in to a model vendor.
 
 Every command box is one paste. Select every line in the box, paste it once, and press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine, because every path is quoted.
 
-## 1. Check the machine
+## 1. Check this computer
 
-Use official [Arch Linux](https://archlinux.org/about/) on x86-64 only. Arch Linux ARM is a different distribution and is not a supported route here. Check the operating system, shell, home-folder permissions, and free space before downloading anything. Use an ordinary account with device-owner approval for any package installation.
+Use official Arch Linux on x86-64 only. Arch Linux ARM is a different distribution and is not supported here. Check the operating system, architecture, shell, account, free space, missing packages, and Python interpreter before downloading anything. Use an ordinary account with device-owner approval for package installation.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, current window.**
 
 ```bash
-course_preflight() {
-  local ID VERSION_ID machine
+course_check_computer() {
+  local ID VERSION_ID machine missing package py
   [ -r /etc/os-release ] || { printf 'STOP: cannot read /etc/os-release\n' >&2; return 1; }
   . /etc/os-release || return 1
   machine="$(uname -m)" || return 1
@@ -30,26 +30,8 @@ course_preflight() {
     printf 'STOP: use an ordinary account with a writable home folder\n' >&2; return 1
   fi
   df -h "$HOME" || return 1
-}
-course_preflight
-```
-
-**Expected:** The OS and architecture match the supported combination above. In the disk table, Available is at least 15G.
-
-**Stop:** Any STOP line appears, or Available is below 15G.
-
-**Recovery:** Free space if needed, then repeat this check. For an unsupported OS, shell, architecture, or account permission, ask the device owner for a supported environment. Do not choose a different processor's binary.
-
-## 2. See whether the Arch packages are already installed
-
-Git, curl, Python, the certificate bundle, and Obsidian come from Arch's official packages. Before installing packages, look in your application menu and known app locations for Obsidian. Keep its profile and vaults. If Obsidian was installed outside pacman, stop and ask the device owner to review it before you install a second copy or replace it. The Python package is `python`, and its command may be `python` rather than `python3`. This check only looks; it does not install, remove, or upgrade anything.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_check_packages() {
-  local missing="" package
-  for package in git curl python ca-certificates obsidian; do
+  missing=""
+  for package in git curl python ca-certificates diffutils less obsidian; do
     pacman -Q "$package" >/dev/null 2>&1 || missing="${missing:+$missing }$package"
   done
   if [ -z "$missing" ]; then
@@ -57,359 +39,133 @@ course_check_packages() {
   else
     printf 'PACKAGES missing: %s\n' "$missing"
   fi
+  py="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.realpath(sys.executable))' 2>/dev/null && break; done)"
+  if [ -n "$py" ]; then
+    printf 'PY %s\n' "$py"
+    "$py" --version || return 1
+  else
+    printf 'PY missing: step 2 installs or upgrades python\n'
+  fi
 }
-course_check_packages
+course_check_computer
 ```
 
-**Expected:** The line is `PACKAGES present`, or it names one or more of `git`, `curl`, `python`, `ca-certificates`, and `obsidian`.
+**Expected:** The OS line shows `arch` and the ARCH line shows `x86_64`. Available is at least 15G. The package line is `PACKAGES present` or names some of `git curl python ca-certificates less obsidian`. The last lines are a `PY` path with `Python 3.12` or newer, or `PY missing: step 2 installs or upgrades python`.
 
-**Stop:** The command prints an error instead of one of those lines, or you are not in a Bash or Zsh terminal on Arch.
+**Stop:** Any STOP line appears, or Available is below 15G.
 
-**Recovery:** Open your desktop terminal as your ordinary user and paste the box again. If the line names missing packages, continue to the next step. If it says `PACKAGES present`, skip the install step and continue at the Python step. An older interpreter can still be present; the Python step is what rejects a version below 3.12.
+**Recovery:** Free space if needed, then paste this box again. For an unsupported OS, shell, architecture, or account, ask the device owner for a supported environment. A missing package or `PY missing` is not a stop; step 2 handles it.
 
-## 3. Install missing Arch packages
+## 2. Install missing packages
 
-This package step asks for an administrator password. Arch does not support a partial upgrade, so the command syncs the package databases and upgrades the system before installing `git`, `python`, `curl`, `ca-certificates`, and the signed Extra `obsidian` package. Existing packaged apps are part of that approved system upgrade; keep any separate Obsidian installation in place. This follows the [pacman](https://wiki.archlinux.org/title/Pacman) rule; [Arch's Python page](https://wiki.archlinux.org/title/Python) names the Python package. Do not run `pacman -Sy` without the upgrade.
+Skip this box when step 1 printed `PACKAGES present` and a `PY` path. Arch does not support partial upgrades, so the command performs a full system upgrade with `-Syu` and installs the missing packages in the same transaction. Read the entire transaction. Type `y` only after the device owner has approved every package listed; otherwise type `n` and stop. The `python` package from core provides the interpreter, and `obsidian` is the signed package from extra.
 
-Skip this box when the previous step printed `PACKAGES present` and the next Python step accepts the interpreter. If that step says Python is older than 3.12, come back and run this box. Do not install an older interpreter from the AUR to match a version number.
+If step 1 named `obsidian` as missing, look in your application menu first. If Obsidian is already installed outside pacman (Flatpak, an AppImage, or a vendor package), stop and ask the device owner before installing a second copy, and remove `obsidian` from the command only with their approval.
 
-**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates package installation.**
+**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates the approved full upgrade.**
 
 ```bash
-sudo pacman -Syu --needed git python curl ca-certificates obsidian
+sudo pacman -Syu --needed git python curl ca-certificates diffutils less obsidian
 ```
 
-**Expected:** Pacman shows the transaction and asks whether to proceed. This is a full-system upgrade: many unrelated packages may appear, as well as any missing course packages. Read the entire transaction. Type `y` and press Return only when the device owner has approved that transaction; otherwise type `n` and stop. When it finishes, the prompt returns. Already-current packages are not reinstalled.
+**Expected:** Pacman shows the full transaction including any system updates and the missing course packages. Prompt returns after completion. Already-current packages are not reinstalled.
 
-**Stop:** `sudo` is missing, the password is rejected, a device policy refuses the transaction, pacman stops with a conflict, or the package list includes an unapproved replacement. Type `n` at the confirmation prompt in that last case.
+**Stop:** sudo missing, password rejected, policy refusal, conflict, or unapproved replacement in the list.
 
-**Recovery:** Stop. Do not use the AUR, an installer script, npm, or pip to get around the refusal. Do not sync the databases without upgrading. Save the exact error and use [when setup stops](../shared/TROUBLESHOOTING.md). When the device owner has approved a full upgrade, paste this box again.
+**Recovery:** Stop. Do not use AUR, partial `-Sy`, or other workarounds. When the owner approves the full transaction, paste again. Use [when setup stops](../shared/TROUBLESHOOTING.md) for the exact error.
 
-## 4. Choose the Python interpreter
+## 3. Install Oh My Pi
 
-Later checks need the path to a specific Python executable, rather than a command name that could lead elsewhere. Arch’s `python` package provides `python` and may also provide `python3`. Try the available commands in this order: `python3.12`, `python3`, then `python`. Keep the absolute path of the first one that reports Python 3.12 or newer.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_resolve_python() {
-  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.realpath(sys.executable))' 2>/dev/null && break; done)"
-  if [ -n "$PY" ]; then
-    printf 'PY %s\n' "$PY"
-    "$PY" -c 'import sys; sys.exit(sys.version_info < (3, 12))' || return 1
-    "$PY" --version || return 1
-    return 0
-  fi
-  printf 'STOP: no real Python executable is version 3.12 or newer\n' >&2
-  return 1
-}
-course_resolve_python
-```
-
-**Expected:** A line starting with `PY ` gives an absolute path, and the next line starts with `Python 3.12` or newer. On Arch that path is often the real file behind the `python` command.
-
-**Stop:** You see the STOP line, no `PY` line, or a version below 3.12.
-
-**Recovery:** Return to the elevated pacman step and run the full upgrade. If the official python package is installed and the real interpreter is still older than 3.12, stop. Do not install a versioned interpreter from the AUR. Save the version line and ask the device owner.
-
-## 5. Download Oh My Pi into a fresh folder
-
-Download the pinned release file and its official checksum list. This step does not make anything executable or copy anything into the command folder. The checksum file also lists musl builds, but the command selects only `omp-linux-x64` for `x86_64`. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5). Do not use the project's installer script.
-
-Each attempt has its own folder under your home directory. A failed download stays there. The next try creates a new folder instead of reusing it.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_download_omp() {
-  local arch asset attempt download
-  unset OMP_ASSET OMP_DOWNLOAD_DIR
-  arch="$(uname -m)" || return 1
-  case "$arch" in
-    x86_64) asset="omp-linux-x64" ;;
-    *)
-      printf 'STOP: unsupported architecture %s\n' "$arch" >&2
-      return 1
-      ;;
-  esac
-  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
-    printf 'STOP: evidence parent is linked; keep work under your home folder\n' >&2; return 1
-  fi
-  attempt="omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-  download="$HOME/course-evidence/reformation-qa/$attempt"
-  if [ -e "$download" ] || [ -L "$download" ]; then
-    printf 'STOP: %s already exists and was not reused\n' "$download" >&2
-    return 1
-  fi
-  mkdir -p -- "$download" || return 1
-  if ! curl -fL --output "$download/$asset" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$asset"; then
-    printf 'STOP: binary download failed; nothing was installed or executed\n' >&2
-    return 1
-  fi
-  if ! curl -fL --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt"; then
-    printf 'STOP: checksum download failed; nothing was installed or executed\n' >&2
-    return 1
-  fi
-  OMP_ASSET="$asset"
-  OMP_DOWNLOAD_DIR="$download"
-  printf 'DOWNLOADED %s\n' "$download/$asset"
-}
-course_download_omp
-```
-
-**Expected:** One line starts with `DOWNLOADED ` and names a new folder under your home directory, ending in `omp-linux-x64`.
-
-**Stop:** You see a STOP line, curl reports an error, or the line names a musl file. Do not continue to the install step after a STOP line.
-
-**Recovery:** Leave the failed folder in place. Do not delete it to retry, and do not disable certificate checks. For a missing certificate bundle, use the approved package step to install `ca-certificates`. For a proxy or a certificate error with that package already installed, ask the device owner to correct the connection. Start a fresh download only after the cause is corrected. Keep the failed folder for [troubleshooting](../shared/TROUBLESHOOTING.md).
-
-## 6. Verify the checksum and install the binary
-
-A checksum is a fingerprint for a file. Here, it is a 64-character hexadecimal value in `SHA256SUMS.txt`. The install proceeds only if exactly one correctly formatted line names the chosen file and the downloaded bytes match that value. If that line is missing, a second line names the file, or the bytes don't match, the function stops before making the file executable, copying it, or running it.
-
-The install goes to `"$HOME/.local/bin/omp"`. If a different file or a shortcut is already there, the command leaves it alone. If the file there already matches the checked download, the command keeps it.
+Download the pinned v18.3.5 release asset for x86_64 and its checksum file. Verify the checksum, install only if the bytes match, place the binary at `$HOME/.local/bin/omp`, add the user bin directory to PATH in the current shell's startup files (only if the exact line is absent), and print the version. The download folder is never reused. Never execute unverified bytes.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_install_omp() {
-  local asset download sums expected actual dest version
-  asset="${OMP_ASSET:-}"
-  download="${OMP_DOWNLOAD_DIR:-}"
-  case "$asset" in
-    omp-linux-x64) ;;
-    *)
-      printf 'STOP: no selected Linux asset is recorded in this terminal\n' >&2
-      return 1
-      ;;
-  esac
-  if [ -z "$download" ] || [ ! -d "$download" ] || [ -L "$download" ]; then
-    printf 'STOP: no fresh download directory is recorded in this terminal\n' >&2
-    return 1
+  local arch asset attempt download sums expected actual dest version line startup login_file zdir
+  unset OMP_ASSET OMP_DOWNLOAD_DIR
+  arch="$(uname -m)" || return 1
+  case "$arch" in x86_64) asset="omp-linux-x64" ;; *) printf 'STOP: unsupported architecture\n' >&2; return 1 ;; esac
+  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
+    printf 'STOP: evidence parent is linked\n' >&2; return 1
   fi
+  attempt="omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  download="$HOME/course-evidence/reformation-qa/$attempt"
+  if [ -e "$download" ] || [ -L "$download" ]; then printf 'STOP: download dir already exists\n' >&2; return 1; fi
+  mkdir -p -- "$download" || return 1
+  curl -fL --output "$download/$asset" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$asset" || { printf 'STOP: binary download failed\n' >&2; return 1; }
+  curl -fL --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt" || { printf 'STOP: checksum download failed\n' >&2; return 1; }
   sums="$download/SHA256SUMS.txt"
-  if ! expected="$(awk -v asset="$asset" '
-    BEGIN { count = 0; hash = "" }
-    {
-      gsub(/\r/, "")
-      if ($2 == asset) { count++; hash = $1; if (NF != 2) bad = 1 }
-    }
-    END {
-      if (count != 1 || bad) exit 2
-      if (hash !~ /^[0-9a-fA-F]{64}$/) exit 3
-      print hash
-    }
-  ' "$sums")"; then
-    printf 'STOP: checksum entry for %s is absent, ambiguous, or not a 64-character hex digest\n' "$asset" >&2
-    return 1
-  fi
-  if [ ! -f "$download/$asset" ] || [ -L "$download/$asset" ]; then
-    printf 'STOP: downloaded file is missing or is a symlink\n' >&2
-    return 1
-  fi
-  actual="$(sha256sum -- "$download/$asset" | awk '{ print $1 }')" || return 1
-  if [ "$actual" != "$expected" ]; then
-    printf 'STOP: checksum mismatch; the binary was not installed or executed\n' >&2
-    return 1
-  fi
+  expected="$(awk -v asset="$asset" '
+    BEGIN { count=0; hash="" }
+    { gsub(/\r/,""); if ($2==asset) { count++; hash=$1; if (NF!=2) bad=1 } }
+    END { if (count!=1 || bad) exit 2; if (hash !~ /^[0-9a-fA-F]{64}$/) exit 3; print hash }
+  ' "$sums")" || { printf 'STOP: checksum entry absent or ambiguous\n' >&2; return 1; }
+  [ -f "$download/$asset" ] && [ ! -L "$download/$asset" ] || { printf 'STOP: downloaded file missing or link\n' >&2; return 1; }
+  actual="$(sha256sum -- "$download/$asset" | awk '{print $1}')" || return 1
+  [ "$actual" = "$expected" ] || { printf 'STOP: checksum mismatch\n' >&2; return 1; }
   chmod +x -- "$download/$asset" || return 1
-  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
-    printf 'STOP: %s is a symlink; the binary was not installed there\n' "$HOME/.local/bin" >&2
-    return 1
-  fi
+  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then printf 'STOP: .local is a link\n' >&2; return 1; fi
   mkdir -p -- "$HOME/.local/bin" || return 1
   dest="$HOME/.local/bin/omp"
-  if [ -L "$dest" ]; then
-    printf 'STOP: %s is a symlink; it was not replaced\n' "$dest" >&2
-    return 1
-  fi
+  if [ -L "$dest" ]; then printf 'STOP: destination is a link\n' >&2; return 1; fi
   if [ -e "$dest" ]; then
-    if [ ! -f "$dest" ] || ! cmp -s -- "$download/$asset" "$dest"; then
-      printf 'STOP: destination exists and differs; it was not overwritten\n' >&2
-      return 1
-    fi
-    printf 'KEEP: destination already matches the verified download\n'
+    if [ ! -f "$dest" ] || ! cmp -s -- "$download/$asset" "$dest"; then printf 'STOP: destination differs\n' >&2; return 1; fi
+    printf 'KEEP: destination already matches\n'
   else
     cp -- "$download/$asset" "$dest" || return 1
-    if [ -L "$dest" ] || ! cmp -s -- "$download/$asset" "$dest"; then
-      printf 'STOP: copy does not match the verified download\n' >&2
-      return 1
-    fi
+    cmp -s -- "$download/$asset" "$dest" || { printf 'STOP: copy mismatch\n' >&2; return 1; }
     printf 'INSTALLED %s\n' "$dest"
   fi
   chmod +x -- "$dest" || return 1
-  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
+  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: installed OMP would not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
-  if [ "$version" != "omp/18.3.5" ]; then
-    printf 'STOP: installed file did not print omp/18.3.5\n' >&2
-    return 1
-  fi
-}
-course_install_omp
-```
-
-**Expected:** You see `KEEP:` or `INSTALLED`, and then `OMP_VERSION omp/18.3.5`. The verified download remains in its attempt folder.
-
-**Stop:** Any STOP line appears, including a checksum miss, a shortcut destination, or a different existing file. The version line is anything other than `omp/18.3.5`.
-
-**Recovery:** Leave both the download folder and any existing `"$HOME/.local/bin/omp"` in place; don't delete the existing file or rename the download onto it. For a checksum or download problem, keep the failed files and ask the course owner to resolve the source or transfer problem before starting a fresh download attempt. For a different existing file or a shortcut, ask the device owner before replacing anything. Don't switch to the musl asset to get past this stop.
-
-## 7. Keep the user command folder on PATH
-
-PATH is the list of folders your shell searches when you type a command name. Save the nonsecret user-command path for both interactive and login sessions of your current shell. [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html) reads `.bashrc` for interactive sessions and the first existing login file in this order: `.bash_profile`, `.bash_login`, `.profile`. The command keeps that order. [Zsh](https://zsh.sourceforge.io/Doc/Release/Files.html) reads `.zshrc` and `.zprofile` under `ZDOTDIR`, or in your home folder when `ZDOTDIR` is unset.
-
-The command adds the exact line only if it isn't already there. It keeps the rest of each file, even if its last line has no newline, and stops if it finds a link or a file that isn't a regular file. It does not write a key.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_persist_path() {
-  local startup login_file zdir line
+  [ "$version" = "omp/18.3.5" ] || { printf 'STOP: wrong version\n' >&2; return 1; }
+  # persist PATH for Bash and Zsh
   line='case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac'
-  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
-    printf 'STOP: user command directory is a symlink\n' >&2; return 1
-  fi
+  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then printf 'STOP: user bin is link\n' >&2; return 1; fi
   mkdir -p -- "$HOME/.local/bin" || return 1
   if [ -n "${BASH_VERSION:-}" ]; then
     login_file=""
     for startup in "$HOME/.bash_profile" "$HOME/.bash_login" "$HOME/.profile"; do
-      if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; }; then
-        printf 'STOP: %s is not an ordinary startup file\n' "$startup" >&2; return 1
-      fi
+      if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; }; then printf 'STOP: bad startup file\n' >&2; return 1; fi
       if [ -z "$login_file" ] && [ -f "$startup" ]; then login_file="$startup"; fi
     done
     set -- "$HOME/.bashrc" "${login_file:-$HOME/.profile}"
   elif [ -n "${ZSH_VERSION:-}" ]; then
     zdir="${ZDOTDIR-$HOME}"
-    if [ ! -d "$zdir" ] || [ -L "$zdir" ]; then
-      printf 'STOP: Zsh startup directory is missing or linked\n' >&2; return 1
-    fi
+    [ -d "$zdir" ] && [ ! -L "$zdir" ] || { printf 'STOP: bad ZDOTDIR\n' >&2; return 1; }
     set -- "$zdir/.zshrc" "$zdir/.zprofile"
   else
     printf 'STOP: use Bash or Zsh\n' >&2; return 1
   fi
   for startup in "$@"; do
     if [ -L "$startup" ] || { [ -e "$startup" ] && [ ! -f "$startup" ]; } || { [ -f "$startup" ] && { [ ! -r "$startup" ] || [ ! -w "$startup" ]; }; }; then
-      printf 'STOP: %s is not a readable, writable ordinary file\n' "$startup" >&2; return 1
+      printf 'STOP: bad startup file\n' >&2; return 1
     fi
   done
   for startup in "$@"; do
     if [ -f "$startup" ] && grep -Fqx -- "$line" "$startup"; then
       printf 'PATH_LINE already present in %s\n' "$startup"
     else
-      if [ -s "$startup" ] && [ -n "$(tail -c 1 -- "$startup")" ]; then
-        printf '\n' >> "$startup" || return 1
-      fi
+      if [ -s "$startup" ] && [ -n "$(tail -c 1 -- "$startup")" ]; then printf '\n' >> "$startup" || return 1; fi
       printf '%s\n' "$line" >> "$startup" || return 1
       printf 'PATH_LINE added to %s\n' "$startup"
     fi
   done
 }
-course_persist_path
+course_install_omp
 ```
 
-**Expected:** Two `PATH_LINE` messages name the interactive and login startup files. Each says `added` or `already present`.
+**Expected:** `KEEP:` or `INSTALLED`, `OMP_VERSION omp/18.3.5`, and `PATH_LINE` messages for the startup files (added or already present).
 
-**Stop:** A STOP line or file-write error appears.
+**Stop:** Any STOP, checksum mismatch, wrong version, or write error.
 
-**Recovery:** Leave the files in place and ask the device owner to fix any links or permissions. After that, repeat this step; the command keeps exact entries that are already there. Then open a new desktop terminal for the check in step 9. Don't export PATH in that window to cover up a startup failure.
+**Recovery:** Leave the download folder and any existing `omp` in place. For checksum or download errors keep the attempt and ask the owner. For a conflicting destination ask the owner before any change. Do not switch assets or disable checks.
 
-## 8. Use the course checkout
+## 4. Get the course files
 
-Check private-repository access before cloning. GitHub credentials are separate from your course-site password and OpenRouter key. This first check uses existing credentials without changing login or credential-helper settings.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
-```
-
-**Expected:** A commit hash followed by `HEAD`. Skip all GitHub CLI steps below and continue at “Create or reuse the checkout.”
-
-**Stop:** If you see an authentication, repository-not-found, or network error, don't clone yet. Fix access first; this error is not about permission to use the folder.
-
-**Recovery:** Keep the error. Resolve a network error with the device owner. For missing GitHub credentials, use the fallback below. If your account lacks access, the repository owner must invite or approve that account; login alone cannot grant access.
-
-### Set up GitHub access only if the first check failed
-
-Check whether the official GitHub CLI, `gh`, is already available.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-if command -v gh >/dev/null 2>&1; then
-  gh --version
-else
-  printf 'GH MISSING\n'
-fi
-```
-
-**Expected:** A `gh version` line, or `GH MISSING`. Skip the install box if a version is shown.
-
-**Stop:** An existing `gh` fails to run.
-
-**Recovery:** Ask the device owner to repair the existing helper. Install only when it is missing.
-
-Use Arch's official [`github-cli` package](https://archlinux.org/packages/extra/x86_64/github-cli/) to install the missing helper. The command upgrades the whole system, so many unrelated packages may appear. Proceed only if the device owner has approved the entire transaction; type `n` and stop if there are conflicts or unapproved replacements. Do not use the AUR, do a partial upgrade, or replace system Python.
-
-**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates package installation.**
-
-```bash
-sudo pacman -Syu --needed github-cli
-```
-
-**Expected:** The package operation completes and the prompt returns. Enter your administrator password only at the sudo prompt.
-
-**Stop:** Permission is refused, the package is unavailable, or the package operation fails.
-
-**Recovery:** Keep the error and ask the device owner to provide the approved official package. Do not change sources or use another installer.
-
-Sign in through your browser using [GitHub CLI login](https://cli.github.com/manual/gh_auth_login). The terminal gives you a one-time device code and may ask you to press Return to open the browser. Enter the code on GitHub and authorize the **account invited to this repository**. If you're asked to configure Git authentication now, choose **No** so you can check where credentials will be stored first. GitHub CLI prefers the OS credential store but can fall back to a plaintext file. Don't use `--insecure-storage`.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; interactive login.**
-
-```bash
-gh auth login --hostname github.com --git-protocol https --web
-```
-
-**Expected:** The browser authorization completes and the terminal confirms login.
-
-**Stop:** Login fails, the browser has the wrong account, or device policy refuses authorization.
-
-**Recovery:** Stop and ask the account or device owner to resolve that specific problem. Do not paste any password or token into a command.
-
-Inspect the active account and credential-storage location with [auth status](https://cli.github.com/manual/gh_auth_status). Keep this output private; do not share it or add `--show-token`.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-gh auth status --hostname github.com
-```
-
-**Expected:** Authentication succeeds for the invited account, and the reported storage is approved by device policy.
-
-**Stop:** Authentication fails, the active account is wrong, or the storage location is not approved or is unclear.
-
-**Recovery:** Ask the device owner to provision approved storage or credentials. Do not continue to helper setup until both account and storage are approved.
-
-Set up the [Git credential helper for github.com only](https://cli.github.com/manual/gh_auth_setup-git), then check repository access again. The access check runs only if the helper setup succeeds.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-gh auth setup-git --hostname github.com &&
-GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
-```
-
-**Expected:** A commit hash followed by `HEAD`.
-
-**Stop:** Either command fails. Do not clone.
-
-**Recovery:** Keep the error and ask the repository owner to confirm the invitation and any organization approval for this account. Repeat the access check only after that correction. Do not force helper setup.
-
-### Create or reuse the checkout
-
-Use the checkout at `"$HOME/Documents/AIHB_OCT_2026"`. If the folder isn't there, this step clones [the course repository](https://github.com/TheHolofex/AIHB_OCT_2026.git). If it's already a checkout of that exact origin, the command leaves it as it is. It does not reset, pull, or clean anything.
+The box checks private-repository access, then clones the course to `"$HOME/Documents/AIHB_OCT_2026"`. If that folder is already a checkout of the course origin, the box leaves it unchanged and does not reset, pull, or clean it. GitHub credentials are separate from your course-site password and OpenRouter key.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -418,63 +174,116 @@ course_use_checkout() {
   local origin_url checkout_top helper
   R="$HOME/Documents/AIHB_OCT_2026"
   ORIGIN="https://github.com/TheHolofex/AIHB_OCT_2026.git"
-  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then
-    printf 'STOP: %s is a symlink; it was not replaced\n' "$R" >&2
-    return 1
-  fi
+  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then printf 'STOP: Documents or checkout is a link\n' >&2; return 1; fi
   if [ ! -e "$R" ]; then
-    GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD || return 1
+    GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code "$ORIGIN" HEAD || return 1
     mkdir -p -- "$HOME/Documents" || return 1
-    git clone "$ORIGIN" "$R" || {
-      printf 'STOP: clone failed; the path was not reused\n' >&2
-      return 1
-    }
+    git clone "$ORIGIN" "$R" || { printf 'STOP: clone failed\n' >&2; return 1; }
   elif [ ! -d "$R" ]; then
-    printf 'STOP: %s exists and is not a directory; it was not replaced\n' "$R" >&2
-    return 1
+    printf 'STOP: exists but not a directory\n' >&2; return 1
   else
     origin_url="$(git -C "$R" remote get-url origin 2>/dev/null || true)"
-    if [ "$origin_url" != "$ORIGIN" ]; then
-      printf 'STOP: %s is not the course checkout; it was not changed\n' "$R" >&2
-      return 1
-    fi
+    if [ "$origin_url" != "$ORIGIN" ]; then printf 'STOP: not the course checkout\n' >&2; return 1; fi
     printf 'USE: existing checkout; no reset, pull, or clean\n'
   fi
-  if [ -L "$R/.git" ]; then
-    printf 'STOP: checkout metadata is linked\n' >&2; return 1
-  fi
+  if [ -L "$R/.git" ]; then printf 'STOP: .git is a link\n' >&2; return 1; fi
   checkout_top="$(git -C "$R" rev-parse --show-toplevel 2>/dev/null)" || return 1
-  if [ "$checkout_top" != "$R" ]; then
-    printf 'STOP: intended folder is not the checkout root\n' >&2; return 1
-  fi
+  [ "$checkout_top" = "$R" ] || { printf 'STOP: not the checkout root\n' >&2; return 1; }
   git -C "$R" rev-parse --verify HEAD >/dev/null || return 1
   M="$R/AI_Harness_Bootcamp_2/module-00-setup"
   if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$R/shared/course_guard.mjs" ] || [ ! -f "$M/scripts/verify-setup.sh" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ]; then
-    printf 'STOP: this checkout is missing a course helper; it was not reset or updated\n' >&2
-    return 1
+    printf 'STOP: checkout missing a course helper\n' >&2; return 1
   fi
   for helper in "$R/shared/run_omp.py" "$R/shared/course_guard.mjs" "$M/scripts/verify-setup.sh" "$M/shared/case/verify_tool_proof.py"; do
-    if [ -L "$helper" ]; then
-      printf 'STOP: course helper is linked; checkout was not changed\n' >&2; return 1
-    fi
+    [ ! -L "$helper" ] || { printf 'STOP: helper is a link\n' >&2; return 1; }
   done
-  printf 'R %s\n' "$R"
-  printf 'M %s\n' "$M"
+  printf 'R %s\nM %s\n' "$R" "$M"
 }
 course_use_checkout
 ```
 
-**Expected:** You see `USE:` or a completed clone, then one `R` line and one `M` line. Both paths are under your home folder.
+**Expected:** For a new clone, a commit hash followed by `HEAD`, then Git's `Cloning into` progress. For an existing checkout, `USE: existing checkout; no reset, pull, or clean`. Either way, the last lines are `R` and `M` paths under your home folder.
 
-**Stop:** Any STOP line appears. The folder exists but is a different project, a file, or a shortcut.
+**Stop:** Authentication, network, or not-found error on ls-remote; any STOP from the function.
 
-**Recovery:** Do not delete, rename, reset, pull, or clean the existing folder. Leave it as it is and ask the person who owns it. A missing helper is not a reason to update the checkout from this guide. Clone help is in GitHub's [cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) page.
+**Recovery:** Keep the error. For network ask the owner. For missing credentials use the subsection below. If the account lacks access, the repository owner must invite it.
 
-## 9. Open a new terminal and confirm the install
+### If GitHub access fails
 
-Close this terminal completely, then open a new terminal window from the desktop menu. Don't type `bash`, `sh`, or `su` in the old window: a program started there is a child that can inherit exported variables and the old PATH. A new terminal window opened from the desktop menu reads its startup files and normally has no key from the old window. If a child window has the key, that alone doesn't show whether the key was saved or exposed.
+Check whether `gh` is present.
 
-Do not export PATH in the new window before this check. The check is what shows whether the startup file worked.
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+if command -v gh >/dev/null 2>&1; then gh --version; else printf 'GH MISSING\n'; fi
+```
+
+**Expected:** A `gh version` line or `GH MISSING`. Skip the install box when a version is shown.
+
+**Stop:** Existing gh fails to run.
+
+**Recovery:** Ask owner to repair existing gh. Install only when missing.
+
+Install only with owner approval for the full upgrade. Use the official package.
+
+**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates.**
+
+```bash
+sudo pacman -Syu --needed github-cli
+```
+
+**Expected:** Transaction completes.
+
+**Stop:** Refused, unavailable, or conflict.
+
+**Recovery:** Keep error; ask owner for the official package. No AUR or partial sync.
+
+Sign in through your browser. The terminal shows a one-time code and may ask you to press Return to open the browser. Enter the code on GitHub and authorize the account invited to this repository. If the terminal asks whether to authenticate Git with your GitHub credentials, choose **No**; the next two boxes check where credentials are stored before Git uses them. Don't add `--insecure-storage`.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; interactive login.**
+
+```bash
+gh auth login --hostname github.com --git-protocol https --web
+```
+
+**Expected:** Browser completes and terminal confirms login for the invited account.
+
+**Stop:** Login fails or wrong account.
+
+**Recovery:** Stop; ask owner or account owner to resolve. Never paste a password or token.
+
+Check status (storage location must be approved by device policy).
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+gh auth status --hostname github.com
+```
+
+**Expected:** Success for invited account and approved storage.
+
+**Stop:** Fails, wrong account, or unclear storage.
+
+**Recovery:** Ask owner for approved credentials/storage.
+
+Set up helper and recheck access.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+gh auth setup-git --hostname github.com &&
+GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
+```
+
+**Expected:** A commit hash followed by `HEAD`. Now paste the step 4 box again to clone the course.
+
+**Stop:** Either command fails. Do not clone.
+
+**Recovery:** Keep the error. The repository owner must confirm the invitation and any organization approval for this account. After that, paste this box again, then the step 4 box.
+
+## 5. Open a new terminal and confirm
+
+Close the current terminal completely. Open a fresh one from the desktop menu. Do not export PATH or run commands in the old window. The new window must read the startup files and show `MISSING` for the key.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, newly opened desktop window.**
 
@@ -501,37 +310,25 @@ course_confirm_new_terminal() {
   printf 'R %s\nM %s\nPY %s\n' "$R" "$M" "$PY"
   resolved="$(command -v omp 2>/dev/null || true)"
   printf 'OMP_PATH %s\n' "${resolved:-missing}"
-  if [ "$resolved" != "$HOME/.local/bin/omp" ]; then
-    printf 'STOP: omp is not the user binary\n' >&2
-    return 1
-  fi
+  if [ "$resolved" != "$HOME/.local/bin/omp" ]; then printf 'STOP: omp is not the user binary\n' >&2; return 1; fi
   version="$("$HOME/.local/bin/omp" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
-  if [ "$version" != "omp/18.3.5" ]; then
-    printf 'STOP: version is not omp/18.3.5\n' >&2
-    return 1
-  fi
-  if [ -n "${OPENROUTER_API_KEY:-}" ]; then
-    printf 'SET\n'
-    printf 'STOP: this window already has the key variable\n' >&2
-    return 1
-  fi
+  if [ "$version" != "omp/18.3.5" ]; then printf 'STOP: version is not omp/18.3.5\n' >&2; return 1; fi
+  if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\nSTOP: this window already has the key\n' >&2; return 1; fi
   printf 'MISSING\n'
 }
 course_confirm_new_terminal
 ```
 
-**Expected:** `R` and `M` name the course checkout, `PY` is an absolute executable reporting Python 3.12 or newer, and `GIT_PATH` is followed by a Git version. `OMP_PATH` is your home folder plus `/.local/bin/omp`. `OMP_VERSION` is `omp/18.3.5`. The last line is `MISSING`.
+**Expected:** `R`, `M`, `PY`, `GIT_PATH`, `OMP_PATH`, `OMP_VERSION omp/18.3.5`, and final line `MISSING`.
 
-**Stop:** Any command fails, Python is below 3.12, Git cannot run, the checkout identity is wrong, OMP has the wrong path or version, or the key line is `SET`.
+**Stop:** Any failure, wrong paths/versions, or `SET` for the key.
 
-**Recovery:** If Python or Git is the problem, work with the device owner to fix only that prerequisite. If the checkout is the problem, leave its files in place and ask the course owner. If `omp` is missing or wrong, return to the PATH step in a window where you can edit the startup file, then open another terminal from the desktop. Don't export PATH in the new window to cover up a missing startup setting. Arch won't add the user bin folder unless that startup file has the line. If you see `SET`, don't print the variable or assume the key was written to a file. Close this window. If you opened it from the old terminal, open the next one from the desktop menu. If a new terminal window opened from the desktop menu still prints `SET`, stop and follow [credentials](../shared/CREDENTIALS.md).
+**Recovery:** If Python/Git/omp/ checkout problem, fix the prerequisite with the owner and repeat from the affected step, then open another fresh desktop terminal. If `SET` appears, close the window and open the next from the desktop menu without printing the key.
 
-## 10. Enter the key
+## 6. Enter your OpenRouter key
 
-The next box reads the key without showing it. Paste the box, press Return, and wait; the terminal is ready for the key even if it looks idle. Paste or type the key, then press Return. You won't see the characters. The key stays in this process only; this step does not write it to a profile, file, or log.
-
-Do not put the key on the same line as a command. Do not run `echo`, `env`, `set`, or `printenv` to look at it. Read [credentials](../shared/CREDENTIALS.md) before you paste a key that may already have been exposed.
+The box reads the key without displaying it. Paste the box, press Return, then paste or type the key and press Return. Characters are not shown. The key exists only in this process.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -539,324 +336,111 @@ Do not put the key on the same line as a command. Do not run `echo`, `env`, `set
 IFS= read -r -s OPENROUTER_API_KEY
 ```
 
-**Expected:** Nothing is echoed. After you press Return, the prompt comes back. It may stay on the same line, because hidden input does not print a newline.
+**Expected:** Nothing echoed. Prompt returns after Return (may stay on same line).
 
-**Stop:** Any character of the key appears on screen, or you pasted the key into the command box instead of waiting for the read.
+**Stop:** Any character of the key appears, or you paste the key into the command box.
 
-**Recovery:** Treat a displayed key as exposed. Stop, follow [credentials](../shared/CREDENTIALS.md), and use the replacement key in a new window. Do not copy the displayed key into a file.
+**Recovery:** Treat displayed key as exposed. Follow [credentials](../shared/CREDENTIALS.md). Use a replacement key in a new window.
 
-## 11. Export the key in this process
+## 7. Confirm the key is loaded
 
-Export lets programs started from this window use the variable, including the readiness check. It still doesn't write the key to disk. `SET` means this process has a non-empty variable, but it doesn't tell you whether the key was saved, exposed, or accepted for authentication. `MISSING` means this process doesn't have the variable.
+Export makes the variable visible to programs started from this window. `SET` confirms a non-empty value in this process only.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 export OPENROUTER_API_KEY
-if [ -n "${OPENROUTER_API_KEY:-}" ]; then
-  printf 'SET\n'
-else
-  printf 'MISSING\n'
-fi
+if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n'; fi
 ```
 
 **Expected:** The only new line is `SET`.
 
-**Stop:** The line is `MISSING`, or any command prints the key itself.
+**Stop:** `MISSING`, or any command prints the key value.
 
-**Recovery:** Paste the hidden-read box again, then paste this box again. Don't put the key in a startup file to keep `SET` when you open a new terminal window. A new independent terminal window is expected to print `MISSING` until you enter the key there.
+**Recovery:** Paste the read box again, then this box again. Never write the key to a file to keep `SET` across terminals.
 
-## 12. Choose Python and the checkout again
+## 8. Run the readiness check
 
-In this same window, check Python and the checkout again before preparing the readiness check. The checkout box won't clone over or update an existing course folder. The Python box still accepts `python` when that command points to the real Arch interpreter.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_resolve_python() {
-  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import os, sys; sys.exit(1) if sys.version_info < (3, 12) else print(os.path.realpath(sys.executable))' 2>/dev/null && break; done)"
-  if [ -n "$PY" ]; then
-    printf 'PY %s\n' "$PY"
-    "$PY" -c 'import sys; sys.exit(sys.version_info < (3, 12))' || return 1
-    "$PY" --version || return 1
-    return 0
-  fi
-  printf 'STOP: no real Python executable is version 3.12 or newer\n' >&2
-  return 1
-}
-course_resolve_python
-```
-
-**Expected:** A `PY` line and a Python version of 3.12 or newer.
-
-**Stop:** The STOP line appears, or the version is below 3.12.
-
-**Recovery:** Return to the pacman step and run the full upgrade. Do not point `PY` at an AUR interpreter or a copy you downloaded outside Arch's packages.
-
-Confirm the existing checkout without changing its files.
+Prepare a fresh attempt outside the checkout. The launcher runs the model with the key from the environment and writes only the result file. The verifier checks the token match and the write provenance. All three steps run in one paste; keep the attempt on any failure.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
-course_use_checkout() {
-  local origin_url checkout_top helper
-  R="$HOME/Documents/AIHB_OCT_2026"
-  ORIGIN="https://github.com/TheHolofex/AIHB_OCT_2026.git"
-  if [ -L "$HOME/Documents" ] || [ -L "$R" ]; then
-    printf 'STOP: %s is a symlink; it was not replaced\n' "$R" >&2
-    return 1
-  fi
-  if [ ! -e "$R" ]; then
-    GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD || return 1
-    mkdir -p -- "$HOME/Documents" || return 1
-    git clone "$ORIGIN" "$R" || {
-      printf 'STOP: clone failed; the path was not reused\n' >&2
-      return 1
-    }
-  elif [ ! -d "$R" ]; then
-    printf 'STOP: %s exists and is not a directory; it was not replaced\n' "$R" >&2
-    return 1
-  else
-    origin_url="$(git -C "$R" remote get-url origin 2>/dev/null || true)"
-    if [ "$origin_url" != "$ORIGIN" ]; then
-      printf 'STOP: %s is not the course checkout; it was not changed\n' "$R" >&2
-      return 1
-    fi
-    printf 'USE: existing checkout; no reset, pull, or clean\n'
-  fi
-  if [ -L "$R/.git" ]; then
-    printf 'STOP: checkout metadata is linked\n' >&2; return 1
-  fi
-  checkout_top="$(git -C "$R" rev-parse --show-toplevel 2>/dev/null)" || return 1
-  if [ "$checkout_top" != "$R" ]; then
-    printf 'STOP: intended folder is not the checkout root\n' >&2; return 1
-  fi
-  git -C "$R" rev-parse --verify HEAD >/dev/null || return 1
-  M="$R/AI_Harness_Bootcamp_2/module-00-setup"
-  if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$R/shared/course_guard.mjs" ] || [ ! -f "$M/scripts/verify-setup.sh" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ]; then
-    printf 'STOP: this checkout is missing a course helper; it was not reset or updated\n' >&2
-    return 1
-  fi
-  for helper in "$R/shared/run_omp.py" "$R/shared/course_guard.mjs" "$M/scripts/verify-setup.sh" "$M/shared/case/verify_tool_proof.py"; do
-    if [ -L "$helper" ]; then
-      printf 'STOP: course helper is linked; checkout was not changed\n' >&2; return 1
-    fi
-  done
-  printf 'R %s\n' "$R"
-  printf 'M %s\n' "$M"
-}
-course_use_checkout
-```
-
-**Expected:** `USE:` for an existing checkout, then `R` and `M` lines.
-
-**Stop:** Any STOP line appears.
-
-**Recovery:** Do not pull, reset, or clean the checkout to create a missing helper. Stop and ask the person who owns that folder.
-
-## 13. Prepare a fresh readiness check
-
-Keep the work folder, token, and evidence folder outside the course checkout. Python creates the token with its `secrets` module, saves it as `run-token.txt` beside the work folder, then copies it into the work folder. This step names the evidence folder but doesn't create it; the launcher creates it. Don't create `from-omp.txt` yourself.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_prepare_proof() {
-  local attempt token_bytes
+course_run_readiness() {
+  local attempt course_exit
   unset COURSE_PROOF_VERIFIED
-  if [ -z "${PY:-}" ] || [ ! -x "${PY:-}" ]; then
-    printf 'STOP: PY is not set in this terminal\n' >&2
-    return 1
-  fi
-  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
-    printf 'STOP: evidence parent is linked; keep work under your home folder\n' >&2; return 1
-  fi
+  if [ -z "${PY:-}" ] || [ -z "${R:-}" ]; then printf 'STOP: PY and R not set\n' >&2; return 1; fi
+  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then printf 'STOP: evidence parent linked\n' >&2; return 1; fi
   attempt="module-00-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   BASE="$HOME/course-evidence/reformation-qa/$attempt"
-  if [ -e "$BASE" ] || [ -L "$BASE" ]; then
-    printf 'STOP: %s already exists and was not reused\n' "$BASE" >&2
-    return 1
-  fi
-  mkdir -p -- "$BASE/proof" || return 1
-  mkdir -p -- "$BASE/receipts" || return 1
+  if [ -e "$BASE" ] || [ -L "$BASE" ]; then printf 'STOP: attempt exists\n' >&2; return 1; fi
+  mkdir -p -- "$BASE/proof" "$BASE/receipts" || return 1
   EVIDENCE="$BASE/receipts/live-1"
-  if [ -e "$EVIDENCE" ] || [ -L "$EVIDENCE" ]; then
-    printf 'STOP: evidence path already exists\n' >&2
-    return 1
-  fi
+  if [ -e "$EVIDENCE" ] || [ -L "$EVIDENCE" ]; then printf 'STOP: evidence exists\n' >&2; return 1; fi
   "$PY" -c 'import secrets; print(secrets.token_hex(16), end="")' > "$BASE/run-token.txt" || return 1
-  token_bytes="$(wc -c < "$BASE/run-token.txt" | tr -d '[:space:]')"
-  if [ "$token_bytes" -lt 16 ]; then
-    printf 'STOP: token file is empty; nothing was sent to the model\n' >&2
-    return 1
-  fi
+  [ "$(wc -c < "$BASE/run-token.txt" | tr -d '[:space:]')" -ge 16 ] || { printf 'STOP: token too short\n' >&2; return 1; }
   cp -- "$BASE/run-token.txt" "$BASE/proof/run-token.txt" || return 1
   cat > "$BASE/proof/prompt.txt" << 'COURSE_PROMPT'
 Read run-token.txt with the course_read tool. Then write only from-omp.txt with the course_write tool. The file contents must be the words omp works, one space, and the exact token text from run-token.txt. Do not write any other file.
 COURSE_PROMPT
-  if [ -e "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
-    printf 'STOP: from-omp.txt already exists; start a new attempt\n' >&2
-    return 1
-  fi
-  printf 'READINESS_WORK %s\n' "$BASE/proof"
-  printf 'TOKEN_OUTSIDE %s\n' "$BASE/run-token.txt"
-  printf 'EVIDENCE_NOT_CREATED %s\n' "$EVIDENCE"
-}
-course_prepare_proof
-```
-
-**Expected:** Three lines, starting with `READINESS_WORK`, `TOKEN_OUTSIDE`, and `EVIDENCE_NOT_CREATED`. You'll see the path to the evidence folder, which doesn't exist yet, but not the token value.
-
-**Stop:** A STOP line appears, or `from-omp.txt` already exists.
-
-**Recovery:** Keep the existing attempt. Paste this box again to use a new attempt folder, but don't copy an old `from-omp.txt` into the new work folder.
-
-## 14. Ask for one tool write
-
-This command starts the course launcher, which selects OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It lets the model read the work folder and write only `from-omp.txt`. The key comes from the variable in this process, not from the command line.
-
-If the key is missing, the launcher exits 2 without creating the evidence folder. If the live run fails, it exits 1. Keep that attempt, and don't run the launcher again against the same work folder after a partial file exists.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_run_proof() {
-  local course_exit
-  if [ -z "${PY:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
-    printf 'STOP: readiness-check paths are not set in this terminal\n' >&2
-    return 1
-  fi
-  if [ -e "$EVIDENCE" ] || [ -L "$EVIDENCE" ]; then
-    printf 'STOP: evidence already exists; start a new attempt\n' >&2
-    return 1
-  fi
-  if [ -e "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
-    printf 'STOP: from-omp.txt already exists; start a new attempt\n' >&2
-    return 1
-  fi
-  "$PY" "$R/shared/run_omp.py" \
-    --workdir "$BASE/proof" \
-    --prompt "$BASE/proof/prompt.txt" \
-    --evidence "$EVIDENCE" \
-    --allow-write from-omp.txt
+  if [ -e "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then printf 'STOP: from-omp.txt exists\n' >&2; return 1; fi
+  printf 'READINESS_WORK %s\nTOKEN_OUTSIDE %s\nEVIDENCE_NOT_CREATED %s\n' "$BASE/proof" "$BASE/run-token.txt" "$EVIDENCE"
+  "$PY" "$R/shared/run_omp.py" --workdir "$BASE/proof" --prompt "$BASE/proof/prompt.txt" --evidence "$EVIDENCE" --allow-write from-omp.txt
   course_exit="$?"
   printf 'LAUNCH_EXIT %s\n' "$course_exit"
-  if [ "$course_exit" -eq 2 ]; then
-    printf 'STOP: prerequisite hold; do not reuse this attempt\n' >&2
-    return 2
-  fi
-  if [ "$course_exit" -ne 0 ]; then
-    printf 'STOP: live run failed; keep this attempt\n' >&2
-    return 1
-  fi
-  return 0
-}
-course_run_proof
-```
-
-**Expected:** The launcher finishes, and the last line you added is `LAUNCH_EXIT 0`. The evidence folder now exists because the launcher created it.
-
-**Stop:** `LAUNCH_EXIT 2` means a prerequisite is on hold. A missing key causes this hold, and the evidence folder should still be absent. `LAUNCH_EXIT 1` means the live run failed or didn't finish. If you see any other STOP line, don't reuse this attempt.
-
-**Recovery:** Don't create `from-omp.txt` by hand or delete the attempt to reuse the same path. For exit 2, read the prerequisite error. If it names a missing key, repeat the hidden-read and export boxes in this window. For another prerequisite, work with the course owner to correct that specific failure. Only then prepare a new attempt. For exit 1, keep the attempt and look at the first failure in its receipts. Work with the course owner to correct the cause before preparing a new attempt. Don't retry without finding the cause, and don't point the launcher at a second provider or a different model.
-
-## 15. Verify the readiness result
-
-The checker reads the work folder, the token file outside it, and the evidence folder. It checks the saved receipts and the pinned provider, model, and OMP identities. It passes only if `from-omp.txt` contains `omp works` and the token from this attempt, and the evidence shows that `course_write` wrote those bytes.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_verify_proof() {
-  local course_exit
-  unset COURSE_PROOF_VERIFIED
-  if [ -z "${PY:-}" ] || [ -z "${M:-}" ] || [ -z "${BASE:-}" ] || [ -z "${EVIDENCE:-}" ]; then
-    printf 'STOP: readiness-check paths are not set in this terminal\n' >&2
-    return 1
-  fi
-  if [ ! -d "$EVIDENCE" ]; then
-    printf 'STOP: evidence was not created; do not invent a result file\n' >&2
-    return 1
-  fi
+  if [ "$course_exit" -eq 2 ]; then printf 'STOP: prerequisite hold\n' >&2; return 2; fi
+  if [ "$course_exit" -ne 0 ]; then printf 'STOP: live run failed\n' >&2; return 1; fi
+  if [ ! -d "$EVIDENCE" ]; then printf 'STOP: evidence not created\n' >&2; return 1; fi
   "$PY" "$M/shared/case/verify_tool_proof.py" "$BASE/proof" "$BASE/run-token.txt" "$EVIDENCE"
   course_exit="$?"
   printf 'VERIFY_EXIT %s\n' "$course_exit"
   if [ "$course_exit" -eq 0 ]; then COURSE_PROOF_VERIFIED="$BASE"; fi
   return "$course_exit"
 }
-course_verify_proof
+course_run_readiness
 ```
 
-**Expected:** The checker prints `READINESS CHECK PASS`, and the last line is `VERIFY_EXIT 0`.
+**Expected:** `READINESS_WORK`, `TOKEN_OUTSIDE`, `EVIDENCE_NOT_CREATED`, `LAUNCH_EXIT 0`, `READINESS CHECK PASS`, `VERIFY_EXIT 0`.
 
-**Stop:** You see `READINESS CHECK HOLD`, `VERIFY_EXIT 1`, `VERIFY_EXIT 2`, or a STOP line.
+**Stop:** `LAUNCH_EXIT 2`, nonzero launch or verify exit, or STOP line.
 
-**Recovery:** Don't edit `from-omp.txt` or run the checker against a folder you filled in yourself. Keep this attempt as HOLD, and work with the course owner to correct the first reported failure before preparing a new attempt. A later prerequisite report cannot replace this check.
+**Recovery:** Keep the attempt. For key hold, re-enter and export in this window. For other prerequisite or failure, ask the owner with the first error from receipts. Do not edit files or reuse the attempt.
 
-## 16. Save the prerequisite report
+## 9. Save the setup report and read the result
 
-This report checks the machine, the tools, the checkout, and whether the key variable is present in this process. It can't tell you whether the live write succeeded. Changed or untracked files in the checkout aren't a failure, so don't clean the checkout because of them.
+The report checks prerequisites. It cannot replace the live readiness result. After the readiness passed, read the actual `from-omp.txt` bytes.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
-course_save_report() {
-  local course_exit
-  if [ -z "${M:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ]; then
-    printf 'STOP: report paths are not set in this terminal\n' >&2
-    return 1
+course_save_and_read() {
+  if [ -z "${M:-}" ] || [ -z "${R:-}" ] || [ -z "${BASE:-}" ] || [ "${COURSE_PROOF_VERIFIED:-}" != "$BASE" ]; then
+    printf 'STOP: readiness not passed in this terminal\n' >&2; return 1
   fi
-  if [ -e "$BASE/setup-report.txt" ] || [ -L "$BASE/setup-report.txt" ]; then
-    printf 'STOP: report already exists; start a new attempt if you need another report\n' >&2
-    return 1
-  fi
+  if [ -e "$BASE/setup-report.txt" ] || [ -L "$BASE/setup-report.txt" ]; then printf 'STOP: report exists\n' >&2; return 1; fi
   bash "$M/scripts/verify-setup.sh" "$R" "$BASE/setup-report.txt"
-  course_exit="$?"
+  local course_exit="$?"
   printf 'REPORT_EXIT %s\n' "$course_exit"
-  return "$course_exit"
-}
-course_save_report
-```
-
-**Expected:** The command writes the report file it names. A run with no failed prerequisite prints `SETUP CHECK PASS` and `REPORT_EXIT 0`. The report does not contain the key.
-
-**Stop:** The command prints `SETUP CHECK HOLD`, any nonzero `REPORT_EXIT`, or an error. A line in the report tells you to pull, reset, or discard files.
-
-**Recovery:** Read the first FAIL line and correct only that prerequisite. Don't pull, reset, clean, or discard the checkout because the report mentions changed files, and don't paste the key into the report. If the report passed but the readiness check didn't, the readiness check remains stopped.
-
-## 17. Read the actual result file
-
-After `READINESS CHECK PASS`, read the result file from disk. Keep the prerequisite report separate: its PASS cannot replace the live readiness check. This command prints every byte of `from-omp.txt`; the token identifies this run and isn't your API key.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
-
-```bash
-course_read_back_proof() {
-  if [ -z "${BASE:-}" ] || [ "${COURSE_PROOF_VERIFIED:-}" != "$BASE" ]; then
-    printf 'STOP: this attempt has not passed the readiness check\n' >&2; return 1
-  fi
-  if [ ! -f "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then
-    printf 'STOP: result file is missing or linked\n' >&2; return 1
-  fi
+  [ "$course_exit" -eq 0 ] || return "$course_exit"
+  if [ ! -f "$BASE/proof/from-omp.txt" ] || [ -L "$BASE/proof/from-omp.txt" ]; then printf 'STOP: result file missing or link\n' >&2; return 1; fi
   printf 'FILE %s\n' "$BASE/proof/from-omp.txt"
   cat -- "$BASE/proof/from-omp.txt" || return 1
   printf '\nEND OF FILE\n'
 }
-course_read_back_proof
+course_save_and_read
 ```
 
-**Expected:** Between the file path and `END OF FILE`, you see `omp works` followed by the token for this attempt. This is the file you just verified, under your home folder outside the checkout.
+**Expected:** `SETUP CHECK PASS`, `REPORT_EXIT 0`, then the file path, `omp works <token>`, and `END OF FILE`.
 
-**Stop:** The file cannot be read, its contents differ from the verified result, or any STOP line appears. A failed readiness check or prerequisite report remains HOLD.
+**Stop:** Nonzero report exit, or STOP.
 
-**Recovery:** Keep the attempt and its receipts. Ask the course owner to resolve the first failed check before creating a new attempt. Don't edit the result file or use an assistant message in place of the file on disk.
-
+**Recovery:** Read the first FAIL in the report and correct only that. Keep the attempt for owner review. The readiness check remains the live proof.
 
 ## Set up local Obsidian
 
-Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 15 minutes for this practice, plus any earlier package download time. Use the signed **Extra** `obsidian` package installed by the full `pacman -Syu` transaction on this page. It is an [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR package or an Obsidian-vendor binary. Pacman checks package integrity and signatures before installation, so never turn off signature checks to get past a failure. Keep existing app profiles and vaults.
+Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 15 minutes. Use the signed Extra `obsidian` package from the approved full `pacman -Syu` transaction. It is the [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR or vendor binary. Pacman verified signatures on install. Keep any existing profile and vaults.
 
-If the package was missing and you skipped the earlier approved full-upgrade transaction, go back and run it. Do not perform a partial upgrade, install through the AUR, or downgrade to match the version named here. Arch listed package version 1.13.7-2; record the version installed on your machine.
+If you skipped the package step when it was needed, return and run the full upgrade. Record the version pacman reports.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -864,7 +448,7 @@ If the package was missing and you skipped the earlier approved full-upgrade tra
 pacman -Q obsidian
 ```
 
-**Expected:** `obsidian` followed by the installed package version. **Stop:** The package is missing or the command fails. **Recovery:** Keep the error and return to the owner-approved full-upgrade transaction. If you have an Obsidian installation outside the package manager, keep it and ask the device owner to resolve the package-route conflict before you proceed; do not overwrite it.
+**Expected:** `obsidian` followed by the installed version (for example 1.13.7-2). **Stop:** Package missing or command fails. **Recovery:** Return to the owner-approved full-upgrade transaction.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -872,25 +456,21 @@ pacman -Q obsidian
 obsidian &
 ```
 
-**Expected:** The Obsidian GUI opens in your desktop session, and you can still use the terminal. **Stop:** A launch error, missing display, or sandbox refusal. **Recovery:** Record Obsidian HOLD and the exact error. Do not add `--no-sandbox`, run as root, or change system security controls to get past the failure.
+**Expected:** The Obsidian GUI opens in your desktop session. **Stop:** Launch error, missing display, or sandbox refusal. **Recovery:** Record `Obsidian HOLD` with the exact error. Do not add flags or change security controls.
 
 ### Open a fresh practice vault and follow its links
 
-Use Obsidian to follow a note link, save an edit, and see a change made outside the app. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder, and leave existing vaults and app profiles intact. You don't need an account, community plugin, Sync service, or MCP connection. This work makes no provider call and needs no API key.
+Use Obsidian to follow a note link, save an edit, and see a change made outside the app. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder; leave existing vaults and app profiles intact. No account, plugin, Sync, or MCP is needed. This work makes no provider call.
 
-Stay in the terminal window used above, with `PY` set to the checked Python executable, `R` to your course checkout, and `M` to `$R/AI_Harness_Bootcamp_2/module-00-setup`. The new `OBS_ROOT` sits outside both the OMP attempt and the checkout. Run one box at a time and stop if any box fails.
+Stay in the terminal with `PY`, `R`, and `M` from earlier steps. The `OBS_ROOT` is outside the OMP attempt and checkout.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
 ```bash
 course_initialize_obsidian() {
-  [ -n "${PY:-}" ] && [ -n "${R:-}" ] && [ -n "${M:-}" ] || {
-    printf 'HOLD: restore this page’s Python and checkout variables first.\n' >&2; return 1;
-  }
+  [ -n "${PY:-}" ] && [ -n "${R:-}" ] && [ -n "${M:-}" ] || { printf 'HOLD: restore PY, R, M first.\n' >&2; return 1; }
   [ "$M" = "$R/AI_Harness_Bootcamp_2/module-00-setup" ] || return 1
-  [ -f "$M/scripts/obsidian_readiness.py" ] && [ ! -L "$M/scripts/obsidian_readiness.py" ] || {
-    printf 'HOLD: course readiness helper is missing or linked.\n' >&2; return 1;
-  }
+  [ -f "$M/scripts/obsidian_readiness.py" ] && [ ! -L "$M/scripts/obsidian_readiness.py" ] || { printf 'HOLD: helper missing or linked.\n' >&2; return 1; }
   OBS_ROOT="$HOME/course-evidence/obsidian-arch-linux-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   "$PY" "$M/scripts/obsidian_readiness.py" initialize --root "$OBS_ROOT" || return 1
   printf 'OPEN EXACT VAULT: %s\n' "$OBS_ROOT/vault"
@@ -898,25 +478,25 @@ course_initialize_obsidian() {
 course_initialize_obsidian
 ```
 
-**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` name the same absolute folder ending in `/vault`. Keep that path visible.
+**Expected:** `Created practice vault:` and `OPEN EXACT VAULT:` name the same absolute folder ending in `/vault`.
 
-**Stop:** Any HOLD or error, an existing destination, or a missing variable.
+**Stop:** HOLD, error, existing destination, or missing variable.
 
-**Recovery:** Keep the attempt. If you closed the terminal, restore `PY`, `R`, and `M` using the earlier Python and checkout instructions. If initialization succeeded, set `OBS_ROOT` to the parent path that was printed and continue with that vault; don't initialize it again. If initialization failed, correct the named problem and use a fresh attempt. If a helper is missing, ask the checkout owner to resolve it; don't reset or update their checkout.
+**Recovery:** Keep the attempt. If the terminal closed, open a new one, paste the step 5 box to restore `PY`, `R`, and `M`, then set `OBS_ROOT` to the printed path without the final `/vault` (for example `OBS_ROOT="$HOME/course-evidence/obsidian-arch-linux-..."`). Do not initialize again. Ask the checkout owner for a missing helper.
 
 **Window: Obsidian, ordinary desktop account.**
 
-1. Open Obsidian using the platform launch step above. If another vault opens, leave its files and settings alone. Open the vault switcher, choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
-2. Select exactly the printed `OBS_ROOT/vault` folder. Press **Ctrl+L** in the folder picker and paste the printed absolute path, then open that folder. Do not select the checkout, the parent `OBS_ROOT`, or an existing personal vault.
-3. In this practice vault, open **Settings → Community plugins** and leave **Restricted mode** on. If it is off, turn it on for this vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. Do not sign in or install a plugin. Open **Settings → General**, note the actual app version, then close Settings.
-4. Open `Start` from the file list. Use Ctrl+E to switch to Reading view if needed, then click its **Token** link. Read the token displayed in `Token`; this random text is an exercise identifier, not a credential.
-5. Click **Reply** in `Token`. Switch to editing view with Ctrl+E if needed. Paste only the token on one line, without a heading, quotation marks, or backticks. Press Ctrl+S to save. Obsidian also saves edits automatically; the next command checks the actual saved bytes.
+1. Open Obsidian (from the launch step above). If another vault opens, leave it alone. Open the vault switcher, choose **Manage vaults**, then **Open folder as vault → Open**. On a first launch, choose **Open folder as vault → Open** directly.
+2. Select exactly the printed `OBS_ROOT/vault` folder. Use Ctrl+L and paste the absolute path. Do not select the checkout or an existing personal vault.
+3. In Settings → Community plugins keep **Restricted mode** on. Under Core plugins turn **Sync** off. Note the app version in General, then close Settings.
+4. Open `Start`. Use Ctrl+E for Reading view if needed. Click its **Token** link. Read the token shown.
+5. Click **Reply**. Switch to editing view with Ctrl+E if needed. Paste only the token on one line. Press Ctrl+S.
 
-**Expected:** The links open the existing `Token` and `Reply` notes, and `Reply` shows the token you read in the app.
+**Expected:** Links open the notes; `Reply` shows the token you read.
 
-**Stop:** The wrong vault opens, a link creates an empty note, settings cannot remain local and restricted, or you cannot edit/save through the GUI.
+**Stop:** Wrong vault, empty note created, settings not local/restricted, or cannot edit/save through GUI.
 
-**Recovery:** Leave `Start` and `Token` unchanged. Reopen the vault at the printed path and follow its existing links. If a policy or display failure stops you from using the Obsidian window, record `Obsidian HOLD` with the error. Editing in a text editor doesn't replace seeing and editing the note in Obsidian.
+**Recovery:** Leave `Start` and `Token` unchanged. Reopen the exact printed vault and follow its existing links. Record `Obsidian HOLD` for policy or display failures. A text editor edit does not count.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -924,15 +504,13 @@ course_initialize_obsidian
 "$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
 ```
 
-**Expected:** `Token generation 1: initial token; external refresh not yet exercised`, followed by `PASS: Obsidian file round-trip; GUI observation still required`. The command prints the path to the saved record of what it read from disk.
+**Expected:** `Token generation 1: ...` followed by `PASS: Obsidian file round-trip; GUI observation still required`.
 
-**Stop:** HOLD or any nonzero exit. A PASS here covers only the initial saved token.
+**Stop:** HOLD or nonzero exit.
 
-**Recovery:** Read the named failure. If the reply doesn't match, return to `Token` in Obsidian, copy its current token into `Reply`, save, and run this check again. Keep all the records from each check. Don't edit the helper's `expected` records or fix a reply through the shell.
+**Recovery:** If reply does not match, correct it in Obsidian and rerun. Keep all records.
 
 ### Observe an external change, save, and reopen
-
-Keep the practice vault open with `Token` visible. This command changes that note from the terminal while leaving the old reply in place.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -942,22 +520,22 @@ Keep the practice vault open with `Token` visible. This command changes that not
 
 **Expected:** `Source token rotated outside Obsidian; your saved reply was preserved.`
 
-**Stop:** Any HOLD or error. Do not continue using an old token after a failed refresh.
+**Stop:** HOLD or error.
 
-**Recovery:** Keep the attempt and the exact error. Work with support to fix the named file or permission problem. If the refresh was interrupted, use a fresh attempt; don't edit expected values or remove a lock to force a pass.
+**Recovery:** Keep the attempt and error; ask owner for file/permission issues.
 
 **Window: Obsidian, same practice vault.**
 
-1. Return to `Token` in the app, which is still open, and look for its new text. If needed, select `Start` and follow **Token** again. Confirm that the token differs from the one still saved in `Reply`.
-2. Follow **Reply**, replace the old line with the new token you just saw, and press Ctrl+S. Do not run refresh again.
-3. Close the practice vault’s window with its window-close control; leave unrelated vault windows open. Launch Obsidian again using the same platform launch step. If it restores the practice vault, confirm its folder is the exact printed `OBS_ROOT/vault`. Otherwise use the vault switcher’s **Manage vaults → Open folder as vault → Open** to select that exact folder again.
-4. Open `Start`, follow **Token**, then **Reply**. Confirm that the new token is still saved after reopening.
+1. Return to `Token` (still open or reopen via link). Confirm the token changed from the one in `Reply`.
+2. Follow **Reply**, replace the old line with the new token, press Ctrl+S. Do not run refresh again.
+3. Close the vault window with its close control. Launch Obsidian again from the platform step. Reopen the exact `OBS_ROOT/vault` via Manage vaults if needed.
+4. Open `Start`, follow **Token**, then **Reply**. Confirm the new token is still saved.
 
-**Expected:** You see the external change, save the new reply in Obsidian, and see that reply again after reopening the same folder.
+**Expected:** External change visible, new reply saved in Obsidian, same after reopen.
 
-**Stop:** The app doesn't show the changed token, the edit disappears, or you can't tell which vault reopened.
+**Stop:** App does not show the change, edit lost, or wrong vault reopens.
 
-**Recovery:** Record `Obsidian HOLD` and the action that failed in the Obsidian window. Keep the files and the records from each check; a match found only in the shell doesn't show that the app worked. Check the exact folder and display/session permissions with support before trying that action again.
+**Recovery:** Record `Obsidian HOLD` with the exact action that failed. Shell match alone does not prove the GUI steps.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -965,27 +543,27 @@ Keep the practice vault open with `Token` visible. This command changes that not
 "$PY" "$M/scripts/obsidian_readiness.py" check --root "$OBS_ROOT"
 ```
 
-**Expected:** `Token generation 2: refreshed token; GUI observation still required` and `PASS: Obsidian file round-trip; GUI observation still required`, plus a new path to the saved record of what the command read from disk. If you refreshed more than once on purpose, the generation is higher; record the value you see.
+**Expected:** `Token generation 2: ...` and `PASS: ...`, plus record path.
 
-**Stop:** HOLD, a token that has not been refreshed, or a GUI action you could not see in the Obsidian window.
+**Stop:** HOLD, unrefrshed token, or GUI action not seen in the window.
 
-**Recovery:** Keep the attempt. If the saved reply does not match, correct it in Obsidian, save it, close and reopen that vault, then check again. Obsidian stays on HOLD if you could not see the GUI actions, even when the files on disk match.
+**Recovery:** Correct the reply in Obsidian, save, close/reopen the vault, then check again.
 
 ### Record actual Obsidian readiness
 
-Use an ordinary text editor to create `gui-observation.txt` beside the vault at the `OBS_ROOT` path you used. Record the date, operating system and architecture, app version, exact vault path, and the two disk-record paths the checks printed. Describe how you followed the links, made and saved the first edit, saw the token change made outside Obsidian, made and saved the second edit, then closed and reopened the vault. Record that Restricted mode was on and Sync was off. You may include a screenshot of the practice vault, but leave out credentials and unrelated personal notes.
+Use an ordinary text editor to create `gui-observation.txt` beside the vault at the printed `OBS_ROOT`. Record date, OS/arch, app version, exact vault path, and the two disk-record paths. Describe following the links, first edit+save, seeing the external change, second edit+save, close and reopen. Note Restricted mode on and Sync off. You may add a screenshot of the vault but omit credentials.
 
-Write `Obsidian READY` only if both disk checks passed and you saw every listed GUI action in the Obsidian window. Otherwise write `Obsidian HOLD` and name the missing action or exact error. A file or `.obsidian` folder alone cannot show that you used the app. Keep this record separate from OMP and n8n readiness; a failure in one does not cancel a result in another. These Obsidian GUI actions have not been checked on Arch; record what happens on your machine.
+Write `Obsidian READY` only if both disk checks passed **and** you saw every GUI action in the Obsidian window. Otherwise write `Obsidian HOLD` and name the missing action or error. A file or `.obsidian` folder alone does not prove use of the app. Keep this record separate from OMP and n8n results.
 
-## 18. Inspect Docker before setting up local n8n
+## 10. Check Docker and the n8n destination
 
-You need local n8n for Module 7. Keep its readiness result separate from the OMP prerequisite report and live write above; none of these results replaces another. Leave extra time for image downloads and owner approvals; the setup time is only an estimate, not a measured time.
+You need local n8n for Module 7. Keep its result separate from OMP and Obsidian. Leave time for downloads and approvals.
 
-Use your ordinary account, and leave existing applications, Docker contexts, containers, volumes, and setup attempts in place. The destination is `$HOME/n8n-course`, outside the course checkout; you will open `http://localhost:5678` in your browser. If the destination already exists or the port is in use, mark HOLD until its owner identifies it. Do not delete it, stop another application, or run the installer over it.
+Use your ordinary account. Leave existing apps, contexts, containers, volumes, and attempts in place. Destination `$HOME/n8n-course` outside the checkout; you will open `http://localhost:5678`. If it exists or port 5678 is in use, mark HOLD and ask the owner. Do not delete or run over it.
 
-The [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml) includes `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. The sandbox runner uses privileged Docker-in-Docker. Obtain device-owner approval for that privilege and the software's applicable license terms before installation or startup. Assistant stays off even though its support services run. If an existing Docker Desktop is used, its owner must also confirm [Docker Desktop license eligibility](https://docs.docker.com/subscription/desktop-license/). Denial is HOLD.
+The stack uses privileged Docker-in-Docker for the sandbox runner. Obtain explicit owner approval for the privilege and the software license before proceeding. If using Docker Desktop, its owner must also confirm eligibility.
 
-Check the services before contacting the daemon, because a Docker command can activate a socket that is already listening.
+Check state before contacting the daemon.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, new window.**
 
@@ -1009,29 +587,33 @@ fi
 printf 'DOCKER_HOST %s\nDOCKER_CONTEXT %s\n' "${DOCKER_HOST:-unset}" "${DOCKER_CONTEXT:-unset}"
 ```
 
-**Expected:** You can identify the state of each service and socket, which context is selected, and whether an environment variable overrides it. For a fresh install, the destination is absent and the port table has no listener rows. Before Docker is installed, missing units are normal.
+**Expected:** Clear state for each unit, context, overrides, destination, and listener table. Fresh machine: destination absent, no listener on 5678.
 
-**Stop:** A remote or unfamiliar context, root account, unknown listener, existing destination, masked/failed service, or denied service inspection is HOLD.
+**Stop:** Remote/unfamiliar context, root account, unknown listener, existing destination, masked/failed unit, or denied inspection: HOLD.
 
-**Recovery:** Ask the device owner to identify existing work and approve contact with the intended local daemon, including any socket activation. Do not switch contexts, unset overrides, unmask units, or start another daemon to get past a conflict. Continue with an existing course instance only if its owner confirms the directory, actual project identity, stack, version, and permission to stop or restart it. Keep its owner-managed lifecycle and actual identity; do not reinstall it, silently change its pinned version, or give it a new project identity.
+**Recovery:** Ask owner to identify existing work and approve contact with the intended local daemon. Do not switch contexts or start unrelated services. Continue only with an existing course instance whose owner confirms its identity, stack, and version.
 
-Once the owner approves contact with that daemon, inspect existing work. Skip this box only when Docker is missing.
+Inspect existing work when Docker is present.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
-docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
+if command -v docker >/dev/null 2>&1; then
+  docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
+else
+  printf 'DOCKER missing\n'
+fi
 ```
 
-**Expected:** Docker responds and lists existing work. `docker compose version` works through the modern plugin interface; a version such as 5.x is acceptable. The old `docker-compose` command on its own is not enough.
+**Expected:** Responses and listed work. Modern `docker compose` works (5.x acceptable).
 
-**Stop:** Permission denial, failed daemon contact, missing Compose, or unidentified work is HOLD for n8n.
+**Stop:** Permission denial, daemon failure, missing compose, or unidentified work: HOLD.
 
-**Recovery:** Follow only the missing-prerequisite steps that apply. Keep a compatible engine and Compose plugin. Do not prune containers or volumes, replace a working engine, or use sudo for n8n commands.
+**Recovery:** Follow only the missing steps that apply. Keep compatible engine and plugin. Do not prune or replace a working engine.
 
-## 19. Install only approved missing Arch Docker prerequisites
+## 11. Install Docker
 
-Use official Arch Linux on x86-64 only, as you checked in step 1. The official packages are [docker](https://archlinux.org/packages/extra/x86_64/docker/) and [docker-compose](https://archlinux.org/packages/extra/x86_64/docker-compose/); the latter provides the modern `docker compose` interface. Keep a compatible engine and plugin that are already installed.
+Use official Arch packages only: `docker` and `docker-compose` from extra. The latter supplies the modern `docker compose` plugin. Check first; keep anything already working.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -1041,62 +623,64 @@ for package in docker docker-compose containerd runc podman-docker; do
 done
 ```
 
-**Expected:** Each package is identified as installed or absent.
+**Expected:** Each package reported as installed or absent.
 
-**Stop:** An alternative provider, package conflict, or unexplained runtime installation is HOLD before changes.
+**Stop:** Alternative provider, unexplained runtime install, or conflict: HOLD.
 
-**Recovery:** Ask the owner to identify the existing installation and any work that depends on it. Do not replace providers or use an AUR package to get past a conflict. If Docker and Compose already work, skip installation.
+**Recovery:** Ask owner to identify the installation and dependent work. Do not replace providers or use AUR.
 
-If a prerequisite is missing, get approval for the full system transaction. Arch [does not support partial upgrades](https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported): `-Syu` updates the system, while `--needed` avoids reinstalling packages that are already current. Follow any current [Arch news](https://archlinux.org/news/) that calls for manual steps with the owner before you continue.
+If anything is missing, obtain owner approval for the full `-Syu` transaction. Follow any current [Arch news](https://archlinux.org/news/) that requires manual steps.
 
-**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates the approved full-system transaction.**
+**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates the approved full transaction.**
 
 ```bash
 sudo pacman -Syu --needed docker docker-compose
 ```
 
-**Expected:** Read the whole proposed transaction. Type `y` only if the owner approved it; otherwise type `n`. Pacman finishes without errors.
+**Expected:** Full transaction completes after you type `y` (only if approved).
 
-**Stop:** A conflict, unapproved replacement, denied full upgrade, or failed transaction is HOLD.
+**Stop:** Conflict, unapproved replacement, denial, or failure: HOLD.
 
-**Recovery:** Keep the error for the owner. Do not replace the full upgrade with a partial sync such as `pacman -Sy`, ignore dependencies, or force an overwrite. Complete any reboot the owner requires, then check service and socket state again using step 18. An installed package alone does not tell you whether the daemon is running.
+**Recovery:** Keep the error. Do not use partial sync. Complete any required reboot, then recheck with step 10.
 
-## 20. Confirm approved ordinary-account Docker access
+## 12. Give your account Docker access
 
-For the system Docker Engine, follow the [Linux post-install instructions](https://docs.docker.com/engine/install/linux-postinstall/). The `docker` group gives its members root-equivalent control of this machine, so get explicit device-owner approval before adding your account. If approval is denied, mark HOLD; do not run the n8n installer as root or make the Docker socket world-writable. If your account already works with an approved daemon, keep that access and skip the group change.
+The `docker` group grants root-equivalent control. Obtain explicit owner approval before adding your account. If denied, record HOLD; do not run as root or make the socket world-writable. If you already work with an approved daemon, keep it and skip the group step.
 
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; sudo changes approved group membership only.**
+After the group change, sign out of the desktop completely and sign back in (new terminal alone does not refresh groups).
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; sudo changes approved group only.**
 
 ```bash
 course_docker_access() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use your ordinary account\n' >&2; return 1; }
+  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use ordinary account\n' >&2; return 1; }
   getent group docker >/dev/null || { sudo groupadd docker || return 1; }
   sudo usermod -aG docker "$(id -un)"
 }
 course_docker_access
 ```
 
-**Expected:** Your approved account is added without errors. Sign out of the desktop completely and sign back in; opening another terminal alone will not refresh your desktop group membership.
+**Expected:** Account added without error.
 
-**Stop:** Any denied group change or unfamiliar account is HOLD.
+**Stop:** Denied group change or unfamiliar account: HOLD.
 
-**Recovery:** Ask the owner to resolve access. Never use `sudo sh` for the installer, `sudo docker` for this path, or socket permission changes as a workaround.
+**Recovery:** Ask owner. Never use `sudo sh`, `sudo docker`, or socket permission changes.
 
-If the system Docker service is already active, skip the start box. If it is inactive, start it only after the owner approves `docker.service` and its dependencies, including containerd and any Docker socket activation. Do not change whether it starts at boot or alter an existing user/rootless/Desktop service. [Arch's Docker guidance](https://wiki.archlinux.org/title/Docker) describes how the service starts, but the existing unit policy still takes precedence.
+If the system service is inactive, start it only after owner approval of `docker.service` and dependencies. Do not alter boot or existing user services.
 
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, fresh login; sudo starts the approved system service.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, fresh login; sudo starts the approved service.**
 
 ```bash
 sudo systemctl start docker.service
 ```
 
-**Expected:** The approved service starts without errors.
+**Expected:** Service starts.
 
-**Stop:** A masked/failed unit, dependency error, or refused startup is HOLD.
+**Stop:** Masked/failed unit or refusal: HOLD.
 
-**Recovery:** Keep the error and ask the owner. Do not unmask, restart unrelated services, or enable a socket to bypass the refusal.
+**Recovery:** Keep error; ask owner. Do not unmask or enable sockets to bypass.
 
-In the terminal you opened after signing back in, check the context and existing work again, even if they looked right in another shell earlier. Use this terminal for n8n.
+In the post-login terminal, re-verify context and work.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, fresh login.**
 
@@ -1104,44 +688,15 @@ In the terminal you opened after signing back in, check the context and existing
 id -un && id -nG && docker context show && docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
 ```
 
-**Expected:** The approved local daemon responds without sudo, the modern Compose interface works, and all existing work is accounted for.
+**Expected:** Local daemon responds without sudo, modern compose works, all work accounted for.
 
-**Stop:** Either `docker info` or `docker compose version` fails, the context differs, or work is unidentified: HOLD.
+**Stop:** `docker info` or compose fails, wrong context, or unidentified work: HOLD.
 
-**Recovery:** Work through the first failure with the device owner. Do not reinstall a working engine to fix account access. Continue only after this same shell passes the checks.
+**Recovery:** Work the first failure with the owner. Do not reinstall a working engine.
 
-## 21. Generate a fresh n8n configuration without starting it
+## 13. Generate the n8n configuration
 
-Use n8n **2.41.5**. The [official installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh) checked for this setup was **1.4.0**. Because the download URL points to a live script that can change, choose the download-and-review method if you need to inspect the script before running it. The [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) accepts a version and `--no-start`, so you can generate the configuration without starting the containers.
-
-Choose only one method. Both refuse a destination that already exists, even if it is a symlink. An installer message saying “existing install” does not tell you its version or whether it is ready. Keep any partial attempt in place and ask the owner to resolve it; do not reset, uninstall, or upgrade it here.
-
-### Selected one-line method
-
-The subshell turns on `pipefail`, so it reports a failed download even if the shell on the right succeeds. But a pipeline may run part of the script before the download is complete. Choose the review method below if you want to avoid that.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-(
-  set -o pipefail
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use an ordinary account\n' >&2; exit 1; }
-  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-    printf 'HOLD: existing destination preserved\n' >&2; exit 1
-  fi
-  curl -fsSL https://get.n8n.io | N8N_DIR="$HOME/n8n-course" sh -s -- --version 2.41.5 --no-start
-)
-```
-
-**Expected:** Configuration is generated under `$HOME/n8n-course`; containers have not started.
-
-**Stop:** Any curl/installer error, existing-install message, unexpected destination, or unexpected startup is HOLD.
-
-**Recovery:** Keep the destination and error. Do not rerun over the attempt or change its version. Ask the owner to resolve it before continuing.
-
-### Alternative: download and review before execution
-
-This method makes a new download folder and marks the download successful only after curl finishes. It never chooses an incomplete file to run.
+Use n8n 2.41.5. The installer source checked was 1.4.0. Because the live URL can change, use the review path: download, page the script with less, inspect, then run only the reviewed file. Destination must be absent (even as symlink or empty dir). Project name is fixed as `n8n-course`; the check below verifies it is unused on this engine before recording.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1150,7 +705,7 @@ course_download_n8n() {
   local attempt
   unset N8N_REVIEW_SCRIPT
   attempt="$(mktemp -d "$HOME/n8n-installer-review.XXXXXX")" || return 1
-  curl -fsSL https://get.n8n.io -o "$attempt/get-n8n.sh" || { printf 'HOLD: incomplete download preserved; do not execute\n' >&2; return 1; }
+  curl -fsSL https://get.n8n.io -o "$attempt/get-n8n.sh" || { printf 'HOLD: incomplete download preserved\n' >&2; return 1; }
   [ -s "$attempt/get-n8n.sh" ] || { printf 'HOLD: empty download\n' >&2; return 1; }
   N8N_REVIEW_SCRIPT="$attempt/get-n8n.sh"
   printf 'REVIEW %s\n' "$N8N_REVIEW_SCRIPT"
@@ -1158,91 +713,109 @@ course_download_n8n() {
 course_download_n8n
 ```
 
-**Expected:** `REVIEW` shows the path to the completed script. Use **File > Open** in your ordinary text editor to open that file. Read it before running it, including the parts that download files and generate configuration. Check for `SCRIPT_VERSION="1.4.0"`; ask the owner to review the installer if it has changed.
+**Expected:** `REVIEW` path to the completed script.
 
-**Stop:** A failed download, changed script version, or unapproved behavior is HOLD. Do not execute a file from a failed attempt.
+**Stop:** Failed or empty download, or changed behavior: HOLD.
 
-**Recovery:** Keep the download for review. Correct the cause with the owner and create another download attempt only when approved.
+**Recovery:** Keep the download. Correct with owner; create new attempt only when approved.
 
-After the review is approved, run this box instead of the one-line method.
+Page the script before executing it. Look for the line `SCRIPT_VERSION="1.4.0"`. If the version differs or the line is absent, record HOLD and ask the owner; do not run the script.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
+
+```bash
+less "$N8N_REVIEW_SCRIPT"
+```
+
+**Expected:** Script content visible in the pager. Press `q` to return.
+
+**Stop:** Pager error or file changed since download.
+
+**Recovery:** Keep the attempt; ask owner.
+
+After review, run the reviewed script.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
 ```bash
 course_run_reviewed_n8n() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use an ordinary account\n' >&2; return 1; }
-  [ -n "${N8N_REVIEW_SCRIPT:-}" ] && [ -s "$N8N_REVIEW_SCRIPT" ] && [ ! -L "$N8N_REVIEW_SCRIPT" ] || { printf 'HOLD: no completed script selected\n' >&2; return 1; }
-  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-    printf 'HOLD: existing destination preserved\n' >&2; return 1
-  fi
+  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use ordinary account\n' >&2; return 1; }
+  [ -n "${N8N_REVIEW_SCRIPT:-}" ] && [ -s "$N8N_REVIEW_SCRIPT" ] && [ ! -L "$N8N_REVIEW_SCRIPT" ] || { printf 'HOLD: no completed script\n' >&2; return 1; }
+  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: existing destination preserved\n' >&2; return 1; fi
+  grep -qx 'SCRIPT_VERSION="1.4.0"' "$N8N_REVIEW_SCRIPT" || { printf 'HOLD: installer version changed\n' >&2; return 1; }
   N8N_DIR="$HOME/n8n-course" sh "$N8N_REVIEW_SCRIPT" --version 2.41.5 --no-start
-}
 course_run_reviewed_n8n
 ```
 
-**Expected:** Configuration is generated in the fresh destination without starting containers.
+**Expected:** Configuration generated in fresh `$HOME/n8n-course`; containers not started.
 
-**Stop:** Any installer failure or existing-install message is HOLD.
+**Stop:** Installer failure or existing-install message: HOLD.
 
-**Recovery:** Keep all files. Ask the owner to resolve this attempt; do not switch to the pipeline to get past the failure.
+**Recovery:** Keep all files; ask owner. Do not switch methods to bypass.
 
-## 22. Bind the browser port to this laptop and start n8n
+## 14. Start n8n on this computer only
 
-In your ordinary text editor, choose **File > Open** and open `compose.yml` inside your home folder's `n8n-course` directory. In the `n8n` service's `ports` entry, change only `'5678:5678'` to `'127.0.0.1:5678:5678'`, then choose **File > Save**. Keep every other service and setting intact. Do this before the first start. If the expected entry is missing or differs, HOLD for owner review.
+Edit the generated `compose.yml` with a scripted substitution that changes exactly one occurrence of the port mapping, then verify the result. Record the fixed project name `n8n-course` only after confirming it is unused. Define the helper that enforces the record and no exported overrides. Start only after the port and project checks.
 
-Do not display or share `.env`, and do not run a resolved `docker compose config` dump: those can reveal generated secrets.
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
-For a freshly generated directory that has never been started, ask the device owner to approve a project name that is unused on the selected Docker engine. A [Compose project name](https://docs.docker.com/compose/how-tos/project-name/) groups its containers, volumes, and networks. The name must start with a letter or digit and contain only lowercase ASCII letters, digits, `_`, or `-`. The check below looks at stopped containers and retained volumes and networks too. If any check fails, mark HOLD.
+```bash
+course_bind_loopback() {
+  local yml="$HOME/n8n-course/compose.yml"
+  [ -f "$yml" ] && [ ! -L "$yml" ] || { printf 'HOLD: no ordinary compose.yml\n' >&2; return 1; }
+  local count_orig
+  count_orig=$(grep -oF -- "- '5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
+  if [ "$count_orig" -ne 1 ]; then
+    printf 'HOLD: expected exactly one 5678:5678, saw %s\n' "$count_orig" >&2; return 1
+  fi
+  sed -i "s/'5678:5678'/'127.0.0.1:5678:5678'/" "$yml" || return 1
+  local count_old count_new
+  count_old=$(grep -oF -- "- '5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
+  count_new=$(grep -oF -- "- '127.0.0.1:5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
+  if [ "$count_old" -ne 0 ] || [ "$count_new" -ne 1 ]; then
+    printf 'HOLD: substitution did not produce exactly one loopback binding\n' >&2; return 1
+  fi
+  printf 'PORT_BOUND 127.0.0.1:5678:5678\n'
+}
+course_bind_loopback
+```
 
-Keep an existing installation's actual project identity and let its owner manage its lifecycle. Do not create a fresh identity for it or choose a new name to get around existing resources. If it already has a `.course-project` file from this setup that its owner has confirmed, reuse it. Otherwise ask its owner; do not guess its identity to create a replacement record.
+**Expected:** `PORT_BOUND 127.0.0.1:5678:5678`
+
+**Stop:** Any count other than exactly one original, or substitution not producing exactly one new binding: HOLD.
+
+**Recovery:** Keep the directory and ask the owner. Do not edit by hand or rerun the installer to bypass the check.
+
+Record the fixed project name after verifying it is unused on this engine and has no resources.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
 ```bash
 course_n8n_identify() {
-  local project containers volumes networks
+  local project="n8n-course" containers volumes networks
   local LC_ALL=C
-  if [ ! -d "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-    printf 'HOLD: expected an ordinary fresh n8n-course directory\n' >&2; return 1
-  fi
-  if [ -e "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: existing project record preserved\n' >&2; return 1
-  fi
-  printf 'Enter the owner-approved unused project name: '
-  IFS= read -r project || { printf 'HOLD: project name was not read\n' >&2; return 1; }
-  case "$project" in
-    ''|[!a-z0-9]*|*[!a-z0-9_-]*)
-      printf 'HOLD: invalid project name\n' >&2; return 1 ;;
-  esac
-  containers="$(docker ps -aq --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: container inspection failed\n' >&2; return 1;
-  }
-  volumes="$(docker volume ls -q --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: volume inspection failed\n' >&2; return 1;
-  }
-  networks="$(docker network ls -q --filter "label=com.docker.compose.project=$project")" || {
-    printf 'HOLD: network inspection failed\n' >&2; return 1;
-  }
+  if [ ! -d "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: expected ordinary fresh n8n-course\n' >&2; return 1; fi
+  if [ -e "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then printf 'HOLD: existing project record preserved\n' >&2; return 1; fi
+  containers=$(docker ps -aq --filter "label=com.docker.compose.project=$project")
+  [ $? -eq 0 ] || { printf 'HOLD: container inspection failed\n' >&2; return 1; }
+  volumes=$(docker volume ls -q --filter "label=com.docker.compose.project=$project")
+  [ $? -eq 0 ] || { printf 'HOLD: volume inspection failed\n' >&2; return 1; }
+  networks=$(docker network ls -q --filter "label=com.docker.compose.project=$project")
+  [ $? -eq 0 ] || { printf 'HOLD: network inspection failed\n' >&2; return 1; }
   if [ -n "$containers" ] || [ -n "$volumes" ] || [ -n "$networks" ]; then
-    printf 'HOLD: project name already has Docker resources; preserve them\n' >&2; return 1
+    printf 'HOLD: project name already has Docker resources\n' >&2; return 1
   fi
-  (
-    umask 077
-    set -o noclobber
-    printf '%s\n' "$project" > "$HOME/n8n-course/.course-project"
-  ) || { printf 'HOLD: project record could not be saved; preserve any existing file\n' >&2; return 1; }
-  printf 'PROJECT recorded: %s\n' "$project"
 }
 course_n8n_identify
 ```
 
-**Expected:** `PROJECT recorded:` names the approved project. Keep `.course-project` in place for every later start, inspection, and stop.
+**Expected:** `PROJECT recorded: n8n-course`
 
-**Stop:** An existing record, invalid name, existing Docker resource, failed inspection, or failed write is HOLD.
+**Stop:** Existing record, resources under the name, or write failure: HOLD.
 
-**Recovery:** Keep all files and resources. Ask the owner to resolve the failure. Do not delete a record or resource to retry, and do not automatically rename an installation.
+**Recovery:** Keep everything; ask owner. Do not delete to retry.
 
-Define `course_n8n` so every call uses the recorded project, the generated `.env`, and the saved `compose.yml`. [Exported shell variables override values from `--env-file`](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/), so the helper checks for conflicts without showing their values. It also catches variables exported with empty values.
+Define the helper (paste once per shell).
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1251,35 +824,25 @@ course_n8n() {
   local variable conflict=0 project
   local LC_ALL=C
   for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then
-      printf 'HOLD: %s\n' "$variable" >&2
-      conflict=1
-    fi
+    if printenv "$variable" >/dev/null 2>&1; then printf 'HOLD: %s\n' "$variable" >&2; conflict=1; fi
   done
   [ "$conflict" -eq 0 ] || return 1
   if [ -L "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course/.course-project" ] || [ ! -f "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record is missing or linked\n' >&2; return 1
+    printf 'HOLD: project record missing or linked\n' >&2; return 1
   fi
-  project="$(cat "$HOME/n8n-course/.course-project")" || {
-    printf 'HOLD: project record could not be read\n' >&2; return 1;
-  }
-  case "$project" in
-    ''|[!a-z0-9]*|*[!a-z0-9_-]*)
-      printf 'HOLD: invalid recorded project name\n' >&2; return 1 ;;
-  esac
+  project="$(cat "$HOME/n8n-course/.course-project")" || { printf 'HOLD: could not read project record\n' >&2; return 1; }
+  case "$project" in ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid recorded project name\n' >&2; return 1 ;; esac
   docker compose -p "$project" --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
 }
 ```
 
-**Expected:** The prompt returns without output. Use `course_n8n` for every stack command below.
+**Expected:** Prompt returns with no output.
 
-**Stop:** Any helper call prints HOLD or returns an error.
+**Stop:** HOLD or error from the definition.
 
-**Recovery:** If the helper names an exported variable, ask the owner to trace its source in a clean shell. Do not print secret values, automatically unset variables, or change configuration to get past the check. If the project record is missing or invalid, keep the directory and ask the owner; do not create a new identity.
+**Recovery:** Trace exported variables in a clean shell with the owner. Keep the directory; do not create a new identity.
 
-When you open a fresh shell later, check the service and socket, then the approved engine and context, using steps 18 and 20 before you contact Docker. Paste only the `course_n8n` definition again and use the recorded file. Never rerun `course_n8n_identify` for an existing installation. Keep using the same engine and context the owner approved; the record does not select a Docker engine.
-
-Recheck the port before startup.
+Recheck the port (fresh instance must have none).
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1287,13 +850,13 @@ Recheck the port before startup.
 ss -ltn 'sport = :5678'
 ```
 
-**Expected:** No listener rows for a fresh instance. An owner-approved existing course instance may already own the port.
+**Expected:** No listener rows.
 
-**Stop:** An unidentified listener is HOLD.
+**Stop:** Unidentified listener: HOLD.
 
-**Recovery:** Ask its owner to resolve the conflict. Do not kill a process or change another application's port.
+**Recovery:** Ask its owner; do not kill or change another app's port.
 
-Start only the approved course stack after confirming the saved loopback mapping and privileged-runner approval.
+Start the stack.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1301,13 +864,13 @@ Start only the approved course stack after confirming the saved loopback mapping
 course_n8n up -d
 ```
 
-**Expected:** Images download and the stack starts. The first download can take several minutes.
+**Expected:** Images download and stack starts (first pull can take minutes).
 
-**Stop:** A port, pull, permission, or startup error is HOLD.
+**Stop:** Port, pull, permission, or startup error: HOLD.
 
-**Recovery:** Keep the files and volumes. Ask the owner to resolve the exact failure; do not prune, reset, or upgrade.
+**Recovery:** Keep files and volumes; ask owner for the exact cause. Do not prune or upgrade.
 
-Inspect state and version without printing secrets.
+Inspect state.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1317,27 +880,25 @@ course_n8n port n8n 5678 &&
 course_n8n exec -T n8n n8n --version
 ```
 
-**Expected:** All six services are represented. `sandbox-certs` is a one-shot service and should show `Exited (0)`. The other services run; `sandbox-api` becomes healthy. The port command prints `127.0.0.1:5678`, and n8n prints `2.41.5`.
+**Expected:** All six services. `sandbox-certs` Exited (0). Others running; `sandbox-api` healthy. Port `127.0.0.1:5678`. n8n `2.41.5`.
 
-**Stop:** A missing service, nonzero certificate exit, persistent failure/restart, non-loopback publication, or another n8n version is HOLD.
+**Stop:** Missing service, nonzero cert exit, restart loop, non-loopback port, or wrong version: HOLD.
 
-**Recovery:** Let the first startup finish, then check again. If the problem remains, leave the state as it is for owner review. If the version is wrong, keep the existing install for the owner to resolve; do not silently change its pin. If the port is exposed beyond loopback, use the course-only stop command in step 24 and fix the configuration before restarting.
+**Recovery:** Let initialization settle and check again. Leave state for owner. Do not silently change pin or port.
 
-## 23. Save a blank readiness workflow
+## 15. Save a blank workflow and confirm it persists
 
-Open `http://localhost:5678` in your browser. For a fresh instance only, complete **Set up owner account** with your name, email, and a local password, then select **Next**. These credentials belong to this local instance. For an existing instance, use its existing login; do not create a replacement owner. No n8n Cloud account, external account, or API key is required. Skip optional registration or license offers. Keep n8n Assistant off and do not enter the OpenRouter key here.
+Open `http://localhost:5678`. For a fresh instance complete owner setup with local name/email/password. For existing use its login. Keep Assistant off; do not enter any OpenRouter key.
 
-Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name it **Module 7 readiness**, and press **Enter**. The editor saves automatically. Keep the canvas blank and do not select **Publish**. Reload the page and confirm the same name and empty canvas remain. If that name already exists, open it rather than overwriting it; if it contains work, keep it and choose a distinct readiness name.
+Select Overview → Build a workflow (or Create workflow). Name it **Module 7 readiness**. Keep the canvas blank. Do not Publish. Reload and confirm the name and empty canvas remain.
 
-**Expected:** You can reopen the named blank workflow after reload, and it remains unpublished.
+**Expected:** Named blank workflow reopens after reload and is unpublished.
 
-**Stop:** A Cloud login, external-key requirement, missing saved workflow, unexpected owner setup on an existing instance, or different UI that prevents these actions is HOLD.
+**Stop:** Cloud login, external key, missing workflow, unexpected owner screen, or different UI: HOLD.
 
-**Recovery:** Check the URL and version. Keep the instance in place and ask the course owner to resolve the mismatch. Do not reset the owner account or treat an assistant response as proof that the workflow was saved.
+**Recovery:** Check URL and version. Keep instance; ask owner. Do not reset owner account.
 
-## 24. Confirm the workflow survives a stop and start
-
-Stop only this approved course stack. Compose keeps the named data volume when `down` is used without `-v`.
+Stop only this stack (data volume stays).
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1345,13 +906,13 @@ Stop only this approved course stack. Compose keeps the named data volume when `
 course_n8n down
 ```
 
-**Expected:** The course containers and network stop; the data volume remains. The local browser page becomes unavailable after reload.
+**Expected:** Containers and network stop; data volume remains. Browser page unavailable after reload.
 
-**Stop:** An unexpected project or stop error is HOLD.
+**Stop:** Unexpected project or error: HOLD.
 
-**Recovery:** Keep the output for the owner. Never use `down -v`, remove volumes, or uninstall to recover.
+**Recovery:** Keep output; never use `-v`.
 
-Start the same stack again.
+Start again.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -1359,8 +920,29 @@ Start the same stack again.
 course_n8n up -d
 ```
 
-**Expected:** Repeat the state/port/version inspection from step 22. Reload `http://localhost:5678`, use the existing login if prompted, and reopen your readiness workflow. Its name and blank canvas persist, and it is still unpublished.
+**Expected:** Same state, port, version as before. Reload browser, use existing login if prompted, reopen the readiness workflow: name and blank canvas persist, still unpublished.
 
-**Stop:** Missing data, a new owner-setup screen, wrong version, wrong port mapping, or failed services is HOLD.
+**Stop:** Missing data, new owner screen, wrong version/port, or failed services: HOLD.
 
-**Recovery:** Keep the directory and volumes intact and ask the owner to check the project and data volume. Do not create another account or workflow to hide a failure to keep the saved data. Module 7 n8n readiness passes only if the saved workflow survives this restart; the earlier OMP checks must keep their own passing results.
+**Recovery:** Keep directory and volumes; ask owner. Do not create another account or workflow to hide a failure. The n8n result is independent of OMP.
+
+## If a step stops
+
+Organized by the step that produced the first error. Keep the exact error, attempt folder, and last observed state. Ask the device or course owner with that evidence. Never delete, rename, or overwrite an existing attempt, checkout, vault, or n8n directory to "start fresh."
+
+- Computer check or Python below 3.12: free space or ask owner for a supported Arch x86_64 desktop with ordinary account and current python package.
+- Package transaction refused or conflicting: keep the exact pacman output; only the owner can approve the full `-Syu`.
+- OMP checksum or install stop: keep the download folder; ask owner to resolve source or transfer. Do not replace or switch assets.
+- GitHub ls-remote or clone stop: keep the error. Network: owner. Credentials: use the gh subsection exactly once per failure mode. Invitation must come from the repository owner.
+- New terminal shows `SET` or wrong paths: close it and open the next from the desktop menu. Never export in the diagnostic window.
+- Key read or export fails to produce `SET`: re-paste the read box, then export. Treat any visible key as exposed per CREDENTIALS.md.
+- Readiness launch or verify fails: keep the attempt folder and its receipts. The first printed failure is the one to correct. Do not edit `from-omp.txt` or reuse the folder.
+- Report or read-back fails: the readiness check is still the live proof. Correct only the named prerequisite; do not clean the checkout.
+- Obsidian package or launch: return to the approved pacman transaction or record HOLD with the GUI error. Never add `--no-sandbox` or overwrite an existing install.
+- Obsidian GUI steps cannot be performed or observed: record `Obsidian HOLD` with the exact missing action. The disk checks alone are not sufficient.
+- Docker preflight, install, or access: keep existing work. Only the owner approves group membership or service start. Re-login after group change.
+- n8n destination or port occupied: ask owner to identify the owner of `$HOME/n8n-course` or listener. Do not delete or kill.
+- n8n generate or bind substitution fails the exactly-one check: keep the directory; the verification is strict. Ask owner.
+- n8n start or workflow does not persist: keep the directory, volumes, and `.course-project`. Use only `course_n8n` for lifecycle. The saved blank workflow after down/up is required for Module 7.
+
+See also [shared/TROUBLESHOOTING.md](../shared/TROUBLESHOOTING.md) and [shared/CREDENTIALS.md](../shared/CREDENTIALS.md) for cross-platform cases. Record every HOLD with the concrete symptom and the attempt path; a later prerequisite report cannot replace an earlier live check.

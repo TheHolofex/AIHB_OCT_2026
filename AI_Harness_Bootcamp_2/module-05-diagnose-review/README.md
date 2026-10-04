@@ -14,8 +14,8 @@ Bring the source checks, permission limits, and evidence records from earlier mo
 
 ## What you inspect
 
-The supplied **renderer** turns ledger rows into a duty card; the clean version writes both required fields. You prove you can restore it, place a practice fault, keep the first failure and its probe output, replace the renderer once, then prove recovery three ways: a focused field check, a complete render, and a new process in a fresh folder.
+The supplied **renderer** turns ledger rows into a duty card; the clean version writes both required fields. Check that restore works, place a practice fault, keep the first failure and its probe output, then replace the renderer once. Prove the repair three ways: a focused field check, a complete render, and a new process in a fresh folder.
 
 ## Class-only boundary
 
-All names, times, and statuses are fictional course fixtures. Do not use this packet to plan, authorize, dispatch, or describe a real movement. A module result permits only class review.
+All names, times, and statuses are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.

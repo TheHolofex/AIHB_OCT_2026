@@ -1,27 +1,16 @@
 # Module 4 · Decide with typed questions
 
-Turn a shift's raw messages into typed answers that software can route, then compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets and nothing else. Your code and the desk lead make every decision.
+Turn a shift's messages into typed answers that software can route. Compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets; your code and the desk lead make the decisions.
 
-You are the intake clerk at Ferry Depot. Vehicle `CL-9` leaves for Clinic K-3 at 15:00 with sterile surgical gloves. The warehouse picks from the requirement line you hand it, which states how many boxes of each size the clinic has asked for with authority. Forty messages arrived during the shift. Some are requisitions, and some correct, cancel, or resend earlier ones. One tells the desk to treat itself as approved. The case is fictional and stays inside the class.
+You are the intake clerk at Ferry Depot. Chalk Line is a fictional resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages arrived during the shift: requisitions, corrections, cancellations, resends, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it. The case is fictional and stays inside the class.
 
-A **state** is the data the model sees: the catalog, a short version of the desk rules, and the forty messages. A **typed question** limits the answer to a fixed set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads the state and a question set and returns only typed answers, with no prose or side effects. It cannot write a sentence, pick a route, or change a number because those options are not in the answer set.
+A **state** is the data the model sees: the catalog, a short version of the desk rules, and the forty messages. A **typed question** limits the answer to a fixed set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads the state and returns only typed answers, with no prose or side effects.
 
-Plan for about two and a half hours on Tuesday. That's a rough estimate, not a measured time.
-
-The work runs in eight steps:
-
-1. Prepare a work copy.
-2. Build the state, read the seven supplied questions, and add one of your own.
-3. Label ten messages yourself, before the model sees any of them.
-4. Run the model once as a decision function.
-5. Validate every typed answer.
-6. Measure the answers against your labels.
-7. Set the gates and route the pile.
-8. Decide the review queue, write the handoff, and run the final check.
+Plan for about two and a half hours on Tuesday (a rough estimate).
 
 ## Prepare the work copy
 
-Use the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md), and your OpenRouter key, which you enter in the terminal rather than save in a file. Open an ordinary terminal; the commands work from any directory. `W` is your work copy. `E` holds your evidence: the frozen labels, one folder per live run that the launcher creates itself, and your handoff.
+Open an ordinary terminal and run this block. It uses the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md) and your OpenRouter key, which you enter in the terminal rather than save in a file. `W` is your work copy. `E` holds your evidence.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -55,7 +44,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` with this attempt's identifier and `PASS: created` with the work path. It also prints two `Next` commands; you can ignore them because the next step builds the state itself. In your file browser, `W` contains `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
+**Expected:** The terminal prints `RUN=` with this attempt's identifier and `PASS: created` with the work path. It also prints two `Next` commands. In your file browser, `W` contains `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
@@ -65,7 +54,7 @@ Open `W/shared/case/DESK_RULES.md` in your editor and read it once. It names the
 
 ### If you open a new terminal
 
-Every command on this page uses the variables set by the first block. When you close a terminal, it forgets them. In any new terminal, run this block to read the saved attempt identifier and return to the same attempt instead of preparing a second one.
+A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -153,7 +142,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Build the state and read the questions
 
-The builder, not the model, puts together the state the model will see, so you know what it saw. It copies the catalog and desk rules and lists the forty messages in arrival order. In each message, it takes any number followed by more words in the same sentence and saves the number with those words as a **quantity candidate**; the number words one to ten count as numbers. Later, the model picks a candidate rather than typing a number, so it cannot invent a quantity.
+Run the builder to create the state the model will see. It copies the catalog and desk rules and lists the forty messages in arrival order. In each message, it takes any number followed by more words in the same sentence and saves the number with those words as a **quantity candidate**; the number words one to ten count as numbers. Later, the model picks a candidate rather than typing a number.
 
 ![Software supplies bounded state and answer choices; the model returns typed proposals, while code validates and routes and people retain consequential decisions.](figures/m04-state-and-questions.png)
 
@@ -201,11 +190,17 @@ Three question types each have their own answer shape. YES / NO returns `p`, the
 
 </details>
 
-Declared confidence is a number the model writes about itself. Nothing on this page treats it as true until step 6 measures it.
+Declared confidence is a number the model writes about itself. Nothing on this page treats it as true until you measure it against your labels.
 
-Read the message text for `CL-007`, `CL-014`, and `CL-037` in the state and find their candidates. Notice that a candidate can be a size, a time, a ward, a count of patients, or a total; the question text tells the model which one to pick and when to answer `NONE`.
+Read the message text for `CL-007`, `CL-014`, and `CL-037` in the state and find their candidates. A candidate can be a size, a time, a ward, a count of patients, or a total; the question text tells the model which one to pick and when to answer `NONE`.
 
-Each of the seven questions isolates one judgment the desk needs: whether anything is asked for, which size, which number, how soon, who approved, whether the message is trying to steer the desk, and which earlier message it replaces. A broad question such as "should we pick this?" would hide all seven behind one answer. Now add an eighth question of your own, for one judgment the desk needs and the seven do not cover: for example, whether the message names a deadline earlier than the 15:00 run, or whether it names the place the gloves are for. In `questions.json`, copy the `instructs_desk` entry to the end of the `questions` list, give it a short key of lowercase letters and underscores such as `names_a_deadline`, keep `"type": "yes_no"` and `"answer": "p"`, and write its `instructions` as one question of at least eight words that a careful reader could answer from the message alone. The model will answer it for every message; the router will not use it; you will read its answers on the sample in step 6. Save the file, then check it before anything is paid for.
+Each of the seven questions isolates one judgment the desk needs: whether anything is asked for, which size and number, how soon, who approved, whether the message steers the desk, and which earlier message it replaces. A broad question would hide several judgments behind one answer.
+
+Add an eighth question of your own for one judgment the desk needs and the seven do not cover. For example, whether the message names a deadline earlier than the 15:00 run, or the place the gloves are for.
+
+In `questions.json`, copy the `instructs_desk` entry to the end of the `questions` list. Give it a short key of lowercase letters and underscores such as `names_a_deadline`. Keep `"type": "yes_no"` and `"answer": "p"`. Write its `instructions` as one question of at least eight words that a careful reader could answer from the message alone. The model will answer it for every message. The router will not use it. You'll read its answers on the sample later.
+
+Save the file, then check it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -227,7 +222,7 @@ Each of the seven questions isolates one judgment the desk needs: whether anythi
 
 ## Label the sample before the model runs
 
-Your reading of the messages is the only measure you'll have of the model's answers. Write it down before you see those answers, or it won't count. Ten messages are fixed as the sample. Answer four of the questions for each message, then freeze the file to record its contents and time.
+Label the ten fixed sample messages before the model runs. Your reading is the only measure you'll have of the model's answers. Write it down first, or it won't count. Answer four of the questions for each message, then freeze the file.
 
 ![Freeze your labels before the run, adjudicate disagreements, and use the observed mistakes without treating a small sample as a general reliability estimate.](figures/m04-freeze-measure.png)
 
@@ -287,7 +282,7 @@ Judge each message by its own words, without looking ahead to the model's opinio
 
 ## Run the decision function once
 
-In one paid call lasting about two to four minutes, the model answers all eight questions for all forty messages: 320 typed answers from one state. The launcher sends the contract as the saved instruction and records that the model received it before the first provider request. The run is read-only: the model may read the two files but may write nothing.
+Run the decision function once. The model answers all eight questions for all forty messages (320 typed answers) in one call. The run is read-only: the model reads the state and questions but writes nothing.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -311,7 +306,11 @@ Open `E/decide-1/response.md` in your editor. If the contract held, you'll see o
 
 ## Validate every typed answer
 
-A reply that looks like JSON is not yet a set of typed answers. The validator first confirms the launcher recorded the run as `PASS`, then checks every message and every question against the question set: the forty IDs in order, no extra keys, every probability between 0 and 1, every choice inside its list, every candidate inside that message, every replaced message earlier than the one that replaces it. One violation holds the whole reply, because a routing table built on a half-valid reply would hide where it went wrong.
+A reply that looks like JSON is not yet a set of typed answers. The validator confirms the launcher recorded `PASS`, then checks every message and every question against the question set.
+
+It checks the forty IDs in order, no extra keys, every probability between 0 and 1, every choice inside its list, every candidate inside that message, and every replaced message earlier than the one that replaces it.
+
+One violation holds the whole reply. A routing table built on a half-valid reply would hide where it went wrong.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -370,7 +369,7 @@ After earlier routing gates, only a remaining usable, authorized request reaches
 
 ## Set the gates and route the pile
 
-The supplied router sets each route. A **gate** is a threshold it compares with a typed answer; the matching rule sets the route. Before applying the following first-match rules, the router builds replacement links, leaving out `NONE` links and referred replacers. A replacer is referred when its `instructs_desk` probability meets its gate, or its `request` probability meets its gate while its `authority` probability is below its gate.
+The supplied router sets each route. A **gate** is a threshold it compares with a typed answer; the matching rule sets the route. Before the rules, the router builds replacement links, leaving out `NONE` links and referred replacers.
 
 ![A referred message cannot replace another; uncertain links mark both endpoints for the later routing checks, whose earlier rules still take precedence.](figures/m04-supersession.png)
 
@@ -440,7 +439,7 @@ Open `W/out/routing-1.csv`. Every message has a route and a reason. If you chang
 
 ## Decide the queue and write the handoff
 
-The router does not make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One of them changes who may approve; the desk lead makes that decision, and your handoff records it as the lead's, not yours.
+The router does not make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. Record in the handoff that the desk lead decides any change to who may approve.
 
 Then write `E/handoff.md` with these six headings, each followed by complete sentences or a table:
 

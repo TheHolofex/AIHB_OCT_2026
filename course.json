@@ -170,8 +170,8 @@
         {"source": "shared/MODULE_02_LAB.md", "dest": "shared/MODULE_02_LAB.html", "kind": "lab", "guide": {"context_sections": ["the-route"], "optional_sections": []}}
       ],
       "figures": [
-        {"source": "shared/figures/m02-reload.svg", "dest": "shared/figures/m02-reload.svg"},
-        {"source": "shared/figures/m02-resolved-state.svg", "dest": "shared/figures/m02-resolved-state.svg"},
+        {"source": "shared/figures/m02-reload.png", "dest": "shared/figures/m02-reload.png"},
+        {"source": "shared/figures/m02-resolved-state.png", "dest": "shared/figures/m02-resolved-state.png"},
         {"source": "shared/figures/m02-obsidian-01-open-vault.png", "dest": "shared/figures/m02-obsidian-01-open-vault.png"},
         {"source": "shared/figures/m02-obsidian-02-initial-vault.png", "dest": "shared/figures/m02-obsidian-02-initial-vault.png"},
         {"source": "shared/figures/m02-obsidian-03-restricted-mode.png", "dest": "shared/figures/m02-obsidian-03-restricted-mode.png"},

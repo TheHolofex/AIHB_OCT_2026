@@ -127,7 +127,7 @@ python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements-dev.txt
 ```
 
-Reuse that environment for publication and checks. `node scripts/render_figures.mjs --check` verifies every local image link and the bytes of the remaining spec-owned SVGs (Module 02); run `node scripts/render_figures.mjs` without `--check` only to regenerate those SVGs after their `figures/spec.json` changes. Instructional PNGs are not rendered by that script. A reader UI change does not require regenerating figures.
+Reuse that environment for publication and checks. `node scripts/render_figures.mjs --check` verifies every local image link in the module pages. No module currently has a spec-owned SVG figure; the script renders a `figures/spec.json` only if one is added. Instructional PNGs are not rendered by that script. A reader UI change does not require regenerating figures.
 
 ```bash
 .venv/bin/python scripts/build_course.py

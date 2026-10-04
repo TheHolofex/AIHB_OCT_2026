@@ -1,6 +1,6 @@
 # When evidence breaks
 
-When a source or calculation disagrees with the brief, save the exact line, value, or error. Identify what failed before correcting the claim. Keep unsupported claims on `HOLD` while you resolve the mismatch.
+When a source or calculation disagrees with the brief, save the exact line, value, or error. Identify what failed before you correct the claim. Keep unsupported claims on `HOLD` while you resolve the mismatch.
 
 ## Find the first failed check
 
@@ -46,4 +46,4 @@ When you find the first mismatch, correct the source selection, premise, or calc
 - missing source → `HOLD` until the supplied source is restored;
 - inaccessible source → use the approved same-text alternative or `HOLD`.
 
-Repeat the failed check, then trace its result through the full decision. Record whether the correction changes the verdict or leaves another blocker. Don't make several silent corrections at once.
+Repeat the failed check. Trace its result through the full decision. Record whether the correction changes the verdict or leaves another blocker. Don't make several silent corrections at once.

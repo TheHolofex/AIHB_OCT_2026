@@ -138,7 +138,7 @@ Test restore before you place the fault. The restore command checks the clean ba
 <details markdown="1">
 <summary>Figure text</summary>
 
-Start with the clean baseline renderer and check its digest. If the digest does not match, stop at `Mismatch → HOLD` before replacing the work copy. If it matches, keep the current renderer and output as a retained attempt, then restore the work copy from the clean baseline. Confirm `RESTORE OK` before placing the practice fault.
+Start with the clean baseline renderer and check its digest. If the digest does not match, stop at `HOLD` before replacing anything. If it matches, save the current renderer and output as a retained attempt, then copy the baseline over the work renderer. Confirm `RESTORE OK` before placing the practice fault.
 
 </details>
 
@@ -211,7 +211,7 @@ Before you run the probe, write down how you would tell a field missing from the
 <details markdown="1">
 <summary>Figure text</summary>
 
-Check the selected source rows for each required field in order. If a source value is missing, the ordinary probe reports `source_omission`. If it is present, check whether the selected rows agree. Conflicting values produce `source_conflict`. When the values agree, check for a rendered card. If there is no card, the result is `output_absent`. If the card exists, the probe reports `rendered` when it contains the field and `renderer_omission` when it does not. Stop at the first failing boundary. Record what you expected, what you saw, and the exact command, then seal that evidence before changing anything. Probe exit status 0 means the diagnosis ran, not that the card is complete. The ordinary probe does not detect a wrong input version. That requires the optional `--intended` comparison, which reports `wrong_input_version` outside these core outcomes.
+Check the selected source rows for each required field in order. If a source value is missing, the ordinary probe reports `source_omission`. If it is present, check whether the selected rows agree. Conflicting values produce `source_conflict`. When the values agree, check for a rendered card. If there is no card, the result is `output_absent`. If the card exists, the probe reports `rendered` when it contains the field and `renderer_omission` when it does not. Stop at the first failing check. Record what you expected, what you saw, and the exact command, then seal that evidence before changing anything. Probe exit status 0 means the diagnosis ran, not that the card is complete. The ordinary probe does not detect a wrong input version. That requires the optional `--intended` comparison, which reports `wrong_input_version` outside these core outcomes.
 
 </details>
 
@@ -260,7 +260,7 @@ Replace the renderer only if the probe isolated it as the first failing boundary
 <details markdown="1">
 <summary>Figure text</summary>
 
-Start from the sealed diagnosis. If it shows that the renderer is the failing boundary, make one authorized replacement. Before the clean renderer is restored, the failed attempt (the failed renderer and its output) is preserved in a retained archive. Then restore the clean renderer. If the diagnosis points to any other cause, stop at `Other cause → HOLD`; do not replace the renderer. Two actions are forbidden and do not count as recovery: hand-patching the output card, and weakening the acceptance requirements.
+Start from the sealed diagnosis. If it shows that the renderer is the first failing boundary (`renderer_omission`), make one authorized replacement: run restore once. Before the clean renderer is restored, the failed attempt (the failed renderer and its output) is saved as a retained attempt. Then restore the clean renderer. If the diagnosis points to any other cause, stop at `HOLD` and do not replace the renderer. Two actions are not allowed and are not recovery: hand-editing the output card, and removing a required field from the acceptance requirements.
 
 </details>
 

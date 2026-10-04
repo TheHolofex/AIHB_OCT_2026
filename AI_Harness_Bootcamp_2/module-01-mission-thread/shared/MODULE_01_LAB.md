@@ -1,14 +1,14 @@
 # Module 1 · Verify a logistics mission thread
 
-Decide whether the polished Cold Lantern brief supports its `GO` recommendation. Open the applicable sources, redo the calculations, and write your own supported verdict: accept, revise, reject, or hold for internal class review. Use the bounded direction and source checks you already know to see whether the claims hold together across the movement. The supplied packet contains every case fact you need.
+Decide whether the Cold Lantern brief supports its `GO` recommendation. Open the sources, redo the calculations, and write your supported verdict: accept, revise, reject, or hold for class review. The packet contains every case fact.
 
-Plan for about three hours. That is a rough estimate, not a measured time.
+Plan for about three hours (a rough estimate).
 
-The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
+The case is fictional and class-only. You are not planning or authorizing a real movement.
 
 ## Start a work folder
 
-Before running the commands, set the locations of the course checkout, this module, your new work folder, and Python. An **absolute path** gives a file's complete location, regardless of your current folder. Keep the paths in quotes so spaces in folder names don't split them.
+Set the locations of the checkout, this module, your work folder, and Python before the commands. An **absolute path** gives a file's complete location. Keep paths in quotes.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -60,13 +60,12 @@ Create a fresh work folder outside the repository with the supplied starter. The
 
 **Recovery:** Keep the existing attempt. Choose a new `RUN` and `W`, then rerun the starter. Do not remove or overwrite an earlier attempt.
 
-Open `desk.md` in the new work folder. Its links point to the working files for this attempt.
 
-The visible checker catches missing fields, known practice values, arithmetic, and stale values. It does not judge whether a source applies or whether the verdict is sound.
+Open `desk.md`. Its links point to the files for this attempt.
 
 ### If you open a new terminal
 
-The commands on this page use the variables you set above, but a terminal forgets them when it closes. In a new terminal, run this block to return to the same attempt without preparing another one. It reads the attempt identifier saved by the first block.
+A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -92,19 +91,19 @@ $env:W = "$HOME\course-evidence\module-01-$RUN\work"
 "RUN=$RUN"; "W=$env:W"
 ```
 
-**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+**Expected:** The terminal prints `RUN=` followed by the identifier, then `W=` followed by the work folder.
 
-**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+**Stop:** The identifier differs from the one you recorded, or the `W=` folder does not exist.
 
-**Recovery:** If the identifier differs, a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. If the folder is missing, the attempt was never prepared; prepare it with the first block.
+**Recovery:** If the identifier differs, a later attempt overwrote the marker; set `RUN` to the value you recorded and run the block again. If the folder is missing, prepare it with the first block.
 
 ## Pacing
 
-Most of the session is your own inspection, calculation, writing, and decision. Building the thread ledger takes the longest. Opening and hashing the inbox, freezing identity and source use, and recomputing the calculated claims take a moderate amount of time each. The other steps are short.
+Building the thread ledger takes the longest. Hashing the inbox, freezing identity, and recomputing claims each take moderate time. Other steps are short.
 
 ## 1. Open and hash the inbox
 
-Record the exact identity of every file you judge. That way, if someone later swaps a source, the change will show. Open:
+Record the exact identity of every file. Open:
 
 - `REQUEST.md` in the work folder
 - every file under `inbox/`
@@ -121,7 +120,7 @@ The identity check starts with the file bytes and produces a hash that identifie
 
 </details>
 
-Do not inspect your instructor's fixture files. The supplied reveal command will copy the practice change into your work folder after the baseline is frozen.
+Do not inspect the instructor fixture files. The reveal command copies the practice change after the baseline is frozen.
 
 Run the content check to confirm that your checkout is intact. It uses the absolute module path, so you can run it from any folder.
 
@@ -143,7 +142,7 @@ Run the content check to confirm that your checkout is intact. It uses the absol
 
 **Recovery:** Keep the mismatch and leave the checkout unchanged. Obtain an intact copy in a fresh location, update `R` and `M`, and begin a new work folder. Do not reset or clean existing work.
 
-Then calculate a **hash**, a fingerprint of the file bytes, for each work-inbox file. Save the hashes in `source-register.csv`, and check that each printed filename matches the file you opened. A matching hash identifies the supplied file, but it doesn't tell you whether that file supports a claim.
+Calculate a **hash**, a fingerprint of the file bytes, for each inbox file. Save the hashes in `source-register.csv`. Check that each printed filename matches the file you opened. A matching hash identifies the supplied file, but it doesn't tell you whether that file supports a claim.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -185,7 +184,7 @@ Check the inbox itself:
 
 ## 2. Freeze exact identity and allowed source use
 
-Before using any source, record what it is, how current it is, and what it may be used for. Open the starter's `source-register.csv` in your editor. Complete one row for every inbox file with the file's hash and the source's identity, version, authority, time, and allowed use. Then run the register check.
+Open the starter's `source-register.csv` in your editor. Complete one row for every inbox file with the file's hash and the source's identity, version, authority, time, and allowed use. Then run the register check.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -205,7 +204,7 @@ Before using any source, record what it is, how current it is, and what it may b
 
 **Recovery:** Correct the register rows against the actual inbox files and rerun.
 
-Before checking the brief sentence by sentence, start `baseline-verdict.md` with its heading and the identity values. Add the verdict fields below them in step 9.
+Before checking the brief, start `baseline-verdict.md` with its heading and the identity values. Add the verdict fields in step 9.
 
 ```text
 # Baseline verdict
@@ -221,11 +220,11 @@ Cargo lot range:
 Time zones present:
 ```
 
-Near matches are not matches. Write the exact identifier you read, including revision and time zone.
+Near matches are not matches. Write the exact identifier, including revision and time zone.
 
 ## 3. Split the AI brief into material claims
 
-To test the polished recommendation, take its decision-changing claims one at a time. Open the 14:05 AI file in the inbox, the one whose name ends desk-ai-go. It is a finished `GO` that you did not write. Put each statement that could change the decision in its own row in `thread-ledger.csv`.
+Open the 14:05 AI file (name ends desk-ai-go). It is a finished `GO`. Put each decision-changing statement in its own row in `thread-ledger.csv`.
 
 Use this header (the 8 steps and 5 statement types are required):
 
@@ -250,7 +249,7 @@ A compound assertion with a count claim, a state claim, and a decision claim nee
 
 ## 4. Trace all eight thread steps
 
-Follow the cargo through every handoff from origin to clinic, so any gap in the thread appears as a gap in the ledger. Use these step names exactly:
+Trace the cargo through every handoff. Use these step names exactly:
 
 1. `Requirement defined`
 2. `Cargo received`
@@ -261,9 +260,9 @@ Follow the cargo through every handoff from origin to clinic, so any gap in the 
 7. `Cargo delivered`
 8. `Usable effect confirmed`
 
-First check the exact identity, the source's authority, and the relevant time. Check quantity and condition where they apply. Then record what the step depends on, what it hands forward, and what remains uncertain. Some entries need only one word; use more when the reasoning calls for it.
+Check the exact identity, authority, and time. Check quantity and condition where they apply. Record what the step depends on, what it hands forward, and what remains uncertain.
 
-If a row depends on another unsupported statement, add a child row and inspect that statement too. Keep splitting until you reach:
+If a row depends on an unsupported statement, add a child row. Keep splitting until you reach:
 
 - something read directly from the applicable source;
 - a deterministic calculation with supported premises and units;
@@ -288,7 +287,7 @@ In the calculation column, show the source values you start from, the arithmetic
 
 Check whether a computed arrival is possible, not just whether the arithmetic works. It is achievable only when the supported departure and gate conditions permit it. Label a time that assumes a blocked condition as **counterfactual**: it shows what would happen if that condition were satisfied. It is neither an observed arrival nor an available estimated time of arrival (ETA).
 
-The script helps you calculate; it isn't evidence. The source rows establish the premises, and your ledger shows whether each premise belongs in the calculation.
+The script helps calculate; it is not evidence.
 
 ![Recompute from supported premises and units, then check feasibility separately; a valid calculation does not establish that the handoff can occur.](figures/m01-recompute-feasibility.png)
 
@@ -297,7 +296,7 @@ The script helps you calculate; it isn't evidence. The source rows establish the
 <details markdown="1">
 <summary>Figure text</summary>
 
-Start with source values and their units, then ask whether the premises are supported. If not, the claim is UNSUPPORTED and leads to HOLD. If they are, show the operation that produces an independent result; don't copy the producer's result. Next, ask whether the required entry conditions are met. If not, the result is counterfactual, not observed. If they are, the result is feasible at this boundary only; delivery has not been observed.
+Start with source values and their units, then ask whether the premises are supported. If not, the claim is UNSUPPORTED and you hold it. If they are, show the operation yourself to get an independent result; don't copy the producer's result. Next, ask whether the required entry conditions are met. If not, the result is counterfactual: valid only if the blocked condition were met. If they are, the result is feasible at this step only; delivery is not yet observed.
 
 </details>
 
@@ -321,9 +320,9 @@ Start with source values and their units, then ask whether the premises are supp
 
 ## 6. Challenge the files you will not use for `GO`
 
-For each source you set aside, explain why it doesn't support the recommendation. Your verdict should account for the sources you didn't use, not just those you did. After opening every inbox file and running the hash command, write `challenge-matrix.md` yourself.
+For each source you set aside, explain why it does not support the recommendation. After hashing, write `challenge-matrix.md`.
 
-Write one block for each source you will not use to support `GO`. In each block, state:
+Write one block for each source you will not use. In each block state:
 
 - what the file actually proves;
 - what it cannot prove;
@@ -354,7 +353,7 @@ Don't ask the producing AI to check its own work. Its citation list, confidence 
 
 ## 7. Run the producer rebuttal
 
-Choose one rebuttal path. Both give you claims to inspect, but neither makes the producer an independent verifier. The practice path uses a supplied fictional rebuttal and records that no live model ran. The live path uses the pinned OMP/OpenRouter launcher and allows only `producer-rebuttal.md` to be written. A failed child is not a success, even if a file remains. Without a key, the live path exits 2 before producing an artifact.
+Choose one rebuttal path. The practice path uses a supplied fictional rebuttal. The live path uses the pinned OMP/OpenRouter launcher and writes only to `producer-rebuttal.md`; it requires your OpenRouter key in the terminal.
 
 **For practice (always available):**
 
@@ -418,7 +417,7 @@ Then add one challenge block for any claim in that file you still have not rejec
 
 ## 8. Write the corrected internal brief
 
-Write `corrected-brief.md` so another class member can decide what needs attention next without having watched you work. Include what is supported, what is contradicted, what remains unresolved, which later events have not occurred, the current blockers, the exact sources and calculations behind those blockers, and the next evidence needed.
+Write `corrected-brief.md` with what is supported, contradicted, unresolved, later events not observed, current blockers, the exact sources and calculations behind them, and the next evidence needed.
 
 A classmate who did not watch you work must be able to understand the decision and its evidence from the review page. An AI agent's inspection supplies technical observations only; it does not replace the classmate's review.
 
@@ -429,7 +428,7 @@ A classmate who did not watch you work must be able to understand the decision a
 <details markdown="1">
 <summary>Figure text</summary>
 
-Treat a producer rebuttal as another claim and sort it as supported, contradicted, or unresolved. For each claim, point to the exact sources and calculations behind that finding. Use those findings to state a class-only decision of ACCEPT, REVISE, REJECT, or HOLD, along with the current blockers, the next evidence, and who can supply it. For unresolved claims, name the next evidence and its owner directly.
+Sort each claim, including the producer's rebuttal, as supported, contradicted, or unresolved; the rebuttal is another claim to check, not proof. For each finding, point to the exact sources and calculations behind it. Use those findings to state a class-only decision of ACCEPT, REVISE, REJECT, or HOLD, along with the current blockers, the next evidence, and who can supply it. For unresolved claims, name the next evidence and who can supply it directly.
 
 </details>
 
@@ -455,7 +454,7 @@ Render the local review page. The command works from any folder because it uses 
 
 **Recovery:** Fix the file named in the message, then run the renderer again. You can run the command from any folder because it uses the absolute module path.
 
-Open `review.html` in your browser and check that your blockers and evidence appear. The verdict remains `UNSET` until step 9; ask your classmate to review the page after that step. The packet check below confirms that the page includes the decision-critical state.
+Open `review.html` and check that blockers and evidence appear. The verdict remains `UNSET` until step 9.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -477,7 +476,7 @@ Open `review.html` in your browser and check that your blockers and evidence app
 
 ## 9. Freeze the baseline verdict
 
-Choose your verdict and record its identity before any source changes. That gives you a fixed baseline for judging a later change. Add the verdict fields below the identity block you wrote in step 2, so the file reads:
+Choose your verdict and record its identity before any source changes. Add the verdict fields below the identity block from step 2.
 
 ```markdown
 # Baseline verdict
@@ -496,9 +495,9 @@ Reason:
 Standing rule:
 ```
 
-After `Verdict:`, write exactly one of `ACCEPT`, `REVISE`, `REJECT`, or `HOLD`. Choose `ACCEPT` only when every material claim needed for this class-only decision is supported. Choose `REVISE` when the evidence supports a decision after bounded corrections to the brief, or `REJECT` when it contradicts the recommendation. Choose `HOLD` when required evidence, authority, access, or a decision condition is unresolved.
+After `Verdict:`, write exactly one of `ACCEPT`, `REVISE`, `REJECT`, or `HOLD`. Choose `ACCEPT` only when every material claim is supported. Choose `REVISE` when evidence supports a decision after bounded corrections. Choose `REJECT` when it contradicts the recommendation. Choose `HOLD` when required evidence, authority, access, or a decision condition is unresolved.
 
-Even if most of the brief is right, an unsupported material premise blocks `ACCEPT`.
+An unsupported material premise blocks `ACCEPT`.
 
 Save the ledger and verdict. Record their hashes:
 
@@ -550,7 +549,7 @@ Before you revise anything, record your classmate's first answers and questions.
 
 ## 10. Predict the source-change effect
 
-Before you see a new source, write down what it should and should not change. That lets you check your revision against your prediction rather than explaining it after the fact. Write `change-prediction.md` before running the reveal command:
+Before you see a new source, write what it should and should not change. Write `change-prediction.md` before the reveal command.
 
 ```markdown
 # Source-change prediction
@@ -572,11 +571,11 @@ Unexpected change that would cause HOLD:
 <details markdown="1">
 <summary>Figure text</summary>
 
-Start with the frozen baseline. Predict what may change and what must not change before you reveal the source update. Then update the claims that depend on the new source and keep unrelated blockers visible. Recompute the verdict either way; new evidence does not automatically produce a GO.
+Freeze the baseline verdict. In change-prediction.md, write what should change and what must not change before you reveal the source update. Then update only the dependent claims and keep unrelated blockers visible. Recompute the verdict either way; new evidence does not produce a GO automatically.
 
 </details>
 
-Your prediction must exist before you reveal the change. Freeze the source register, baseline ledger, challenge matrix, corrected brief, verdict, and prediction:
+Your prediction must exist before you reveal the change. Freeze the source register, baseline ledger, challenge matrix, corrected brief, verdict, and prediction.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -618,9 +617,9 @@ Release the practice change only after the freeze command passes. Keep the basel
 
 **Recovery:** Complete the freeze first, then run the reveal again.
 
-Now open `REVEALED_CHANGE.md` in your work folder. Refer to this revealed source as `S10`; keep the frozen nine-source register unchanged. Do not open the staff fixture directly.
+Open `REVEALED_CHANGE.md`. Refer to it as `S10`. Keep the frozen register unchanged. Do not open the staff fixture.
 
-Copy the baseline rows into the starter's untouched `changed-thread-ledger.csv`. The command refuses to run if the changed ledger already contains work. Keep the baseline unchanged. Then update only claims that depend on the current gate closure, recording the source revision, old value, new value, and reason for every change.
+Copy the baseline rows into the untouched `changed-thread-ledger.csv`. Then update only claims that depend on the current gate closure. Record revision, old value, new value, and reason.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -660,7 +659,7 @@ print('CHANGED LEDGER SEEDED: baseline unchanged')
 
 **Recovery:** Keep any changed work you already have. If you seeded this attempt, continue editing that copy instead of running the seed command again. If you cannot confirm its identity, keep the attempt and begin a new one; never overwrite an earlier changed ledger.
 
-In your editor, update the seeded ledger and write `changed-brief.md`; do not overwrite `corrected-brief.md`. Change downstream language only where the new source supports it. Route rows may need revised identity/version details, calculations, entry conditions, and handoffs. For other steps, keep facts, source identities, calculations, and results unchanged. If the new route premise changes a warrant or uncertainty, cite S10 or the changed route claim's ID in your explanation. Do not backdate a later-issued source into the original decision.
+In your editor, update the seeded ledger and write `changed-brief.md` (do not overwrite `corrected-brief.md`). Route rows may need revised identity/version details, calculations, entry conditions, and handoffs. For other steps, keep facts, source identities, calculations, and results unchanged. If the new route premise changes a warrant or uncertainty, cite S10 or the changed route claim's ID in your explanation. Do not backdate a later source.
 
 You may quote an old value or an inapplicable identity to explain why you rejected it, but make clear that it is not the current finding. Keep the baseline mission identities. In `changed-verdict.md`, use these additional fields and fill them from your comparison rather than assuming the overall decision must change:
 
@@ -716,7 +715,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 
 ## 12. Finish the handoff
 
-Write `handoff.md` so the next reader can find your verdict, its evidence, and what to inspect first:
+Write `handoff.md` so the next reader can find your verdict, evidence, and what to inspect first.
 
 ```markdown
 # Module 1 handoff
@@ -738,7 +737,7 @@ A classmate who did not watch you work should be able to reconstruct the verdict
 
 ## 13. Defend the thread, not the form
 
-Your instructor or a classmate will choose one handoff between adjacent thread steps and one material claim row. You do not choose the easiest examples.
+Your instructor or a classmate will choose one handoff and one material claim row.
 
 For the **thread walk**, use the review page and explain:
 

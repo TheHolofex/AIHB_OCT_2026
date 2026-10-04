@@ -1,14 +1,13 @@
 # Module 10 · Stand up a local uncensored AI and hand it off
 
-A complete kit lets someone else bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it, all without your chat history. Put together the smallest set of files and instructions that does the job, freeze it, move only the declared bundle to a new location, and run it from a new terminal. Keep your own rerun separate from watching another person use the kit.
+Build the smallest kit of files and instructions that lets a colleague bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it, all without your chat history. Freeze only the declared bundle, copy it to a new location, and run from a new terminal. Keep your own rerun separate from watching another person use the kit.
 
-The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed, so it answers bluntly and applies no judgment of its own. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
+The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
 
-Plan for about three hours on Thursday. That's a rough estimate, not a measured time. Your recipient's attempt happens outside class hours.
-
+Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours.
 ## Prepare separate work and transfer locations
 
-Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work copy, where you build the kit; `E` is the separate evidence folder; and `F` is where the received package will go. The commands work from any directory. Don't create `F` until the transfer step.
+Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work copy for the kit; `E` is the evidence folder; `F` is the received package location. Commands work from any directory. Don't create `F` until the transfer step.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -45,7 +44,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; e,f=map(Path,sys.argv[1:]); (f.exists() or f.is_symlink()) and sys.exit('HOLD: received destination exists'); e.mkdir(); print('EVIDENCE',e); print('FRESH DESTINATION',f)" "$E" "$F"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. Ignore the printed `Next` suggestion; this lab gives you the next command. The block then prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
+**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. The block prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
 
 **Stop:** A destination exists, a prerequisite is missing, or preparation fails.
 
@@ -53,7 +52,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 
 ### If you open a new terminal
 
-Every command on this page uses the variables you set above, and a terminal forgets them when it closes. In a new terminal, run this block to get back to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -93,13 +92,7 @@ $F = "$BASE/received package"
 
 ## Read the boundary before the first launch
 
-Open these files in your editor:
-
-- `W/shared/case/SERVICE_RULES.md`
-- `W/shared/case/model-card.json`
-- `W/shared/case/task.json`
-- `W/shared/case/hostile-note.md`
-- `W/shared/PACKAGE.md`
+Open these files in your editor: `W/shared/case/SERVICE_RULES.md`, `W/shared/case/model-card.json`, `W/shared/case/task.json`, `W/shared/case/hostile-note.md`, and `W/shared/PACKAGE.md`.
 
 In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check, and say why neither carries any authority here. Name what the uncensored model won't do for you: refuse, warn, or apply judgment.
 
@@ -110,7 +103,7 @@ In `E/pre-run.md`, record the pinned model identity, the byte size, the license,
 <details markdown="1">
 <summary>Figure text</summary>
 
-The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requests and replies with the local weights, and prompts and replies are recorded. Output from the local weights goes to the operator, who reviews it; it does not go straight to publishing. Two things are blocked at the boundary: no shared endpoint, and no traffic for other people. A separate note attached to the local weights reads: identity ≠ safety or accuracy. The identity check is a limited check of the weight file, not a safety guarantee around the service.
+The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requests and replies with the local weights, and prompts and replies are recorded. Output from the local weights goes to the operator, who reviews output before any use; it does not go straight to publishing. Two things are blocked at the boundary: no shared endpoint, and no traffic from other people. A separate note attached to the local weights says that the identity check confirms the weight file only, not its safety or accuracy.
 
 </details>
 
@@ -122,7 +115,7 @@ The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requ
 
 ## Gain account access and download the pinned weights
 
-The model's repository is access-gated. Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB, and it can resume if it's interrupted.
+Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB and resumes if interrupted.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -189,7 +182,7 @@ Set-Location -LiteralPath $BASE
 
 ## Bring the service up under OMP orchestration
 
-OMP drafts the launch line and drives the bring-up; you approve and watch each step. Open OMP in `W` and give it the brief below. Check the line it proposes against the pinned boundary before you run it.
+Open OMP in `W` and give it the brief below. Check the line it proposes against the pinned boundary before you run it.
 
 ![OMP drafts the launch line, but you check it against the pinned boundary and start the server; reachability is a separate probe.](figures/m10-launch-approval.png)
 
@@ -198,12 +191,11 @@ OMP drafts the launch line and drives the bring-up; you approve and watch each s
 <details markdown="1">
 <summary>Figure text</summary>
 
-1. Checked weights and the wired loopback config both feed into: OMP drafts launch line.
-2. Check the drafted line: `127.0.0.1` + context `32768`.
-3. If the bind is wrong, reject the line and go back to OMP for a new draft. A rejected line is never launched.
-4. If the check passes, the operator starts the server.
-5. A health probe then checks whether the service is reachable. A drafted line is not a running service.
-6. If the probe finds the service unreachable, the result is HOLD.
+1. Checked weight file and loopback configuration feed OMP drafts the launch line.
+2. Your check: 127.0.0.1, context 32768, nothing that widens the boundary.
+3. Wrong: reject the line and ask OMP for a new draft. A drafted line is not a running service.
+4. Passes: you start the server.
+5. Health probe: is the service reachable? Unreachable: HOLD.
 
 </details>
 
@@ -294,7 +286,7 @@ Set-Location -LiteralPath $BASE
 
 ## Observe the uncensored behaviour
 
-Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften, and save the exchange to `E/observations.md`. The model won't refuse and won't warn you; that's the capability you chose, so the guardrail is you. Record what you wouldn't put your name on, and why you wouldn't send it anywhere.
+Ask the model for one deliberately blunt answer and save the exchange to `E/observations.md`. The model won't refuse or warn you; the guardrail is you. Record what you wouldn't put your name on, and why.
 
 **Expected:** A saved exchange where the model answers without refusing, and the boundary you've set on using its output.
 
@@ -408,7 +400,7 @@ Restore the control from the baseline by running the package's own restore comma
 
 ## Freeze the declared bundle before copying
 
-Keep only the ten files the package declares. Don't add the weights, the evidence folder, the repository, private material, or conversation history. Record each file's digest in `E`, outside `W`:
+Keep only the ten files the package declares. Don't add the weights, evidence, repository, private material, or chat history. Record each file's digest in `E` outside `W`:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -450,7 +442,7 @@ print('FROZEN BUNDLE',len(files),'files')
 
 ## Copy only the frozen members
 
-Leave the weights out; your colleague downloads them under their own account and checks them against the pinned identity. Copy the files with digest checks against the record you just froze in `E/bundle-before.json`:
+Leave the weights out; your colleague downloads them under their own account and checks them against the pinned identity. Copy the files with digest checks against the record in `E/bundle-before.json`:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -519,7 +511,7 @@ print('NO WEIGHTS COPIED')
 
 ## Hand the package to another person
 
-Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run it from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, their commands, the outcomes you saw, and any help they got in `E/transfer-status.md`. A technical replay, even one run by an agent, doesn't count as watching another person operate the kit. If no one is available, keep the technical results and record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
+Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, outcomes, and any help in `E/transfer-status.md`. A technical replay doesn't count as watching another person operate the kit. If no one is available, record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
 
 If your colleague needs help, record what they did before and after it; don't relabel an assisted attempt as independent. Use their questions to improve a new version of the package, and keep the observed attempt as it was.
 

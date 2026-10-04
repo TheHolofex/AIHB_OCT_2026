@@ -1,6 +1,6 @@
 # When setup stops
 
-Start with the first action that failed. Save its exact error and the last thing you saw work before changing anything. Don't reinstall every tool or discard an existing checkout.
+Start with the first failed action. Save its exact error and last good observation before changing anything. Don't reinstall tools or discard the checkout.
 
 ## Choose the next action from the observed failure
 
@@ -12,11 +12,11 @@ Start with the first action that failed. Save its exact error and the last thing
 | `omp` is not found | Check the resolved command path below. Add only the user-bin directory named by your platform guide, then check again in the intended terminal. |
 | `omp` reports a different version | Note the path and version you found. Do not silently overwrite a different installation. Use the verified course binary and confirm that PATH resolves to it. |
 | A course directory already exists | Confirm that it is the intended checkout. Use it without reset, pull, or clean when it is valid; otherwise leave it untouched and resolve the path conflict. |
-| Git cannot read the private course repository | A website password is not GitHub access. Follow the platform's read check with prompts disabled, then use the browser-login steps if needed. Even after you log in to GitHub, you need permission to read the repository. Ask the repository owner about the invitation or organization approval, and keep any existing checkout. |
+| Git cannot read the private course repository | A website password is not GitHub access. Follow the platform's read check with prompts disabled, then use the browser-login steps if needed. Login does not grant permission. Ask the repository owner about the invitation or organization approval, and keep any existing checkout. |
 | GitHub CLI reports unapproved credential storage | Stop before configuring the Git helper or cloning. Ask the device owner to set up approved credential storage or approved Git credentials. Do not request plaintext storage or share authentication output. |
 | The conditional GitHub CLI package is unavailable | Use only the named platform's official package route. Ubuntu's `gh` requires Universe; ask the owner to approve that component if unavailable. Do not silently add sources. Arch's `github-cli` installation uses a full upgrade, not a partial upgrade. |
-| The new terminal has tools but the key is `MISSING` | That's expected in a terminal you opened fresh, not from an earlier window. Enter the key through the hidden-input step in that terminal. Never put the key in a shell profile. |
-| A new process reports an unexpected `SET` | Check whether the new process inherited its environment from a parent process. `SET` alone does not tell you whether the key was saved or exposed. Do not include an environment dump in the evidence. |
+| The new terminal has tools but the key is `MISSING` | That's expected in an independently opened terminal. Enter the key through the hidden prompt in that terminal. Never put the key in a shell profile. |
+| A new process reports an unexpected `SET` | Check if the new process inherited the environment from a parent. `SET` alone does not tell you whether the key was saved or exposed. Do not include an environment dump in the evidence. |
 | The launcher exits 2 | Read its prerequisite message. Missing key, wrong OMP version, missing input, conflicting permissions, or an existing attempt can stop before a provider request. No live success has occurred. |
 | The launcher exits 1 | Keep the entire attempted run. Check `result.json` and the raw receipts. A file left behind does not make an incomplete turn successful. |
 | The provider returns 401 or 403 | Confirm the participant key and model access in OpenRouter without printing the key. Do not try a direct-provider login or silently switch models. |
@@ -31,7 +31,7 @@ Start with the first action that failed. Save its exact error and the last thing
 
 ## When local Obsidian stops
 
-Save the first error, app version, platform, attempt folder, and the last action you saw in the Obsidian window before changing anything. Keep **Obsidian READY/HOLD** separate from OMP and n8n. Module 2 needs local Obsidian READY; another editor or a disk PASS cannot replace a record of what you actually saw in Obsidian. Use your existing guide's **Set up local Obsidian** section: [native Windows](../platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](../platforms/windows-wsl.md#set-up-local-obsidian), [macOS](../platforms/macos.md#set-up-local-obsidian), [Ubuntu](../platforms/ubuntu.md#set-up-local-obsidian), or [Arch](../platforms/arch-linux.md#set-up-local-obsidian).
+Save the first error, app version, platform, attempt folder, and last Obsidian action before changing anything. Keep **Obsidian READY/HOLD** separate from OMP and n8n. Module 2 needs local Obsidian READY; another editor or a disk PASS cannot replace what you saw in Obsidian. Use your existing guide's **Set up local Obsidian** section: [native Windows](../platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](../platforms/windows-wsl.md#set-up-local-obsidian), [macOS](../platforms/macos.md#set-up-local-obsidian), [Ubuntu](../platforms/ubuntu.md#set-up-local-obsidian), or [Arch](../platforms/arch-linux.md#set-up-local-obsidian).
 
 | What you see | What to do next |
 |---|---|
@@ -78,7 +78,7 @@ Keep **n8n READY/HOLD** separate from the OMP setup report and the live OMP read
 | The empty instance has no “Create Workflow” button or mandatory “Saved” label | On the Apple Silicon Mac where these steps were checked, the empty instance offers **Overview → Build a workflow**. Click the title, enter the readiness name, and press **Enter**; saving is automatic. Reload and confirm the name and blank canvas. Do not publish. If your screens don't allow this, keep the instance as it is and ask for help. |
 | The workflow disappears after reload or after `down` / `up -d` | Record n8n HOLD. Keep the directory and volumes. With the owner, confirm you are using the same engine, Compose path/project, and named data volume. Ordinary `down` keeps named data. Never use `down -v`, prune volumes, or create a replacement workflow to hide failed persistence. |
 
-What the UI showed and how n8n ran were checked only on Apple Silicon. You still need successful checks on your own device. Share only errors with private details removed and a description of the system state you saw; never include `.env`, resolved Compose configuration, local passwords, or provider keys.
+The UI and n8n run were checked only on Apple Silicon. You still need successful checks on your own device. Share only errors with private details removed and a description of the system state you saw; never include `.env`, resolved Compose configuration, local passwords, or provider keys.
 
 ## Confirm the command you are actually running
 
@@ -105,13 +105,13 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the selected OMP executable failed its v
 
 **Recovery:** Fix only the installation or PATH issue shown in the output. Keep other installations and repeat the check before a paid turn.
 
-**PATH** is the ordered list of directories your terminal searches for a command. Changing PATH does not install a program, and a terminal you already have open does not automatically pick up settings saved later. The key works differently: keep it in the current terminal process only, even if you save a non-secret PATH setting.
+**PATH** is the ordered list of directories your terminal searches for a command. Changing PATH does not install a program, and an open terminal does not pick up settings saved later. The key works differently: keep it in the current terminal process only, even if you save a non-secret PATH setting.
 
 ## Distinguish slow work from a stopped process
 
 Keep the original terminal visible. In Activity Monitor on macOS, Task Manager on Windows, or your Linux system monitor, find the named download or package-manager process and check its current CPU, disk, and network activity. A single check showing no activity does not mean the process has hung.
 
-If an installation was interrupted, follow the package manager's recovery instructions instead of killing or restarting a transaction without checking. For a provider turn, the launcher times out after a set limit and records an incomplete attempt. Wait for it to report the failure instead of starting a second paid process to see whether that one is faster.
+If an installation was interrupted, follow the package manager's recovery instructions instead of killing or restarting without checking. For a provider turn, the launcher times out after a set limit and records an incomplete attempt. Wait for it to report the failure instead of starting a second paid process.
 
 ## Capture a support packet
 
@@ -129,6 +129,6 @@ External attempt/report location:
 Whether any output or forbidden effect appeared:
 ```
 
-Redact personal paths, account IDs, internal hosts, and credentials from the copy you share. Keep command names, versions, exit codes, and the first error. An exposed key must be revoked; deleting it from a screenshot does not revoke access.
+Redact personal paths, account IDs, internal hosts, and credentials from what you share. Keep command names, versions, exit codes, and the first error. An exposed key must be revoked; deleting it from a screenshot does not revoke access.
 
 Make one targeted correction, then repeat the failed check. If you cannot explain a correction, a rollback fails, or device policy blocks the action, record `HOLD` and contact the responsible owner. Do not disable certificate checks, Gatekeeper, antivirus, or protected filesystem permissions to force progress.

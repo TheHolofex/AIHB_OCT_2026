@@ -58,7 +58,7 @@ For Edit Fields nodes, use **Manual Mapping** and **Add Field**, and set each fi
 
 ### 1. Create and name the blank router
 
-Open **Overview → Build a workflow** on a fresh installation, or **Overview → Create workflow** when workflows already exist. Click the workflow title, enter `White Rack — attempt a — router`, and press Enter. Use your attempt identifier in place of `a`. n8n saves automatically, so there's no Save or Saved indicator to wait for. Leave the workflow unpublished.
+Open **Overview → Build a workflow** on a fresh installation, or **Overview → Create workflow** when workflows already exist. Click the workflow title, enter `White Rack — attempt a — router` (use your attempt identifier in place of `a`), and press Enter. n8n saves automatically, so there's no Save or Saved indicator to wait for. Leave the workflow unpublished.
 
 ![Blank n8n canvas named White Rack — attempt a — router, with no nodes](figures/m07-n8n-01-blank-router.png)
 

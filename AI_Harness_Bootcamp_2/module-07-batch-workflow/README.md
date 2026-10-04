@@ -6,23 +6,23 @@ Plan for about three hours on Wednesday. That's a rough estimate, not a measured
 
 ## Before you begin
 
-Complete [local n8n readiness](../module-00-setup/README.md): n8n 2.41.5 on the approved full official local stack, with the editor available on localhost. Bring the habits you already have: inspect sources, freeze predictions before running anything, validate with bounded controls like Blue Gauge's predicate, and keep every piece of evidence. Have a plain text editor ready, and know where your browser saves downloads. Keep Assistant off and workflows unpublished. You'll use test forms only, with no model calls or provider credentials.
+Complete [local n8n readiness](../module-00-setup/README.md), then open [Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). Start with a blank router canvas. Download the two input waves, validator, and separate receipt checker from the lab. Save your predictions before running the router.
 
-[Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). You start from a blank router canvas and download the two input waves, the supplied validator, and the separate receipt checker from the lab. Save your predictions before you run the router.
+Use n8n 2.41.5 on the approved full official local stack, with the editor on localhost. Inspect sources, freeze predictions before runs, validate with bounded controls like Blue Gauge's predicate, and keep evidence as you did earlier. Have a plain text editor ready and know where your browser saves downloads. Keep Assistant off and workflows unpublished. Use test forms only, without model calls or provider credentials.
 
 ## The saved change
 
-The router checks exact, case-sensitive values. `RACK_CONFLICT` takes priority and produces `hold,RESOURCE_CONFLICT`. Otherwise, `AUTHORIZED` produces `pass,READY`. Exact `PENDING` uses the saved `pending_status` value: `OPEN` produces `hold,OPEN`; `NOT_AUTHORIZED` produces `reject,NOT_AUTHORIZED`. Other permit strings, including `WITHDRAWN`, fall back to `hold,OPEN`. Gate-window text and input disposition don't affect the route. A pending decision is not a quality release.
+The router checks exact, case-sensitive values. `RACK_CONFLICT` takes priority and produces `hold,RESOURCE_CONFLICT`. Otherwise, `AUTHORIZED` produces `pass,READY`. Exact `PENDING` uses the saved `pending_status`: `OPEN` produces `hold,OPEN`; `NOT_AUTHORIZED` produces `reject,NOT_AUTHORIZED`. Other permit strings, including `WITHDRAWN`, fall back to `hold,OPEN`. Gate-window text and input disposition don't choose a route. A pending decision isn't a quality release.
 
-Change only Pending rule's String value, from `OPEN` to `NOT_AUTHORIZED`. Leave every other node setting, wire, and input as it is. Before you edit, keep the original JSON export and the separately downloaded SHA256 report for it. Keep the changed export as a separate file.
+Change only Pending rule's String value from `OPEN` to `NOT_AUTHORIZED`. Keep every other node setting, wire, and input unchanged. Before editing, keep the original JSON export and its separately downloaded SHA256 report. Save the changed export separately.
 
-Importing JSON adds nodes to whatever n8n canvas is open, so import the checker into its own new blank workflow. To restore, recheck the original export against its saved digest, then import it into another new blank workflow. Don't restore by changing the policy value back by hand.
+Import the checker into its own new blank workflow; importing JSON adds nodes to the open canvas. To restore, check the original export against its saved digest, then import it into another new blank workflow. Don't change the policy back by hand.
 
 ## Retain the evidence
 
-Keep the frozen delta CSV for each wave, the baseline and changed exports, the original and rechecked identity reports, the six receipts, the baseline exact comparison, the two predicted-change reports, and the two restored exact reports. Record each workflow's name and URL and every execution ID. A successful execution isn't a comparison result: read the checker's `PASS` or `HOLD` report and its full row counts. Keep every held attempt, and never edit a receipt by hand.
+Keep each wave's frozen delta CSV, the baseline and changed exports, the original and rechecked identity reports, six receipts, the baseline exact comparison, two predicted-change reports, and two restored exact reports. Record each workflow's name and URL and every execution ID. Read the checker's `PASS` or `HOLD` report and full row counts; a successful execution isn't a comparison result. Keep every held attempt. Never edit a receipt by hand.
 
-The optional revised-wave stretch first changes the input with the policy held fixed, then changes the policy with the revised input held fixed. Each comparison needs its own frozen prediction and downloaded report.
+For the optional revised-wave stretch, first change the input with the policy fixed. Then change the policy with the revised input fixed. Freeze a separate prediction and download a report for each comparison.
 
 ## Class-only boundary
 

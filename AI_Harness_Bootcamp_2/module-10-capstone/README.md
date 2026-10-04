@@ -1,10 +1,10 @@
 # Module 10 · Stand up a local uncensored AI and hand it off
 
-Stand up the pinned uncensored model on your own laptop as a loopback-only service, prove one live interaction through it, stop and restore it, then hand the complete kit to a colleague who repeats the run without you. OMP does most of the work: it drafts the launch line, drives the bring-up steps, and fills in the package fields, while the adapter scripts check every claim the package makes.
+Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line, drives bring-up, and fills in package fields; the adapter scripts check the package's claims.
 
-The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed, so it answers bluntly and applies no judgment of its own. Every boundary in this lab is yours to keep, not the model's.
+The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. You must keep every boundary.
 
-Plan for about three hours on Thursday. That's a rough estimate, not a measured time. Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
+Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
 
 ## Start here
 
@@ -19,10 +19,10 @@ Plan for about three hours on Thursday. That's a rough estimate, not a measured 
 <details markdown="1">
 <summary>Figure text</summary>
 
-The declared kit contains `shared/PACKAGE.md` (instructions), `scripts/` (adapters), `shared/case/` (case and rules), `shared/controls/` (active control), and `shared/baseline/` (baseline). Freeze the declared paths, then make a digest-checked copy into a fresh received folder. Only those declared members travel along the copy path. The recipient downloads the weights separately; local run evidence is retained separately, and chat history does not travel with the kit. The stop receipt is not a copied package member.
+The declared kit lists `shared/PACKAGE.md` (instructions), `scripts/` (adapters), `shared/case/` (case and rules), `shared/controls/` (active control), `shared/baseline/` (baseline). Freeze the declared paths, then make a digest-checked copy into a fresh received folder. Only those declared members travel. Not in the kit: model weights (recipient downloads them separately), run evidence including the stop receipt (kept separately), and conversation history.
 
 </details>
 
 ## Bounded use
 
-The service binds only to `127.0.0.1`. The weights stay on this laptop under your own account: don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. This kit is a limited local service, not a deployment, and a completed run authorizes nothing beyond its own evidence bundle.
+Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. The case is fictional and class-only; it isn't for real movements or operations. Results are for class review only. This kit is a limited local service, not a deployment; completing the run authorizes nothing beyond its evidence bundle.

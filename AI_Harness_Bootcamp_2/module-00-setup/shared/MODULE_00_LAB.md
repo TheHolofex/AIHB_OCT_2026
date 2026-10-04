@@ -1,18 +1,16 @@
 # Module 0 · Give AI a clear, limited job
 
-Draft a checked internal email about North Shelf for the Field Clinic S-3 supply clerk. Decide what to delegate to AI, what judgment to keep, and what use to refuse. Give the tool clear limits, check the saved email against the packet, and decide whether named class participants may read it. Then change one supplied fact while preserving the other facts and limits.
+Draft a checked internal email about North Shelf for the Field Clinic S-3 supply clerk. Decide what to delegate to AI, what judgment to keep, and what use to refuse. Give the tool clear limits, check the saved email against the packet, and decide whether named class participants may read it. Then change one supplied fact while keeping the other facts and limits.
 
 North Shelf is fictional. The email stays with named class participants. It is not a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite, material fact, or decision owner is unresolved.
 
-Plan for about three hours. That is a rough estimate, not a measured time. Aim to have a first checked draft within roughly the first hour. Use the rest of your time to demonstrate a failing check, apply the changed input, compare the drafts, and record the handoff.
+Plan for about three hours (rough estimate). Get a first checked draft in the first hour. Use remaining time for a failing check, the changed input, comparison, and handoff record.
 
 ## 1. Create the four-file work folder
 
-Machine readiness is a prerequisite: finish the appropriate [setup path](../README.md) and its checks before drafting. A **terminal** is the application where you enter commands. Use it as your ordinary user, with the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs.
+Finish the [setup path](../README.md) first. Create the work folder and evidence folder outside the checkout with these commands. Use your ordinary user terminal and the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs. `W` names the work folder; `E` names the evidence folder. A **terminal** is the text window where you enter commands. A **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt.
 
-Your **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create that folder outside the checkout. `W` names the work folder; `E` names the evidence folder beside it. Earlier attempts remain untouched.
-
-Live drafting needs your OpenRouter key in this terminal. An API key is the credential the launcher uses to reach the account that pays for the model call. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
+Live drafting needs your OpenRouter key in this terminal. An API key is the credential the launcher uses to reach the account that pays for the model call. You enter your OpenRouter key, which you enter in the terminal rather than save in a file. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. Enter the key after the folder exists.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -46,7 +44,7 @@ $E = "$HOME\course-evidence\module-00-$RUN\evidence"
 
 **Stop:** A destination exists, copying fails, or a source is missing.
 
-**Recovery:** Preserve the partial attempt. Repair the path or prerequisite, then repeat the block with a new `RUN`. Do not delete earlier work or change the source checkout.
+**Recovery:** Keep the partial attempt. Repair the path or prerequisite, then repeat the block with a new `RUN`. Do not delete earlier work or change the source checkout.
 
 ### If you open a new terminal
 
@@ -136,9 +134,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## 2. Identify who decides acceptance
 
-A check can report a result, but only a named person can accept the email for its use; settle who that is before any draft exists. Open `W/check_artifact.py`. The local checker is inspectable practice software. Its output cannot independently certify the meaning of your email or your judgment. Editing a practice checker does not make a draft more defensible.
-
-Create `W/acceptance-control.md` in your editor. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
+Open `W/check_artifact.py` in your editor. Create `W/acceptance-control.md`. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
 
 ![The checker reports mechanical results; a named person owns the supported decision about the email's stated use.](figures/m00-decision-owner.png)
 
@@ -159,7 +155,7 @@ An AI draft goes through two separate checks. The practice checker tests mechani
 
 ## 3. Read the packet and checker in full
 
-You can only judge a draft against facts you have read yourself, so read every supplied fact and every condition the checker tests before the tool runs. Open `W/SOURCE_PACKET.md`, `W/REQUEST.md`, and `W/check_artifact.py` in your editor. Leave `CHANGED_INPUT.md` unopened until step 13.
+Open `W/SOURCE_PACKET.md`, `W/REQUEST.md`, and `W/check_artifact.py` in your editor. Leave `CHANGED_INPUT.md` unopened until step 13. Read every supplied fact and every condition the checker tests before the tool runs so you judge the draft against facts you have read.
 
 The packet distinguishes a request, custody, paperwork availability, and release authority. The request requires a 130–190-word email with a subject and contact line. The checker recognizes selected facts and prohibited claims, but it can miss meanings expressed in unfamiliar wording.
 
@@ -173,7 +169,7 @@ In `acceptance-control.md`, add one example of a claim that still needs your rea
 
 ## 4. Divide drafting, judgment, and prohibited action
 
-Decide in writing what the tool may do, what stays with you, and what it must never do, so the limits exist before the first draft. Create `W/direction-brief.md`. State what AI may draft, what judgment remains yours, and what it must not do. The AI may reorganize supplied facts into the requested email. You retain source interpretation, acceptance, disclosure, and the sharing decision. A real send, release, or invented service is outside scope.
+Create `W/direction-brief.md`. Decide in writing what the tool may do, what stays with you, and what it must never do so the limits exist before the first draft. State what AI may draft, what judgment remains yours, and what it must not do. The AI may reorganize supplied facts into the requested email. You retain source interpretation, acceptance, disclosure, and the sharing decision. A real send, release, or invented service is outside scope.
 
 **Expected:** The three responsibilities are explicit and fit this request.
 
@@ -215,7 +211,7 @@ Decision to proceed with a class draft, or HOLD:
 
 ## 6. Freeze a testable direction
 
-Write the direction so that a finished draft can be checked against it line by line. Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
+Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. Write the direction so that a finished draft can be checked against it line by line. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
 
 ![Give the model a limited drafting job, name the evidence that could defeat acceptance, and keep consequential decisions with their owner.](figures/m00-bounded-direction.png)
 
@@ -244,11 +240,11 @@ an external action. After writing, report the path only.
 
 **Stop:** The direction leaves a consequential choice to the model or conflicts with the supplied request.
 
-**Recovery:** Correct the brief before running. Preserve any earlier version and its reason for change.
+**Recovery:** Correct the brief before running. Keep any earlier version and its reason for change.
 
 ## 7. Produce one actual tool-written draft
 
-Run the tool once under the limits you wrote, so that what you check is a real file the tool produced, with the run's records kept beside it. Use the shared launcher to run the model with the declared course tools and permission to write only the new `artifact.md` output. A **receipt** is a saved record of what the launcher or tool observed during a run. The launcher creates a separate receipt folder for this call; that folder must not already exist.
+Run the tool once under the limits you wrote, so that what you check is a real file the tool produced, with the run's records kept beside it. Use the shared launcher to run the model with the declared course tools and permission to write only the new `artifact.md` output. A **receipt** records a run's inputs, tool calls, results, and file effects. The launcher creates a separate receipt folder for this call; that folder must not already exist.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -266,7 +262,7 @@ Run the tool once under the limits you wrote, so that what you check is a real f
 
 **Stop:** Exit 2 means a prerequisite failed before a valid turn; exit 1 means attempted work was incomplete or violated a required check. Missing key, no actual file, mismatched identity, or a forbidden effect keeps this stage on `HOLD`.
 
-**Recovery:** Preserve the first failure and any partial file. Restore the prerequisite or diagnose the instruction problem before beginning a fresh retained attempt. Do not manufacture `artifact.md`, overwrite it, or rerun into the same receipt child.
+**Recovery:** Keep the first failure and any partial file. Restore the prerequisite or diagnose the instruction problem before beginning a fresh retained attempt. Do not manufacture `artifact.md`, overwrite it, or rerun into the same receipt child.
 
 ## 8. Read the disk file, count words, and check
 
@@ -292,7 +288,7 @@ Judge the file on disk, not the assistant's description of it. Open `W/artifact.
 
 ## 9. Trace material claims yourself
 
-Every claim that could change a reader's action needs a source you can point to; the checker cannot do this part. Create `W/source-check.md`. Quote each material statement about quantity, custody, paperwork timing, authority, and prohibited clinic action, then give its exact supporting packet line or paragraph. Mark unsupported implications as well as plainly wrong facts.
+Create `W/source-check.md`. Quote each material statement about quantity, custody, paperwork timing, authority, and prohibited clinic action, then give its exact supporting packet line or paragraph. Mark unsupported implications as well as plainly wrong facts. Every claim that could change a reader's action needs a source you can point to; the checker cannot do this part.
 
 ![A source can support the stated fact without supporting the action a reader might infer from it.](figures/m00-claim-check.png)
 
@@ -301,7 +297,7 @@ Every claim that could change a reader's action needs a source you can point to;
 <details markdown="1">
 <summary>Figure text</summary>
 
-A material claim leads to its source and locator, and then to the quoted support. Sort the support into what it establishes and what it does not establish. Anything it does not establish is blocked from becoming an unsupported implication. Both sides go to human interpretation. Mechanical checks run separately and also inform human interpretation. They do not validate an implication.
+A material claim leads to its source and locator (line or paragraph), and then to the quoted support. Sort the support into what the quote establishes and what it does not establish. What it does not establish cannot support an action a reader might infer. Both sides go to human interpretation. Mechanical checks also inform human interpretation, but they do not support an inferred action.
 
 </details>
 
@@ -313,7 +309,7 @@ A material claim leads to its source and locator, and then to the quoted support
 
 ## 10. Make a failing copy without changing the original
 
-Test whether the visible check can reject a known wrong count. The following block changes the original on-hand number only in a separate falsifier file. It also records the original draft's **hash**, a fingerprint calculated from its bytes, so you can check later that the original stayed unchanged.
+Run the block below to make a failing copy in a separate file without changing the original. Test whether the visible check can reject a known wrong count. The block changes the original on-hand number only in the falsifier file. It also records the original draft's **hash**, a fingerprint calculated from its bytes, so you can check later that the original stayed unchanged.
 
 ![A rejected known-bad copy shows that this check catches that defect; it does not certify the original draft's meaning.](figures/m00-falsifier.png)
 
@@ -322,7 +318,7 @@ Test whether the visible check can reject a known wrong count. The following blo
 <details markdown="1">
 <summary>Figure text</summary>
 
-Keep the original and the test copy separate. Preserve the original and record its hash; later, confirm that the original hash is unchanged. Separately, make a copy, add one deliberate error, and run the same checker on it. Expect a rejection. The rejection shows that the check can detect that error. Check sensitivity is not full correctness: the rejection says nothing about whether the original is correct.
+Keep the original, artifact.md, and the test copy, falsifier-probe.md, separate. Keep the original unchanged and record its hash; later, confirm that the hash is unchanged. Separately, make a copy, add one deliberate error, and run the same checker on it. Expect the checker to reject the copy. The rejection shows that the check can catch that error. It does not show that the original is correct.
 
 </details>
 
@@ -349,7 +345,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Falsifier preparation stopped.' }
 
 ## 11. Describe an observed capability and limit
 
-Record what you saw the tool do and fail to do, so the next person inherits observations rather than opinions. Create `W/capability-limit.md`. Distinguish the model's text, the terminal/file interface, the harness's enforced permissions and recorded checks, and the human decision. Name one capability and one limitation supported by this attempt's evidence.
+Create `W/capability-limit.md`. Record what you saw the tool do and fail to do, so the next person inherits observations rather than opinions. Distinguish the model's text, the terminal/file interface, the harness's enforced permissions and recorded checks, and the human decision. Name one capability and one limitation supported by this attempt's evidence.
 
 ![Distinguish the model's words, the actual file, the harness's recorded behavior, and the decision a person owns.](figures/m00-tool-layers.png)
 
@@ -358,7 +354,7 @@ Record what you saw the tool do and fail to do, so the next person inherits obse
 <details markdown="1">
 <summary>Figure text</summary>
 
-Each of four layers has its own evidence. The model produces generated text. The interface produces a file on disk. The harness keeps permissions and receipts. The person owns interpretation and the use decision. Text is not fact, and a receipt is not correctness. No layer's success carries over to the next. Evidence from any layer can support either a recorded capability or a recorded limit.
+Each of four layers gives its own evidence. The model gives the text it generated. The interface gives the file written to disk. The harness gives enforced permissions and run receipts. The person owns interpretation and the decision to use the result. Generated text is not a verified fact, and a receipt shows what ran, not that the result is right. No layer's success carries over to the next. Evidence from any layer can support one recorded capability or one recorded limit.
 
 </details>
 
@@ -370,7 +366,7 @@ Each of four layers has its own evidence. The model produces generated text. The
 
 ## 12. Make the bounded human decision
 
-The decision is yours and it has a boundary; write both down. In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, and explain the supporting evidence and remaining limit. This is not permission to send the email to a real operations list.
+In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, and explain the supporting evidence and remaining limit. The decision is yours and it has a boundary; write both down. This is not permission to send the email to a real operations list.
 
 **Expected:** The decision respects the source trace, responsibility screen, observed falsifier, and class-only audience.
 
@@ -380,7 +376,7 @@ The decision is yours and it has a boundary; write both down. In `W/decision.md`
 
 ## 13. Predict and apply the changed input
 
-A real request changes after the first draft, and the test of a limited job is whether only the changed fact moves. Now open `W/CHANGED_INPUT.md`. Before running again, create `W/changed-input-prediction.md`: record what must change, what must stay unchanged, and why. The changed input replaces the on-hand count; it does not grant new authority.
+Open `W/CHANGED_INPUT.md`. Before running again, create `W/changed-input-prediction.md`: record what must change, what must stay unchanged, and why. A real request changes after the first draft, and the test of a limited job is whether only the changed fact moves. The changed input replaces the on-hand count; it does not grant new authority.
 
 Save this as `W/prompt-changed.txt` in your editor:
 
@@ -399,7 +395,7 @@ unchanged. After writing, report the new path only.
 <details markdown="1">
 <summary>Figure text</summary>
 
-Preserve the baseline, predict first, and then apply the one changed fact. The change splits two ways. The statements that depend on that fact change. Other constraints stay fixed. Then compare both drafts. On a separate branch, the original checker still expects the old count, so the changed draft fails that check. Do not edit away the failure.
+Keep the original draft, write down what must change and what must not, and then apply the one changed fact. The change splits two ways: update the statements that depend on it, and keep authority, audience and other facts unchanged. Then compare both drafts. On a separate branch, the original checker still expects the old count, so the changed draft, artifact-changed.md, fails that check. Do not edit the checker to hide the failure.
 
 </details>
 
@@ -419,11 +415,11 @@ Preserve the baseline, predict first, and then apply the one changed fact. The c
 
 **Stop:** The launcher holds, the original changes, or the revised email changes authority or a fact not named by the changed input.
 
-**Recovery:** Preserve both versions and the failed turn. Diagnose the unsupported change; do not silently replace the original or broaden the task.
+**Recovery:** Keep both versions and the failed turn. Diagnose the unsupported change; do not silently replace the original or broaden the task.
 
 ## 14. Check and compare the two drafts
 
-The original checker and a line-by-line comparison tell you what actually changed, which your prediction can then be judged against. Run the original checker on the changed draft, then compare the two files. The checker still expects the original count; its stale-count failure is intentional.
+Run the original checker on the changed draft, then compare the two files. The original checker and a line-by-line comparison tell you what actually changed, which your prediction can then be judged against. The checker still expects the original count; its stale-count failure is intentional.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -441,7 +437,7 @@ The original checker and a line-by-line comparison tell you what actually change
 
 **Stop:** The old count still appears as current, an unrelated condition fails, or the original checker was edited to hide the stale requirement.
 
-**Recovery:** Preserve the failure and trace it to the changed or unchanged source fact. Keep the original checker unchanged.
+**Recovery:** Keep the failure and trace it to the changed or unchanged source fact. Keep the original checker unchanged.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -463,7 +459,7 @@ The original checker and a line-by-line comparison tell you what actually change
 
 ## 15. Write the handoff
 
-The next reader has your folder and nothing else, so the handoff names where to look and what was decided. Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, decision, observed limit, unresolved owner, and first file the next reader should inspect. Keep work and receipts outside the checkout.
+Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, decision, observed limit, unresolved owner, and first file the next reader should inspect. The next reader has your folder and nothing else, so the handoff names where to look and what was decided. Keep work and receipts outside the checkout.
 
 Before you stop, confirm that `W` holds the files this lab asked you to create: `acceptance-control.md`, `minimum-screen.md`, `direction-brief.md`, `prompt.txt`, `artifact.md`, `source-check.md`, `falsifier-probe.md`, `falsifier-observation.md`, `capability-limit.md`, `decision.md`, `changed-input-prediction.md`, `prompt-changed.txt`, `artifact-changed.md`, `changed-input-comparison.md`, and `handoff.md`, and that `E` holds the launcher receipts for both turns and `original-artifact.sha256`.
 
@@ -498,7 +494,7 @@ In `W/stretch-trace.md`, quote every material change and its source support, the
 
 **Stop:** The repair creates new authority, changes another fact, exceeds the word bound, or silently alters either retained artifact.
 
-**Recovery:** Preserve the stretch attempt and name the unsupported change. Revise only after identifying its source or deciding it must be removed. A mechanical result cannot certify the reader's interpretation.
+**Recovery:** Keep the stretch attempt and name the unsupported change. Revise only after identifying its source or deciding it must be removed. A mechanical result cannot certify the reader's interpretation.
 
 </details>
 
