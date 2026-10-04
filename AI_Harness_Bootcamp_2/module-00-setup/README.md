@@ -41,7 +41,6 @@ Module 7 uses the local visual workflow editor without a paid model call. You do
 - Reserve a restart window and connect to a stable network.
 - Keep at least 15 GB free; WSL should have 25 GB.
 - Get administrator approval for operating-system packages.
-- Ask the person who owns this laptop if you can use Docker for n8n, including permission to run Docker inside Docker and a Docker Desktop license if one applies. If they say no, record n8n HOLD.
 - Keep existing Docker contexts, containers, volumes, applications, and setup attempts. Resolve an occupied port 5678 or existing `$HOME/n8n-course` with its owner before installation.
 - Keep credentials in the approved password manager or secure handoff.
 - **Do not paste a key into a command, Markdown file, shell profile, screenshot, ticket, or repository.**
