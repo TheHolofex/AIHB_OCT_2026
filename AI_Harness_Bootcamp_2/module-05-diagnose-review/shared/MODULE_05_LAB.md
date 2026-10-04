@@ -1,14 +1,14 @@
 # Module 5 · Diagnose and recover
 
-A Copper Span duty card could show a scanned load but hide a condition that requires the movement to hold. Before changing anything, find where the required information disappears. Keep the failed result, use the supplied diagnostic check to tell possible causes apart, and make one authorized correction you can reverse. Then prove recovery with the original acceptance requirements still in force.
+Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result, use the probe to tell missing source data from a rendering fault, make one authorized correction you can undo, then prove the card recovered under the original acceptance requirements.
 
-Plan for about three hours, though that's a rough estimate rather than a measured time.
+Plan for about three hours (a rough estimate).
 
-The case is fictional. Your work stays inside the class. You are not planning or authorizing a real movement.
+The case is fictional and class-only; nothing here plans or authorizes a real movement.
 
 ## Prepare a separate attempt
 
-Use the verified Python and checkout from setup in an ordinary terminal. These commands work from any directory without disturbing earlier attempts. `W` is your work folder, and `E` holds your records outside it.
+Open an ordinary terminal and run this block. It uses the Python and checkout from setup, creates a new work folder `W` and a records folder `E`, and leaves earlier attempts alone. The preparer prints a suggested next command; don't run it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -43,17 +43,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 
 **Expected:** The preparer prints `PASS: created` followed by the absolute work path. `W` contains `scripts/render_review.py`, `scripts/restore.py`, `baseline/`, `shared/case/ledger.json` (and the stretch ledgers), and an empty `out/` directory. `E` is a sibling evidence directory.
 
-**Stop:** A command fails, a destination already exists, Python is not the verified 3.12-or-newer interpreter, or you already followed the preparer's suggested route command and created a review.
+**Stop:** A command fails, a destination already exists, Python isn't the verified 3.12-or-newer interpreter, or you already ran the preparer's suggested command and created a review.
 
 **Recovery:** Keep the existing attempt. Fix the prerequisite through setup, then repeat this block with a new `RUN`. Do not reset the checkout or delete an old work folder.
 
-If you open a new terminal later, repeat only the variable assignments. Do not prepare a second folder unless this attempt has stopped.
-
-The prepare script prints a suggested next command. Do not run it yet.
-
 ### If you open a new terminal
 
-The commands on this page depend on the variables you set above, which a terminal forgets when it closes. In a new terminal, run this block to return to the same attempt instead of preparing another one. It reads the attempt identifier saved by the first block.
+A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -85,11 +81,11 @@ $E = "$HOME\course-evidence\module-05-$RUN\evidence"
 
 **Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
 
-**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+**Recovery:** If the identifier differs, a later attempt overwrote the saved marker: set `RUN` to the value you recorded and run the block again. If the folder is missing, the attempt was never prepared: run the first block.
 
 ## 1. Confirm the clean render
 
-The **renderer** is the supplied program that turns ledger rows into a duty card. Run it with the exact ledger path from a terminal where the variables are set. Keep this clean output as the baseline for comparison.
+Render the card with the clean **renderer**, the supplied program that turns ledger rows into a duty card. Keep this output; it's your baseline for comparison.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -107,9 +103,9 @@ The **renderer** is the supplied program that turns ledger rows into a duty card
 
 **Stop:** The command prints a line starting `HOLD:`.
 
-**Recovery:** Confirm the variables and that `ledger.json` exists under `W`. Keep any output already written; use a new output filename when you repeat the command.
+**Recovery:** Check the variables and that `ledger.json` is under `W`. Keep any output already written and rerun with a new output filename.
 
-Now read the card. It must contain both required fields.
+Open the card and check that both required fields are there.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -127,15 +123,13 @@ Get-Content "$W\out\baseline.md"
 
 **Stop:** Either `permit_status:` or `gate_time_mdt:` is missing from the card.
 
-**Recovery:** Confirm the variables and that `ledger.json` exists under `W`. Keep any output already written; use a new output filename when you repeat the command.
+**Recovery:** Check the variables and that `ledger.json` is under `W`, then render again to a new output filename. Keep the earlier output.
 
-Read the one-page duty card for the rules:
-
-[shared/case/DUTY_CARD.md](case/DUTY_CARD.md)
+Then read the rules for this card in [shared/case/DUTY_CARD.md](case/DUTY_CARD.md).
 
 ## 2. Verify restore before any swap
 
-Before the restore command copies the clean baseline renderer over the work version, it checks the baseline's **digest**, a fingerprint of its file bytes. It first saves the existing renderer and `out/` files under `attempts/`. Confirm that restore works before placing the fault.
+Test restore before you place the fault. The restore command checks the clean baseline's **digest** (a fingerprint of its file bytes), saves your current renderer and `out/` files under `attempts/`, then copies the baseline over the work renderer.
 
 ![Confirm the restore reproduces the clean renderer before placing a fault, while preserving the existing attempt and output.](figures/m05-restore-precondition.png)
 
@@ -168,7 +162,7 @@ Start with the clean baseline renderer and check its digest. If the digest does 
 
 ## 3. Seal the first miss
 
-When your instructor tells you to, use the supplied script to place the practice fault in your own work copy. This breaks only the work copy's renderer; the clean baseline stays untouched. Before you fix anything, record exactly where the field first disappears.
+When your instructor says so, place the practice fault. It breaks only your work copy's renderer; the clean baseline is untouched. Don't fix anything until you've recorded where the field first disappears.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -188,7 +182,7 @@ When your instructor tells you to, use the supplied script to place the practice
 
 **Recovery:** Run the restore from step 2 again, confirm `RESTORE OK`, then place the fault again. If the hold names an existing output, you have already placed the fault in this attempt; continue.
 
-Render with the now-faulty work copy:
+Render the card again with the faulty renderer:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -202,13 +196,13 @@ Render with the now-faulty work copy:
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\miss.md"
 ```
 
-**Expected:** The terminal prints the full path of `miss.md`. The command still succeeds: the fault drops a field, it does not crash the renderer.
+**Expected:** The terminal prints the full path of `miss.md`. The render succeeds; the fault drops a field instead of crashing the renderer.
 
 **Stop:** A line starting `HOLD:`.
 
 **Recovery:** Keep the output. Check that the ledger path is the one under `W`, then repeat with a new output filename.
 
-Before running the diagnostic check, record how you would tell a missing source field from one lost while rendering. The read-only **probe** compares required fields in the selected source rows with the rendered card. Run it from the source module path so the faulty work copy cannot disable it:
+Before you run the probe, write down how you would tell a field missing from the source from one lost while rendering. The read-only **probe** compares the required fields in the selected source rows with the rendered card. The command runs it from the checkout, not your work copy, so the fault can't disable it:
 
 ![Compare the selected source and rendered card, preserve the first mismatch, and read the probe's classifications before replacing anything.](figures/m05-first-divergence.png)
 
@@ -233,7 +227,13 @@ Check the selected source rows for each required field in order. If a source val
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\miss.md"
 ```
 
-Before replacing anything, write `$E/sealed-first-miss.md` and leave it unchanged. Record the last passing boundary, where the required field is still present, and the first failing boundary, where it goes missing. Use the probe output to show the difference:
+**Expected:** The probe prints four lines: `selected_source_ids` followed by the current row IDs, `review_present yes`, one field line ending `renderer_omission`, and the other ending `rendered`. The field marked `renderer_omission` is the first one missing from the card.
+
+**Stop:** You can't name the earliest missing field from the probe output, or more than one field is missing.
+
+**Recovery:** Record `HOLD`. Wait to replace the renderer until the probe shows the field in the selected source but not on the card. If the source is missing it, replacing the renderer cannot bring that information back.
+
+Now write `$E/sealed-first-miss.md` from the probe output. Do this before you replace anything, and don't change the file afterwards. Record the last passing boundary, where the field is still present, and the first failing boundary, where it's missing:
 
 ```markdown
 # Sealed first miss
@@ -249,15 +249,9 @@ First missing field:
 Still present:
 ```
 
-**Expected:** The probe prints four lines: `selected_source_ids` followed by the current row IDs, `review_present yes`, one field line ending `renderer_omission`, and the other ending `rendered`. The field marked `renderer_omission` is the first one missing from the card.
-
-**Stop:** You cannot name the earliest missing field from the probe output, or more than one field is affected before localization.
-
-**Recovery:** Record `HOLD`. Wait to replace the renderer until the probe shows the field in the selected source but not on the card. If the source is missing it, replacing the renderer cannot bring that information back.
-
 ## 4. One authorized replace
 
-Once the probe isolates the renderer as the first failing boundary, authorize one replacement of the work-copy renderer with the clean baseline. Record why replacing it addresses the observed cause. The restore command first keeps the failed renderer and `out/` in `attempts/`. Do not hand-edit the card or remove a required field from the acceptance requirements.
+Replace the renderer only if the probe isolated it as the first failing boundary (`renderer_omission`). Make one authorized replacement by running restore, which first saves the failed renderer and `out/` under `attempts/`, then copies the clean baseline back. Don't hand-edit the card, and don't drop a required field from the acceptance requirements.
 
 ![Replace the renderer only when the evidence isolates it; preserve the failed attempt instead of patching the card or relaxing acceptance.](figures/m05-authorized-correction.png)
 
@@ -282,17 +276,17 @@ Start from the sealed diagnosis. If it shows that the renderer is the failing bo
 & $PY "$W\scripts\restore.py" "$W"
 ```
 
-Write `$E/replace-record.md` with the command and the `RESTORE OK` line.
-
 **Expected:** `RESTORE OK`, and the work copy now matches the baseline bytes.
 
 **Stop:** You made more than one change, or you replaced the renderer before sealing the miss.
 
 **Recovery:** Record the error. Start over with a fresh prepare_work destination.
 
+Then write `$E/replace-record.md` with the command, the `RESTORE OK` line, and why replacing the renderer fixes the cause you found.
+
 ## 5. Prove recovery three ways
 
-Check the repair three ways. Inspect the field that was missing, render the complete card from the ledger, then repeat the run in a fresh folder with a new process. For that last check, start from an unrelated **working directory** (the folder where you run commands). Keep both required fields in every acceptance check. Finding the cause alone isn't recovery.
+Finding the cause isn't enough. Prove the repair with three checks, in this order; each must show both required fields.
 
 ![Prove the focused repair, the complete result, and fresh-process recovery without dropping either required field.](figures/m05-recovery-proofs.png)
 
@@ -305,7 +299,7 @@ Recovery needs three separate proofs. First, a focused field probe of a newly re
 
 </details>
 
-1. For the focused check, render a new card and use the probe to inspect its required fields.
+First, the focused check: render a new card and use the probe to check its required fields.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -322,7 +316,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\focused.md"
 ```
 
-2. For the end-to-end check, render the full card from the work-copy ledger and inspect the saved output.
+Second, the end-to-end check: render the complete card from the work-copy ledger, then open `complete.md` and check both fields.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -336,7 +330,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\complete.md"
 ```
 
-3. For the clean-condition check, copy the renderer and ledger to a fresh folder, then run them in a new process from an unrelated working directory.
+Third, the clean-condition check: copy the renderer and ledger to a fresh folder, then run them in a new process from your home folder, a working directory unrelated to the work copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -373,15 +367,15 @@ Set-Location "$HOME"
 & $PY "$FRESH\render_review.py" "$FRESH\ledger.json" "$FRESH\review.md"
 ```
 
-**Expected:** The focused probe reports both fields as `rendered`. The complete and fresh review files contain both `permit_status` and `gate_time_mdt`. The fresh run used a new directory and an unrelated working directory. A probe exit of 0 means the diagnosis completed, not that the card is complete; read its field classifications.
+**Expected:** The focused probe reports both fields as `rendered`, and the complete and fresh review files both contain `permit_status` and `gate_time_mdt`. The fresh run used a new folder and started from your home folder. A probe exit code of 0 only means the probe ran; read its field lines.
 
 **Stop:** Any of the three outputs lacks `permit_status:` or `gate_time_mdt:`, or the focused probe reports anything other than `rendered`.
 
 **Recovery:** Keep the failed output. Fix the path problem you diagnosed, then use unused output names for another proof. If another renderer replacement is needed, start a fresh attempt instead of erasing the first intervention.
 
-Save the three outputs (including the focused probe result) and the sealed miss.
+Keep the three outputs, the focused probe result, and the sealed miss for your handoff.
 
-Check that quoting works when your work path contains a space. This is a separate check, so your original attempt stays untouched. Render the baseline before testing restore so restore has an output to keep.
+Finally, check that the commands still work when the work path contains a space. This block prepares a separate attempt, renders a baseline (restore needs an output to save), then restores and probes it. Your main attempt stays untouched.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -433,18 +427,16 @@ Fresh-process rerun file:
 What the next person should inspect first:
 ```
 
-A classmate who did not watch you work should be able to reconstruct the result without coaching.
-
 ## Stretch: competing causes on a second case
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: distinguish source omission, wrong input version, and renderer omission</summary>
 
-Missing fields can point to missing source evidence, the wrong input version, or a renderer that drops a field the source supplies. Before you run these checks, write down which cause you expect and what evidence would tell them apart in `E/stretch-prediction.md`. Leave the core evidence unchanged.
+Three different causes can make a field go missing: missing source data, the wrong input version, or a renderer that drops a field the source supplies. Before you start, write in `E/stretch-prediction.md` which cause you expect in each case and what evidence would tell them apart. Leave the core evidence unchanged.
 
 ### Inspect missing source evidence
 
-Use the clean renderer with the supplied second ledger. If the renderer holds, inspect the selected source rows with the probe; do not fill a source gap by changing code.
+Render the second ledger with the clean renderer. The renderer should refuse it, and the command then runs the probe on the source rows. Don't fill a source gap by changing code.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -475,7 +467,7 @@ if ($LASTEXITCODE -ne 1) { throw 'Expected a malformed-source refusal; inspect t
 
 ### Compare the intended input
 
-Compare the stale ledger with the supplied intended ledger. Check both source IDs and revisions to identify the selected inputs; matching IDs alone don't mean the versions match.
+Probe the stale ledger against the supplied intended ledger. Look at both the source IDs and their revisions: matching IDs don't mean matching versions.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -589,11 +581,11 @@ Set-Location -LiteralPath $HOME -ErrorAction Stop
 
 Check that:
 
-- restore printed RESTORE OK before the first swap;
-- the sealed miss names exactly one earliest field using the probe output on selected rows;
-- only one authorized replace was made;
-- the focused probe confirmed both fields on the work-copy render, while the complete render and fresh-process output from a new unrelated directory also show both fields;
-- the work remains inside the fictional class case;
+- restore printed `RESTORE OK` before the first swap;
+- the sealed miss names exactly one earliest field, based on the probe output for the selected rows;
+- you made only one authorized replacement;
+- the focused probe confirmed both fields on the work-copy render, and the complete render and the fresh-process output also show both fields (the fresh run started from your home folder);
+- the work stayed inside the fictional class case.
 
 Keep the sealed misses, the source selections, each authorized replacement record, and all three recovery proofs. The next owner should be able to tell a source gap from a wrong version or a field the renderer dropped, without asking you.
 

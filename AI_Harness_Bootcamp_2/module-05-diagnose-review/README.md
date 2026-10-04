@@ -1,20 +1,20 @@
 # Module 5 · Diagnose and recover
 
-Before changing the workflow, find where required information disappears from a Copper Span duty card. Keep the failed result, use a check to tell missing source data from a display failure, and make one authorized correction you can reverse. Then prove recovery against the original requirements.
+Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result, use the probe to tell missing source data from a rendering fault, make one authorized correction you can undo, then prove the card recovered under the original requirements.
 
-Plan for about three hours, though that's a rough estimate rather than a measured time.
+Plan for about three hours (a rough estimate).
 
-The supplied ledger is the local record for this case. Current rows must include `permit_status` and `gate_time_mdt`. These fields record permit status and gate time in Mountain Daylight Time, but they do not authorize movement.
+The supplied ledger is the record for this case. Its current rows must include `permit_status` and `gate_time_mdt` (the gate time is in Mountain Daylight Time). Neither field authorizes movement.
 
 ## Start here
 
 1. [Diagnose and recover the duty card](shared/MODULE_05_LAB.md).
 
-Use the source checks, permission limits, and evidence records you already have. Find the last point where the required information is present and the first point where it goes missing, then record both before authorizing a correction.
+Bring the source checks, permission limits, and evidence records from earlier modules. Record the last point where the field is present and the first point where it's missing before you authorize any correction.
 
 ## What you inspect
 
-The supplied **renderer** turns ledger rows into a duty card. The clean version writes both required fields. Before a practice fault is placed, prove that you can restore that version. Keep the first failure and its diagnostic evidence before replacing anything. Then check recovery with a focused field check, a complete render, and a new process in a fresh folder.
+The supplied **renderer** turns ledger rows into a duty card; the clean version writes both required fields. You prove you can restore it, place a practice fault, keep the first failure and its probe output, replace the renderer once, then prove recovery three ways: a focused field check, a complete render, and a new process in a fresh folder.
 
 ## Class-only boundary
 
