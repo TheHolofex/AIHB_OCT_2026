@@ -2,7 +2,7 @@
 
 ## Session result
 
-The learner stands up the pinned uncensored model on their laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes and copies a kit that passes its structure check from a new terminal without the author's chat history. All work is individual within the Thursday session. The package carries everything except the weights; the structure check does not run its commands or prove that another person can operate it. Learner retains ownership (recorded at close-out).
+The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes a kit they can use again without the chat that built it. All work is individual within the Thursday session. The package carries everything except the weights. The structure check does not run the package commands and does not start the service. The learner keeps the kit and the evidence. This is the learner's own capability, not a handoff to another person.
 
 ## Staff release validation
 
@@ -32,8 +32,8 @@ Total facilitated allocation: 3 hours. The blocks are planning allocations, not 
 
 ## Close-out observations
 
-The learner records the checks they actually ran and their limits. The fresh-terminal structure check confirms named fields and files within `F`; it neither executes package commands nor proves anyone else can operate the kit.
+The learner records the checks they actually ran and their limits. The fresh-terminal structure check confirms named fields and files within `F`. It does not execute package commands, and it does not hand the model to anyone else. The learner is the one who runs it.
 
 ## HOLD conditions
 
-Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; the fresh-terminal structure check fails; or access, download, or hardware prevents required steps. Preserve every artifact of a held attempt. Access/hardware/time misses close as honest HOLD in-session; no outside-session continuation or recipient work.
+Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; the fresh-terminal structure check fails; or access, download, or hardware prevents required steps. Preserve every artifact of a held attempt. Access, hardware, or time misses close as honest HOLD in the session. No one else finishes the attempt, and no work continues after the session.

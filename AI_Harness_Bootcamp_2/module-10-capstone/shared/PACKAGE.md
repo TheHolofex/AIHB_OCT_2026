@@ -2,15 +2,15 @@
 
 ## Purpose
 
-Bring the pinned uncensored model up as a loopback-only service on this laptop, prove one live interaction through it, stop it, restore it, then freeze a ten-file kit and check a fresh copy from a new terminal on the same machine.
+Bring the named uncensored model up on this laptop, where only this laptop can reach it. Get one real reply, stop it, and bring it back. Then save the ten files and check a fresh copy from a new terminal on this same machine. You keep this. You are not handing it to someone else.
 
 ## Bounds
 
-One operator at a time. The service binds `127.0.0.1` only. The weights stay on this machine: no re-upload, no sharing the endpoint, no serving another person's traffic. Prompts and replies are recorded in the evidence directory. The model is uncensored; every boundary in this section is the operator's responsibility, not the model's.
+One person at a time, and that person is you. The server listens on `127.0.0.1` only. The model file stays on this machine. Don't upload it again, don't share the address, and don't let anyone else send requests to it. Prompts and replies are recorded in the evidence folder. The model is uncensored. Every limit in this section is yours to hold, not the model's.
 
 ## Inputs
 
-The fresh copy carries only these ten files; the weights are excluded:
+The fresh copy carries only these ten files. The model file is not one of them:
 
 - `shared/PACKAGE.md`
 - `scripts/local_ai.py`
@@ -23,15 +23,15 @@ The fresh copy carries only these ten files; the weights are excluded:
 - `shared/baseline/run.json`
 - `shared/baseline/run.json.sha256`
 
-The 15.7 GB weights stay at the original work location. The final fresh-copy structure check uses only `scripts/check_package.py` and the other copied files. It requires neither a second download nor a running service.
+The 15.7 GB model file stays where you downloaded it. The final check uses only `scripts/check_package.py` and the other copied files. It does not need a second download, and it does not need the server to be running.
 
 ## Controls / config identity
 
-`shared/controls/run.json` is the active control; only a Boolean `enabled` field is accepted, and every adapter command rechecks it before acting. `shared/baseline/run.json` plus `shared/baseline/run.json.sha256` is the restore source; validate the digest before restoring. The wire outputs `omp-local.yml` and `omp-launch.json` are generated fresh by the adapter in the work directory and compared byte for byte after any rerun. A digest detects a change against the retained record; it is not proof of authorship.
+`shared/controls/run.json` is the on/off switch. It accepts only a true or false `enabled` field, and every check command looks at it before acting. `shared/baseline/run.json` plus `shared/baseline/run.json.sha256` is the copy you restore from. Check the fingerprint before you restore. The wire step writes `omp-local.yml` and `omp-launch.json` fresh in the work folder, and you compare those bytes after any rerun. A fingerprint shows that a file changed against the record you kept. It does not prove who wrote the file.
 
 ## Run
 
-Resolve a Python 3.12-or-newer executable, log in to Hugging Face, accept the pinned repository's conditions, then download and verify the weights.
+Find a Python 3.12 or newer program, sign in to Hugging Face, accept the model's conditions, then download the model file and check it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -57,9 +57,9 @@ hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-
 
 **Stop:** The repository conditions are not accepted, the download is interrupted, the byte size differs, or the digest does not match.
 
-**Recovery:** The download resumes; never accept a wrong-size or wrong-digest file, and never edit `model-card.json` to force a pass.
+**Recovery:** The download resumes. Never accept a wrong-size or wrong-fingerprint file, and never edit `model-card.json` to force a pass.
 
-Start the service on loopback with the pinned context, wait for load, then confirm reachability. The launch line is the one the wire step and the orchestration notes assemble; `omp-launch.json` records the exact OMP argv.
+Start the server on this laptop with the named context, wait for it to load, then confirm it answers. The start line is the one the wire step and your notes assemble. `omp-launch.json` records the exact OMP command.
 
 ```bash
 llama-server -m weights/OrcaSAQ-2-27B-Uncensored.gguf --host 127.0.0.1 --port 8080 -c 32768
@@ -71,13 +71,13 @@ llama-server -m weights/OrcaSAQ-2-27B-Uncensored.gguf --host 127.0.0.1 --port 80
 & $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
 ```
 
-**Expected:** The server reports loading complete; the probe prints `PASS: local service reachable on loopback`.
+**Expected:** The server reports loading complete. The check prints `PASS: local service reachable on loopback`.
 
-**Stop:** Loading fails, or the probe reports the service unreachable.
+**Stop:** Loading fails, or the check says the server cannot be reached.
 
-**Recovery:** Free memory, keep the context at the pinned value, and re-probe. Do not change the bind address.
+**Recovery:** Free some memory, keep the context at the named value, and check again. Do not change the address.
 
-One live interaction through OMP:
+One live reply through OMP:
 
 ```bash
 omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-session --no-title --no-skills --no-rules --no-extensions --no-lsp --no-prewalk --mode json -p "Answer in one sentence: what are you?"
@@ -87,11 +87,11 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-session --no-title --no-skills --no-rules --no-extensions --no-lsp --no-prewalk --mode json -p "Answer in one sentence: what are you?"
 ```
 
-**Expected:** A real reply from the local model; the event stream names `llama.cpp` as provider and reports zero cost. Keep the transcript.
+**Expected:** A real reply from the local model. The event stream names `llama.cpp` as provider and reports zero cost. Keep the transcript.
 
 **Stop:** A context-size refusal or a connection failure.
 
-**Recovery:** Re-probe; the service must be reachable before any interaction. Do not edit the overlay to widen the context.
+**Recovery:** Check that the server answers before you try again. Do not edit the settings to widen the context.
 
 ## Check
 
@@ -111,11 +111,11 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 
 **Stop:** Any check holds.
 
-**Recovery:** Preserve the first failure. The structural check does not execute commands and does not show that another person can operate the kit. The final fresh-copy check (after freeze) runs only `check_package.py` from the new terminal on the copied files; it performs no download and no server launch.
+**Recovery:** Keep the first failure. The structure check does not run the commands. It tells you the named sections and files are present. It does not start the server, and it does not mean someone else can run this. You run it. The final fresh-copy check, after you freeze the files, runs only `check_package.py` from the new terminal on the copied files. It does not download anything, and it does not start the server.
 
 ## Stop
 
-Interrupt the server process, then prove the stopped state.
+Interrupt the server process, then prove it stopped.
 
 ```bash
 "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
@@ -125,7 +125,7 @@ Interrupt the server process, then prove the stopped state.
 & $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
 ```
 
-**Expected:** The probe exits 1 with `HOLD: service is not reachable`. Write the stop receipt naming the port, then confirm it:
+**Expected:** The check exits 1 with `HOLD: service is not reachable`. Write the stop receipt naming the port, then confirm it:
 
 ```bash
 "$PY" scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
@@ -135,15 +135,15 @@ Interrupt the server process, then prove the stopped state.
 & $PY scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
 ```
 
-**Expected:** `PASS: service is stopped and unreachable on loopback`. No stopped-state proof, no handoff.
+**Expected:** `PASS: service is stopped and unreachable on loopback`. If you do not have that line, you do not have a stopped server.
 
-**Stop:** The probe still reports the service reachable.
+**Stop:** The check still says the server can be reached.
 
-**Recovery:** Terminate the server process and re-probe. Do not record a stop that did not happen.
+**Recovery:** Stop the server process and check again. Do not record a stop that did not happen.
 
 ## Restore
 
-Validate the frozen baseline, restore the enabled control if it was disabled, relaunch the service, and prove both reachability and unchanged wiring:
+Check the saved baseline, put the on/off switch back if you turned it off, start the server again, and prove both that it answers and that the wiring is unchanged:
 
 ```bash
 "$PY" - <<'PY'
@@ -185,20 +185,20 @@ print('RESTORE OK')
 "& $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json"
 ```
 
-**Expected:** `RESTORE OK`, the probe passes, and the wire outputs are byte-identical.
+**Expected:** `RESTORE OK`, the check passes, and the wire files are byte-identical.
 
-**Stop:** The baseline digest fails, the probe fails, or the wire bytes differ.
+**Stop:** The baseline fingerprint fails, the check fails, or the wire bytes differ.
 
-**Recovery:** Preserve every artifact. Do not run the next command after a failed restore.
+**Recovery:** Keep every file from the failed attempt. Do not run the next command after a failed restore.
 
 ## Strongest evidence
 
-The verify identity card, the live interaction transcript naming `llama.cpp` as provider at zero cost, the stop receipt, and the byte-identical restore comparison. Together these show the pinned weights, a loopback-only service, and a stopped state that you can reach again after restore from the frozen baseline.
+The identity card from the verify step, the live reply that names `llama.cpp` as the provider at zero cost, the stop receipt, and the restore comparison that matches byte for byte. Together these show the named model file, a server only this laptop can reach, and a stopped state you can reach again after you restore from the saved baseline.
 
 ## Limitations
 
-The model is uncensored; it carries no refusal behaviour of its own and applies no editorial judgment. Guardrails, filtering, and what to publish from replies are the operator's. The quantization is not lossless. This kit proves a bounded local service and a cold restart; it does not establish production serving, safety-stack completeness, or model quality. A laptop that cannot hold the 15.7 GB file in memory runs it slowly or not at all.
+The model is uncensored. It will not refuse on its own, and it will not edit itself. What you ask, what you filter, and what you publish are your decisions. The file is a compressed copy, not a perfect copy of the full model. This kit shows a local service you can stop and start again. It does not show that the service is ready for other people, that a safety stack is complete, or that the model's answers are good. A laptop that cannot hold the 15.7 GB file in memory runs it slowly, or not at all.
 
 ## Next owner
 
-You retain the kit and its evidence on your laptop. Complete the live run, stop/restore proof, and fresh-copy check within the session. If a required step cannot finish, record the reason for `HOLD` and close the attempt before the session ends.
+You keep the kit and the evidence on your laptop. You are the owner. Finish the live run, the stop and restore proof, and the fresh-copy check in this session. If a required step cannot finish, write the reason for `HOLD` and close the attempt before the session ends.
