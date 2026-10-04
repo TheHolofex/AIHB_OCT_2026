@@ -155,7 +155,7 @@ class PublicationBehavior(unittest.TestCase):
             pages.append({"source": "lab.md", "dest": "lab.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}})
             self.course["modules"].append({"id": f"{i:02d}", "directory": directory, "title": "Module · Example", "case_name": f"Example {i}", "summary": "Inspect the supplied evidence.", "nav_summary": "Terminal · Source inspection",
                                            "outcomes": {"can": "Inspect a supplied source before deciding what it supports.", "will": ["Read the file.", "Keep an unsupported claim unresolved."]}, "pages": pages, "download_dirs": ["shared/case"]})
-        (boot / "README.md").write_text("# Synthetic publication test\n\nInspect the supplied course.\n\n## Choose your assignment\n\n<div data-course-map></div>\n\n" + "\n\n".join(links), encoding="utf-8")
+        (boot / "README.md").write_text("# Synthetic publication test\n\nInspect the supplied course.\n\n## Work through the assignments\n\n<div data-course-map></div>\n\n" + "\n\n".join(links), encoding="utf-8")
         self.save_manifest()
         self.page = boot / "module-00-example/README.md"
         self.published = self.root / "site/AI_Harness_Bootcamp_2/module-00-example/README.html"
