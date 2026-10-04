@@ -78,7 +78,7 @@ Using source checking as a quality bar, the learner puts an AI Agent on a local 
 
 ## PO-08 — Control hallucinations
 
-Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, bounded agent handoffs, and fixed-flow operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, not new objectives here.
+Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, bounded agent handoffs, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, not new objectives here.
 
 **Enabling objectives:**
 1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.

@@ -39,7 +39,7 @@ Eleven instructor-led, hands-on module blocks run across four teaching days, Mon
 | 5 | Tuesday · Block 3 | 04 Decide with typed questions |
 | 6 | Wednesday · Block 1 | 05 Orchestrate an OMP agent team |
 | 7 | Wednesday · Block 2 | 06 Design a workflow for a decision model |
-| 8 | Wednesday · Block 3 | 07 Build and control a fixed workflow through change |
+| 8 | Wednesday · Block 3 | 07 Automate a spreadsheet with an agent |
 | 9 | Thursday · Block 1 | 08 Control hallucinations |
 | 10 | Thursday · Block 2 | 09 Constrain agent behavior |
 | 11 | Thursday · Block 3 | 10 Stand up and package a local uncensored AI |
@@ -131,11 +131,11 @@ A refusal to connect, or an AI proposal accepted without checking, is not credit
 
 ## Complexity and implementation boundary
 
-Core operation includes bounded native OMP teams and a fixed visual workflow. Module 05 uses read-only specialists and a reviewer, one coordinator-owned output, explicit dependencies, and bounded selective recovery. Module 08 adds a bounded human-started read-only ensemble: isolated reviews, one correction, and fresh re-review through supplied controls. Core also permits a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure, and MCP construction remain advanced.
+Core operation includes bounded native OMP teams and task-bounded automation. Module 05 uses read-only specialists and a reviewer, one coordinator-owned output, explicit dependencies, and bounded selective recovery. Module 07 connects one n8n agent to one spreadsheet-writing tool. Module 08 adds a bounded human-started read-only ensemble: isolated reviews, one correction, and fresh re-review through supplied controls. Core also permits a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure, and MCP construction remain advanced.
 
 Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Bounded multi-agent orchestration belongs to Module 05; checking a local-model package from a fresh copy remains Module 10's.
 
-The learner specifies and configures bounded behavior in supplied controls. In Module 05, the learner owns the work graph, native role instructions, handoff acceptance and recovery; the adapter supplies the launcher, guard and independent evidence checks, not a second scheduler. In Module 07, the learner composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. In Module 03, the learner operates and configures a supplied MCP server and its limits. Building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
+The learner specifies and configures bounded behavior in supplied controls. In Module 05, the learner owns the work graph, native role instructions, handoff acceptance and recovery; the adapter supplies the launcher, guard and independent evidence checks, not a second scheduler. In Module 07, the learner connects an n8n agent, a pinned chat model, and a supplied-purpose tool workflow that creates a downloadable spreadsheet. The supplied file checker establishes lot coverage; a person checks the routes and statuses against the rules. In Module 03, the learner operates and configures a supplied MCP server and its limits. Building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
 
 Module 07 requires local n8n 2.41.5 on the full official six-service Docker stack, localhost access, and unpublished workflows. The platform setup owns installation and readiness. The native Windows PowerShell path uses WSL Ubuntu only as the n8n bridge; it keeps OMP, Python, Git, credentials, and other course work native. Neither an OMP pass nor a supplied receipt substitutes for n8n operation.
 

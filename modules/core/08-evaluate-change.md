@@ -2,7 +2,7 @@
 
 **Serves oracle:** S04, S14, S17, S19, S25  
 **Primary objective:** PO-08 — Control hallucinations  
-**Prerequisites:** Source verification, atomic typed questions, exact checks kept in code beside decision-model judgments, and fixed-flow operation; preflighted environment and this module's supplied claims, source packets, and controls  
+**Prerequisites:** Source verification, atomic typed questions, exact checks kept in code beside decision-model judgments, and bounded model-and-tool operation; preflighted environment and this module's supplied claims, source packets, and controls  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:CLAIMS  
 **Produces:** FROZEN_CLAIMS; BEFORE_REVIEWS; CORRECTION; AFTER_REVIEWS; REPORT; HUMAN_DISPOSITION; PO08_RESULT  
 **Rough time:** a little over 2 hours (design budget, unmeasured)  
