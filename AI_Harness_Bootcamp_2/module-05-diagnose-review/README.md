@@ -1,6 +1,6 @@
 # Module 5 · Diagnose and recover
 
-Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result. Use the probe to tell whether the source lacks the field or the renderer dropped it. Make one authorized correction you can undo, then prove the card recovered under the original acceptance requirements.
+A required field drops off a Copper Span duty card. Find where it disappeared before you change anything. Keep the failed card. The probe tells you whether the source never had the field, or the program that writes the card left it out. Then make one correction you can undo, and show the card meets the same rules as before.
 
 Plan for about three hours (a rough estimate).
 
@@ -10,12 +10,12 @@ The supplied ledger is the record for this case. Its current rows must include `
 
 1. [Diagnose and recover the duty card](shared/MODULE_05_LAB.md).
 
-Bring the source checks, permission limits, and evidence records from earlier modules. Record the last point where the field is present and the first point where it's missing before you authorize any correction.
+Bring the source checks, permission limits, and evidence records from earlier modules. Write down the last place the field is still there, and the first place it's gone, before you allow any correction.
 
 ## What you inspect
 
-The supplied **renderer** turns ledger rows into a duty card. The clean version writes both required fields. First check that restore works. Then place a practice fault, keep the first failure and its probe output, and replace the renderer once. Prove the repair three ways: a focused field check, a complete render, and a new process in a fresh folder.
+The **renderer** is the program that turns ledger rows into a duty card. The clean version writes both required fields. First check that you can put that clean version back. Then place a practice fault, keep the first failure and what the probe prints, and replace the renderer once. Show the repair three ways: a check of just those fields, a complete card, and a new run in a fresh folder.
 
 ## Class-only boundary
 
-All names, times, and statuses are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+All names, times, and statuses are fictional. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.

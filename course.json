@@ -288,14 +288,14 @@
       "directory": "module-05-diagnose-review",
       "title": "Module 5 · Diagnose and recover",
       "case_name": "Copper Span",
-      "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
-      "nav_summary": "Failure diagnosis · verified recovery",
+      "summary": "Find where a required field first disappears, make one change you can undo, and show the card is whole again.",
+      "nav_summary": "Duty card · find the miss",
       "outcomes": {
-        "can": "Keep a hidden failure on record instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized correction you can undo, and prove the recovery holds.",
+        "can": "Keep the first failed card instead of covering it up, find the exact place the field was last present and first missing, make one correction you can undo, and show the card meets the same rules again.",
         "will": [
-                "Seal the first miss, then compare it with a known-good run to find where the fault begins.",
-                "Use one probe to tell two competing causes apart.",
-                "Correct or revert once, then confirm the fix with a focused check, a full check, and a run in a fresh folder."
+                "Save the first miss, then compare it with a known-good run to see where the fault starts.",
+                "Use one check to tell whether the source lacks the field or the program that writes the card dropped it.",
+                "Make one change you can undo, then confirm the fix with a field check, a full card, and a run in a fresh folder."
         ]
       },
       "pages": [
