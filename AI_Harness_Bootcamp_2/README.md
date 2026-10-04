@@ -1,6 +1,6 @@
 # AI Harness Bootcamp
 
-Learn to operate AI harnesses by doing useful work: draft a document, check a claim, process a batch, and hand off a repeatable workflow. You run the tools yourself, check what they produce, and use what you find to improve the next run.
+Learn to operate AI harnesses by doing useful work: <br>draft a document, check a claim, process a batch, and hand off a repeatable workflow. <br>You run the tools yourself, check what they produce, and use what you find to improve the next run.
 
 ## Put an AI harness to work
 
