@@ -93,7 +93,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 | 05 | ledger rows `BK-200`–`BK-279` |
 | 06 | runs `R-001`–`R-080` |
 | 07 | lots `LW-01`–`LW-80` |
-| 08 | paired cases `PC-01`–`PC-40` |
+| 08 | source packets `PC-01`–`PC-03`; claims `C01`–`C07` |
 | 09 | notes `AG-001`–`AG-040` |
 | 10 | the pinned model identity `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, weight file `OrcaSAQ-2-27B-Uncensored.gguf`, repo pin `a0ebe1b5ad5c009cd382908585c04b7e9e0cf0c0`, port 8080, and the transfer bundle |
 | 04 | intake messages `CL-001`–`CL-040`, requisitions `K3-REQ-100`–`K3-REQ-199`, vehicle `CL-9`, catalog lines `GL-65`–`GL-80` |
@@ -318,22 +318,21 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 ## One unsourced number can send Slope Brief
 
-**Status:** adopted. The shipped lab uses the 40 paired cases and hard gates. Retired thin-adapter inputs (20:50Z / invented-payload) are not active work. Historical evidence stays historical.
+**Status:** adopted for hallucination-control rewrite. The shipped lab uses three source packets PC-01/02/03. Retired 40-pair thin-adapter inputs and variation comparison are not active work. Historical evidence stays historical.
 
-**Project:** Slope Brief is a vehicle resupply of heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle `SB-4`. Someone will adopt one brief as the load sheet that driver carries. A frozen baseline configuration and two candidates are compared on paired cases `PC-01`–`PC-40`. Declare the hard-gate rule before opening results. Any single violation defeats a candidate. Do not average. Restore the baseline copies.
+**Project:** Slope Brief is a vehicle resupply of heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle `SB-4`. Three source packets (PC-01, PC-02, PC-03) supply seven fixed material claims for a bounded correction loop. The learner freezes the claims and packets, obtains two independent blind reviews, corrects within the registered set (null for dispatch authority absent from sources), obtains two re-reviews, and produces a report plus human disposition. Operational dispatch remains HOLD.
 
-**Stake:** Candidate A names Clinic T-8 and states a mass with no source line. The clinic name is true. The mass would be treated as proof the load fits `SB-4`. Candidate B prints a Zulu stamp as a local afternoon and names neither zone. The route window looks open. Either miss sends a truck that does not fit, or a truck that arrives after the window has closed. The fuel cans do not complete the handoff.
+**Stake:** An invented mass, clock/zone errors, wrong-shipment citation, or absent dispatch authority would commit an unsupported load or authorize a release the sources do not contain. Two claims are supported by the authoritative locators. The learner must distinguish source support from model agreement and never promote an explicit UNKNOWN to dispatch.
 
-**Skill:** Separate a real change from ordinary variation. The learner does not re-verify the whole thread.
+**Skill:** Operate a source-bound, typed, independently reviewed correction loop. The learner does not re-verify the whole thread or average model opinions.
 
-**Platform:** Frozen paired files, pre-result policy, and restoration of baseline controls provide deterministic practice. A separate explicit paid lane compares two saved instruction files using the same pinned OpenRouter model, fixed paired prompts, repeat controls, and per-attempt receipts. Deterministic file scores do not measure live-model variation. No new model training.
+**Platform:** The supplied CLI (freeze --work W --out E; review --attempt E --reviewer source|skeptic --phase before|after; correct --attempt E; report --attempt E) runs five fresh pinned-model turns with isolated inputs. Deterministic initial checks run before reviews. Review schema enforces verdict (supported|contradicted|unknown), locator and quote that resolve to the packet sources. Correction is limited to the seven registered claims. Report audits all turns, rechecks support, and forces operational_dispatch "HOLD". Human records individual dispositions. No vote or automatic release.
 
-**Volume:** 40 pairs, so one fluent paragraph cannot be the comparison.
+**Volume:** Seven distinct claims across three packets; one fluent paragraph cannot cover them.
 
-**Worked gates:** Candidate A contains `2040 kg` with no source line. Candidate B renders `19:05Z` as `13:05` and omits both `UTC` and `MDT`. Either hit defeats that candidate. Do not use `1,584 kg`, `1,650 kg`, or `20:50Z`.
+**Worked gates:** C01 mass-invented, C02 clock-unlabelled, C03 clock-wrong-zone, C04 wrong-shipment, C05 gate-supported, C06 mass-supported, C07 dispatch-absent (null on correction). Authoritative locators and text from the PC-01/02/03 sources.json (Ridge Depot gate text, payload statements for SB-4 to Clinic T-8). Do not alter source facts.
 
-**Independence:** Does not consume the Monday afternoon verdict. Does not cite Module 07's White Rack movement, Icehouse Depot, that module's clinic, or its lot IDs.
-
+**Independence:** Does not consume the Monday afternoon verdict. Does not cite Module 07's White Rack movement, Icehouse Depot, that module's clinic, or its lot IDs. Ridge Depot, Clinic T-8, SB-4 facts stay inside this packet only.
 ## A harmless question can still file a Night Desk release
 
 **Status:** adopted. The shipped lab uses the 40 notes and supplied probes. Retired thin-adapter inputs are not active work. Historical evidence stays historical.
@@ -382,7 +381,7 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Wed block 1 | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
 | Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
 | Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |
-| Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Hard gate declared first. One unsourced mass, or one unnamed zone, defeats that brief. Baseline restored. |
+| Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Exact claim checks, blind source and skeptical reviews, source-constrained correction, and two fresh full-set reviews expose unsupported facts and reviewer errors. A human resolves disagreements by evidence; missing dispatch authority remains unknown and operational dispatch stays HOLD. |
 | Thu block 2 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |
 | Thu block 3 | The learner records capability without a live interaction, or binds the service beyond loopback. | Package plus live runtime proof: pinned weights identity, loopback-only service, live interaction, stop, restore, digest-checked kit copy; fresh-terminal structure check passes; learner retains ownership. |
 

@@ -422,35 +422,27 @@
     {
       "id": "08",
       "directory": "module-08-change-eval",
-      "title": "Module 8 · Evaluate a change with variation controls",
+      "title": "Module 8 · Control hallucinations",
       "case_name": "Slope Brief",
-      "summary": "Test a proposed change against frozen cases and hard gates, and tell its effect apart from ordinary model variation.",
-      "nav_summary": "Change evaluation · model variation",
+      "summary": "Find unsupported claims, compare independent agent reviews, and check every correction against the original sources before deciding what you can use.",
+      "nav_summary": "Hallucination control · review ensemble",
       "outcomes": {
-        "can": "Decide whether a proposed change is safe to adopt by setting your rejection rule before you see any result, comparing it case by case against the current version, and proving you can put the current version back.",
+        "can": "Control unsupported claims by combining structured source checks with independent agent reviews, correcting only what the evidence supports, and keeping unresolved facts visible in your final decision.",
         "will": [
-                "Write down which failures reject a change, and freeze the exact files under test, before opening any candidate output.",
-                "Compare two candidates with the baseline on the same cases and trace every failure to its source record, without letting an average hide a single violation.",
-                "Restore the baseline from stored fingerprints and show the rerun matches byte for byte."
+                "Check a draft claim by claim, keeping valid structure, source support, and permission to act separate.",
+                "Run two reviewers independently, compare their evidence, and use a correcting agent without letting agreement overrule a source check.",
+                "Recheck every corrected claim, retain unknowns and disagreements, and decide whether the brief is usable within its stated limits."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": ["the-decision-rule", "class-only-boundary"], "optional_sections": []}}
       ],
-      "figures": [
-        {"source": "shared/figures/m08-bounded-decision.png", "dest": "shared/figures/m08-bounded-decision.png"},
-        {"source": "shared/figures/m08-evidence-lanes.png", "dest": "shared/figures/m08-evidence-lanes.png"},
-        {"source": "shared/figures/m08-freeze-before-results.png", "dest": "shared/figures/m08-freeze-before-results.png"},
-        {"source": "shared/figures/m08-paired-hard-gates.png", "dest": "shared/figures/m08-paired-hard-gates.png"},
-        {"source": "shared/figures/m08-restore-baseline.png", "dest": "shared/figures/m08-restore-baseline.png"}
-      ],
+      "figures": [],
       "scripts": [
-        {"source": "scripts/restore_baseline.py", "dest": "scripts/restore_baseline.py"},
-        {"source": "scripts/evaluate_pairs.py", "dest": "scripts/evaluate_pairs.py"},
-        {"source": "scripts/stretch_runner.py", "dest": "scripts/stretch_runner.py"}
+        {"source": "scripts/hallucination.py", "dest": "scripts/hallucination.py"}
       ],
-      "download_dirs": ["shared/cases", "shared/controls", "shared/baseline"],
+      "download_dirs": ["shared/case", "shared/controls"],
       "tests": ["tests/test_module_08.py", "tests/test_adequacy.py"]
     },
     {

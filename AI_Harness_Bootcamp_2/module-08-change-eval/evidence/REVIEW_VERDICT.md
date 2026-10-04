@@ -1,10 +1,38 @@
-# Module 7 verdict
+# Module 8 verification record
+
+## Hallucination-control rewrite — 2026-10-04
+
+The current exercise replaces variation comparison with structured source checks, two blind reviewer roles, an evidence-bound correction, and two fresh reviews of the complete correction.
+
+**Live evidence:** `$HOME/course-evidence/module08-hallucination-20261004T195428Z-62c876a8/`. Raw receipts remain outside the checkout. `commands.json` records invocation boundaries, exit codes, and output. `attempt/report.json` binds all five audited runs to their inputs, instructions, source reads, and original responses.
+
+| Check | Observed result |
+|---|---|
+| Pinned runtime | OMP 18.3.5; `openrouter/anthropic/claude-sonnet-4.6`; macOS arm64 |
+| Prepare and freeze | Seven claims and three original source packets frozen successfully |
+| Missing credential | `HOLD` before a model attempt was created |
+| Live ensemble | Before/source, before/skeptic, corrector, after/source, and after/skeptic all passed receipt audits |
+| Complete recheck | All seven corrected claims rechecked; zero remaining exact-check issues, reviewer disagreements, or correction regressions |
+| Missing authority | C07 remained `unknown`, with null value and locator; operational dispatch stayed `HOLD` |
+| Offline regressions | `tests/test_module_08.py`: 14 passed; `tests/test_adequacy.py`: 4 passed |
+| Course gates | `scripts/check_course.py`: all 29 scoped gates passed, including byte-for-byte publication checking; complete output retained in `worktree-course-gates.txt` |
+| Published interface | Overview-to-lab navigation, eight steps, PowerShell tab and native command copy, desktop/mobile layouts, mobile course menu, and readable commands without JavaScript exercised in Chromium |
+
+Report SHA-256: `f46b4e768e84ed2f833dfb6124900f54a8cbfddd251b31a8862359412d4ea747`.
+Command-log SHA-256: `0c320b30de8d68973b25b2e47d6dc1c6b7dfbf7f0860886938da87f7c25ac8be`.
+`publication-proof.json` and four screenshots retain the interface observations.
+
+**Limits:** This is one real five-session campaign, not a measured hallucination rate, independent-model-family comparison, learner-time study, or human acceptance decision. All agents used the same model in separate sessions. The seeded claims are authored defects and controls, not observations of spontaneous model failures. Jev supplies the typed state/question design reference; this exercise does not invoke Jev or measure calibrated confidence. Browser checks do not establish Windows execution. No instructor or classmate grade is required.
+
+## Historical package review — 2026-08-23
+
+The record below concerns the retired variation-comparison exercise. Its script names, reference snapshot, and review results do not verify the current rewrite.
 
 **Date:** 2026-08-23
 **Standard:** `reference/REFERENCE.md`, SHA-256 recorded in `reference/REFERENCE.sha256`
 **Amendments:** none. Reference frozen 2026-08-23.
 
-## Executable evidence
+### Executable evidence
 
 | Evidence | Command | Result file |
 |---|---|---|
@@ -12,7 +40,7 @@
 | Oracle adequacy | `python3 tests/test_adequacy.py` | `evidence/adequacy-final.txt` |
 | Restore | `python3 scripts/restore_baseline.py` | `RESTORE OK`; work copies pass |
 
-## Prose panel
+### Prose panel
 
 Language-model seats. **Class F / human panel is UNMEASURED.**
 
@@ -23,6 +51,6 @@ Language-model seats. **Class F / human panel is UNMEASURED.**
 | `reviews/round-1-adversarial.md` | Adversarial | 31/40 REJECT |
 | `reviews/round-1-voice.md` | Voice | 90/100 human craft, 6/100 AI mannerisms REJECT |
 
-## Decision
+### Decision
 
 **Accepted as a reviewed implementation package, ready for a controlled pilot with a facilitator present.** Not accepted as a measured learner experience.

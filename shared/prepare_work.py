@@ -15,12 +15,12 @@ REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
     "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case",),
     "06": ("controls", "corpus", "checks"), "07": ("batch", "controls"),
-    "08": ("cases", "controls", "baseline"), "09": ("case", "controls"),
+    "08": ("case", "controls"), "09": ("case", "controls"),
     "10": ("case", "controls", "baseline"), "04": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
     "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
-    "07": (), "08": ("evaluate_pairs.py", "restore_baseline.py"),
+    "07": (), "08": (),
     "09": (), "10": ("local_ai.py", "check_package.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
@@ -151,7 +151,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "07":
         return []
     if module_id == "08":
-        code = 'from pathlib import Path; print(Path("shared/controls/policy.json").read_text(encoding="utf-8"))'
+        code = 'from pathlib import Path; print(Path("shared/case/LEGEND.txt").read_text(encoding="utf-8"))'
     elif module_id == "10":
         code = 'from pathlib import Path; print(Path("shared/case/model-card.json").read_text(encoding="utf-8"))'
     else:

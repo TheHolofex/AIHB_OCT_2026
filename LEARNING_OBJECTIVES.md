@@ -68,11 +68,18 @@ Using source-verification and bounded-predicate validation skills, the learner c
 **Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
 **Owner:** Module 07
 
-## PO-08 — Evaluate a change with variation controls
+## PO-08 — Control hallucinations
 
-Using exact workflow comparisons and the freeze-before-outcome discipline, the learner fixes cases, configurations and hard gates before outcomes, evaluates authored paired practice outputs without averaging away a violation, and verifies baseline restoration. A live instruction comparison controls the provider, model, sources, form, prompt and permissions while preserving run-to-run variation.
+Using source verification, typed questions, deterministic predicates, and fixed-flow operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority.
 
-**Evidence:** pre-result policy, all paired case results, separate format/mass/time-zone gates, failed-case repair proxy, bounded recommendation and restored-baseline identities. Live stretch evidence retains every preregistered repeat, paired disagreement, observed latency and costs, with SDK estimates separated from provider billing.
+**Enabling objectives:**
+1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.
+2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
+3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
+
+Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and operate a fixed workflow. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
+
+**Evidence:** frozen original claims, source packets, controls, and exact checks; two blind initial reviews with typed verdicts and source quotations; the complete source-constrained correction; two fresh full-set reviews; five actual audited run receipts; a claim-by-claim report of source support, disagreements, unknowns, and regressions; individual USE, KEEP_UNKNOWN, or HOLD dispositions with reasons, an internal-summary decision, and the missing evidence and responsible owner. Operational dispatch remains HOLD. Retain malformed outputs and unsuccessful attempts.
 **Owner:** Module 08
 
 ## PO-09 — Constrain agent behavior

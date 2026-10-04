@@ -12,7 +12,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
-| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 08 stretch has 36 paired calls and two restored controls |
+| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; five-turn paid review/correction sequence uses one pinned model per turn |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
 No unmeasured budget is reported as achieved. Delivery may vary support and optional stretch work; it may not hide required work outside the course days or weaken a technical check.
@@ -40,7 +40,7 @@ Eleven instructor-led, hands-on module blocks run across four teaching days, Mon
 | 6 | Wednesday · Block 1 | 05 Diagnose and recover |
 | 7 | Wednesday · Block 2 | 06 Improve from observed failures |
 | 8 | Wednesday · Block 3 | 07 Build and control a fixed workflow through change |
-| 9 | Thursday · Block 1 | 08 Evaluate a change with variation controls |
+| 9 | Thursday · Block 1 | 08 Control hallucinations |
 | 10 | Thursday · Block 2 | 09 Constrain agent behavior |
 | 11 | Thursday · Block 3 | 10 Stand up and package a local uncensored AI |
 
@@ -113,7 +113,7 @@ File presence cannot establish observed performance. An authored practice output
 | 05 | Diagnose and recover | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO05_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
 | 06 | Improve from observed failures | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO06_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
 | 07 | Build and control a fixed workflow through change | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO07_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
-| 08 | Evaluate a change with variation controls | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO08_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
+| 08 | Control hallucinations | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CLAIMS` | `FROZEN_CLAIMS`; `BEFORE_REVIEWS`; `CORRECTION`; `AFTER_REVIEWS`; `REPORT`; `HUMAN_DISPOSITION`; `PO08_RESULT` | Structured claim checks and a fixed read-only ensemble | Seven claims on three frozen source packets; blind source and skeptical reviews; one source-constrained correction; two fresh full-set reviews; all five actual runs audited; disagreements and regressions resolved by evidence or held; individual human disposition retains unknown authority. |
 | 09 | Constrain agent behavior | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO09_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
 | 10 | Stand up and package a local uncensored AI | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out naming unresolved limits. ~180 min allocation (unmeasured). Access/hardware/time misses: honest in-session HOLD. Learner retains ownership. |
 ## Minimum screen and release authority
@@ -131,7 +131,7 @@ A refusal to connect, or an AI proposal accepted without checking, is not credit
 
 ## Complexity and implementation boundary
 
-Fixed workflow is the highest mandatory operation. Core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure, and MCP construction remain advanced.
+Fixed workflow is the highest mandatory operation. Core permits a local, human-reviewed Markdown knowledge vault and Module 08's bounded human-started read-only ensemble: isolated reviews, one correction, and fresh re-review through supplied controls. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, custom retrieval infrastructure, and MCP construction remain advanced.
 
 Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 05's capability, and checking a local-model package from a fresh copy remains Module 10's.
 

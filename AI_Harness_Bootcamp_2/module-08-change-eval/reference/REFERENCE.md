@@ -1,42 +1,72 @@
-# Reference: Module 8 — Evaluate a change with variation controls
+# Reference: Module 8 — Control hallucinations
 
-**Revision:** 2 (adopts replacement scenario)  
-**Frozen on:** 2026-09-30  
-**Supersedes:** thin two-brief adapter (pair-a / pair-b, invented-payload and 20:50Z collapse gates)  
-**Scope:** one change-evaluation module using 40 paired cases on a fictional Ridge Depot to Clinic T-8 heater-fuel movement on vehicle SB-4  
-**Course objective:** declare hard gates before results, evaluate with per-cell authoritative locator gates, prove restore of baseline copies using stored hashes
+**Revision:** 3  
+**Frozen on:** 2026-10-04  
+**Scope:** structured claim checks and a fixed review-and-correction ensemble on fictional Slope Brief evidence  
+**Supersedes:** the 40-pair change-evaluation exercise and 38-call variation/restore stretch; their historical evidence remains historical
 
-## 1. The need
-A new draft or configuration cannot be separated from ordinary run-to-run variation by comparing one convenient output. Hard-gate violations are not averaged. Any single violation defeats the candidate.
+## Mastery and progression
 
-## 2. Case
-Forty paired cases PC-01 through PC-40. Each case supplies:
-- sources.json (locator-keyed authoritative records with exact SB-PC-XX#payload and SB-PC-XX#gate plus non-authoritative near-miss entries)
-- form.md (three-row template)
-- baseline.md (correct fill from authoritative locators)
-- candidate-a.md and candidate-b.md
+Using source verification, typed questions, deterministic predicates, and fixed-flow operation, the learner controls unsupported assertions through a source-bound review-and-correction loop. The learner can handle reviewer error, unanimous unsupported approval, correction regressions, and absent authority without converting any of them into release permission.
 
-Valid mass = 2200 + 11 × case_number kg. PC-40 authoritative mass is the sourced 2040 kg positive control.
+The three enabling capabilities are assigning the appropriate evidence check to each material claim; directing blind review and source-constrained correction while retaining coverage; and adjudicating disagreements and regressions against original evidence. Files and receipts prove the work; creating them is not the mastery claim.
 
-Gate times are always 19:05 UTC / 13:05 MDT in authoritative sources.
+## Source basis
 
-Candidate A defeats on unsourced 2040 kg in PC-03, PC-11, PC-27 only.
-Candidate B defeats by dropping zone labels (bare clock tokens or missing UTC/MDT) in PC-02, PC-14, PC-35 only.
-All other briefs, including all baselines and PC-40, pass the gates when the authoritative locator and exact stated text are used.
+[Jev's introduction](https://docs.typesafe.ai/introduction) describes state plus atomic typed questions and directly structured results. Its [confidence documentation](https://docs.typesafe.ai/confidence) distinguishes returned distributions and derived confidence. These are design references, checked on 2026-10-04, not a course API integration or a claim that generated confidence is calibrated.
 
-The packet contains near-miss identities, hostile retrieved instruction text, a time/supersession trap, and received/released condition-word collisions.
+The actual runtime is the existing shared OMP 18.3.5 launcher and `openrouter/anthropic/claude-sonnet-4.6`, using only `OPENROUTER_API_KEY`. It generates JSON, which the supplied Python checker validates. Neither provider-enforced structured output nor Jev probability semantics is claimed.
 
-## 3. Evaluation contract
-Pre-result policy declares "hard gate, any single violation" and "any_violation_rejects" before any candidate is opened.
+## Independent supplied case
 
-evaluate_pairs.py <case-dir> <policy.json> <results.csv> produces exactly 120 rows with columns case_id, variant, format_ok, mass_gate, zone_gate, passed, reason, source_sha256, brief_sha256, config_sha256. Hashes are validated against the frozen manifests.
+The movement is heater-fuel cans from Ridge Depot to Clinic T-8 on SB-4. Source packets PC-01, PC-02, and PC-03 preserve the original source bytes. The seven-claim draft is authored practice data, not a recorded provider output.
 
-restore_baseline.py <workdir> restores only shared/controls/active-instruction.md and the baseline briefs from the distinct frozen shared/baseline/ using stored hashes. It refuses to touch candidate files or targets outside the work root.
+| Claim | Case and kind | Starting condition |
+|---|---|---|
+| C01 | PC-03 mass | `2040 kg` without a source locator; the authoritative payload record states `2233 kg`. |
+| C02 | PC-01 time | `13:05` without its zone. |
+| C03 | PC-01 time | `13:05 UTC`, confusing the local clock with UTC. |
+| C04 | PC-03 citation | An SB-5 assertion attached to the SB-4 payload record. |
+| C05 | PC-01 gate | Supported full gate passage with its authoritative locator. |
+| C06 | PC-02 mass | Supported `2222 kg` with its authoritative locator. |
+| C07 | PC-03 authority | An assertion of dispatch release that the packet does not establish. |
 
-The technical gates are the actual learning task. The evaluator produces the 120-row result for the practice cases. A classmate who did not observe the work must be able to reconstruct the result from the policy, the raw pairs, the results.csv, and the restore proof.
+The corrector must preserve C05 and C06. Gate and citation fields are extractive complete-source passages, not free paraphrases. Mass and clock fields require exact sourced values and labels with the correct locator. A missing authorization becomes an explicit null value and null locator, not a denial or an invented approval. The PC-01 `2255 kg` near-miss versus `2211 kg` payload example is a separate worked counterexample, not another registered claim.
 
-## 4. Independence
-Does not consume any prior module's product. Does not cite Cold Lantern, V-18, 12 Mesa Yard, 20:50Z, 84 kg, or any retired thin-lab tokens.
+No other module's files, verdicts, or scenario facts are consumed. This fictional exercise authorizes no movement.
 
-## 5. Harness change
-The supplied evaluate_pairs and restore now operate on the 40 paired cases with per-cell authoritative locators and hashed baseline restore instead of the two-pair thin lab.
+## Execution contract
+
+Invoke `AI_Harness_Bootcamp_2/module-08-change-eval/scripts/hallucination.py` from the repository. The shared preparation helper supplies only the case and controls in a fresh external W. E is separate and must not exist before freeze.
+
+1. `freeze --work W --out E` checks supplied input identities and creates frozen original claims, sources, controls, manifest, and `initial-checks.json`. It makes no provider call. The manifest covers the adapter, shared launcher, and guard as well as the input/control bytes.
+2. `review --attempt E --reviewer source --phase before` and the separate skeptic invocation each run a fresh read-only agent. Each sees only the original claims, original source packets, and schema. Neither sees another verdict or the exact checker findings.
+3. `correct --attempt E` first audits both prior reviews. A fresh correcting agent receives the original claims and sources, schema, deterministic findings, and both completed reviews as data. It returns the complete registered set, preserving IDs, cases, and kinds.
+4. The source and skeptic review invocations with `--phase after` each receive only the complete correction, original sources, and schema. They do not receive prior reviews or the correction discussion.
+5. `report --attempt E` audits all five distinct live runs again, compares saved parsed documents with their actual model responses, rechecks every corrected claim, and writes `report.json`, `report.md`, and `human-decision.json` without replacing prior outputs.
+
+Persistent `inputs/<stage>` folders make the blind boundaries inspectable; `runs/<stage>` holds real launcher receipts; `reviews/<phase>-<role>.json` and `correction.json` preserve parsed outputs. Each audit binds the phase's exact read root, read-only authority, prompt, saved role instruction, all input bytes, successful reads of every required file, and completed pinned-model execution. Frozen input/control drift or edited parsed results holds the next operation.
+
+There are five human-started model turns, not five provider requests: a turn may make several tool/provider exchanges. There are no implicit retries, fallback models, autonomous agent conversations, or multi-agent writes. Missing prerequisites hold the live lane; no fixture substitutes for execution.
+
+## Structured checks and acceptance
+
+A review contains `schema: m08-review-v1` and seven unique answers with exactly `id`, `verdict`, `locator`, `quote`, and `reason`. Verdicts are `supported`, `contradicted`, or `unknown`. Supported and contradicted judgments need a nonempty exact quotation from a real record in the claim's own case. Unknown may cite a real passage showing the limitation or leave both locator and quote null. A genuine quote can still fail to support the judgment; schema acceptance is not semantic truth.
+
+A correction contains `schema: m08-correction-v1` and all seven claims with exactly `id`, `case_id`, `kind`, `value`, and `locator`. Value is nonempty text or null. A null value has a null locator. Invented locators, missing or duplicate IDs, changed case/kind identities, and malformed JSON stop the stage. A well-formed but incorrect value is retained for fresh review and final reporting.
+
+Deterministic checks use complete values, units, clock labels, same-case authoritative locators, and extractive source text. They are not a list of special-cased bad numbers. Corrected clocks can pass. A right number with a wrong-case citation cannot pass. A model vote cannot override these checks.
+
+The final report separates `technical_complete` from `content_holds`. It exposes every original/corrected claim, exact finding, reviewer quotation and reason, disagreement, and initially supported claim changed by correction. Properly retaining an unknown authority does not by itself block an internal summary, but `operational_dispatch` always remains `HOLD`.
+
+Human dispositions are `USE`, `KEEP_UNKNOWN`, or `HOLD`, each with a source-backed reason. `internal_summary_decision` and `unresolved_evidence_and_owner` state the overall limit. These human judgments are recorded, not automatically verified. A successful report command is not a learner score or a dispatch decision.
+
+## Failure and evidence boundaries
+
+Preserve incomplete receipts, malformed responses, wrong judgments, and failed attempts. Never remove a difficult claim, overwrite a response, or combine favorable rows from different attempts. Existing attempts and reports are refused. Five same-model sessions do not establish independent model-family agreement, calibrated confidence, a general hallucination rate, or superiority. Local records are inspectable audit evidence, not tamper-proof proof against an operator who can rewrite the entire evidence directory.
+
+The roughly 130-minute session allocation is a design budget, unmeasured with learners. Actual provider, browser, platform, and technical checks must be recorded separately from editorial review.
+
+## 2026-10-04 amendment — inspectable handoff without grading
+
+No classmate or instructor grades a learner's work, and no peer sign-off is required. The handoff itself contains the original failure, frozen evidence, independent reviews, correction, full recheck, human disposition, and unresolved boundary. Technical `PASS` and `HOLD` describe work checks and decisions, never learner qualification.
