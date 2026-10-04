@@ -30,7 +30,7 @@ An answer can read well and still be wrong, so compare what the tool actually pr
 |---|---|---|---|
 | Monday | [North Shelf](module-00-setup/README.md) | Lunch break | [Cold Lantern](module-01-mission-thread/README.md) |
 | Tuesday | [Ledger Pike](module-02-context-desk/README.md) | Lunch break | [Kiln Hold](module-03-mcp-research/README.md), [Chalk Line](module-04-typed-decisions/README.md) |
-| Wednesday | [Copper Span](module-05-diagnose-review/README.md) | Lunch break | [Blue Gauge](module-06-run-corpus/README.md), [White Rack](module-07-batch-workflow/README.md) |
+| Wednesday | [Copper Span](module-05-diagnose-review/README.md) | Lunch break | [Blue Gauge](module-06-decision-model/README.md), [White Rack](module-07-batch-workflow/README.md) |
 | Thursday | [Slope Brief](module-08-change-eval/README.md), [Night Desk](module-09-agent-safeguards/README.md) | Lunch break | [Cold Foundry](module-10-capstone/README.md) |
 
 <div data-photo-band="route"></div>

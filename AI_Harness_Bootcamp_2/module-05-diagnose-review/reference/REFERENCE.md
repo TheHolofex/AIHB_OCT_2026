@@ -89,6 +89,8 @@ The merge retains main's spreadsheet-agent and structured hallucination-control 
 
 Current main already records a separate Module 07 core-contract mismatch: the course map produces AGENT_SHEET while `modules/core/07-fixed-workflow.md` still names retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` records that inherited `test_core_standard.py` HOLD. This integration does not claim a green combined full-course gate or rewrite that unrelated Module 07 contract.
 
+The subsequent Blue Gauge decision-model merge also retained Module 05's preparation/runtime contract. The 11 orchestration tests, 8 guard tests and now 71 root unit tests passed. Final publication and figure-link checks passed with 35 instructional pages, 420 raw downloads and 40 UI/generated assets. Obsolete generated Module 06 pages and its test-created bytecode cache were removed after that module's directory rename.
+
 ## Limits and historical boundary
 
 The 90–150 minute allocation is a planning estimate, not a measured learner duration. No representative learner study, human panel, native Windows/WSL/Linux execution, Intel macOS run or screen-reader operation is claimed. Interactive Agent Hub/steering is explained from the pinned native sources; the headless smoke does not prove an interactive supervision session. Child outputs and timestamps are nondeterministic; contracts and checked identities determine acceptance.

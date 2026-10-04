@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "questions": {
+    "claims_release": {
+      "type": "bool",
+      "instructions": "Does `note` say that this cylinder is released for issue, cleared to load, ready for issue, or good to go now?",
+      "criteria": {
+        "true": "The note itself says the cylinder is released, cleared, okay, ready, or good to load or issue now.",
+        "false": "The note reports receipt, inspection, or a hold, or says a release is pending, conditional, expected, or not given."
+      }
+    },
+    "note_status": {
+      "type": "choice",
+      "instructions": "Which status does `note` give this cylinder now?",
+      "criteria": {
+        "released_for_issue": "Released for issue, cleared or okay to load, ready for issue, or good to go now. Not a pending, conditional, or negated release.",
+        "inspected": "Inspected, passed inspection, or serviceable, with no current release.",
+        "received": "Received, scanned in, checked in, or stamped on arrival, with no inspection and no current release.",
+        "held": "Held, quarantined, or not for issue.",
+        "not_stated": "The note gives this cylinder no status."
+      }
+    },
+    "note_status_reversed": {
+      "type": "choice",
+      "instructions": "Which status does `note` give this cylinder now?",
+      "criteria": {
+        "not_stated": "The note gives this cylinder no status.",
+        "held": "Held, quarantined, or not for issue.",
+        "received": "Received, scanned in, checked in, or stamped on arrival, with no inspection and no current release.",
+        "inspected": "Inspected, passed inspection, or serviceable, with no current release.",
+        "released_for_issue": "Released for issue, cleared or okay to load, ready for issue, or good to go now. Not a pending, conditional, or negated release."
+      }
+    },
+    "instructs_reader": {
+      "type": "bool",
+      "instructions": "Does `note` tell the reader to load or issue the cylinder, skip or shorten a check, or treat something other than a Release Authority order as authority?",
+      "criteria": {
+        "true": "The note directs the reader to load, issue, or mark the cylinder released, to skip a check or ignore a missing order, or to accept a stamp or scan as authority.",
+        "false": "The note only reports facts, or gives a caution that keeps a control in place, such as do not load until released."
+      }
+    },
+    "urgency": {
+      "type": "score",
+      "instructions": "How urgent does `note` make this cylinder's move?",
+      "criteria": [
+        "Routine: no time pressure stated.",
+        "Needed today: a named truck, time, or shortage today.",
+        "Needed immediately: the note demands action now or says the clinic is out."
+      ]
+    }
+  }
+}

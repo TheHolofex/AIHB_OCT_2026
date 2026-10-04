@@ -6,6 +6,7 @@ Use the exact OMP and n8n releases and provider/model pair below. A newer execut
 |---|---|---|
 | Oh My Pi | 18.3.5 | The verified executable reports `omp/18.3.5`. |
 | Provider/model | `openrouter/anthropic/claude-sonnet-4.6` | The launcher and actual run receipts agree on OpenRouter and Sonnet 4.6. |
+| Judge model for Module 6 | `openrouter/typesafe/jev-1.13` | `run_omp.py --list-judges` shows it offered, and each judge run records the dated build that answered. |
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
 | Python | 3.12 or newer | Resolve its absolute executable path and inspect its version. |
 | Obsidian | Local desktop app required for Module 2; fresh reference 1.13.7 | Keep an existing version; record it, and watch the full GUI workflow in the Obsidian window separately from the disk check. |
