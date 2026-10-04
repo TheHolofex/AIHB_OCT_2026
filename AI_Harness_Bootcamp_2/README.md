@@ -65,20 +65,6 @@ The hours in this table don't include breaks or meals.
 | 12:50–13:30 | Lunch |
 | 13:30–16:30 | Cold Foundry |
 
-Some assignments also have a break partway through, at these points:
-
-- **Ledger Pike:** after you run the file screen.
-- **Kiln Hold:** after you probe the bounded connection.
-- **Chalk Line:** after the comparison prints and before you adjudicate the disagreements.
-- **Copper Span:** after you seal the first miss.
-- **Blue Gauge:** after you write your sixteen first-failure notes.
-- **White Rack:** after you've built and saved your workflow.
-- **Night Desk:** after the two supplied probes and before the planted-note run.
-
-Before any break, save your notes and receipts.
-
-**Cold Foundry's handoff happens outside class hours.** The assignment ends with a kit that another person should be able to start, stop, and restore from its saved files, without your chat history. Their attempt is scheduled separately, so line up that person before Thursday. Running the kit yourself in a fresh terminal shows that it restarts from its saved files, but not that someone else can use it, so you record the two results separately. If no one is available, record the other person's attempt as unobserved, not passed.
-
 <div data-photo-band="route"></div>
 
 ## Choose your assignment
