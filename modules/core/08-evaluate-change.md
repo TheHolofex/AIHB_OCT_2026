@@ -17,7 +17,7 @@
 
 ## Capability delta
 
-Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and operate a fixed workflow. After this project, the learner can control the admission of model-generated claims through a source-bound review-and-correction loop, including failures introduced or endorsed by its reviewers.
+Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and have an agent produce a structured-data artifact. After this project, the learner can control the admission of model-generated claims through a source-bound review-and-correction loop, including failures introduced or endorsed by its reviewers.
 
 ## Enabling objectives
 

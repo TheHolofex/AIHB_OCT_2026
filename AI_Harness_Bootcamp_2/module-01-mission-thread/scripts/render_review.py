@@ -29,6 +29,10 @@ SECTION_FILES = [
     ("Changed verdict", "changed-verdict.md"),
     ("Handoff", "handoff.md"),
 ]
+OPTIONAL_SECTIONS = [
+    ("Handoff scrutiny", "handoff-scrutiny.md"),
+    ("Your reading of the scrutiny", "handoff-scrutiny-decision.md"),
+]
 RESULT_ORDER = ("CONTRADICTED", "UNRESOLVED", "NOT YET OCCURRED", "SUPPORTED")
 QUESTIONS = [
     "What can proceed?",
@@ -150,6 +154,10 @@ def main() -> int:
         path = work / name
         text = path.read_text(encoding="utf-8") if path.exists() else f"Missing: {name}"
         sections.append(f"<section><h2>{html.escape(title)}</h2><pre>{html.escape(text)}</pre></section>")
+    for title, name in OPTIONAL_SECTIONS:
+        path = work / name
+        if path.is_file() and path.stat().st_size:
+            sections.append(f"<section><h2>{html.escape(title)}</h2><pre>{html.escape(path.read_text(encoding='utf-8'))}</pre></section>")
     ledgers = []
     for title, name in (("Source register", "source-register.csv"), ("Baseline thread", "thread-ledger.csv"), ("Changed thread", "changed-thread-ledger.csv")):
         path = work / name

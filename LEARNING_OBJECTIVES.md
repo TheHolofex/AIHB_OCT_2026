@@ -61,11 +61,11 @@ Using preserved failures, source distinctions, and the freeze-before-outcome dis
 **Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
 **Owner:** Module 06
 
-## PO-07 — Build and control a fixed workflow
+## PO-07 — Automate a batch into a spreadsheet
 
-Using source-verification and bounded-predicate validation skills, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
+Using source checking as a quality bar, the learner puts an AI Agent on a local n8n workflow, connects that agent to OpenRouter with their own key, and has the agent call a tool that writes a spreadsheet from a supplied batch. The learner downloads the file and checks it against the source lots. A chat reply is not the spreadsheet, and a note inside the batch is not a rule.
 
-**Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
+**Evidence:** unpublished agent workflow with an OpenRouter chat model and one spreadsheet tool; downloaded spreadsheet; structure check showing each source lot once; and a note naming rows the rules reject. The key stays out of exports, prompts, and notes.
 **Owner:** Module 07
 
 ## PO-08 — Control hallucinations
@@ -77,7 +77,7 @@ Using source verification, typed questions, deterministic predicates, and fixed-
 2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
 3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
 
-Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and operate a fixed workflow. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
+Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
 
 **Evidence:** frozen original claims, source packets, controls, and exact checks; two blind initial reviews with typed verdicts and source quotations; the complete source-constrained correction; two fresh full-set reviews; five actual audited run receipts; a claim-by-claim report of source support, disagreements, unknowns, and regressions; individual USE, KEEP_UNKNOWN, or HOLD dispositions with reasons, an internal-summary decision, and the missing evidence and responsible owner. Operational dispatch remains HOLD. Retain malformed outputs and unsuccessful attempts.
 **Owner:** Module 08

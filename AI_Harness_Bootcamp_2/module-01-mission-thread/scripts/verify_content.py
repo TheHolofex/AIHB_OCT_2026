@@ -31,6 +31,9 @@ required = [
     ROOT / "scripts/check_work.py",
     ROOT / "scripts/hash_inbox.py",
     ROOT / "scripts/run_producer_rebuttal.py",
+    ROOT / "scripts/run_handoff.py",
+    CASE / "fixtures/HANDOFF_PROMPT.txt",
+    CASE / "fixtures/HANDOFF_SCRUTINY_PROMPT.txt",
     CASE / "INBOX_MAP.json",
     MANIFEST,
 ]
