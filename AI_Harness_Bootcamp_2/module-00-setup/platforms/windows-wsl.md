@@ -47,14 +47,16 @@ Use the exact Ubuntu NAME from the list to open it. The box checks that this NAM
 **Terminal: Windows PowerShell, ordinary user, opened from Start.**
 
 ```powershell
-$CourseDistro = Read-Host 'Exact Ubuntu NAME from the list, for example Ubuntu-24.04'
-$CourseVersion = $null
-foreach ($CourseLine in @(wsl --list --verbose)) {
-  if ((($CourseLine -replace "`0", '') -match '^\s*\*?\s*(\S+)\s.*\s(\d)\s*$') -and $Matches[1] -ceq $CourseDistro) { $CourseVersion = $Matches[2] }
+. {
+  $CourseDistro = Read-Host 'Exact Ubuntu NAME from the list, for example Ubuntu-24.04'
+  $CourseVersion = $null
+  foreach ($CourseLine in @(wsl --list --verbose)) {
+    if ((($CourseLine -replace "`0", '') -match '^\s*\*?\s*(\S+)\s.*\s(\d)\s*$') -and $Matches[1] -ceq $CourseDistro) { $CourseVersion = $Matches[2] }
+  }
+  if (-not $CourseVersion) { throw 'STOP: that exact NAME is not in the installed list.' }
+  if ($CourseVersion -ne '2') { throw 'STOP: that Ubuntu runs as WSL 1; see If a step stops.' }
+  wsl --distribution $CourseDistro --cd ~
 }
-if (-not $CourseVersion) { throw 'STOP: that exact NAME is not in the installed list.' }
-if ($CourseVersion -ne '2') { throw 'STOP: that Ubuntu runs as WSL 1; see If a step stops.' }
-wsl --distribution $CourseDistro --cd ~
 ```
 
 **Expected:** an Ubuntu prompt that ends in `$`. Run the Ubuntu steps below in this window.
@@ -485,7 +487,7 @@ if [ -d /mnt/wslg ] && { [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ];
 
 ### Install and open Obsidian
 
-If Linux Obsidian is already installed in this Ubuntu, the box keeps it and downloads nothing. Otherwise it downloads the [official 1.13.7 release](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7) file for your processor into a new folder and checks its SHA-256 fingerprint before installing it. On `x86_64`, apt installs the Debian package; read its proposed changes before you answer `Y`. On `aarch64`, Obsidian is an AppImage, a single application file, which needs the `libfuse2t64` library ([AppImage FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html)). If you run Linux Obsidian another way, such as your own AppImage, skip this box and open it your usual way.
+If Linux Obsidian is already installed in this Ubuntu, the box keeps it and downloads nothing. Otherwise it downloads the [official 1.13.7 release](https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v1.13.7) file for your processor into a new folder and checks its SHA-256 fingerprint before installing it. On `x86_64`, apt installs the Debian package; read its proposed changes before you answer `Y`. On `aarch64`, Obsidian is an AppImage, a single application file. It needs FUSE (`fuse3` and `libfuse2t64`; see the [AppImage FUSE guidance](https://docs.appimage.org/user-guide/troubleshooting/fuse.html)) and `zlib1g-dev`, which supplies the `libz.so` name its ARM64 starter loads ([AppImage issue 964](https://github.com/AppImage/AppImageKit/issues/964)). If you run Linux Obsidian another way, such as your own AppImage, skip this box and open it your usual way.
 
 **Terminal: Ubuntu Bash, ordinary Linux user using sudo only for the approved apt step, same window.**
 
@@ -506,8 +508,8 @@ course_install_obsidian() {
     printf 'Obsidian HOLD: checksum mismatch; the file was not installed or run\n'; return 1; }
   if [ "$asset" = obsidian_1.13.7_amd64.deb ]; then
     (cd "$ObsidianDownload" && sudo apt install "./$asset") || return 1
-  elif [ "$(dpkg-query -W -f='${Status}' libfuse2t64 2>/dev/null)" != 'install ok installed' ]; then
-    sudo apt update && sudo apt install libfuse2t64 || return 1
+  else
+    sudo apt update && sudo apt install fuse3 libfuse2t64 zlib1g-dev || return 1
   fi
   printf 'OBSIDIAN INSTALLED %s\n' "$asset"
 }
@@ -633,8 +635,10 @@ $cs = Get-CimInstance -ClassName Win32_ComputerSystem
 'Windows: {0} ({1}), build {2}, {3:N1} GB RAM' -f $os.Caption, $os.OSArchitecture, $os.BuildNumber, ($cs.TotalPhysicalMemory / 1GB)
 Get-Service -Name LanmanServer | Select-Object Name, Status, StartType
 wsl --version
+'wsl exit: ' + $LASTEXITCODE
+if ($LASTEXITCODE -ne 0) { throw 'STOP: wsl version failed.' }
 Get-NetTCPConnection -State Listen -LocalPort 5678 -ErrorAction SilentlyContinue | Select-Object LocalAddress, LocalPort, OwningProcess
-if (Get-Command docker -CommandType Application -ErrorAction SilentlyContinue) { docker version } else { 'Docker CLI not found on Windows' }
+if (Get-Command docker -CommandType Application -ErrorAction SilentlyContinue) { docker version; if ($LASTEXITCODE -ne 0) { 'docker version failed' } } else { 'Docker CLI not found on Windows' }
 ```
 
 **Expected:** a supported edition and build, about 8 GB of RAM or more, `LanmanServer` with `Running` and `Automatic`, a WSL version of 2.1.5 or later, and nothing listening on port 5678.
@@ -841,12 +845,16 @@ Save the first error message before you change anything. A precisely recorded fa
 wsl --update
 if ($LASTEXITCODE -ne 0) { throw 'STOP: keep the update message.' }
 wsl --version
+'wsl version exit: ' + $LASTEXITCODE
+if ($LASTEXITCODE -ne 0) { throw 'STOP: version failed.' }
 wsl --list --verbose
+'list exit: ' + $LASTEXITCODE
+if ($LASTEXITCODE -ne 0) { throw 'STOP: list failed.' }
 ```
 
 **Expected:** a WSL version of 2.1.5 or later, and your Ubuntu still listed as VERSION `2`.
 
-**Stop:** the update fails, or a restart is requested.
+**Stop:** a `STOP:` line appears, or a restart is requested.
 
 **Recovery:** Restart Windows if asked, then run the first box of [Choose and open Ubuntu](#choose-and-open-ubuntu) again.
 
@@ -855,14 +863,18 @@ wsl --list --verbose
 **Terminal: Windows PowerShell, ordinary user; owner-approved conversion only.**
 
 ```powershell
-$CourseDistro = Read-Host 'Exact NAME that shows VERSION 1'
-$CourseBackup = Read-Host 'Full path for a new backup file, for example D:\wsl-backup\ubuntu.tar'
-if (Test-Path -LiteralPath $CourseBackup) { throw 'STOP: that backup file already exists; choose a new path.' }
-wsl --export $CourseDistro $CourseBackup
-if ($LASTEXITCODE -ne 0) { throw 'STOP: the backup failed; nothing was converted.' }
-wsl --set-version $CourseDistro 2
-if ($LASTEXITCODE -ne 0) { throw 'STOP: conversion failed; keep the backup.' }
-wsl --list --verbose
+. {
+  $CourseDistro = Read-Host 'Exact NAME that shows VERSION 1'
+  $CourseBackup = Read-Host 'Full path for a new backup file, for example D:\wsl-backup\ubuntu.tar'
+  if (Test-Path -LiteralPath $CourseBackup) { throw 'STOP: that backup file already exists; choose a new path.' }
+  wsl --export $CourseDistro $CourseBackup
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: the backup failed; nothing was converted.' }
+  wsl --set-version $CourseDistro 2
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: conversion failed; keep the backup.' }
+  wsl --list --verbose
+  'list exit: ' + $LASTEXITCODE
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: list failed.' }
+}
 ```
 
 **Expected:** the export and conversion finish, and the list shows the NAME with VERSION `2`.

@@ -206,6 +206,25 @@ def class_a(r: Recorder, root: Path) -> None:
     r.check("A10", not late, "downloaded installers are inspected before they run",
             f"execute-before-inspect: {sorted(set(late))[:6]}")
 
+    # A11 — every shell box parses. A box that leaves the shell waiting for more input
+    # (a lost closing brace or quote) looks to a learner like a terminal that hangs.
+    broken = []
+    for f in fs:
+        if f.lang not in SHELL_LANGS:
+            continue
+        done = subprocess.run(["bash", "-n"], input=f.body, capture_output=True, text=True)
+        if done.returncode != 0:
+            broken.append(f"{f.path.name}:{f.line}: {done.stderr.strip().splitlines()[-1] if done.stderr.strip() else 'syntax error'}")
+    r.check("A11", not broken, "every shell box parses", f"boxes that don't parse: {broken[:5]}")
+
+    # A12 — PowerShell scripts a learner runs are plain ASCII. Windows PowerShell 5.1 reads a
+    # file without a byte-order mark in the ANSI code page, so one curly quote or dash can end
+    # a string early and stop the whole script from parsing.
+    non_ascii = [str(p.relative_to(root)) for p in learner_scripts(root)
+                 if p.suffix == ".ps1" and any(b > 0x7F for b in p.read_bytes())]
+    r.check("A12", not non_ascii, "PowerShell scripts are ASCII, so Windows PowerShell 5.1 parses them",
+            f"non-ASCII PowerShell scripts: {non_ascii}")
+
 
 # --------------------------------------------------------------------------------------
 # Class B — the acceptance machinery discriminates

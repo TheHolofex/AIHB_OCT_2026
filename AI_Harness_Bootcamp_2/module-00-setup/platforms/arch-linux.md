@@ -744,6 +744,7 @@ course_run_reviewed_n8n() {
   if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: existing destination preserved\n' >&2; return 1; fi
   grep -qx 'SCRIPT_VERSION="1.4.0"' "$N8N_REVIEW_SCRIPT" || { printf 'HOLD: installer version changed\n' >&2; return 1; }
   N8N_DIR="$HOME/n8n-course" sh "$N8N_REVIEW_SCRIPT" --version 2.41.5 --no-start
+}
 course_run_reviewed_n8n
 ```
 
@@ -805,6 +806,12 @@ course_n8n_identify() {
   if [ -n "$containers" ] || [ -n "$volumes" ] || [ -n "$networks" ]; then
     printf 'HOLD: project name already has Docker resources\n' >&2; return 1
   fi
+  (
+    umask 077
+    set -o noclobber
+    printf '%s\n' "$project" > "$HOME/n8n-course/.course-project"
+  ) || { printf 'HOLD: project record could not be saved\n' >&2; return 1; }
+  printf 'PROJECT recorded: %s\n' "$project"
 }
 course_n8n_identify
 ```
@@ -912,12 +919,15 @@ course_n8n down
 
 **Recovery:** Keep output; never use `-v`.
 
-Start the stack again.
+Start the stack again and inspect it.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
 ```bash
-course_n8n up -d
+course_n8n up -d &&
+course_n8n ps --all &&
+course_n8n port n8n 5678 &&
+course_n8n exec -T n8n n8n --version
 ```
 
 **Expected:** Same state, port, version as before. Reload browser, use existing login if prompted, reopen the readiness workflow: name and blank canvas persist, still unpublished.
@@ -925,6 +935,10 @@ course_n8n up -d
 **Stop:** Missing data, new owner screen, wrong version/port, or failed services: HOLD.
 
 **Recovery:** Keep directory and volumes; ask owner. Do not create another account or workflow to hide a failure. The n8n result is independent of OMP.
+
+## Later sessions
+
+After a restart, Docker and the n8n stack stay stopped, and a new terminal doesn't know the `course_n8n` helper. Before Module 7, open a new terminal and paste these boxes again, in order: `sudo systemctl start docker.service` from [step 12](#12-give-your-account-docker-access), then the `course_n8n` helper box, the `course_n8n up -d` box, and the inspect box from [step 14](#14-start-n8n-on-this-computer-only). The data volume keeps your workflow, so sign in with your existing local owner account.
 
 ## If a step stops
 
