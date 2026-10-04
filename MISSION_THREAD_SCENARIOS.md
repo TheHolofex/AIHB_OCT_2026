@@ -93,7 +93,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 | 05 | ledger rows `BK-200`–`BK-279` |
 | 06 | runs `R-001`–`R-080` |
 | 07 | lots `LW-01`–`LW-80` |
-| 08 | paired cases `PC-01`–`PC-40` |
+| 08 | source packets `PC-01`–`PC-03`; claims `C01`–`C07` |
 | 09 | notes `AG-001`–`AG-040` |
 | 10 | the pinned model identity `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, weight file `OrcaSAQ-2-27B-Uncensored.gguf`, repo pin `a0ebe1b5ad5c009cd382908585c04b7e9e0cf0c0`, port 8080, and the transfer bundle |
 | 04 | intake messages `CL-001`–`CL-040`, requisitions `K3-REQ-100`–`K3-REQ-199`, vehicle `CL-9`, catalog lines `GL-65`–`GL-80` |
@@ -292,25 +292,25 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 ## Paperwork arriving does not make a White Rack lot ready
 
-**Status:** native n8n cutover approved. The active case retains the 80-lot waves and White Rack facts. The earlier supplied Python `route.py` plus `RULE.md` engine and rule-file restore are historical mechanisms, not active instructions. Retired thin-adapter inputs (`L-11` etc.) and prior execution evidence remain historical; this change does not claim observed learner performance.
+**Status:** agent-spreadsheet path adopted. The active case retains the 80-lot White Rack facts. The native 13-node router, its exports, and the earlier Python router are historical mechanisms, not active instructions. This change does not claim observed learner performance.
 
-**Project:** White Rack is a vehicle resupply of refrigerated reagent kits from Icehouse Depot to Clinic I-6. The clinic is waiting to hear which lots can travel. The learner builds one saved native visual n8n graph from blank for lots `LW-01`–`LW-80`, runs both waves, changes one saved policy field, proves the complete predicted effect, and restores the independently identified original graph into a new blank workflow to reproduce both waves. No hand patch.
+**Project:** White Rack is a vehicle resupply of refrigerated reagent kits from Icehouse Depot to Clinic I-6. The clinic is waiting to hear which lots can travel. The learner puts an AI Agent on a local n8n workflow, connects it to OpenRouter with their own key, and has the agent call a tool that writes a spreadsheet for lots `LW-01`–`LW-80`. The learner downloads that file and checks it. No hand-typed sheet.
 
 **Stake:** A note says the paperwork arrived for the lots that look familiar. That arrival is true. A hand-edited sheet marks those lots ready and leaves the rest wrong. `LW-19` and `LW-55` both claim the only refrigeration rack. Telling Clinic I-6 the pending lots are ready means they open reagent kits quality has not released. The rack pair holds. This session does not decide which cold lot travels.
 
-**Skill:** Compose a reusable batch process from native visual validation, branching, rejoining, ordering, and serialization steps. This extends prior source checking and rules kept in code into complete batch control. Prove every changed and unchanged serialized row under one saved policy change, then prove restoration on both waves. Installation and file retention are prerequisites and evidence, not objectives. Generated prose is excluded from deterministic acceptance before execution.
+**Skill:** Automate a batch into a local spreadsheet by connecting an n8n AI Agent to OpenRouter and giving it one file-writing tool. Source checking remains the quality bar: the downloaded file is checked against the source lots, and a note inside the batch is not a rule.
 
-**Platform:** Local n8n 2.41.5 with the full official six-service Docker setup, localhost only, workflows unpublished. The native Windows PowerShell route uses WSL Ubuntu only for n8n; the other course tools and credentials remain on their native route. Browser Form Trigger Test URLs receive uploads; binary outputs provide downloads. The learner constructs the router from blank with native nodes and pastes supplied `validate-batch.js` unchanged. A separately imported `receipt-checker.json` provides independent checks. No supplied router import, Python routing engine, learner-written code, Assistant, or paid model call.
+**Platform:** Local n8n 2.41.5 with the full official six-service Docker setup, localhost only, workflows unpublished. The OpenRouter key goes only into the n8n credential form. The agent calls an unpublished tool workflow from the editor test. Convert to File produces the `.xlsx`, and the learner downloads it. n8n does not write that file into the learner's Documents folder by itself.
 
-**Graph:** Form Trigger → CSV extraction → Edit Fields `Pending rule` → supplied batch validator → first-match Switch → four Edit Fields branches → Merge Append → Sort `_row` ascending → Edit Fields retaining only `lot,route,status` → CSV file. Keep source fields and `_row` until the final mapping. Malformed input HOLDs before routing; never trim, coerce, repair, or fabricate rows. Preserve all source strings. Switch Ignore Case and all-matching-outputs are OFF.
+**Graph:** Historical router, not the active path: Form Trigger → CSV extraction → Edit Fields `Pending rule` → supplied batch validator → first-match Switch → four Edit Fields branches → Merge Append → Sort `_row` ascending → Edit Fields retaining only `lot,route,status` → CSV file. The active path is Upload wave → Extract from File → one batch item → AI Agent, with OpenRouter Chat Model and a Call n8n Workflow Tool that writes `white-rack.xlsx`.
 
-**Volume:** 80 lots per wave. The same saved graph handles both. Gate windows and `input_disposition` labels are provenance only; the waves share permit/exception values, so baseline receipts must have identical raw bytes.
+**Volume:** 80 lots in `wave1.csv`. The agent writes one spreadsheet row per lot. Gate-window text and `input_disposition` are provenance, not routing authority.
 
-**Worked rule:** First, exact `resource_exception=RACK_CONFLICT` produces `hold,RESOURCE_CONFLICT`. Next, exact case-sensitive `permit=AUTHORIZED` produces `pass,READY`; exact `permit=PENDING` produces `hold,OPEN` under saved `pending_status=OPEN`. All other permits, including lookalikes and CANCELLED rows' `WITHDRAWN`, produce `hold,OPEN`. Change only `Pending rule`'s string value to `NOT_AUTHORIZED`; the PENDING branch then produces `reject,NOT_AUTHORIZED`. `LW-12`, `LW-28`, and `LW-41` are the existing pending-case facts. Every unaffected row stays byte-identical. `LW-19` and `LW-55` remain held regardless of permit. The policy does not allocate the rack. Keep worked IDs in staff memory; learners derive their predictions from source cells.
+**Worked rule:** First, exact `resource_exception=RACK_CONFLICT` produces `hold,RESOURCE_CONFLICT`. Next, exact `permit=AUTHORIZED` produces `pass,READY`. Exact `permit=WITHDRAWN` produces `reject,NOT_AUTHORIZED`. Every other permit, including `PENDING` and lookalikes, produces `hold,OPEN`. Notes in `gate_window` are not rules. `LW-19` and `LW-55` remain held. Learners check the downloaded sheet against these rules; they do not hand-edit it to match.
 
-**Proof:** Before any routing execution, freeze each wave's source-derived delta CSV (`lot,before_route,before_status,after_route,after_status`) with one row per actual predicted change and a statement that all other serialized rows stay byte-identical. Rack precedence remains fixed. Compare complete original wave receipts in checker `exact` mode. Preserve the original JSON export before the edit and separately retain its SHA-256 report from checker `file-identity` mode (same export in both upload fields, expected digest empty only for initial recording). After the one-field change, retain both changed receipts and export the changed graph separately. For each wave, `predicted-change` must account for all 80 rows, exact order/count/header/BOM/newlines/quotes, declared changes, and all unaffected fields. Require a report PASS, not merely a green execution.
+**Proof:** The learner downloads `white-rack.xlsx` from the tool execution and runs `check_sheet.py` against `wave1.csv`. `PASS: sheet has the 80 source lots` means the file is complete. It does not mean every route is right. The learner records rows the rules reject. A chat reply and a green execution are not the spreadsheet. Historical exact-comparison reports remain historical.
 
-**Restore:** Recheck the exact preserved original export against the digest in its original retained report; require PASS and `identity_check: matched`, never substitute a recalculated expected digest. Import into a new blank workflow because imports add nodes to the current canvas. Distinguish baseline, changed, and restored identities. Rerun both waves, requiring `exact` PASS and raw byte equality against each corresponding retained original receipt. Preserve downloads without editing or overwriting bytes.
+**Restore:** Historical router contract, not the active path. The active close is the downloaded spreadsheet, the structure check, and the learner's note of rows the rules reject.
 
 **Optional revision:** Freeze and prove the input effect separately (wave-two baseline versus revised-wave baseline) and the policy effect separately (revised-wave baseline versus revised-wave changed policy). Each has its own source-derived prediction; neither comparison may hide the other effect.
 
@@ -318,22 +318,21 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 ## One unsourced number can send Slope Brief
 
-**Status:** adopted. The shipped lab uses the 40 paired cases and hard gates. Retired thin-adapter inputs (20:50Z / invented-payload) are not active work. Historical evidence stays historical.
+**Status:** adopted for hallucination-control rewrite. The shipped lab uses three source packets PC-01/02/03. Retired 40-pair thin-adapter inputs and variation comparison are not active work. Historical evidence stays historical.
 
-**Project:** Slope Brief is a vehicle resupply of heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle `SB-4`. Someone will adopt one brief as the load sheet that driver carries. A frozen baseline configuration and two candidates are compared on paired cases `PC-01`–`PC-40`. Declare the hard-gate rule before opening results. Any single violation defeats a candidate. Do not average. Restore the baseline copies.
+**Project:** Slope Brief is a vehicle resupply of heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle `SB-4`. Three source packets (PC-01, PC-02, PC-03) supply seven fixed material claims for a bounded correction loop. The learner freezes the claims and packets, obtains two independent blind reviews, corrects within the registered set (null for dispatch authority absent from sources), obtains two re-reviews, and produces a report plus human disposition. Operational dispatch remains HOLD.
 
-**Stake:** Candidate A names Clinic T-8 and states a mass with no source line. The clinic name is true. The mass would be treated as proof the load fits `SB-4`. Candidate B prints a Zulu stamp as a local afternoon and names neither zone. The route window looks open. Either miss sends a truck that does not fit, or a truck that arrives after the window has closed. The fuel cans do not complete the handoff.
+**Stake:** An invented mass, clock/zone errors, wrong-shipment citation, or absent dispatch authority would commit an unsupported load or authorize a release the sources do not contain. Two claims are supported by the authoritative locators. The learner must distinguish source support from model agreement and never promote an explicit UNKNOWN to dispatch.
 
-**Skill:** Separate a real change from ordinary variation. The learner does not re-verify the whole thread.
+**Skill:** Operate a source-bound, typed, independently reviewed correction loop. The learner does not re-verify the whole thread or average model opinions.
 
-**Platform:** Frozen paired files, pre-result policy, and restoration of baseline controls provide deterministic practice. A separate explicit paid lane compares two saved instruction files using the same pinned OpenRouter model, fixed paired prompts, repeat controls, and per-attempt receipts. Deterministic file scores do not measure live-model variation. No new model training.
+**Platform:** The supplied CLI (freeze --work W --out E; review --attempt E --reviewer source|skeptic --phase before|after; correct --attempt E; report --attempt E) runs five fresh pinned-model turns with isolated inputs. Deterministic initial checks run before reviews. Review schema enforces verdict (supported|contradicted|unknown), locator and quote that resolve to the packet sources. Correction is limited to the seven registered claims. Report audits all turns, rechecks support, and forces operational_dispatch "HOLD". Human records individual dispositions. No vote or automatic release.
 
-**Volume:** 40 pairs, so one fluent paragraph cannot be the comparison.
+**Volume:** Seven distinct claims across three packets; one fluent paragraph cannot cover them.
 
-**Worked gates:** Candidate A contains `2040 kg` with no source line. Candidate B renders `19:05Z` as `13:05` and omits both `UTC` and `MDT`. Either hit defeats that candidate. Do not use `1,584 kg`, `1,650 kg`, or `20:50Z`.
+**Worked gates:** C01 mass-invented, C02 clock-unlabelled, C03 clock-wrong-zone, C04 wrong-shipment, C05 gate-supported, C06 mass-supported, C07 dispatch-absent (null on correction). Authoritative locators and text from the PC-01/02/03 sources.json (Ridge Depot gate text, payload statements for SB-4 to Clinic T-8). Do not alter source facts.
 
-**Independence:** Does not consume the Monday afternoon verdict. Does not cite Module 07's White Rack movement, Icehouse Depot, that module's clinic, or its lot IDs.
-
+**Independence:** Does not consume the Monday afternoon verdict. Does not cite Module 07's White Rack movement, Icehouse Depot, that module's clinic, or its lot IDs. Ridge Depot, Clinic T-8, SB-4 facts stay inside this packet only.
 ## A harmless question can still file a Night Desk release
 
 **Status:** adopted. The shipped lab uses the 40 notes and supplied probes. Retired thin-adapter inputs are not active work. Historical evidence stays historical.
@@ -381,8 +380,8 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Tue block 3 | The clerk totals the Chalk Line pile from a fluent summary, counts a corrected requisition twice, and obeys the note that calls itself approved. | Seven typed questions per message, validated; supersession and gates applied in code; the hostile note and the authority change referred to a person; declared confidence measured against frozen labels. |
 | Wed block 1 | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
 | Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
-| Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |
-| Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Hard gate declared first. One unsourced mass, or one unnamed zone, defeats that brief. Baseline restored. |
+| Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | The n8n AI Agent, connected to OpenRouter, writes the spreadsheet by calling a tool. The learner downloads the file and checks it. A note in the batch does not release a lot. |
+| Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Exact claim checks, blind source and skeptical reviews, source-constrained correction, and two fresh full-set reviews expose unsupported facts and reviewer errors. A human resolves disagreements by evidence; missing dispatch authority remains unknown and operational dispatch stays HOLD. |
 | Thu block 2 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |
 | Thu block 3 | The learner records capability without a live interaction, or binds the service beyond loopback. | Package plus live runtime proof: pinned weights identity, loopback-only service, live interaction, stop, restore, digest-checked kit copy; fresh-terminal structure check passes; learner retains ownership. |
 

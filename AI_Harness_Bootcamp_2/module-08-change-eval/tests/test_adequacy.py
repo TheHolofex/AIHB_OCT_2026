@@ -1,78 +1,55 @@
 #!/usr/bin/env python3
-"""Prove the Module 8 oracle can fail each live criterion."""
+"""Adversarial aggregation tests; authored judgments are not live evidence."""
+import copy
+import unittest
 
-from __future__ import annotations
-
-import re
-import shutil
-import subprocess
-import sys
-import tempfile
-from pathlib import Path
-
-from mutations import MUTATIONS
-
-MODULE = Path(__file__).resolve().parents[1]
-CID_RE = re.compile(r"^\s*(?:PASS|FAIL)\s+(M8-[A-Z0-9-]+):", re.M)
-FAIL_RE = re.compile(r"^\s*FAIL\s+(M8-[A-Z0-9-]+):", re.M)
+from test_module_08 import M, ORIGINAL, SOURCES, corrected_claims, review_document
 
 
-def run_oracle(root: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, "tests/test_module_08.py"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-    )
+def reviews_for(claims):
+    return {label: review_document(claims) for label in M.STAGES if label != "correct"}
 
 
-def main() -> int:
-    live = run_oracle(MODULE)
-    output = live.stdout + live.stderr
-    print(output, end="" if output.endswith("\n") else "\n")
-    if live.returncode != 0:
-        print("LIVE ORACLE FAIL — adequacy does not run against a red module")
-        return 1
+class EnsembleDecisions(unittest.TestCase):
+    def test_unanimous_false_approval_cannot_defeat_a_source_fact(self):
+        correction = corrected_claims()
+        correction[0]["value"] = "2040 kg"
+        rows = M.claim_findings(ORIGINAL, correction, SOURCES, reviews_for(correction))
+        self.assertEqual(rows[0]["after"]["source"]["verdict"], "supported")
+        self.assertEqual(rows[0]["after"]["skeptic"]["verdict"], "supported")
+        self.assertTrue(rows[0]["content_hold"])
+        self.assertEqual(rows[0]["final_deterministic"]["verdict"], "contradicted")
 
-    live_ids = set(CID_RE.findall(output))
-    unproven = live_ids - {m.cid for m in MUTATIONS}
-    survivors: list[str] = []
-    unapplied: list[str] = []
+    def test_repair_rechecks_supported_controls_and_reports_regression(self):
+        correction = corrected_claims()
+        correction[5]["value"] = "9999 kg"
+        rows = M.claim_findings(ORIGINAL, correction, SOURCES, reviews_for(correction))
+        self.assertFalse(rows[0]["content_hold"])
+        self.assertTrue(rows[5]["regression"])
+        self.assertTrue(rows[5]["content_hold"])
+        self.assertFalse(rows[4]["regression"])
 
-    for mutation in MUTATIONS:
-        with tempfile.TemporaryDirectory() as tmp:
-            reformation = Path(tmp) / "reformation"
-            copy = reformation / "AI_Harness_Bootcamp_2" / MODULE.name
-            shutil.copytree(MODULE, copy, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-            shutil.copytree(MODULE.parents[1] / "shared", reformation / "shared", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-            try:
-                mutation.apply(copy)
-            except Exception as exc:
-                unapplied.append(f"{mutation.cid}: {exc!r}")
-                print(f"  SKIP {mutation.cid} {mutation.what} — {exc!r}")
-                continue
-            after = run_oracle(copy)
-            killed = mutation.cid in set(FAIL_RE.findall(after.stdout + after.stderr))
-            print(f"  {'killed' if killed else 'SURVIVED'} {mutation.cid} {mutation.what}")
-            if not killed:
-                survivors.append(f"{mutation.cid} survived: {mutation.what}")
+    def test_unknown_is_usable_only_when_the_assertion_is_withdrawn(self):
+        correction = corrected_claims()
+        reviews = reviews_for(correction)
+        retained = M.claim_findings(ORIGINAL, correction, SOURCES, reviews)[6]
+        self.assertEqual(retained["final_deterministic"]["verdict"], "unknown")
+        self.assertFalse(retained["content_hold"])
+        correction[6]["value"] = "The shipment is released for dispatch."
+        invented = M.claim_findings(ORIGINAL, correction, SOURCES, reviews)[6]
+        self.assertTrue(invented["content_hold"])
+        self.assertEqual(invented["final_deterministic"]["verdict"], "unknown")
 
-    ok = not survivors and not unapplied and not unproven
-    if survivors:
-        print(f"SURVIVORS: {len(survivors)}")
-        for item in survivors:
-            print("   ", item)
-    if unapplied:
-        print(f"UNAPPLIED: {len(unapplied)}")
-        for item in unapplied:
-            print("   ", item)
-    if unproven:
-        print(f"UNPROVEN: {sorted(unproven)}")
-    if ok:
-        print(f"PASS: {len(MUTATIONS)} mutations, 0 survivors")
-        return 0
-    return 1
+    def test_disagreement_survives_a_successful_deterministic_repair(self):
+        correction = corrected_claims()
+        reviews = reviews_for(correction)
+        reviews["after-skeptic"]["answers"][0]["verdict"] = "unknown"
+        rows = M.claim_findings(ORIGINAL, correction, SOURCES, reviews)
+        self.assertEqual(rows[0]["final_deterministic"]["verdict"], "supported")
+        self.assertTrue(rows[0]["review_disagreement"])
+        self.assertTrue(rows[0]["content_hold"])
+        self.assertEqual(rows[0]["reviewers_disagreeing_with_check"], ["skeptic"])
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    unittest.main()

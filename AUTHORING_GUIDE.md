@@ -66,12 +66,12 @@ Legacy P4 is an authoring source only. Record adaptation provenance in Module 02
 | Source verification and output discernment | 01 |
 | Human-reviewed knowledge vault, saved instruction and load proof, source-as-data control, fresh-session retrieval | 02 |
 | MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
-| Hidden-fault diagnosis and recovery | 04 |
-| Observed-run analysis and predicate specification | 05 |
-| Fixed workflow and deterministic outer-state change | 06 |
-| Variation-aware candidate comparison and rollback | 07 |
-| Live-agent allow-list, write jail, planted-instruction refuse | 08 |
-| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 09 |
+| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 04 |
+| Hidden-fault diagnosis and recovery | 05 |
+| Observed-run analysis and predicate specification | 06 |
+| Fixed workflow and deterministic outer-state change | 07 |
+| Hallucination control with structured claim checks, isolated reviewer agents, correction, re-review and human disposition | 08 |
+| Live-agent allow-list, write jail, planted-instruction refuse | 09 |
 | Package local-runtime instructions/controls (no undeclared deps) for fresh-terminal structure verification | 10 |
 
 ## Responsibility before release
@@ -101,7 +101,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 The learner specifies and configures bounded behavior in **supplied controls**: questions, thresholds, policies, and rules written in the formats those controls read. The adapter implements any new checker, router, or runner and owns its identity. If a needed behavior can't be expressed in a supplied control, record the behavior, implementation dependency, owner, and `HOLD`; do not claim the control was implemented. A model-backed control is pinned to one model and version, and its evidence records the build that answered.
 
-The fixed workflow is the highest common-core machinery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, the simpler alternative, the added risk, and the escalation owner.
+The fixed workflow is the highest common-core machinery. Core permits a local, human-reviewed Markdown knowledge vault and a bounded human-started read-only ensemble for Module 08. Reviewers receive isolated inputs; the correction stage sees completed reviews as evidence, and fresh reviewers recheck the entire correction. No model vote grants authority. Autonomous state updates, adaptive flow, autonomous agent collaboration, multi-agent writes, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, simpler alternative, added risk, and escalation owner.
 
 ## Deterministic and stochastic evidence
 

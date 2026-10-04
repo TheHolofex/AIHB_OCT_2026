@@ -1,18 +1,28 @@
-# Module 8 · Evaluate a change with variation controls
+# Module 8 · Control hallucinations
 
-Decide whether a proposed change can be adopted without losing a required source check. Freeze the cases, configurations, and decision rule before you open any results. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate, even when its other results look better.
+Produce a corrected Slope Brief that preserves the useful facts without filling gaps by guesswork. Check the claims against structured source data, run two independent reviewer agents, have another agent correct the draft, and review the correction afresh. You own the final decision.
 
-The fictional movement carries heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The forty case packets, each with three briefs, are practice data written in advance, not records of OpenRouter calls. Nothing here authorizes a real load sheet or movement.
+Plan for a little over two hours (a rough estimate). The complete sequence makes five paid model turns. You need the Python, pinned Oh My Pi, and OpenRouter access verified in [setup](../../module-00-setup/README.md). You won't write code or connect Jev's API.
 
-A **hard gate** is a condition every result must meet. Keep the format check, the mass gate, and the time-zone gate separate: malformed output, an unsourced mass, or a missing time-zone label can each reject a candidate on its own. A **paired comparison** gives the baseline and the candidate the same source packet.
+## The decision rule
 
-The core comparison checks fixed outputs written in advance, so running that check again tells you nothing about model variation. In the optional live comparison, repeated model calls show how outputs differ under the same conditions, so you can judge whether an apparent improvement holds up across attempts.
+The fictional packet concerns heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. Three source packets support seven material claims. The starting draft contains deliberate defects; it is authored practice data, not evidence of a live model's behavior.
 
-Plan for a little over two hours on Thursday (a rough estimate).
+Apply this rule throughout: **a claim needs the right source, not enough agreeing reviewers.** Code checks what can be checked exactly. Agents judge the relationship between a claim and its evidence. You inspect that relationship before using the result.
 
-## Prepare a separate attempt
+| Finding | Your action |
+|---|---|
+| A required claim is missing, duplicated, or malformed. | Hold the output. You can't inspect a complete correction. |
+| A number, unit, zone, or source identity fails an exact check. | Keep that claim on hold even if both agents approve it. |
+| A citation exists, but concerns another shipment or supports a weaker statement. | Reject the claimed support. Inspect the relevant source. |
+| The packet doesn't establish a material fact or permission. | Keep it explicitly unknown. Name the evidence and owner needed to resolve it. |
+| Reviewers disagree. | Compare their evidence. Record your source-backed disposition or retain the hold; don't decide by vote. |
 
-Create a new work folder and a separate evidence folder. Use the Python and checkout you verified in [setup](../../module-00-setup/README.md). These commands work from any folder and leave earlier attempts alone. `W` is your work folder; `E` holds your records outside it. Don't open the candidate briefs yet.
+`PASS` in a command means that command's technical checks completed. It is not a learner score, proof that every model judgment is right, or permission to dispatch a vehicle.
+
+## 1. Prepare a separate attempt
+
+Create a work folder outside the checkout. `W` names that work folder; `E` names the separate evidence folder that the freeze command will create. These commands leave earlier attempts alone. If your checkout is elsewhere, change only the `R` line to its verified location.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -25,8 +35,7 @@ RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
 mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-08-run" && printf 'RUN=%s\n' "$RUN"
 W="$HOME/course-evidence/module-08-$RUN/work"
 E="$HOME/course-evidence/module-08-$RUN/evidence"
-"$PY" "$R/shared/prepare_work.py" 08 "$W" &&
-"$PY" -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
+"$PY" "$R/shared/prepare_work.py" 08 "$W"
 ```
 
 **Terminal: PowerShell, ordinary user.**
@@ -42,18 +51,17 @@ $W = "$HOME\course-evidence\module-08-$RUN\work"
 $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 & $PY "$R\shared\prepare_work.py" 08 "$W"
 if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
-& $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier (record it), then `PASS: created` followed by your work path, then two `Next` commands that display the policy file. You can skip those; the next step opens that file. The work folder contains `shared/cases`, `shared/controls`, `shared/baseline`, and the two scripts you'll run, `scripts/evaluate_pairs.py` and `scripts/restore_baseline.py`. Your evidence folder is separate.
+**Expected:** `RUN=` and an identifier, followed by `PASS: created` and your work path. Record the identifier. The printed `Next` commands display the case legend; you may read that file in your editor instead. The work folder contains `shared/case` and `shared/controls`. The evidence folder doesn't exist yet.
 
-**Stop:** A command fails, a destination already exists, or Python isn't the verified 3.12-or-newer interpreter.
+**Stop:** Preparation fails, the destination already exists, or Python isn't the verified 3.12-or-newer interpreter.
 
-**Recovery:** Keep the existing attempt. Fix the prerequisite through setup, then repeat this block with a new `RUN`. Don't reset the checkout or delete an old work folder.
+**Recovery:** Preserve the attempt. Fix the prerequisite through setup, then repeat the preparation with a new `RUN`. Don't reset the checkout or delete earlier work.
 
 ### If you open a new terminal
 
-A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
+A closed terminal forgets the variables. Reload the existing attempt without preparing another copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -81,253 +89,60 @@ $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 "RUN=$RUN"; "W=$W"
 ```
 
-**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+**Expected:** `RUN=` matches the identifier you recorded, and `W=` names the existing work folder.
 
-**Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
+**Stop:** The identifier differs or the work folder is missing.
 
-**Recovery:** If the identifier differs, a later attempt overwrote the saved marker: set `RUN` by hand to the value you recorded and run the block again. If the folder is missing, the attempt was never prepared, so prepare it with the first block.
+**Recovery:** A later attempt may have replaced the saved marker. Set `RUN` to your recorded identifier, then set `W` and `E` from it using the last lines above. If no work folder was prepared, return to the preparation commands. A new terminal also needs the key entered again before a paid call.
 
-## Freeze your rule and input identities
+## 2. Inspect the claims before asking the agents
 
-In your editor, open `W/shared/controls/policy.json` and the three batch manifests next to it. The policy lists the forty case IDs, the three form rows whose values need a source (mass, gate time UTC, gate time MDT), the mass and time-zone gates, no exclusions, and `any_violation_rejects`.
+Open `W/shared/case/LEGEND.txt`, `claims.json`, and the three `PC-*/sources.json` files. A **locator** identifies one exact source record, such as `SB-PC-01#payload`. Read its text as well as its structured fields. `authoritative: true` applies to that record's stated fact; it is not blanket authority to act.
 
-Create `W/decision.md` in your editor. Before you open any candidate, write down what would reject either candidate, what counts as a failed case, and why a faster result can't excuse an unsupported material claim. Don't write an adoption decision yet.
+In your editor, create `W/notes.md`. Pick one claim you would use, one you would stop, and one whose evidence needs a closer look. For each, record the claim ID, source locator, and reason. Distinguish an unsupported assertion from a false one: missing permission is not proof that permission was denied.
 
-Freeze the file bytes without displaying the candidates. The record covers the policy, manifests, cases, gates, instructions, and restore copies.
+Open `W/shared/controls/schema.json` and the two `review-*.txt` instructions. Each reviewer answers the same narrow question for every claim with `supported`, `contradicted`, or `unknown`. A review also carries a locator, an exact source quotation, and a reason. The supplied checker rejects missing fields, extra claims, duplicate IDs, and invented quotations. It cannot establish that a real quotation logically supports the model's conclusion; you still need to read it.
 
-![Freeze the rule, cases, and input identities before opening candidates; a manifest identifies supplied files, not a model execution.](figures/m08-freeze-before-results.png)
+Consider this counterexample before any call: two agents approve `2255 kg` for the PC-01 shipment and quote the near-miss yard note. The quote is real. Open `SB-PC-01#payload-s14` and `SB-PC-01#payload`. Which shipment does each concern? Record which value can enter the brief and why agreement cannot resolve the mismatch.
 
-*Freeze the rule, cases, and input identities before opening candidates; a manifest identifies supplied files, not a model execution.*
+**Expected:** Your notes distinguish structure, source support, and permission to act. You can point to evidence that would defeat two agreeing reviewers.
 
-<details markdown="1">
-<summary>Figure text</summary>
+**Stop:** You can't tell which source belongs to the claim, or you need information outside the packet to settle it.
 
-Freeze the rule before opening any candidate.
+**Recovery:** Keep that claim unknown and name the missing evidence. Don't fill the gap from model memory or a web search about this fictional movement.
 
-1. Four inputs go into one frozen record:
-   - the rejection rule, `any_violation_rejects`
-   - the 40 case IDs
-   - the input and configuration hashes
-   - the batch manifests. A manifest names a supplied file; it is not proof that a model produced that file.
-2. All four go into one frozen record, `pre-result.json`.
-3. Then inspect the candidates.
+## 3. Freeze the packet and run the exact checks
 
-Results cannot change the rule or the record: nothing goes back from the candidates or their results.
-
-</details>
+Freeze the original claims, sources, and controls before the reviews. A **fingerprint** is a SHA-256 digest used to detect changed file bytes. The command preserves the inputs and writes the first deterministic findings without making a model call.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-"$PY" -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); files=sorted(p for p in (w/'shared').rglob('*') if p.is_file() and p.suffix in ('.json','.md','.py')); hashes={p.relative_to(w).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}; f=Path(sys.argv[2]).open('x',encoding='utf-8'); json.dump({'rule':'any_violation_rejects','sha256':hashes},f,indent=2); f.close(); print('FROZEN',len(hashes),'input/control files')" "$W" "$E/pre-result.json"
+"$PY" "$M/scripts/hallucination.py" freeze --work "$W" --out "$E"
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
-& $PY -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); files=sorted(p for p in (w/'shared').rglob('*') if p.is_file() and p.suffix in ('.json','.md','.py')); hashes={p.relative_to(w).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}; f=Path(sys.argv[2]).open('x',encoding='utf-8'); json.dump({'rule':'any_violation_rejects','sha256':hashes},f,indent=2); f.close(); print('FROZEN',len(hashes),'input/control files')" "$W" "$E\pre-result.json"
+& $PY "$M\scripts\hallucination.py" freeze --work "$W" --out "$E"
+if ($LASTEXITCODE -ne 0) { throw 'Freeze stopped; preserve this attempt.' }
 ```
 
-**Expected:** The terminal prints `FROZEN`, a file count, and `input/control files`. `E/pre-result.json` holds the fingerprints of the files, and your decision rule was written before you saw any outcomes.
+**Expected:** A line beginning `PASS: frozen 7 claims`. Open `E/initial-checks.json` and compare it with your notes. The saved `frozen` folder retains the draft, source packets, and controls. Freezing a defective draft preserves a failure for inspection; it doesn't make the draft acceptable.
 
-**Stop:** The record already exists, an input is missing, or you've already picked cases based on their results.
+**Stop:** You see `HOLD:`, the evidence destination already exists, or a required input is missing or malformed.
 
-**Recovery:** Keep the first attempt and start a new one. A new filename doesn't turn a rule written after you saw results into one written before.
+**Recovery:** Keep the error and original files. Resolve the named prerequisite and prepare a fresh attempt. Never edit a frozen source or a fingerprint to make a check pass.
 
-## Check the baseline, then evaluate every pair
+## 4. Give two reviewers separate looks
 
-First confirm that all forty baseline briefs pass, then score every baseline, A, and B brief on the same cases. Each case has `sources.json`, a three-row form, and three briefs: baseline, A, and B. A **locator** identifies the exact source record that supports a value. The mass and time-zone gates check each value together with its own locator; the format check records whether the brief follows the required form. A zone word elsewhere can't fix a clock value without its label. Judge a number by whether a source supports it, not by whether you've seen it in an earlier failure.
+Run the source reviewer and the skeptical reviewer in separate fresh sessions. Each gets the same frozen claims and sources. Neither gets the other review, your notes, or the deterministic findings. The first checks exact support; the second looks for wrong-case evidence and conclusions that go beyond the source.
 
-A malformed source packet, or one for the wrong case, stops the comparison. Don't count it as a candidate failure. A malformed candidate with valid sources stays in the comparison as a format failure.
-
-Run every baseline first. In both shells, the loop remembers a failure even if a later case passes.
-
-![Compare each candidate against its own same-case baseline and check each material value and locator; an average cannot erase a failed gate.](figures/m08-paired-hard-gates.png)
-
-*Compare each candidate against its own same-case baseline and check each material value and locator; an average cannot erase a failed gate.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-A single violation still counts.
-
-- One case's `sources.json` feeds three briefs: the baseline, candidate A, and candidate B.
-- Each brief faces four separate checks:
-  - format
-  - mass with its `#payload` locator
-  - UTC time with its `#gate` locator
-  - MDT time with its `#gate` locator
-- Each value is checked together with its own locator.
-- The baseline must pass every check. If any baseline fails, the comparison is on HOLD: do not evaluate adoption. A baseline failure is not a candidate rejection.
-- For candidates A and B, any one failed check rejects that candidate. A failed check is never averaged with other checks or other cases.
-- Every result is kept.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-baseline_failed=0
-for case_dir in "$W"/shared/cases/PC-*; do
-  "$PY" "$W/shared/controls/hard_gates.py" "$case_dir/baseline.md" || baseline_failed=1
-done
-if [ "$baseline_failed" -eq 0 ]; then echo 'BASELINE PASS'; else echo 'HOLD: a baseline failed; do not evaluate adoption.'; fi
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-$baselineFailed = $false
-foreach ($caseDir in Get-ChildItem "$W\shared\cases" -Directory -Filter 'PC-*') {
-  & $PY "$W\shared\controls\hard_gates.py" "$($caseDir.FullName)\baseline.md"
-  if ($LASTEXITCODE -ne 0) { $baselineFailed = $true }
-}
-if ($baselineFailed) { throw 'HOLD: a baseline failed; do not evaluate adoption.' } else { 'BASELINE PASS' }
-```
-
-**Expected:** Forty `PASS` lines, then `BASELINE PASS`. It says nothing about whether either candidate is good.
-
-**Stop:** Any line starting `HOLD:`, or fewer than forty `PASS` lines.
-
-**Recovery:** Save the failed output. Check the named input against your frozen record; don't fix a brief by hand to force the baseline to pass.
-
-Now run the supplied evaluator from any directory.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/evaluate_pairs.py" "$W/shared/cases" "$W/shared/controls/policy.json" "$W/out/results.csv"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\evaluate_pairs.py" "$W\shared\cases" "$W\shared\controls\policy.json" "$W\out\results.csv"
-```
-
-**Expected:** `EVALUATED 120`, meaning all forty cases have a baseline, A, and B row. It doesn't mean the candidates passed. Open `W/out/results.csv` in your editor or a spreadsheet and look at `format_ok`, `mass_gate`, `zone_gate`, `passed`, `reason`, and the three identity columns.
-
-**Stop:** A case is missing, an identity differs, the evaluator holds, or the output destination already exists.
-
-**Recovery:** Keep the output and the error. Fix the input problem before you start a new attempt. Don't drop the difficult case or replace an earlier result.
-
-## Make the bounded adoption decision
-
-For each failed row, open that brief and the `sources.json` beside it. Trace the material value back to its exact authoritative locator. Record the case, candidate, gate, and source evidence in `decision.md`. Apply your original rule even if most cases pass.
-
-For each candidate, report how many distinct cases would need repair. This **cost proxy** is a count of failed cases that hints at repair work; it isn't measured repair time or expense. Keep it separate from observed time, tokens, and money. These prewritten outputs tell you nothing about real API cost, and they don't show that one live model is better than another.
-
-Before you accept the comparison, check that your frozen inputs still match.
-
-![State only what the observed comparison supports, and keep the failed-case repair proxy separate from measured time, token usage, and cost estimates.](figures/m08-bounded-decision.png)
-
-*State only what the observed comparison supports, and keep the failed-case repair proxy separate from measured time, token usage, and cost estimates.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Keep the claim inside the evidence.
-
-Four things set the limit of the bounded decision: the observed cases, the frozen rule, the named configuration, and the actual repetitions. Anything about unseen cases, including general superiority, is outside that limit: make no unseen-case claim.
-
-Three measurements stay separate:
-
-- The failed-case count is a repair proxy, not repair time.
-- Elapsed time, tokens, and the SDK estimate are recorded on their own.
-- The provider bill is unobserved unless you check it in your account.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); record=json.loads(Path(sys.argv[2]).read_text()); changed=[name for name,digest in record['sha256'].items() if hashlib.sha256((w/name).read_bytes()).hexdigest()!=digest]; print('FROZEN IDENTITY PASS' if not changed else 'HOLD: '+', '.join(changed)); sys.exit(bool(changed))" "$W" "$E/pre-result.json"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY -c "import hashlib,json,sys; from pathlib import Path; w=Path(sys.argv[1]); record=json.loads(Path(sys.argv[2]).read_text()); changed=[name for name,digest in record['sha256'].items() if hashlib.sha256((w/name).read_bytes()).hexdigest()!=digest]; print('FROZEN IDENTITY PASS' if not changed else 'HOLD: '+', '.join(changed)); sys.exit(bool(changed))" "$W" "$E\pre-result.json"
-```
-
-**Expected:** `FROZEN IDENTITY PASS`, which means every file you froze still matches the fingerprint you recorded before results. Your decision cites the actual failures instead of averaging them away.
-
-**Stop:** The identity check fails, or your decision depends on a rule you changed after looking at results.
-
-**Recovery:** Hold the adoption decision and keep the mismatch. Fix the process in a new attempt; don't change the result you've already seen.
-
-## Demonstrate restoration
-
-Swap in the candidate instruction, restore the baseline from its stored fingerprints, and prove the rerun is byte-identical. The block makes the checked instruction the active one (saving a copy of the previous first), then runs the supplied restore. This changes a control on purpose; it doesn't edit a candidate brief.
-
-![Restore the hash-identified baseline, retain candidate attempts, and prove the rerun matches the original result bytes.](figures/m08-restore-baseline.png)
-
-*Restore the hash-identified baseline, retain candidate attempts, and prove the rerun matches the original result bytes.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Restore the baseline and confirm the rerun matches.
-
-1. Make the checked instruction active, saving the previous active file first.
-2. The stored hashes identify the frozen copies.
-3. Restore the baseline control and briefs from those copies. The candidate attempts are kept, not deleted.
-4. Rerun the evaluation.
-5. Compare the original and restored result bytes.
-   - Bytes match: restoration complete.
-   - Bytes differ: HOLD.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); active=w/'shared/controls/active-instruction.md'; backup=Path(sys.argv[2]).open('xb'); backup.write(active.read_bytes()); backup.close(); active.write_bytes((w/'shared/controls/candidate-checked-instruction.md').read_bytes())" "$W" "$E/active-before-selection.md" &&
-"$PY" "$W/scripts/restore_baseline.py" "$W" &&
-"$PY" "$W/scripts/evaluate_pairs.py" "$W/shared/cases" "$W/shared/controls/policy.json" "$W/out/restored-results.csv" &&
-"$PY" -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); same=(w/'out/results.csv').read_bytes()==(w/'out/restored-results.csv').read_bytes(); print('RESTORED RESULTS MATCH' if same else 'HOLD: results differ'); sys.exit(not same)" "$W"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); active=w/'shared/controls/active-instruction.md'; backup=Path(sys.argv[2]).open('xb'); backup.write(active.read_bytes()); backup.close(); active.write_bytes((w/'shared/controls/candidate-checked-instruction.md').read_bytes())" "$W" "$E\active-before-selection.md"
-if ($LASTEXITCODE -ne 0) { throw 'Selection stopped; preserve the attempt.' }
-& $PY "$W\scripts\restore_baseline.py" "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Restore held; do not continue.' }
-& $PY "$W\scripts\evaluate_pairs.py" "$W\shared\cases" "$W\shared\controls\policy.json" "$W\out\restored-results.csv"
-if ($LASTEXITCODE -ne 0) { throw 'Restored evaluation held.' }
-& $PY -c "from pathlib import Path; import sys; w=Path(sys.argv[1]); same=(w/'out/results.csv').read_bytes()==(w/'out/restored-results.csv').read_bytes(); print('RESTORED RESULTS MATCH' if same else 'HOLD: results differ'); sys.exit(not same)" "$W"
-```
-
-**Expected:** Three lines in order: `RESTORE OK`, `EVALUATED 120`, `RESTORED RESULTS MATCH`. The restore checked the active instruction and all forty baseline briefs against their hashes and bytes, the second evaluation matches the first byte for byte, and the candidate attempts are untouched.
-
-**Stop:** The frozen restore source changed, a restore check holds, or the compared bytes differ.
-
-**Recovery:** Keep both results and the control backup. Don't rebuild a baseline from memory or patch a candidate. Record what broke before you prepare a fresh copy.
-
-## Write the handoff
-
-In `W/handoff.md`, name the frozen policy record, the comparison results, your adoption decision, the repair proxy, and the restore evidence. State the limit: comparing fixed, supplied briefs doesn't measure how a live instruction behaves over repeated runs.
-
-Before you stop, check that `handoff.md` names `pre-result.json`, `results.csv`, `restored-results.csv`, your decision, the failed-case counts for A and B, and the stated limit.
-
-<details class="rf-stretch" markdown="1">
-<summary>Optional stretch: separate an instruction effect from ordinary variation</summary>
-
-## Preregister and run the live comparison
-
-Compare the supplied baseline and checked instructions on PC-01–PC-06, with three fresh repeats per instruction and case, alternating which goes first. After those 36 calls, restore the baseline and run two fresh controls on PC-01 and PC-02. Don't choose replacements after you see results.
-
-Open both instruction files in your editor. Explain the one check the candidate adds, and predict where it might help, make no difference, or add work. Record that prediction in `decision.md` before you run anything. Keep the model, source/form pair, prompt, and permissions the same within each pair.
-
-This stretch costs money. Use only your OpenRouter key, which you enter in the terminal rather than save in a file, and the pinned Sonnet model from setup. The runner makes one call at a time, never retries a failed call, and never switches provider or model. If your key, credit, or the model isn't available, this stretch is blocked; that's not a reason to use a different provider.
-
-Run this in the same terminal window that holds `PY`, `W`, `E`, and `M`. If you opened a new terminal, run the block under "If you open a new terminal" first.
+All calls use `openrouter/anthropic/claude-sonnet-4.6` through the pinned launcher. Different roles are not different model families. The supplied controls allow reads only; the agents cannot edit the packet or authorize a movement. Calls are not retried or replaced with another model. Check your provider account's available credit and spending limit before starting; five turns is a call count, not a price guarantee.
 
 ### Enter your key in this terminal
 
-Enter the key through a hidden prompt in this terminal. Paste the first command by itself and press Enter. Type or paste the key at the prompt (it shows nothing) and press Enter again. Then paste the second block. A new terminal starts without the key.
+Paste the first command by itself and press Enter. Enter the key at the hidden prompt and press Enter again. Then paste the second block. Keep the key out of notes, files, chat, and shell profiles.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -341,11 +156,11 @@ IFS= read -r -s OPENROUTER_API_KEY
 $secret = Read-Host 'OpenRouter key' -AsSecureString
 ```
 
-**Expected:** The terminal waits silently for the key, then returns to its ordinary prompt without showing the value.
+**Expected:** The terminal waits for the key without showing its value, then returns to the ordinary prompt.
 
-**Stop:** Characters appear as you type, or you're not sure which program is reading the input.
+**Stop:** The key's characters appear, or you aren't sure which program is reading the input.
 
-**Recovery:** Cancel with Ctrl+C and close that terminal. If the value was shown, revoke the key at OpenRouter and use a replacement.
+**Recovery:** Cancel with Ctrl+C and close the terminal. If the key was exposed, revoke it at OpenRouter and use a replacement.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -369,38 +184,140 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid or has credit.
+**Expected:** `SET` proves the key is present in this terminal, not that it is valid or has credit.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
-**Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
+**Recovery:** Repeat the hidden prompt. Don't print the environment to troubleshoot access.
 
-Before the first call, the runner freezes the schedule and the file identities. Each model attempt gets only `sources.json` and `form.md`, plus permission to create `brief.md`. The launcher, not the batch runner, creates each receipt folder.
+### Run both first reviews
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-"$PY" "$M/scripts/stretch_runner.py" "$W" "$E/live-comparison"
+"$PY" "$M/scripts/hallucination.py" review --attempt "$E" --reviewer source --phase before &&
+"$PY" "$M/scripts/hallucination.py" review --attempt "$E" --reviewer skeptic --phase before
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
-& $PY "$M\scripts\stretch_runner.py" "$W" "$E\live-comparison"
+& $PY "$M\scripts\hallucination.py" review --attempt "$E" --reviewer source --phase before
+if ($LASTEXITCODE -ne 0) { throw 'Source review stopped; preserve this attempt.' }
+& $PY "$M\scripts\hallucination.py" review --attempt "$E" --reviewer skeptic --phase before
+if ($LASTEXITCODE -ne 0) { throw 'Skeptical review stopped; preserve this attempt.' }
 ```
 
-**Expected:** With everything in place, 38 attempts, each checked on its own, produce `comparison.json`, `attempts.csv`, raw receipts, the briefs the tool wrote, and `restore.json`. `COMPLETE` means every planned observation exists, not that the checked instruction won. Without the key, the runner exits 2 before it creates any comparison attempt or contacts a provider.
+**Expected:** Lines beginning `PASS: before source review` and `PASS: before skeptic review`. The typed reviews appear in `E/reviews/before-source.json` and `before-skeptic.json`. Each corresponding folder under `E/runs` preserves the raw model response and launcher receipts. A review passing the receipt and schema checks can still contain a wrong judgment.
 
-**Stop:** Any call is incomplete, a frozen identity changes, restoration fails, the provider rejects a request, or the runner stops on its own cost estimate. A content-gate failure is an observation to keep, not a cue to retry until the answer passes.
+**Stop:** Either command holds, a required source read is unproved, or a review omits a claim, cites a missing record, or supplies a quotation that isn't in that record.
 
-**Recovery:** Keep the whole comparison, including its first failure. Fix the missing prerequisite before you consider a new preregistered attempt. Don't merge favorable rows from different attempts, leave out failures, or change the runner so it doesn't stop.
+**Recovery:** Preserve the whole attempt, including the raw response. A missing key can be entered before a call starts. Once a call has produced an attempt, don't rerun it under the same name or edit its response. Correct the prerequisite before beginning another complete attempt; never combine favorable reviews from different attempts.
 
-## Interpret the paired observations
+## 5. Compare evidence before correcting
 
-Open `comparison.json` and `attempts.csv`. For each case, compare the three baseline outcomes with the three checked outcomes. Report every paired disagreement (a baseline attempt and a checked attempt with different outcomes) and any differences among repeats of the same instruction. Keep every preregistered attempt visible. One better answer can't separate an instruction's effect from ordinary variation. Under the frozen rule, a single violation by the checked instruction rejects adoption. You may see no improvement at all.
+Open both reviews beside `initial-checks.json` and your notes. For every claim, compare the verdicts, locators, quotations, and reasons. Agreement on `supported` is a finding to inspect, not an acceptance rule. Agreement on `unknown` can be the appropriate result.
 
-Report the failed-case repair count separately from elapsed time, raw token usage, and the software library's cost estimate, which the receipts label as an SDK estimate. You don't know what the provider billed unless you check it in your account yourself; don't call an estimate a bill. Check the two restored controls and the hash of the instruction that was actually restored.
+Add a short entry to `W/notes.md` for each disagreement or reviewer mistake:
 
-In your stretch conclusion, explain what these six cases support, what they don't show, and what's still uncertain. A finished model comparison doesn't certify a human operator, and it doesn't prove one instruction is better in general.
+- What exact claim is at issue?
+- What does the cited source actually establish, for which shipment?
+- Is the conflict settled by an exact check, by the source text, or not at all?
+- What correction is supported, or what must stay unknown?
 
-</details>
+If the agents agree on every row, still inspect every source connection. Use the PC-01 counterexample from Step 2 to explain why their agreement alone would not have been enough.
+
+**Expected:** You can explain the evidence behind each proposed change and identify the claims that should remain unchanged. The original reviews remain intact.
+
+**Stop:** A proposed repair depends on a guess, a reviewer has supplied a fact absent from the packet, or you would need a majority vote to choose.
+
+**Recovery:** Record the unresolved claim and the missing evidence. A correcting agent can preserve an unknown; it cannot manufacture the missing authority.
+
+## 6. Ask another agent to correct the complete claim set
+
+Give a fresh correcting agent the original packet, both reviews, and the deterministic findings. Reviews are suggestions to examine, not instructions that override the sources. The correcting agent must return all seven claims, preserve their identities, repair supported values, and use `null` for a fact the packet cannot establish. In these files, `null` means “unknown,” not zero, false, or permission denied.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/hallucination.py" correct --attempt "$E"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& $PY "$M\scripts\hallucination.py" correct --attempt "$E"
+if ($LASTEXITCODE -ne 0) { throw 'Correction stopped; preserve this attempt.' }
+```
+
+**Expected:** A line beginning `PASS: correction of 7 claims`. Open `E/correction.json`. The original draft remains in `E/frozen`; the correcting agent's raw response and receipts remain in `E/runs/correct`. This `PASS` establishes a complete, well-formed correction attempt, not factual acceptance.
+
+**Stop:** The command holds, the correction drops or adds a claim, changes a claim's case or kind, or invents a source.
+
+**Recovery:** Keep the failed correction. Don't hand-edit a model output into a passing receipt. If a well-formed correction contains a bad value, keep it for the next checks; don't hide the error by asking again until you like the answer.
+
+## 7. Review the correction without showing earlier verdicts
+
+Run both reviewers again in fresh sessions. Each sees the full corrected claim set and original sources, without the previous reviews or correction discussion. Check the claims that were already right as carefully as the repaired ones: a corrector can fix one number and damage another.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/hallucination.py" review --attempt "$E" --reviewer source --phase after &&
+"$PY" "$M/scripts/hallucination.py" review --attempt "$E" --reviewer skeptic --phase after
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& $PY "$M\scripts\hallucination.py" review --attempt "$E" --reviewer source --phase after
+if ($LASTEXITCODE -ne 0) { throw 'Fresh source review stopped; preserve this attempt.' }
+& $PY "$M\scripts\hallucination.py" review --attempt "$E" --reviewer skeptic --phase after
+if ($LASTEXITCODE -ne 0) { throw 'Fresh skeptical review stopped; preserve this attempt.' }
+```
+
+**Expected:** Lines beginning `PASS: after source review` and `PASS: after skeptic review`. `E/reviews/after-source.json` and `after-skeptic.json` account for the complete corrected claim set. Their new receipt folders under `E/runs` are separate from the first reviews.
+
+**Stop:** Either command holds, a claim is missing, or the reviewed input isn't the saved correction.
+
+**Recovery:** Retain the failure. A disagreement or a wrong judgment in a valid review belongs in the final evidence; it is not a reason to discard that review. Missing or malformed execution evidence holds the affected result.
+
+## 8. Check every change and make your own decision
+
+Build the final report. The supplied tool audits all five model runs, checks the frozen identities, reruns the exact checks, and compares the original and corrected claims. It does not count votes to authorize a release.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/hallucination.py" report --attempt "$E"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& $PY "$M\scripts\hallucination.py" report --attempt "$E"
+if ($LASTEXITCODE -ne 0) { throw 'Report holds; retain all findings and inspect the reason.' }
+```
+
+**Expected:** With complete valid execution evidence, the command writes `E/report.json`, `report.md`, and `human-decision.json`. A completed report can print a line beginning `PASS: report written; operational dispatch HOLD`. That means the report was assembled; inspect its claim findings before accepting even an internal summary. Operational dispatch remains on hold because the packet doesn't establish the required authority.
+
+**Stop:** A source or control changed, receipts are incomplete, a material fact still fails its exact check, or a previously supported claim regressed. Don't treat a favorable review as a substitute for the missing evidence.
+
+**Recovery:** Keep the report and failed attempt. Name the unresolved claim, missing fact or authority, and person who could resolve it. A fresh attempt is separate evidence, not a replacement for this one.
+
+Open `report.md` beside the original sources and complete `human-decision.json` in your editor. Inspect all seven claims; don't accept only the ones highlighted as changed. In each claim's `disposition`, record `USE`, `KEEP_UNKNOWN`, or `HOLD`; put the exact source locator and your explanation in `reason`. Complete `internal_summary_decision` and `unresolved_evidence_and_owner` for the brief as a whole. Keep `operational_dispatch` at `HOLD` and keep your human decision separate from the model receipts.
+
+Your final decision must answer:
+
+1. Which corrected claims are supported, and by which exact records? Did the supported controls remain intact?
+2. Which reviewer judgments did you reject or leave unresolved? What evidence outweighs their agreement or explains their disagreement?
+3. Is the corrected brief usable as a bounded internal source summary? If so, which unknowns must travel with it? If not, what holds it?
+4. What prevents dispatch, and who would need to supply the missing fact or authorization?
+
+Keep the whole evidence folder and your notes. A useful handoff lets someone inspect the original failure, independent reviews, correction, full recheck, and your source-backed decision without the chat.
+
+Five calls on one small packet do not establish a hallucination rate, calibrated confidence, or superiority over another model. Separate sessions do not remove shared model or source errors. The useful result is narrower: an inspectable correction with explicit limits.
+
+## Class-only boundary
+
+The Slope Brief case is fictional: heater-fuel cans move from Ridge Depot to Clinic T-8 on vehicle SB-4. Names, hours, and masses used as defects are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class review only.

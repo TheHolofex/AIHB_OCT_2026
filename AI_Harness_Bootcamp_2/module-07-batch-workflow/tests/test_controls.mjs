@@ -5,8 +5,8 @@ import { createHash } from 'node:crypto';
 
 // Execute the shipped Code bodies, with only their n8n input/binary contract.
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-const validate = new AsyncFunction('$input', '$', await readFile(new URL('../shared/controls/validate-batch.js', import.meta.url), 'utf8'));
-const checker = JSON.parse(await readFile(new URL('../shared/controls/receipt-checker.json', import.meta.url), 'utf8'));
+const validate = new AsyncFunction('$input', '$', await readFile(new URL('../reference/historical/controls/validate-batch.js', import.meta.url), 'utf8'));
+const checker = JSON.parse(await readFile(new URL('../reference/historical/controls/receipt-checker.json', import.meta.url), 'utf8'));
 const compare = new AsyncFunction('$input', checker.nodes.find(node => node.name === 'Compare complete files').parameters.jsCode);
 const row = (lot = 'A', overrides = {}) => ({ lot, permit: 'APPROVED', gate_window: 'OPEN', input_disposition: 'NEW', resource_exception: '', pending_status: 'OPEN', ...overrides });
 const batch = (rows, source = rows.map(({ pending_status, ...original }) => original)) => validate.call(

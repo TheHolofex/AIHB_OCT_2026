@@ -3440,5 +3440,51 @@
     },
     "integration_receipt": "final-integration.json",
     "pushed_or_deployed": false
+  },
+  "module08_hallucination_revision": {
+    "date": "2026-10-04",
+    "scope": "Structured source checks, blind ensemble review, evidence-bound correction, and complete recheck; this observation is separate from the historical campaign above.",
+    "evidence_root": "$HOME/course-evidence/module08-hallucination-20261004T195428Z-62c876a8",
+    "path_resolution": "Paths in this revision are relative to this revision's evidence_root.",
+    "runtime": {
+      "omp": "18.3.5",
+      "model_selector": "openrouter/anthropic/claude-sonnet-4.6",
+      "observed_omp_sessions": 5,
+      "independent_model_families": false
+    },
+    "report": {
+      "path": "attempt/report.json",
+      "sha256": "f46b4e768e84ed2f833dfb6124900f54a8cbfddd251b31a8862359412d4ea747",
+      "technical_complete": true,
+      "content_holds": false,
+      "corrected_claims_rechecked": 7,
+      "deterministic_issues": 0,
+      "disagreements_after": 0,
+      "regressions": 0,
+      "unknown_authority": 1,
+      "operational_dispatch": "HOLD"
+    },
+    "commands": {
+      "path": "commands.json",
+      "sha256": "0c320b30de8d68973b25b2e47d6dc1c6b7dfbf7f0860886938da87f7c25ac8be",
+      "missing_key_observation": "HOLD before a model attempt was created"
+    },
+    "offline_regressions": {
+      "test_module_08.py": 14,
+      "test_adequacy.py": 4,
+      "status": "passed"
+    },
+    "publication": {
+      "path": "publication-proof.json",
+      "observed": "Overview-to-lab navigation, eight steps, PowerShell tab and native command copy, desktop/mobile layouts without horizontal overflow, mobile course menu, no-JavaScript command access, no browser errors",
+      "screenshots": ["overview-desktop.webp", "lab-desktop.webp", "lab-mobile.webp", "lab-mobile-nojs.webp"]
+    },
+    "limitations": [
+      "One campaign is not a measured hallucination rate.",
+      "Separate same-model sessions do not establish independent model-family errors.",
+      "No Jev invocation or calibrated confidence measurement.",
+      "No human learner acceptance or timing measured.",
+      "Browser rendering is not Windows execution."
+    ]
   }
 }
