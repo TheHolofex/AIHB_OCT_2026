@@ -89,7 +89,9 @@ The merge retains main's spreadsheet-agent and structured hallucination-control 
 
 Current main already records a separate Module 07 core-contract mismatch: the course map produces AGENT_SHEET while `modules/core/07-fixed-workflow.md` still names retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` records that inherited `test_core_standard.py` HOLD. This integration does not claim a green combined full-course gate or rewrite that unrelated Module 07 contract.
 
-The subsequent Blue Gauge decision-model merge also retained Module 05's preparation/runtime contract. The 11 orchestration tests, 8 guard tests and now 71 root unit tests passed. Final publication and figure-link checks passed with 35 instructional pages, 420 raw downloads and 40 UI/generated assets. Obsolete generated Module 06 pages and its test-created bytecode cache were removed after that module's directory rename.
+The subsequent Blue Gauge decision-model merge also retained Module 05's preparation/runtime contract. The 11 orchestration tests, 8 guard tests and now 71 root unit tests passed. Publication and figure-link checks at that merge passed with 35 instructional pages, 420 raw downloads and 40 UI/generated assets. Obsolete generated Module 06 pages and its test-created bytecode cache were removed after that module's directory rename.
+
+The separately committed ungraded-course changes for Modules 00, 01 and 04, plus the course-gap analysis, were then retained without changing the orchestration controls. Publication and figure-link checks passed again: 35 instructional pages, 419 raw downloads and 40 UI/generated assets.
 
 ## Limits and historical boundary
 
