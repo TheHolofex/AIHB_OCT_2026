@@ -33,7 +33,7 @@ An answer can read well and still be wrong, so compare what the tool actually pr
 
 <div data-photo-band="route"></div>
 
-## Choose your assignment
+## Work through the assignments
 
 Start with setup, then work through the assignments in order. Each one comes with its own case and files and expects you to bring the skills you practiced in the earlier ones. Keep your work and evidence outside your checkout, the local copy of the course repository.
 
