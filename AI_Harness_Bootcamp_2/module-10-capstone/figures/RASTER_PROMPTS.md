@@ -124,48 +124,6 @@ Centre-left: a rectangle outlined as the service boundary, labelled 'Service bou
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
 
-## m10-package-boundary
-
-- Title: What travels in the kit
-- Native size: 1536×1024; published SHA-256: `e68fe5c4b19e127a28f66894893a877aff577fe9282db26ec68b0740864e00f2`
-- Accepted attempt: 01 of 1
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "What travels in the kit"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Declared kit"
-- "shared/PACKAGE.md (instructions)"
-- "scripts/ (adapters)"
-- "shared/case/ (case and rules)"
-- "shared/controls/ (active control)"
-- "shared/baseline/ (baseline)"
-- "Freeze the declared paths"
-- "Digest-checked copy"
-- "Fresh received folder"
-- "Not in the kit"
-- "Model weights: the recipient downloads them separately"
-- "Run evidence, including the stop receipt: kept separately"
-- "Conversation history"
-
-LAYOUT AND RELATIONSHIPS:
-Top row, read left to right. A box headed 'Declared kit' lists five monospace path rows, each with its role in plain text: 'shared/PACKAGE.md (instructions)', 'scripts/ (adapters)', 'shared/case/ (case and rules)', 'shared/controls/ (active control)', 'shared/baseline/ (baseline)'. A single arrow goes to the step box 'Freeze the declared paths', then an arrow to 'Digest-checked copy', then an arrow into the box 'Fresh received folder'. That box shows five short unlabelled rows standing for the same five members. Below the top row, separated by a gap, one panel headed 'Not in the kit' lists three parallel lines: 'Model weights: the recipient downloads them separately', 'Run evidence, including the stop receipt: kept separately', 'Conversation history'. No line connects this panel to the copy path or the received folder. Flat strokes; no file counts, sizes, digests or model names.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
 ## m10-stop-restore
 
 - Title: Service stop and control restore are separate

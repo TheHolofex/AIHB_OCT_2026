@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Bring the pinned uncensored model up as a loopback-only service on this laptop, prove one live interaction through it, stop it, restore it, and hand the kit to the next owner.
+Bring the pinned uncensored model up as a loopback-only service on this laptop, prove one live interaction through it, stop it, restore it, then freeze a ten-file kit and check a fresh copy from a new terminal on the same machine.
 
 ## Bounds
 
@@ -10,7 +10,7 @@ One operator at a time. The service binds `127.0.0.1` only. The weights stay on 
 
 ## Inputs
 
-The received package carries every file except the weights:
+The fresh copy carries only these ten files; the weights are excluded:
 
 - `shared/PACKAGE.md`
 - `scripts/local_ai.py`
@@ -23,7 +23,7 @@ The received package carries every file except the weights:
 - `shared/baseline/run.json`
 - `shared/baseline/run.json.sha256`
 
-The 15.7 GB weights are not copied into the package. The next owner downloads them under their own account against the pinned identity in `model-card.json`.
+The 15.7 GB weights stay at the original work location. The final fresh-copy structure check uses only `scripts/check_package.py` and the other copied files. It requires neither a second download nor a running service.
 
 ## Controls / config identity
 
@@ -111,7 +111,7 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 
 **Stop:** Any check holds.
 
-**Recovery:** Preserve the first failure. The structural check does not execute commands and does not show that another person can operate the kit.
+**Recovery:** Preserve the first failure. The structural check does not execute commands and does not show that another person can operate the kit. The final fresh-copy check (after freeze) runs only `check_package.py` from the new terminal on the copied files; it performs no download and no server launch.
 
 ## Stop
 
@@ -193,7 +193,7 @@ print('RESTORE OK')
 
 ## Strongest evidence
 
-The verify identity card, the live interaction transcript naming `llama.cpp` as provider at zero cost, the stop receipt, and the byte-identical restore comparison. Together these show the pinned weights, a loopback-only service, and a stopped state that another operator can reach again.
+The verify identity card, the live interaction transcript naming `llama.cpp` as provider at zero cost, the stop receipt, and the byte-identical restore comparison. Together these show the pinned weights, a loopback-only service, and a stopped state that you can reach again after restore from the frozen baseline.
 
 ## Limitations
 
@@ -201,4 +201,4 @@ The model is uncensored; it carries no refusal behaviour of its own and applies 
 
 ## Next owner
 
-Whoever receives the copied package. They download the weights under their own account, verify them against `shared/case/model-card.json`, and follow this file from Run.
+You retain the kit and its evidence on your laptop. Complete the live run, stop/restore proof, and fresh-copy check within the session. If a required step cannot finish, record the reason for `HOLD` and close the attempt before the session ends.

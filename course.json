@@ -151,15 +151,15 @@
       "directory": "module-02-context-desk",
       "title": "Module 2 · Build and control a reusable second brain",
       "case_name": "Ledger Pike",
-      "summary": "Build linked notes in Obsidian and prove a fresh session can use them.",
-      "nav_summary": "Obsidian · reusable knowledge",
+      "summary": "Build linked notes in Obsidian and show that a new chat can answer from them.",
+      "nav_summary": "Obsidian · linked notes",
       "outcomes": {
-        "can": "Build a small Obsidian vault of linked, source-backed notes, prove from the run records that a fresh session used your saved rule and only the notes you admitted, and improve one weakness you find in what that session can retrieve.",
+        "can": "Build linked notes in Obsidian from the supplied paperwork, show from the run records that a new chat used your saved rule and only the notes you accepted, and fix one weakness that changes what that chat can answer.",
         "will": [
-                "Choose claims backed by the supplied notes, link them in your vault, and keep evidence separate from instructions quoted inside a note.",
-                "Admit only notes you've reviewed, then check that a fresh session loaded your saved rule and read only the content you approved, without your chat or the raw packet.",
-                "Fix one substantive weakness you find in what a cold run can retrieve, then show the effect in a new revision and a fresh run.",
-                "Confirm that a run stops before it contacts the provider when the saved rule file is missing."
+                "Choose claims the paperwork supports, link those notes, and treat an instruction written inside a source as evidence, not as an order.",
+                "Accept only notes you've checked, then confirm a new chat loaded your saved rule and read only the notes you approved, not the earlier chat or the original files.",
+                "Fix one weakness that changes what a new chat can answer, then show that change in a new saved copy and a new chat.",
+                "Confirm the run stops before it calls the model when the saved rule file is missing."
         ]
       },
       "pages": [
@@ -486,12 +486,12 @@
     {
       "id": "10",
       "directory": "module-10-capstone",
-      "title": "Module 10 · Stand up a local uncensored AI and hand it off",
+      "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Stand up a local uncensored AI service, stop and restore it, and package the kit for its next owner.",
-      "nav_summary": "Local uncensored AI · cold handoff",
+      "summary": "Run a local uncensored AI service on your laptop, prove stop and restore, and check your own saved package.",
+      "nav_summary": "Local uncensored AI · self-contained kit",
       "outcomes": {
-        "can": "Stand up an uncensored local model on your own laptop, stop and restore it, and package the kit so a fresh copy passes its check without your chat history.",
+        "can": "Stand up, stop, and restore an uncensored local model on your own laptop using saved controls, then make and check a self-contained package without relying on chat history.",
         "will": [
                 "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
                 "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
@@ -506,7 +506,6 @@
         {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},
         {"source": "shared/figures/m10-launch-approval.png", "dest": "shared/figures/m10-launch-approval.png"},
         {"source": "shared/figures/m10-operator-boundary.png", "dest": "shared/figures/m10-operator-boundary.png"},
-        {"source": "shared/figures/m10-package-boundary.png", "dest": "shared/figures/m10-package-boundary.png"},
         {"source": "shared/figures/m10-stop-restore.png", "dest": "shared/figures/m10-stop-restore.png"}
       ],
       "scripts": [

@@ -72,7 +72,7 @@ Legacy P4 is an authoring source only. Record adaptation provenance in Module 02
 | Variation-aware candidate comparison and rollback | 07 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 08 |
 | Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 09 |
-| Received-package structure check from a fresh copy | 10 |
+| Package local-runtime instructions/controls (no undeclared deps) for fresh-terminal structure verification | 10 |
 
 ## Responsibility before release
 
@@ -118,7 +118,7 @@ Candidate evaluation declares before results one of:
 
 ## Transfer practice
 
-Clean-session restartability and received-package structure check are separate observations. Freeze the declared ten-file bundle (`E/bundle-before.json`) and make a digest-checked copy into the received folder `F`. In a new terminal inside `F`, run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked`. The structure check reads the package's named fields and confirms every file it names is inside `F`; it does not run the package's commands. Record the check and unresolved limits in `E/close-out.md`.
+Clean-session restartability and fresh-terminal structure check are separate observations. Freeze the declared ten-file bundle (`E/bundle-before.json`) and make a digest-checked copy into the fresh folder `F`. In a new terminal inside `F`, run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked`. The structure check reads the package's named fields and confirms every file it names is inside `F`; it does not run the package's commands. Record the check and unresolved limits in `E/close-out.md`.
 
 ## Publication check
 

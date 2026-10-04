@@ -356,17 +356,17 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Status:** adopted. The shipped lab uses the pinned real model identity with the staff-recorded SHA-256. Historical evidence stays historical.
 
-**Project:** Cold Foundry stands up the uncensored `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` (15.7 GB single weight file, Apache-2.0, access-gated) on the learner's own laptop under OMP orchestration: the learner commands OMP, OMP drafts the launch line and drives the bring-up steps, and the deterministic adapter verifies every claim. The kit is finished when the package carries everything except the weights and passes its structure check from a fresh copy without the author's chat history.
+**Project:** Cold Foundry stands up the uncensored `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` (15.7 GB single weight file, Apache-2.0, access-gated) on the learner's own laptop under OMP orchestration: the learner commands OMP, OMP drafts the launch line and drives the bring-up steps, and the deterministic adapter verifies every claim. The kit is finished when the package carries everything except the weights, the live runtime (identity, interaction, stop/restore) is proved, and the kit passes its structure check from a fresh terminal copy without the author's chat history. ~180 min allocation (unmeasured).
 
-**Stake:** A real download is true and a loopback service is bounded, but recording capability without a live interaction closes Cold Foundry on an unserved claim: a lab that never proved one real reply has proved nothing. Binding beyond loopback exposes an uncensored endpoint whose refusal direction was removed. The boundary is the operator's, not the model's.
+**Stake:** A real download is true and a loopback service is bounded, but recording capability without a live interaction closes Cold Foundry on an unserved claim: a lab that never proved one real reply has proved nothing. Binding beyond loopback exposes an uncensored endpoint whose refusal direction was removed. The boundary is the operator's, not the model's. Access, download, or hardware limits close the attempt as honest HOLD in-session; no outside-session work or recipient required.
 
-**Skill:** Transfer. Clean-session restart and received-package structure check from a fresh copy stay separate. The final Thursday block proves the kit on the supplied unfamiliar task inside the four course days.
+**Skill:** Self-contained local model operation and packaging. Live runtime proof and fresh-terminal structure check from a digest-checked kit copy (no weights) stay separate. The final Thursday block proves the kit on the supplied unfamiliar task inside the session by the learner alone.
 
-**Platform:** The deterministic adapter scripts plus `PACKAGE.md` on disk: purpose, bounds, inputs, controls, run, check, stop, restore, strongest evidence, limits, next owner. No chat history. OMP orchestrates; the scripts decide pass or hold.
+**Platform:** The deterministic adapter scripts plus `PACKAGE.md` on disk: purpose, bounds, inputs, controls, run, check, stop, restore, strongest evidence, limits. Learner answers "Next owner" with retention of ownership. No chat history. OMP orchestrates; the scripts decide pass or hold.
 
-**Volume:** One 15.7 GB download under the learner's own accepted account, one loopback provider overlay, one server bring-up, one live interaction, one stop/restore cycle, one transfer bundle. A hostile community note argues for a `0.0.0.0` bind and a skipped digest check.
+**Volume:** One 15.7 GB download under the learner's own accepted account, one loopback provider overlay, one server bring-up, one live interaction, one stop/restore cycle, one digest-checked 10-file kit copy (weights excluded). A hostile community note argues for a `0.0.0.0` bind and a skipped digest check.
 
-**Practice task:** The supplied task is public. Technical replay, clean-session restart, and received-package structure check are separate observations.
+**Practice task:** The supplied task is public. Technical replay, clean-session restart, and fresh-terminal structure check are separate observations. All performed by the learner on own laptop in the session.
 
 **Independence:** Uses only this module's files and task. Does not require earlier modules' folders, case IDs, or verdicts. Scoped bounded-use amendment: Cold Foundry runs real software under its own bounded-use rule — loopback-only service, weights stay on the learner's machine, no public serving; the other sessions keep their fictional-case doctrine unchanged.
 
@@ -384,7 +384,7 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | Learner-built native n8n graph; one saved `pending_status` edit. Every row is compared, the cold-rack pair holds, and the independently identified original export reproduces both waves after a blank-workflow restore. |
 | Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Hard gate declared first. One unsourced mass, or one unnamed zone, defeats that brief. Baseline restored. |
 | Thu block 2 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |
-| Thu block 3 | The learner records capability without a live interaction, or binds the service beyond loopback. | Package alone enforces the pinned weights identity, refuses any bind beyond loopback, proves a live local interaction, stops, and restores. |
+| Thu block 3 | The learner records capability without a live interaction, or binds the service beyond loopback. | Package plus live runtime proof: pinned weights identity, loopback-only service, live interaction, stop, restore, digest-checked kit copy; fresh-terminal structure check passes; learner retains ownership. |
 
 ## Original-course mechanisms, translated
 

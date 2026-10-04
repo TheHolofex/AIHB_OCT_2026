@@ -34,7 +34,7 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 | 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
 | 08 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 10 | Stand up a local uncensored AI and hand it off | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, and package the kit so it carries everything except the weights and passes its check from a fresh copy without your chat history. |
+| 10 | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions/controls (weights excluded) so fresh-terminal structure check passes, and close out distinguishing live runtime proof from structure-only evidence. All work individual in the Thursday session. |
 
 Cases and evidence bundles are **independent**: no gate relies on a product from an earlier module. Skills build on one another, but earlier skills are assumed rather than retaught as new objectives. The authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) defines the module contract.
 
@@ -65,7 +65,7 @@ The core requires zero programming objectives. Dynamic checker implementation, A
 - Keep evidence of a material failure before repairing it. Finding the fault alone is held, not completed recovery.
 - A file's presence or a written refusal doesn't prove execution. Keep actual tool calls, execution results, guard records, and disk snapshots. A technical replay proves only the behavior it exercised.
 - `PASS` and `HOLD` describe technical checks and work decisions, not grades. Keep the failed attempt, fix its cause, and keep later attempts separate.
-- A clean-session check proves only the behavior exercised. Module 10's received-package structure check confirms named fields and files inside the fresh copy; it does not execute package commands or show that another person can operate the kit.
+- A clean-session check proves only the behavior exercised. Module 10's fresh-terminal structure check confirms named fields and files inside the fresh copy; it does not execute package commands or show that another person can operate the kit.
 - Each module bundle contains the artifact/state, decisive evidence, decision, claim result, failure or `HOLD`, scope boundary, and handoff.
 
 ## Authoritative files

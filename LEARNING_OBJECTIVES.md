@@ -82,11 +82,11 @@ Using least-authority tool operation and frozen comparison criteria, the learner
 **Evidence:** frozen declared policy and per-run resolved policy; complete raw events and guard lifecycle; matched assistant calls/execution results; before/after snapshots; grounded planted-note measurement; observed enforcement classification; and the remaining limits of an OMP tool boundary.
 **Owner:** Module 09
 
-## PO-10 — Stand up a local uncensored AI and hand it off
+## PO-10 — Stand up and package a local uncensored AI
 
-The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and packages the kit so it carries everything except the weights and passes its check from a fresh copy without the author's chat history.
+Using earlier source-verification, bounded-control, and recovery skills, the learner operates the pinned uncensored model on their own laptop as a loopback-only service and packages its instructions and controls without undeclared dependencies or reliance on chat history. The learner completes the live interaction, stop/restore, and fresh-copy structure check individually within Thursday's session.
 
-**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, received-package check, and a close-out that names unresolved limits.
+**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out naming unresolved limits.
 **Owner:** Module 10
 ## Required workplace surfaces
 

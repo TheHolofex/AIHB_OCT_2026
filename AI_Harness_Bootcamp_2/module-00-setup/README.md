@@ -99,17 +99,19 @@ Open and read the result file from disk before accepting it. A tool saying “do
 
 ## Set up local Obsidian
 
-Use Obsidian to follow links, edit local notes, and see changes made outside the app. This check takes roughly 15 to 30 minutes after installation. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+Obsidian is the note app for Module 2. A **vault** is a folder of notes on your laptop. Do this before Module 2, in the platform guide you already chose. You don't sign in to Obsidian, and you don't use your key here.
 
-Complete **Set up local Obsidian** in your existing guide: [native Windows](platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](platforms/windows-wsl.md#set-up-local-obsidian), [macOS](platforms/macos.md#set-up-local-obsidian), [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian), or [Arch](platforms/arch-linux.md#set-up-local-obsidian). Follow its install, hash, display, and approval steps before opening the practice vault. The [release and asset table](shared/VERSIONS.md#local-obsidian-for-module-2) identifies the exact fresh downloads. Keep personal vaults, installed versions, and application profiles.
+Open **Set up local Obsidian** in that guide and follow only those steps:
 
-On the WSL route, run Linux Obsidian and the helper in the same Ubuntu Linux home as OMP. WSLg requires [Windows 10 build 19044+ or Windows 11 and WSL 2](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps). Do not open a WSL UNC path in native Windows Obsidian or copy the vault to `/mnt/c`. On the native PowerShell route, Obsidian and course work stay native to Windows; the separate Ubuntu bridge remains for n8n only.
+- [Windows PowerShell](platforms/windows-powershell.md#set-up-local-obsidian)
+- [Windows with WSL](platforms/windows-wsl.md#set-up-local-obsidian)
+- [Mac](platforms/macos.md#set-up-local-obsidian)
+- [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian)
+- [Arch Linux](platforms/arch-linux.md#set-up-local-obsidian)
 
-Keep **Settings → Community plugins → Restricted mode** on in the practice vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. No Obsidian account, community plugin, or MCP service is required. Keep the existing [hidden-input credential procedure](shared/CREDENTIALS.md); never put a key in a note or another secret file.
+The guide installs the app if you don't have it, then has you practice in one new vault. If Obsidian is already installed, keep that copy and your existing notes. Don't mix steps from another platform.
 
-In your platform guide, create one fresh vault. Follow its links, save an edit, watch for a change made to a file outside Obsidian, save again, then close and reopen the same vault. Keep that attempt and note what you saw. Do not create a second practice vault by following another platform's instructions.
-
-Record **Obsidian READY** only after both disk passes and a separate check in the Obsidian window. Note the platform and architecture, app version, practice-vault location, link you followed, first saved edit, changed token shown in the app, second saved edit, and same reply visible after reopening. Record who watched and the date, and keep credentials out of any screenshot. A disk PASS or an `.obsidian` folder alone cannot show what happened in the app. If the window check is missing or fails, record **Obsidian HOLD**; keep the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
+You're done when the guide's checks pass and you saw the practice in the Obsidian window. Write **Obsidian READY** or **Obsidian HOLD** as the guide tells you. That result stays separate from your Oh My Pi and n8n results. If a step stops, use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops).
 
 ## Local n8n readiness for Module 7
 
