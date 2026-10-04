@@ -2,7 +2,7 @@
 
 Build linked knowledge in Obsidian, then use a fresh model session to answer from the notes you've reviewed. Keep the original evidence separate from proposals. Make the admission decisions yourself. After the first cold run, fix one substantive weakness.
 
-This is an ungraded exercise with fictional Ledger Pike paperwork. Your result supports internal class review only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
+This is an ungraded exercise with fictional Ledger Pike paperwork. Your result is for class use only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
 
 ## The route
 

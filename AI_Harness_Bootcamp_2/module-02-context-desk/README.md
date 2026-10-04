@@ -24,4 +24,4 @@ The saved rule tells the model how to treat evidence. The file screen flags inst
 
 ## Class-only boundary
 
-The names, crates, offices, and quoted blocks are fictional. Results are for internal class review only; they don't authorize a release, assignment, dispatch, or real movement.
+The names, crates, offices, and quoted blocks are fictional. Results are for class use only; they don't authorize a release, assignment, dispatch, or real movement.

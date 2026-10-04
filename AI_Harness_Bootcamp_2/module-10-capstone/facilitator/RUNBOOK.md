@@ -2,7 +2,7 @@
 
 ## Session result
 
-A colleague can bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it using only the received package and the supplied task — without the author's chat history. The technical replay and the person-to-person attempt stay separate evidence. If no recipient is available, independent-person operation is unobserved, not passed.
+The learner stands up the pinned uncensored model on their laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes and copies a kit that passes its structure check from a new terminal without the author's chat history. The package carries everything except the weights; the structure check does not run its commands or prove that another person can operate it.
 
 ## Before class
 
@@ -27,13 +27,13 @@ Total facilitated allocation: 3 hours. The blocks are planning allocations, not 
 | Bring-up and probe | 25 min | OMP-drafted launch line, learner approval, probe to green |
 | Live interaction and observation | 30 min | One live exchange, blunt-answer observation, named boundary |
 | Stop and restore | 25 min | Stopped-state proof, control disable/restore, byte comparison |
-| Package freeze and transfer | 25 min | Freeze, copy, fresh-terminal replay, recipient arrangement |
-| Close | 15 min | Evidence review, honest statement of what ran |
+| Package freeze and received-copy check | 25 min | Freeze the declared ten-file bundle, make a digest-checked copy into `F`, then from a new terminal inside `F` run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked` or the observed HOLD |
+| Close | 15 min | Learner records verified identity, live interaction, stop receipt, restore comparison, received-package check, what ran, and unresolved limits in `E/close-out.md` |
 
-## Handoff observations
+## Close-out observations
 
-Keep the recipient's evidence separate from the technical replay. Record their questions verbatim, what they ran before and after any help, and what failed. Their questions are the input to the next package version. An assisted attempt is not an independent attempt; label it.
+The learner records the checks they actually ran and their limits. The received-package structure check confirms named fields and files within `F`; it neither executes package commands nor proves anyone else can operate the kit.
 
 ## HOLD conditions
 
-Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; or no recipient can be scheduled. Preserve every artifact of a held attempt.
+Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; or the received-package structure check fails. Preserve every artifact of a held attempt.

@@ -26,4 +26,4 @@ For the optional revised-wave stretch, first change the input with the policy fi
 
 ## Class-only boundary
 
-All lots, permits, windows, and notes are fictional practice data. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+All lots, permits, windows, and notes are fictional practice data. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class use only.

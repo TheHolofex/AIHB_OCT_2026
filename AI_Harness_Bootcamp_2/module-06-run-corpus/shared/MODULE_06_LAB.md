@@ -2,7 +2,7 @@
 
 Find a repeated failure in Blue Gauge's practice records. Turn it into a check that flags the same text in another run. Use your failure notes to define a **predicate**: a yes-or-no condition. Configure the supplied control with two exact pieces of text, test it on known-bad, known-good, and missing input, and record what it catches and misses.
 
-The eighty records are fictional practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations and don't measure model reliability. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+The eighty records are fictional practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations and don't measure model reliability. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class use only.
 
 Plan for about three hours (a rough estimate).
 
@@ -650,7 +650,7 @@ Decision (adopt, revise, or hold) and the sampled evidence that bounds it:
 What the next person should read first in the full corpus:
 ```
 
-A classmate who didn't watch you work should be able to rebuild your result and understand the control's limits without help from you.
+Write it so the handoff alone is enough to rebuild your result and understand the control's limits, without you there to explain them.
 
 In the handoff, say which observed failures the predicate targets and which it misses. A **false positive** is a match on a run that doesn't have the failure; a **false negative** is a run that has the failure but doesn't match. List any you found in the runs you checked, with their run IDs and how many runs you checked. If you haven't measured a limit, don't report it as a zero error rate.
 

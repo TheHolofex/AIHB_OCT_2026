@@ -1,6 +1,6 @@
 # Module 0 · Set up the harness and direct bounded work
 
-Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and accept the email only for its stated use.
+Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and decide whether you'd send the email.
 
 Start with one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check. In that check, the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep those results separate from the checked email.
 

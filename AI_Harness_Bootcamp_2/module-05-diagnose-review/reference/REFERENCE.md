@@ -12,7 +12,7 @@ Random editing destroys attribution. Restore that is not run is not restore. A m
 
 ## 2. Better framing
 
-The module is not a hunt through staff folders. The hidden drop lives in a work-copy renderer placed after restore is proved. The learner-facing scripts/render_review.py and the place_practice_fault.py are public and inspectable. Graded cases stay outside.
+The module is not a hunt through staff folders. The hidden drop lives in a work-copy renderer placed after restore is proved. The learner-facing scripts/render_review.py and the place_practice_fault.py are public and inspectable.
 
 ## 3. Authority
 
@@ -45,7 +45,7 @@ The learner does not write a new renderer, open staff folders, or release work o
 
 ## 7. Technical checks
 
-Visible practice checks use the supplied renderer, probe, and restore. No separate protected or graded case is supplied. Class F / human panel remains unmeasured.
+Visible practice checks use the supplied renderer, probe, and restore. No separate graded case is supplied. Class F / human panel remains unmeasured.
 
 ## 8. Absolute failures
 
@@ -63,3 +63,7 @@ This reference supersedes the thin V-18/THREAD_CARD adapter (revision 1). The di
 ## Standalone repository path amendment
 
 Repository-authority paths now resolve from the `AIHB_OCT_2026` root. Research, supplied case facts, and historical evidence are unchanged. `REFERENCE.sha256` records the amended file; earlier observations retain their original repository context.
+
+## 2026-10-04 amendment — no graded cases
+
+The owner directed on 2026-10-04 that no classmate or instructor grades a learner's work. §2 drops "Graded cases stay outside," and §7 states that no separate graded case is supplied. The facilitator runbook drops its protected-case item and its instruction to select the examples when a learner defends the sealed miss. The digest is recomputed for this amendment; historical text is unchanged.

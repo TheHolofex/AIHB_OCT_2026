@@ -24,4 +24,4 @@ Use the checkout, Python, and OMP you verified in [setup](../module-00-setup/REA
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional course fixtures. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result is for class review only.
+All names, identifiers, places, and facts are fictional course fixtures. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result is for class use only.

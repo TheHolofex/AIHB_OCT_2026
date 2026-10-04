@@ -18,4 +18,4 @@ The supplied **renderer** turns ledger rows into a duty card. The clean version 
 
 ## Class-only boundary
 
-All names, times, and statuses are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+All names, times, and statuses are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class use only.

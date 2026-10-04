@@ -15,7 +15,6 @@ The harness forces explicit ledger input to the renderer, a digest-checked basel
 1. Run the prepare_work for 04 into a throwaway and confirm the next render command succeeds with both fields.
 2. Confirm python scripts/restore.py <workdir> against a throwaway copy prints RESTORE OK.
 3. Confirm the public place_practice_fault.py and probe_fields.py run from source paths.
-4. Keep protected cases outside the learner repository and model context.
 
 ## Route
 
@@ -47,7 +46,7 @@ You may not supply:
 - a hand-edited review.md; or
 - the replace command wording.
 
-If you cross that line, mark the work as guided practice. Select the examples yourself when you ask a learner to defend the sealed miss.
+If you cross that line, mark the work as guided practice.
 
 ## HOLD conditions
 

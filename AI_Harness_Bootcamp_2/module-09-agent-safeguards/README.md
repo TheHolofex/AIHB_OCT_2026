@@ -37,4 +37,4 @@ If the policy doesn't stop a prohibited call, or the transcript shows an undecla
 
 ## Class-only boundary
 
-The case and all its names, identifiers, and facts are fictional. Don't use it to plan, authorize, or describe real movements or operations. Results are for class review only.
+The case and all its names, identifiers, and facts are fictional. Don't use it to plan, authorize, or describe real movements or operations. Results are for class use only.

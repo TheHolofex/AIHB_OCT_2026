@@ -201,4 +201,4 @@ The model is uncensored; it carries no refusal behaviour of its own and applies 
 
 ## Next owner
 
-The receiving colleague for their independent attempt, then course staff for the retained evidence bundle.
+Whoever receives the copied package. They download the weights under their own account, verify them against `shared/case/model-card.json`, and follow this file from Run.

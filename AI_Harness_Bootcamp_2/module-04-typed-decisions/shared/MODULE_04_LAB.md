@@ -459,7 +459,7 @@ Then write `E/handoff.md` with these six headings, each followed by complete sen
 (declared confidence is the model's claim about itself; what the ten-message sample can and cannot establish; what a second run would add)
 
 ## Decision
-(write exactly one of PASS FOR CLASS REVIEW or HOLD, then the condition that would change it, without repeating either phrase: for example, this changes if the desk lead rejects the delegation)
+(write exactly one of READY FOR SIGNATURE or HOLD, then the condition that would change it, without repeating either phrase: for example, this changes if the desk lead rejects the delegation)
 
 ## Next owner
 (who signs the requirement line and what they read first)
@@ -548,4 +548,4 @@ Check that `E` holds `labels.sha256`, `decide-1`, `adjudication.md`, and `handof
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional course fixtures. The requirement line allows class review only; it does not dispatch `CL-9`, release stock, or change who may approve a requisition. A `PASS` from the final check means the files agree with each other. It does not mean the clinic's need was read correctly.
+All names, identifiers, places, and facts are fictional course fixtures. The requirement line is for class use only; it does not dispatch `CL-9`, release stock, or change who may approve a requisition. A `PASS` from the final check means the files agree with each other. It does not mean the clinic's need was read correctly.

@@ -1,6 +1,6 @@
 # Module 1 · Verify sources and outputs
 
-Check the Cold Lantern brief against the applicable sources and your own calculations. Decide whether to accept, revise, reject, or hold its recommendation for internal class review. A **mission thread** links each movement step to what the next step needs.
+Check the Cold Lantern brief against the applicable sources and your own calculations. Decide whether to accept, revise, reject, or hold its recommendation. A **mission thread** links each movement step to what the next step needs.
 
 Plan for about three hours (a rough estimate).
 
@@ -32,5 +32,5 @@ The AI system's confidence, citation list, and self-review do not count as indep
 
 ## Class-only boundary
 
-The names, routes, documents, quantities, and organizations are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+The names, routes, documents, quantities, and organizations are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class use only.
 

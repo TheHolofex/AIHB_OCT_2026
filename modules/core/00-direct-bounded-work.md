@@ -9,8 +9,8 @@
 **Performance stage:** Guided to Independent  
 **Work surface:** Communication artifact  
 **Practical work:** Confirm the supplied acceptance control; produce and check a useful artifact against the 60-minute first-result design target; choose one use, one human-retained judgment, and one refusal; apply the minimum responsibility screen; then freeze accepted direction and rerun after one controlled input change.  
-**Performance evidence:** Preserved FIRST_RESULT, independent source-of-record check, delegate/human/refuse record, capability-limit statement, MIN_SCREEN result, frozen DIRECTION, INTERNAL_ARTIFACT, supplied acceptance result, changed-input comparison, and bounded internal decision.  
-**Failure / HOLD:** Hold when preflight, the supplied case, permission, source, decision owner, affected audience, or acceptance control is missing; when constraints conflict; when the producer can alter the deciding check; or when correction changes the accepted mission. Public practice checks are inspectable.
+**Performance evidence:** Preserved FIRST_RESULT, independent source-of-record check, delegate/human/refuse record, capability-limit statement, MIN_SCREEN result, frozen DIRECTION, INTERNAL_ARTIFACT, supplied acceptance result, changed-input comparison, and send-or-hold decision.  
+**Failure / HOLD:** Hold when preflight, the supplied case, permission, source, affected audience, or acceptance control is missing; when constraints conflict; when the producer can alter the deciding check; or when correction changes the accepted mission. Public practice checks are inspectable.
 **Scope boundary:** Proves first-use judgment and independent direction for bounded internal use; it does not authorize consequential release.  
 **Handoff:** Give the next owner the artifact, its direction and source boundary, the screen result, the observed limitation, and the decision made.
 **Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module’s gate does not consume another module’s product.

@@ -567,4 +567,4 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the receipts need attention; preserve th
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional course fixtures. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result is for class review only.
+All names, identifiers, places, and facts are fictional course fixtures. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result is for class use only.

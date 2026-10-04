@@ -1,6 +1,6 @@
 # Module 1 · Verify a logistics mission thread
 
-Decide whether the Cold Lantern brief supports its `GO` recommendation. Open the sources, redo the calculations, and write your supported verdict: accept, revise, reject, or hold for class review. The packet contains every case fact.
+Decide whether the Cold Lantern brief supports its `GO` recommendation. Open the sources, redo the calculations, and write your supported verdict: accept, revise, reject, or hold. The packet contains every case fact.
 
 Plan for about three hours (a rough estimate).
 
@@ -419,7 +419,7 @@ Then add one challenge block for any claim in that file you still have not rejec
 
 Write `corrected-brief.md` with what is supported, contradicted, unresolved, later events not observed, current blockers, the exact sources and calculations behind them, and the next evidence needed.
 
-A classmate who did not watch you work must be able to understand the decision and its evidence from the review page. An AI agent's inspection supplies technical observations only; it does not replace the classmate's review.
+Write it so the review page alone shows the decision and its evidence, with nothing left for you to explain in person.
 
 ![A defensible verdict names its evidence, blockers, uncertainty, and next evidence; a producer's rebuttal is not independent verification.](figures/m01-supported-verdict.png)
 
@@ -519,7 +519,7 @@ Save the ledger and verdict. Record their hashes:
 
 **Recovery:** Complete the verdict and ledger, rerun the hash commands, then proceed only after recording.
 
-Render the review page again so it shows the verdict, then ask a classmate who did not watch you work to answer the five questions from that page alone. Use three minutes as a review target, not a measured guarantee.
+Render the review page again so it shows the verdict. Then check that the page alone answers the five questions below, without your notes or the work files.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -545,7 +545,7 @@ Render the review page again so it shows the verdict, then ask a classmate who d
 4. Which source and calculation establish that result?
 5. What evidence would change it?
 
-Before you revise anything, record your classmate's first answers and questions. If no eligible person is available, mark the classmate review blocked and continue with technical inspection only. Neither an agent nor your own rereading can supply the missing human observation.
+If the page can't answer one of them, fix the file that part of the page comes from, render the page again, and record the hashes again before you continue.
 
 ## 10. Predict the source-change effect
 
@@ -707,7 +707,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Rendering held; preserve the failure.' }
 & "$env:PY" "$env:M\scripts\check_work.py" "$env:W"
 ```
 
-**Expected:** All seven visible practice phases pass. The checker compares both verdict lines with the practice case's known answer. If yours differs, it prints `FAIL: baseline verdict is HOLD` or `FAIL: changed verdict is HOLD`. Recheck your blockers against the sources, but do not change your judgment just to match the checker. Record a verdict you still stand behind in `handoff.md`. Your reading of the sources, your classmate's review, and your own judgment remain separate evidence requirements.
+**Expected:** All seven visible practice phases pass. The checker compares both verdict lines with the practice case's known answer. If yours differs, it prints `FAIL: baseline verdict is HOLD` or `FAIL: changed verdict is HOLD`. Recheck your blockers against the sources, but do not change your judgment just to match the checker. Record a verdict you still stand behind in `handoff.md`. The checker's result doesn't replace your reading of the sources or your own judgment.
 
 **Stop:** Stale values or unrelated change errors.
 
@@ -733,29 +733,7 @@ Standing rule:
 What the next person should inspect first:
 ```
 
-A classmate who did not watch you work should be able to reconstruct the verdict without coaching.
-
-## 13. Defend the thread, not the form
-
-Your instructor or a classmate will choose one handoff and one material claim row.
-
-For the **thread walk**, use the review page and explain:
-
-1. what the first step produced;
-2. what the next step required;
-3. whether the output met that requirement;
-4. which source or calculation established the result; and
-5. what would break the handoff.
-
-For the **claim defense**, open the cited source and show:
-
-1. the exact entity and current version;
-2. the passage or row you used;
-3. your calculation or warrant;
-4. why an attractive competing source does not establish the claim; and
-5. what observation would falsify your row.
-
-Use your saved work to show the evidence. If the selected handoff or claim lacks a supportable explanation, keep that work decision on `HOLD` and record what remains unresolved. A completed ledger alone does not establish support.
+Write it so the handoff alone is enough to reconstruct the verdict, without you there to explain it.
 
 ## Before you stop
 
@@ -771,7 +749,7 @@ Check that:
 - the brief works in the review surface;
 - the baseline ledger, prediction, and verdict predate the sealed change;
 - the changed ledger contains only dependent changes and no stale route value;
-- the handoff supports reconstruction without coaching; and
+- the handoff alone is enough to reconstruct the verdict; and
 - the work remains inside the fictional class case.
 
 
@@ -787,7 +765,7 @@ Choose one unchanged claim supported by a source independent of the new bulletin
 
 **Stop:** You cannot trace a change through its dependency, an unchanged claim has no support beyond habit, or you are treating the counterfactual as evidence that actually arrived.
 
-**Recovery:** Reopen the exact source and both ledger rows. Correct the reasoning in your defense record without changing the frozen baseline files. If no independent reviewer is available, keep the technical record and leave the human defense unmeasured.
+**Recovery:** Reopen the exact source and both ledger rows. Correct the reasoning in your defense record without changing the frozen baseline files.
 
 </details>
 

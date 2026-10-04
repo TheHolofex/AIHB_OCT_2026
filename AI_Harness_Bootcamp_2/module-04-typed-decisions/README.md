@@ -27,4 +27,4 @@ The model's declared confidence is a claim, not a measurement. Compare its answe
 
 ## Class-only boundary
 
-The fictional case is for class review only, not a real movement or operation. The requirement line does not dispatch a vehicle, release stock, or change anyone's authority. A technical `PASS` means the files agree; judge whether you read the clinic's need correctly and record that judgment in the handoff.
+The fictional case is for class use only, not a real movement or operation. The requirement line does not dispatch a vehicle, release stock, or change anyone's authority. A technical `PASS` means the files agree; judge whether you read the clinic's need correctly and record that judgment in the handoff.

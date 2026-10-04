@@ -10,7 +10,7 @@ Produce:
 4. a baseline verdict of `ACCEPT`, `REVISE`, `REJECT`, or `HOLD`;
 5. a prediction made before the sealed route change is opened;
 6. a changed-source comparison;
-7. a local review page another person can inspect; and
+7. a local review page that shows the decision and its evidence; and
 8. a handoff.
 
 Use only the supplied local files. This is a fictional class case. Do not use it to plan, authorize, dispatch, or describe a real movement.

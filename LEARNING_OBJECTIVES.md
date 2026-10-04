@@ -6,9 +6,9 @@ Each outcome adds one capability and has one owning module. Earlier capabilities
 
 ## PO-00 — Select, screen, and direct bounded work
 
-Given a supplied low-risk professional case, the learner explains relevant capabilities and limitations, chooses what to delegate and what to retain human judgment over, refuses one unsuitable use, applies the minimum responsibility screen, converts the request into accepted direction with audience, outcome, sources, constraints, precedence, falsifier, stop condition, and decision owner, and produces a checked communication artifact for bounded internal use.
+Given a supplied low-risk professional case, the learner explains relevant capabilities and limitations, chooses what to delegate and what to retain human judgment over, refuses one unsuitable use, applies the minimum responsibility screen, converts the request into accepted direction with audience, outcome, sources, constraints, precedence, falsifier, and stop condition, produces a checked communication artifact, and decides on the evidence whether it is ready to send.
 
-**Evidence:** use/delegate/refuse decision, checked first artifact, capability-limit statement, minimum-screen result, frozen direction, communication artifact, supplied practice acceptance result, changed-input result, and bounded internal-acceptance decision.
+**Evidence:** use/delegate/refuse decision, checked first artifact, capability-limit statement, minimum-screen result, frozen direction, communication artifact, supplied practice acceptance result, changed-input result, and send-or-hold decision.
 **Owner:** Module 00
 
 ## PO-01 — Verify sources and outputs
@@ -28,7 +28,7 @@ The learner completes research from bounded sources, verifies a material claim a
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; person-to-person transfer belongs to Module 10.
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
@@ -84,9 +84,9 @@ Using least-authority tool operation and frozen comparison criteria, the learner
 
 ## PO-10 — Stand up a local uncensored AI and hand it off
 
-The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and hands the complete kit to another person who repeats bring-up from the saved kit alone rather than the author's chat history.
+The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and packages the kit so it carries everything except the weights and passes its check from a fresh copy without the author's chat history.
 
-**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, recipient observations and questions, any assistance given, and final handoff. Record a missing recipient as an unobserved attempt.
+**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, received-package check, and a close-out that names unresolved limits.
 **Owner:** Module 10
 ## Required workplace surfaces
 

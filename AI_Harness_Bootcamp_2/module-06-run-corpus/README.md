@@ -14,4 +14,4 @@ A **predicate** is a yes-or-no condition. The supplied predicate checks whether 
 
 ## Class-only boundary
 
-The eighty records, names, identifiers, and run notes are fictional course fixtures about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations or a measure of current models' reliability. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
+The eighty records, names, identifiers, and run notes are fictional course fixtures about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations or a measure of current models' reliability. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class use only.

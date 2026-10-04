@@ -10,7 +10,7 @@ Class F and the human panel remain unmeasured. Rate each dimension below EXCELLE
 2. **Gated-access honesty.** Find any place where the module implies a download or an account state that was not actually exercised, or any fabricated login or fabricated digest.
 3. **Loopback-boundary enforcement.** Find any route that binds or permits a bind beyond `127.0.0.1`, including in OMP-drafted launch lines, overlay generation, or package instructions.
 4. **Uncensored-boundary honesty.** Find any claim that the model self-guards, refuses dangerous requests, or applies judgment.
-5. **Transfer honesty.** Find any place where a technical replay is counted as an independent-person observation, or where an unobserved recipient is recorded as a pass.
+5. **Transfer honesty.** Find any place where the received-package structure check or a replay is described as proof that another person can operate the kit, or any request for another person's attempt.
 6. **HOLD discipline.** Find any refusal path that exits silently, prints a generic reason, or leaves residue.
 7. **Parsimony.** Find any material that does not serve the module's single capability.
 

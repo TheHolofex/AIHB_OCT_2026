@@ -62,7 +62,7 @@
       "summary": "Give an AI tool a clearly limited job and check the internal email it drafts against the sources.",
       "nav_summary": "Oh My Pi · giving AI a limited job",
       "outcomes": {
-        "can": "Give an AI tool one clearly limited writing job, check what it wrote against the source facts yourself, and decide whether the result is fit for its stated internal use.",
+        "can": "Give an AI tool one clearly limited writing job, check what it wrote against the source facts yourself, and decide whether you'd send it.",
         "will": [
                 "Decide, before the tool runs, what it may draft, what judgment stays with you, and what you refuse to delegate.",
                 "Run a supplied check on the draft, make it fail on purpose, and confirm it can catch a wrong fact.",
@@ -86,7 +86,6 @@
         {"source": "shared/figures/m00-bounded-direction.png", "dest": "shared/figures/m00-bounded-direction.png"},
         {"source": "shared/figures/m00-change-isolation.png", "dest": "shared/figures/m00-change-isolation.png"},
         {"source": "shared/figures/m00-claim-check.png", "dest": "shared/figures/m00-claim-check.png"},
-        {"source": "shared/figures/m00-decision-owner.png", "dest": "shared/figures/m00-decision-owner.png"},
         {"source": "shared/figures/m00-falsifier.png", "dest": "shared/figures/m00-falsifier.png"},
         {"source": "shared/figures/m00-readiness-lanes.png", "dest": "shared/figures/m00-readiness-lanes.png"},
         {"source": "shared/figures/m00-recovery-loop.png", "dest": "shared/figures/m00-recovery-loop.png"},
@@ -489,14 +488,14 @@
       "directory": "module-10-capstone",
       "title": "Module 10 · Stand up a local uncensored AI and hand it off",
       "case_name": "Cold Foundry",
-      "summary": "Hand off a local uncensored AI service another person can run, stop, and restore without you.",
+      "summary": "Stand up a local uncensored AI service, stop and restore it, and package the kit for its next owner.",
       "nav_summary": "Local uncensored AI · cold handoff",
       "outcomes": {
-        "can": "Stand up an uncensored local model on your own laptop and hand the kit to someone who can run, stop, and restore it without you.",
+        "can": "Stand up an uncensored local model on your own laptop, stop and restore it, and package the kit so a fresh copy passes its check without your chat history.",
         "will": [
                 "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
                 "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
-                "Freeze and transfer the kit, keep your own replay separate from another person's attempt, and record their questions as evidence for the next version."
+                "Freeze the kit, copy it with digest checks, and check the copy from a new terminal using only its own files."
         ]
       },
       "pages": [
@@ -505,7 +504,6 @@
       ],
       "figures": [
         {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},
-        {"source": "shared/figures/m10-independent-transfer.png", "dest": "shared/figures/m10-independent-transfer.png"},
         {"source": "shared/figures/m10-launch-approval.png", "dest": "shared/figures/m10-launch-approval.png"},
         {"source": "shared/figures/m10-operator-boundary.png", "dest": "shared/figures/m10-operator-boundary.png"},
         {"source": "shared/figures/m10-package-boundary.png", "dest": "shared/figures/m10-package-boundary.png"},

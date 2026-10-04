@@ -13,12 +13,11 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
 | Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 08 stretch has 36 paired calls and two restored controls |
-| Independent-recipient session | One per learner, outside the four course days | Provisional; requires recruitment and scheduling evidence |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
 No unmeasured budget is reported as achieved. Delivery may vary support and optional stretch work; it may not hide required work outside the course days or weaken a technical check.
 
-Time estimates exclude meals and breaks, setup, optional stretches, and the separately scheduled independent-recipient session.
+Time estimates exclude meals and breaks, setup, and optional stretches.
 
 ## Schedule and independence
 
@@ -98,9 +97,9 @@ Adapters share [CASE_FAMILY.md](CASE_FAMILY.md); every module still receives its
 | **Guided** | Use and challenge a supplied bounded method. | Opening of session 1 |
 | **Independent** | Author task-specific direction, evidence, and decisions. | 1–5 |
 | **Adversarial** | Preserve standards under changed, misleading, malformed, over-authorized, hidden, or variable conditions. | 6–10 |
-| **Transferred** | Operate from saved artifacts and enable another person to use the package. | 11 |
+| **Transferred** | Operate from saved artifacts and package the work so it checks out from a fresh copy without the author's chat history. | 11 |
 
-File presence cannot establish observed performance. An authored practice output is not a live-model receipt. A technical replay can establish observed software behavior; it cannot establish a real classmate's independent reading or recipient performance.
+File presence cannot establish observed performance. An authored practice output is not a live-model receipt. A technical replay establishes only the software behavior it exercised.
 
 ## Sequence, supplied inputs, and evidence
 
@@ -116,7 +115,7 @@ File presence cannot establish observed performance. An authored practice output
 | 07 | Build and control a fixed workflow through change | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO07_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
 | 08 | Evaluate a change with variation controls | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO08_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
 | 09 | Constrain agent behavior | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO09_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
-| 10 | Stand up a local uncensored AI and hand it off | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live interaction, stop/restore receipts, recipient observations and questions, and a handoff that names unresolved limits |
+| 10 | Stand up a local uncensored AI and hand it off | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, received-package check, and close-out naming unresolved limits |
 ## Minimum screen and release authority
 
 `MIN_SCREEN` covers source/data authority, sensitive-data boundary, affected audience/person, disclosure need, consequential authority, and human decision owner. It is a standing rule: every module applies it to its own supplied case, and an unresolved item is `HOLD`. Modules 00–02 can claim only bounded internal acceptance.
@@ -134,7 +133,7 @@ A refusal to connect, or an AI proposal accepted without checking, is not credit
 
 Fixed workflow is the highest mandatory operation. Core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure, and MCP construction remain advanced.
 
-Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 05's capability, and person-to-person transfer remains Module 10's.
+Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 05's capability, and checking a local-model package from a fresh copy remains Module 10's.
 
 The learner specifies and configures bounded behavior in supplied controls. In Module 07, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. In Module 03 the learner also operates and configures a supplied MCP server and its limits; building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
 
@@ -142,16 +141,14 @@ Module 07 requires local n8n 2.41.5 on the full official six-service Docker stac
 
 ## Degraded and 10x policy
 
-If a **model**, **tool**, **source**, **supplied fixture**, **recipient**, or **restore** path is missing, retain only bounded unaffected evidence and record the missing prerequisite. No replay or narration becomes operation. A substituted dependency is named in the work record with the basis for comparison. Because no module depends on another's evidence, a missing dependency does not cascade into later sessions.
+If a **model**, **tool**, **source**, **supplied fixture**, or **restore** path is missing, retain only bounded unaffected evidence and record the missing prerequisite. No replay or narration becomes operation. A substituted dependency is named in the work record with the basis for comparison. Because no module depends on another's evidence, a missing dependency does not cascade into later sessions.
 
 All live runs use Oh My Pi 18.3.5, `openrouter/anthropic/claude-sonnet-4.6`, and `OPENROUTER_API_KEY` through `shared/run_omp.py`. Missing credentials, unavailable pinned version/model, rate limits, exhausted credits, or failed receipts hold the live lane. Do not switch provider/model, borrow a direct-provider login, retry implicitly, or report a fixture as live evidence.
 
 Public practice controls and fictional corpora are inspectable. The shared extension enforces an OMP tool boundary, not an operating-system sandbox. Time estimates in this map are rough design figures, not measurements, until they are observed with people.
 
-At 200 learners, preserve the same capabilities, supplied cases, technical checks, and transfer practice. The scale plan must account for machine support, troubleshooting, facilitator availability, and recipient capacity. Missing staffing or budget evidence remains provisional.
+At 200 learners, preserve the same capabilities, supplied cases, technical checks, and fresh-copy package checks. The scale plan must account for machine support, troubleshooting, and facilitator availability. Missing staffing or budget evidence remains provisional.
 
 ## Transfer practice
 
-Clean-session restartability and person-to-person transfer are separate observations. Run the supplied task from the saved package in a fresh session, then ask another person to operate it from the package without relying on your chat history.
-
-Preserve the recipient's actions and questions, including any help you provide. Use those observations to improve the package. If no recipient is available, record that the person-to-person attempt was not observed; a technical replay does not replace it. There are no recipient scores, learner pass/fail decisions, or reassessment requirements.
+Freeze the declared ten-file bundle in `E/bundle-before.json`, then make a digest-checked copy in the received folder `F`. In a new terminal inside `F`, run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked`. The structure check reads named fields and confirms every named file is inside `F`; it does not run the package's commands or show that another person can operate the kit. Record the check and unresolved limits in `E/close-out.md`. There are no scores, learner pass/fail decisions, or reassessment requirements.

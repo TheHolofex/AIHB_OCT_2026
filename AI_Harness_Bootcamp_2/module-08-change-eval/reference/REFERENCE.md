@@ -33,10 +33,14 @@ evaluate_pairs.py <case-dir> <policy.json> <results.csv> produces exactly 120 ro
 
 restore_baseline.py <workdir> restores only shared/controls/active-instruction.md and the baseline briefs from the distinct frozen shared/baseline/ using stored hashes. It refuses to touch candidate files or targets outside the work root.
 
-The technical gates are the actual learning task. The evaluator produces the 120-row result for the practice cases. A classmate who did not observe the work must be able to reconstruct the result from the policy, the raw pairs, the results.csv, and the restore proof.
+The technical gates are the actual learning task. The evaluator produces the 120-row result for the practice cases. The handoff contains the policy, the raw pairs, the results.csv, and the restore proof so the result is reconstructible from the handoff alone.
 
 ## 4. Independence
 Does not consume any prior module's product. Does not cite Cold Lantern, V-18, 12 Mesa Yard, 20:50Z, 84 kg, or any retired thin-lab tokens.
 
 ## 5. Harness change
 The supplied evaluate_pairs and restore now operate on the 40 paired cases with per-cell authoritative locators and hashed baseline restore instead of the two-pair thin lab.
+
+## 2026-10-04 amendment — handoff standard without a classmate
+
+The owner directed on 2026-10-04 that no classmate or instructor grades a learner's work. §3 states the handoff standard as a property of the handoff: it contains the policy, the raw pairs, `results.csv`, and the restore proof, so the result can be reconstructed from it alone. The digest is recomputed for this amendment.
