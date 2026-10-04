@@ -48,7 +48,7 @@ Use exactly three enabling objectives:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Before this project, the learner could verify sources and give bounded direction. After this project, the learner can turn those sources into reviewed, linked knowledge governed by an explicitly loaded saved instruction and demonstrate its use in a fresh session. Source checking remains Module 01's inherited quality bar. Saved instructions and load proof are newly taught here. Hidden-fault diagnosis belongs to Module 05; person-to-person transfer belongs to Module 10.
+Before this project, the learner could verify sources and give bounded direction. After this project, the learner can turn those sources into reviewed, linked knowledge governed by an explicitly loaded saved instruction and demonstrate its use in a fresh session. Source checking remains Module 01's inherited quality bar. Saved instructions and load proof are newly taught here. Bounded multi-agent orchestration belongs to Module 05; person-to-person transfer belongs to Module 10.
 
 **Consumes:** `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD`
 
@@ -58,6 +58,19 @@ The independent Ledger Pike case retains all forty DN sources unchanged. Use Obs
 
 Legacy P4 is an authoring source only. Record adaptation provenance in Module 02's active staff reference; do not create a runtime dependency on the old checkout or change the frozen historical research reference. Keep reuse rationale and curriculum handoffs out of learner prose.
 
+### Module 05 contract
+
+Before this project, the learner could direct and verify one bounded assistant run. After it, the learner can supervise a dependency-aware native OMP agent team, accept its handoffs, and recover a partial failure without discarding valid independent work. Use the three enabling objectives in `LEARNING_OBJECTIVES.md`: decomposition and complete delegation contracts; native fan-out/fan-in with dependent review and source adjudication; selective recovery with dependency invalidation.
+
+The learner owns the work graph, assignment briefs, acceptance, and decision to use the combined result. OMP owns native child execution. The supplied adapter prepares resources, limits the tool surface, preserves native records, and checks evidence; it must not secretly replace delegation with a custom scheduler or prewritten outputs. Use read-only specialists and reviewer, one coordinator-owned output, bounded concurrency and depth, explicit stop conditions, and no implicit retry or model fallback. A task batch is not an ordered dependency graph.
+
+**Consumes:** `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:NATIVE_TASK`; `VERIFY:ORCHESTRATION_CONTROLS`
+
+**Produces:** `WORK_GRAPH`; `AGENT_HANDOFFS`; `PARTIAL_RECOVERY`; `INTEGRATED_BRIEF`; `PO05_RESULT`
+
+Native child completion and artifact presence are not acceptance. Join actual requests, child sessions, results, source identities and permitted effects. A missing input must produce an observed blocked attempt; a selective repair retains that attempt and identifies which prior work remains valid. Review consumes the actual candidate and source evidence after its prerequisites, not merely a request to “review the above.” A source or brief change invalidates its consumers and downstream integration. Keep model proposals, deterministic checks, and human acceptance separate. Historical renderer-repair evidence does not establish this replacement's behavior.
+
+
 ## Single ownership
 
 | Sub-problem | Owner |
@@ -66,12 +79,12 @@ Legacy P4 is an authoring source only. Record adaptation provenance in Module 02
 | Source verification and output discernment | 01 |
 | Human-reviewed knowledge vault, saved instruction and load proof, source-as-data control, fresh-session retrieval | 02 |
 | MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
-| Hidden-fault diagnosis and recovery | 04 |
-| Observed-run analysis and predicate specification | 05 |
-| Fixed workflow and deterministic outer-state change | 06 |
-| Variation-aware candidate comparison and rollback | 07 |
-| Live-agent allow-list, write jail, planted-instruction refuse | 08 |
-| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 09 |
+| Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 04 |
+| Native OMP team decomposition, evidence-bearing handoffs, dependent review, selective recovery | 05 |
+| Observed-run analysis and predicate specification | 06 |
+| Fixed workflow and deterministic outer-state change | 07 |
+| Variation-aware candidate comparison and rollback | 08 |
+| Live-agent allow-list, write jail, planted-instruction refuse | 09 |
 | Restartability and person-to-person transfer | 10 |
 
 ## Responsibility before release
@@ -101,7 +114,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 The learner can specify a mechanically decidable predicate and configure it in a **supplied deterministic control**. The adapter implements any new checker and owns its identity. If the observed failure is an arbitrary semantic condition that cannot be represented in supplied controls, record the predicate, implementation dependency, owner, and `HOLD`; do not claim the control was implemented.
 
-The fixed workflow is the highest common-core machinery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets a trigger for one of them records the trigger, the simpler alternative, the added risk, and the escalation owner.
+The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow, not agent-runtime development. Module 05 permits read-only specialists and a reviewer under one coordinator-owned output; learners configure supplied roles and briefs rather than build a scheduler. The core also permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets one of those triggers records the simpler alternative, added risk, and escalation owner.
 
 ## Deterministic and stochastic evidence
 

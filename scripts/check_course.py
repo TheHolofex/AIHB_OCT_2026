@@ -45,6 +45,8 @@ def main() -> int:
                 required.add("tests/test_checker.py")
             elif module_id == "01":
                 required.update({"tests/test_workflow.py", "tests/test_adequacy.py"})
+            elif module_id == "05":
+                required.add("tests/test_orchestration_guard.mjs")
             elif module_id != "09":
                 required.add("tests/test_adequacy.py")
             listed = module["tests"]
@@ -54,7 +56,7 @@ def main() -> int:
                 script = (directory / relative).resolve()
                 if not script.is_relative_to(directory):
                     raise ValueError(f"escaped test path: {relative}")
-                runner = ["node", "--test"] if module_id == "07" else [sys.executable]
+                runner = ["node", "--test"] if script.suffix == ".mjs" else [sys.executable]
                 commands.append((runner + [str(script)], directory))
         for relative in ("tests/test_core_standard.py", "tests/test_publication.py", "tests/test_build_course.py", "tests/test_runtime_launcher.py", "tests/test_runtime_guard.py", "AI_Harness_Bootcamp_2/tests/test_module_figures.py"):
             commands.append(([sys.executable, str(ROOT / relative)], ROOT))

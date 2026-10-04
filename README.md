@@ -16,7 +16,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change while accounting for model variation, and transfers the method.
+The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, improves from observed runs, operates one fixed workflow, evaluates change while accounting for model variation, and transfers the method.
 
 The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**. The independent-person attempt is scheduled separately, outside the four course days.
 
@@ -29,7 +29,7 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 | 02 | Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
 | 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
-| 05 | Diagnose and recover | Localize a hidden fault, make an authorized reversible correction, and prove clean-condition recovery. |
+| 05 | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
 | 06 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
 | 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
 | 08 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
@@ -48,11 +48,11 @@ The three enabling objectives are:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Diagnosing hidden faults remains Module 05's capability; independent-person transfer remains Module 10's.
+Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Bounded multi-agent orchestration belongs to Module 05; independent-person transfer remains Module 10's.
 
 ## Core and advanced boundary
 
-A fixed workflow is the highest machinery every core learner operates. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow operation, multi-agent operation or writing, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
+The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow. Module 05 uses read-only specialists and a reviewer with one coordinator-owned output, explicit dependencies, and bounded recovery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
 
 The core requires zero programming objectives. Dynamic checker implementation, API/MCP construction, custom RAG, agent-runtime development, and deployment remain adapter or builder work.
 
@@ -102,11 +102,13 @@ Appearance, reading mode, shell choice, explicitly selected reading positions, a
 
 ## Pinned execution and publication
 
-Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. The only provider credential is `OPENROUTER_API_KEY`, supplied to the current process. Every live exercise selects **`openrouter/anthropic/claude-sonnet-4.6`** through `shared/run_omp.py`. The launcher creates fresh runtime state, exposes only course tools, disables retries and model fallback, and keeps evidence separate from work. The guard is an OMP tool boundary, not an operating-system sandbox.
+Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. Live cloud-model exercises select **`openrouter/anthropic/claude-sonnet-4.6`** with `OPENROUTER_API_KEY` supplied to the current process. Module 05 uses its native-task orchestration launcher; other cloud-model exercises use `shared/run_omp.py`. The launchers create fresh runtime state, bound the model's tools, disable retries and model fallback, and keep evidence separate from work. These are OMP tool boundaries, not operating-system sandboxes.
 
 Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
 
 Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 keeps its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
+
+Module 05 runs native `task` children rather than a second scheduler. Its three read-only specialists feed a coordinator-owned brief and a dependent read-only review. The first missing-input attempt remains on record; selective repair can reuse only still-valid independent results. The module checker joins requested assignments to native child records, source identities and permitted effects. A parent summary, finished task, or fixture transcript cannot substitute for accepted live handoffs.
 
 Module 7 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
 

@@ -286,36 +286,33 @@
     {
       "id": "05",
       "directory": "module-05-diagnose-review",
-      "title": "Module 5 · Diagnose and recover",
+      "title": "Module 5 · Orchestrate an OMP agent team",
       "case_name": "Copper Span",
-      "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
-      "nav_summary": "Failure diagnosis · verified recovery",
+      "summary": "Delegate independent work, check each handoff, and recover a blocked agent before combining the results.",
+      "nav_summary": "OMP agent teams · controlled handoffs",
       "outcomes": {
-        "can": "Keep a hidden failure on record instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized correction you can undo, and prove the recovery holds.",
+        "can": "Direct an OMP agent team whose assignments fit together, check what each agent actually did, and recover a partial failure without throwing away valid work.",
         "will": [
-                "Seal the first miss, then compare it with a known-good run to find where the fault begins.",
-                "Use one probe to tell two competing causes apart.",
-                "Correct or revert once, then confirm the fix with a focused check, a full check, and a run in a fresh folder."
+                "Separate independent assignments from work that must wait, and give every child a complete brief, clear limits, and an acceptance check.",
+                "Run native OMP specialists, reconcile their findings against current sources, and give a separate reviewer the actual combined brief.",
+                "Preserve a blocked attempt, repair only the affected assignment, and recheck the results that depend on it."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-you-stop"], "optional_sections": ["stretch-competing-causes-on-a-second-case"]}}
+        {"source": "shared/MODULE_05_LAB.md", "dest": "shared/MODULE_05_LAB.html", "kind": "lab", "guide": {"context_sections": ["before-the-first-wave", "when-a-stage-holds", "retain-the-handoff", "recover-terminal-variables"], "optional_sections": []}},
+        {"source": "shared/ORCHESTRATION_GUIDE.md", "dest": "shared/ORCHESTRATION_GUIDE.html", "kind": "reference"}
       ],
       "figures": [
-        {"source": "shared/figures/m05-authorized-correction.png", "dest": "shared/figures/m05-authorized-correction.png"},
-        {"source": "shared/figures/m05-first-divergence.png", "dest": "shared/figures/m05-first-divergence.png"},
-        {"source": "shared/figures/m05-recovery-proofs.png", "dest": "shared/figures/m05-recovery-proofs.png"},
-        {"source": "shared/figures/m05-restore-precondition.png", "dest": "shared/figures/m05-restore-precondition.png"}
+        {"source": "shared/figures/m05-work-graph.png", "dest": "shared/figures/m05-work-graph.png"},
+        {"source": "shared/figures/m05-partial-recovery.png", "dest": "shared/figures/m05-partial-recovery.png"}
       ],
       "scripts": [
-        {"source": "scripts/render_review.py", "dest": "scripts/render_review.py"},
-        {"source": "scripts/restore.py", "dest": "scripts/restore.py"},
-        {"source": "scripts/place_practice_fault.py", "dest": "scripts/place_practice_fault.py"},
-        {"source": "scripts/probe_fields.py", "dest": "scripts/probe_fields.py"}
+        {"source": "scripts/orchestrate.py", "dest": "scripts/orchestrate.py"},
+        {"source": "scripts/orchestration_evidence.py", "dest": "scripts/orchestration_evidence.py"}
       ],
-      "download_dirs": ["shared/case"],
-      "tests": ["tests/test_module_05.py", "tests/test_adequacy.py"]
+      "download_dirs": ["shared/case", "shared/controls", "shared/agents", "shared/prompts"],
+      "tests": ["tests/test_module_05.py", "tests/test_orchestration_guard.mjs"]
     },
     {
       "id": "06",

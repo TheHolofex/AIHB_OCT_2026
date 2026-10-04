@@ -2,7 +2,6 @@
 """Workspace safety regressions; every mutation is in a disposable source tree."""
 from __future__ import annotations
 
-import hashlib
 import importlib.util
 import json
 import tempfile
@@ -62,22 +61,12 @@ class WorkspaceBehavior(unittest.TestCase):
 
     def test_missing_control_holds_before_destination_creation(self):
         module = self.module("05")
-        (module / "scripts/restore.py").unlink()
+        (module / "scripts/orchestrate.py").unlink()
         work = self.base / "attempt/work"
         with self.assertRaisesRegex(ValueError, "required source"):
             prepare_work.prepare("05", work, self.root)
         self.assertFalse(work.exists())
         self.assertFalse(work.parent.exists())
-
-    def test_frozen_renderer_remains_distinct_after_work_control_changes(self):
-        self.module("05")
-        work = prepare_work.prepare("05", self.base / "work with spaces", self.root)
-        original = (work / "baseline/render_review.py").read_bytes()
-        frozen = (work / "baseline/render_review.py.sha256").read_text().strip()
-        (work / "scripts/render_review.py").write_text("faulty replacement", encoding="utf-8")
-        self.assertEqual(hashlib.sha256((work / "baseline/render_review.py").read_bytes()).hexdigest(), frozen)
-        self.assertEqual((work / "baseline/render_review.py").read_bytes(), original)
-        self.assertNotEqual(hashlib.sha256((work / "scripts/render_review.py").read_bytes()).hexdigest(), frozen)
 
     def test_linked_source_and_broken_destination_link_refuse(self):
         module = self.module("03")

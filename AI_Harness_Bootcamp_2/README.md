@@ -6,7 +6,7 @@ Learn to operate AI harnesses by doing useful work: <br>draft a document, check 
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You'll use Oh My Pi to work with files and supplied tools, Obsidian to review and link notes, and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, test changes, diagnose failures, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
+You'll use Oh My Pi to work with files, supplied tools, and small agent teams; Obsidian to review and link notes; and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, delegate independent assignments, recover blocked work, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
 
 <div data-photo-band="custody"></div>
 
@@ -15,6 +15,7 @@ You'll use Oh My Pi to work with files and supplied tools, Obsidian to review an
 - **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
 - **A reusable knowledge vault.** Review source-backed notes in Obsidian, link the useful claims, and prove that a fresh model session uses your saved instruction and only the notes you approved. Then fix one weakness that matters and show the difference in another fresh run.
+- **A checked agent-team brief.** Give OMP specialists separate assignments, inspect their sources and results, and combine only accepted work. If one agent is blocked, preserve the valid reports, repair that assignment, and recheck the combined brief.
 - **A repeatable batch workflow.** Build and save a visual n8n workflow that validates records, routes exceptions, and produces ordered receipts. Predict which rows one policy change will alter, compare every output row in both batches, then restore the original workflow and reproduce its results exactly.
 - **A handoff someone else can run.** Give another person the inputs, instructions, controls, and checks they need to run, stop, and restore the work without you or your chat history.
 

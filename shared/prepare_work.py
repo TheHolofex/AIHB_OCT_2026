@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import hashlib
 import os
 import shutil
 import sys
@@ -13,13 +12,13 @@ from pathlib import Path
 
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
-    "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case",),
+    "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case", "controls", "prompts", "agents"),
     "06": ("controls", "corpus", "checks"), "07": ("batch", "controls"),
     "08": ("cases", "controls", "baseline"), "09": ("case", "controls"),
     "10": ("case", "controls", "baseline"), "04": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
-    "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
+    "02": ("second_brain.py",), "03": (), "05": ("orchestrate.py", "orchestration_evidence.py"), "06": (),
     "07": (), "08": ("evaluate_pairs.py", "restore_baseline.py"),
     "09": (), "10": ("local_ai.py", "check_package.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
@@ -118,12 +117,6 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
             target = stage / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
-        if module_id == "05":
-            baseline = stage / "baseline"
-            baseline.mkdir()
-            content = (stage / "scripts/render_review.py").read_bytes()
-            (baseline / "render_review.py").write_bytes(content)
-            (baseline / "render_review.py.sha256").write_text(hashlib.sha256(content).hexdigest() + "\n", encoding="utf-8")
         if module_id == "03":
             prepare_module_03(stage, dest)
         if dest.exists() or dest.is_symlink():
@@ -147,7 +140,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "03":
         return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "05":
-        return [python, "scripts/render_review.py", "shared/case/ledger.json", "out/baseline.md"]
+        return [python, "scripts/orchestrate.py", "inspect", "--work", "."]
     if module_id == "07":
         return []
     if module_id == "08":
