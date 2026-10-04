@@ -1,28 +1,19 @@
-# Module 10 · Stand up a local uncensored AI and hand it off
+# Module 10 · Stand up and package a local uncensored AI
 
-Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line and the bring-up steps and fills in package fields; you approve and run the server line, and the adapter scripts check the package's claims.
+You are going to run a local model on your own laptop, get one real reply, stop it, and bring it back. OMP drafts the start command. You check that line, and you start the server. The check scripts then test what your saved files claim. You keep those files so you can do this again without digging through the chat. You are not packaging them so someone else can take over.
 
-The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. You must keep every boundary.
+The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one file of about 15.7 GB. Uncensored means the part that used to refuse requests was removed. It will answer bluntly, and it will not warn you or decide what should go out. You hold that line. The server listens only on `127.0.0.1`, which means only this laptop can reach it. The model file stays on this laptop. The tools record what you ask and what it answers.
 
-Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
+Plan for about three hours on Thursday. That is a rough estimate. You work on your own laptop and finish in this session, including shutdown. If access, hardware, or time stops a required step, write the reason for `HOLD` and close the attempt before the session ends. `HOLD` means the work stopped for a named reason. It is not a grade.
 
 ## Start here
 
-1. [Stand the service up and transfer it](shared/MODULE_10_LAB.md) end to end.
-2. Read the [service rules](shared/case/SERVICE_RULES.md) before the first launch.
-3. Transfer the [runnable package](shared/PACKAGE.md) only after your own run is complete.
+1. [Stand the model up and keep the files](shared/MODULE_10_LAB.md) from the first command through close-out.
+2. Read the [service rules](shared/case/SERVICE_RULES.md) before you start the server.
+3. After your own run is done, freeze the ten files in the [package](shared/PACKAGE.md) and copy them. Check that copy from a new terminal. Do not copy the model file again, and do not download it again.
 
-![Transfer only the declared, digest-checked files; the recipient downloads weights separately, and evidence and conversation history stay outside the kit.](shared/figures/m10-package-boundary.png)
+The copy has only the ten files the package names: the instructions, the check scripts, the case and rules, the on/off control, and the saved baseline. Leave the model file where you downloaded it. Evidence, including the stop receipt, and the chat stay outside the copy. The fresh-copy check reads the named sections and confirms the named files are in the folder. It does not run the commands, and it does not start the server again.
 
-*Transfer only the declared, digest-checked files; the recipient downloads weights separately, and evidence and conversation history stay outside the kit.*
+## Keep it on this laptop
 
-<details markdown="1">
-<summary>Figure text</summary>
-
-The declared kit lists `shared/PACKAGE.md` (instructions), `scripts/` (adapters), `shared/case/` (case and rules), `shared/controls/` (active control), `shared/baseline/` (baseline). Freeze the declared paths, then make a digest-checked copy into a fresh received folder. Only those declared members travel. Not in the kit: model weights (recipient downloads them separately), run evidence including the stop receipt (kept separately), and conversation history.
-
-</details>
-
-## Bounded use
-
-Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. Results are for class review only. This kit is a limited local service, not a deployment. Completing the run authorizes nothing beyond its evidence bundle.
+Start the server only on `127.0.0.1`. Keep the model file on this laptop, under your own account. Don't upload it again, don't share the address, and don't let anyone else send requests to it. The tools record prompts and replies in your evidence folder. What you produce is for class review only. This is a local service you can run yourself. Finishing the run does not authorize anything beyond the evidence you saved.

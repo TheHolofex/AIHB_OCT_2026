@@ -83,6 +83,12 @@ On the isolated feature branch before integration with concurrent main changes:
 - Isolated Chromium exercised overview-to-lab and home navigation, the new home/module wording, shell switching, actual page-clipboard command bytes, full reading, narrow 390-pixel layout, Sand/Dark presentation, both loaded figures, full-size dialog and Escape, published controls/roles, and staff/obsolete-script 404 boundaries. No horizontal document overflow was observed. With JavaScript disabled, all required stages and all 18 command blocks remained available.
 - Browser screenshots are retained under the private evidence root. The default shared browser's screenshots/input stalled; a separately launched Chromium instance completed the observed interaction and visual checks. That tool failure is not a passed browser lane.
 
+## Integration with concurrent main changes
+
+The merge retains main's spreadsheet-agent and structured hallucination-control work, along with its revised local-model scope. After integration, the 11 orchestration tests, 8 guard tests and all 65 root unit tests passed. A fresh Module 05 preparation/inspect succeeded, and the merged launcher independently accepted the retained real review. The rebuilt publication passed exact checking and figure-link validation: 35 instructional pages, 423 raw downloads and 40 UI/generated assets. Chromium confirmed the combined homepage and the orchestration overview.
+
+Current main already records a separate Module 07 core-contract mismatch: the course map produces AGENT_SHEET while `modules/core/07-fixed-workflow.md` still names retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` records that inherited `test_core_standard.py` HOLD. This integration does not claim a green combined full-course gate or rewrite that unrelated Module 07 contract.
+
 ## Limits and historical boundary
 
 The 90–150 minute allocation is a planning estimate, not a measured learner duration. No representative learner study, human panel, native Windows/WSL/Linux execution, Intel macOS run or screen-reader operation is claimed. Interactive Agent Hub/steering is explained from the pinned native sources; the headless smoke does not prove an interactive supervision session. Child outputs and timestamps are nondeterministic; contracts and checked identities determine acceptance.

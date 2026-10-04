@@ -34,7 +34,7 @@ Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password
 
 For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. Use your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
 
-Module 7 uses the local visual workflow editor. You don't need n8n Cloud or an Assistant provider key. Keep Assistant off and workflows unpublished; don't copy the OpenRouter key into n8n.
+Module 7 uses the local visual workflow editor. You don't need n8n Cloud. Keep Assistant off and keep workflows unpublished during setup. In Module 7 you put your OpenRouter key into an n8n credential for the agent. Don't put that key in a file, a workflow export, a prompt, or your notes.
 
 ## Before the first command
 

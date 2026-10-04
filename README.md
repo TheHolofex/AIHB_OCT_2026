@@ -16,9 +16,9 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, improves from observed runs, operates one fixed workflow, evaluates change while accounting for model variation, and transfers the method.
+The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, improves from observed runs, operates a fixed workflow, controls hallucinations through structured checks and independent agent review, and transfers the method.
 
-The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**. The independent-person attempt is scheduled separately, outside the four course days.
+The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
 ## Target sequence
 
@@ -32,9 +32,9 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 | 05 | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
 | 06 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
 | 07 | Build and control a fixed workflow | Compose native visual batch controls, prove a single policy change completely, and restore the independently identified original graph. |
-| 08 | Evaluate a change with variation controls | Use repeated controls or a justified deterministic case to separate change from ordinary variation. |
+| 08 | Control hallucinations | Operate a source-bound review-and-correction loop; prevent schema-valid or unanimously endorsed errors from entering accepted work, and retain unknowns in the human decision. |
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 10 | Stand up a local uncensored AI and hand it off | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, and enable another person to repeat bring-up from the kit alone. |
+| 10 | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions/controls (weights excluded) so fresh-terminal structure check passes, and close out distinguishing live runtime proof from structure-only evidence. All work individual in the Thursday session. |
 
 Cases and evidence bundles are **independent**: no gate relies on a product from an earlier module. Skills build on one another, but earlier skills are assumed rather than retaught as new objectives. The authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) defines the module contract.
 
@@ -48,11 +48,11 @@ The three enabling objectives are:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Bounded multi-agent orchestration belongs to Module 05; independent-person transfer remains Module 10's.
+Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Bounded multi-agent orchestration belongs to Module 05; checking a local-model package from a fresh copy remains Module 10's.
 
 ## Core and advanced boundary
 
-The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow. Module 05 uses read-only specialists and a reviewer with one coordinator-owned output, explicit dependencies, and bounded recovery. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
+The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow. Module 05 uses read-only specialists and a reviewer with one coordinator-owned output, explicit dependencies, and bounded recovery. Module 08 adds a bounded, human-started, read-only review ensemble: agents work in isolated sessions, and a person starts each fixed stage and owns acceptance. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
 
 The core requires zero programming objectives. Dynamic checker implementation, API/MCP construction, custom RAG, agent-runtime development, and deployment remain adapter or builder work.
 
@@ -65,7 +65,7 @@ The core requires zero programming objectives. Dynamic checker implementation, A
 - Keep evidence of a material failure before repairing it. Finding the fault alone is held, not completed recovery.
 - A file's presence or a written refusal doesn't prove execution. Keep actual tool calls, execution results, guard records, and disk snapshots. A technical replay proves only the behavior it exercised.
 - `PASS` and `HOLD` describe technical checks and work decisions, not grades. Keep the failed attempt, fix its cause, and keep later attempts separate.
-- Clean-session restartability and independent-person transfer are separate; neither can substitute for the other.
+- A clean-session check proves only the behavior exercised. Module 10's fresh-terminal structure check confirms named fields and files inside the fresh copy; it does not execute package commands or show that another person can operate the kit.
 - Each module bundle contains the artifact/state, decisive evidence, decision, claim result, failure or `HOLD`, scope boundary, and handoff.
 
 ## Authoritative files
@@ -110,7 +110,7 @@ Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source st
 
 Module 05 runs native `task` children rather than a second scheduler. Its three read-only specialists feed a coordinator-owned brief and a dependent read-only review. The first missing-input attempt remains on record; selective repair can reuse only still-valid independent results. The module checker joins requested assignments to native child records, source identities and permitted effects. A parent summary, finished task, or fixture transcript cannot substitute for accepted live handoffs.
 
-Module 7 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
+Module 7 uses local **n8n 2.41.5** on the full approved official Docker stack. The learner connects an AI Agent to OpenRouter with their own key and downloads the spreadsheet that agent creates. The key must not appear in an export, prompt, or note. Run `python3 AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_sheet.py` and `node --test AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_controls.mjs`.
 
 The child working directory is inside its redirected, fresh HOME. In pinned OMP, `--no-rules` does not disable [ancestor context-file discovery](https://github.com/can1357/oh-my-pi/blob/v18.3.5/packages/coding-agent/src/discovery/helpers.ts); placing cwd beside HOME allowed an outside ancestor's instructions to load. An actual offline OMP replay observed the leak before this placement fix and its absence afterward, with zero provider requests.
 

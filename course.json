@@ -140,6 +140,7 @@
         {"source": "scripts/verify_content.py", "dest": "scripts/verify_content.py"},
         {"source": "scripts/compute_thread.py", "dest": "scripts/compute_thread.py"},
         {"source": "scripts/run_producer_rebuttal.py", "dest": "scripts/run_producer_rebuttal.py"},
+        {"source": "scripts/run_handoff.py", "dest": "scripts/run_handoff.py"},
         {"source": "scripts/render_review.py", "dest": "scripts/render_review.py"},
         {"source": "scripts/freeze_baseline.py", "dest": "scripts/freeze_baseline.py"},
         {"source": "scripts/reveal_change.py", "dest": "scripts/reveal_change.py"}
@@ -152,15 +153,15 @@
       "directory": "module-02-context-desk",
       "title": "Module 2 · Build and control a reusable second brain",
       "case_name": "Ledger Pike",
-      "summary": "Build linked notes in Obsidian and prove a fresh session can use them.",
-      "nav_summary": "Obsidian · reusable knowledge",
+      "summary": "Build linked notes in Obsidian and show that a new chat can answer from them.",
+      "nav_summary": "Obsidian · linked notes",
       "outcomes": {
-        "can": "Build a small Obsidian vault of linked, source-backed notes, prove from the run records that a fresh session used your saved rule and only the notes you admitted, and improve one weakness you find in what that session can retrieve.",
+        "can": "Build linked notes in Obsidian from the supplied paperwork, show from the run records that a new chat used your saved rule and only the notes you accepted, and fix one weakness that changes what that chat can answer.",
         "will": [
-                "Choose claims backed by the supplied notes, link them in your vault, and keep evidence separate from instructions quoted inside a note.",
-                "Admit only notes you've reviewed, then check that a fresh session loaded your saved rule and read only the content you approved, without your chat or the raw packet.",
-                "Fix one substantive weakness you find in what a cold run can retrieve, then show the effect in a new revision and a fresh run.",
-                "Confirm that a run stops before it contacts the provider when the saved rule file is missing."
+                "Choose claims the paperwork supports, link those notes, and treat an instruction written inside a source as evidence, not as an order.",
+                "Accept only notes you've checked, then confirm a new chat loaded your saved rule and read only the notes you approved, not the earlier chat or the original files.",
+                "Fix one weakness that changes what a new chat can answer, then show that change in a new saved copy and a new chat.",
+                "Confirm the run stops before it calls the model when the saved rule file is missing."
         ]
       },
       "pages": [
@@ -212,16 +213,16 @@
     {
       "id": "03",
       "directory": "module-03-mcp-research",
-      "title": "Module 3 · Operate MCP tools under limited authority",
+      "title": "Module 3 · Research the notes, then limit what the AI can touch",
       "case_name": "Kiln Hold",
-      "summary": "Research an Obsidian vault through an MCP server, check the AI's handling calls against the rules, and prove the limits you set on the connection.",
-      "nav_summary": "MCP tools · handling decisions · limited access",
+      "summary": "Research a folder of notes with the assistant, check its markings against the rules, and show the limits you set.",
+      "nav_summary": "Notes · markings · limits",
       "outcomes": {
-        "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit the connection to the folders and actions each phase needs, prove those limits with a probe, and remove the connection with proof that it is gone.",
+        "can": "Connect the assistant to a folder of notes only after you read what that connection claims, limit it to the folders and actions each part of the work needs, prove those limits, and remove the connection with proof that it is gone.",
         "will": [
-                "Read a server's self-description and catch a tool whose read-only label is false.",
-                "Make your own handling decisions first, then check the AI's handling proposals against written rules.",
-                "Narrow the assistant's reach between phases and use a probe to show that every forbidden action was stopped, even the ones the model never tried."
+                "Read what the connection claims and catch a tool whose read-only label is wrong.",
+                "Mark six notes yourself, then check the assistant’s markings against the written rules.",
+                "Tighten what the assistant can reach, and show that every forbidden action was stopped, including the ones it never tried."
         ]
       },
       "pages": [
@@ -319,14 +320,14 @@
       "directory": "module-06-run-corpus",
       "title": "Module 6 · Improve from observed failures",
       "case_name": "Blue Gauge",
-      "summary": "Turn observed practice failures into one precise control and check its limits.",
+      "summary": "Find a repeated failure in the practice runs, turn it into one exact text check, and see what that check still misses.",
       "nav_summary": "Failure notes · an exact text check",
       "outcomes": {
-        "can": "Turn failures you observed into one exact rule a program can check, configure that rule in a supplied control, and measure what it still misses.",
+        "can": "Turn a failure you saw more than once into one exact check a program can run, set it with two pieces of text, and write down what it still misses.",
         "will": [
-                "Freeze a sample of runs before you see any outcomes, and note each run's first failure before you group the failures.",
-                "Draw one conclusion about failure categories that the counts actually support.",
-                "Write the rule as two exact text strings, test it on known-bad, known-good, and missing-input cases, and record its false positives and false negatives."
+                "Freeze which runs you'll read before you see any results, and write each run's first problem before you group them.",
+                "State one conclusion the counts in this sample actually support.",
+                "Pick two exact pieces of text, try the check on a known-bad run, a known-good run, and a missing file, and record what it catches and misses."
         ]
       },
       "pages": [
@@ -347,107 +348,57 @@
     {
       "id": "07",
       "directory": "module-07-batch-workflow",
-      "title": "Module 7 · Operate a fixed workflow through change",
+      "title": "Module 7 · Automate a spreadsheet with an agent",
       "case_name": "White Rack",
-      "summary": "Build a visual workflow, prove exactly what one policy change does to both batches, and restore the original.",
-      "nav_summary": "Visual workflows · exact comparison and restoration",
+      "summary": "Connect an n8n agent to OpenRouter and have it write a local spreadsheet from a batch.",
+      "nav_summary": "n8n agent · local spreadsheet",
       "outcomes": {
-        "can": "Build a fixed visual batch workflow that routes every record by explicit rules, predict exactly which records one saved rule change will alter, prove nothing else changed, and restore the original workflow from a saved copy.",
+        "can": "Put an AI Agent on a local n8n workflow, connect it to OpenRouter with your own key, and have that agent create a spreadsheet on your computer from a batch you give it.",
         "will": [
-                "Connect checking, ordered routing, rejoining, and sorting into one saved n8n workflow that accounts for every row.",
-                "Write down, before running anything, which rows a one-value policy change will alter, then prove the before-and-after files match that prediction and nothing else.",
-                "Confirm your saved copy by its fingerprint, rebuild the workflow from it in a blank canvas, and reproduce both original results byte for byte."
+                "Add the agent, connect the OpenRouter chat model with your key, and give it one tool that writes the spreadsheet.",
+                "Run the workflow from the editor and download the spreadsheet file to your computer.",
+                "Check that the file has every source lot once, and record any row the rules say is wrong."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
       ],
-      "figures": [
-        {"source": "shared/figures/m07-n8n-01-blank-router.png", "dest": "shared/figures/m07-n8n-01-blank-router.png"},
-        {"source": "shared/figures/m07-n8n-02-upload-field.png", "dest": "shared/figures/m07-n8n-02-upload-field.png"},
-        {"source": "shared/figures/m07-n8n-03-read-csv.png", "dest": "shared/figures/m07-n8n-03-read-csv.png"},
-        {"source": "shared/figures/m07-n8n-03-empty-batch-setting.png", "dest": "shared/figures/m07-n8n-03-empty-batch-setting.png"},
-        {"source": "shared/figures/m07-n8n-04-pending-rule.png", "dest": "shared/figures/m07-n8n-04-pending-rule.png"},
-        {"source": "shared/figures/m07-n8n-05-check-batch.png", "dest": "shared/figures/m07-n8n-05-check-batch.png"},
-        {"source": "shared/figures/m07-n8n-06-switch-rules.png", "dest": "shared/figures/m07-n8n-06-switch-rules.png"},
-        {"source": "shared/figures/m07-n8n-06-switch-options.png", "dest": "shared/figures/m07-n8n-06-switch-options.png"},
-        {"source": "shared/figures/m07-n8n-07-rack-hold.png", "dest": "shared/figures/m07-n8n-07-rack-hold.png"},
-        {"source": "shared/figures/m07-n8n-08-ready.png", "dest": "shared/figures/m07-n8n-08-ready.png"},
-        {"source": "shared/figures/m07-n8n-09-pending-decision.png", "dest": "shared/figures/m07-n8n-09-pending-decision.png"},
-        {"source": "shared/figures/m07-n8n-10-fallback.png", "dest": "shared/figures/m07-n8n-10-fallback.png"},
-        {"source": "shared/figures/m07-n8n-11-collect-routes.png", "dest": "shared/figures/m07-n8n-11-collect-routes.png"},
-        {"source": "shared/figures/m07-n8n-11-branch-wires.png", "dest": "shared/figures/m07-n8n-11-branch-wires.png"},
-        {"source": "shared/figures/m07-n8n-12-original-order.png", "dest": "shared/figures/m07-n8n-12-original-order.png"},
-        {"source": "shared/figures/m07-n8n-13-receipt-fields.png", "dest": "shared/figures/m07-n8n-13-receipt-fields.png"},
-        {"source": "shared/figures/m07-n8n-14-make-receipt.png", "dest": "shared/figures/m07-n8n-14-make-receipt.png"},
-        {"source": "shared/figures/m07-n8n-complete-canvas.png", "dest": "shared/figures/m07-n8n-complete-canvas.png"},
-        {"source": "shared/figures/m07-n8n-15-baseline-export.png", "dest": "shared/figures/m07-n8n-15-baseline-export.png"},
-        {"source": "shared/figures/m07-n8n-16-checker-import.png", "dest": "shared/figures/m07-n8n-16-checker-import.png"},
-        {"source": "shared/figures/m07-n8n-17-original-hash.png", "dest": "shared/figures/m07-n8n-17-original-hash.png"},
-        {"source": "shared/figures/m07-n8n-18-wave1-baseline.png", "dest": "shared/figures/m07-n8n-18-wave1-baseline.png"},
-        {"source": "shared/figures/m07-n8n-19-wave2-baseline.png", "dest": "shared/figures/m07-n8n-19-wave2-baseline.png"},
-        {"source": "shared/figures/m07-n8n-20-baseline-exact.png", "dest": "shared/figures/m07-n8n-20-baseline-exact.png"},
-        {"source": "shared/figures/m07-n8n-21-one-saved-change.png", "dest": "shared/figures/m07-n8n-21-one-saved-change.png"},
-        {"source": "shared/figures/m07-n8n-22-changed-runs.png", "dest": "shared/figures/m07-n8n-22-changed-runs.png"},
-        {"source": "shared/figures/m07-n8n-23-wave1-delta.png", "dest": "shared/figures/m07-n8n-23-wave1-delta.png"},
-        {"source": "shared/figures/m07-n8n-24-wave2-delta.png", "dest": "shared/figures/m07-n8n-24-wave2-delta.png"},
-        {"source": "shared/figures/m07-n8n-25-changed-export.png", "dest": "shared/figures/m07-n8n-25-changed-export.png"},
-        {"source": "shared/figures/m07-n8n-26-digest-recheck.png", "dest": "shared/figures/m07-n8n-26-digest-recheck.png"},
-        {"source": "shared/figures/m07-n8n-27-blank-restore.png", "dest": "shared/figures/m07-n8n-27-blank-restore.png"},
-        {"source": "shared/figures/m07-n8n-27-restored-rule.png", "dest": "shared/figures/m07-n8n-27-restored-rule.png"},
-        {"source": "shared/figures/m07-n8n-28-wave1-restored.png", "dest": "shared/figures/m07-n8n-28-wave1-restored.png"},
-        {"source": "shared/figures/m07-n8n-29-wave1-restored-exact.png", "dest": "shared/figures/m07-n8n-29-wave1-restored-exact.png"},
-        {"source": "shared/figures/m07-n8n-30-wave2-restored.png", "dest": "shared/figures/m07-n8n-30-wave2-restored.png"},
-        {"source": "shared/figures/m07-n8n-31-wave2-restored-exact.png", "dest": "shared/figures/m07-n8n-31-wave2-restored-exact.png"},
-        {"source": "shared/figures/m07-n8n-32-revised-baseline.png", "dest": "shared/figures/m07-n8n-32-revised-baseline.png"},
-        {"source": "shared/figures/m07-n8n-33-input-only-proof.png", "dest": "shared/figures/m07-n8n-33-input-only-proof.png"},
-        {"source": "shared/figures/m07-n8n-34-revised-changed.png", "dest": "shared/figures/m07-n8n-34-revised-changed.png"},
-        {"source": "shared/figures/m07-n8n-35-policy-only-proof.png", "dest": "shared/figures/m07-n8n-35-policy-only-proof.png"}
+      "figures": [],
+      "scripts": [
+        {"source": "scripts/check_sheet.py", "dest": "scripts/check_sheet.py"}
       ],
-      "scripts": [],
       "download_dirs": [],
       "raw_downloads": [
         "shared/batch/wave1.csv",
-        "shared/batch/wave2.csv",
-        "shared/batch/wave2-revised.csv",
-        "shared/controls/validate-batch.js",
-        "shared/controls/receipt-checker.json"
+        "shared/SHEET_RULES.md"
       ],
-      "tests": ["tests/test_controls.mjs"]
+      "tests": ["tests/test_controls.mjs", "tests/test_sheet.py"]
     },
     {
       "id": "08",
       "directory": "module-08-change-eval",
-      "title": "Module 8 · Evaluate a change with variation controls",
+      "title": "Module 8 · Control hallucinations",
       "case_name": "Slope Brief",
-      "summary": "Test a proposed change against frozen cases and hard gates, and tell its effect apart from ordinary model variation.",
-      "nav_summary": "Change evaluation · model variation",
+      "summary": "Find unsupported claims, compare independent agent reviews, and check every correction against the original sources before deciding what you can use.",
+      "nav_summary": "Hallucination control · review ensemble",
       "outcomes": {
-        "can": "Decide whether a proposed change is safe to adopt by setting your rejection rule before you see any result, comparing it case by case against the current version, and proving you can put the current version back.",
+        "can": "Control unsupported claims by combining structured source checks with independent agent reviews, correcting only what the evidence supports, and keeping unresolved facts visible in your final decision.",
         "will": [
-                "Write down which failures reject a change, and freeze the exact files under test, before opening any candidate output.",
-                "Compare two candidates with the baseline on the same cases and trace every failure to its source record, without letting an average hide a single violation.",
-                "Restore the baseline from stored fingerprints and show the rerun matches byte for byte."
+                "Check a draft claim by claim, keeping valid structure, source support, and permission to act separate.",
+                "Run two reviewers independently, compare their evidence, and use a correcting agent without letting agreement overrule a source check.",
+                "Recheck every corrected claim, retain unknowns and disagreements, and decide whether the brief is usable within its stated limits."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": ["the-decision-rule", "class-only-boundary"], "optional_sections": []}}
       ],
-      "figures": [
-        {"source": "shared/figures/m08-bounded-decision.png", "dest": "shared/figures/m08-bounded-decision.png"},
-        {"source": "shared/figures/m08-evidence-lanes.png", "dest": "shared/figures/m08-evidence-lanes.png"},
-        {"source": "shared/figures/m08-freeze-before-results.png", "dest": "shared/figures/m08-freeze-before-results.png"},
-        {"source": "shared/figures/m08-paired-hard-gates.png", "dest": "shared/figures/m08-paired-hard-gates.png"},
-        {"source": "shared/figures/m08-restore-baseline.png", "dest": "shared/figures/m08-restore-baseline.png"}
-      ],
+      "figures": [],
       "scripts": [
-        {"source": "scripts/restore_baseline.py", "dest": "scripts/restore_baseline.py"},
-        {"source": "scripts/evaluate_pairs.py", "dest": "scripts/evaluate_pairs.py"},
-        {"source": "scripts/stretch_runner.py", "dest": "scripts/stretch_runner.py"}
+        {"source": "scripts/hallucination.py", "dest": "scripts/hallucination.py"}
       ],
-      "download_dirs": ["shared/cases", "shared/controls", "shared/baseline"],
+      "download_dirs": ["shared/case", "shared/controls"],
       "tests": ["tests/test_module_08.py", "tests/test_adequacy.py"]
     },
     {
@@ -484,16 +435,16 @@
     {
       "id": "10",
       "directory": "module-10-capstone",
-      "title": "Module 10 · Stand up a local uncensored AI and hand it off",
+      "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Hand off a local uncensored AI service another person can run, stop, and restore without you.",
-      "nav_summary": "Local uncensored AI · cold handoff",
+      "summary": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again.",
+      "nav_summary": "Your own local model",
       "outcomes": {
-        "can": "Stand up an uncensored local model on your own laptop and hand the kit to someone who can run, stop, and restore it without you.",
+        "can": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again without the chat.",
         "will": [
-                "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
-                "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
-                "Freeze and transfer the kit, keep your own replay separate from another person's attempt, and record their questions as evidence for the next version."
+                "Download the named model file under your own account, check that it is the right file, and point OMP at a server only this laptop can reach.",
+                "Get one real reply, then stop the server and bring the saved settings back so the wiring matches.",
+                "Save the ten files, copy them, and check that copy from a new terminal using only those files."
         ]
       },
       "pages": [
@@ -502,10 +453,8 @@
       ],
       "figures": [
         {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},
-        {"source": "shared/figures/m10-independent-transfer.png", "dest": "shared/figures/m10-independent-transfer.png"},
         {"source": "shared/figures/m10-launch-approval.png", "dest": "shared/figures/m10-launch-approval.png"},
         {"source": "shared/figures/m10-operator-boundary.png", "dest": "shared/figures/m10-operator-boundary.png"},
-        {"source": "shared/figures/m10-package-boundary.png", "dest": "shared/figures/m10-package-boundary.png"},
         {"source": "shared/figures/m10-stop-restore.png", "dest": "shared/figures/m10-stop-restore.png"}
       ],
       "scripts": [

@@ -48,7 +48,7 @@ Use exactly three enabling objectives:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Before this project, the learner could verify sources and give bounded direction. After this project, the learner can turn those sources into reviewed, linked knowledge governed by an explicitly loaded saved instruction and demonstrate its use in a fresh session. Source checking remains Module 01's inherited quality bar. Saved instructions and load proof are newly taught here. Bounded multi-agent orchestration belongs to Module 05; person-to-person transfer belongs to Module 10.
+Before this project, the learner could verify sources and give bounded direction. After this project, the learner can turn those sources into reviewed, linked knowledge governed by an explicitly loaded saved instruction and demonstrate its use in a fresh session. Source checking remains Module 01's inherited quality bar. Saved instructions and load proof are newly taught here. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Consumes:** `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD`
 
@@ -83,9 +83,9 @@ Native child completion and artifact presence are not acceptance. Join actual re
 | Native OMP team decomposition, evidence-bearing handoffs, dependent review, selective recovery | 05 |
 | Observed-run analysis and predicate specification | 06 |
 | Fixed workflow and deterministic outer-state change | 07 |
-| Variation-aware candidate comparison and rollback | 08 |
+| Hallucination control with structured claim checks, isolated reviewer agents, correction, re-review and human disposition | 08 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 09 |
-| Restartability and person-to-person transfer | 10 |
+| Package local-runtime instructions/controls (no undeclared deps) for fresh-terminal structure verification | 10 |
 
 ## Responsibility before release
 
@@ -114,7 +114,7 @@ An executed tool claim requires the actual assistant call, execution result, gua
 
 The learner can specify a mechanically decidable predicate and configure it in a **supplied deterministic control**. The adapter implements any new checker and owns its identity. If the observed failure is an arbitrary semantic condition that cannot be represented in supplied controls, record the predicate, implementation dependency, owner, and `HOLD`; do not claim the control was implemented.
 
-The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow, not agent-runtime development. Module 05 permits read-only specialists and a reviewer under one coordinator-owned output; learners configure supplied roles and briefs rather than build a scheduler. The core also permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets one of those triggers records the simpler alternative, added risk, and escalation owner.
+The core includes bounded native OMP multi-agent orchestration and a fixed visual workflow, not agent-runtime development. Module 05 permits read-only specialists and a reviewer under one coordinator-owned output; learners configure supplied roles and briefs rather than build a scheduler. Module 08 adds a bounded human-started read-only ensemble: reviewers receive isolated inputs, the correction stage sees completed reviews as evidence, and fresh reviewers recheck the entire correction. No model vote grants authority. The core also permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure including custom RAG, API/MCP construction, runtime development, and deployment remain advanced. A learner who meets one of those triggers records the simpler alternative, added risk, and escalation owner.
 
 ## Deterministic and stochastic evidence
 
@@ -131,9 +131,7 @@ Candidate evaluation declares before results one of:
 
 ## Transfer practice
 
-Clean-session and person-to-person transfer are separate observations. The recipient receives the saved package, operating access, and supplied task. Record what they do, what they ask, and any help they need; use that feedback to improve the package rather than score the attempt.
-
-Preserve technical failures and later attempts separately. A missing recipient is an unobserved transfer attempt, not a learner grade. Do not require a new recipient or unseen task as a condition for trying again.
+Clean-session restartability and fresh-terminal structure check are separate observations. Freeze the declared ten-file bundle (`E/bundle-before.json`) and make a digest-checked copy into the fresh folder `F`. In a new terminal inside `F`, run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked`. The structure check reads the package's named fields and confirms every file it names is inside `F`; it does not run the package's commands. Record the check and unresolved limits in `E/close-out.md`.
 
 ## Publication check
 
@@ -166,7 +164,7 @@ Use the pinned shared OMP launcher rather than direct vendor logins or alternate
 
 Module 02 also requires Obsidian for local Markdown editing. Do not add community plugins, Sync, a REST API, or an MCP service to its core workflow. Reuse `shared/run_omp.py` and `shared/course_guard.mjs` unchanged.
 
-Record observed exercise outcomes separately from editorial review. Keep live-provider, native-platform, peer-review, and person-to-person transfer observations explicit. Preserve historical evidence without treating an old assessment policy as a current requirement. The 15-minute/eight-term orientation, 120-minute unaided-work limit, and first-result timing remain design targets until measured with people.
+Record observed exercise outcomes separately from editorial review. Keep live-provider and native-platform observations explicit. Preserve historical evidence without treating an old assessment policy as a current requirement. The 15-minute/eight-term orientation, 120-minute unaided-work limit, and first-result timing remain design targets until measured with people.
 
 ### `PASS` and `HOLD` are ordinary English, and they stay
 

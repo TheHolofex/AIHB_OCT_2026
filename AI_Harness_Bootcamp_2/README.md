@@ -16,10 +16,11 @@ You'll use Oh My Pi to work with files, supplied tools, and small agent teams; O
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
 - **A reusable knowledge vault.** Review source-backed notes in Obsidian, link the useful claims, and prove that a fresh model session uses your saved instruction and only the notes you approved. Then fix one weakness that matters and show the difference in another fresh run.
 - **A checked agent-team brief.** Give OMP specialists separate assignments, inspect their sources and results, and combine only accepted work. If one agent is blocked, preserve the valid reports, repair that assignment, and recheck the combined brief.
-- **A repeatable batch workflow.** Build and save a visual n8n workflow that validates records, routes exceptions, and produces ordered receipts. Predict which rows one policy change will alter, compare every output row in both batches, then restore the original workflow and reproduce its results exactly.
-- **A handoff someone else can run.** Give another person the inputs, instructions, controls, and checks they need to run, stop, and restore the work without you or your chat history.
+- **A spreadsheet an agent writes.** In local n8n, connect an AI Agent to OpenRouter with your key and have it write a spreadsheet from a batch. Download the file and check it against the source. The chat is not the result.
+- **A corrected, evidence-bound brief.** Check each material claim, have independent agents challenge it, and verify the corrections against the original sources. Keep unknowns visible even when the reviewers agree.
+- **A local model you can run yourself.** Start it on your laptop, stop it, bring it back, and keep the files so you can do that again without the chat.
 
-In the batch workflow, before you change the policy, you save the original workflow export along with a separate record of its SHA-256 fingerprint. The changed export goes in its own file. To restore, you check the original against its fingerprint, import it into a new, blank workflow, and compare both reruns byte for byte with their original receipts. No model-written text goes into these checks, and you never edit an output by hand to make it match.
+The spreadsheet is the result. A fluent reply in the agent panel is not the file, and a note inside the batch is not a rule.
 
 An answer can read well and still be wrong, so compare what the tool actually produced with the request and the sources. If a check fails, save the failed result, fix the cause, and check again. If you're missing a fact or permission you need, stop and say exactly what's missing.
 
