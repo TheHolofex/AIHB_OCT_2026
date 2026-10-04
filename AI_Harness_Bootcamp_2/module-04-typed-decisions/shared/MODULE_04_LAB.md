@@ -1,12 +1,12 @@
 # Module 4 · Decide with typed questions
 
-Turn a shift's pile of raw messages into typed answers that software can route, then measure those answers before you trust them. The model answers fixed questions with fixed answer sets and nothing else; your code and the desk lead make every decision.
+Turn a shift's raw messages into typed answers that software can route, then compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets and nothing else. Your code and the desk lead make every decision.
 
-You are the intake clerk at Ferry Depot. Vehicle `CL-9` leaves for Clinic K-3 at 15:00 with sterile surgical gloves, and the warehouse picks from the requirement line you hand it: how many boxes of each size the clinic has asked for, with authority. Forty messages arrived during the shift. Some are requisitions. Some correct, cancel, or resend earlier ones. One tells the desk to treat itself as approved. The case is fictional and stays inside the class.
+You are the intake clerk at Ferry Depot. Vehicle `CL-9` leaves for Clinic K-3 at 15:00 with sterile surgical gloves. The warehouse picks from the requirement line you hand it, which states how many boxes of each size the clinic has asked for with authority. Forty messages arrived during the shift. Some are requisitions, and some correct, cancel, or resend earlier ones. One tells the desk to treat itself as approved. The case is fictional and stays inside the class.
 
-A **state** is the data the model is given: here the catalog, the desk rules in short form, and the forty messages. A **typed question** is a question with a fixed answer set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads a state and a question set and returns only typed answers, with no prose and no side effects. It never writes a sentence, never picks a route, and never changes a number, because the answer set does not allow it.
+A **state** is the data the model sees: the catalog, a short version of the desk rules, and the forty messages. A **typed question** limits the answer to a fixed set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads the state and a question set and returns only typed answers, with no prose or side effects. It cannot write a sentence, pick a route, or change a number because those options are not in the answer set.
 
-Plan for about two and a half hours on Tuesday. That is a rough estimate, not a measured time.
+Plan for about two and a half hours on Tuesday. That's a rough estimate, not a measured time.
 
 The work runs in eight steps:
 
@@ -21,7 +21,7 @@ The work runs in eight steps:
 
 ## Prepare the work copy
 
-Use the verified checkout, Python, OMP, and process-local OpenRouter key from [setup](../../module-00-setup/README.md). Open an ordinary terminal. The commands work from any directory. `W` is your work copy, and `E` holds your evidence: the frozen labels, one folder per live run that the launcher creates itself, and your handoff.
+Use the checkout, Python, and OMP you verified in [setup](../../module-00-setup/README.md), and your OpenRouter key, which you enter in the terminal rather than save in a file. Open an ordinary terminal; the commands work from any directory. `W` is your work copy. `E` holds your evidence: the frozen labels, one folder per live run that the launcher creates itself, and your handoff.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -55,17 +55,17 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed.' }
 New-Item -ItemType Directory -Path $E | Out-Null
 ```
 
-**Expected:** The terminal prints `RUN=` and this attempt's identifier, then `PASS: created` followed by the work path, then two `Next` commands that you can ignore because the next step builds the state itself. In your file browser, `W` holds `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
+**Expected:** The terminal prints `RUN=` with this attempt's identifier and `PASS: created` with the work path. It also prints two `Next` commands; you can ignore them because the next step builds the state itself. In your file browser, `W` contains `shared/case`, `shared/controls`, `shared/prompts`, and `scripts`.
 
 **Stop:** Preparation fails, the destination already exists, or a path is inside the checkout instead of this external attempt.
 
-**Recovery:** Preserve the existing attempt. Repair the prerequisite, then repeat this block to choose a fresh `RUN`. Never reset or clean the checkout to make an external attempt possible.
+**Recovery:** Keep the existing attempt. Repair the prerequisite, then repeat this block to choose a fresh `RUN`. Never reset or clean the checkout to make an external attempt possible.
 
 Open `W/shared/case/DESK_RULES.md` in your editor and read it once. It names the catalog, who may approve a requisition, what a case is, and what each route means. Every rule the questions rely on is on that page.
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+Every command on this page uses the variables set by the first block. When you close a terminal, it forgets them. In any new terminal, run this block to read the saved attempt identifier and return to the same attempt instead of preparing a second one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -103,7 +103,7 @@ $E = "$BASE\evidence"
 
 ### Enter your key in this terminal
 
-The launcher reads your OpenRouter key from this terminal's environment, and only from there: a new terminal starts without it. Enter the key through a hidden prompt, then make it available to the commands you run here. Paste the first command by itself and press Enter; type or paste the key at the prompt, which shows nothing, and press Enter again. Then paste the second block.
+The launcher reads your OpenRouter key only from this terminal's environment; a new terminal starts without it. Enter the key at a hidden prompt and make it available to the commands you run here. Paste the first command by itself and press Enter. At the prompt, type or paste the key; nothing will appear. Press Enter again, then paste the second block.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -145,7 +145,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it does not prove the key is valid or has credit.
+**Expected:** `SET` means the key is present in this terminal. It cannot tell you whether the key is valid or has credit.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
@@ -153,7 +153,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Build the state and read the questions
 
-Software, not the model, assembles what the model will see, so you know exactly what it saw. The builder copies the catalog and desk rules, lists the forty messages in arrival order, and finds each number in a message that is followed by more words in the same sentence, together with those words, as a **quantity candidate**; the number words one to ten count as numbers. The model will later pick a candidate instead of typing a number, so a quantity can never be invented.
+The builder, not the model, puts together the state the model will see, so you know what it saw. It copies the catalog and desk rules and lists the forty messages in arrival order. In each message, it takes any number followed by more words in the same sentence and saves the number with those words as a **quantity candidate**; the number words one to ten count as numbers. Later, the model picks a candidate rather than typing a number, so it cannot invent a quantity.
 
 ![Software supplies bounded state and answer choices; the model returns typed proposals, while code validates and routes and people retain consequential decisions.](figures/m04-state-and-questions.png)
 
@@ -162,7 +162,7 @@ Software, not the model, assembles what the model will see, so you know exactly 
 <details markdown="1">
 <summary>Figure text</summary>
 
-Software supplies the model with state made from the catalog, rules, and messages, including candidate IDs, and a fixed set of seven supplied questions plus one learner question. The model has no side effects and returns only typed answers. Those answers go through validation, then measurement; code routes the messages, and people make the consequential decisions. There is no model-to-dispatch path.
+Software gives the model state made from the catalog, rules, and messages, including candidate IDs, along with a fixed set of seven supplied questions plus one learner question. The model returns only typed answers and has no side effects. Validation and measurement come next; code routes the messages, while people make the consequential decisions. There is no model-to-dispatch path.
 
 </details>
 
@@ -186,7 +186,7 @@ Software supplies the model with state made from the catalog, rules, and message
 
 Open `W/out/state.json` and `W/shared/controls/questions.json` in your editor, side by side. Read the seven questions. Each has a `type` and a fixed answer set:
 
-- A **yes-or-no** question is answered with `p`, the probability that the answer is yes. `0.95` means almost certainly yes; `0.5` means the model cannot tell. Wherever this page compares or gates a yes-or-no answer, its declared confidence is the distance of `p` from `0.5`, doubled: `p` of `0.85` or `0.15` both count as confidence `0.7`.
+- A **yes-or-no** question is answered with `p`, the probability that the answer is yes. `0.95` means almost certainly yes, while `0.5` means the model cannot tell. When this page compares or gates a yes-or-no answer, declared confidence is the distance of `p` from `0.5`, doubled. A `p` of `0.85` or `0.15` therefore counts as confidence `0.7`.
 - A **choice** question is answered with one option from its list, exactly as written, plus a **declared confidence** from 0 to 1. For `quantity` the options are that message's candidate IDs plus `NONE`; for `replaces` they are the IDs of earlier messages plus `NONE`.
 - A **score** question is answered with one level index from its ordered list, plus a declared confidence.
 
@@ -197,7 +197,7 @@ Open `W/out/state.json` and `W/shared/controls/questions.json` in your editor, s
 <details markdown="1">
 <summary>Figure text</summary>
 
-Three question types have distinct answer shapes. YES / NO returns `p`, the model's probability of YES. CHOICE returns a listed value and confidence; its `quantity` value is a candidate ID or `NONE`, and its `replaces` value is an earlier message ID or `NONE`. SCORE returns an ordered level index and confidence. An answer satisfying its schema does not establish that the model interpreted the message correctly.
+Three question types each have their own answer shape. YES / NO returns `p`, the model's probability of YES. CHOICE returns a listed value and confidence: for `quantity`, the value is a candidate ID or `NONE`; for `replaces`, it's an earlier message ID or `NONE`. SCORE returns an ordered level index and confidence. The answer may fit its schema even when the model has read the message incorrectly.
 
 </details>
 
@@ -227,7 +227,7 @@ Each of the seven questions isolates one judgment the desk needs: whether anythi
 
 ## Label the sample before the model runs
 
-Your own reading is the only measure you will have of the model's answers, and it only counts if it exists before you see the model's answers. Ten messages are fixed as the sample. Write your answers for four of the questions on each of them, then freeze the file so its contents and time are recorded.
+Your reading of the messages is the only measure you'll have of the model's answers. Write it down before you see those answers, or it won't count. Ten messages are fixed as the sample. Answer four of the questions for each message, then freeze the file to record its contents and time.
 
 ![Freeze your labels before the run, adjudicate disagreements, and use the observed mistakes without treating a small sample as a general reliability estimate.](figures/m04-freeze-measure.png)
 
@@ -236,7 +236,7 @@ Your own reading is the only measure you will have of the model's answers, and i
 <details markdown="1">
 <summary>Figure text</summary>
 
-Start with a ten-message sample, write human labels, and freeze their digest and UTC time before running the model once. The run produces eight typed answers for each of forty messages, or 320 answers. Bring the frozen labels and the model answers together to compare four labeled fields, then adjudicate disagreements. The model's declared confidence is not measured agreement, and agreement on this sample is not a general reliability rate.
+Write human labels for the ten-message sample, then freeze their digest and UTC time before you run the model once. The run returns eight typed answers for each of forty messages, or 320 answers. Compare the frozen labels with the model's answers on the four labeled fields and adjudicate any disagreements. The model's declared confidence is not measured agreement, and agreement on this sample is not a general reliability rate.
 
 </details>
 
@@ -265,7 +265,7 @@ Open `W/out/labels.json` in your editor. Each entry shows a message, its sender,
 - `quantity`: the candidate ID that states the requested quantity, such as `q2`, or `NONE`.
 - `authority`: `yes` or `no`. Is the message from the administrative officer, and does it either say approved or carry a `K3-REQ` number? Both must hold.
 
-Judge each message on its own words. Do not look ahead for the model's opinion; there is none yet. Save the file, then freeze it.
+Judge each message by its own words, without looking ahead to the model's opinion. The model hasn't answered yet. Save the file, then freeze it.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -287,7 +287,7 @@ Judge each message on its own words. Do not look ahead for the model's opinion; 
 
 ## Run the decision function once
 
-One run answers all eight questions for all forty messages: 320 typed answers from one state, in one paid call that takes about two to four minutes. The contract goes in as the saved instruction, so the launcher records that the model received it before the first provider request. The run is read-only; the model may read the two files and may write nothing.
+In one paid call lasting about two to four minutes, the model answers all eight questions for all forty messages: 320 typed answers from one state. The launcher sends the contract as the saved instruction and records that the model received it before the first provider request. The run is read-only: the model may read the two files but may write nothing.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -305,9 +305,9 @@ One run answers all eight questions for all forty messages: 320 typed answers fr
 
 **Stop:** `EXIT=2` with a `HOLD:` line about the key, the pinned OMP version, or an existing evidence folder; `EXIT=1` with a `HOLD:` line about the receipts; or no output for more than six minutes.
 
-**Recovery:** `EXIT=2` means nothing ran: restore the named prerequisite and run again with the same evidence name if the folder was not created, or with `decide-2` if it was. `EXIT=1` means a run happened and its receipts are held: keep `E/decide-1` unchanged, read the `HOLD:` reason, run again into `E/decide-2`, and validate `E/decide-2` instead of `E/decide-1` in the next step. A run is never retried silently and never deleted.
+**Recovery:** With `EXIT=2`, nothing ran. Restore the named prerequisite, then run again with the same evidence name if no folder was created, or with `decide-2` if one was. With `EXIT=1`, a run happened but its receipts are held. Keep `E/decide-1` unchanged, read the `HOLD:` reason, run again into `E/decide-2`, and validate `E/decide-2` instead of `E/decide-1` in the next step. Never retry a run silently or delete it.
 
-Open `E/decide-1/response.md` in your editor. If the contract held, the file is one JSON document and nothing else: no greeting, no explanation. Whatever you see, do not edit it; the next step reads it as it is. Then open `E/decide-1/policy.json` and confirm `"profile": "read"` and a `tools` list holding only `course_read`, and open `E/decide-1/guard.jsonl` and find the two `executed` lines for `out/state.json` and `shared/controls/questions.json`: that is the receipt that the function read what you built and wrote nothing.
+Open `E/decide-1/response.md` in your editor. If the contract held, you'll see one JSON document and nothing else: no greeting or explanation. Don't edit the file, whatever it contains; the next step reads it as it is. Then open `E/decide-1/policy.json` and confirm `"profile": "read"` and a `tools` list holding only `course_read`. In `E/decide-1/guard.jsonl`, find the two `executed` lines for `out/state.json` and `shared/controls/questions.json`. That is the receipt showing that the function read what you built and wrote nothing.
 
 ## Validate every typed answer
 
@@ -329,7 +329,7 @@ A reply that looks like JSON is not yet a set of typed answers. The validator fi
 
 **Stop:** `HOLD:` naming a held launcher run, or listing violations such as a choice outside its list, a missing message, or prose around the document.
 
-**Recovery:** Keep `E/decide-1` and the HOLD line; they are the observation. Run the decision function again into `E/decide-2`, validate that receipt into `out/answers-2.json`, and use `answers-2.json` wherever the rest of this page says `answers-1.json`. Record in the handoff that the first reply was held and why. Never edit a reply to make it validate.
+**Recovery:** Keep `E/decide-1` and the HOLD line; they record what happened. Run the decision function again into `E/decide-2`, validate that receipt into `out/answers-2.json`, and use `answers-2.json` wherever the rest of this page says `answers-1.json`. Record in the handoff that the first reply was held and why. Never edit a reply to make it validate.
 
 ## Measure the answers against your labels
 
@@ -370,7 +370,7 @@ After earlier routing gates, only a remaining usable, authorized request reaches
 
 ## Set the gates and route the pile
 
-Code owns the routes. A **gate** is a threshold the supplied router compares with a typed answer; the rule using it determines the route. The router first builds replacement links, ignoring `NONE` and referred replacers, then applies the following first-match rules. A replacer is referred when its `instructs_desk` probability meets its gate, or its `request` probability meets its gate while its `authority` probability is below its gate.
+The supplied router sets each route. A **gate** is a threshold it compares with a typed answer; the matching rule sets the route. Before applying the following first-match rules, the router builds replacement links, leaving out `NONE` links and referred replacers. A replacer is referred when its `instructs_desk` probability meets its gate, or its `request` probability meets its gate while its `authority` probability is below its gate.
 
 ![A referred message cannot replace another; uncertain links mark both endpoints for the later routing checks, whose earlier rules still take precedence.](figures/m04-supersession.png)
 
@@ -379,7 +379,7 @@ Code owns the routes. A **gate** is a threshold the supplied router compares wit
 <details markdown="1">
 <summary>Figure text</summary>
 
-Before routing, each proposed `replaces` link is resolved. If the link is `NONE`, or the replacer is referred, the link is ignored. A replacer is referred when its `instructs_desk` probability meets its gate, or when its `request` probability meets its gate while its `authority` probability is below its gate. Otherwise, if the link confidence is below `min_confidence`, both endpoints are flagged as uncertain. Otherwise the replacement is recorded and the target is superseded. These flags enter the routing order rather than deciding routes on their own: an endpoint that a valid replacement supersedes is `SUPERSEDED` before an uncertain-link `REVIEW`, and an endpoint whose `instructs_desk` probability meets its gate is `REFER` before an uncertain-link `REVIEW`.
+Before routing, the router resolves each proposed `replaces` link. It ignores the link if it is `NONE` or its replacer is referred. A replacer is referred when its `instructs_desk` probability meets its gate, or when its `request` probability meets its gate while its `authority` probability is below its gate. For the remaining links, link confidence below `min_confidence` marks both endpoints as uncertain; otherwise, the router records the replacement and supersedes the target. Uncertain flags do not set routes by themselves. In the routing order, a valid replacement puts its target in `SUPERSEDED` before an uncertain-link `REVIEW`, and an endpoint whose `instructs_desk` probability meets its gate goes to `REFER` before an uncertain-link `REVIEW`.
 
 </details>
 
@@ -416,7 +416,7 @@ Nine rules are checked in order for each message; the first matching rule sets t
 
 </details>
 
-Open `W/shared/controls/gates.json` in your editor. The router sends a message to `REVIEW` when its weakest declared confidence is below `min_confidence`, so set that gate from what you measured. To exclude an observed wrong answer that reaches the final confidence gate, `min_confidence` must be strictly higher than its confidence. Equality passes. A wrong answer at confidence 1 cannot be excluded by this gate alone; record that limit rather than treating 1.0 as a no-trust switch. If no wrong answers were observed, there is no observed highest-wrong value, and the sample still does not establish general reliability. Leave the three probability gates at `0.5` unless a disagreement showed a reason to move one. Save the file, then route.
+Open `W/shared/controls/gates.json` in your editor. Set `min_confidence` from what you measured: the router sends a message to `REVIEW` when its weakest declared confidence falls below that gate. To exclude an observed wrong answer that reaches the final confidence gate, set `min_confidence` strictly higher than that answer's confidence; equality passes. A wrong answer at confidence 1 cannot be excluded by this gate alone. Record that limit instead of treating 1.0 as a no-trust switch. If you observed no wrong answers, you have no observed highest-wrong value; the sample still cannot show general reliability. Leave the three probability gates at `0.5` unless a disagreement gave you a reason to move one. Save the file, then route.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -434,13 +434,13 @@ Open `W/shared/controls/gates.json` in your editor. The router sends a message t
 
 **Stop:** A line starting `HOLD:`, or a `PICK` count of zero.
 
-**Recovery:** A `HOLD:` names a gate outside 0 to 1 or an unexpected key in `gates.json`; correct the file and route again as attempt `2`. A `PICK` count of zero with gates at `1.0` is what you asked for; lower `min_confidence` only if your measurement supports it.
+**Recovery:** A `HOLD:` means a gate is outside 0 to 1 or `gates.json` contains an unexpected key. Correct the file and route again as attempt `2`. If the `PICK` count is zero with gates at `1.0`, that follows from the gates you set. Lower `min_confidence` only if your measurement supports it.
 
 Open `W/out/routing-1.csv`. Every message has a route and a reason. If you change a gate after reading it, route again with the next attempt number; the final check reads the highest-numbered attempt and recomputes it from the gates on disk.
 
 ## Decide the queue and write the handoff
 
-The router never decided anything a person must own. The `REFER` queue holds messages that lack authority or that try to instruct the desk; the `REVIEW` queue holds answers the model could not type cleanly or gave low confidence; the `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One of them changes who may approve; that decision belongs to the desk lead, and your handoff records it as the lead's, not yours.
+The router does not make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One of them changes who may approve; the desk lead makes that decision, and your handoff records it as the lead's, not yours.
 
 Then write `E/handoff.md` with these six headings, each followed by complete sentences or a table:
 
@@ -474,7 +474,7 @@ Then write `E/handoff.md` with these six headings, each followed by complete sen
 
 ## Run the final check
 
-The check joins what you produced: the state as built from the case, the labels and their freeze time, each run's receipts and read-only policy, the typed answers against the replies, the agreement file against the frozen labels, the routing against the gates on disk, and the handoff against the queues. It confirms order and consistency. It does not judge whether the model's answers are right; your labels and your reading did that.
+The final check compares the state with the case, checks the labels and their freeze time, and checks each run's receipts and read-only policy. It also compares the typed answers with the replies, the agreement file with the frozen labels, the routing with the gates on disk, and the handoff with the queues. It confirms order and consistency, not whether the model's answers are right. That judgment comes from your labels and your reading.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -492,14 +492,14 @@ The check joins what you produced: the state as built from the case, the labels 
 
 **Stop:** Any line starting `HOLD`, followed by `HOLD: N checks held`.
 
-**Recovery:** Each `HOLD` line names the file and the cause. A changed label, an edited reply, or gates changed after the last routing are repaired by routing again or by starting a fresh attempt; they are never repaired by editing evidence.
+**Recovery:** Each `HOLD` line names the file and the cause. If a label changed, a reply was edited, or gates changed after the last routing, route again or start a fresh attempt. Never repair these by editing evidence.
 
 ## Stretch: measure stability across a second run
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: run it again and measure stability</summary>
 
-A typed answer that changes between two runs of the same state was never a fact about the message. Run the decision function a second time into the next unused folder, `E/decide-2` if your first run passed, validate it into the matching `out/answers-N.json`, and compare your two validated answer files question by question. If your first run was held and `decide-2` already exists, use `decide-3` and `answers-3.json` below.
+A typed answer that changes between two runs of the same state is not a fact about the message. Run the decision function a second time into the next unused folder, `E/decide-2` if your first run passed. Validate it into the matching `out/answers-N.json`, then compare your two validated answer files question by question. If your first run was held and `decide-2` already exists, use `decide-3` and `answers-3.json` below.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -537,16 +537,16 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the second reply did not validate; keep 
 
 **Stop:** The second reply holds, or the two runs do not cover the same messages.
 
-**Recovery:** Keep both receipts. A held second reply is itself an observation about stability; record it in the handoff's Limits section.
+**Recovery:** Keep both receipts. A held second reply also tells you something about stability; record it in the handoff's Limits section.
 
-Add the flip count to the Limits section of the handoff. A flipped answer with high declared confidence in both runs is the strongest evidence this page offers that declared confidence is not a measurement.
+Add the flip count to the Limits section of the handoff. A flipped answer with high declared confidence in both runs is the strongest evidence here that declared confidence is not a measurement.
 
 </details>
 
 ## Before you stop
 
-Confirm that `E` holds `labels.sha256`, `decide-1`, `adjudication.md`, and `handoff.md`, and that `W/out` holds `state.json`, `labels.json`, a validated `answers-N.json`, its `agreement-N.json`, and the final `routing-N.csv` and `requirement-N.json` pair. The case files, the contract, the prompt, and the seven supplied questions must still match the checkout; the final check compares them. Keep work and evidence outside the checkout. A later look at the model's answers does not change the frozen labels; a later change of gates is a new routing attempt.
+Check that `E` holds `labels.sha256`, `decide-1`, `adjudication.md`, and `handoff.md`, and that `W/out` holds `state.json`, `labels.json`, a validated `answers-N.json`, its `agreement-N.json`, and the final `routing-N.csv` and `requirement-N.json` pair. The case files, the contract, the prompt, and the seven supplied questions must still match the checkout; the final check compares them. Keep work and evidence outside the checkout. Looking at the model's answers later does not change the frozen labels, and changing gates later means making a new routing attempt.
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional course fixtures. The requirement line permits only class review; it does not dispatch `CL-9`, release stock, or change who may approve a requisition. A `PASS` from the final check says the files agree with each other, not that the clinic's need was read correctly.
+All names, identifiers, places, and facts are fictional course fixtures. The requirement line allows class review only; it does not dispatch `CL-9`, release stock, or change who may approve a requisition. A `PASS` from the final check means the files agree with each other. It does not mean the clinic's need was read correctly.

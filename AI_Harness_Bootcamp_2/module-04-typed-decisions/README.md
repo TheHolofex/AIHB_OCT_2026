@@ -1,10 +1,10 @@
 # Module 4 · Decide with typed questions
 
-Turn a shift's pile of raw intake messages into typed answers that software can route, measure those answers against your own reading before you trust them, and hand the desk lead a requirement line in which every number rests on a message with authority. The model answers fixed questions with fixed answer sets; it writes no sentence, picks no route, and invents no number.
+Turn a shift's raw intake messages into typed answers that software can route. Before trusting those answers, compare them with your own reading. Then give the desk lead a requirement line where every number is backed by a message with authority. The model answers fixed questions from fixed answer sets; it cannot write a sentence, pick a route, or invent a number.
 
 Chalk Line is a vehicle resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9`. Forty messages reached the intake desk during one shift: requisitions, corrections, cancellations, resends, stock notes, a vendor's offer, a request meant for another clinic, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line the desk hands it. Every fact you need is in the packet, and the case is fictional.
 
-Plan for about two and a half hours on Tuesday. That is a rough estimate, not a measured time.
+Plan for about two and a half hours on Tuesday. That's a rough estimate, not a measured time.
 
 ## Start here
 
@@ -12,11 +12,11 @@ Plan for about two and a half hours on Tuesday. That is a rough estimate, not a 
 
 ## The shape of the work
 
-A chat answer is a paragraph a person has to read and interpret before anything can act on it. A typed answer is a value from a fixed set: yes or no with a probability, one option from a list, one level on a scale. Code can branch on a typed answer, count it, and compare it with your own answer to the same question. Seven supplied questions and one you write yourself, asked once per message, give you 320 typed answers from one run, and software draws every route from them.
+A chat answer is a paragraph that a person has to read and interpret before anything can act on it. A typed answer comes from a fixed set: yes or no with a probability, one option from a list, or one level on a scale. Code can branch on a typed answer, count it, and compare it with your own answer to the same question. Seven supplied questions and one you write yourself, asked once per message, give you 320 typed answers from one run, and software draws every route from them.
 
-Each question is atomic. "Is this a requisition we should pick?" hides five judgments behind one answer: whether it is a request at all, which size, which number, whether it carries authority, and whether a later message replaced it. Asked separately, each judgment can be checked separately, and the rule that combines them lives in code you can read, not in the model's reasoning.
+Each question is atomic: it asks for one judgment at a time. "Is this a requisition we should pick?" hides five judgments behind one answer: whether the message requests anything, which size, which number, whether it has authority, and whether a later message replaced it. Asked separately, each judgment can be checked on its own, and the rule that combines them lives in code you can read, not in the model's reasoning.
 
-A general model run through a harness can be held to a typed-answer contract, with one difference you must respect: the confidence it declares is a claim about itself. You measure that claim on messages you labeled first, and you set the gates from the measurement.
+You can hold a general model running through a harness to a typed-answer contract. But the confidence it declares is its own claim. Measure that claim on messages you labeled before the run, then set the gates from what you measured.
 
 ## The desk rules
 
@@ -27,4 +27,4 @@ A general model run through a harness can be held to a typed-answer contract, wi
 
 ## Class-only boundary
 
-The requirement line permits only class review. It dispatches no vehicle, releases no stock, and changes nobody's authority. A technical `PASS` says the files agree with each other; whether the clinic's need was read correctly is your judgment, recorded in the handoff.
+The requirement line is for class review only. It does not dispatch a vehicle, release stock, or change anyone's authority. A technical `PASS` tells you the files agree with each other. You still need to judge whether you read the clinic's need correctly and record that judgment in the handoff.
