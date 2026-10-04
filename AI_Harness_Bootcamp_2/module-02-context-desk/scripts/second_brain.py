@@ -57,8 +57,10 @@ def safe(path):
     for part in [*reversed(path.parents), path]:
         require(not part.is_symlink() and not part.is_junction(), f'link/junction is not allowed: {part}')
         if part.parent.is_dir():
-            matches = [p.name for p in part.parent.iterdir() if p.name.casefold() == part.name.casefold()]
-            require(not matches or matches == [part.name], f'case collision or incorrect case: {part}')
+            name = part.name
+            folded = name.casefold()
+            matches = [candidate for candidate in os.listdir(part.parent) if candidate.casefold() == folded]
+            require(not matches or matches == [name], f'case collision or incorrect case: {part}')
     return path.resolve()
 
 
