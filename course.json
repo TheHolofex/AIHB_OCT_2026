@@ -288,14 +288,14 @@
       "directory": "module-05-diagnose-review",
       "title": "Module 5 · Diagnose and recover",
       "case_name": "Copper Span",
-      "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
-      "nav_summary": "Failure diagnosis · verified recovery",
+      "summary": "Find where a required field first disappears, make one change you can undo, and show the card is whole again.",
+      "nav_summary": "Duty card · find the miss",
       "outcomes": {
-        "can": "Keep a hidden failure on record instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized correction you can undo, and prove the recovery holds.",
+        "can": "Keep the first failed card instead of covering it up, find the exact place the field was last present and first missing, make one correction you can undo, and show the card meets the same rules again.",
         "will": [
-                "Seal the first miss, then compare it with a known-good run to find where the fault begins.",
-                "Use one probe to tell two competing causes apart.",
-                "Correct or revert once, then confirm the fix with a focused check, a full check, and a run in a fresh folder."
+                "Save the first miss, then compare it with a known-good run to see where the fault starts.",
+                "Use one check to tell whether the source lacks the field or the program that writes the card dropped it.",
+                "Make one change you can undo, then confirm the fix with a field check, a full card, and a run in a fresh folder."
         ]
       },
       "pages": [
@@ -489,14 +489,14 @@
       "directory": "module-10-capstone",
       "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Run a local uncensored AI service on your laptop, prove stop and restore, and check your own saved package.",
-      "nav_summary": "Local uncensored AI · self-contained kit",
+      "summary": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again.",
+      "nav_summary": "Your own local model",
       "outcomes": {
-        "can": "Stand up, stop, and restore an uncensored local model on your own laptop using saved controls, then make and check a self-contained package without relying on chat history.",
+        "can": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again without the chat.",
         "will": [
-                "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
-                "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
-                "Freeze the kit, copy it with digest checks, and check the copy from a new terminal using only its own files."
+                "Download the named model file under your own account, check that it is the right file, and point OMP at a server only this laptop can reach.",
+                "Get one real reply, then stop the server and bring the saved settings back so the wiring matches.",
+                "Save the ten files, copy them, and check that copy from a new terminal using only those files."
         ]
       },
       "pages": [
