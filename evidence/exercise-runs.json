@@ -1137,6 +1137,53 @@
     {
       "id": "06",
       "case": "Blue Gauge",
+      "evidence_run_id": "20261004-blue-gauge-decision-model",
+      "observation_scope": "Module redesigned 2026-10-04 around a pinned decision model as OMP's judge role. Deterministic oracle (42 checks), adequacy (10 mutations killed), launcher (18) and guard (11) tests, and publication pass. One maintainer live run of the whole lab on Darwin arm64 with pinned Oh My Pi 18.3.5 and OPENROUTER_API_KEY, using the staff worked question set as the first repair. Private evidence: ~/course-evidence/module06-decision-model-20261004-maintainer-live/ and its -attempt-1 sibling. Not a human learner run, not timing, not another platform.",
+      "lanes": {
+        "core": {
+          "status": "passed",
+          "scope": "Technical: maintainer live whole-lab run in Bash; starter set held on nine named problems, two tuning runs, first-miss notes, revision, thresholds from the spread, freeze, one held-out run, measurement, handoff, and verify PASS on every record join. No human award."
+        },
+        "stretch": {
+          "status": "passed",
+          "scope": "Technical: tuning notes judged again with the frozen questions; 70 of 100 answers identical, largest change 0.08 (an urgency score), no route changed, verify still PASS."
+        },
+        "live_provider": {
+          "status": "passed",
+          "scope": "Candidate list saved with no model call; four judge runs (tuning-1, tuning-2, held-out, tuning-3) through the guarded launcher, each answered by openrouter/typesafe/jev-1.13-20260917 with audited receipts. A discarded first attempt (same build) is retained for the drift record."
+        },
+        "platform": {
+          "status": "blocked",
+          "observed": "Darwin arm64 native Bash; PowerShell 7.6.6 on macOS ran every lab PowerShell fence live in one session, extracted verbatim with backslashes changed to forward slashes for macOS native arguments.",
+          "missing": "Native Windows PowerShell 5.1 and 7 with Windows paths, Windows ARM64, WSL, Ubuntu and Arch execution."
+        },
+        "accessibility": {
+          "status": "not_measured",
+          "scope": "Publisher structure checks, plus a Chromium DOM check of the lab and overview: one H1, sixteen Bash and sixteen PowerShell command blocks, the stretch disclosure, no console or page errors, no broken images, and no horizontal overflow at 390px or 1440px. Screenshots timed out in this environment for every course page, including unchanged Module 4, so nothing visual was observed."
+        },
+        "peer_review": {
+          "status": "not_measured",
+          "reason": "No human peer-review observation; AI technical reviewers do not substitute."
+        },
+        "human_qualification": {
+          "status": "blocked",
+          "reason": "No human run of the lab; the three-hour allocation is a design target."
+        }
+      },
+      "observed": [
+        "Tuning-1 (worked set): question misses on BG-002 and BG-008 (status claims read as instructions), BG-006 (an instruction read as a release), BG-011 (a caution read as a hold), and BG-019 (status changed with option order). At the template thresholds no critical error; 6 reviews (30%).",
+        "Tuning-2 after a criteria-only revision: one question miss (BG-006 status), reviewed anyway for its instruction. At 0.6/0.6/0.2/0.4 no critical error and 3 reviews (15%). Jev USD 0.000891 for 20 notes.",
+        "Held-out, frozen with a 40% ceiling: no missed overstatement, all six instructions and all three other-cylinder notes reviewed, one wrong return (BG-078, vendor tag READY), 12 reviews (20%). Jev USD 0.002664 for 60 notes (USD 0.044 per 1,000); courier turn USD 0.036. Decision ADOPT for bounded internal screening.",
+        "Identical questions and build across attempts: 66 of 100 tuning answers identical; largest changes 0.15 (urgency), 0.08 (a status probability), 0.06 (an instruction probability); BG-009's instruction probability read 0.50, 0.49, 0.46, and 0.52 in four first runs.",
+        "PowerShell 7.6.6 run of every lab fence: each exited as expected (the starter check exits 1 by design); held-out no critical error, one wrong return, 12 reviews (20%); verify PASS before and after the stretch."
+      ],
+      "friction_and_repairs": [
+        "Launcher printed raw float costs (USD 0.0007827959999999998); display now rounds to six decimals while receipts keep the raw value.",
+        "Stretch first asserted that Jev repeats answers exactly; observed drift contradicted it, and the stretch now measures drift instead.",
+        "OMP 18.3.5 rejects object option descriptions in choice questions, drops reset: null from eval arguments, needs an object drain timeout, and has no CLI key for modelRoles.judge; the question checker, auditor, runner, and overlay file account for each."
+      ],
+      "superseded_design": {
+      "note": "Retired 2026-10-04: eighty R- runs, outcome-blind sample, and two-literal predicate control. Fields below describe that design's evidence and keep their original indentation.",
       "lanes": {
         "core": {
           "status": "passed",
@@ -1311,6 +1358,7 @@
           "bytes": 11810
         },
         "notes": "Records preserve exact command/argv, cwd, exits, stdout/stderr, elapsed seconds and page/block/command hashes when captured. Older rows use step/command/elapsed_seconds. Referenced state files preserve shell variables. No missing timestamp or input-before hash is invented."
+      }
       }
     },
     {

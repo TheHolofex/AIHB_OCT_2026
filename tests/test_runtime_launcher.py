@@ -11,6 +11,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -305,6 +306,144 @@ class LauncherBehavior(unittest.TestCase):
         script.write_text("# edited\n", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "differs from the course"):
             prepare(entry(*matching))
+
+    def test_the_judge_setting_accepts_only_the_pinned_decision_model(self):
+        setting = self.base / "JUDGE.yml"
+        for text in ("modelRoles:\n  judge: openrouter/typesafe/jev-1.13\n", "# pinned\nmodelRoles:\n    judge: 'openrouter/typesafe/jev-1.13'\n"):
+            setting.write_text(text, encoding="utf-8")
+            self.assertEqual(runtime.parse_judge_config(setting), runtime.JUDGE_SELECTOR)
+        refused = {
+            "the moving alias": ("modelRoles:\n  judge: openrouter/~typesafe/jev-latest\n", "alias"),
+            "the router": ("modelRoles:\n  judge: openrouter/typesafe/jev-router\n", "not the pinned"),
+            "a chat model as judge": ("modelRoles:\n  judge: openrouter/anthropic/claude-sonnet-4.6\n", "not the pinned"),
+            "a second setting": ("modelRoles:\n  judge: openrouter/typesafe/jev-1.13\n  default: openrouter/anthropic/claude-sonnet-4.6\n", "exactly two"),
+            "a one-line mapping": ('modelRoles: {judge: "openrouter/typesafe/jev-1.13"}\n', "exactly two"),
+        }
+        for label, (text, message) in refused.items():
+            setting.write_text(text, encoding="utf-8")
+            with self.subTest(label), self.assertRaisesRegex(ValueError, message):
+                runtime.parse_judge_config(setting)
+
+    def test_question_files_must_fit_the_pinned_judge_bridge(self):
+        target = self.base / "QUESTIONS.json"
+        good = {"claims_release": {"type": "bool", "instructions": "Does `note` claim a release?", "criteria": {"true": "Claims it.", "false": "Does not."}},
+                "status": {"type": "choice", "instructions": "Which status does `note` give?", "criteria": {"received": "Received only.", "not_stated": "No status."}},
+                "urgency": {"type": "score", "instructions": "How urgent is `note`?", "criteria": ["Routine", "Immediate"]}}
+        target.write_text(json.dumps({"schema_version": 1, "questions": good}), encoding="utf-8")
+        self.assertEqual(set(runtime.parse_questions(target)), set(good))
+        broken = {
+            "object option text": {"status": {**good["status"], "criteria": {"received": {"what": "Received"}, "not_stated": "No status."}}},
+            "a one-option choice": {"status": {**good["status"], "criteria": {"received": "Received only."}}},
+            "a one-level score": {"urgency": {**good["urgency"], "criteria": ["Routine"]}},
+            "a yes/no criterion that is not true or false": {"claims_release": {**good["claims_release"], "criteria": {"yes": "Claims it."}}},
+            "an unknown field": {"claims_release": {**good["claims_release"], "weight": 2}},
+            "an id with capitals": {"ClaimsRelease": good["claims_release"]},
+        }
+        for label, change in broken.items():
+            target.write_text(json.dumps({"schema_version": 1, "questions": {**good, **change}}), encoding="utf-8")
+            with self.subTest(label), self.assertRaises(ValueError):
+                runtime.parse_questions(target)
+
+    def judge_receipt(self):
+        """A synthetic judge run: one frozen cell, two judged notes, one served build."""
+        work = self.work.resolve()
+        (work / "notes").mkdir()
+        for key, text in (("BG-001", "OC-2001 received at East Yard."), ("BG-002", "OC-2002 released under RA-5521.")):
+            (work / "notes" / f"{key}.json").write_text(json.dumps({"id": key, "state": {"note": text}}), encoding="utf-8")
+        (work / "out").mkdir()
+        questions = {"claims_release": {"type": "bool", "instructions": "Does `note` claim a release?"},
+                     "status": {"type": "choice", "instructions": "Which status does `note` give?", "criteria": {"received": "Received only.", "released": "Released for issue.", "not_stated": "No status."}},
+                     "urgency": {"type": "score", "instructions": "How urgent is `note`?", "criteria": ["Routine", "Today", "Immediate"]}}
+        (work / "QUESTIONS.json").write_text(json.dumps({"schema_version": 1, "questions": questions}), encoding="utf-8")
+        (work / "JUDGE.yml").write_text("modelRoles:\n  judge: openrouter/typesafe/jev-1.13\n", encoding="utf-8")
+        self.evidence.mkdir()
+        args = SimpleNamespace(judge_config=str(work / "JUDGE.yml"), judge_questions=str(work / "QUESTIONS.json"), judge_states=str(work / "notes"), judge_output="out/run-1")
+        prompt, judge = runtime.judge_launch_files(runtime.prepare_judge(args, work), work, self.evidence)
+        self.assertIn(judge["cell_code"], prompt)
+        policy = dict.fromkeys(runtime.POLICY_KEYS)
+        policy.update(schema_version=1, run_id="synthetic", work_root=str(work), profile="judge", tools=["eval"], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION, judge=judge)
+        before = runtime.snapshot(work, [])
+        call_args = {"language": "js", "code": judge["cell_code"], "title": "Judge runner", "timeout": 120, "reset": None}
+        executed_args = runtime.normalize_arguments(call_args)
+        content = [{"type": "text", "text": "judged 2/2; failed 0"}]
+        call = {"type": "toolCall", "id": "judge-1", "name": "eval", "arguments": call_args}
+        assistant = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "toolUse", "content": [call]}
+        final = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "stop", "content": [{"type": "text", "text": "judged 2/2; failed 0"}]}
+        events = [{"type": "agent_start"}, {"type": "message_end", "message": assistant},
+                  {"type": "tool_execution_start", "toolCallId": "judge-1", "toolName": "eval", "args": executed_args},
+                  {"type": "tool_execution_end", "toolCallId": "judge-1", "toolName": "eval", "result": {"content": content}, "isError": False},
+                  {"type": "message_end", "message": {"role": "toolResult", "toolCallId": "judge-1", "toolName": "eval", "content": content, "isError": False}},
+                  {"type": "message_end", "message": final}, {"type": "agent_end", "isTerminal": True, "messages": [assistant, final]}]
+        request = {"type": "provider_request", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "tools": ["eval"]}
+        guard = [{"type": "guard_ready", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "active_tools": ["eval"]}, request,
+                 {"run_id": "synthetic", "type": "decision", "call_id": "judge-1", "tool": "eval", "arguments": executed_args, "allow": True, "reason": "frozen judge cell"}, request,
+                 {"type": "guard_end", "run_id": "synthetic", "ready": True, "failed": False, "provider_requests": 2}]
+        return policy, events, guard, before
+
+    def write_judgments(self, policy, rows=None, status=None):
+        build = "openrouter/typesafe/jev-1.13-20260917"
+        def answers(release, choice):
+            spread = {"received": 0.05, "released": 0.05, "not_stated": 0.05, choice: 0.9}
+            return {"claims_release": {"type": "bool", "bool": release}, "status": {"type": "choice", "choice": choice, "probabilities": spread, "confidence": 0.85},
+                    "urgency": {"type": "score", "score": 0.2, "legend": {"0": "Routine", "1": "Today", "2": "Immediate"}, "probabilities": {"0": 0.8, "1": 0.2, "2": 0.0}, "confidence": 0.7}}
+        rows = rows if rows is not None else [{"key": "BG-001", "answers": answers(0.03, "received"), "error": None, "model": build}, {"key": "BG-002", "answers": answers(0.96, "released"), "error": None, "model": build}]
+        status = status or {"id": "jdgb-1", "intent": "Judging 2 states", "total": 2, "done": 2, "failed": 0, "cost": 0.00004, "running": False, "model": build, "elapsedS": 1.2}
+        folder = Path(policy["work_root"]) / policy["judge"]["output"]
+        folder.mkdir(exist_ok=True)
+        (folder / "judgments.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+        (folder / "batch-status.json").write_text(json.dumps(status), encoding="utf-8")
+        return rows, status
+
+    def test_a_judge_run_binds_the_frozen_cell_every_answer_and_one_served_build(self):
+        policy, events, guard, before = self.judge_receipt()
+        rows, status = self.write_judgments(policy)
+        after = runtime.snapshot(Path(policy["work_root"]), [])
+        self.assertEqual(runtime.validate_run(policy, events, guard, {"before": before, "after": after}, 0), [])
+        self.assertEqual(runtime.judge_output_errors(policy)[1]["served_model"], "openrouter/typesafe/jev-1.13-20260917")
+        chat = copy.deepcopy(rows); chat[0]["model"] = "openrouter/anthropic/claude-sonnet-4.6"
+        newer = copy.deepcopy(rows); newer[1]["model"] = "openrouter/typesafe/jev-1.13-20261001"
+        outside = copy.deepcopy(rows); outside[0]["answers"]["status"]["choice"] = "cleared"
+        defects = {
+            "a chat model answered as judge": ("not the pinned judge", chat, None),
+            "two builds answered one batch": ("more than one judge build", newer, None),
+            "a note was never judged": ("every state exactly once", rows[:1], {**status, "total": 1, "done": 1}),
+            "an answer outside the frozen options": ("outside the frozen options", outside, None),
+            "a failed item": ("judged without failure", rows, {**status, "failed": 1}),
+        }
+        for label, (fragment, changed_rows, changed_status) in defects.items():
+            self.write_judgments(policy, changed_rows, changed_status)
+            snapshots = {"before": before, "after": runtime.snapshot(Path(policy["work_root"]), [])}
+            with self.subTest(label):
+                errors = runtime.validate_run(policy, events, guard, snapshots, 0)
+                self.assertTrue(any(fragment in error for error in errors), f"{label}: {errors}")
+        self.write_judgments(policy)
+        other_cell = copy.deepcopy(events)
+        other_cell[1]["message"]["content"][0]["arguments"]["code"] = "return 1;"
+        self.assertIn("eval ran code other than the frozen judge cell", runtime.validate_run(policy, other_cell, guard, {"before": before, "after": after}, 0))
+        (Path(policy["work_root"]) / "out/run-1/notes.txt").write_text("stray", encoding="utf-8")
+        stray = runtime.snapshot(Path(policy["work_root"]), [])
+        self.assertTrue(any("beyond its declared output" in error for error in runtime.validate_run(policy, events, guard, {"before": before, "after": stray}, 0)))
+
+    def test_judge_invocations_that_cannot_run_stop_before_any_model_call(self):
+        (self.work / "JUDGE.yml").write_text("modelRoles:\n  judge: openrouter/~typesafe/jev-latest\n", encoding="utf-8")
+        (self.work / "QUESTIONS.json").write_text(json.dumps({"schema_version": 1, "questions": {"q": {"type": "bool", "instructions": "Is `note` empty?"}}}), encoding="utf-8")
+        (self.work / "notes").mkdir()
+        (self.work / "notes/BG-001.json").write_text(json.dumps({"id": "BG-001", "state": {"note": "x"}}), encoding="utf-8")
+        judge = ["--judge-config", str(self.work / "JUDGE.yml"), "--judge-questions", str(self.work / "QUESTIONS.json"), "--judge-states", str(self.work / "notes"), "--judge-output", "out-1"]
+        environment = dict(os.environ, OPENROUTER_API_KEY="")
+        run = lambda *args: subprocess.run([sys.executable, str(LAUNCHER), "--evidence", str(self.evidence), *args], capture_output=True, text=True, env=environment, cwd=self.base, timeout=20)
+        cases = {
+            "an alias as judge": (("--workdir", str(self.work), *judge), "alias"),
+            "a partial judge request": (("--workdir", str(self.work), *judge[:4]), "go together"),
+            "a judge run with a prompt": (("--workdir", str(self.work), "--prompt", str(self.prompt), *judge), "writes its own prompt"),
+            "a candidate listing with a work folder": (("--list-judges", "--workdir", str(self.work)), "takes only --evidence"),
+        }
+        for label, (args, message) in cases.items():
+            with self.subTest(label):
+                result = run(*args)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn(message, result.stderr)
+                self.assertFalse(self.evidence.exists())
 
 
 if __name__ == "__main__":

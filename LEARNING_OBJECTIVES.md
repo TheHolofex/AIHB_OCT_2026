@@ -54,11 +54,11 @@ The learner preserves a material hidden failure, identifies the last passing and
 **Evidence:** sealed localization, supplied diagnostic comparison, probe result, correction/revert record, focused and end-to-end reruns, and clean-condition recurrence result. Localization alone does not establish recovery.
 **Owner:** Module 05
 
-## PO-06 — Improve from observed failures
+## PO-06 — Design a workflow for a decision model
 
-Using preserved failures, source distinctions, and the freeze-before-outcome discipline, the learner fixes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
+Using bounded direction, source verification, and typed questions with labels frozen before a run, the learner selects and pins a structured decision model as the harness judge through OpenRouter, designs the question set and code split around that model's documented weak spots, sets thresholds from its probabilities on tuning notes by the cost of each error, freezes them with a review ceiling, and measures the frozen screen once on held-out notes. Typed questions and frozen labels are this module's prerequisites; selection, design for the model class, risk-weighted thresholds, and held-out proof are its new capability.
 
-**Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
+**Evidence:** saved judge candidate list and selection record naming the decision point, data boundary, and weak spots; the pinned two-line judge setting; a question set that passes the router check; every tuning run with launcher receipts, served build, and cost; first-miss notes recorded before revision; thresholds and review ceiling frozen before the held-out run; a held-out measurement with error counts, review share, served build, and cost per 1,000 notes; a handoff; and the verifier's joined result.
 **Owner:** Module 06
 
 ## PO-07 — Automate a batch into a spreadsheet
@@ -70,14 +70,14 @@ Using source checking as a quality bar, the learner puts an AI Agent on a local 
 
 ## PO-08 — Control hallucinations
 
-Using source verification, typed questions, deterministic predicates, and fixed-flow operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority.
+Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, and fixed-flow operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority.
 
 **Enabling objectives:**
 1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.
 2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
 3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
 
-Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
+Before this project, the learner could verify a source, obtain typed judgments, keep exact checks in code beside a decision model's judgments, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
 
 **Evidence:** frozen original claims, source packets, controls, and exact checks; two blind initial reviews with typed verdicts and source quotations; the complete source-constrained correction; two fresh full-set reviews; five actual audited run receipts; a claim-by-claim report of source support, disagreements, unknowns, and regressions; individual USE, KEEP_UNKNOWN, or HOLD dispositions with reasons, an internal-summary decision, and the missing evidence and responsible owner. Operational dispatch remains HOLD. Retain malformed outputs and unsuccessful attempts.
 **Owner:** Module 08

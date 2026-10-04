@@ -70,3 +70,7 @@ The roughly 130-minute session allocation is a design budget, unmeasured with le
 ## 2026-10-04 amendment — inspectable handoff without grading
 
 No classmate or instructor grades a learner's work, and no peer sign-off is required. The handoff itself contains the original failure, frozen evidence, independent reviews, correction, full recheck, human disposition, and unresolved boundary. Technical `PASS` and `HOLD` describe work checks and decisions, never learner qualification.
+
+## 2026-10-04 amendment — Module 6 prerequisite
+
+Module 6 no longer has the learner configure a literal predicate in a supplied control. It now has the learner pin a decision model as the harness judge, keep exact checks in code beside that model's typed judgments, and freeze thresholds before one held-out measurement. Where "Mastery and progression" lists deterministic predicates as a prerequisite, read exact checks kept in code beside decision-model judgments. This module's own capability and evidence are unchanged. The digest is recomputed for this amendment.

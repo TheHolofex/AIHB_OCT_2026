@@ -14,12 +14,12 @@ from pathlib import Path
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
     "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case",),
-    "06": ("controls", "corpus", "checks"), "07": ("batch", "controls"),
+    "06": ("case", "controls"), "07": ("batch", "controls"),
     "08": ("case", "controls"), "09": ("case", "controls"),
     "10": ("case", "controls", "baseline"), "04": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
-    "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
+    "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": ("blue_gauge.py",),
     "07": (), "08": (),
     "09": (), "10": ("local_ai.py", "check_package.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
@@ -58,6 +58,15 @@ def prepare_module_03(stage: Path, dest: Path) -> None:
     inside_json = json.dumps(str(dest))[1:-1]
     (stage / "mcp.json").write_text(template.read_text(encoding="utf-8").replace("{{WORK}}", inside_json), encoding="utf-8")
     shutil.copyfile(stage / "shared/mcp/AUTHORITY.template.md", stage / "AUTHORITY.md")
+
+
+MODULE_06_EDITABLE = (("QUESTIONS.starter.json", "QUESTIONS.json"), ("THRESHOLDS.template.json", "THRESHOLDS.json"), ("SELECTION.template.md", "SELECTION.md"))
+
+
+def prepare_module_06(stage: Path) -> None:
+    """Place the three files the lab edits at the work root."""
+    for template, name in MODULE_06_EDITABLE:
+        shutil.copyfile(stage / "shared/controls" / template, stage / name)
 
 
 def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path:
@@ -102,6 +111,9 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
         source = module / "scripts" / name
         require_regular(source, module)
         copies.append((source, Path("scripts") / name))
+    if module_id == "06":
+        for template, _ in MODULE_06_EDITABLE:
+            require_regular(module / "shared/controls" / template, module)
     if module_id == "10":
         source = module / "shared/PACKAGE.md"
         require_regular(source, module)
@@ -126,6 +138,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
             (baseline / "render_review.py.sha256").write_text(hashlib.sha256(content).hexdigest() + "\n", encoding="utf-8")
         if module_id == "03":
             prepare_module_03(stage, dest)
+        if module_id == "06":
+            prepare_module_06(stage)
         if dest.exists() or dest.is_symlink():
             raise FileExistsError(f"destination already exists: {dest}")
         # Reserve the destination exclusively; never let POSIX rename replace an
@@ -144,6 +158,8 @@ def next_arguments(module_id: str) -> list[str]:
     python = str(Path(sys.executable).resolve())
     if module_id == "02":
         return [python, "scripts/second_brain.py", "initialize", "--work", "."]
+    if module_id == "06":
+        return [python, "scripts/blue_gauge.py", "check-questions", "QUESTIONS.json"]
     if module_id == "03":
         return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "05":
@@ -155,7 +171,7 @@ def next_arguments(module_id: str) -> list[str]:
     elif module_id == "10":
         code = 'from pathlib import Path; print(Path("shared/case/model-card.json").read_text(encoding="utf-8"))'
     else:
-        folder = "shared/corpus" if module_id == "06" else "shared/case"
+        folder = "shared/case"
         code = f'from pathlib import Path; print("\\n".join(p.as_posix() for p in sorted(Path("{folder}").rglob("*")) if p.is_file()))'
     return [python, "-c", code]
 

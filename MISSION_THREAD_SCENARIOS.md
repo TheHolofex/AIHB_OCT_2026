@@ -272,23 +272,23 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Independence:** New ledger. Not Module 06's Blue Gauge movement, East Yard, or that module's clinic. Not the thin lab's current card values as the hidden fault.
 
-## A receipt stamp can commit Blue Gauge
+## A note can promote a receipt in Blue Gauge
 
-**Status:** adopted. The shipped lab uses the 80-run corpus and predicate control. Retired thin-adapter inputs (20:50Z check) are not active work. Historical evidence stays historical.
+**Status:** adopted 2026-10-04. The shipped lab screens AI-drafted handoff notes with a pinned decision model. The earlier eighty-run corpus, two-literal predicate control, and their figures are retired; their evidence stays historical.
 
-**Project:** Blue Gauge is a vehicle resupply of oxygen cylinders from East Yard to Clinic O-2. The quality clerk will trust the assistant's stamp on that movement. Eighty authored practice run records `R-001`–`R-080` represent a shift; they are not observations of current model reliability. Freeze the sample as `R-001` through `R-016` before opening outcomes. Write first-failure notes. Specify one mechanically decidable predicate. Configure it in the supplied control. Do not write a second checker.
+**Project:** Blue Gauge is a vehicle resupply of oxygen cylinders from East Yard to Clinic O-2. Each night an assistant drafts one handoff note per cylinder from the yard's scan record, and the desk screens every note before the 06:00 load. Eighty authored notes `BG-001`–`BG-080`, each with a scan record and a desk label. Twenty tuning notes have visible labels; sixty held-out notes are measured once after the freeze. The learner selects and pins `openrouter/typesafe/jev-1.13` as OMP's judge through OpenRouter, repairs a starter question set, runs the tuning notes, records first misses before revising, sets four thresholds, freezes them with a review ceiling, judges the held-out notes once, and hands off the measured screen.
 
-**Stake:** Most runs look fine. The repeated failure writes a release on a file that is still only a receipt. The odd run is a typo on a cylinder ID, and it looks like the bug. Automating the typo leaves the false releases in the pile. Clinic O-2 is then told unreleased cylinders are ready to load.
+**Stake:** Most notes read fine. The repeated failure claims a release the scan record doesn't hold, often without the word released: "good to go", "cleared", "okay to load". A few notes tell the desk to treat a stamp as authority or skip a check. If an overstating note passes, Clinic O-2 is told a received cylinder can load. If an instruction reaches no person, a note authorizes a load.
 
-**Skill:** Outcome-blind sample, first failure before categories, one bounded predicate in a supplied control. Public practice code and held-out rows are inspectable.
+**Skill:** Choose and pin a decision model in the harness; design questions and a code split for its documented weak spots (literal reading, numbers and dates, long state, adversarial text, option order); set thresholds from tuning answers by error cost; prove the frozen screen on held-out notes with the served build and cost. Typed questions and frozen labels are prerequisites from Module 04.
 
-**Platform:** Supplied `predicate.py` shape. Known-bad exits 1. Known-good exits 0. Missing path exits 1 and prints `HOLD: missing input`.
+**Platform:** Pinned OMP 18.3.5 through `shared/run_omp.py`: `--list-judges` saves the candidates; the judge profile overlays `modelRoles.judge`, exposes only `eval`, and the guard allows one launcher-written cell. `scripts/blue_gauge.py` supplies the router, spread, freeze, measurement, and joined verifier. No learner-written code.
 
-**Volume:** 80 runs. Sample of 16, inside the core's 8–20 band. Authoring target, not a learner-facing count: 5 of `R-001`–`R-016` contain the promotion, 11 do not. At least eight promotions exist in the full 80. Distractor failures (typos, wrong cylinder) stay in the notes and do not become the predicate.
+**Volume:** 80 notes. Tuning 20 (seven overstatements, two instructions, one other cylinder). Held-out 60 (seventeen overstatements, six instructions, three other-cylinder notes). Traps: negated, pending, conditional, and expected releases; cautions that keep a control in place; a cited order the scan record lacks; status claims on held cylinders; a vendor tag reading `READY`.
 
-**Worked predicate:** fail when the file contains the exact case-sensitive substring `RELEASED` and also contains `source_status: RECEIVED`. Pass when either is absent. `UNRELEASED` contains `RELEASED`; record that literal limitation rather than silently inventing semantic parsing. Configure exactly two distinct nonempty strings in one `all_present` array. Do not use `20:50Z` as this packet's predicate.
+**Worked question set:** staff-only `reference/WORKED_QUESTIONS.json`. Observed staff runs 2026-10-04, build `jev-1.13-20260917`, thresholds 0.6 / 0.6 / 0.2 / 0.4: the worked set as frozen gave no critical error on held-out, one wrong return, and 27% review; after the lab's first-miss revision, no critical error, one wrong return, and 20% review. The same build drifts by a few hundredths between runs.
 
-**Independence:** Synthetic runs. Not Module 05's Copper Span movement or its vehicle. Not Monday's ledger.
+**Independence:** New notes and scan records. Not Module 05's Copper Span movement or its vehicle. Not Monday's ledger.
 
 ## Paperwork arriving does not make a White Rack lot ready
 

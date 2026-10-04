@@ -320,32 +320,29 @@
     },
     {
       "id": "06",
-      "directory": "module-06-run-corpus",
-      "title": "Module 6 · Improve from observed failures",
+      "directory": "module-06-decision-model",
+      "title": "Module 6 · Design a workflow for a decision model",
       "case_name": "Blue Gauge",
-      "summary": "Find a repeated failure in the practice runs, turn it into one exact text check, and see what that check still misses.",
-      "nav_summary": "Failure notes · an exact text check",
+      "summary": "Choose and pin a decision model in Oh My Pi, write the questions it answers, set thresholds from its answers, and prove the screen on notes you didn't tune it on.",
+      "nav_summary": "Decision models · typed questions · thresholds",
       "outcomes": {
-        "can": "Turn a failure you saw more than once into one exact check a program can run, set it with two pieces of text, and write down what it still misses.",
+        "can": "Pick a decision model as your harness's judge and pin one version, write questions around what it gets wrong, set thresholds by what each mistake costs, and prove the frozen screen on notes you didn't tune it on.",
         "will": [
-                "Freeze which runs you'll read before you see any results, and write each run's first problem before you group them.",
-                "State one conclusion the counts in this sample actually support.",
-                "Pick two exact pieces of text, try the check on a known-bad run, a known-good run, and a missing file, and record what it catches and misses."
+                "Compare the judge models your key can reach, pin one version, and write down why and what data leaves your laptop.",
+                "Fix a question set so code settles what a rule can, each question asks one thing, and a status asked in two orders shows when the order sways the answer.",
+                "Read the first misses before you change anything, fix the wording, and set four thresholds from the tuning answers.",
+                "Freeze the screen, judge the held-out notes once, and hand off the errors, the review share, the build that answered, and the cost per 1,000 notes."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["pacing", "before-you-stop"], "optional_sections": ["stretch-two-preregistered-configurations-on-the-held-out-runs"]}}
+        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["use-the-judge-in-your-own-omp-sessions", "before-you-stop", "class-only-boundary"], "optional_sections": ["stretch-run-the-tuning-notes-a-second-time"]}}
       ],
-      "figures": [
-        {"source": "shared/figures/m06-control-boundaries.png", "dest": "shared/figures/m06-control-boundaries.png"},
-        {"source": "shared/figures/m06-first-failure-notes.png", "dest": "shared/figures/m06-first-failure-notes.png"},
-        {"source": "shared/figures/m06-freeze-sample.png", "dest": "shared/figures/m06-freeze-sample.png"},
-        {"source": "shared/figures/m06-predicate-boundary.png", "dest": "shared/figures/m06-predicate-boundary.png"},
-        {"source": "shared/figures/m06-reconcile-history.png", "dest": "shared/figures/m06-reconcile-history.png"}
+      "figures": [],
+      "scripts": [
+        {"source": "scripts/blue_gauge.py", "dest": "scripts/blue_gauge.py"}
       ],
-      "scripts": [],
-      "download_dirs": ["shared/controls", "shared/corpus", "shared/checks"],
+      "download_dirs": ["shared/case", "shared/controls"],
       "tests": ["tests/test_module_06.py", "tests/test_adequacy.py"]
     },
     {
