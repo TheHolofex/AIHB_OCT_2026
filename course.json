@@ -212,16 +212,16 @@
     {
       "id": "03",
       "directory": "module-03-mcp-research",
-      "title": "Module 3 · Operate MCP tools under limited authority",
+      "title": "Module 3 · Research the notes, then limit what the AI can touch",
       "case_name": "Kiln Hold",
-      "summary": "Research an Obsidian vault through an MCP server, check the AI's handling calls against the rules, and prove the limits you set on the connection.",
-      "nav_summary": "MCP tools · handling decisions · limited access",
+      "summary": "Research a folder of notes with the assistant, check its markings against the rules, and show the limits you set.",
+      "nav_summary": "Notes · markings · limits",
       "outcomes": {
-        "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit the connection to the folders and actions each phase needs, prove those limits with a probe, and remove the connection with proof that it is gone.",
+        "can": "Connect the assistant to a folder of notes only after you read what that connection claims, limit it to the folders and actions each part of the work needs, prove those limits, and remove the connection with proof that it is gone.",
         "will": [
-                "Read a server's self-description and catch a tool whose read-only label is false.",
-                "Make your own handling decisions first, then check the AI's handling proposals against written rules.",
-                "Narrow the assistant's reach between phases and use a probe to show that every forbidden action was stopped, even the ones the model never tried."
+                "Read what the connection claims and catch a tool whose read-only label is wrong.",
+                "Mark six notes yourself, then check the assistant’s markings against the written rules.",
+                "Tighten what the assistant can reach, and show that every forbidden action was stopped, including the ones it never tried."
         ]
       },
       "pages": [
