@@ -376,6 +376,7 @@ The setup report checks your prerequisites separately: Git, Python, Oh My Pi, th
   $restrictiveConfigured = @($configured | Where-Object { [string]$_.ExecutionPolicy -in @('Restricted', 'AllSigned') })
   $processRestrictive = @($list | Where-Object { $_.Scope -eq 'Process' -and [string]$_.ExecutionPolicy -in @('Restricted', 'AllSigned') })
   $effective = [string](Get-ExecutionPolicy)
+  $global:LASTEXITCODE = -1
   if ($restrictiveConfigured.Count -gt 0 -or $processRestrictive.Count -gt 0) {
     throw ('STOP: a restrictive execution policy is set on this computer (Get-ExecutionPolicy -List). Ask the device owner for an approved way to run the reviewed local course checker.')
   } elseif ($effective -notin @('Restricted', 'AllSigned')) {
@@ -385,16 +386,17 @@ The setup report checks your prerequisites separately: Git, Python, Oh My Pi, th
   } else {
     throw ('STOP: execution policy ' + $effective + ' was set on this computer. Ask the device owner for an approved way to run the checker.')
   }
-  $reportExit = $LASTEXITCODE
+  $reportExit = $global:LASTEXITCODE
   Write-Output ('REPORT_EXIT ' + $reportExit)
   if ($reportExit -ne 0) { throw 'HOLD: the setup report found a problem. Fix its first FAIL line.' }
+  if (-not (Test-Path -LiteralPath $report -PathType Leaf) -or -not ((Get-Content -LiteralPath $report -Tail 1) -like 'SETUP CHECK PASS*')) { throw 'HOLD: the setup report did not end with SETUP CHECK PASS.' }
   Get-Content -LiteralPath (Join-Path $proof 'from-omp.txt') -Raw -ErrorAction Stop
 }
 ```
 
 **Expected:** report lines ending in `SETUP CHECK PASS`, then `REPORT_EXIT 0`, then `omp works` followed by this attempt's token. The report never contains the key.
 
-**Stop:** `STOP: a restrictive execution policy is set on this computer (Get-ExecutionPolicy -List)`, `SETUP CHECK HOLD`, a nonzero `REPORT_EXIT`, a message that running scripts is disabled or the file isn't signed, or file text that differs.
+**Stop:** `STOP: a restrictive execution policy is set on this computer (Get-ExecutionPolicy -List)`, `SETUP CHECK HOLD`, a nonzero `REPORT_EXIT`, `HOLD: the setup report did not end with SETUP CHECK PASS.`, a message that running scripts is disabled or the file isn't signed, or file text that differs.
 
 **Recovery:** fix the first `FAIL` line's `NEXT ACTION`, then run Step 8 again for a new attempt. For a policy block, see [If a step stops](#step-9-the-setup-report).
 
@@ -617,12 +619,13 @@ course_check_ubuntu
 2. Otherwise download **Docker Desktop for Windows** for your processor from [Docker's Windows install page](https://docs.docker.com/desktop/setup/install/windows-install/) and run it. Use the installation mode the owner approves; the per-user mode needs no administrator rights. Select **Use WSL 2 instead of Hyper-V** if it's offered, select **Close** when it finishes, and restart Windows if asked.
 3. Open **Docker Desktop** from Start. Read the agreement, and select **Accept** only if the licensing question is settled.
 4. In **Settings → Resources → WSL Integration**, turn on the exact Ubuntu NAME you opened, then select **Apply & restart**.
+5. Type `exit` in the Ubuntu window, then open Ubuntu again with the PowerShell box in [Open Ubuntu and check it](#open-ubuntu-and-check-it), so the window picks up Docker Desktop's connection.
 
 ### Create the n8n configuration
 
 The official installer writes n8n's configuration into `n8n-course` in your Linux home without starting anything. This block first confirms that Ubuntu can reach Docker, that nothing is using port 5678, and that no `n8n-course` folder or Docker project exists yet. Then it downloads the installer to a review folder and checks that the installer reports version 1.4.0. It opens the installer in `less`, a pager that shows a file one screen at a time. Press **q** when you've read it, and type `INSTALL` to go ahead. The installer accepts the course's pinned n8n version and `--no-start`; see the [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup). The block then changes the one published port line from `'5678:5678'` to `'127.0.0.1:5678:5678'`, so only this laptop can reach the editor. Finally it records the Docker Compose project name `n8n-course`, the name Docker uses to group this stack's containers, volumes, and networks.
 
-**Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
+**Terminal: Ubuntu Bash, ordinary Linux user, the Ubuntu window you just reopened.**
 
 ```bash
 course_n8n_configure() {
@@ -745,7 +748,7 @@ course_n8n down &&
 
 Reload **http://localhost:5678**, sign in as the same local owner if asked, and open **Module 7 Readiness**. Record **n8n READY** only if the version, the localhost-only port, the six-service state, and the saved workflow all survived the restart. Otherwise record **n8n HOLD** and name the failed check. Type `exit` to leave Ubuntu; Docker Desktop keeps n8n running.
 
-In later sessions, check that Docker Desktop is running, open the same Ubuntu by name, and define `course_n8n` again. Reuse the recorded `n8n-course` project. Never run `course_n8n_configure` again for an existing installation.
+In later sessions, check that Docker Desktop is running, open the same Ubuntu by name, define `course_n8n` again, and run the start block again: after a restart, n8n stays stopped until you start it, and the block starts it and checks it. Reuse the recorded `n8n-course` project. Never run `course_n8n_configure` again for an existing installation.
 
 ## If a step stops
 
@@ -781,7 +784,7 @@ If `gh` is already installed, this block only prints its version. The installer 
 
 ```powershell
 . {
-  if (Get-Command gh -CommandType Application -ErrorAction SilentlyContinue) { gh --version; return }
+  if (Get-Command gh -CommandType Application -ErrorAction SilentlyContinue) { gh --version; if ($LASTEXITCODE -ne 0) { throw 'STOP: the existing GitHub CLI failed. Keep its message.' }; return }
   if (-not (Get-Command winget -CommandType Application -ErrorAction SilentlyContinue)) { throw 'STOP: WinGet is missing; ask the device owner to install GitHub CLI.' }
   winget install --exact --id GitHub.cli --source winget
   if ($LASTEXITCODE -ne 0) { throw 'STOP: GitHub CLI did not install. Keep the message.' }

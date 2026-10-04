@@ -59,6 +59,10 @@ MUTATIONS: list[Mutation] = [
     Mutation("A10", "an installer runs without being inspected",
              append(GUIDE, "\n```bash\ncurl -fsSL https://example.invalid/download_cli.sh -o /tmp/x.sh\n"
                            "bash /tmp/x.sh\n```\n")),
+    Mutation("A11", "a box loses the closing brace of its function",
+             append(GUIDE, "\n```bash\ncourse_broken() {\n  printf 'ready\\n'\ncourse_broken\n```\n")),
+    Mutation("A12", "a PowerShell script gains a typographic dash",
+             append("scripts/verify-setup.ps1", "\n# Report \u2014 written by the checker\n")),
     # Class B
     Mutation("B1-B6", "the practice checker stops binding numbers to their subject",
              lambda root: (p := root / "shared/case/check_artifact.py",

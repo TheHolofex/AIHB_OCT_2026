@@ -751,7 +751,7 @@ N8N_REVIEWED_INSTALLER="$N8N_REVIEW_DIR/get-n8n.sh"
 **Recovery:** Keep the directory and show it to the owner. Use a new directory for a later attempt.
 
 ### 2. Generate the n8n files and limit the port
-This box runs the official one-line setup for n8n 2.41.5 with --no-start. It creates compose.yml, .env, and searxng-settings.yml without starting services. It then changes only the one browser port line in compose.yml from '5678:5678' to '127.0.0.1:5678:5678'. It refuses to run if the destination already exists or if Docker already has resources for the project name. If you reviewed the installer above, it uses that copy.
+This box runs the official one-line setup for n8n 2.41.5 with --no-start. It creates compose.yml, .env, and searxng-settings.yml without starting services. It then changes only the one browser port line in compose.yml from '5678:5678' to '127.0.0.1:5678:5678'. It refuses to run if port 5678 is occupied, the destination already exists, or Docker already has resources for the project name. If you reviewed the installer above, it uses that copy.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the Docker check passed.**
 
@@ -764,17 +764,18 @@ course_n8n_generate() {
   volumes="$(docker volume ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
   networks="$(docker network ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
   if [ -n "$containers$volumes$networks" ]; then printf 'HOLD: Docker already has resources for project n8n-course\n'; return 1; fi
+  if nc -z -w 1 127.0.0.1 5678 2>/dev/null; then printf 'HOLD: something is already listening on port 5678; nothing was generated\n'; return 1; fi
   if [ -n "${N8N_REVIEWED_INSTALLER:-}" ]; then
     N8N_DIR="$dir" sh "$N8N_REVIEWED_INSTALLER" --version 2.41.5 --no-start
   else
     ( set -o pipefail; curl -fsSL https://get.n8n.io | N8N_DIR="$dir" sh -s -- --version 2.41.5 --no-start )
   fi || { printf 'HOLD: the n8n installer failed; keep %s for review\n' "$dir"; return 1; }
   if [ ! -f "$dir/compose.yml" ] || [ ! -f "$dir/.env" ]; then printf 'HOLD: the installer did not create compose.yml and .env\n'; return 1; fi
-  count="$(grep -oF -e "- '5678:5678'" "$dir/compose.yml" | wc -l)"
+  count="$(grep -cF -e "- '5678:5678'" "$dir/compose.yml")"
   if [ "$count" != 1 ]; then printf 'HOLD: expected one 5678 port line in compose.yml, found %s\n' "$count"; return 1; fi
   cp "$dir/compose.yml" "$dir/compose.yml.orig" || return 1
   sed "s/- '5678:5678'/- '127.0.0.1:5678:5678'/" "$dir/compose.yml.orig" > "$dir/compose.yml.new" || return 1
-  if [ "$(grep -oF -e "- '127.0.0.1:5678:5678'" "$dir/compose.yml.new" | wc -l)" != 1 ] || [ "$(grep -oF -e "- '5678:5678'" "$dir/compose.yml.new" | wc -l)" != 0 ]; then printf 'HOLD: the port change did not apply cleanly; compose.yml is unchanged\n'; return 1; fi
+  if [ "$(grep -cF -e "- '127.0.0.1:5678:5678'" "$dir/compose.yml.new")" != 1 ] || [ "$(grep -cF -e "- '5678:5678'" "$dir/compose.yml.new")" != 0 ]; then printf 'HOLD: the port change did not apply cleanly; compose.yml is unchanged\n'; return 1; fi
   mv "$dir/compose.yml.new" "$dir/compose.yml" || return 1
   printf 'PORT BOUND 127.0.0.1:5678\n'
   (umask 077; set -o noclobber; printf '%s\n' n8n-course > "$dir/.course-project") || { printf 'HOLD: could not record the project name\n'; return 1; }
@@ -791,8 +792,6 @@ course_n8n_generate
 
 ### 3. Start n8n and check it
 This box defines two helpers and then starts the stack. `course_n8n` runs Docker Compose with the recorded project name, .env, and compose.yml. It stops if any variable that would override .env is exported in this shell. `course_n8n_check` shows the services, the published port, and the running n8n version.
-
-If you opened a new terminal window since the n8n generate step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first; it defines the helpers and is safe to repeat.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
 
@@ -849,6 +848,8 @@ course_n8n_check
 **Recovery:** Keep the directory and volumes. Before doing anything else, ask the owner to check whether the engine or Compose project changed. Don't create a replacement workflow to hide a persistence failure.
 
 Record n8n readiness only after you observe the correct version, local-only mapping, the full stack state, the saved workflow after reload, and the workflow still there after this stop/start. If you can't confirm any of these, keep n8n readiness on **HOLD** for Module 7. This does not change either OMP readiness result.
+
+In a later session, start Docker Desktop if it isn't running, open a new Terminal window, and paste the [step 3 box](#3-start-n8n-and-check-it) again. After a restart the stack stays stopped until you start it; the box defines the helpers, starts n8n, and checks it. The data volume keeps your workflow, so sign in with your existing local owner account.
 
 ## If a step stops
 

@@ -497,19 +497,19 @@ obsidian &
 
 ### ARM64: install FUSE and launch
 
-The AppImage needs `libfuse2t64` beside FUSE 3; type `n` if apt would remove FUSE 3. The vendor's [launch instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) use `--no-sandbox`, which turns off Chromium's renderer sandbox for Obsidian. Get separate device-owner approval for that exception; without it, record Obsidian HOLD and skip this box.
+The AppImage needs `libfuse2t64` beside FUSE 3, and `zlib1g-dev`, which supplies the `libz.so` name its ARM64 starter loads ([AppImage issue 964](https://github.com/AppImage/AppImageKit/issues/964)). Type `n` if apt would remove FUSE 3. The vendor's [launch instructions](https://github.com/obsidianmd/obsidian-help/blob/master/en/Getting%20started/Download%20and%20install%20Obsidian.md) use `--no-sandbox`, which turns off Chromium's renderer sandbox for Obsidian. Get separate device-owner approval for that exception; without it, record Obsidian HOLD and skip this box.
 
 **Terminal: Ubuntu ARM64, Bash or Zsh, same window; sudo elevates only the approved apt transaction.**
 
 ```bash
 course_obsidian_fuse() {
   case "$(uname -m)" in aarch64|arm64) ;; *) printf 'HOLD: ARM64 step only.\n'; return 1 ;; esac
-  if [ "$(dpkg-query -W -f='${Status}' libfuse2t64 2>/dev/null)" = 'install ok installed' ]; then
-    printf 'libfuse2t64 already installed.\n'
+  if [ "$(dpkg-query -W -f='${Status}' libfuse2t64 2>/dev/null)" = 'install ok installed' ] && [ "$(dpkg-query -W -f='${Status}' zlib1g-dev 2>/dev/null)" = 'install ok installed' ]; then
+    printf 'libfuse2t64 and zlib1g-dev already installed.\n'
   else
-    sudo apt-get update && sudo apt install libfuse2t64 || return 1
+    sudo apt-get update && sudo apt install libfuse2t64 zlib1g-dev || return 1
   fi
-  dpkg-query -W -f='${Package} ${Version} ${Status}\n' libfuse2t64
+  dpkg-query -W -f='${Package} ${Version} ${Status}\n' libfuse2t64 zlib1g-dev
 }
 course_launch_obsidian_arm64() {
   [ "${OBS_ASSET:-}" = Obsidian-1.13.7-arm64.AppImage ] && [ -n "${OBS_DOWNLOAD:-}" ] || { printf 'HOLD: complete the ARM64 download first.\n'; return 1; }
@@ -523,9 +523,9 @@ course_launch_obsidian_arm64() {
 course_obsidian_fuse && course_launch_obsidian_arm64
 ```
 
-**Expected:** `libfuse2t64 … install ok installed`, checksum `OK`, then an Obsidian window.
+**Expected:** `libfuse2t64 … install ok installed` and `zlib1g-dev … install ok installed`, checksum `OK`, then an Obsidian window.
 
-**Stop:** No approval, an unapproved apt change, missing FUSE, or no window.
+**Stop:** No approval, an unapproved apt change, missing FUSE or `zlib1g-dev`, or no window.
 
 **Recovery:** Record Obsidian HOLD with the error; don't run the AppImage as root or change kernel security settings.
 
@@ -933,6 +933,10 @@ course_n8n exec -T n8n n8n --version
 **Stop:** Missing workflow, a new owner-setup screen, wrong version or port, or failed services.
 
 **Recovery:** Keep the folder and volumes and ask the owner to check the data volume; never use `down -v`.
+
+## Later sessions
+
+After a restart, Docker starts on its own, but the n8n stack stays stopped until you start it. A new terminal also doesn't know the `course_n8n` helper. Before Module 7, open a new terminal and paste these boxes again, in order: the [step 13](#13-generate-the-n8n-configuration) box that defines `course_n8n`, then the [step 14](#14-start-n8n-on-this-computer-only) start box and check box. The data volume keeps your workflow, so sign in with your existing local owner account.
 
 ## If a step stops
 

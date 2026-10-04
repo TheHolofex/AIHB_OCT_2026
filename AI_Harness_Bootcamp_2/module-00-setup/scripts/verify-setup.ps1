@@ -103,7 +103,7 @@ function Test-VersionCommand {
         Add-Result FAIL $Name "$Command did not return a successful version result" 'Preserve the failed command and repair this prerequisite.'
         return
     }
-    $shown = (Get-Redacted $resolved) + " — " + $out
+    $shown = (Get-Redacted $resolved) + " - " + $out
     if ($Expected -and $out -ne $Expected) {
         Add-Result FAIL $Name "want $Expected, observed $out at $shown" "Install the exact version and re-run in a new PowerShell window."
     } else {
@@ -233,7 +233,7 @@ try {
     $writer = [IO.StreamWriter]::new($stream, [Text.UTF8Encoding]::new($false))
     try {
         foreach ($line in $script:lines) { $writer.WriteLine($line) }
-        $writer.WriteLine("$verdict — report: $(Get-Redacted $ResultsPath)")
+        $writer.WriteLine("$verdict - report: $(Get-Redacted $ResultsPath)")
     } finally {
         $writer.Dispose()
         $stream.Dispose()
@@ -243,6 +243,6 @@ try {
     exit 1
 }
 
-Write-Host "`n$verdict — report: $ResultsPath"
+Write-Host "`n$verdict - report: $ResultsPath"
 if ($script:failCount -eq 0) { exit 0 }
 exit 1

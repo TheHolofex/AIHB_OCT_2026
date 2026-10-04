@@ -1,6 +1,6 @@
 # Module 0 verdict
 
-The 2026-08-23 verdict below is historical. Current local n8n evidence and its platform limits are recorded in [Native local n8n cutover](#native-local-n8n-cutover--2026-10-02); the earlier counts and qualification language are not current acceptance claims.
+The 2026-08-23 verdict below is historical. Current local n8n evidence and its platform limits are recorded in [Native local n8n cutover](#native-local-n8n-cutover--2026-10-02). The setup guides as rewritten on 2026-10-03 were run end to end in Docker and on a sandboxed Mac on 2026-10-04; see [Setup guides run end to end](#setup-guides-run-end-to-end--2026-10-04). The earlier counts and qualification language are not current acceptance claims.
 
 **Date:** 2026-08-23
 **Standard:** `reference/REFERENCE.md` v2, SHA-256 recorded in `reference/REFERENCE.sha256`
@@ -128,3 +128,34 @@ Detailed host-shell and browser observations, native execution IDs and the redac
 The first integrated run exposed obsolete A1/A4 scans that treated `printf '%s/get-n8n.sh'` as an executed relative file and A3's blanket ban on `exit`, which rejected safe subshell refusals and the intentional WSL-to-PowerShell return. Those incidental-source tests and their mutations were removed, not re-pinned. The surviving oracle is scoped; it does not certify execution of every platform command. PowerShell argument passing, subprocess stdin and complete-file extraction mistakes in the throwaway harness were corrected before recording the successful matrices.
 
 **Limits:** PowerShell 7 parsing on macOS is not native Windows PowerShell 5.1 verification; controlled Bash/zsh checks use a Docker stub. Native Windows/WSL, Intel macOS, Ubuntu and Arch n8n startup were not observed. Direct course-page screen capture timed out; Chromium screen-media PDF and print output were successfully rendered and visually inspected instead. No new human learner-performance, assistive-technology, paid provider, or hosted-deployment result is claimed.
+
+## Setup guides run end to end — 2026-10-04
+
+The five platform guides were rewritten on 2026-10-03 (commit `e047199`) and had no recorded run. Each Linux route was run top to bottom on a fresh machine by pasting every box exactly as published into a real interactive shell: bracketed paste, one Return, and only the inputs a learner gives (sudo password, the hidden key, `q` in a pager, typed answers). New terminals and re-logins open with a desktop session's environment, and a reboot is a restart of the machine. The harness is `tests/guide_lab/run_guide.py`; per-box results are in `evidence/guide-runs-2026-10-04/`. A box passes only when its exit status and the output its Expected note names both appear.
+
+| Route | Machine | Result |
+|---|---|---|
+| Ubuntu 24.04, Bash | x86-64 (emulated), systemd | 36 of 36 boxes: steps 1 to 9 with one live readiness call, GitHub access recovery, Obsidian (`.deb`), Docker Engine, n8n 2.41.5 start, saved-workflow restart, and the later-session steps after a reboot |
+| Ubuntu 24.04, zsh | x86-64 (emulated) | steps 1 to 5: the PATH line reaches a new zsh window |
+| Ubuntu 24.04, Bash | ARM64, systemd | 35 of 35 boxes, including the ARM64 AppImage route |
+| Ubuntu in WSL 2 | ARM64; WSL session markers, Windows PATH entries, Xvfb for WSLg, a separate engine in place of Docker Desktop | 26 of 26 Ubuntu-side boxes, including the later session after a restart |
+| Windows PowerShell route, Ubuntu part | same WSL machine | 9 of 9 Ubuntu-side n8n boxes and the later session |
+| Arch Linux | x86-64 (emulated), no systemd | 34 of 35 boxes through step 13; `course_n8n up -d` can't start containers under emulation |
+| Arch Linux ARM, substitute for steps 10 to 15 | ARM64, systemd | 22 of 22 boxes: Docker, group re-login, n8n, saved-workflow restart, and the later-session steps after a reboot |
+| macOS | this Mac, throwaway HOME, login zsh windows | 17 of 17 boxes run: steps 1 to 9 with one live call, GitHub access recovery, the Obsidian practice vault, the Docker check, and n8n file generation; the Obsidian `.dmg` box ran in a separate pass |
+
+**Defects found and fixed**
+
+- Arch step 13: the box that runs the reviewed n8n installer had lost its closing `}`, so pasting it left the shell waiting for more input.
+- Arch step 14: the project-record write was missing, so `course_n8n` refused every later command.
+- Windows step 9: `verify-setup.ps1` held three em dashes; Windows PowerShell 5.1 reads a script without a byte-order mark as ANSI, where they end strings early, so the checker never parsed. The box then printed a stale `REPORT_EXIT 0`. The script is ASCII now, the box resets the exit code first, and it requires a report ending in `SETUP CHECK PASS`.
+- WSL: the open-Ubuntu and WSL 1 backup boxes weren't wrapped in `. { }`, so a pasted `Read-Host` took the next line as its answer and a failed backup didn't stop the conversion.
+- Ubuntu and WSL ARM64: Obsidian's AppImage starter needs `libz.so`, which only `zlib1g-dev` provides; WSL Ubuntu also lacks FUSE 3. The app never started before; it starts now.
+- macOS: BSD `wc -l` pads its count with spaces, so the generate box always reported the wrong number of port lines and stopped. It also generated files while another service held port 5678.
+- Windows PowerShell route: the guide didn't reopen Ubuntu after turning on WSL integration.
+- Ubuntu, Arch, macOS and the Windows PowerShell route: nothing said how to bring n8n back after a restart; the stack stays stopped, and on Arch Docker does too.
+- Module 0 oracle: A11 now parses every shell box, and A12 requires ASCII PowerShell scripts; each has a killing mutation.
+
+**Stand-ins:** the GitHub browser sign-in (a token from an existing `gh` login), the Obsidian window (the same file edits the app makes; the app process was started under Xvfb), the n8n editor (its own owner-setup, workflow and login requests), Docker Desktop on WSL (a separate engine sharing the network, home folder and socket), and, on emulated Arch, starting `dockerd` by hand after the `systemctl` box. Six live readiness calls were made across the final runs.
+
+**Limits:** No native Windows. The PowerShell boxes were parsed and reviewed against Windows PowerShell 5.1 behavior, and the Step 9 logic was exercised in PowerShell 7, but none ran on Windows. Docker containers aren't desktops: no GUI window was inspected, WSL is an emulation, and x86-64 machines ran under emulation on Apple Silicon. On macOS, nothing was installed system-wide, and n8n wasn't started because another session holds port 5678 on this Mac. This is setup execution only, not learner timing or human review.
