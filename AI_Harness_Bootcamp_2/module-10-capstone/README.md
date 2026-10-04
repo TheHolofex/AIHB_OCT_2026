@@ -1,10 +1,10 @@
 # Module 10 · Stand up a local uncensored AI and hand it off
 
-Stand up the pinned uncensored model on your own laptop as a loopback-only service, prove one live interaction through it, stop and restore it, then hand the complete kit to a colleague who repeats the run without you. OMP does the heavy lifting: it drafts the launch line, drives the bring-up steps, and produces the package fields, while the adapter scripts verify every claim the package makes.
+Stand up the pinned uncensored model on your own laptop as a loopback-only service, prove one live interaction through it, stop and restore it, then hand the complete kit to a colleague who repeats the run without you. OMP does most of the work: it drafts the launch line, drives the bring-up steps, and fills in the package fields, while the adapter scripts check every claim the package makes.
 
-The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed, so it will answer bluntly and apply no judgment of its own. Every boundary in this lab is yours to hold, not the model's.
+The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed, so it answers bluntly and applies no judgment of its own. Every boundary in this lab is yours to keep, not the model's.
 
-Plan for 3 hours on Thursday. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours. If no recipient is available, record independent-person operation as unobserved, not passed.
+Plan for about three hours on Thursday. That's a rough estimate, not a measured time. Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
 
 ## Start here
 
@@ -25,4 +25,4 @@ The declared kit contains `shared/PACKAGE.md` (instructions), `scripts/` (adapte
 
 ## Bounded use
 
-The service binds `127.0.0.1` only. The weights stay on this laptop under your own account: no re-upload, no sharing the endpoint, no serving another person's traffic. Prompts and replies are recorded by the harness in your evidence directory. This kit is a bounded local service, not a deployment, and a completed run authorizes nothing beyond its own evidence bundle.
+The service binds only to `127.0.0.1`. The weights stay on this laptop under your own account: don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. This kit is a limited local service, not a deployment, and a completed run authorizes nothing beyond its own evidence bundle.

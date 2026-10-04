@@ -1,14 +1,14 @@
 # Module 10 · Stand up a local uncensored AI and hand it off
 
-A complete kit lets another person bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it without your chat history. Assemble the smallest sufficient set of files and instructions, freeze it, move only the declared bundle to a fresh location, and operate it from a new terminal. Keep your own rerun separate from observing another person use the kit.
+A complete kit lets someone else bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it, all without your chat history. Put together the smallest set of files and instructions that does the job, freeze it, move only the declared bundle to a new location, and run it from a new terminal. Keep your own rerun separate from watching another person use the kit.
 
-The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it will answer bluntly and apply no judgment of its own. The service binds `127.0.0.1` only, the weights stay on this laptop, and prompts are recorded by the harness.
+The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed, so it answers bluntly and applies no judgment of its own. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
 
-Plan for 3 hours on Thursday. This is a planning allowance, not a measured completion guarantee. The recipient's attempt takes place outside the facilitated hours.
+Plan for about three hours on Thursday. That's a rough estimate, not a measured time. Your recipient's attempt happens outside class hours.
 
 ## Prepare separate work and transfer locations
 
-Use the verified checkout and Python from [setup](../../module-00-setup/README.md). `W` is the authoring work copy, `E` is the separate evidence directory, and `F` is the future received package. The commands work from any directory. Do not create `F` until the transfer step.
+Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work copy, where you build the kit; `E` is the separate evidence folder; and `F` is where the received package will go. The commands work from any directory. Don't create `F` until the transfer step.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -45,15 +45,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; e,f=map(Path,sys.argv[1:]); (f.exists() or f.is_symlink()) and sys.exit('HOLD: received destination exists'); e.mkdir(); print('EVIDENCE',e); print('FRESH DESTINATION',f)" "$E" "$F"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier, then `PASS: created` followed by the work path; ignore the printed `Next` suggestion, because this lab gives the next command. `W` holds nested case, control, baseline, package, and scripts. `E` exists beside it, and the printed received-folder destination does not exist yet.
+**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. Ignore the printed `Next` suggestion; this lab gives you the next command. The block then prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
 
 **Stop:** A destination exists, a prerequisite is missing, or preparation fails.
 
-**Recovery:** Keep the first attempt, correct the prerequisite, and use a new `RUN`. Do not reset the checkout or reuse a partially prepared received folder.
+**Recovery:** Keep the first attempt, fix the prerequisite, and use a new `RUN`. Don't reset the checkout or reuse a half-prepared received folder.
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+Every command on this page uses the variables you set above, and a terminal forgets them when it closes. In a new terminal, run this block to get back to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -101,7 +101,7 @@ Open these files in your editor:
 - `W/shared/case/hostile-note.md`
 - `W/shared/PACKAGE.md`
 
-In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it does not. Quote the community note's two suggestions — the `0.0.0.0` bind and the skipped digest check — and state why each supplies no authority here. Name what the uncensored model will not do for you: refuse, warn, or apply judgment.
+In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check, and say why neither carries any authority here. Name what the uncensored model won't do for you: refuse, warn, or apply judgment.
 
 ![Loopback limits network reach, and the identity check identifies the checked weight file; neither establishes the model's safety, accuracy, or fitness for publication.](figures/m10-operator-boundary.png)
 
@@ -114,15 +114,15 @@ The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requ
 
 </details>
 
-**Expected:** Every material statement has a file and line behind it. The loopback bind and the pinned identity are the only operating truth.
+**Expected:** Every material statement in your notes points to a file and line. The only facts you operate from are the loopback bind and the pinned identity.
 
-**Stop:** A rule is unclear, the note is being treated as guidance, or the boundary feels optional.
+**Stop:** A rule is unclear, you're treating the note as guidance, or the boundary feels optional.
 
-**Recovery:** Reopen `SERVICE_RULES.md` and the note. The boundary is not negotiable by anyone, including you.
+**Recovery:** Reopen `SERVICE_RULES.md` and the note. The boundary doesn't bend for anyone, including you.
 
 ## Gain account access and download the pinned weights
 
-The repository is access-gated. Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB and resumable.
+The model's repository is access-gated. Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB, and it can resume if it's interrupted.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -140,9 +140,9 @@ hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-
 
 **Expected:** One file, `OrcaSAQ-2-27B-Uncensored.gguf`, at exactly 15,676,553,472 bytes when complete. Record the account name in `E/pre-run.md`; never record a token.
 
-**Stop:** The conditions are not accepted, the download is interrupted, or the byte size differs.
+**Stop:** You haven't accepted the conditions, the download is interrupted, or the byte size differs.
 
-**Recovery:** `hf download` resumes. Never accept a wrong-size file and never continue without the conditions accepted.
+**Recovery:** Run `hf download` again; it picks up where it stopped. Never accept a file of the wrong size, and don't continue until you've accepted the conditions.
 
 ## Verify the pinned identity
 
@@ -161,9 +161,9 @@ Set-Location -LiteralPath $W
 
 **Expected:** `PASS: pinned weight identity verified` with the identity card: model id, weight file, exact size, digest, license, and base model.
 
-**Stop:** The adapter reports a size or digest mismatch by name.
+**Stop:** The adapter names a size or digest mismatch.
 
-**Recovery:** Re-download and re-verify. Never edit `model-card.json` or force a pass. Return to the repository root with `cd "$BASE"` after this step.
+**Recovery:** Download the file again and re-verify. Never edit `model-card.json` or force a pass. After this step, return to the attempt folder with `cd "$BASE"`.
 
 ## Wire OMP to the loopback service
 
@@ -181,15 +181,15 @@ Set-Location -LiteralPath $W
 Set-Location -LiteralPath $BASE
 ```
 
-**Expected:** `WIRED loopback service at 127.0.0.1:8080` and the two outputs `omp-local.yml` and `omp-launch.json`. The overlay names no address other than `127.0.0.1`. Read `omp-launch.json`: it records the exact OMP argv for the live interaction.
+**Expected:** `WIRED loopback service at 127.0.0.1:8080` and the two outputs `omp-local.yml` and `omp-launch.json`. The overlay names no address other than `127.0.0.1`. Read `omp-launch.json`; it records the exact OMP command line (argv) for the live interaction.
 
-**Stop:** The adapter refuses the port, the outputs exist, or the control is disabled.
+**Stop:** The adapter refuses the port, the outputs already exist, or the control is disabled.
 
-**Recovery:** The refusal names the reason. Preserve the outputs; never overwrite them.
+**Recovery:** The refusal gives the reason. Keep the existing outputs; never overwrite them.
 
 ## Bring the service up under OMP orchestration
 
-OMP drafts the launch line and drives bring-up; you approve and observe each step. Open OMP in `W` and give it the orchestration brief below, then run the line it proposes after checking it against the pinned boundary.
+OMP drafts the launch line and drives the bring-up; you approve and watch each step. Open OMP in `W` and give it the brief below. Check the line it proposes against the pinned boundary before you run it.
 
 ![OMP drafts the launch line, but you check it against the pinned boundary and start the server; reachability is a separate probe.](figures/m10-launch-approval.png)
 
@@ -212,7 +212,7 @@ Read shared/case/SERVICE_RULES.md, shared/case/model-card.json, and shared/case/
 Draft the exact llama-server launch line for the pinned weight file: loopback bind on port 8080, context 32768, no other flags that widen the boundary. Print the line and each flag's purpose. Do not run it yourself; I approve and run it.
 ```
 
-Check the proposed line against `SERVICE_RULES.md`: the host must be `127.0.0.1`, the context must be 32768, and nothing else may widen the boundary. Run the approved line in a terminal reserved for the server:
+Check the proposed line against `SERVICE_RULES.md`: the host must be `127.0.0.1`, the context must be 32768, and nothing else may widen the boundary. Run the approved line in a terminal you keep just for the server (if it's a new terminal, run the block under "If you open a new terminal" there first):
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -227,7 +227,7 @@ llama-server -m "$W/weights/OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --po
 llama-server -m "$W\weights\OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
 ```
 
-Load takes minutes on most laptops. When the server reports loading complete, prove reachability from a second terminal:
+Loading takes a few minutes on most laptops. When the server says loading is complete, check that it's reachable from a second terminal (run the block under "If you open a new terminal" there first):
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -246,9 +246,9 @@ Set-Location -LiteralPath $BASE
 
 **Expected:** The probe prints `PASS: local service reachable on loopback`. Record the load time and the probe result in `E/pre-run.md`.
 
-**Stop:** The proposed line binds anything except `127.0.0.1`, loading fails, or the probe reports unreachable.
+**Stop:** The proposed line binds anything except `127.0.0.1`, loading fails, or the probe reports the service unreachable.
 
-**Recovery:** Reject the drafted line and ask again if the bind is wrong; free memory and re-probe if loading failed. Do not change the bind address or the context.
+**Recovery:** If the bind is wrong, reject the drafted line and ask again. If loading failed, free some memory and probe again. Don't change the bind address or the context.
 
 ## Prove one live interaction
 
@@ -270,7 +270,7 @@ None of these checks establishes any of the following: not safety, not model qua
 
 </details>
 
-Run the exact argv from `omp-launch.json`:
+Run the exact command recorded in `omp-launch.json`:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -286,25 +286,25 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 Set-Location -LiteralPath $BASE
 ```
 
-**Expected:** The saved stream contains a real assistant reply, names `llama.cpp` as the provider, and reports zero cost. A refusal to answer would be surprising from this model; a connection failure is the failure mode to watch.
+**Expected:** The saved stream contains a real assistant reply, names `llama.cpp` as the provider, and reports zero cost. A refusal would be surprising from this model; the failure to watch for is a connection failure.
 
 **Stop:** A context-size refusal or connection failure appears.
 
-**Recovery:** Re-probe, then retry once. If the context is exceeded, the server context stays at the pinned value; do not widen it.
+**Recovery:** Probe again, then retry once. If the context is exceeded, leave the server context at the pinned value; don't widen it.
 
 ## Observe the uncensored behaviour
 
-Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften. Save the exchange to `E/observations.md`. The model will not refuse and will not warn; that is the capability you chose, and the guardrail is you. Record what you would not put your name on and why you would not send it anywhere.
+Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften, and save the exchange to `E/observations.md`. The model won't refuse and won't warn you; that's the capability you chose, so the guardrail is you. Record what you wouldn't put your name on, and why you wouldn't send it anywhere.
 
-**Expected:** A recorded exchange showing the model answering without refusal, and your named boundary for using its output.
+**Expected:** A saved exchange where the model answers without refusing, and the boundary you've set on using its output.
 
-**Stop:** The exchange is not saved, or the observation reads like an endorsement of unlimited use.
+**Stop:** The exchange isn't saved, or your note reads like an endorsement of unlimited use.
 
 **Recovery:** Save the transcript first, then write the boundary.
 
 ## Stop the service and prove the stopped state
 
-Interrupt the server process in its terminal with Ctrl+C. Then prove the stopped state and record it:
+Stop the server with Ctrl+C in its terminal. Then prove it's stopped and record that:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -323,7 +323,7 @@ Set-Location -LiteralPath $BASE
 
 **Expected:** The probe exits 1 with `HOLD: service is not reachable`; the service is down.
 
-Write the stop receipt in `W` naming the port and the action:
+Write a stop receipt in `W` that names the port and the action:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -357,13 +357,13 @@ Set-Location -LiteralPath $BASE
 
 **Expected:** `PASS: service is stopped and unreachable on loopback`. Copy the receipt to `E/`.
 
-**Stop:** The probe still reports the service reachable, or the receipt does not name this port.
+**Stop:** The probe still reports the service reachable, or the receipt doesn't name this port.
 
-**Recovery:** Terminate the server and re-probe. Never record a stop that did not happen.
+**Recovery:** Stop the server process and probe again. Never record a stop that didn't happen.
 
 ## Disable the control and prove the refusal
 
-Disable the active control, attempt each adapter command, and restore from the validated baseline:
+Turn off the active control, try each adapter command, then restore the control from the validated baseline:
 
 ![The operator stops the process; the adapter verifies the stopped state. Restoring an enabled control does not itself restart the service.](figures/m10-stop-restore.png)
 
@@ -400,15 +400,15 @@ Set-Location -LiteralPath $BASE
 
 **Expected:** `HOLD: control disabled` and exit 1 for every adapter command; no command acts while the control is off.
 
-Restore from the baseline by rerunning the package's own restore commands, then confirm the wire outputs are unchanged before proceeding.
+Restore the control from the baseline by running the package's own restore commands again, then confirm the wire outputs are unchanged before you go on.
 
 **Stop:** Any adapter command acts while the control is disabled, or the baseline digest fails.
 
-**Recovery:** Preserve the refusal as evidence. Restore only through the validated baseline.
+**Recovery:** Keep the refusal as evidence. Restore only from the validated baseline.
 
 ## Freeze the declared bundle before copying
 
-Keep only the eleven files the package declares. Do not add the weights, the evidence folder, the repository, private material, or conversation history. Freeze the identities outside `W`:
+Keep only the ten files the package declares. Don't add the weights, the evidence folder, the repository, private material, or conversation history. Record each file's digest in `E`, outside `W`:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -442,7 +442,7 @@ print('FROZEN BUNDLE',len(files),'files')
 '@ | & $PY - "$W" "$E"
 ```
 
-**Expected:** A new record with ten path/digest pairs and the stop-receipt digest.
+**Expected:** `FROZEN BUNDLE 10 files`, and a new record, `E/bundle-before.json`, with ten path/digest pairs and the stop receipt's digest.
 
 **Stop:** A file is missing, a record already exists, or the set differs from the package's declared inputs.
 
@@ -450,7 +450,7 @@ print('FROZEN BUNDLE',len(files),'files')
 
 ## Copy only the frozen members
 
-The weights stay out: the colleague downloads them under their own account against the pinned identity. Copy with digest validation exactly as the package's freeze step prescribes:
+Leave the weights out; your colleague downloads them under their own account and checks them against the pinned identity. Copy the files with digest checks against the record you just froze in `E/bundle-before.json`:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -511,17 +511,17 @@ print('NO WEIGHTS COPIED')
 '@ | & $PY - "$W" "$F" "$E/bundle-before.json"
 ```
 
-**Expected:** The printed destination contains only the declared bundle. The weights are absent by design.
+**Expected:** `FRESH PACKAGE` followed by the destination path, then `NO WEIGHTS COPIED`. The destination holds only the declared bundle; the weights are left out on purpose.
 
 **Stop:** The destination exists, a frozen source changed, or the weights were copied.
 
-**Recovery:** Keep the failed folder; use a fresh destination for a corrected transfer.
+**Recovery:** Keep the failed folder, and use a new destination for the corrected transfer.
 
 ## Hand the package to another person
 
-The colleague receives the fresh folder, the pinned identity, and the boundary. Let them run it from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, commands, observed outcomes, and any help in `E/transfer-status.md`. A technical replay, including an agent replay, is not an observation of another person's operation. If no person is available, retain the technical results and record independent-person operation as **unobserved**, with the missing prerequisite. It is not a pass.
+Give your colleague the fresh folder, the pinned identity, and the boundary. Let them run it from the package alone: account access, download, verify, wire, serve, probe, interact, stop, restore. Record their questions, their commands, the outcomes you saw, and any help they got in `E/transfer-status.md`. A technical replay, even one run by an agent, doesn't count as watching another person operate the kit. If no one is available, keep the technical results and record independent-person operation as **unobserved**, along with what was missing. That isn't a pass.
 
-If the colleague needs help, record what they did before and after; do not relabel an assisted attempt as independent. Use their questions to improve a new package version while preserving the observed attempt.
+If your colleague needs help, record what they did before and after it; don't relabel an assisted attempt as independent. Use their questions to improve a new version of the package, and keep the observed attempt as it was.
 
 ![Keep technical replay separate from another person's attempt, record every intervention, and mark human transfer unobserved when no recipient has operated the kit.](figures/m10-independent-transfer.png)
 
@@ -542,4 +542,4 @@ If there is no recipient, the different person's operation is UNOBSERVED. No age
 
 ## Close the session
 
-In `E/close-out.md`, record the verified identity, the live interaction, the stop receipt, the restore comparison, and the transfer status. State plainly which parts ran and which did not. Then shut the service down if it is still running, and keep the evidence bundle for staff review.
+In `E/close-out.md`, record the verified identity, the live interaction, the stop receipt, the restore comparison, and the transfer status. State plainly which parts ran and which didn't. Then shut the service down if it's still running, and keep the evidence bundle for staff review.
