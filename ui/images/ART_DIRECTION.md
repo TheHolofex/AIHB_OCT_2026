@@ -9,9 +9,9 @@ Maintainer record for the photographs in this directory. It is not published: th
 | `home-hero.webp` | 1672×941, 142,250 B | Homepage hero (the first `.webp` in `ui_assets`) | A convoy of unmarked cargo trucks passes a scan portal at a forward supply-base gate at golden hour. One pallet waits behind a taped hold line. |
 | `home-band-custody.webp` | 1672×716, 120,678 B | Band `custody` | A night receiving yard under amber light towers: staged pallet rows, a scan portal, a refrigerated container. |
 | `home-band-route.webp` | 1672×716, 112,092 B | Band `route` | Four cargo trucks climb desert switchbacks at dusk toward a clinic in the valley. |
-| `home-band-clinic.webp` | 1672×716, 110,536 B | Band `clinic` | A field clinic receiving point at warm dusk, with the delivered stack confirmed. |
+| `home-band-clinic.webp` | 1672×716, 110,536 B | Not placed | A field clinic receiving point at warm dusk, with the delivered stack confirmed. |
 
-The three bands follow the mission thread's handoff: cargo received into custody, the vehicle moves, the clinic confirms usable effect. Bands are decorative (`alt=""`), lazy-loaded, and placed on the home page with `<div data-photo-band="ID"></div>`.
+Custody and route are the placed bands: cargo received into custody, then the vehicle moves. They are decorative (`alt=""`), lazy-loaded, and placed on the home page with `<div data-photo-band="ID"></div>`. The clinic photograph is kept here and is not on the home page.
 
 ## Style contract
 

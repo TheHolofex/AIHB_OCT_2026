@@ -35,7 +35,6 @@
     {"source": "ui/images/home-hero.webp", "dest": "assets/images/home-hero.webp"},
     {"source": "ui/images/home-band-custody.webp", "dest": "assets/images/home-band-custody.webp"},
     {"source": "ui/images/home-band-route.webp", "dest": "assets/images/home-band-route.webp"},
-    {"source": "ui/images/home-band-clinic.webp", "dest": "assets/images/home-band-clinic.webp"},
     {"source": "ui/vendor/sirocco/icons/menu.svg", "dest": "assets/sirocco/icons/menu.svg"},
     {"source": "ui/vendor/sirocco/icons/close.svg", "dest": "assets/sirocco/icons/close.svg"},
     {"source": "ui/vendor/sirocco/icons/search.svg", "dest": "assets/sirocco/icons/search.svg"},
@@ -52,8 +51,7 @@
   ],
   "home_bands": {
     "custody": "assets/images/home-band-custody.webp",
-    "route": "assets/images/home-band-route.webp",
-    "clinic": "assets/images/home-band-clinic.webp"
+    "route": "assets/images/home-band-route.webp"
   },
   "modules": [
     {

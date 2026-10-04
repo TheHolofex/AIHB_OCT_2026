@@ -39,22 +39,3 @@ Start with setup, then work through the assignments in order. Each one comes wit
 
 <div data-course-map></div>
 
-<div data-photo-band="clinic"></div>
-
-## Fictional cases, actual work
-
-Ten of the eleven assignments use fictional cases. Cold Foundry doesn't: you run a real, uncensored model on your own laptop under its own usage rules. Either way, the tools, files, checks, and handoffs are real. Use the supplied data, not confidential information from your workplace. No exercise authorizes a real dispatch, release, or other operational decision, and none publishes a model or makes one reachable from outside your own machine.
-
-`PASS` and `HOLD` report the result of a technical check or a work decision: a check passes, or the work goes on hold until the problem is resolved.
-
-## Before you start
-
-Choose the [setup path for Windows PowerShell, Windows with WSL 2, macOS, Ubuntu, or Arch Linux](module-00-setup/README.md). You need a browser, a plain-text editor, permission to install the required tools, and GitHub read access to the private course repository. The password for this course site doesn't give you repository access; you need both.
-
-Setup installs or checks Git, Python 3.12 or newer, Oh My Pi (OMP) 18.3.5, Obsidian, and n8n 2.41.5 with its full official Docker stack, all on your own machine. For live work, OMP uses [your own OpenRouter key](module-00-setup/shared/CREDENTIALS.md) and one fixed model, Claude Sonnet 4.6. Don't save the key in course files or shell profiles.
-
-Module 2 needs Obsidian installed on your machine, with community plugins in Restricted mode and Sync turned off. If you already have Obsidian and it passes the readiness check, keep that installation; for a fresh install, use the release your platform guide names. The check has you open the practice vault, follow its links, save a reply, watch Obsidian pick up a change made outside the app, and then close and reopen the vault. Record what you saw in the Obsidian window separately from the disk check and from the OMP and n8n readiness results. On the WSL route, you run the Linux version of Obsidian through WSLg, on the same Linux home files that OMP uses, rather than pointing the Windows app at a network path.
-
-Module 7 has its own n8n readiness check: you open the local editor and confirm that a saved workflow survives stopping and restarting n8n. You don't need an n8n Cloud account, an Assistant key, or any paid model calls. Keep the Assistant off, leave workflows unpublished, and open n8n only at localhost in your browser. The device owner must approve the privileged Docker-in-Docker runner and any Docker Desktop licensing that applies. On the native Windows PowerShell route, n8n is the only part that runs through a WSL Ubuntu bridge; OMP, Python, Git, your credentials, and the rest of the course work stay native to Windows. If WSL or Docker is blocked, n8n stays on HOLD even when OMP passes.
-
-Allow roughly one to three hours for setup on top of the daily schedule, and longer if downloads are slow, the Obsidian or n8n checks take extra work, or you're waiting on the device owner's approval. That's a rough estimate, not a measured time.
