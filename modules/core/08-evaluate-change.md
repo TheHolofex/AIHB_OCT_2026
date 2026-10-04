@@ -2,7 +2,7 @@
 
 **Serves oracle:** S04, S14, S17, S19, S25  
 **Primary objective:** PO-08 — Control hallucinations  
-**Prerequisites:** Source verification, atomic typed questions, exact checks kept in code beside decision-model judgments, and bounded model-and-tool operation; preflighted environment and this module's supplied claims, source packets, and controls  
+**Prerequisites:** Source verification, atomic typed questions, exact checks kept in code beside decision-model judgments, bounded agent handoffs, and bounded model-and-tool operation; preflighted environment and this module's supplied claims, source packets, and controls  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:CLAIMS  
 **Produces:** FROZEN_CLAIMS; BEFORE_REVIEWS; CORRECTION; AFTER_REVIEWS; REPORT; HUMAN_DISPOSITION; PO08_RESULT  
 **Rough time:** a little over 2 hours (design budget, unmeasured)  
@@ -17,13 +17,12 @@
 
 ## Capability delta
 
-Before this project, the learner could verify a source, obtain typed judgments, keep exact checks in code beside a decision model's judgments, and have an agent produce a structured-data artifact. After this project, the learner can control the admission of model-generated claims through a source-bound review-and-correction loop, including failures introduced or endorsed by its reviewers.
+Before this project, the learner could verify a source, obtain typed judgments, keep exact checks in code beside a decision model's judgments, supervise a bounded agent team, and have an agent produce a structured-data artifact. After this project, the learner can control the admission of model-generated claims through a source-bound review-and-correction loop, including failures introduced or endorsed by its reviewers. Giving each claim an exact check, a support judgment, or a held authority applies the Module 06 split as a quality bar; it is not a new objective.
 
 ## Enabling objectives
 
-1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.
-2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
-3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
+1. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
+2. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
 
 ## Check the work
 

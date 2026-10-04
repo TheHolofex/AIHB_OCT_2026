@@ -26,7 +26,7 @@ A **hallucination** is an assertion presented as established when the available 
 
 ## Use a model for a narrow judgment
 
-[Jev](https://docs.typesafe.ai/introduction) takes a **state**—the facts to inspect—and **typed questions**, which have fixed answer types. That pattern makes a judgment inspectable: ask one question about one claim, return a named answer, and let code decide which checks or holds follow.
+Keep each judgment as narrow as the decision-model questions you've already written: one question about one claim, a fixed set of answers, and code that decides which checks or holds follow.
 
 Here the question is: **Does this source packet establish this exact claim?** Each reviewer must choose `supported`, `contradicted`, or `unknown`, identify the source, quote it, and explain the connection. `unknown` means the packet doesn't settle the claim; it doesn't mean the claim is false. Use the [typed-question discipline](../module-04-typed-decisions/README.md) you already practiced, now on a draft's factual claims.
 
