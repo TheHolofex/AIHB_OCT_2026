@@ -24,46 +24,12 @@ An answer can read well and still be wrong, so compare what the tool actually pr
 
 ## Four-day schedule
 
-The course runs Monday through Thursday, and all of it is hands-on: you work alongside an instructor, run the tools yourself, and check your own results. Most assignments take about three hours. Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times, and your pace will vary with the group and the machine.
-
-| Day | Assignments, in order | Roughly |
-|---|---|---:|
-| Monday | [00 North Shelf](module-00-setup/README.md), then [01 Cold Lantern](module-01-mission-thread/README.md) | 6 hours |
-| Tuesday | [02 Ledger Pike](module-02-context-desk/README.md), then [03 Kiln Hold](module-03-mcp-research/README.md), then [04 Chalk Line](module-04-typed-decisions/README.md) | 8 to 9 hours |
-| Wednesday | [05 Copper Span](module-05-diagnose-review/README.md), then [06 Blue Gauge](module-06-run-corpus/README.md), then [07 White Rack](module-07-batch-workflow/README.md) | 9 hours |
-| Thursday | [08 Slope Brief](module-08-change-eval/README.md), then [09 Night Desk](module-09-agent-safeguards/README.md), then [10 Cold Foundry](module-10-capstone/README.md) | 7.5 hours |
-
-The hours in this table don't include breaks or meals.
-
-### Tuesday timetable
-
-| Roughly | Work |
-|---|---|
-| 08:00–11:10 | Ledger Pike |
-| 11:10–11:50 | Lunch |
-| 11:50–15:00 | Kiln Hold |
-| 15:00–15:20 | Meal break |
-| 15:20–18:00 | Chalk Line |
-
-### Wednesday timetable
-
-| Roughly | Work |
-|---|---|
-| 08:00–11:10 | Copper Span |
-| 11:10–11:50 | Lunch |
-| 11:50–15:00 | Blue Gauge |
-| 15:00–15:20 | Meal break |
-| 15:20–18:30 | White Rack |
-
-### Thursday timetable
-
-| Roughly | Work |
-|---|---|
-| 08:00–10:15 | Slope Brief |
-| 10:15–10:25 | Break |
-| 10:25–12:50 | Night Desk |
-| 12:50–13:30 | Lunch |
-| 13:30–16:30 | Cold Foundry |
+| Day | AM (with a break) | Lunch | PM (with a break) |
+|---|---|---|---|
+| Monday | [North Shelf](module-00-setup/README.md) | Lunch break | [Cold Lantern](module-01-mission-thread/README.md) |
+| Tuesday | [Ledger Pike](module-02-context-desk/README.md) | Lunch break | [Kiln Hold](module-03-mcp-research/README.md), [Chalk Line](module-04-typed-decisions/README.md) |
+| Wednesday | [Copper Span](module-05-diagnose-review/README.md) | Lunch break | [Blue Gauge](module-06-run-corpus/README.md), [White Rack](module-07-batch-workflow/README.md) |
+| Thursday | [Slope Brief](module-08-change-eval/README.md), [Night Desk](module-09-agent-safeguards/README.md) | Lunch break | [Cold Foundry](module-10-capstone/README.md) |
 
 <div data-photo-band="route"></div>
 
