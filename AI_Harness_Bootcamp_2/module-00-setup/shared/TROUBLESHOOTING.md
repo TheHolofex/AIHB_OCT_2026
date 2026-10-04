@@ -20,7 +20,7 @@ Start with the first failed action. Save its exact error and last good observati
 | The launcher exits 2 | Read its prerequisite message. Missing key, wrong OMP version, missing input, conflicting permissions, or an existing attempt can stop before a provider request. No live success has occurred. |
 | The launcher exits 1 | Keep the entire attempted run. Check `result.json` and the raw receipts. A file left behind does not make an incomplete turn successful. |
 | The provider returns 401 or 403 | Confirm the participant key and model access in OpenRouter without printing the key. Do not try a direct-provider login or silently switch models. |
-| The provider returns 402 or 429 | Stop paid work. Keep the response and sort out credit or rate availability before starting a new attempt on purpose. Do not loop retries. |
+| The provider returns 402 or 429 | Stop. Keep the response and sort out account or rate availability before starting a new attempt on purpose. Do not loop retries. |
 | The assistant claims it wrote a file, but the file or receipt is absent | Record `HOLD`. Check the declared work root and authorized filename. Do not create the file yourself or use chat text in place of a tool-write receipt. |
 | A write or evidence destination already exists | Keep that attempt. After you record the cause, start with new work/output and receipt paths. Changing only E does not make an existing output new. |
 | A Windows script is blocked by execution policy or signing requirements | Check the effective policy and every scope. Leave organizational and intentionally configured restrictions as they are, and ask the device owner for an approved route. Temporary Process-scope `RemoteSigned` applies only to the native setup when the unmanaged default is explicitly authorized; it does not change CurrentUser or LocalMachine. |
@@ -56,7 +56,7 @@ Run the helper in a terminal as an ordinary user, and make edits in the Obsidian
 
 ## When local n8n stops
 
-Keep **n8n READY/HOLD** separate from the OMP setup report and the live OMP readiness result. Module 7 requires n8n READY, but checking n8n needs no paid model call, n8n Cloud signup, or Assistant key. Once you have fixed the first failure, use the complete n8n section in your chosen platform guide.
+Keep **n8n READY/HOLD** separate from the OMP setup report and the live OMP readiness result. Module 7 requires n8n READY, but checking n8n needs no model call, n8n Cloud signup, or Assistant key. Once you have fixed the first failure, use the complete n8n section in your chosen platform guide.
 
 | What you see | What to do next |
 |---|---|
@@ -73,7 +73,7 @@ Keep **n8n READY/HOLD** separate from the OMP setup report and the live OMP read
 | Running n8n reports anything except `2.41.5` | Record n8n HOLD and keep the version and instance you found. The owner must resolve the mismatch. Do not repin, upgrade, migrate, or replace it on your own. |
 | `sandbox-certs` shows `Exited (0)` | That service has finished its one-time job successfully. The other five services should stay running, with healthy health checks where shown. A nonzero certificate exit, missing service, persistent restart, or unhealthy service is HOLD. Let the initial startup settle and check again. Keep a record of failures that continue. |
 | The published port is `0.0.0.0:5678` or `[::]:5678` | Use the guide's ordinary `down` to stop only the course stack you identified. Correct the Compose mapping to `127.0.0.1:5678:5678` before restarting, and keep its volumes and other services. |
-| The browser asks for Cloud signup, payment, or a provider key | Confirm `http://localhost:5678` and the inspected course instance. A fresh local owner uses **Next**; the optional survey uses **Get started**. Select **Skip** on the free-license offer and **Set up later in Settings** for Assistant. Do not enter the OpenRouter key. |
+| The browser asks for Cloud signup or a provider key | Confirm `http://localhost:5678` and the inspected course instance. A fresh local owner uses **Next**; the optional survey uses **Get started**. Select **Skip** on the free-license offer and **Set up later in Settings** for Assistant. Do not enter the OpenRouter key. |
 | Local login fails, or an existing instance unexpectedly shows owner setup | Leave the instance as it is. Confirm the engine, project, port, and existing local login with its owner. Do not reset the account or register a replacement owner. |
 | The empty instance has no “Create Workflow” button or mandatory “Saved” label | On the Apple Silicon Mac where these steps were checked, the empty instance offers **Overview → Build a workflow**. Click the title, enter the readiness name, and press **Enter**; saving is automatic. Reload and confirm the name and blank canvas. Do not publish. If your screens don't allow this, keep the instance as it is and ask for help. |
 | The workflow disappears after reload or after `down` / `up -d` | Record n8n HOLD. Keep the directory and volumes. With the owner, confirm you are using the same engine, Compose path/project, and named data volume. Ordinary `down` keeps named data. Never use `down -v`, prune volumes, or create a replacement workflow to hide failed persistence. |
@@ -103,7 +103,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the selected OMP executable failed its v
 
 **Stop:** The command is missing, resolves to an unexpected installation, fails to run, or reports another version.
 
-**Recovery:** Fix only the installation or PATH issue shown in the output. Keep other installations and repeat the check before a paid turn.
+**Recovery:** Fix only the installation or PATH issue shown in the output. Keep other installations and repeat the check before a model turn.
 
 **PATH** is the ordered list of directories your terminal searches for a command. Changing PATH does not install a program, and an open terminal does not pick up settings saved later. The key works differently: keep it in the current terminal process only, even if you save a non-secret PATH setting.
 
@@ -111,7 +111,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the selected OMP executable failed its v
 
 Keep the original terminal visible. In Activity Monitor on macOS, Task Manager on Windows, or your Linux system monitor, find the named download or package-manager process and check its current CPU, disk, and network activity. A single check showing no activity does not mean the process has hung.
 
-If an installation was interrupted, follow the package manager's recovery instructions instead of killing or restarting without checking. For a provider turn, the launcher times out after a set limit and records an incomplete attempt. Wait for it to report the failure instead of starting a second paid process.
+If an installation was interrupted, follow the package manager's recovery instructions instead of killing or restarting without checking. For a provider turn, the launcher times out after a set limit and records an incomplete attempt. Wait for it to report the failure instead of starting a second provider process.
 
 ## Capture a support packet
 

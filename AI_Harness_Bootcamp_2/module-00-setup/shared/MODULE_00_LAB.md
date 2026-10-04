@@ -10,7 +10,7 @@ Plan for about three hours (a rough estimate). Get a first checked draft in the 
 
 Finish your [setup path](../README.md) and its checks first. A **terminal** is the text window where you enter commands; use it as your ordinary user, with the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs. A **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create the work folder `W` and the evidence folder `E` beside it, outside the checkout. Earlier attempts stay untouched.
 
-Live drafting needs your OpenRouter key, which you enter in the terminal rather than save in a file. An API key is the credential the launcher uses to reach the account that pays for the model call. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
+Live drafting needs your OpenRouter key, which you enter in the terminal rather than save in a file. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -126,7 +126,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid or has credit.
+**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 

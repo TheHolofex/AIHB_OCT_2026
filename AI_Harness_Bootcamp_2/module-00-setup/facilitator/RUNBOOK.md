@@ -13,7 +13,7 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 1. Run the relevant setup path on the actual classroom images, including local Obsidian before Module 2 and its full local n8n path before Module 7.
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
-4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic paid retry.
+4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic retry.
 5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. For a formal result, identify the real decision owner, custody location, control/version and original outcome record. If missing, mark HOLD and continue only reachable practice.
 7. Exercise genuine deciding controls on passing and failing specimens before any formal use; never substitute a public practice pass or agent role-play.
@@ -44,7 +44,7 @@ Follow **Set up local Obsidian** in the learner's [platform guide](../README.md#
 
 Record actual platform, architecture, app version, date, observer, attempt location, and the GUI actions seen separately from helper output. The helper deliberately records `gui_observed: false`; never edit that field to manufacture desktop evidence. A token copied by a script, a matching disk file, or `.obsidian` presence does not prove GUI operation. Capture only credential-free practice-window evidence. Preserve every HOLD and use [Obsidian troubleshooting](../shared/TROUBLESHOOTING.md#when-local-obsidian-stops).
 
-The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes remain unobserved in this record. Do not infer their success from the Mac observation or from shell parsing. Keep the learner's process-local hidden key entry, no-secret-files procedure, fixed provider/model, and no automatic paid retries unchanged; a maintainer credential exception grants no learner exception.
+The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, Intel macOS, Ubuntu, and Arch GUI lanes remain unobserved in this record. Do not infer their success from the Mac observation or from shell parsing. Keep the learner's process-local hidden key entry, no-secret-files procedure, fixed provider/model, and no automatic retries unchanged; a maintainer credential exception grants no learner exception.
 
 ## Local n8n readiness
 
@@ -57,7 +57,7 @@ The platform guide must establish all of the following on the learner’s actual
 - A fresh installation has an unused owner-approved project name recorded in `.course-project`; lifecycle commands use `course_n8n` with explicit project and configuration files and no exported overrides. Reuse the same identity and engine. Existing installations retain their owner-managed identity; stopped Docker Desktop requires startup approval because existing work may resume.
 - The n8n browser port is `127.0.0.1:5678`, with no other host ports added. The running version is exactly `2.41.5`; a mismatch remains HOLD pending owner resolution.
 - `n8n`, `runners`, `sandbox-api`, `sandbox-runner-1`, and `searxng` stay running, with health checks healthy where shown. `sandbox-certs` is the sixth service and correctly finishes at `Exited (0)`.
-- A named blank, unpublished workflow survives browser reload and ordinary course `down` / `up -d` against the same project and named volumes. Never use `down -v`. Assistant remains off. Module 7 requires no Cloud signup, Assistant key, or paid model call.
+- A named blank, unpublished workflow survives browser reload and ordinary course `down` / `up -d` against the same project and named volumes. Never use `down -v`. Assistant remains off. Module 7 requires no Cloud signup, Assistant key, or model call.
 
 For the observed fresh-instance UI, use **Set up owner account → Next**, optional survey **Get started**, free-license offer **Skip**, then Assistant **Set up later in Settings**. On an empty instance, **Overview → Build a workflow** opens the canvas. Click the title, enter the readiness name, and press **Enter**. Saving is automatic; require the name and blank canvas to persist after reload, not a mandatory **Saved** label. An existing instance uses its existing local login. Preserve a preexisting workflow; choose a distinct readiness name if needed.
 

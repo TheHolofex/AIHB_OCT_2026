@@ -517,7 +517,7 @@ Record **Obsidian READY** only if you saw every one of those actions in the app 
 
 n8n is a visual workflow editor. You'll run it locally in Docker Desktop, reach it only from this laptop at `http://localhost:5678`, and confirm that a saved workflow survives a stop and restart. The commands that control n8n run in an Ubuntu window under WSL 2, Windows' built-in Linux layer. Keep this result separate from `SETUP CHECK PASS` and `READINESS CHECK PASS`; Module 7 needs n8n ready.
 
-Before you install anything, get the device owner's answers to three questions. First: does this laptop meet [Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/)? These include WSL 2.1.5 or newer, Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or newer, 8 GB of RAM, hardware virtualization, and the Windows Server service (`LanmanServer`) set to Automatic. Windows on Arm uses an Early Access build. Second: does your use qualify under [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)? Third: may you run the [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml)? Its sandbox runner uses privileged Docker-in-Docker. Keep n8n's Assistant off, and never enter a provider key into n8n.
+Before you install anything, get the device owner's answers to three questions. First: does this laptop meet [Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/)? These include WSL 2.1.5 or newer, Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or newer, 8 GB of RAM, hardware virtualization, and the Windows Server service (`LanmanServer`) set to Automatic. Windows on Arm uses an Early Access build. Second: does your use qualify under [Docker Desktop licensing](https://docs.docker.com/subscription/desktop-license/)? Third: may you run the [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml)? Its sandbox runner uses privileged Docker-in-Docker. Keep n8n's Assistant off, and never enter a provider key into n8n.
 
 ### Check Windows, WSL, and Docker
 
@@ -871,7 +871,7 @@ Run this only if the check named the **User** scope.
 ### Step 8: the readiness check
 
 - **`LAUNCH_EXIT 2`:** a prerequisite failed before the live attempt, such as a missing key or `omp` not being on PATH, and the evidence folder wasn't created. Fix the named cause, then run Step 8 again for a new attempt.
-- **`LAUNCH_EXIT 1`, `VERIFY_EXIT 1`, or `READINESS CHECK HOLD`:** the live attempt ran and failed. Keep both folders, read the `FAIL:` line or the launcher's message, and fix that cause. Common causes are a rejected key, no credit on the OpenRouter account, or a network block.
+- **`LAUNCH_EXIT 1`, `VERIFY_EXIT 1`, or `READINESS CHECK HOLD`:** the live attempt ran and failed. Keep both folders, read the `FAIL:` line or the launcher's message, and fix that cause. Common causes are a rejected key, an OpenRouter account problem, or a network block.
 - Never write or edit `from-omp.txt` yourself, and never run the launcher again in the same attempt folder.
 
 ### Step 9: the setup report

@@ -32,13 +32,12 @@ The platform guide keeps **PATH**, the saved list of folders your shell searches
 
 Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password doesn't grant it. Your guide checks approved Git credentials first. Use GitHub CLI (`gh`) for browser login only if that fails; you don't need it to run the AI.
 
-For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. The call bills the account behind your key. Use an account you're authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
+For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. Use your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
 
-Module 7 uses the local visual workflow editor without a paid model call. You don't need n8n Cloud or an Assistant provider key. Keep Assistant off and workflows unpublished; don't copy the OpenRouter key into n8n.
+Module 7 uses the local visual workflow editor. You don't need n8n Cloud or an Assistant provider key. Keep Assistant off and workflows unpublished; don't copy the OpenRouter key into n8n.
 
 ## Before the first command
 
-- Reserve a restart window and connect to a stable network.
 - Keep at least 15 GB free; WSL should have 25 GB.
 - Get administrator approval for operating-system packages.
 - Ask the person who owns this laptop if you can use Docker for n8n, including permission to run Docker inside Docker and a Docker Desktop license if one applies. If they say no, record n8n HOLD.
