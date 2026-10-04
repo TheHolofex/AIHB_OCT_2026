@@ -489,14 +489,14 @@
       "directory": "module-10-capstone",
       "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Run a local uncensored AI service on your laptop, prove stop and restore, and check your own saved package.",
-      "nav_summary": "Local uncensored AI · self-contained kit",
+      "summary": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again.",
+      "nav_summary": "Your own local model",
       "outcomes": {
-        "can": "Stand up, stop, and restore an uncensored local model on your own laptop using saved controls, then make and check a self-contained package without relying on chat history.",
+        "can": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again without the chat.",
         "will": [
-                "Download and verify the pinned weights under your own account, and wire a loopback-only service.",
-                "Prove one live interaction, then stop and restore the service with byte-identical wiring.",
-                "Freeze the kit, copy it with digest checks, and check the copy from a new terminal using only its own files."
+                "Download the named model file under your own account, check that it is the right file, and point OMP at a server only this laptop can reach.",
+                "Get one real reply, then stop the server and bring the saved settings back so the wiring matches.",
+                "Save the ten files, copy them, and check that copy from a new terminal using only those files."
         ]
       },
       "pages": [
