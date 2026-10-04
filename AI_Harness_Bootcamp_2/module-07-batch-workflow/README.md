@@ -1,29 +1,29 @@
 # Module 7 · Operate a fixed workflow through change
 
-Build a local visual n8n workflow for White Rack's fictional refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict the effect of one saved policy change across two batches of 80 lots. Compare all changed and unchanged receipt rows, then restore the preserved workflow into a new blank canvas and reproduce both original files exactly.
+Build a local visual n8n workflow that routes White Rack's fictional shipment of refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict the effect of one saved policy change across two batches of 80 lots. Compare every receipt row, changed or not, then restore the saved original workflow into a new blank canvas and reproduce both original files exactly.
 
-Plan for about three hours on Wednesday. That is a rough estimate, not a measured time.
+Plan for about three hours on Wednesday. That's a rough estimate, not a measured time.
 
 ## Before you begin
 
-Complete [local n8n readiness](../module-00-setup/README.md): n8n 2.41.5 on the approved full official local stack, with the editor available on localhost. Use your established source inspection, frozen prediction, bounded-control validation, and evidence-preservation habits. Have a plain text editor and a browser download folder you can locate. Keep Assistant off and workflows unpublished. This work uses test forms without model calls or provider credentials.
+Complete [local n8n readiness](../module-00-setup/README.md): n8n 2.41.5 on the approved full official local stack, with the editor available on localhost. Bring the habits you already have: inspect sources, freeze predictions before running anything, validate with bounded controls like Blue Gauge's predicate, and keep every piece of evidence. Have a plain text editor ready, and know where your browser saves downloads. Keep Assistant off and workflows unpublished. You'll use test forms only, with no model calls or provider credentials.
 
-[Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). Start from a blank router canvas. Download the two input waves, supplied validator, and separate receipt checker from that lab. Save predictions before any routing execution.
+[Build, run, compare, and restore the workflow](shared/MODULE_07_LAB.md). You start from a blank router canvas and download the two input waves, the supplied validator, and the separate receipt checker from the lab. Save your predictions before you run the router.
 
 ## The saved change
 
-The router checks exact, case-sensitive values. `RACK_CONFLICT` wins first and produces `hold,RESOURCE_CONFLICT`. Otherwise, `AUTHORIZED` produces `pass,READY`. Exact `PENDING` uses the saved `pending_status` value: `OPEN` produces `hold,OPEN`; `NOT_AUTHORIZED` produces `reject,NOT_AUTHORIZED`. Other permit strings, including `WITHDRAWN`, fall back to `hold,OPEN`. Gate-window text and input disposition do not choose a route. A pending decision is not a quality release.
+The router checks exact, case-sensitive values. `RACK_CONFLICT` takes priority and produces `hold,RESOURCE_CONFLICT`. Otherwise, `AUTHORIZED` produces `pass,READY`. Exact `PENDING` uses the saved `pending_status` value: `OPEN` produces `hold,OPEN`; `NOT_AUTHORIZED` produces `reject,NOT_AUTHORIZED`. Other permit strings, including `WITHDRAWN`, fall back to `hold,OPEN`. Gate-window text and input disposition don't affect the route. A pending decision is not a quality release.
 
-Change only Pending rule's String value from `OPEN` to `NOT_AUTHORIZED`. Keep every other node setting, wire, and input fixed. Preserve the original JSON export and its separately downloaded original SHA256 report before editing. Retain the changed export separately.
+Change only Pending rule's String value, from `OPEN` to `NOT_AUTHORIZED`. Leave every other node setting, wire, and input as it is. Before you edit, keep the original JSON export and the separately downloaded SHA256 report for it. Keep the changed export as a separate file.
 
-Importing JSON adds nodes to the open n8n canvas. Import the checker into its own new blank workflow. Later, recheck the original export against its retained digest and import it into another new blank workflow for restoration. Do not restore by manually reversing the policy value.
+Importing JSON adds nodes to whatever n8n canvas is open, so import the checker into its own new blank workflow. To restore, recheck the original export against its saved digest, then import it into another new blank workflow. Don't restore by changing the policy value back by hand.
 
 ## Retain the evidence
 
-Keep the frozen per-wave delta CSVs, baseline and changed exports, original and rechecked identity reports, six receipts, the baseline exact comparison, two predicted-change reports, and two restored exact reports. Record workflow identities and execution IDs. A successful execution is not a comparison result: read the checker's `PASS` or `HOLD` report and its complete row counts. Preserve every held attempt and never hand-edit a receipt.
+Keep the frozen delta CSV for each wave, the baseline and changed exports, the original and rechecked identity reports, the six receipts, the baseline exact comparison, the two predicted-change reports, and the two restored exact reports. Record each workflow's name and URL and every execution ID. A successful execution isn't a comparison result: read the checker's `PASS` or `HOLD` report and its full row counts. Keep every held attempt, and never edit a receipt by hand.
 
-The optional revised-wave practice compares input changes with policy fixed, then policy changes with the revised input fixed. Each comparison needs its own frozen prediction and downloaded report.
+The optional revised-wave stretch first changes the input with the policy held fixed, then changes the policy with the revised input held fixed. Each comparison needs its own frozen prediction and downloaded report.
 
 ## Class-only boundary
 
-All lots, permits, windows, and notes are fictional practice data. Do not use this packet to plan, authorize, dispatch, or describe a real movement. A module result permits only class review.
+All lots, permits, windows, and notes are fictional practice data. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
