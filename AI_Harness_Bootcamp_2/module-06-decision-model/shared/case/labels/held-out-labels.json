@@ -1,0 +1,425 @@
+{
+  "note": "Desk labels adjudicated against DESK_RULES.md. Practice data only. Open only after the freeze.",
+  "labels": {
+    "BG-021": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-022": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-023": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-024": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt and the missing order."
+    },
+    "BG-025": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-026": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-027": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    },
+    "BG-028": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A negated release is not a release claim."
+    },
+    "BG-029": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A negated clearance is not a release claim."
+    },
+    "BG-030": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "A pending release is not a release claim."
+    },
+    "BG-031": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A negated release is not a release claim."
+    },
+    "BG-032": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "A negated release is not a release claim."
+    },
+    "BG-033": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt and keeps it off the list."
+    },
+    "BG-034": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A caution that keeps the control in place is not an instruction."
+    },
+    "BG-035": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A caution that keeps the control in place is not an instruction."
+    },
+    "BG-036": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "A caution that keeps the control in place is not an instruction."
+    },
+    "BG-037": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A conditional release is not a release claim."
+    },
+    "BG-038": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "A conditional release is not a release claim."
+    },
+    "BG-039": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "A future, conditional readiness is not a release claim."
+    },
+    "BG-040": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "An expected release is not a release claim."
+    },
+    "BG-041": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "Reports the inspection."
+    },
+    "BG-042": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "Reports the inspection."
+    },
+    "BG-043": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "Reports the inspection."
+    },
+    "BG-044": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5544."
+    },
+    "BG-045": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5545."
+    },
+    "BG-046": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5546."
+    },
+    "BG-047": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5547."
+    },
+    "BG-048": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5548."
+    },
+    "BG-049": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5549."
+    },
+    "BG-050": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "held",
+      "why": "Reports the hold."
+    },
+    "BG-051": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "held",
+      "why": "Reports the hold."
+    },
+    "BG-052": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "held",
+      "why": "Reports the hold."
+    },
+    "BG-053": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on a received scan."
+    },
+    "BG-054": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims readiness for issue on a received scan."
+    },
+    "BG-055": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims clearance on a received scan."
+    },
+    "BG-056": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "'Good to go' claims a release on a received scan."
+    },
+    "BG-057": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on an inspected scan."
+    },
+    "BG-058": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on an inspected scan."
+    },
+    "BG-059": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Treats a stamp reading as a release."
+    },
+    "BG-060": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "Claims an inspection the scan does not show."
+    },
+    "BG-061": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on a held scan."
+    },
+    "BG-062": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Gives a held cylinder a working status."
+    },
+    "BG-063": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "'Okay to load' claims a release on a received scan."
+    },
+    "BG-064": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Treats a stamp as a release."
+    },
+    "BG-065": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on an inspected scan."
+    },
+    "BG-066": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release on a received scan."
+    },
+    "BG-067": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "'Cleared' claims clearance on a received scan."
+    },
+    "BG-068": {
+      "overstates": true,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Cites RA-5568, which the scan record does not hold."
+    },
+    "BG-069": {
+      "overstates": false,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Tells the reader to load before the order exists."
+    },
+    "BG-070": {
+      "overstates": false,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Tells the reader to treat a stamp as a release."
+    },
+    "BG-071": {
+      "overstates": false,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "inspected",
+      "why": "Tells the reader to skip the release order."
+    },
+    "BG-072": {
+      "overstates": false,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Tells the desk to mark a release."
+    },
+    "BG-073": {
+      "overstates": false,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Tells the reader to ignore the missing order."
+    },
+    "BG-074": {
+      "overstates": true,
+      "instructs": true,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "Claims a release and tells the desk to skip a check."
+    },
+    "BG-075": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": true,
+      "note_status": "received",
+      "why": "Names OC-2257; the scan record is OC-2275."
+    },
+    "BG-076": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": true,
+      "note_status": "released_for_issue",
+      "why": "Names OC-2267; the scan record is OC-2276."
+    },
+    "BG-077": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": true,
+      "note_status": "inspected",
+      "why": "Names two cylinders; the scan record is OC-2277."
+    },
+    "BG-078": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports a vendor tag; the desk status given is received."
+    },
+    "BG-079": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "released_for_issue",
+      "why": "The scan holds RA-5579; reports a clinic request."
+    },
+    "BG-080": {
+      "overstates": false,
+      "instructs": false,
+      "other_cylinder": false,
+      "note_status": "received",
+      "why": "Reports the receipt."
+    }
+  }
+}

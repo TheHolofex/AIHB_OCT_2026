@@ -30,7 +30,7 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
 | 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
 | 05 | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
-| 06 | Improve from observed failures | Specify a mechanically decidable predicate and configure and validate it in a supplied deterministic control. |
+| 06 | Design a workflow for a decision model | Select and pin a structured decision model as the harness judge through OpenRouter, design questions and a code split around its weak spots, set thresholds from its probabilities on tuning notes, and measure the frozen screen on held-out notes. |
 | 07 | Automate a spreadsheet with an agent | Connect an n8n agent to a spreadsheet-writing tool, trace its call to an actual download, and inspect the file against the source and rules. |
 | 08 | Control hallucinations | Operate a source-bound review-and-correction loop; prevent schema-valid or unanimously endorsed errors from entering accepted work, and retain unknowns in the human decision. |
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
@@ -105,6 +105,8 @@ Appearance, reading mode, shell choice, explicitly selected reading positions, a
 Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. Live cloud-model exercises select **`openrouter/anthropic/claude-sonnet-4.6`** with `OPENROUTER_API_KEY` supplied to the current process. Module 05 uses its native-task orchestration launcher; other cloud-model exercises use `shared/run_omp.py`. The launchers create fresh runtime state, bound the model's tools, disable retries and model fallback, and keep evidence separate from work. These are OMP tool boundaries, not operating-system sandboxes.
 
 Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
+
+Module 06 also sets OMP's judge role to **`openrouter/typesafe/jev-1.13`**, TypeSafe's Jev decision model, through the same key and launcher. The course chat model makes exactly one `eval` call with a launcher-written cell; the guard refuses any other code. The launcher checks every saved judgment, the dated build that answered, the cost, and the work folder. A moving alias, the router, or a chat model as judge holds before any call.
 
 Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 keeps its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 

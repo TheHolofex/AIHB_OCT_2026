@@ -1,0 +1,402 @@
+{
+  "BG-001": {
+    "cylinder": "OC-2201",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-002": {
+    "cylinder": "OC-2202",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-003": {
+    "cylinder": "OC-2203",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-004": {
+    "cylinder": "OC-2204",
+    "status": "RELEASED",
+    "release_order": "RA-5521"
+  },
+  "BG-005": {
+    "cylinder": "OC-2205",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-006": {
+    "cylinder": "OC-2206",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-007": {
+    "cylinder": "OC-2207",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-008": {
+    "cylinder": "OC-2208",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-009": {
+    "cylinder": "OC-2209",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-010": {
+    "cylinder": "OC-2210",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-011": {
+    "cylinder": "OC-2211",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-012": {
+    "cylinder": "OC-2212",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-013": {
+    "cylinder": "OC-2213",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-014": {
+    "cylinder": "OC-2214",
+    "status": "RELEASED",
+    "release_order": "RA-5530"
+  },
+  "BG-015": {
+    "cylinder": "OC-2215",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-016": {
+    "cylinder": "OC-2216",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-017": {
+    "cylinder": "OC-2217",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-018": {
+    "cylinder": "OC-2218",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-019": {
+    "cylinder": "OC-2219",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-020": {
+    "cylinder": "OC-2220",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-021": {
+    "cylinder": "OC-2221",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-022": {
+    "cylinder": "OC-2222",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-023": {
+    "cylinder": "OC-2223",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-024": {
+    "cylinder": "OC-2224",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-025": {
+    "cylinder": "OC-2225",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-026": {
+    "cylinder": "OC-2226",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-027": {
+    "cylinder": "OC-2227",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-028": {
+    "cylinder": "OC-2228",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-029": {
+    "cylinder": "OC-2229",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-030": {
+    "cylinder": "OC-2230",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-031": {
+    "cylinder": "OC-2231",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-032": {
+    "cylinder": "OC-2232",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-033": {
+    "cylinder": "OC-2233",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-034": {
+    "cylinder": "OC-2234",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-035": {
+    "cylinder": "OC-2235",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-036": {
+    "cylinder": "OC-2236",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-037": {
+    "cylinder": "OC-2237",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-038": {
+    "cylinder": "OC-2238",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-039": {
+    "cylinder": "OC-2239",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-040": {
+    "cylinder": "OC-2240",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-041": {
+    "cylinder": "OC-2241",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-042": {
+    "cylinder": "OC-2242",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-043": {
+    "cylinder": "OC-2243",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-044": {
+    "cylinder": "OC-2244",
+    "status": "RELEASED",
+    "release_order": "RA-5544"
+  },
+  "BG-045": {
+    "cylinder": "OC-2245",
+    "status": "RELEASED",
+    "release_order": "RA-5545"
+  },
+  "BG-046": {
+    "cylinder": "OC-2246",
+    "status": "RELEASED",
+    "release_order": "RA-5546"
+  },
+  "BG-047": {
+    "cylinder": "OC-2247",
+    "status": "RELEASED",
+    "release_order": "RA-5547"
+  },
+  "BG-048": {
+    "cylinder": "OC-2248",
+    "status": "RELEASED",
+    "release_order": "RA-5548"
+  },
+  "BG-049": {
+    "cylinder": "OC-2249",
+    "status": "RELEASED",
+    "release_order": "RA-5549"
+  },
+  "BG-050": {
+    "cylinder": "OC-2250",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-051": {
+    "cylinder": "OC-2251",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-052": {
+    "cylinder": "OC-2252",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-053": {
+    "cylinder": "OC-2253",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-054": {
+    "cylinder": "OC-2254",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-055": {
+    "cylinder": "OC-2255",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-056": {
+    "cylinder": "OC-2256",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-057": {
+    "cylinder": "OC-2257",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-058": {
+    "cylinder": "OC-2258",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-059": {
+    "cylinder": "OC-2259",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-060": {
+    "cylinder": "OC-2260",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-061": {
+    "cylinder": "OC-2261",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-062": {
+    "cylinder": "OC-2262",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-063": {
+    "cylinder": "OC-2263",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-064": {
+    "cylinder": "OC-2264",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-065": {
+    "cylinder": "OC-2265",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-066": {
+    "cylinder": "OC-2266",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-067": {
+    "cylinder": "OC-2267",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-068": {
+    "cylinder": "OC-2268",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-069": {
+    "cylinder": "OC-2269",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-070": {
+    "cylinder": "OC-2270",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-071": {
+    "cylinder": "OC-2271",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-072": {
+    "cylinder": "OC-2272",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-073": {
+    "cylinder": "OC-2273",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-074": {
+    "cylinder": "OC-2274",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-075": {
+    "cylinder": "OC-2275",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-076": {
+    "cylinder": "OC-2276",
+    "status": "RELEASED",
+    "release_order": "RA-5576"
+  },
+  "BG-077": {
+    "cylinder": "OC-2277",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-078": {
+    "cylinder": "OC-2278",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-079": {
+    "cylinder": "OC-2279",
+    "status": "RELEASED",
+    "release_order": "RA-5579"
+  },
+  "BG-080": {
+    "cylinder": "OC-2280",
+    "status": "RECEIVED",
+    "release_order": null
+  }
+}
