@@ -1,14 +1,14 @@
 # Module 6 · Improve from observed failures
 
-Turn a repeated failure in Blue Gauge's practice records into a check that can flag the same text condition in another run. Use your source checks and preserved failure evidence to derive a **predicate**: a yes-or-no condition the supplied control can decide mechanically. Configure it with two exact pieces of text, then check known-bad, known-good, and missing input and record its limits.
+Turn a repeated failure in Blue Gauge's practice records into a check that flags the same text in another run. Use your source checks and the failure notes you keep to define a **predicate**: a yes-or-no condition the supplied control can decide mechanically. Configure it with two exact pieces of text, test it on known-bad, known-good, and missing input, and record its limits.
 
-The eighty records are authored practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They are not workplace observations or measurements of current model reliability. Your work stays inside the fictional class case and authorizes no real movement.
+The eighty records are invented practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations, and they don't measure how reliable current models are. Your work stays inside the fictional class case and authorizes no real movement.
 
-Plan for about three hours. That is a rough estimate, not a measured time.
+Plan for about three hours. That's a rough estimate, not a measured time.
 
 ## Copy a work folder
 
-Use the verified checkout and Python from setup. The commands name the checkout at `$HOME/Documents/AIHB_OCT_2026` as `R` and select the full path to Python 3.12 or newer as `PY`. `M` names the module sources. `RUN` gives this attempt a unique name; `W` holds its work files and `E` its evidence outside the checkout. Use the command blocks for your terminal throughout.
+Use the checkout and Python you verified in setup. The block below sets `R` to the checkout at `$HOME/Documents/AIHB_OCT_2026` and `PY` to the full path of Python 3.12 or newer. `M` points to the module sources, and `RUN` gives this attempt a unique name. `W` holds the attempt's work files and `E` its evidence, both outside the checkout. Use the command blocks for your terminal throughout.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -23,11 +23,11 @@ W="$HOME/course-evidence/module-06-$RUN/work"
 E="$HOME/course-evidence/module-06-$RUN/evidence"
 ```
 
-**Expected:** The variables are defined with R as the checkout root, PY as the absolute path to a Python >= 3.12 interpreter, and W/E under a fresh RUN.
+**Expected:** The terminal prints `RUN=` followed by this attempt's identifier. Note it down. `R` now points to the checkout, `PY` to Python 3.12 or newer, and `W` and `E` to new paths for this `RUN`.
 
-**Stop:** PY is empty or does not point to a 3.12 or newer interpreter.
+**Stop:** PY is empty or doesn't point to Python 3.12 or newer.
 
-**Recovery:** Correct the Python selection in a new terminal following the setup instructions and repeat the assignments.
+**Recovery:** Fix Python by following the setup instructions, then run the block again in a new terminal.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -59,11 +59,11 @@ $E = "$HOME\course-evidence\module-06-$RUN\evidence"
 mkdir -p "$E"
 ```
 
-**Expected:** The E directory exists.
+**Expected:** The evidence folder `E` exists.
 
-**Stop:** The mkdir fails due to permissions.
+**Stop:** `mkdir` fails with a permission error.
 
-**Recovery:** Use a writable path under $HOME/course-evidence and repeat the mkdir with absolute path.
+**Recovery:** Use a writable path under $HOME/course-evidence and run `mkdir` again with the full path.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -71,13 +71,13 @@ mkdir -p "$E"
 New-Item -ItemType Directory -Force -Path "$E" | Out-Null
 ```
 
-**Expected:** The E directory exists.
+**Expected:** The evidence folder `E` exists.
 
-**Stop:** The command fails due to permissions.
+**Stop:** The command fails with a permission error.
 
-**Recovery:** Use a writable path under $HOME/course-evidence and repeat the New-Item with absolute path.
+**Recovery:** Use a writable path under $HOME/course-evidence and run `New-Item` again with the full path.
 
-Use the shared prepare script with its absolute path under R so the work folder (W) is outside the checkout and does not overwrite anything. Prepare exactly once per attempt.
+Run the shared prepare script by its full path under R. It creates the work folder (W) outside the checkout and doesn't overwrite anything. Prepare each attempt only once.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -91,13 +91,13 @@ cd "$R" && "$PY" "$R/shared/prepare_work.py" 06 "$W"
 Set-Location -LiteralPath "$R"; & $PY "$R\shared\prepare_work.py" 06 "$W"
 ```
 
-**Expected:** `PASS: created` followed by the full work path, then two suggested next commands, one for each shell. Do not run them yet: they list the corpus, and you freeze the sample rule first. The folder contains `shared/controls/`, `shared/corpus/` with the eighty runs, and `shared/checks/`.
+**Expected:** `PASS: created` followed by the full work path, then two suggested next commands, one for each shell. Don't run them yet: they list the run files, and you need to freeze the sample rule first. The work folder contains `shared/controls/`, `shared/corpus/` with the eighty runs, and `shared/checks/`.
 
-**Stop:** If the destination already exists, prepare refuses with HOLD.
+**Stop:** Prepare refuses with HOLD because the destination already exists.
 
-**Recovery:** Open a new terminal and paste the variable block from the start of this lab, which creates a new `RUN` and so a new `W`; then repeat the prepare command.
+**Recovery:** Open a new terminal and paste the variable block from the start of this lab. It creates a new `RUN`, and with it a new `W`. Then run the prepare command again.
 
-After the prepare step, create the output directory once under the absolute W:
+Then create the output folder under W. You only need to do this once:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -115,13 +115,13 @@ New-Item -ItemType Directory -Force -Path "$W\out" | Out-Null
 
 **Stop:** A permission error.
 
-**Recovery:** Use a writable path under `$HOME/course-evidence` and repeat the command with the absolute path.
+**Recovery:** Use a writable path under `$HOME/course-evidence` and run the command again with the full path.
 
-Every later command uses absolute paths under `W`, so you never need to change directory. Do not copy any extra checker into the work folder.
+Every later command uses full paths under `W`, so you never need to change folders. Don't copy any other checker into the work folder.
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+Every command on this page uses the variables you set above, and a terminal forgets them when it closes. In a new terminal, run this block to get back to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -153,17 +153,17 @@ $E = "$HOME\course-evidence\module-06-$RUN\evidence"
 
 **Stop:** The identifier differs from the one you recorded, or the folder named after `W=` does not exist.
 
-**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so prepare it with the first block.
+**Recovery:** A different identifier means a later attempt overwrote the saved marker; set `RUN` by hand to the value you recorded and run the block again. A missing folder means the attempt was never prepared, so run the prepare steps above.
 
 ## Pacing
 
-Most of the session is your own hands-on work. Reading the sample runs and writing first-failure notes takes the longest, followed by freezing the config copy and running the three controls. Reconciling counts and inferring the two literals take less time, and freezing the sample rule and the handoff are short. Your own pace may differ.
+Most of the session is hands-on work. Reading the sample runs and writing first-failure notes takes the longest, followed by freezing the config copy and running the three checks. Reconciling the counts and choosing the two literals take less time, and freezing the sample rule and writing the handoff are quick. Your own pace may differ.
 
 ## 1. Freeze the sample rule first
 
 Write `sample-rule.md` before you open any run that shows an outcome or a stamp result.
 
-This makes the sample **outcome-blind**: you fix membership without choosing records because they passed or failed. Use the declaration below only if you have not opened the run files. If you have already seen outcomes, preserve that fact; a fresh folder cannot make them unseen. Record the earlier exposure rather than claim an outcome-blind attempt.
+This makes the sample **outcome-blind**: you decide which runs belong in it without choosing any because they passed or failed. Use the declaration below only if you haven't opened the run files. If you've already seen outcomes, a fresh folder can't make you unsee them, so write down that you saw them instead of claiming an outcome-blind attempt.
 
 ![Freeze the sample before reading outcomes; if you already saw results, record that exposure rather than claim an outcome-blind attempt.](figures/m06-freeze-sample.png)
 
@@ -202,11 +202,11 @@ I will not use a stamp result to decide which runs belong in the sample.
 EOF
 ```
 
-**Expected:** The file `sample-rule.md` is created with the three headings.
+**Expected:** `sample-rule.md` exists and has the three headings.
 
-**Stop:** The cat fails or the file is not created.
+**Stop:** `cat` fails or the file isn't created.
 
-**Recovery:** Check permissions and repeat the cat with absolute path.
+**Recovery:** Check permissions and run the `cat` command again with the full path.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -225,13 +225,13 @@ I will not use a stamp result to decide which runs belong in the sample.
 "@ | Out-File -FilePath "$W\sample-rule.md" -Encoding utf8
 ```
 
-**Expected:** The file `sample-rule.md` is created with the three headings.
+**Expected:** `sample-rule.md` exists and has the three headings.
 
-**Stop:** The command fails or the file is not created.
+**Stop:** The command fails or the file isn't created.
 
-**Recovery:** Check permissions and repeat the Out-File with absolute path.
+**Recovery:** Check permissions and run the `Out-File` command again with the full path.
 
-Record the rule's fingerprint beside it, so the reading that follows can be shown to have come after the rule.
+Record the rule's fingerprint in `E` so you can show that your reading came after the rule.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -239,11 +239,11 @@ Record the rule's fingerprint beside it, so the reading that follows can be show
 "$PY" -c "import hashlib,sys; from pathlib import Path; src, dst = map(Path, sys.argv[1:]); digest = hashlib.sha256(src.read_bytes()).hexdigest(); handle = dst.open('x', encoding='utf-8'); handle.write(digest + '\n'); handle.close(); print(digest)" "$W/sample-rule.md" "$E/sample-rule.sha256"
 ```
 
-**Expected:** A 64-character digest, written to a new file `E/sample-rule.sha256`. The command exits 0.
+**Expected:** The terminal prints a 64-character digest and writes it to a new file, `E/sample-rule.sha256`. The command exits 0.
 
-**Stop:** The sample-rule file is missing, the digest file already exists, or you have already opened a run and seen a stamp.
+**Stop:** The sample-rule file is missing, the digest file already exists, or you've already opened a run and seen a stamp.
 
-**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. If the failure occurred before you saw outcomes, open a new terminal, repeat the prepare block, and write the rule before opening any run. If you already saw outcomes, record that exposure and do not claim that another attempt is outcome-blind.
+**Recovery:** Leave this attempt in place, and don't delete the digest or the run files. If this failed before you saw any outcomes, open a new terminal, repeat the prepare block, and write the rule before you open any run. If you've already seen outcomes, write that down, and don't claim that a new attempt is outcome-blind.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -252,11 +252,11 @@ Record the rule's fingerprint beside it, so the reading that follows can be show
 Write-Output "exit $LASTEXITCODE"
 ```
 
-**Expected:** A 64-character digest, written to a new file `E\sample-rule.sha256`. The command exits 0.
+**Expected:** The terminal prints a 64-character digest and writes it to a new file, `E\sample-rule.sha256`. The command exits 0.
 
-**Stop:** The sample-rule file is missing, the digest file already exists, or you have already opened a run and seen a stamp.
+**Stop:** The sample-rule file is missing, the digest file already exists, or you've already opened a run and seen a stamp.
 
-**Recovery:** Leave this attempt in place. Do not delete the digest or the run files. If the failure occurred before you saw outcomes, open a new terminal, repeat the prepare block, and write the rule before opening any run. If you already saw outcomes, record that exposure and do not claim that another attempt is outcome-blind.
+**Recovery:** Leave this attempt in place, and don't delete the digest or the run files. If this failed before you saw any outcomes, open a new terminal, repeat the prepare block, and write the rule before you open any run. If you've already seen outcomes, write that down, and don't claim that a new attempt is outcome-blind.
 
 ### If you must start a new attempt
 
@@ -277,20 +277,20 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True); (Path(sys.argv[2])/'out').mkdir(exist_ok=True)" "$E" "$W"
 ```
 
-**Expected:** The preparer creates a fresh work folder at the new path. Both `W/out` and the new sibling evidence directory `E` exist before you record the digest.
+**Expected:** The preparer creates a new work folder at the new path, and `W/out` and the new evidence folder `E` both exist before you record the digest.
 
-**Stop:** The prepare holds if the chosen destination already exists.
+**Stop:** Prepare holds because the destination already exists.
 
-**Recovery:** Select a path that does not exist yet (use a new terminal with new RUN) and repeat the prepare command.
+**Recovery:** Use a path that doesn't exist yet (paste the variable block into a new terminal to get a new RUN), then run the prepare command again.
 
-If no outcomes were opened, recreate `sample-rule.md` and repeat the digest step with the new W and E. If outcomes were opened, retain that exposure in the attempt record and do not reuse the declaration that you have not seen them. A rerun can check the control, but cannot establish an outcome-blind first reading.
+If you haven't opened any outcomes, write `sample-rule.md` again and repeat the digest step with the new W and E. If you have, note that in the attempt record, and don't reuse the declaration that says you haven't seen them. A rerun can still check the control, but it can't give you an outcome-blind first reading.
 
 ## 2. First-failure notes before categories
 
 
 Open the sixteen sample files under `shared/corpus/`. For each run, write one first-failure note in `$E/first-failures.md` before you write any category tally.
 
-Name the earliest concrete problem you can support from that run's text, with the line or passage that shows it. Do not start with a category name. If you find no failure, record that observation instead of inventing one. Keep uncertain cases explicit.
+Name the earliest concrete problem that the run's text supports, and point to the line or passage that shows it. Don't start with a category name. If you find no failure, write that down instead of inventing one. If you're unsure, say so.
 
 ![Record each run's earliest supported problem, no failure, or uncertainty before assigning categories.](figures/m06-first-failure-notes.png)
 
@@ -311,15 +311,15 @@ Every run's note feeds a single gate: All notes first. Only after the complete s
 
 </details>
 
-**Expected:** The file `first-failures.md` contains sixteen entries, one per sample run. Each begins with the run identifier and records the earliest supported problem, an unresolved observation, or that no failure was found.
+**Expected:** `first-failures.md` has sixteen entries, one per sample run. Each starts with the run ID and records the earliest supported problem, an observation you couldn't resolve, or that you found no failure.
 
-**Stop:** If you wrote a category count before every run has its note, the counts are not evidence.
+**Stop:** You wrote a category count before every run had its note. Those counts aren't evidence.
 
 **Recovery:** Keep the notes you have, add the missing ones, and only then write or revise the counts file.
 
 ## 3. Then tally categories
 
-After all sixteen notes exist, group the observed failures by what went wrong and write `$E/counts.md`. Keep each run identifier attached to its category so another reader can reconcile the counts with the notes. Use the pass, fail, and other totals below to account for every run once.
+Once all sixteen notes exist, group the failures you observed by what went wrong and write `$E/counts.md`. List the run IDs under each category so another reader can check the counts against the notes. Use the pass, fail, and other lines below so that every run is counted exactly once.
 
 ```markdown
 # Counts
@@ -332,9 +332,9 @@ total: 16
 revisions to category names:
 ```
 
-The total must be 16. Each category count must agree with its listed runs, and pass, fail, and other must add to the total. If they do not, record `HOLD` and identify the missing or double-counted run. State one conclusion supported by the failure categories in this sample; do not generalize its frequency to workplace use or current models.
+The total must be 16. Each category's count must match the runs listed under it, and pass, fail, and other must add up to the total. If they don't, record `HOLD` and find the run that's missing or counted twice. Then state one conclusion that the failure categories in this sample support. Don't treat how often a failure appeared here as a rate for real work or current models.
 
-Keep the original first-failure notes visible next to any revised category label.
+If you revise a category label, keep the original first-failure notes visible next to it.
 
 ![Reconcile pass, fail, and other to all sixteen runs once, and keep each original first-failure note beside any revised category.](figures/m06-reconcile-history.png)
 
@@ -353,15 +353,15 @@ Account for each run once.
 
 </details>
 
-**Expected:** The counts file shows totals that add to 16, and the first-failure notes remain the source of truth.
+**Expected:** The totals in the counts file add up to 16, and the first-failure notes are still the source of truth.
 
-**Stop:** The totals add to any number other than 16.
+**Stop:** The totals add up to anything other than 16.
 
-**Recovery:** Find the run that is missing or counted twice by comparing with `first-failures.md`, correct the counts, and keep the earlier version.
+**Recovery:** Compare the counts with `first-failures.md` to find the run that's missing or counted twice. Correct the counts and keep the earlier version.
 
 ## 4. Infer two literals and configure the supplied control
 
-Choose the two exact text strings that mark your repeated failure, and lock them so the checks run against a fixed version. Read `shared/controls/PREDICATE_SPEC.md`.
+Choose two exact text strings that mark your repeated failure, then freeze them so every check runs against the same version. Start by reading `shared/controls/PREDICATE_SPEC.md`.
 
 The control takes one run file and a configuration file:
 
@@ -369,9 +369,9 @@ The control takes one run file and a configuration file:
 
 The configuration is a JSON object with exactly one key, `all_present`. Its value is a list of exactly two different nonempty strings. Those two strings are the literals.
 
-Choose the literals from your first-failure notes to identify one repeated failure category. A **literal** is an exact piece of text. The predicate matches only when both literals occur in the same file; either one may also occur alone in a passing run. This is a substring search, so text inside a longer word also matches. Capital letters and lowercase letters are different. The control does not interpret meaning, calculate values, or use pattern rules called regular expressions.
+A **literal** is an exact piece of text. Choose two literals from your first-failure notes that together identify one repeated failure category. The predicate matches only when both appear in the same file; either one can also appear alone in a passing run. It's a substring search, so text inside a longer word also matches, and capital and lowercase letters count as different. The control doesn't interpret meaning, calculate values, or use pattern rules (regular expressions).
 
-The characters `RELEASED` occur inside `UNRELEASED`. A config that uses `RELEASED` therefore matches a hold stamp written as `UNRELEASED` when the other literal is also present. This is a limit of a pure text check. Measure that limit honestly.
+The characters `RELEASED` occur inside `UNRELEASED`, so a config that uses `RELEASED` also matches a hold stamp written as `UNRELEASED` when the other literal is present. That's a limit of a pure text check; measure it rather than hide it.
 
 ![Derive two exact literals from your notes; the supplied condition checks their co-occurrence, not the meaning or truth of the run.](figures/m06-predicate-boundary.png)
 
@@ -407,15 +407,15 @@ Copy-Item "$W\shared\controls\predicate.template.json" -Destination "$W\out\pred
 ```
 
 
-**Expected:** $W/out/predicate.json exists with the template content.
+**Expected:** $W/out/predicate.json exists and matches the template.
 
-**Stop:** If the copy fails or the file is not present, check the path and permissions.
+**Stop:** The copy fails or the file isn't there.
 
-**Recovery:** Ensure you are in the work folder (W) and that shared/controls/predicate.template.json exists in the copied tree, then repeat the copy command with absolute paths.
+**Recovery:** Check the path and permissions. Make sure W points to your work folder and that shared/controls/predicate.template.json exists in it, then run the copy command again.
 
-Edit `$W/out/predicate.json` so that `all_present` holds your two strings. The finished file looks like `{"all_present": ["first text", "second text"]}` with your own two texts and nothing else.
+Edit `$W/out/predicate.json` so that `all_present` holds your two strings. The finished file should look like `{"all_present": ["first text", "second text"]}`, with your own two strings and nothing else.
 
-Then copy the file you will actually use:
+Then freeze a copy. The checks use this frozen copy, not the file you edit:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -454,16 +454,16 @@ print('FROZEN', target.name, hashlib.sha256(raw).hexdigest())
 if ($LASTEXITCODE -ne 0) { throw 'Freeze held; preserve the attempt.' }
 ```
 
-**Expected:** One line: `FROZEN predicate-frozen.json` and a 64-character digest. The freeze checks nothing about the content; step 5 tests it.
+**Expected:** One line: `FROZEN predicate-frozen.json` followed by a 64-character digest. Freezing doesn't check the content; step 5 does.
 
-**Stop:** A line starting `HOLD:`: the frozen file already exists, or a file cannot be read or written.
+**Stop:** A line starting `HOLD:`. Either the frozen file already exists, or a file can't be read or written.
 
-**Recovery:** Keep the rejected frozen file and its results. Use the separate copy, edit, and freeze recovery below; never overwrite a frozen attempt. `CFG` names the frozen configuration used by the checks and the stretch.
+**Recovery:** Keep the earlier frozen file and its results. To change the literals, use the copy, edit, and freeze recovery in step 5; never overwrite a frozen file. `CFG` names the frozen configuration that the checks and the stretch use.
 
 
 ## 5. Run the supplied control
 
-First confirm that the control refuses a malformed configuration: the unedited template has no literals, so it must hold. Then check your frozen configuration on a known-bad run, a known-good run, and a missing file.
+First, confirm that the control refuses a malformed configuration. The unedited template has no literals, so the control must hold. Then check your frozen configuration on a known-bad run, a known-good run, and a missing file.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -473,11 +473,11 @@ echo "exit $?"
 ```
 
 
-**Expected:** Standard error prints `HOLD: malformed config`. The echoed exit is 1.
+**Expected:** The control prints `HOLD: malformed config` to standard error, and the exit line is `exit 1`.
 
-**Stop:** The exit is not 1, or the output contains `MATCH` or `PASS`.
+**Stop:** The exit isn't 1, or the output contains `MATCH` or `PASS`.
 
-**Recovery:** Confirm the unedited template copy and the quoted paths; use a new name for any edited copy.
+**Recovery:** Check that the command points at the unedited template and that the paths are quoted. If you edited a copy, give it a new name.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -488,11 +488,11 @@ Write-Output "exit $LASTEXITCODE"
 
 
 
-**Expected:** Standard error prints `HOLD: malformed config`. The exit line is `exit 1`.
+**Expected:** The control prints `HOLD: malformed config` to standard error, and the exit line is `exit 1`.
 
-**Stop:** The exit is not 1, or the output contains `MATCH` or `PASS`.
+**Stop:** The exit isn't 1, or the output contains `MATCH` or `PASS`.
 
-**Recovery:** Confirm the unedited template copy and the quoted paths; use a new name for any edited copy.
+**Recovery:** Check that the command points at the unedited template and that the paths are quoted. If you edited a copy, give it a new name.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -538,9 +538,9 @@ The three `exit 1` cases share one exit code: HOLD also exits 1. The exit code a
 
 Copy the three command lines and their output into `$E/predicate-results.md`.
 
-**Stop:** If known-bad exits 0 or known-good exits 1, the literals do not separate the cases you chose.
+**Stop:** Known-bad exits 0 or known-good exits 1. Your literals don't separate the cases you chose.
 
-**Recovery:** Preserve the frozen configuration and its failed separation. Create a new working copy; this command does not run the predicate.
+**Recovery:** Keep the frozen configuration and the results that show it failed. Make a new working copy with the command below; it doesn't run the predicate.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -579,13 +579,13 @@ print('EDIT THIS WORKING COPY:', target)
 if ($LASTEXITCODE -ne 0) { throw 'Revised copy held; preserve the attempt.' }
 ```
 
-**Expected:** A new working configuration is printed; the original frozen file is unchanged.
+**Expected:** The terminal prints `EDIT THIS WORKING COPY:` and the new copy's path. The original frozen file is unchanged.
 
-**Stop:** Copying fails or an existing destination would be replaced.
+**Stop:** The copy fails, or it would replace an existing file.
 
-**Recovery:** Retain that attempt and choose a fresh working filename. Do not remove the original.
+**Recovery:** Keep that attempt and choose a new working filename. Don't remove the original.
 
-Open the printed `P` file in your editor, change the two literals using the sample and the failed control, and save it. Keep this terminal open while you edit. Then freeze the revised copy:
+Open the printed `P` file in your editor. Change the two literals based on the sample and the failed check, then save it. Keep this terminal open while you edit. Then freeze the revised copy:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -624,13 +624,13 @@ print('FROZEN', target.name, hashlib.sha256(raw).hexdigest())
 if ($LASTEXITCODE -ne 0) { throw 'Revised freeze held; preserve the attempt.' }
 ```
 
-**Expected:** The new frozen file and digest are printed. `CFG` now selects that revision without changing the earlier attempt.
+**Expected:** The terminal prints the new frozen file's name and digest. `CFG` now points to this revision, and the earlier attempt is unchanged.
 
-**Stop:** Freezing fails, either prior file changes, or the two literals are not the intended revision.
+**Stop:** Freezing fails, one of the earlier files changes, or the two literals aren't the revision you intended.
 
-**Recovery:** Preserve the failure and start another separate working copy. Repeat the three controls above with the new `CFG`; continue only when known-bad matches, known-good passes, and missing input holds.
+**Recovery:** Keep the failure and start another separate working copy.
 
-Do not edit the predicate.py itself.
+If you froze a revised config, rerun the three checks above with the new `CFG`. Continue only when known-bad matches, known-good passes, and missing input holds. Don't edit `predicate.py` itself.
 
 ## 6. Finish the handoff
 
@@ -650,16 +650,16 @@ Decision (adopt, revise, or hold) and the sampled evidence that bounds it:
 What the next person should read first in the full corpus:
 ```
 
-A classmate who did not watch you work should be able to reconstruct the result and the limits of the control without coaching.
+A classmate who didn't watch you work should be able to rebuild your result and understand the control's limits without help from you.
 
-State which observed failures the predicate targets and which it cannot catch. A **false positive** is a match on a run without that failure; a **false negative** is a missed run that has it. Report any such cases in the records you checked, with their run IDs and the number checked. Do not describe an unmeasured limitation as a zero error rate.
+In the handoff, say which observed failures the predicate targets and which it can't catch. A **false positive** is a match on a run that doesn't have the failure; a **false negative** is a run that has the failure but doesn't match. List any you found in the runs you checked, with their run IDs and how many runs you checked. If you haven't measured a limit, don't report it as a zero error rate.
 
 ## Stretch: two preregistered configurations on the held-out runs
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: measure the tradeoff on R-017 through R-080</summary>
 
-After you have a working frozen config for the sample, write two new configuration files in $W/out/ :
+Once you have a frozen config that works on the sample, make two working copies of it in $W/out/:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -705,13 +705,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Stretch working copies held; preserve the atte
 ```
 
 
-**Expected:** Both stretch files exist as copies of the frozen config.
+**Expected:** The terminal prints `STRETCH WORKING COPIES READY`, and both stretch files are copies of the frozen config.
 
-**Stop:** If the copy does not preserve the exact two literals from your frozen config, start the stretch copies again from the frozen file.
+**Stop:** A copy doesn't contain the exact two literals from your frozen config.
 
-**Recovery:** Preserve any existing stretch work. Use the successfully checked frozen configuration named by `CFG`, including a separately frozen repair when needed. A new attempt needs fresh output names, not overwritten copies.
+**Recovery:** Keep any existing stretch work. Make the copies again from the frozen configuration in `CFG` that passed the checks (your separately frozen revision, if you made one). Give a new attempt new output names instead of overwriting the copies.
 
-Edit $W/out/stretch-a.json and $W/out/stretch-b.json to use two different pairs of literals. Freeze both (do not edit after).
+Edit $W/out/stretch-a.json and $W/out/stretch-b.json so they use two different pairs of literals. Then freeze both, and don't edit them afterward.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -736,9 +736,9 @@ PY
 
 **Expected:** Two lines, `FROZEN stretch-a-frozen.json` and `FROZEN stretch-b-frozen.json`, each followed by a 64-character digest.
 
-**Stop:** The copy fails or the files are not distinct two-literal configs.
+**Stop:** The copy fails, or the files aren't two different two-literal configs.
 
-**Recovery:** Preserve any partial or earlier freeze. Choose fresh frozen filenames for a new pair and use those names in its commands; never overwrite a preregistered configuration.
+**Recovery:** Keep any partial or earlier freeze. For a new pair, choose new frozen filenames and use them in that pair's commands; never overwrite a preregistered configuration.
 
 **Terminal: PowerShell, ordinary user.**
 
@@ -764,13 +764,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Stretch freeze held; preserve the attempt.' }
 
 **Expected:** Two lines, `FROZEN stretch-a-frozen.json` and `FROZEN stretch-b-frozen.json`, each followed by a 64-character digest.
 
-**Stop:** The copy fails or the files are not distinct two-literal configs.
+**Stop:** The copy fails, or the files aren't two different two-literal configs.
 
-**Recovery:** Preserve any partial or earlier freeze. Choose fresh frozen filenames for a new pair and use those names in its commands; never overwrite a preregistered configuration.
+**Recovery:** Keep any partial or earlier freeze. For a new pair, choose new frozen filenames and use them in that pair's commands; never overwrite a preregistered configuration.
 
-The **held-out runs**, R-017 through R-080, were not used to choose the original literals. Read those 64 run texts and write predictions in $W/out/stretch-prediction.md before running either configuration or opening the public labels. For each run, predict whether `promotion_failure` is true, meaning a receipt was treated as a release, and whether each configuration will return MATCH or PASS.
+The **held-out runs**, R-017 through R-080, weren't used to choose the original literals. Read those 64 runs and write your predictions in $W/out/stretch-prediction.md before you run either configuration or open the public labels. For each run, predict whether `promotion_failure` is true (a receipt was treated as a release) and whether each configuration will return MATCH or PASS.
 
-Create the prediction skeleton below, then fill every value from your reading of the run files. Use `true` or `false` for `promotion_failure` and `MATCH` or `PASS` for each configuration. Keep exactly one row per run, in ID order. Creating the file exclusively prevents an accidental replacement; it does not prevent later edits. The following freeze records the completed bytes before any results or labels are opened.
+Create the prediction skeleton below, then fill in every value from your reading of the runs. Use `true` or `false` for `promotion_failure` and `MATCH` or `PASS` for each configuration. Keep exactly one row per run, in ID order. The command won't overwrite an existing file, but nothing stops later edits; the freeze step that follows records the finished file before you open any results or labels.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -811,9 +811,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Prediction file creation held; preserve the at
 
 **Stop:** `FileExistsError`: the file already exists.
 
-**Recovery:** Keep the existing file; fill in its values rather than create another.
+**Recovery:** Keep the existing file and fill in its values instead of creating another.
 
-Validate all sixty-four completed predictions and freeze their hash. A count alone cannot distinguish predictions from unanswered placeholders.
+Check all sixty-four completed predictions and freeze their hash. Counting rows isn't enough, because a row that still holds a placeholder counts too.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -860,13 +860,13 @@ print('PREDICTIONS 64 FROZEN', digest)
 if ($LASTEXITCODE -ne 0) { throw 'Prediction freeze held; preserve the attempt.' }
 ```
 
-**Expected:** `PREDICTIONS 64 FROZEN` and a SHA-256 value appear. `stretch-prediction.sha256` is a new file beside the completed prediction.
+**Expected:** `PREDICTIONS 64 FROZEN` and a SHA-256 value appear, and a new file, `stretch-prediction.sha256`, sits beside the completed prediction.
 
-**Stop:** A placeholder, duplicate, missing or malformed row remains; the hash file already exists; or you have opened results or labels.
+**Stop:** A row is still a placeholder, duplicated, missing, or malformed; the hash file already exists; or you've opened results or labels.
 
-**Recovery:** Before the first freeze, complete the missing judgments from the run texts and repeat the check. Preserve an existing commitment. Once results or labels are open, mark any new prediction as post-result analysis rather than replacing the original.
+**Recovery:** Before the first freeze, fill in the missing predictions from the run texts and run the check again. If a freeze already exists, keep it. Once you've opened results or labels, mark any new prediction as post-result analysis instead of replacing the original.
 
-Then run the configuration in stretch-a-frozen.json on every held-out file, then run the configuration in stretch-b-frozen.json on every held-out file:
+Then run each frozen configuration on every held-out run, first stretch-a-frozen.json and then stretch-b-frozen.json:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -943,11 +943,11 @@ for label in ("a", "b"):
 if ($LASTEXITCODE -ne 0) { throw 'Held-out comparison stopped; keep the partial evidence.' }
 ```
 
-**Expected:** Two new JSONL files each contain the 64 run IDs R-017 through R-080, their frozen configuration hash, exit status, stdout, and stderr. Both `COMPLETE` lines print their output paths; the command exits 0. Each invocation chooses a new shared suffix for its two result files.
+**Expected:** Two new JSONL files each hold one row for each of the 64 runs, R-017 through R-080, with the frozen configuration's hash, the exit status, stdout, and stderr. Both `COMPLETE` lines show their output paths, and the command exits 0. Each time you run the command, its two result files get a new shared suffix.
 
-**Stop:** A result file already exists, a configuration changes, or any invocation produces HOLD or another error instead of MATCH/PASS. A missing input is not a positive classification. A partial result file is not a completed comparison.
+**Stop:** A result file already exists, a configuration changes, or any run produces HOLD or another error instead of MATCH or PASS. A missing input doesn't count as a match, and a partial result file isn't a finished comparison.
 
-**Recovery:** Keep all partial results and the first failure. Repair only the diagnosed path or input problem, then repeat the command: it creates fresh result filenames without replacing the retained attempt. If you change a configuration, preregister new predictions and preserve the previous comparison separately.
+**Recovery:** Keep all partial results and the first failure. Fix only the path or input problem you diagnosed, then run the command again; it creates new result filenames and leaves the earlier attempt in place. If you change a configuration, preregister new predictions and keep the earlier comparison separate.
 
 After the runs, open the public practice labels:
 
@@ -963,15 +963,15 @@ cat "$W/shared/checks/held-out-truth.json"
 Get-Content "$W\shared\checks\held-out-truth.json"
 ```
 
+**Expected:** The JSON lists each held-out run, R-017 through R-080, with `promotion_failure` set to true or false and a short note.
+
 **Stop:** The file is missing or unreadable.
 
-**Recovery:** Confirm the path under the work copy and repeat the Get-Content.
+**Recovery:** Check the path under the work copy and run the command again.
 
-**Expected:** The json shows promotion_failure true or false for each R-0NN without revealing your literals.
+For each frozen configuration, compare its matches and misses with the public labels, and report its false positives and false negatives out of all 64 runs. Compare the two configurations' errors, and don't drop a run because it's inconvenient. Explain what `RELEASED` matching inside `UNRELEASED` shows about the limits of a pure text check.
 
-For each frozen configuration, report matches and misses against the public labels, including false positives and false negatives out of all 64 runs. Compare the two configurations' errors without dropping an inconvenient run. Explain what the UNRELEASED / RELEASED substring collision shows about the limit of a pure text check.
-
-Do not resample runs to improve the numbers. The public labels are practice data only.
+Don't resample runs to improve the numbers. The public labels are practice data only.
 
 </details>
 
@@ -979,11 +979,11 @@ Do not resample runs to improve the numbers. The public labels are practice data
 
 Check that:
 
-- the sample rule exists before any outcome text was read;
-- first-failure notes exist for all sixteen sample runs before any counts;
-- counts reconcile to sixteen;
+- the sample rule existed before you read any outcome text;
+- you wrote first-failure notes for all sixteen sample runs before any counts;
+- the counts add up to sixteen;
 - the frozen config contains exactly two distinct nonempty strings;
 - known-bad exits 1 with MATCH, known-good exits 0 with PASS, and missing input prints `HOLD: missing input`;
-- no second checker was written;
-- the work remains inside the fictional class case;
-- the two stretch predictions were written before the held-out labels were opened (if you did the stretch).
+- you didn't write a second checker;
+- the work stayed inside the fictional class case;
+- if you did the stretch, you froze your predictions before you opened the held-out labels.

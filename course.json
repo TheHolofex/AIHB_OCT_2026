@@ -327,11 +327,11 @@
       "summary": "Turn observed practice failures into one precise control and check its limits.",
       "nav_summary": "Derive and check bounded controls from failures",
       "outcomes": {
-        "can": "Turn observed failures into one bounded, mechanically checkable rule, configure that rule in a supplied control, and measure what it still misses.",
+        "can": "Turn failures you observed into one exact rule a program can check, configure that rule in a supplied control, and measure what it still misses.",
         "will": [
-                "Freeze a sample of runs before you see any outcome, then record each failure before you group them.",
-                "Derive one category conclusion that the counts actually support.",
-                "Write the rule as exact literals, prove it on known-bad, known-good, and missing-input cases, and record its false positives and false negatives."
+                "Freeze a sample of runs before you see any outcomes, and note each run's first failure before you group the failures.",
+                "Draw one conclusion about failure categories that the counts actually support.",
+                "Write the rule as two exact text strings, test it on known-bad, known-good, and missing-input cases, and record its false positives and false negatives."
         ]
       },
       "pages": [
