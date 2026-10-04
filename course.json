@@ -322,14 +322,14 @@
       "directory": "module-06-run-corpus",
       "title": "Module 6 · Improve from observed failures",
       "case_name": "Blue Gauge",
-      "summary": "Turn observed practice failures into one precise control and check its limits.",
+      "summary": "Find a repeated failure in the practice runs, turn it into one exact text check, and see what that check still misses.",
       "nav_summary": "Failure notes · an exact text check",
       "outcomes": {
-        "can": "Turn failures you observed into one exact rule a program can check, configure that rule in a supplied control, and measure what it still misses.",
+        "can": "Turn a failure you saw more than once into one exact check a program can run, set it with two pieces of text, and write down what it still misses.",
         "will": [
-                "Freeze a sample of runs before you see any outcomes, and note each run's first failure before you group the failures.",
-                "Draw one conclusion about failure categories that the counts actually support.",
-                "Write the rule as two exact text strings, test it on known-bad, known-good, and missing-input cases, and record its false positives and false negatives."
+                "Freeze which runs you'll read before you see any results, and write each run's first problem before you group them.",
+                "State one conclusion the counts in this sample actually support.",
+                "Pick two exact pieces of text, try the check on a known-bad run, a known-good run, and a missing file, and record what it catches and misses."
         ]
       },
       "pages": [
