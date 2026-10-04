@@ -28,7 +28,7 @@ The learner completes research from bounded sources, verifies a material claim a
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous knowledge updates, concurrent agent writes to shared knowledge, custom retrieval infrastructure, and MCP construction remain advanced. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
@@ -47,11 +47,19 @@ Using bounded direction, source verification, a saved instruction, and the rule-
 **Evidence:** the supplied question set with the learner's added question and the judgment each question isolates; labels digest frozen before the run and bound to the run's input snapshot; a read-only receipt that read the state and the questions; validated typed answers or a preserved held reply; agreement table with adjudicated disagreements and the highest declared confidence among wrong answers; gate settings tied to that measurement; routing table and requirement line recomputable from the answers and gates; queue decisions and the authority change recorded as the desk lead's; and the stated limit that declared confidence is the model's claim.  
 **Owner:** Module 4
 
-## PO-05 — Diagnose and recover
+## PO-05 — Orchestrate an OMP agent team
 
-The learner preserves a material hidden failure, identifies the last passing and first failing boundary, runs a discriminating probe, makes one authorized reversible correction or verified revert, and proves recovery without weakening acceptance.
+**Mastery:** Using bounded direction, source verification, saved instructions, limited tool authority, and typed result contracts, supervise a dependency-aware OMP agent team, accept each evidence-bearing handoff, and recover partial failure without discarding valid work or prematurely accepting the integrated result.
 
-**Evidence:** sealed localization, supplied diagnostic comparison, probe result, correction/revert record, focused and end-to-end reruns, and clean-condition recurrence result. Localization alone does not establish recovery.
+**Enabling objectives:**
+
+1. Decompose a request into independent assignments and dependent joins, giving each child a complete brief, input scope, acceptance contract, stop condition, and output owner.
+2. Operate native OMP fan-out/fan-in and a subsequent independent review, distinguish executed work from accepted results, and reconcile conflicting claims against current authoritative sources rather than agent votes.
+3. Preserve a partial failure, correct the affected assignment, rerun only invalidated work, and recheck its dependent integration while retaining attributable unchanged results.
+
+Before this project, the learner could direct and verify one bounded assistant run. After it, the learner can supervise several separately executing agents whose results must form one coherent, checked product. Source checking, permission limits, and typed answers remain prerequisites; the new capability is dependency-aware delegation, acceptance, and recovery across agents.
+
+**Evidence:** operator-owned work graph and delegation briefs; native parent/child execution records and pinned identities; source-bearing specialist reports; preserved blocked attempt; selective repair with justified reuse; coordinator-owned brief, dependent review, and independent saved-evidence check. A completed child is not automatically an accepted handoff, and local receipts are not tamper-proof attestation.
 **Owner:** Module 05
 
 ## PO-06 — Improve from observed failures
@@ -70,14 +78,14 @@ Using source checking as a quality bar, the learner puts an AI Agent on a local 
 
 ## PO-08 — Control hallucinations
 
-Using source verification, typed questions, deterministic predicates, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority.
+Using source verification, typed questions, deterministic predicates, bounded agent handoffs, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, not new objectives here.
 
 **Enabling objectives:**
 1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.
 2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
 3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
 
-Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
+Before this project, the learner could verify a source, obtain typed judgments, validate a predicate, supervise a bounded agent team, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
 
 **Evidence:** frozen original claims, source packets, controls, and exact checks; two blind initial reviews with typed verdicts and source quotations; the complete source-constrained correction; two fresh full-set reviews; five actual audited run receipts; a claim-by-claim report of source support, disagreements, unknowns, and regressions; individual USE, KEEP_UNKNOWN, or HOLD dispositions with reasons, an internal-summary decision, and the missing evidence and responsible owner. Operational dispatch remains HOLD. Retain malformed outputs and unsuccessful attempts.
 **Owner:** Module 08

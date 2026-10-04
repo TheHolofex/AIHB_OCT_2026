@@ -45,6 +45,8 @@ def main() -> int:
                 required.add("tests/test_checker.py")
             elif module_id == "01":
                 required.update({"tests/test_workflow.py", "tests/test_adequacy.py"})
+            elif module_id == "05":
+                required.add("tests/test_orchestration_guard.mjs")
             elif module_id != "09":
                 required.add("tests/test_adequacy.py")
             listed = module["tests"]

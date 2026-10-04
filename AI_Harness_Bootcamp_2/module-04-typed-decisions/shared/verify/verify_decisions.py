@@ -176,9 +176,9 @@ def verify(work: Path, evidence: Path) -> int:
             if not re.search(rf"^##\s+{re.escape(heading)}\s*$", text, re.M):
                 raise chalk.Hold(f"handoff.md lacks the heading '{heading}'")
         decision = re.split(r"^##\s+Decision\s*$", text, flags=re.M)[1].split("\n## ")[0]
-        found = [token for token in ("PASS FOR CLASS REVIEW", "HOLD") if token in decision]
+        found = [token for token in ("READY FOR SIGNATURE", "HOLD") if token in decision]
         if len(found) != 1:
-            raise chalk.Hold("the Decision section must state exactly one of PASS FOR CLASS REVIEW or HOLD")
+            raise chalk.Hold("the Decision section must state exactly one of READY FOR SIGNATURE or HOLD")
         queue = [row["id"] for row in shared["rows"] if row["route"] in ("REFER", "REVIEW", "CLARIFY")]
         missing = [identifier for identifier in queue if identifier not in text]
         if missing:

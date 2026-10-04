@@ -5,13 +5,13 @@ Staff-only record. Not published (absent from `course.json`).
 - Generator: `codex-cli 0.154.0` (`codex exec`, built-in `image_gen`). No reference images attached.
 - Style: flat light instructional diagram (warm off-white ground, white boxes, thin neutral borders, one ochre accent, muted red only for stop/HOLD, muted green only for allowed). Sentence-case titles and plain-language labels.
 - Post-processing: composited onto the opaque `#FAF7F0` ground and saved as lossless RGB PNG at native size; no other pixel changes.
-- Run evidence (all attempts, prompts, logs): `~/course-evidence/image-remake-20261003T204449`
+- Run evidence (all attempts, prompts, logs): `~/course-evidence/image-remake-20261003T204449`; `m00-bounded-direction` and `m00-responsibility-screen` were regenerated on 2026-10-04 with concrete decision labels, evidence in `~/course-evidence/image-remake-20261004T161818Z-north-shelf`.
 - These figures replace an earlier set that used dark, glowing styling and slogan-style labels.
 
 ## m00-bounded-direction
 
 - Title: Write a testable direction before the run
-- Native size: 1536×1024; published SHA-256: `91393b4e836269ff9c56380495ba8e1d5b49c541fc3bad1b6af8b546e22903b1`
+- Native size: 1536×1024; published SHA-256: `70d9208f16b4f30c50a91a8ea85cbebc2aa3e7148eda7fc423415aa85505694c`
 - Accepted attempt: 01 of 1
 
 ### Final prompt
@@ -31,20 +31,20 @@ TITLE (top-left): "Write a testable direction before the run"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
 - "AI: drafts from the supplied facts"
-- "You: interpret, accept and decide on sharing"
-- "Refused: real sending, release or any external action"
+- "You: check the facts and make the send-or-hold call"
+- "Refused: real sending, release or any outside action"
 - "direction-brief.md"
 - "Outcome and audience"
 - "Allowed sources and constraints"
 - "Precedence: which source governs a conflict"
-- "Acceptance condition you can observe"
-- "Falsifier: an observation that would defeat acceptance"
+- "What a correct email must show"
+- "Falsifier: an observation that would prove the email wrong"
 - "Stop condition"
-- "Decision owner"
+- "Who decides it goes out: you"
 - "Freeze the direction before the first run"
 
 LAYOUT AND RELATIONSHIPS:
-Top row: three equal, separate boxes side by side in neutral fill. Left to right: 'AI: drafts from the supplied facts', 'You: interpret, accept and decide on sharing', 'Refused: real sending, release or any external action' (only this box may carry the red blocked accent). From each, one short vertical line drops into the top edge of one large bordered frame below. The lines mean 'is written into'. The frame is headed 'direction-brief.md' and holds seven equal cells in two rows. Row 1: Outcome and audience | Allowed sources and constraints | Precedence: which source governs a conflict. Row 2: Acceptance condition you can observe | Falsifier: an observation that would defeat acceptance | Stop condition | Decision owner. No cell is highlighted. The frame footer reads 'Freeze the direction before the first run'. No arrow leaves the frame, so nothing implies approval.
+Top row: three equal, separate boxes side by side in neutral fill. Left to right: 'AI: drafts from the supplied facts', 'You: check the facts and make the send-or-hold call', 'Refused: real sending, release or any outside action' (only this box may carry the red blocked accent). From each, one short vertical line drops into the top edge of one large bordered frame below. The lines mean 'is written into'. The frame is headed 'direction-brief.md' and holds seven equal cells in two rows. Row 1: Outcome and audience | Allowed sources and constraints | Precedence: which source governs a conflict. Row 2: What a correct email must show | Falsifier: an observation that would prove the email wrong | Stop condition | Who decides it goes out: you. No cell is highlighted. The frame footer reads 'Freeze the direction before the first run'. No arrow leaves the frame, so nothing implies approval.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
@@ -126,48 +126,6 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 
 LAYOUT AND RELATIONSHIPS:
 Top chain, left to right, 'then' arrows: 'Material claim' → 'Source and locator (line or paragraph)' → 'Quoted support'. From 'Quoted support', an orthogonal fork down to two side-by-side boxes: 'What the quote establishes' (left) and 'What it does not establish' (right). From 'What it does not establish', a dashed red connector ending in a perpendicular stop bar, with the small label 'Not supported' at the bar, leads toward 'An action a reader might infer' at far right. This is a blocked link, not an arrow. Both fork boxes feed down by straight arrows into 'Human interpretation' (bottom centre). A separate lower-left box, 'Mechanical checks', has one straight arrow into 'Human interpretation' only, and no connection to the inferred-action box. Even spacing; no S-bends.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
-## m00-decision-owner
-
-- Title: Who decides whether the draft is accepted
-- Native size: 1536×1024; published SHA-256: `f73f99c055d986bf9a1ba552a9b2a8abd75675a9882aeadb5041a3502fdee881`
-- Accepted attempt: 03 of 3
-- Earlier attempts were rejected in review for relationship or layout defects; the last revision requirements are included at the end of the prompt.
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "Who decides whether the draft is accepted"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "AI draft"
-- "Practice checker: check_artifact.py"
-- "Tests mechanical conditions"
-- "Human review"
-- "Checks the draft against sources and meaning"
-- "Named decision owner"
-- "PASS FOR CLASS REVIEW"
-- "HOLD"
-- "Neither outcome is operational permission"
-
-LAYOUT AND RELATIONSHIPS:
-'AI draft' at left. Two separate horizontal lanes leave it: upper lane 'Practice checker: check_artifact.py' with sub-line 'Tests mechanical conditions'; lower lane 'Human review' with sub-line 'Checks the draft against sources and meaning'. The lanes do not touch each other. Each ends in a straight orthogonal arrow (meaning 'reports to') into one box at right, 'Named decision owner'. The owner box splits into two orthogonal arrows (meaning 'chooses one of') to two token boxes of identical shape: 'PASS FOR CLASS REVIEW' (olive outline) and 'HOLD' (red outline). Neither token is preselected. One continuous neutral bracket under both tokens carries 'Neither outcome is operational permission'. Nothing sits under the checker alone. No glow, no curved connectors.
-
-REVISION REQUIREMENTS (previous attempts were rejected; fix all of these):
-- FIX. The previous defect is only partly fixed. The note now relates to both tokens, but it is drawn as a flow: a grey vertical line on the right of the tokens has arrowheads pointing left into PASS FOR CLASS REVIEW and HOLD, and a separate arrow runs down into a bordered box holding 'Neither outcome is operational permission'. This reads as the note box feeding the tokens, or the tokens feeding a third node. The spec asks for one continuous neutral bracket that carries the note, with no extra node. The lower ~18% of the canvas is also still empty. Regeneration: keep everything left of the tokens unchanged. Stack the two tokens with a small gap. On their right, draw one plain square bracket (thin, #C9C1B0, no arrowheads) that spans from the top of PASS FOR CLASS REVIEW to the bottom of HOLD. Set 'Neither outcome is operational permission' as plain unboxed text, vertically centred on the bracket's midpoint, wrapped to two lines, with at least 40 px to the right canvas edge. Move the whole diagram down about 60 px so the vertical margins are even.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
@@ -313,7 +271,7 @@ Before returning, inspect all labels and arrows. Every stated label must appear,
 ## m00-responsibility-screen
 
 - Title: Screen the job before you delegate it
-- Native size: 1536×1024; published SHA-256: `39173ae318ece9817c7c3ab62ee5180039098943ee456271ee244deb8e9ee41b`
+- Native size: 1536×1024; published SHA-256: `e9983055f034c1edcbef4c934c2bb6c4d1caefa55108b998c0ed5a9555de54d4`
 - Accepted attempt: 01 of 1
 
 ### Final prompt
@@ -333,14 +291,13 @@ TITLE (top-left): "Screen the job before you delegate it"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
 - "Source and data authority"
-- "Human decision owner"
+- "Who decides whether this email goes out"
 - "Both resolved?"
 - "Yes"
 - "No"
-- "Class draft only"
-- "Not permission to send, release or share widely"
+- "Draft the email"
 - "HOLD"
-- "Resolve with the actual owner before drafting"
+- "Resolve it before drafting"
 - "Also answer from what you inspected"
 - "Sensitive data present"
 - "Affected audience or person"
@@ -348,7 +305,7 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 - "Consequential action this draft cannot authorize"
 
 LAYOUT AND RELATIONSHIPS:
-Left: two stacked gate boxes, 'Source and data authority' above 'Human decision owner'. Each has an arrow into one decision diamond 'Both resolved?' to their right. The 'Yes' edge goes right to an olive-outlined box 'Class draft only' with the sub-line 'Not permission to send, release or share widely'. The 'No' edge goes down to a red HOLD token, then by arrow to 'Resolve with the actual owner before drafting'. No arrow leads from that box back to drafting. Right side: a plain bordered panel headed 'Also answer from what you inspected', listing four lines (Sensitive data present; Affected audience or person; Disclosure needed; Consequential action this draft cannot authorize). The panel has no arrows to or from the gates or the outcomes: these questions are answers to record, not permissions. Flat fills, no halo, title centred.
+Left: two stacked gate boxes, 'Source and data authority' above 'Who decides whether this email goes out'. Each has an arrow into one decision diamond 'Both resolved?' to their right. The 'Yes' edge goes right to an olive-outlined box 'Draft the email'. The 'No' edge goes down to a red HOLD token, then by arrow to 'Resolve it before drafting'. No arrow leads from that box back to drafting. Right side: a plain bordered panel headed 'Also answer from what you inspected', listing four lines (Sensitive data present; Affected audience or person; Disclosure needed; Consequential action this draft cannot authorize). The panel has no arrows to or from the gates or the outcomes: these questions are answers to record, not permissions. Flat fills, no halo, title centred.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````

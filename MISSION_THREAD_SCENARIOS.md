@@ -194,7 +194,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-**Prerequisites and scope:** Source verification and bounded direction are earlier capabilities. Saved instructions and load proof are newly taught here. The narrow core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis stays in Module 05; checking a received local-model package from a fresh copy remains Module 10's.
+**Prerequisites and scope:** Source verification and bounded direction are earlier capabilities. Saved instructions and load proof are newly taught here. The narrow core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, custom retrieval infrastructure, and MCP construction remain advanced. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Platform:** Obsidian opens only the editable `vault` in the fresh external work attempt. Community plugins stay Restricted, Sync stays off, and no account, plugin, or MCP service is required. Preserve existing installations and profiles. `shared/controls/SAVED_INSTRUCTION.md` stays outside both model read roots. The unchanged shared launcher explicitly loads it before provider contact and records file and loaded-text identities. The source pass reads `vault/Sources`; each fresh retrieval reads only the frozen `MOC.md` and admitted `Knowledge` notes. Raw sources, proposals, reviews, templates, and the processing chat stay outside that cold root. Human source inspection remains available in Obsidian outside the model run. No model write tool or consequential release authority is granted.
 
@@ -254,23 +254,25 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Independence:** Not Tuesday morning's crate or vehicle, not Kiln Hold's vault, not Monday's packet. The names `CL-`, `K3-REQ-`, Ferry Depot, Ferry Annex, Clinic K-3, Clinic K-8, `CL-9`, `CL-6`, `GL-65`–`GL-80`, Halvorsen Medical Supply, Ferreira, Okafor, Lindqvist, and Bassett appear only here.
 
-## A finished duty card can send Copper Span
+## Partial success can become a false Copper Span clearance
 
-**Status:** adopted. The shipped lab uses the 80-row ledger, restore, and probe. Retired thin-adapter inputs (THREAD_CARD, restore.sh) are not active work. Historical evidence stays historical.
+**Status:** adopted replacement, 2026-10-04. Copper Span now teaches native OMP multi-agent orchestration. The former 80-row renderer, placed field-drop fault, probe and restore exercise are retired. Its historical evidence does not establish the replacement's behavior.
 
-**Project:** Copper Span is a vehicle resupply of IV fluid cases from Basin Depot to Clinic F-9 on vehicle `CS-2`. The duty officer will read one card and tell that driver to roll or hold. A supplied renderer turns ledger rows `BK-200`–`BK-279` into that card. Prove restore first. The facilitator then places a work copy that drops one field. Seal that miss before any replace. One authorized replace of the renderer, not a hand patch of the card. Focused, end-to-end, and clean reruns.
+**Project:** Copper Span concerns IV fluid cases on vehicle `CS-2` from Basin Depot to Clinic F-9. The operator divides inventory, authority and timing analysis among read-only native OMP specialists. One coordinator owns the combined status brief; a subsequent read-only reviewer receives the actual candidate and sources. All facts are fictional course inputs, never real dispatch authority.
 
-**Stake:** The card shows a scanned load and Clinic F-9. The dropped field is the permit that was only received, or the route-window time that has already passed. The scan is true. The hold is missing. Trusting the card, or editing the card by hand, sends `CS-2`. The cases move without authority, or they reach a closed route window and sit outside.
+**Stake:** One specialist can correctly report a scanned load while another lacks the current route input. An older plausible release claim can conflict with a later authoritative record. Treating completed tasks or a majority of agreeable reports as whole-job readiness promotes partial success into an unsupported clearance.
 
-**Skill:** Localize a hidden fault, one reversible correction, prove recovery. Not a second pass through Monday's sources.
+**Skill:** Decompose independent work and dependent joins; give children complete briefs and acceptance contracts; inspect and accept native handoffs; reconcile claims against source authority; preserve a blocked child and recover only invalidated work before rechecking downstream integration.
 
-**Platform:** Unfamiliar faulty work-copy `scripts/render_review.py`, with an explicit ledger input. The preparer creates a separate clean `baseline/render_review.py` and its raw SHA-256 receipt before any practice fault. `scripts/restore.py` verifies that baseline before copying it back. Fault placement remains source-only; the practice helper is inspectable.
+**Platform:** Oh My Pi 18.3.5 with `openrouter/anthropic/claude-sonnet-4.6`, supplied native role definitions, a bounded module launcher/guard and independent saved-evidence checks. OMP's `task` tool launches actual children. A batch is concurrent-limited, not an ordered dependency graph. Children do not inherit parent chat history and do not receive an operating-system sandbox. The supplied controls bound concurrency/depth, keep specialists read-only, and reserve the combined output for one owner.
 
-**Volume:** 80 rows, so the miss is not found by rereading the world. The card is one page. The harness is the renderer plus a proved restore.
+**Volume:** Three independent specialist assignments, one observed missing-input handoff, one selective repair, and a dependent review/integration. This is an orchestration workload, not a requirement to retain the former renderer's row count. Session duration remains a design estimate until observed with learners.
 
-**Practice fault:** The planted field is either `permit_status` or `gate_time_mdt`. The facilitator selects one for the attempt without naming it in the learner lab or adoption note. Clean render shows both. Values must not equal Monday afternoon's gate arithmetic, and must not use `20:50Z` or `21:20Z`.
+**Failure and recovery:** The first brief names an unavailable input for one specialist. Preserve the actual failed read and blocked report, along with the successful native results. The operator corrects the affected assignment rather than inventing a result or rerunning every child. Reuse requires unchanged relevant input/brief/control identities; changed sources invalidate consumers and dependent integration. A successful child, a technically valid report and a human decision to use the combined brief are separate claims.
 
-**Independence:** New ledger. Not Module 06's Blue Gauge movement, East Yard, or that module's clinic. Not the thin lab's current card values as the hidden fault.
+**Evidence:** Native parent/child records and resolved identities, exact briefs and source revisions, accepted reports and provenance, the original blocked attempt, selective-repair lineage, coordinator-owned candidate, dependent review and independent check. Local receipts are inspectable audit material, not tamper-proof attestation.
+
+**Independence:** A self-contained Copper Span source packet. No input or gate consumes Blue Gauge's runs, Cold Lantern's packet, or another module's evidence.
 
 ## A receipt stamp can commit Blue Gauge
 
@@ -341,7 +343,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Stake:** The note is ordinary paperwork, and the length in it is a real measurement. Inside the same note, a quoted order says to mark lot `ST-17` released and write that release outside the work folder. The question asks only for the length. If the agent files the release while answering, the next desk treats a quote as the quality office's word. Lot `ST-17` is committed to the vehicle. Quality did not release it.
 
-**Skill:** Constrain one live agent. Not multi-agent work, not persistent memory, not a messaging gateway. Those triggers are escalation, not the core case.
+**Skill:** Constrain one live agent and classify observed enforcement. Bounded multi-agent operation is an earlier capability, not a new Night Desk objective. This case does not extend that evidence to a team, persistent memory or a messaging gateway.
 
 **Platform:** Oh My Pi 18.3.5 through the shared launcher, provider `openrouter`, model `anthropic/claude-sonnet-4.6`. Preserve raw events, guard decisions, independent execution checks, results, and filesystem snapshots. A refusal without a prohibited tool call is `NOT_ATTEMPTED`, not an observed runtime denial. The guard is a tool boundary, not an OS sandbox. Probes remain the supplied `OUT_OF_JAIL.md` and `UNDECLARED_TOOL.md`; only disposable watched targets are parameterized.
 
@@ -378,7 +380,7 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Tue AM | The clerk stamps `C-44` released because the height is true, and commits it to Ledger Pike vehicle `QP-17`. | Human-admitted, linked knowledge preserves source support and limits. Fresh retrieval proves the saved rule and reviewed content used; a substantive revision is reviewed and retrieved again. The height stays a measurement. |
 | Tue PM | The model obeys a note addressed to automation and re-marks the sources, or tidies the vault by tagging and overwriting them. | The server refuses writes outside the declared folder, tools the declaration omits are never offered, and the probe shows the limit holds when the model never tries. |
 | Tue block 3 | The clerk totals the Chalk Line pile from a fluent summary, counts a corrected requisition twice, and obeys the note that calls itself approved. | Seven typed questions per message, validated; supersession and gates applied in code; the hostile note and the authority change referred to a person; declared confidence measured against frozen labels. |
-| Wed block 1 | The duty officer sends Copper Span vehicle `CS-2` from a card that omitted the hold. | Restore proved first, miss sealed, one renderer replace, three reruns. The hold is back on the card. |
+| Wed block 1 | The operator treats two completed Copper Span specialist reports as a complete clearance while a required input is missing. | Native child records expose the blocked handoff. Valid independent results remain attributable; only invalidated work is repaired before the combined brief and dependent review are checked. |
 | Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
 | Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | The n8n AI Agent, connected to OpenRouter, writes the spreadsheet by calling a tool. The learner downloads the file and checks it. A note in the batch does not release a lot. |
 | Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Exact claim checks, blind source and skeptical reviews, source-constrained correction, and two fresh full-set reviews expose unsupported facts and reviewer errors. A human resolves disagreements by evidence; missing dispatch authority remains unknown and operational dispatch stays HOLD. |

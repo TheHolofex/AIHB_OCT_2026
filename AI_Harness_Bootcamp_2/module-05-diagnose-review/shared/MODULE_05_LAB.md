@@ -1,590 +1,339 @@
-# Module 5 · Diagnose and recover
+# Module 5 lab · Orchestrate an OMP agent team
 
-A required field drops off a Copper Span duty card. Find where it disappeared before you change anything. Keep the failed card. The probe tells you whether the source never had the field, or the program that writes the card left it out. Then make one correction you can undo, and show the card meets the same rules as before.
+Build a checked status brief for fictional CS-2, carrying IV fluid cases from Basin Depot to Clinic F-9. Inventory, release authority and timing are separate sources. A complete inventory report cannot fill a missing timing handoff.
 
-Plan for about three hours (a rough estimate).
+## Before the first wave
 
-The case is fictional and for class only. Nothing here plans or authorizes a real movement.
+Plan 90–150 minutes. Keep one ordinary terminal open for the four stages. Use Python 3.12+, the verified OMP 18.3.5 executable and the course OpenRouter credential in the current process. Restore a missing prerequisite through [setup](../../module-00-setup/README.md) or [credential handling](../../module-00-setup/shared/CREDENTIALS.md), not by switching providers or borrowing another login.
 
-## Prepare a separate attempt
+The launcher starts a fresh isolated OMP runtime for each stage. Your terminal retains the work and evidence paths; the model does not inherit your personal OMP profile.
 
-Open an ordinary terminal and run this block. It uses the Python and checkout from setup, creates a new work folder `W` and a records folder `E`, and leaves earlier attempts alone. The preparer prints a suggested next command. Don't run it.
+Technical statuses are not movement decisions. A `PASS` means the stage's evidence meets its contract. The combined brief may correctly say `HOLD`. All case facts are fictional; no result authorizes real movement.
 
-**Terminal: Bash or zsh, ordinary user.**
+## Prepare a work attempt
+
+Set `R` to your existing checkout. Change that one path if your checkout is elsewhere. The preparer creates `W` outside the repository and refuses to overwrite an earlier attempt. Stage evidence paths must not already exist; the launcher creates them.
+
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
 R="$HOME/Documents/AIHB_OCT_2026"
-PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
-[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
-M="$R/AI_Harness_Bootcamp_2/module-05-diagnose-review"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || { printf '%s\n' 'HOLD: Python 3.12 or newer is required.' >&2; exit 1; }
 RUN="$(date -u +%Y%m%dT%H%M%SZ)-$$"
-mkdir -p "$HOME/course-evidence" && printf '%s\n' "$RUN" > "$HOME/course-evidence/module-05-run" && printf 'RUN=%s\n' "$RUN"
+mkdir -p "$HOME/course-evidence"
+printf '%s\n' "$RUN" > "$HOME/course-evidence/module-05-run"
 W="$HOME/course-evidence/module-05-$RUN/work"
 E="$HOME/course-evidence/module-05-$RUN/evidence"
-"$PY" "$R/shared/prepare_work.py" 05 "$W" &&
-"$PY" -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
+FANOUT_E="$E/fanout"
+REPAIR_E="$E/repair"
+INTEGRATE_E="$E/integrate"
+REVIEW_E="$E/review"
+"$PY" "$R/shared/prepare_work.py" 05 "$W"
 ```
 
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-$R = "$HOME\Documents\AIHB_OCT_2026"
-$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
-if (-not $PY) { throw 'No Python >= 3.12 found' }
-$M = "$R\AI_Harness_Bootcamp_2\module-05-diagnose-review"
-$RUN = [guid]::NewGuid().ToString('N')
-New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null; Set-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Value $RUN; "RUN=$RUN"
-$W = "$HOME\course-evidence\module-05-$RUN\work"
-$E = "$HOME\course-evidence\module-05-$RUN\evidence"
-& $PY "$R\shared\prepare_work.py" 05 "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
-& $PY -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$E"
-```
-
-**Expected:** The preparer prints `PASS: created`, then the full work path. `W` contains `scripts/render_review.py`, `scripts/restore.py`, `baseline/`, `shared/case/ledger.json` (and the stretch ledgers), and an empty `out/` directory. `E` is the records folder next to it.
-
-**Stop:** A command fails, the destination already exists, Python isn't the 3.12-or-newer interpreter you checked in setup, or you already ran the suggested command and created a review.
-
-**Recovery:** Keep this attempt. Fix the missing setup piece, then run this block again with a new `RUN`. Don't reset the checkout or delete an old work folder.
-
-### If you open a new terminal
-
-A closed terminal forgets these variables. In a new terminal, run this block to load them again for the same attempt. Don't prepare another one.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-R="$HOME/Documents/AIHB_OCT_2026"
-PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3, 12) else print(sys.executable)' 2>/dev/null && break; done)"
-[ -n "$PY" ] || echo 'HOLD: Python 3.12 or newer is required.' >&2
-RUN="$(cat "$HOME/course-evidence/module-05-run")"
-M="$R/AI_Harness_Bootcamp_2/module-05-diagnose-review"
-W="$HOME/course-evidence/module-05-$RUN/work"
-E="$HOME/course-evidence/module-05-$RUN/evidence"
-printf '%s\n' "RUN=$RUN" "W=$W"
-```
-
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
 $R = "$HOME\Documents\AIHB_OCT_2026"
 $PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
 if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
-$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Raw).Trim()
-$M = "$R\AI_Harness_Bootcamp_2\module-05-diagnose-review"
+$RUN = [guid]::NewGuid().ToString('N')
+New-Item -ItemType Directory -Force -Path "$HOME\course-evidence" | Out-Null
+Set-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Value $RUN
 $W = "$HOME\course-evidence\module-05-$RUN\work"
 $E = "$HOME\course-evidence\module-05-$RUN\evidence"
-"RUN=$RUN"; "W=$W"
+$FANOUT_E = "$E\fanout"
+$REPAIR_E = "$E\repair"
+$INTEGRATE_E = "$E\integrate"
+$REVIEW_E = "$E\review"
+& $PY "$R\shared\prepare_work.py" 05 "$W"
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preparation failed; preserve this attempt.' }
 ```
 
-**Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
+**Expected:** `PASS: created` and the absolute work path. The work folder contains two Python controls under `scripts/`, three case sources, four roles, specialist and stage briefs, and an empty `out/`.
 
-**Stop:** The identifier differs from the one you wrote down, or the folder named after `W=` does not exist.
+**Stop:** Preparation fails, the destination already exists, or the interpreter is not verified. Do not reset the checkout or delete an old work folder. Resolve the prerequisite and choose a new `RUN`.
 
-**Recovery:** If the identifier differs, a later attempt overwrote the saved marker. Set `RUN` to the value you wrote down and run the block again. If the folder is missing, this attempt was never prepared. Run the first block.
+## Assign ownership and write a complete brief
 
-## 1. Confirm the clean render
+Open the three specialist briefs under `W/shared/prompts/`: `inventory.md`, `authority.md`, `timing.md`. Read their Input line, target, allowed work, acceptance condition and stop condition. Read the corresponding role definitions under `W/shared/agents/`.
 
-Write the card with the clean **renderer**, the supplied program that turns ledger rows into a duty card. Keep this output. It's the known-good card you'll compare against later.
+Write a short work plan in your own notes, outside the evidence directories:
 
-**Terminal: Bash or zsh, ordinary user.**
+1. Name each specialist's input and the fact it owns. Explain why these three assignments can run independently.
+2. Draw the join before integration. Name the file's sole writer.
+3. Draw the edge from the actual candidate to its reviewer. Explain why putting the reviewer in the first batch would be wrong.
+4. State what counts as a complete, accepted handoff and what must happen when one is blocked.
+5. Predict which work could remain valid if only Timing's assignment changed.
+
+Rewrite the Target paragraph in `inventory.md` in your own words so a child with no parent conversation can execute it. Keep its Input line, output field names and read-only boundary. Add a specific acceptance sentence that prevents a quantity report from being presented as release authority. Do this **before** dispatch; later edits invalidate the handoff produced from the earlier brief.
+
+Keep the supplied role frontmatter and execution controls unchanged. Leave Timing's Input line unchanged for the first wave. The first run must expose its actual missing-input boundary rather than silently substituting another file.
+
+Use the [native task and role contract](ORCHESTRATION_GUIDE.md#native-task-arguments) when checking whether a brief is self-contained.
+
+## Inspect the frozen inputs
+
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/baseline.md"
+"$PY" "$W/scripts/orchestrate.py" inspect --work "$W"
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\baseline.md"
+& $PY "$W\scripts\orchestrate.py" inspect --work "$W"
 ```
 
-**Expected:** The terminal prints the full path of `baseline.md`.
+**Expected:** JSON with `status: "PASS"`, the required model/version, the graph and three assignments. Each assignment identifies its brief, input, existence and fingerprint. Timing names `shared/case/timing-pending.json` and has `source_exists: false`.
 
-**Stop:** The command prints a line starting `HOLD:`.
+Inspect is offline. Its PASS does not prove the installed OMP version, credential, provider access or a child execution; run preflight checks those prerequisites before dispatch.
 
-**Recovery:** Check the variables and that `ledger.json` is under `W`. Keep any output already written and rerun with a new output filename.
+Compare the graph and permissions with your plan. A child must not need another child's unfinished answer. Every dependent action must have a later owner and an explicit input.
 
-Open the card and check that both required fields are there.
+**Stop:** The graph, assigned paths or permissions differ from your plan, or inspect returns HOLD. **Recover:** Correct the named work brief or restore an accidentally changed control from the supplied preparation source; inspect again before dispatch.
 
-**Terminal: Bash or zsh, ordinary user.**
+## Run the independent wave
+
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
-cat "$W/out/baseline.md"
+"$PY" "$W/scripts/orchestrate.py" run --work "$W" --evidence "$FANOUT_E" --stage fanout
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-Get-Content "$W\out\baseline.md"
+& $PY "$W\scripts\orchestrate.py" run --work "$W" --evidence "$FANOUT_E" --stage fanout
 ```
 
-**Expected:** The card shows `current_rows:`, `near_miss_rows:`, `near_miss_ids:`, and `scanned_quantity:` lines, then a `permit_status:` line and a `gate_time_mdt:` line, each with a value, then `class_only: true`.
+If you maintain multiple OMP installations, `--omp` can name the absolute path to the verified 18.3.5 executable. The launcher rejects another version; do not treat a newer global installation as the pinned one.
 
-**Stop:** Either `permit_status:` or `gate_time_mdt:` is missing from the card.
+**Expected for the supplied failure case:** Exit 1 and JSON `status: "HOLD"`; `dispatched` contains inventory, authority and timing; `accepted_roles` contains inventory and authority; `blocked_roles` contains timing. The issue names the missing Timing input. No combined brief is written.
 
-**Recovery:** Check the variables and that `ledger.json` is under `W`, then render again to a new output filename. Keep the earlier output.
+**Stop:** A credential, provider or runtime failure is not this expected case result. **Recover:** Inspect the actual issue, resolve its cause and choose a fresh evidence path. Preserve the failed attempt. Never prewrite a blocked report or modify a result to match the expected state.
 
-Then read the rules for this card in [shared/case/DUTY_CARD.md](case/DUTY_CARD.md).
+## Trace the blocked handoff
 
-## 2. Verify restore before any swap
+Run the independent saved-evidence check, then open the derived handoffs.
 
-Test restore before you place the fault. The restore command checks the clean baseline's **digest**, a fingerprint of its file bytes. The command saves your current renderer and `out/` files under `attempts/`, then copies the baseline over the work renderer.
-
-![Check that restore puts the clean renderer back before you place a fault, and keep the current attempt and output.](figures/m05-restore-precondition.png)
-
-*Check that restore puts the clean renderer back before you place a fault, and keep the current attempt and output.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Start with the clean baseline renderer and check its digest. If the fingerprint does not match, stop at `HOLD` before you replace anything. If it matches, save the current renderer and output as a kept attempt, then copy the baseline over the work renderer. Confirm `RESTORE OK` before you place the practice fault.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
-"$PY" "$W/scripts/restore.py" "$W"
+"$PY" "$W/scripts/orchestrate.py" check --work "$W" --evidence "$FANOUT_E"
+"$PY" -m json.tool "$FANOUT_E/reports.json"
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-& $PY "$W\scripts\restore.py" "$W"
+& $PY "$W\scripts\orchestrate.py" check --work "$W" --evidence "$FANOUT_E"
+& $PY -m json.tool "$FANOUT_E\reports.json"
 ```
 
-**Expected:** `RESTORE OK` is printed, and the `scripts/render_review.py` bytes now match the baseline.
+**Expected:** Check exits 1 with the same two accepted roles and blocked Timing handoff. A child can have native exit code 0 while returning `status: "blocked"`; completion and acceptance are different.
 
-**Stop:** `RESTORE OK` is not printed, or the files differ.
+Trace one successful specialist and Timing through these actual files:
 
-**Recovery:** Do not continue. Record the error and start with a new prepare_work destination.
+| Record | What to establish |
+|---|---|
+| `policy.json` → `task_call.tasks` | Requested child name, role, complete brief and schema. |
+| `guard.jsonl` → `guard_ready` | That child's actual model, role hash and active tools. |
+| `guard.jsonl` → `execution_result` | Successful read hash, or Timing's `ok: false`, `code: "ENOENT"` and exact path. |
+| `sessions/<parent-session>/Timing.jsonl` | Native read call and failed tool result, followed by the structured yield. Join the tool-call ID to the guard record. |
+| `sessions/<parent-session>/Timing.json` | The returned blocked data, not a parent paraphrase. |
+| `reports.json` | The original producing attempt/child identity and source-bearing report. |
 
-## 3. Seal the first miss
+There is one parent-session directory for this stage. Open it in your file browser or editor; do not substitute a transcript from another attempt.
 
-When your instructor says so, place the practice fault. It breaks only the renderer in your work copy. The clean baseline stays untouched. Don't fix anything until you've written down where the field first disappears.
+Write down why the two complete reports are reusable and why integration is not yet allowed. Do not call the missing-input read a denied permission: the read was authorized, actually attempted and failed because the assigned file was absent.
 
-**Terminal: Bash or zsh, ordinary user.**
+**Stop:** A child session, real read outcome or producing identity is missing or disagrees with the report. **Recover:** Resolve the evidence discrepancy before reuse; choose a fresh run rather than filling missing native records by hand.
+
+## Repair only its assignment
+
+Change the single Input line in `W/shared/prompts/timing.md` from `timing-pending.json` to `timing.json`. Preserve every evidence file and leave the other specialist briefs unchanged.
+
+The bounded replacement below refuses to proceed unless exactly one old Input line exists.
+
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
-"$PY" "$M/scripts/place_practice_fault.py" "$W" --variant A
+"$PY" -c 'from pathlib import Path; import sys; p=Path(sys.argv[1]); text=p.read_text(encoding="utf-8"); old="Input: shared/case/timing-pending.json"; new="Input: shared/case/timing.json"; assert text.splitlines().count(old)==1, "HOLD: expected exactly one old Input line"; p.write_text(text.replace(old,new,1),encoding="utf-8"); print(new)' "$W/shared/prompts/timing.md"
+"$PY" "$W/scripts/orchestrate.py" inspect --work "$W"
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-& $PY "$M\scripts\place_practice_fault.py" "$W" --variant A
-```
-
-**Expected:** `FAULT PLACED A`.
-
-**Stop:** A line starting `HOLD:`, for example `HOLD: work copy is not the clean baseline` or `HOLD: output already exists`.
-
-**Recovery:** Run the restore from step 2 again, confirm `RESTORE OK`, then place the fault again. If the hold names an existing output, you have already placed the fault in this attempt. Continue.
-
-Write the card again with the faulty renderer:
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/miss.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\miss.md"
-```
-
-**Expected:** The terminal prints the full path of `miss.md`. The render succeeds. The fault drops a field instead of crashing the renderer.
-
-**Stop:** A line starting `HOLD:`.
-
-**Recovery:** Keep the output. Check that the ledger path is the one under `W`, then repeat with a new output filename.
-
-Before you run the probe, write down how you would tell whether a field is missing from the source or lost while the card is written. The read-only **probe** compares the required fields in the selected source rows with the rendered card. The command runs it from the checkout, not your work copy, so the fault can't turn it off:
-
-![Compare the selected source and the written card, keep the first mismatch, and read what the probe calls it before you replace anything.](figures/m05-first-divergence.png)
-
-*Compare the selected source and the written card, keep the first mismatch, and read what the probe calls it before you replace anything.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Check the selected source rows for each required field, in order. If a source value is missing, the ordinary probe reports `source_omission`. If it is present, check whether the selected rows agree. Conflicting values produce `source_conflict`. When the values agree, check for a written card. If there is no card, the result is `output_absent`. If the card exists, the probe reports `rendered` when it contains the field and `renderer_omission` when it does not. Stop at the first failing check. Write down what you expected, what you saw, and the exact command, then save that record before you change anything. A probe exit status of 0 means the check ran. It does not mean the card is complete. The ordinary probe does not catch a wrong input version. That takes the optional `--intended` comparison, which reports `wrong_input_version` outside these core outcomes.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger.json" --review "$W/out/miss.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\miss.md"
-```
-
-**Expected:** The probe prints four lines: `selected_source_ids` followed by the current row IDs, `review_present yes`, one field line ending `renderer_omission`, and the other ending `rendered`. The field marked `renderer_omission` is the first one missing from the card.
-
-**Stop:** You can't name the earliest missing field from the probe output, or more than one field is missing.
-
-**Recovery:** Record `HOLD`. Wait to replace the renderer until the probe shows the field in the selected source but not on the card. If the source is missing it, replacing the renderer cannot bring that information back.
-
-Now write `$E/sealed-first-miss.md` from the probe output. Do this before you replace anything, and don't change the file afterwards. Record the last place the field is still present, and the first place it's missing:
-
-```markdown
-# Sealed first miss
-
-Command:
-Observed output (first 20 lines):
-Probe output:
-  selected_source_ids ...
-  review_present yes
-  permit_status ...
-  gate_time_mdt ...
-First missing field:
-Still present:
-```
-
-## 4. One authorized replace
-
-Replace the renderer only if the probe names it as the first failing place (`renderer_omission`). Make that one allowed replacement by running restore. The command first saves the failed renderer and `out/` under `attempts/`, then copies the clean baseline back. Don't edit the card by hand, and don't drop a required field from the rules the card has to meet.
-
-![Replace the renderer only when the evidence points to it. Keep the failed attempt. Don't patch the card or drop a required field.](figures/m05-authorized-correction.png)
-
-*Replace the renderer only when the evidence points to it. Keep the failed attempt. Don't patch the card or drop a required field.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Start from the saved diagnosis. If it shows that the renderer is the first failing place (`renderer_omission`), make one allowed replacement: run restore once. Before the clean renderer comes back, the failed attempt (the failed renderer and its output) is saved and kept. Then restore the clean renderer. If the diagnosis points to any other cause, stop at `HOLD` and do not replace the renderer. Two actions are not allowed, and they are not recovery: editing the output card by hand, and removing a required field from the rules the card has to meet.
-
-</details>
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/restore.py" "$W"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\restore.py" "$W"
-```
-
-**Expected:** `RESTORE OK`, and the work copy now matches the baseline bytes.
-
-**Stop:** You made more than one change, or you replaced the renderer before saving the miss.
-
-**Recovery:** Record the error. Start over with a fresh prepare_work destination.
-
-Then write `$E/replace-record.md` with the command, the `RESTORE OK` line, and why replacing the renderer fixes the cause you found.
-
-## 5. Prove recovery three ways
-
-Finding the cause isn't enough. Show the repair with three checks, in this order. Each one must show both required fields.
-
-![Show the field check, the complete card, and a new run in a fresh folder, without dropping either required field.](figures/m05-recovery-proofs.png)
-
-*Show the field check, the complete card, and a new run in a fresh folder, without dropping either required field.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Recovery needs three separate proofs. First, a field probe of a newly written card. Second, a complete card from the named ledger. Third, a new run in a fresh folder, started from a working directory that is not the work copy. Each proof must show both required fields, `permit_status` and `gate_time_mdt`. All three proofs use the same rules. No proof drops a field or makes the rules easier.
-
-</details>
-
-First, the field check: write a new card and use the probe to check its required fields.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/focused.md" &&
-"$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger.json" --review "$W/out/focused.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\focused.md"
-if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\focused.md"
-```
-
-Second, the full check: write the complete card from the work-copy ledger. Then open `complete.md` and check both fields.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/complete.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\complete.md"
-```
-
-Third, the clean-condition check: copy the renderer and ledger to a fresh folder. Then run them in a new process from your home folder, a working directory that is not the work copy.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-FRESH="$HOME/course-evidence/module-05-$RUN/fresh"
-"$PY" -c "
+@'
 from pathlib import Path
 import sys
 p = Path(sys.argv[1])
-if p.exists() or p.is_symlink(): sys.exit(1)
-p.mkdir(parents=True)
-" "$FRESH" &&
-cp "$W/scripts/render_review.py" "$FRESH/" &&
-cp "$W/shared/case/ledger.json" "$FRESH/" &&
-cd "$HOME" &&
-"$PY" "$FRESH/render_review.py" "$FRESH/ledger.json" "$FRESH/review.md"
+text = p.read_text(encoding="utf-8")
+old = "Input: shared/case/timing-pending.json"
+new = "Input: shared/case/timing.json"
+assert text.splitlines().count(old) == 1, "HOLD: expected exactly one old Input line"
+p.write_text(text.replace(old, new, 1), encoding="utf-8")
+print(new)
+'@ | & $PY - "$W\shared\prompts\timing.md"
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: timing assignment was not corrected.' }
+& $PY "$W\scripts\orchestrate.py" inspect --work "$W"
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Expected:** Timing now names `shared/case/timing.json`, with `source_exists: true` and a changed assignment fingerprint. Inventory and Authority fingerprints remain unchanged. The original blocked attempt remains a record of the original assignment; do not edit it into a successful attempt.
+
+**Stop:** The replacement fails, Timing still lacks its source, or another assignment changed. **Recover:** Correct only the intended Input line. Restore accidentally changed briefs from their first attempt's frozen `inputs/briefs/` copies, then inspect again.
+
+## Run and check selective repair
+
+**Terminal:** Bash or zsh, ordinary user.
+
+```bash
+"$PY" "$W/scripts/orchestrate.py" run --work "$W" --evidence "$REPAIR_E" --stage repair --prior "$FANOUT_E"
+"$PY" "$W/scripts/orchestrate.py" check --work "$W" --evidence "$REPAIR_E"
+"$PY" -m json.tool "$REPAIR_E/reports.json"
+```
+
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-$FRESH = "$HOME\course-evidence\module-05-$RUN\fresh"
-& $PY -c "
+& $PY "$W\scripts\orchestrate.py" run --work "$W" --evidence "$REPAIR_E" --stage repair --prior "$FANOUT_E"
+& $PY "$W\scripts\orchestrate.py" check --work "$W" --evidence "$REPAIR_E"
+& $PY -m json.tool "$REPAIR_E\reports.json"
+```
+
+**Expected:** Run and check exit 0 with `status: "PASS"`; `dispatched: ["timing"]`; `reused: ["inventory", "authority"]`; all three accepted and none blocked.
+
+Compare `attempt_id` and `child_id` for Inventory and Authority with their entries in the first attempt. They must still identify the original producing run. Timing has a new producing attempt and native child session. A matching child name alone is not a matching run identity.
+
+Read Timing's current revision and supersession. Do not select an old fact merely because it looks plausible. `accepted-handoffs.json` is created by a dependent integration/review attempt, not by this check.
+
+**Stop:** A source, brief, role or control changed unexpectedly; a reused result has a new claimed producing identity; extra children ran; or the saved check is HOLD. **Recover:** Resolve the named cause and rerun only invalidated work with fresh evidence before integration.
+
+## Integrate accepted handoffs
+
+Only continue with a checked, current three-specialist set.
+
+**Terminal:** Bash or zsh, ordinary user.
+
+```bash
+"$PY" "$W/scripts/orchestrate.py" run --work "$W" --evidence "$INTEGRATE_E" --stage integrate --prior "$REPAIR_E"
+"$PY" "$W/scripts/orchestrate.py" check --work "$W" --evidence "$INTEGRATE_E"
+"$PY" -m json.tool "$W/out/status-brief.json"
+```
+
+**Terminal:** PowerShell, ordinary user.
+
+```powershell
+& $PY "$W\scripts\orchestrate.py" run --work "$W" --evidence "$INTEGRATE_E" --stage integrate --prior "$REPAIR_E"
+& $PY "$W\scripts\orchestrate.py" check --work "$W" --evidence "$INTEGRATE_E"
+& $PY -m json.tool "$W\out\status-brief.json"
+```
+
+**Expected:** Run and check exit 0 with `status: "PASS"`. No specialist is dispatched. The coordinator reads `accepted-handoffs.json` and all three sources, then writes `out/status-brief.json` once. The integration evidence retains a `candidate.json` snapshot.
+
+The brief separates scanned from usable quantity, cites the current release and timing records, and retains all three original handoff identities. Explain why the authority record's later archive receipt timestamp does not override its explicit supersession chain. Explain why technical acceptance can coexist with a movement decision of HOLD.
+
+**Stop:** Any check holds, a required citation is absent, a source changed, or a write occurred outside the single candidate path. **Recover:** Return to the producing work, resolve the discrepancy and create a new integration attempt. Do not ask a reviewer to bless an unaccepted candidate.
+
+## Review the actual candidate
+
+The reviewer is required, read-only and dependent on the actual integrated candidate.
+
+**Terminal:** Bash or zsh, ordinary user.
+
+```bash
+"$PY" "$W/scripts/orchestrate.py" run --work "$W" --evidence "$REVIEW_E" --stage review --prior "$INTEGRATE_E"
+"$PY" "$W/scripts/orchestrate.py" check --work "$W" --evidence "$REVIEW_E"
+"$PY" -c 'from pathlib import Path; import sys; files=list(Path(sys.argv[1]).glob("sessions/*/Review.json")); assert len(files)==1, "HOLD: expected one native review"; print(files[0].read_text(encoding="utf-8"))' "$REVIEW_E"
+```
+
+**Terminal:** PowerShell, ordinary user.
+
+```powershell
+& $PY "$W\scripts\orchestrate.py" run --work "$W" --evidence "$REVIEW_E" --stage review --prior "$INTEGRATE_E"
+& $PY "$W\scripts\orchestrate.py" check --work "$W" --evidence "$REVIEW_E"
+@'
 from pathlib import Path
 import sys
-p = Path(sys.argv[1])
-if p.exists() or p.is_symlink(): sys.exit(1)
-p.mkdir(parents=True)
-" "$FRESH"
-if ($LASTEXITCODE -ne 0) { throw 'Fresh dir exists.' }
-Copy-Item "$W\scripts\render_review.py" "$FRESH\"
-Copy-Item "$W\shared\case\ledger.json" "$FRESH\"
-Set-Location "$HOME"
-& $PY "$FRESH\render_review.py" "$FRESH\ledger.json" "$FRESH\review.md"
+files = list(Path(sys.argv[1]).glob("sessions/*/Review.json"))
+assert len(files) == 1, "HOLD: expected one native review"
+print(files[0].read_text(encoding="utf-8"))
+'@ | & $PY - "$REVIEW_E"
 ```
 
-**Expected:** The focused probe reports both fields as `rendered`, and the complete and fresh review files both contain `permit_status` and `gate_time_mdt`. The fresh run used a new folder and started from your home folder. A probe exit code of 0 only means the probe ran; read its field lines.
+**Expected:** CLI run/check exit 0 with `status: "PASS"` and only review dispatched. The separate native review payload has `role: "review"`, `status: "accepted"`, the actual `candidate_sha256`, and no issues. The review reads the candidate, accepted handoffs and current sources; it performs no write.
 
-**Stop:** Any of the three outputs lacks `permit_status:` or `gate_time_mdt:`, or the focused probe reports anything other than `rendered`.
+A reviewer HOLD remains a HOLD. Read its concrete findings. Correct the producing work, preserve the old candidate and evidence, and use fresh evidence paths for the necessary downstream runs. Never alter a review into acceptance or treat a second agent's agreement as source authority.
 
-**Recovery:** Keep the failed output. Fix the path problem you found, then use unused output names for another proof. If you need to replace the renderer again, start a fresh attempt. Don't erase the first correction.
+## Make the human use decision
 
-Keep the three outputs, the focused probe result, and the saved miss for your handoff.
+Write a short decision note outside the evidence directories. Identify the candidate hash and the final checked evidence path. State one of **use as a status brief**, **revise**, or **hold**, with a source-backed reason and the remaining human owner.
 
-Finally, check that the commands still work when the work path contains a space. This block prepares a separate attempt and writes a baseline card, because restore needs an output to save. Then it restores the renderer and probes a new card. Your main attempt stays untouched.
+Answer these transfer questions in the same note:
 
-**Terminal: Bash or zsh, ordinary user.**
+- Which native records show that Timing actually failed to read its assigned input?
+- Which two reports were retained, and what made their reuse legitimate?
+- If Authority changes next, which specialist and downstream results become stale? Which independent work can stay?
+- What does the review establish, and what authority does it not establish?
+
+A technical PASS does not grant permission to move goods. This is a fictional status-brief decision only.
+
+## When a stage holds
+
+| Observation | Action |
+|---|---|
+| Exit 2 with `HOLD: ...` before dispatch | Fix the named prerequisite or dependency. Do not switch model/provider or invent a receipt. |
+| First fan-out: two accepted, Timing blocked on the named absent file | Preserve the attempt; correct only the affected assignment and run selective repair. |
+| Exit 1 for a failed/aborted/malformed native attempt | Preserve partial records. Diagnose the actual failure; do not assume incomplete evidence is reusable. |
+| A saved input, role or brief is stale | Reconsider its consumer and downstream work. Do not relabel an old result as a new run. |
+| A native record, prior seal or source citation disagrees | Stop automatic reuse. Resolve the evidence discrepancy. |
+| Review holds or candidate bytes changed | Resolve the candidate's producing work and repeat its dependent checks/review with fresh evidence. |
+| Evidence destination already exists | Keep it. Choose a new literal path and record that path in your notes. |
+
+Ctrl+C requests a stop during a headless run. Partial records may remain; cancellation does not promise complete child reports or rollback. A separate interactive OMP process cannot attach to this headless team's Agent Hub. [Native supervision and its process boundary](ORCHESTRATION_GUIDE.md#supervise-an-interactive-native-team).
+
+## Retain the handoff
+
+Keep the work plan, edited briefs, four evidence directories, candidate and human decision note. The evidence chain includes frozen policy/inputs, actual native parent and child sessions, guard records, derived handoffs, process outcome and local hashes.
+
+Do not put notes into sealed evidence directories or move those directories while using their recorded prior links. The checker uses their exact identities and locations. A handoff to another person must preserve those locations or explicitly arrange a new checked run; copying files alone is not proof that the workflow was replayed.
+
+## Recover terminal variables
+
+If you open another terminal, reselect the verified interpreter and restore the exact saved attempt. Load the credential into that process using the existing credential procedure. Do not infer the attempt from whichever directory looks newest.
+
+**Terminal:** Bash or zsh, ordinary user.
 
 ```bash
-SPACE_WORK="$HOME/course-evidence/module-05-$RUN/work with space"
-"$PY" "$R/shared/prepare_work.py" 05 "$SPACE_WORK" &&
-"$PY" "$SPACE_WORK/scripts/render_review.py" "$SPACE_WORK/shared/case/ledger.json" "$SPACE_WORK/out/baseline.md" &&
-"$PY" "$SPACE_WORK/scripts/restore.py" "$SPACE_WORK" &&
-"$PY" "$SPACE_WORK/scripts/render_review.py" "$SPACE_WORK/shared/case/ledger.json" "$SPACE_WORK/out/focused.md" &&
-"$PY" "$M/scripts/probe_fields.py" "$SPACE_WORK/shared/case/ledger.json" --review "$SPACE_WORK/out/focused.md"
+PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>/dev/null && break; done)"
+[ -n "$PY" ] || { printf '%s\n' 'HOLD: Python 3.12 or newer is required.' >&2; exit 1; }
+RUN="$(cat "$HOME/course-evidence/module-05-run")"
+W="$HOME/course-evidence/module-05-$RUN/work"
+E="$HOME/course-evidence/module-05-$RUN/evidence"
+FANOUT_E="$E/fanout"
+REPAIR_E="$E/repair"
+INTEGRATE_E="$E/integrate"
+REVIEW_E="$E/review"
+printf '%s\n' "RUN=$RUN" "W=$W" "E=$E"
 ```
 
-**Terminal: PowerShell, ordinary user.**
+**Terminal:** PowerShell, ordinary user.
 
 ```powershell
-$SPACE_WORK = "$HOME\course-evidence\module-05-$RUN\work with space"
-& $PY "$R\shared\prepare_work.py" 05 "$SPACE_WORK"
-if ($LASTEXITCODE -ne 0) { throw 'Spaced work preparation held.' }
-& $PY "$SPACE_WORK\scripts\render_review.py" "$SPACE_WORK\shared\case\ledger.json" "$SPACE_WORK\out\baseline.md"
-if ($LASTEXITCODE -ne 0) { throw 'Baseline render held.' }
-& $PY "$SPACE_WORK\scripts\restore.py" "$SPACE_WORK"
-if ($LASTEXITCODE -ne 0) { throw 'Restore held.' }
-& $PY "$SPACE_WORK\scripts\render_review.py" "$SPACE_WORK\shared\case\ledger.json" "$SPACE_WORK\out\focused.md"
-if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
-& $PY "$M\scripts\probe_fields.py" "$SPACE_WORK\shared\case\ledger.json" --review "$SPACE_WORK\out\focused.md"
+$PY = $(foreach ($candidate in 'python3.12','python3','python') { try { $resolved = & $candidate -c 'import sys; sys.exit(1) if sys.version_info < (3,12) else print(sys.executable)' 2>$null; if ($LASTEXITCODE -eq 0 -and $resolved) { $resolved.Trim(); break } } catch {} })
+if (-not $PY) { throw 'HOLD: Python 3.12 or newer is required.' }
+$RUN = (Get-Content -LiteralPath "$HOME\course-evidence\module-05-run" -Raw).Trim()
+$W = "$HOME\course-evidence\module-05-$RUN\work"
+$E = "$HOME\course-evidence\module-05-$RUN\evidence"
+$FANOUT_E = "$E\fanout"
+$REPAIR_E = "$E\repair"
+$INTEGRATE_E = "$E\integrate"
+$REVIEW_E = "$E\review"
+"RUN=$RUN"; "W=$W"; "E=$E"
 ```
 
-**Expected:** Preparation and both renders succeed, restore prints `RESTORE OK`, and the probe reports both fields as `rendered`.
-
-**Stop:** Any command holds or either field is absent.
-
-**Recovery:** Keep this directory. Fix the named problem, then choose a new spaced destination instead of reusing an existing output.
-
-## 6. Finish the handoff
-
-Write `$E/handoff.md` so the next person can repeat your result and check it without asking you:
-
-```markdown
-# Module 5 handoff
-
-First missing field:
-Probe output that showed it:
-  (include selected_source_ids, review_present, and the cause line)
-Replace command:
-Previous renderer and outputs preserved in: (the attempts folder under W)
-Focused probe result:
-Complete render file:
-Fresh-process rerun file:
-What the next person should inspect first:
-```
-
-## Stretch: competing causes on a second case
-
-<details class="rf-stretch" markdown="1">
-<summary>Optional stretch: distinguish source omission, wrong input version, and renderer omission</summary>
-
-Three different causes can make a field go missing: the source never had it, you used the wrong version of the input, or the renderer dropped a field the source supplies. Before you start, write in `E/stretch-prediction.md` which cause you expect in each case, and what you would see that tells them apart. Leave the core evidence unchanged.
-
-### Inspect missing source evidence
-
-Write a card from the second ledger with the clean renderer. The renderer should refuse it, and the command then runs the probe on the source rows. Don't fill a source gap by changing code.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger-stretch.json" "$W/out/source-omission.md"
-SOURCE_EXIT=$?
-if [ "$SOURCE_EXIT" -eq 1 ]; then
-  "$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger-stretch.json"
-else
-  printf '%s\n' 'HOLD: expected a malformed-source refusal; inspect the actual result.'
-  false
-fi
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger-stretch.json" "$W\out\source-omission.md"
-if ($LASTEXITCODE -ne 1) { throw 'Expected a malformed-source refusal; inspect the actual result.' }
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger-stretch.json"
-```
-
-**Expected:** The renderer prints `HOLD: malformed input (permit_status)`. The probe then prints `permit_status source_omission BK-202` and `gate_time_mdt source_omission BK-203`.
-
-**Stop:** The renderer accepts the incomplete source, or you cannot find the missing values in the named rows.
-
-**Recovery:** Keep the refusal and the probe output. Get the missing source from its owner. Putting the renderer back cannot create that information.
-
-### Compare the intended input
-
-Probe the stale ledger against the supplied intended ledger. Look at both the source IDs and their revisions. Matching IDs don't mean matching versions.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger-stale.json" --intended "$W/shared/case/ledger-intended.json"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger-stale.json" --intended "$W\shared\case\ledger-intended.json"
-```
-
-**Expected:** The probe reports `wrong_input_version` and prints both selections and their revisions.
-
-**Stop:** You cannot explain which intended source replaces the stale selection.
-
-**Recovery:** Write down the input-selection error and name the correct snapshot. Don't replace a working renderer to hide a wrong input.
-
-### Localize the other renderer omission
-
-The main ledger has both fields. Place variant B, write the card to a new name, and use the result to find the first missing field before you allow a replacement.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$M/scripts/place_practice_fault.py" "$W" --variant B &&
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/stretch-miss.md" &&
-"$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger.json" --review "$W/out/stretch-miss.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$M\scripts\place_practice_fault.py" "$W" --variant B
-if ($LASTEXITCODE -ne 0) { throw 'Fault placement held.' }
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\stretch-miss.md"
-if ($LASTEXITCODE -ne 0) { throw 'Stretch render held.' }
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\stretch-miss.md"
-```
-
-**Expected:** One field is `renderer_omission`; the other is `rendered`. Seal this miss and the source support in `E/sealed-stretch-miss.md` before continuing.
-
-**Stop:** More than one field is missing, or the selected source does not supply the omitted value.
-
-**Recovery:** Keep what you saw and find the earlier cause. Don't replace anything until the evidence points to this renderer.
-
-### Prove the second recovery without overwriting the first
-
-Allow one baseline replacement for the saved variant-B miss. Use new output names and a new fresh-process folder for its three proofs.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$W/scripts/restore.py" "$W" &&
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/stretch-focused.md" &&
-"$PY" "$M/scripts/probe_fields.py" "$W/shared/case/ledger.json" --review "$W/out/stretch-focused.md" &&
-"$PY" "$W/scripts/render_review.py" "$W/shared/case/ledger.json" "$W/out/stretch-complete.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$W\scripts\restore.py" "$W"
-if ($LASTEXITCODE -ne 0) { throw 'Stretch restore held.' }
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\stretch-focused.md"
-if ($LASTEXITCODE -ne 0) { throw 'Stretch focused render held.' }
-& $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\stretch-focused.md"
-if ($LASTEXITCODE -ne 0) { throw 'Stretch probe held.' }
-& $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\stretch-complete.md"
-```
-
-**Expected:** Restore succeeds, the focused probe reports both fields as `rendered`, and the complete output contains both values.
-
-**Stop:** Any command holds or either field is absent.
-
-**Recovery:** Keep the failed proof and choose unused names for a justified new attempt. Never overwrite the core proof files.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-FRESH="$HOME/course-evidence/module-05-$RUN/fresh-stretch"
-"$PY" -c "from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)" "$FRESH" &&
-cp "$W/scripts/render_review.py" "$FRESH/" &&
-cp "$W/shared/case/ledger.json" "$FRESH/" &&
-cd "$HOME" &&
-"$PY" "$FRESH/render_review.py" "$FRESH/ledger.json" "$FRESH/review.md"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-$FRESH = "$HOME\course-evidence\module-05-$RUN\fresh-stretch"
-& $PY -c 'from pathlib import Path; import sys; Path(sys.argv[1]).mkdir(parents=True, exist_ok=False)' "$FRESH"
-if ($LASTEXITCODE -ne 0) { throw 'Fresh stretch destination already exists.' }
-Copy-Item "$W\scripts\render_review.py" "$FRESH\" -ErrorAction Stop
-Copy-Item "$W\shared\case\ledger.json" "$FRESH\" -ErrorAction Stop
-Set-Location -LiteralPath $HOME -ErrorAction Stop
-& $PY "$FRESH\render_review.py" "$FRESH\ledger.json" "$FRESH\review.md"
-```
-
-**Expected:** The new process produces a review with both fields while using only the copied renderer and ledger, from a working directory that is not the work copy.
-
-**Stop:** The destination exists or the copied run fails.
-
-**Recovery:** Keep the failed directory. After you correct the cause you found, use a new destination. Write down which source or renderer change each of the three cases actually justified. A successful renderer replacement in one case won't fix all three.
-
-</details>
-
-## Before you stop
-
-Check that:
-
-- restore printed `RESTORE OK` before the first swap;
-- the saved miss names exactly one earliest field, based on the probe output for the selected rows;
-- you made only one allowed replacement;
-- the focused probe confirmed both fields on the work-copy card, and the complete card and the fresh-folder output also show both fields (the fresh run started from your home folder);
-- the work stayed inside the fictional class case.
-
-Keep the saved misses, the source selections, each replacement record, and all three recovery proofs. The next person should be able to tell a source gap from a wrong version, or from a field the renderer dropped, without asking you.
+**Expected:** The printed identifier and paths match your retained notes. **Stop:** The saved identifier is missing or identifies a different attempt. **Recover:** Restore the exact identifier and paths from your notes, not the newest directory. If you deliberately chose another evidence path for a later attempt, restore that literal path instead of the default variable above.

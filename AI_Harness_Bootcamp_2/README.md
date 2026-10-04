@@ -6,7 +6,7 @@ Learn to operate AI harnesses by doing useful work: <br>draft a document, check 
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You'll use Oh My Pi to work with files and supplied tools, Obsidian to review and link notes, and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, test changes, diagnose failures, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
+You'll use Oh My Pi to work with files, supplied tools, and small agent teams; Obsidian to review and link notes; and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, delegate independent assignments, recover blocked work, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
 
 <div data-photo-band="custody"></div>
 
@@ -15,6 +15,7 @@ You'll use Oh My Pi to work with files and supplied tools, Obsidian to review an
 - **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
 - **A reusable knowledge vault.** Review source-backed notes in Obsidian, link the useful claims, and prove that a fresh model session uses your saved instruction and only the notes you approved. Then fix one weakness that matters and show the difference in another fresh run.
+- **A checked agent-team brief.** Give OMP specialists separate assignments, inspect their sources and results, and combine only accepted work. If one agent is blocked, preserve the valid reports, repair that assignment, and recheck the combined brief.
 - **A spreadsheet an agent writes.** In local n8n, connect an AI Agent to OpenRouter with your key and have it write a spreadsheet from a batch. Download the file and check it against the source. The chat is not the result.
 - **A corrected, evidence-bound brief.** Check each material claim, have independent agents challenge it, and verify the corrections against the original sources. Keep unknowns visible even when the reviewers agree.
 - **A local model you can run yourself.** Start it on your laptop, stop it, bring it back, and keep the files so you can do that again without the chat.
