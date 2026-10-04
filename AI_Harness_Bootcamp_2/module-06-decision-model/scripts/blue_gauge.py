@@ -437,7 +437,15 @@ def command_verify(args) -> int:
     check("selection", lambda: sections(work / "SELECTION.md", SELECTION_HEADINGS, work / "shared/controls/SELECTION.template.md") + ([] if PINNED in (work / "SELECTION.md").read_text(encoding="utf-8") else [f"SELECTION.md does not name {PINNED}"]))
     check("judge setting", lambda: [] if runtime.parse_judge_config(work / "JUDGE.yml") == PINNED else ["JUDGE.yml is not pinned"])
     check("questions", lambda: question_problems(work / "QUESTIONS.json"))
-    tuning_runs = sorted((path.name for path in evidence.glob("tuning-*") if path.is_dir() and re.fullmatch(r"tuning-\d+", path.name)), key=lambda name: int(name.split("-")[1]))
+    every_run = sorted((path.name for path in evidence.glob("tuning-*") if path.is_dir() and re.fullmatch(r"tuning-\d+", path.name)), key=lambda name: int(name.split("-")[1]))
+
+    def completed(name: str) -> bool:
+        try:
+            return load(evidence / name / "result.json").get("status") == "PASS"
+        except Hold:
+            return False
+    tuning_runs = [name for name in every_run if completed(name)]
+    held_runs = [name for name in every_run if name not in tuning_runs]
 
     def judge_runs(names, split):
         problems = []
@@ -450,18 +458,26 @@ def command_verify(args) -> int:
     check("tuning runs", lambda: judge_runs(tuning_runs, "tuning"))
 
     def first_misses():
-        if not tuning_runs:
-            return ["no tuning run to compare against"]
-        run = Run(work, tuning_runs[0])
+        # The first run with saved judgments sets the misses to note, whatever its recorded status.
+        first = None
+        for name in every_run:
+            try:
+                first = (name, Run(work, name))
+                break
+            except Hold:
+                continue
+        if first is None:
+            return ["no tuning run with saved judgments to compare against"]
+        name, run = first
         missed = [key for key in run.notes if question_misses(run.rows[key]["answers"], run.labels[key])]
         notes = (evidence / "first-misses.md").read_text(encoding="utf-8") if (evidence / "first-misses.md").is_file() else None
         if notes is None:
             return ["missing first-misses.md"]
         problems = [f"first-misses.md does not mention {key}" for key in missed if key not in notes]
-        if missed and len(tuning_runs) < 2:
-            problems.append(f"{tuning_runs[0]} had question misses; a revised tuning run must follow")
-        if missed and len(tuning_runs) >= 2 and digest(evidence / tuning_runs[0] / "questions.json") == digest(evidence / tuning_runs[-1] / "questions.json"):
-            problems.append("the later tuning run used the same questions as the first")
+        asked = digest(evidence / name / "questions.json")
+        revised = [later for later in tuning_runs if int(later.split("-")[1]) > int(name.split("-")[1]) and digest(evidence / later / "questions.json") != asked]
+        if missed and not revised:
+            problems.append(f"{name} had question misses; a revised tuning run must follow")
         return problems
     check("first misses", first_misses)
 
@@ -488,6 +504,8 @@ def command_verify(args) -> int:
                 print(f"HOLD {label}: {problem}")
         else:
             print(f"PASS {label}")
+    if held_runs:
+        print(f"NOTE kept held tuning runs, not audited as complete: {', '.join(held_runs)}")
     if failed:
         print(f"HOLD: {failed} of {len(checks)} checks need attention")
         return 1

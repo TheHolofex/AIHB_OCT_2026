@@ -323,15 +323,15 @@
       "directory": "module-06-decision-model",
       "title": "Module 6 · Design a workflow for a decision model",
       "case_name": "Blue Gauge",
-      "summary": "Choose and pin a decision model in Oh My Pi, write the questions it answers, set thresholds from its probabilities, and prove the frozen screen on notes you didn't tune it on.",
+      "summary": "Choose and pin a decision model in Oh My Pi, write the questions it answers, set thresholds from its answers, and prove the screen on notes you didn't tune it on.",
       "nav_summary": "Decision models · typed questions · thresholds",
       "outcomes": {
-        "can": "Choose and pin a decision model as your harness's judge, design questions and a code split around its known weak spots, set thresholds from its probabilities by what each error costs, and prove the frozen screen on notes you didn't tune it on.",
+        "can": "Pick a decision model as your harness's judge and pin one version, write questions around what it gets wrong, set thresholds by what each mistake costs, and prove the frozen screen on notes you didn't tune it on.",
         "will": [
-                "Compare the judge models your key can reach, pin one version, and record why and what data leaves your laptop.",
-                "Rewrite a question set so code settles what a rule can, every question asks one thing, and a status asked in two option orders exposes order bias.",
-                "Read the first misses before changing anything, revise the wording, and set four thresholds from the tuning answers.",
-                "Freeze the screen, judge the held-out notes once, and hand off the errors, review share, served build, and cost per 1,000 notes."
+                "Compare the judge models your key can reach, pin one version, and write down why and what data leaves your laptop.",
+                "Fix a question set so code settles what a rule can, each question asks one thing, and a status asked in two orders shows when the order sways the answer.",
+                "Read the first misses before you change anything, fix the wording, and set four thresholds from the tuning answers.",
+                "Freeze the screen, judge the held-out notes once, and hand off the errors, the review share, the build that answered, and the cost per 1,000 notes."
         ]
       },
       "pages": [

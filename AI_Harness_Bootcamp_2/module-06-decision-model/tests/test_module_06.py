@@ -163,6 +163,18 @@ def main() -> int:
         defect("a tuning receipt the shared auditor rejects is held", "saved response differs", lambda: (evidence / "tuning-2" / "response.md").write_text("judged everything perfectly", encoding="utf-8"), lambda: (evidence / "tuning-2" / "response.md").write_text(response, encoding="utf-8"))
         moved = base / "parked-tuning-2"
         defect("misses in the first tuning run with no revised run are held", "a revised tuning run must follow", lambda: (evidence / "tuning-2").rename(moved), lambda: moved.rename(evidence / "tuning-2"))
+        held = evidence / "tuning-3"
+        held.mkdir()
+        (held / "result.json").write_bytes(runtime.json_bytes({"status": "HOLD", "reason": "provider refused the request"}))
+        code, out = verify()
+        shutil.rmtree(held)
+        check("M6-VERIFY", code == 0 and "kept held tuning runs" in out and "tuning-3" in out, "a held tuning run kept beside the others does not block the final check")
+        first_result = evidence / "tuning-1" / "result.json"
+        kept = first_result.read_bytes()
+        relabelled = {**json.loads(kept), "status": "HOLD"}
+        defect("relabelling the first run as held does not excuse its misses", "does not mention BG-011",
+               lambda: (first_result.write_bytes(runtime.json_bytes(relabelled)), notes_file.write_text("BG-002 only.\n", encoding="utf-8")),
+               lambda: (first_result.write_bytes(kept), notes_file.write_text(original, encoding="utf-8")))
 
         late = base / "late"
         late_work = prepare_work.prepare("06", late / "work", root=REPO)
