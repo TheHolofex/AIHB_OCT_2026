@@ -15,8 +15,9 @@ The current exercise replaces variation comparison with structured source checks
 | Complete recheck | All seven corrected claims rechecked; zero remaining exact-check issues, reviewer disagreements, or correction regressions |
 | Missing authority | C07 remained `unknown`, with null value and locator; operational dispatch stayed `HOLD` |
 | Offline regressions | `tests/test_module_08.py`: 14 passed; `tests/test_adequacy.py`: 4 passed |
-| Course gates | `scripts/check_course.py`: all 29 scoped gates passed, including byte-for-byte publication checking; complete output retained in `worktree-course-gates.txt` |
+| Pre-integration course gates | `scripts/check_course.py`: all 29 scoped gates passed before the concurrent Module 7 rewrite was integrated; complete output retained in `worktree-course-gates.txt` |
 | Published interface | Overview-to-lab navigation, eight steps, PowerShell tab and native command copy, desktop/mobile layouts, mobile course menu, and readable commands without JavaScript exercised in Chromium |
+| Combined-course checks | All 18 Module 8 regressions, 9 publication tests, 34 builder tests, and byte-for-byte publication checking passed after integration. `tests/test_core_standard.py` reported `HOLD: course map and module supply boundaries disagree: 07-fixed-workflow.md`; the incoming Module 7 map names `AGENT_SHEET` while its unchanged core specification still names the retired fixed-workflow products. That unrelated contract was not rewritten here. |
 
 Report SHA-256: `f46b4e768e84ed2f833dfb6124900f54a8cbfddd251b31a8862359412d4ea747`.
 Command-log SHA-256: `0c320b30de8d68973b25b2e47d6dc1c6b7dfbf7f0860886938da87f7c25ac8be`.
