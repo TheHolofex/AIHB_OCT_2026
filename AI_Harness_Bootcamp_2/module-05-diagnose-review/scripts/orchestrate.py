@@ -129,7 +129,7 @@ def prepare_attempt(work, destination, stage, assignments, prior, reports, reuse
         copy_input(work / "scripts" / name, output / "inputs/controls" / name)
     copy_input(work / evidence.GUARD, output / "inputs/controls/orchestration_guard.mjs")
     stage_text = (work / f"shared/prompts/{stage}.md").read_text(encoding="utf-8")
-    (output / "inputs/stage.md").write_text(stage_text, encoding="utf-8")
+    copy_input(work / f"shared/prompts/{stage}.md", output / "inputs/stage.md")
     reads = {"main": {}}
     role_files = {}
     for role in dispatched:

@@ -102,7 +102,7 @@ Appearance, reading mode, shell choice, explicitly selected reading positions, a
 
 ## Pinned execution and publication
 
-Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. Live cloud-model exercises select **`openrouter/anthropic/claude-sonnet-4.6`** with `OPENROUTER_API_KEY` supplied to the current process. Module 05 uses its native-task orchestration launcher; other cloud-model exercises use `shared/run_omp.py`. The launchers create fresh runtime state, bound the model's tools, disable retries and model fallback, and keep evidence separate from work. These are OMP tool boundaries, not operating-system sandboxes.
+Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. Live cloud-model OMP runs select **`openrouter/anthropic/claude-sonnet-4.6`** as the main chat model, with `OPENROUTER_API_KEY` supplied to the current process. Module 05 uses its native-task orchestration launcher; other OMP exercises use `shared/run_omp.py`. The launchers create fresh runtime state, bound the model's tools, disable retries and model fallback, and keep evidence separate from work. These are OMP tool boundaries, not operating-system sandboxes.
 
 Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
 

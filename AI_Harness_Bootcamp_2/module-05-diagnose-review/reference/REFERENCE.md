@@ -61,7 +61,7 @@ Candidate SHA-256: `89c46ce52611ff5a63a835fbee2420763a8fcaf02d83a290870b8ef885c9
 
 An actual check of this review returned HOLD/1 after the integration brief was changed. Restoring the original brief restored PASS/0 without altering the saved evidence. An earlier complete native run also rejected premature integration from the blocked first wave with preflight HOLD/2.
 
-Final control identities used by this run:
+Control identities used by this run, before the byte-preservation correction below:
 
 | Control | SHA-256 |
 |---|---|
@@ -69,7 +69,24 @@ Final control identities used by this run:
 | scripts/orchestration_evidence.py | `12bfaa29b5177ea0dd29ad41563781ad7e5667ea958af7b0642e002c3019a77d` |
 | shared/controls/orchestration_guard.mjs | `12a0816c73b8495bde70fda73fd1c8322c74f391aad5a0c4a0fe20dbf25bb44d` |
 
-Earlier failed attempts were kept, not rewritten: native cwd alias mismatch, returned-assignment whitespace normalization, and child initial-tool registration led to specific corrections. The final run uses canonical cwd comparison, native trim normalization and no child writer registration.
+Earlier failed attempts were kept, not rewritten: native cwd alias mismatch, returned-assignment whitespace normalization, and child initial-tool registration led to specific corrections. That run uses canonical cwd comparison, native trim normalization and no child writer registration.
+
+## Final byte-preservation proof
+
+An unchanged CRLF stage brief could falsely become stale because text-mode snapshot writing normalized its line endings. The regression reproduced that consumer-visible HOLD before the fix; byte-preserving `copy_input` removed the false invalidation. All 12 orchestration behavior tests, 8 Node guard tests and 71 root unit tests then passed. Publication again passed byte-for-byte checking with 35 instructional pages, 419 raw downloads and 40 UI/generated assets.
+
+A fresh native four-stage run used the corrected launcher, the same pinned binary/provider/model, and actual CRLF integration and review briefs. Its separate private evidence root is `~/course-evidence/copper-span-native-crlf-20261004/`. No earlier attempt was modified or resealed.
+
+| Stage | Producing run ID | Observed run/check result |
+|---|---|---|
+| Fanout | `b2bb4e55-ed57-4f1e-a8af-3565e4bbcf76` | HOLD/1; Inventory and Authority accepted; Timing blocked on the absent assigned input. |
+| Repair | `e9fe48b7-ac01-427a-86b3-3908f504d23c` | PASS/0; only Timing dispatched; Inventory and Authority reused. |
+| Integrate | `701d1db4-a56d-4749-9346-9733501e3917` | PASS/0; no child; candidate written from the handoffs and sources. |
+| Review | `0943df06-75be-4a04-a9b9-1120d7de6858` | PASS/0; only Review dispatched; independent evidence check accepted the current chain. |
+
+The independent fanout check after repair also identified its Timing assignment as stale, as required after correcting that brief. Repair, integration and review independently remained PASS/0. Integration's frozen brief retained all 22 CRLF line breaks; review's retained all 14. Each frozen file's hash matched its current source exactly. This is macOS execution with CRLF-authored inputs, not native Windows execution.
+
+The corrected launcher's SHA-256 is `cc3c66c4de7bb62f20ccf95e735dff2002b0541953b7653ed811b9f9394c0342`; the evidence checker and guard hashes are unchanged from the table above. The final candidate's SHA-256 is `b72966fb1e06d91389b72395d11f04b99b0b8fa2693ecca9ec92ba2b65ca81d4`. `independent-checks.json` in this evidence root retains the separate check results, control identities and CRLF snapshot hashes.
 
 ## Offline and publication proof
 
@@ -88,6 +105,10 @@ On the isolated feature branch before integration with concurrent main changes:
 The merge retains main's spreadsheet-agent and structured hallucination-control work, along with its revised local-model scope. After integration, the 11 orchestration tests, 8 guard tests and all 65 root unit tests passed. A fresh Module 05 preparation/inspect succeeded, and the merged launcher independently accepted the retained real review. The rebuilt publication passed exact checking and figure-link validation: 35 instructional pages, 423 raw downloads and 40 UI/generated assets. Chromium confirmed the combined homepage and the orchestration overview.
 
 Current main already records a separate Module 07 core-contract mismatch: the course map produces AGENT_SHEET while `modules/core/07-fixed-workflow.md` still names retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` records that inherited `test_core_standard.py` HOLD. This integration does not claim a green combined full-course gate or rewrite that unrelated Module 07 contract.
+
+The subsequent Blue Gauge decision-model merge also retained Module 05's preparation/runtime contract. The 11 orchestration tests, 8 guard tests and now 71 root unit tests passed. Publication and figure-link checks at that merge passed with 35 instructional pages, 420 raw downloads and 40 UI/generated assets. Obsolete generated Module 06 pages and its test-created bytecode cache were removed after that module's directory rename.
+
+The separately committed ungraded-course changes for Modules 00, 01 and 04, plus the course-gap analysis, were then retained without changing the orchestration controls. Publication and figure-link checks passed again: 35 instructional pages, 419 raw downloads and 40 UI/generated assets.
 
 ## Limits and historical boundary
 

@@ -237,6 +237,20 @@ class OrchestrationBehavior(unittest.TestCase):
         self.assertEqual(reusable, ["timing"])
         self.assertEqual(dispatched, ["inventory", "authority"])
 
+    def test_unchanged_consumer_line_endings_do_not_make_frozen_briefs_stale(self):
+        for stage, newline in (("integrate", b"\r\n"), ("review", b"\n")):
+            path = self.work / f"shared/prompts/{stage}.md"
+            path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", newline))
+        _first, _initial, repair, _repaired = self.repaired()
+        integrate, integrated = self.stage("integrate", repair)
+        self.assertEqual(evidence.summary(integrated)["status"], "PASS")
+        review, _reviewed = self.stage("review", integrate)
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            status = orchestrate.check_stage(self.work, review)
+        self.assertEqual(status, 0)
+        self.assertEqual(json.loads(output.getvalue())["status"], "PASS")
+
     def test_changed_consumer_instructions_invalidate_review_not_specialists(self):
         _first, _initial, repair, _repaired = self.repaired()
         integrate, _integrated = self.stage("integrate", repair)
