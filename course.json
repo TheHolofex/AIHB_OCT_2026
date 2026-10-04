@@ -295,8 +295,8 @@
       "outcomes": {
         "can": "Preserve a hidden failure instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized reversible correction, and prove the recovery holds.",
         "will": [
-                "Seal the failing result and compare it with a known-good run to locate the fault.",
-                "Run a single probe that tells two competing causes apart.",
+                "Seal the first miss, then compare it with a known-good run to find where the fault begins.",
+                "Use one probe to tell two competing causes apart.",
                 "Correct or revert once, rerun the focused check and the full check, and confirm the clean condition does not recur."
         ]
       },
