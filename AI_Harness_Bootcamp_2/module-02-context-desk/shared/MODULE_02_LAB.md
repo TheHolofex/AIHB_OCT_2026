@@ -1,6 +1,6 @@
 # Module 2 · Build and control a reusable second brain
 
-Build linked knowledge in Obsidian, then ask a fresh model session to answer from the notes you've reviewed. Keep the original evidence separate from proposals. Make the admission decisions yourself. After the first cold run, fix one substantive weakness.
+Build linked knowledge in Obsidian, then use a fresh model session to answer from the notes you've reviewed. Keep the original evidence separate from proposals. Make the admission decisions yourself. After the first cold run, fix one substantive weakness.
 
 This is an ungraded exercise with fictional Ledger Pike paperwork. Your result supports internal class review only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
 
@@ -119,7 +119,7 @@ Select **Core plugins**, find **Sync**, and turn its toggle off if it is on. Do 
 
 ## 2. Inspect the controls and process sources
 
-The launcher loads a **saved instruction** before contacting the model. The **file screen** checks a chosen file for fixed instruction-like phrases. The **read root** sets the folder the model's read tool can access. Human admission is the fourth boundary: you decide which supported claims enter reusable Knowledge.
+The launcher loads a **saved instruction** before contacting the model. The **file screen** checks a chosen file for fixed instruction-like phrases. The **read root** sets the folder the model's read tool can access. The fourth boundary is human admission: you decide which supported claims enter reusable Knowledge.
 
 ![Saved instruction, file screen, read root, and human admission have separate jobs.](figures/m02-resolved-state.png)
 *Saved instruction, file screen, read root, and human admission have separate jobs.*

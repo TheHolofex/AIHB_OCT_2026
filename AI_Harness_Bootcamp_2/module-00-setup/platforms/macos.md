@@ -1,12 +1,12 @@
 # Set up on macOS
 
-This setup takes your Mac from a fresh Terminal window to a working Oh My Pi (OMP) install that reads and writes a file through the course launcher. Plan for 45 to 90 minutes, plus download time. You need the Terminal app, a browser, a plain text editor, 15 GB free in your home folder, and permission to install missing tools. Keep your work under your home folder and outside the course checkout. If device policy blocks a step, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
+This setup takes your Mac from a fresh terminal window to a working Oh My Pi (OMP) install that reads and writes a file through the course launcher. Plan for 45 to 90 minutes, plus download time. You'll need the Terminal app, a browser, a plain text editor, 15 GB free in your home folder, and permission to install missing tools. Keep your work under your home folder, outside the course checkout. If device policy blocks a step, stop and use the [support packet](../shared/TROUBLESHOOTING.md).
 
-The work has three parts. Steps 1 to 9 install the tools and run the OMP readiness check. **Set up local Obsidian** prepares the note app for Module 2. **Prepare local n8n for Module 7** prepares the local workflow editor. Every box is meant to be pasted whole into Terminal. Your Mac's default shell is zsh, and every box also works in Bash. If a box prints a `STOP` or `HOLD` line, read its **Recovery** note, and use [If a step stops](#if-a-step-stops) for the less common cases.
+The work has three parts. Steps 1 to 9 install the tools and run the OMP readiness check. **Set up local Obsidian** prepares the note app for Module 2. **Prepare local n8n for Module 7** prepares the local workflow editor. Paste each box whole into Terminal. Your Mac's default shell is zsh, but the boxes also work in Bash. If a box prints `STOP` or `HOLD`, read its **Recovery** note. For other problems, see [If a step stops](#if-a-step-stops).
 
 ## 1. Check this Mac
 
-Open **Terminal** from **Applications → Utilities** while you're signed in to your ordinary account. This box checks your macOS version, chip, shell, and free space. It also shows which tools are missing. It doesn't install anything, and it won't run Apple's `git` or `python3` placeholders, which would otherwise open an install dialog.
+Open **Terminal** from **Applications → Utilities** while you're signed in to your ordinary account. This box checks your macOS version, chip, shell, and free space, then lists any missing tools. It doesn't install anything or run Apple's `git` or `python3` placeholders, which could open an install dialog.
 
 This setup needs macOS 15 or newer, the same minimum as [Homebrew](https://docs.brew.sh/Installation). Apple silicon is fully supported. Homebrew treats Intel Macs as [Tier 3](https://docs.brew.sh/Support-Tiers), which means they may work but get less support.
 
@@ -101,9 +101,9 @@ course_check_mac
 
 ## 2. Install missing tools
 
-Skip this step if step 1 printed `NOTHING TO INSTALL`. Otherwise, this box installs [Homebrew](https://brew.sh/), a package manager for macOS, if it isn't already there. It then uses Homebrew for any missing Git or [Python 3.12](https://formulae.brew.sh/formula/python@3.12). If Apple's Command Line Tools are missing, the Homebrew installer installs them too, and they include Git.
+If step 1 printed `NOTHING TO INSTALL`, skip this step. Otherwise, this box installs [Homebrew](https://brew.sh/), a package manager for macOS, if needed. It then uses Homebrew to install any missing Git or [Python 3.12](https://formulae.brew.sh/formula/python@3.12). If Apple's Command Line Tools are missing, the Homebrew installer installs them too; they include Git.
 
-The Homebrew installer lists what it will change, asks you to press **Return**, and asks for your administrator password. Terminal doesn't show the password as you type. If an Apple dialog opens, click **Install**, wait for it to finish, then return to Terminal and press a key. The installer needs an administrator account. Never run `sudo brew`.
+The Homebrew installer lists what it will change, asks you to press **Return**, and asks for your administrator password. The password won't appear as you type. If an Apple dialog opens, click **Install**, wait for it to finish, then return to Terminal and press a key. The installer needs an administrator account. Never run `sudo brew`.
 
 On an Intel Mac, Homebrew no longer publishes ready-built Python packages, so `python@3.12` compiles from source and can take a long time. Intel users can [install Python from python.org instead](#tools-and-homebrew).
 
@@ -149,9 +149,9 @@ course_install_missing
 
 ## 3. Install Oh My Pi
 
-This box downloads OMP 18.3.5 and its checksum list into a new folder under `~/course-evidence`. A **checksum** is a fingerprint for a file. The box installs the file only when its SHA-256 fingerprint, computed with macOS's `shasum -a 256`, matches the one line in `SHA256SUMS.txt` that names your Mac's file. It copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
+This box downloads OMP 18.3.5 and its checksum list into a new folder under `~/course-evidence`. A **checksum** is a file's fingerprint. The box computes the downloaded file's SHA-256 fingerprint with macOS's `shasum -a 256` and compares it with the one line in `SHA256SUMS.txt` that names your Mac's file. Only a match gets installed. The box copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
 
-The box then updates your shell's startup files so new windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line, and both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they are your login file and `.bashrc`. The box leaves your existing lines in place and adds each line only once. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5).
+Next, the box updates your shell's startup files so new terminal windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line. Both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they're your login file and `.bashrc`. The box keeps your existing lines and adds each new line only once. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5).
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -251,7 +251,7 @@ course_install_omp
 
 ## 4. Get the course files
 
-This box first checks that your existing Git credentials can read the private course repository. It doesn't prompt for a login or change credential settings. If access works, it clones the repository to `~/Documents/AIHB_OCT_2026`, or it reuses an existing checkout of the same repository without pulling, resetting, or cleaning it.
+This box checks whether your existing Git credentials can read the private course repository. It won't prompt for a login or change your credential settings. If you have access, it clones the repository to `~/Documents/AIHB_OCT_2026`. If the same repository is already there, it keeps that checkout without pulling, resetting, or cleaning it.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -292,7 +292,7 @@ course_get_checkout
 
 ### If GitHub access fails
 
-Use these three boxes only after `ACCESS HOLD`. The [GitHub CLI](https://cli.github.com/manual/gh_auth_login), `gh`, signs you in through your browser and lets Git use that sign-in for github.com. Your GitHub account is separate from your course-site password and your OpenRouter key. If Homebrew isn't installed, paste the step 2 box first; it installs Homebrew even when nothing else is missing.
+Use these three boxes only after `ACCESS HOLD`. The [GitHub CLI](https://cli.github.com/manual/gh_auth_login), `gh`, signs you in through your browser. It lets Git use that sign-in for github.com. Your GitHub account is separate from your course-site password and your OpenRouter key. If Homebrew isn't installed, paste the step 2 box first. It installs Homebrew even when nothing else is missing.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -327,7 +327,7 @@ Sign in with the GitHub account that was invited to the course repository. The c
 gh auth login --hostname github.com --git-protocol https --web
 ```
 
-**Expected:** The browser approval finishes, and Terminal reports that you're logged in.
+**Expected:** The browser approval finishes, and the terminal reports that you're logged in.
 
 **Stop:** The login fails, or the wrong account is signed in.
 
@@ -413,7 +413,7 @@ course_confirm_new_terminal
 
 **Stop:** Any `STOP` line, or `SET`.
 
-**Recovery:** Correct the startup setting in your earlier window, then open another new window and paste this box again. Don't add an `export` here to make it pass; see [New terminal and key](#new-terminal-and-key).
+**Recovery:** Correct the startup setting in your earlier window, then open another new terminal window and paste this box again. Don't add an `export` here to make it pass; see [New terminal and key](#new-terminal-and-key).
 
 ## 6. Enter your OpenRouter key
 
@@ -450,7 +450,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 ## 8. Run the readiness check
 
-This box makes a fresh attempt folder under `~/course-evidence`, with a random token and a prompt. The token marks this attempt; it isn't a credential. The box then runs the course launcher, which uses only OpenRouter and `openrouter/anthropic/claude-sonnet-4.6` and lets the model write only `from-omp.txt`. Last, the checker confirms that the file holds `omp works` plus this attempt's token and that the saved receipts show `course_write` wrote it. This step is a paid model call.
+This box makes a fresh attempt folder under `~/course-evidence`, with a random token and a prompt. The token marks this attempt; it isn't a credential. The box then runs the course launcher. The launcher uses only OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It lets the model write only `from-omp.txt`. Last, the checker confirms that the file holds `omp works` plus this attempt's token and that the saved receipts show `course_write` wrote it. This step is a paid model call.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -504,7 +504,7 @@ course_readiness_check
 
 ## 9. Save the setup report and read the result
 
-The setup report checks your tools, checkout, and key presence, and it saves what it found beside your attempt. The report can't replace the readiness check, so this box reads the result file only after step 8 passed in this window. Changed files in the checkout are reported for your information; don't clean them up.
+The setup report checks your tools, checkout, and key presence. It saves what it found beside your attempt. The report can't replace the readiness check, so this box reads the result file only after step 8 passed in this window. Changed files in the checkout are reported for your information; don't clean them up.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -729,7 +729,7 @@ course_check_docker
 1. On Docker's page, choose **Docker Desktop for Mac with Apple silicon** or **Docker Desktop for Mac with Intel chip** to match the `ARCH` line from step 1 (`arm64` or `x86_64`).
 2. Quit apps that use Docker, open `Docker.dmg`, and drag **Docker** onto **Applications**. Keep the disk image open until copying finishes.
 3. Open **Docker** from **Applications** and select **Accept** for the subscription agreement if the device owner approved it. Docker Desktop installs its command-line tools in `~/.docker/bin` and adds that folder to your PATH.
-4. Wait until Docker Desktop reports that the engine is running. Then open a new Terminal window from the **Shell** menu and paste the box above again.
+4. Wait until Docker Desktop reports that the engine is running. Then open a new terminal window from the **Shell** menu and paste the box above again.
 
 ### Optional: review the installer script before it runs
 The installer script is downloaded live from the network and can change. To see exactly what it will do, download it first, read it with less, then let the next box use the reviewed copy.
@@ -792,7 +792,7 @@ course_n8n_generate
 ### 3. Start n8n and check it
 This box defines two helpers and then starts the stack. `course_n8n` runs Docker Compose with the recorded project name, .env, and compose.yml. It stops if any variable that would override .env is exported in this shell. `course_n8n_check` shows the services, the published port, and the running n8n version.
 
-If you opened a new Terminal window since the n8n generate step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first; it defines the helpers and is safe to repeat.
+If you opened a new terminal window since the n8n generate step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first; it defines the helpers and is safe to repeat.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
 
@@ -832,7 +832,7 @@ docker context show && course_n8n up -d && course_n8n_check
 ### 5. Confirm the workflow survives a restart
 Stop only the course stack you identified. Compose `down` removes its containers and network but keeps its named data volumes, so never add `-v`.
 
-If you opened a new Terminal window since the n8n start step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first so the helpers are defined.
+If you opened a new terminal window since the n8n start step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first so the helpers are defined.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
 
@@ -865,7 +865,7 @@ xcode-select --install
 
 **Expected:** An Apple dialog opens. Click **Install**, accept the license if authorized, wait for completion, then re-run step 1. **Stop:** The dialog reports an error or you cannot authorize it. **Recovery:** Ask the device owner to complete the permitted installation, then re-run step 1.
 
-Intel Python: download the current macOS installer from https://www.python.org/downloads/macos/, open the .pkg, follow the installer, then open a new Terminal window and re-run step 1.
+Intel Python: download the current macOS installer from https://www.python.org/downloads/macos/, open the .pkg, follow the installer, then open a new terminal window and re-run step 1.
 
 ### Oh My Pi install
 Checksum mismatch or conflicting destination: keep the prior file and start a fresh download attempt (the box uses a new RUN each time). Linked startup file or .zwc: ask the owner to add the two lines by hand (you can copy them from your other startup file after the box adds them there). macOS blocks the binary: follow Apple's Gatekeeper guidance at https://support.apple.com/en-us/102445 with the owner; do not disable Gatekeeper or remove quarantine attributes.
@@ -901,4 +901,4 @@ docker CLI missing after Docker Desktop install: add the export for the user CLI
 export PATH="$HOME/.docker/bin${PATH:+:$PATH}"
 ```
 
-Then open a new Terminal window from the Shell menu and re-run the Docker check. Wrong context or exported Compose override: ask the owner, then use a clean shell that does not have those variables exported. Existing `~/n8n-course`, port 5678 in use, or project resources for n8n-course: preserve everything; reuse an existing course instance only after the owner confirms its version and settings (skip the generate box). Slow startup: wait for the engine to settle and re-run the check box. Port exposed beyond 127.0.0.1: run `course_n8n down` (this stack only), keep the volumes, and ask the owner to correct the bind in compose.yml before restarting. To review the installer script before execution: use the optional review box that appears before the generate step (it runs `less` on the downloaded file before any execution).
+Then open a new terminal window from the Shell menu and re-run the Docker check. Wrong context or exported Compose override: ask the owner, then use a clean shell that does not have those variables exported. Existing `~/n8n-course`, port 5678 in use, or project resources for n8n-course: preserve everything; reuse an existing course instance only after the owner confirms its version and settings (skip the generate box). Slow startup: wait for the engine to settle and re-run the check box. Port exposed beyond 127.0.0.1: run `course_n8n down` (this stack only), keep the volumes, and ask the owner to correct the bind in compose.yml before restarting. To review the installer script before execution: use the optional review box that appears before the generate step (it runs `less` on the downloaded file before any execution).

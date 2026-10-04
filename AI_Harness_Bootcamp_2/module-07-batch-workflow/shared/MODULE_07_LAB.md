@@ -1,8 +1,8 @@
 # Module 7 · Build a workflow, predict a change, and prove the result
 
-Build a local n8n workflow that routes White Rack's refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict what one policy change will do to two source batches, run both batches, and compare every receipt row. Save a copy of the original workflow, change one saved value, then restore the original into a new blank workflow and reproduce both original receipts.
+Build a local n8n workflow that routes White Rack's refrigerated reagent kits from Icehouse Depot to Clinic I-6. Predict what one policy change will do to two source batches. Run both batches and compare every receipt row. Save a copy of the original workflow, change one saved value, then restore the original into a new blank workflow and reproduce both original receipts.
 
-Plan for about three hours on Wednesday. That's a rough estimate, not a measured time. All lots and movements are fictional. A receipt doesn't authorize a real movement, and it isn't a quality release.
+Plan for about three hours on Wednesday (a rough estimate). All lots and movements are fictional. A receipt doesn't authorize a real movement, and it isn't a quality release.
 
 You'll use three named workflows: your router, the supplied checker, and a restored router. Keep all three unpublished, and work only in the local browser editor and its test forms. A **receipt** is a downloaded CSV with the columns `lot,route,status`. An **exact comparison** checks the whole file, including column order, quotes, separators, and line endings. A green workflow run alone doesn't prove the files match.
 
@@ -10,7 +10,7 @@ You'll use three named workflows: your router, the supplied checker, and a resto
 
 Complete [local n8n readiness](../../module-00-setup/README.md) first: n8n **2.41.5**, the approved full official local stack, and the editor at `http://localhost:5678`. Keep Assistant off. You don't need a cloud account, provider key, published workflow, or production URL. Bring your source-checking and evidence habits from earlier modules.
 
-In Finder or File Explorer, create a new folder such as `module-07-attempt-2026-10-01-a`. Give each attempt its own name. Inside it, create `inputs`, `predictions`, `exports`, `receipts`, and `reports`, and use your plain-text editor to create an empty text file named `observations.md`. Whenever a step says to record something, write it there. Download these exercise files into `inputs`:
+In Finder or File Explorer, create a new folder such as `module-07-attempt-2026-10-01-a` and give each attempt its own name. Inside it, create `inputs`, `predictions`, `exports`, `receipts`, and `reports`. Use your plain-text editor to create an empty text file named `observations.md`. Whenever a step says to record something, write it there. Download these exercise files into `inputs`:
 
 - [wave1.csv](batch/wave1.csv)
 - [wave2.csv](batch/wave2.csv)
@@ -52,7 +52,7 @@ Add one row for each lot you predict will actually change when `OPEN` becomes `N
 
 Build the fixed workflow node by node, so every routing rule is visible on the canvas and nothing depends on a hidden setting.
 
-To add each node, click the **+** on the previous node's output, search for the node type shown in bold, and select it. n8n connects it to the previous node for you. Click the node title, type the exact name shown, and press Enter. Go back to the canvas once you've set its fields. To connect nodes that already exist, drag from the source's right output connector to the destination's left input connector. Check that the wire is there instead of assuming it was added.
+To add each node, click the **+** on the previous node's output, search for the node type shown in bold and select it. n8n connects it to the previous node for you. Click the node title, type the exact name shown, and press Enter. Go back to the canvas once you've set its fields. To connect nodes that already exist, drag from the source's right output connector to the destination's left input connector. Check that the wire is there instead of assuming it was added.
 
 For Edit Fields nodes, use **Manual Mapping** and **Add Field**, and set each field's type to **String**. Use **Fixed** for literal values. For values inside `{{ }}`, switch the value control to **Expression** and paste the whole expression. Don't paste an expression as fixed text. Leave any setting not mentioned here at its default. Leave **Settings → On Error** at **Stop Workflow**; don't turn on retries, error continuation, or pinned test data.
 
@@ -188,11 +188,11 @@ From Receipt fields, add **Convert to File** named `Make receipt`. Choose **Conv
 
 ## Preserve the baseline and prepare the independent checker
 
-Save the untouched router as a file you can restore from, and set up a separate checker that compares receipts without trusting the router.
+Save the untouched router as a file you can restore from. Set up a separate checker that compares receipts without trusting the router.
 
 ### 15. Export the original router
 
-Return to Overview, reopen your named router, and inspect Pending rule: `pending_status` must still be Fixed `OPEN`. Return to the canvas. Open the **three-dot menu beside the workflow name** and choose **Export JSON**. Copy the download into `exports/router-baseline.json`. Record the router's name and browser URL in `observations.md`. Keep this file exactly as it is; later exports get different names.
+Return to Overview, reopen your named router, and inspect Pending rule: `pending_status` must still be Fixed `OPEN`. Return to the canvas. Open the **three-dot menu beside the workflow name** and choose **Export JSON**. Copy the download into `exports/router-baseline.json`. Record the router's name and browser URL in `observations.md`. Keep this file exactly as it is. Later exports get different names.
 
 ![Router menu offers Export JSON while the original graph is still unchanged](figures/m07-n8n-15-baseline-export.png)
 
@@ -220,9 +220,9 @@ Return to the checker editor. Open **Compare complete files → Output → Schem
 
 ## Run and compare the two baseline waves
 
-Make the two reference receipts under the unchanged policy, and prove they match each other before you change anything.
+Make the two reference receipts under the unchanged policy. Prove they match each other before you change anything.
 
-Before every form run, re-arm the workflow the form belongs to with **Execute workflow**, wait for it to start listening, and use the **Test URL from that workflow**. Don't reuse a form tab from another workflow or from an earlier restored copy. If the form says it isn't listening, go back to the right editor, re-arm it, and reopen its Test URL. Submit once per execution, and use the current execution's output, not an older node preview.
+Before every form run, re-arm the workflow the form belongs to with **Execute workflow**, wait for it to start listening, and use the **Test URL from that workflow**. Don't reuse a form tab from another workflow or from an earlier restored copy. If the form says it isn't listening, go back to the right editor, re-arm it, and reopen its Test URL. Submit once per execution and use the current execution's output, not an older node preview.
 
 ### 18. Run and download wave 1 under OPEN
 
@@ -296,7 +296,7 @@ Open the changed router's **three-dot menu beside the workflow name** and choose
 
 ## Restore the preserved baseline and prove both reruns
 
-Put the original router back from the saved export, then prove the restored copy produces the baseline receipts byte for byte.
+Put the original router back from the saved export. Then prove the restored copy produces the baseline receipts byte for byte.
 
 ### 26. Recheck the original export against its retained digest
 
@@ -357,7 +357,7 @@ Explain any mismatch from the source cells, node settings, or files you selected
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: separate an input revision from the policy change</summary>
 
-Download [wave2-revised.csv](batch/wave2-revised.csv) into `inputs`. Before you run it, compare its source cells with wave2.csv. Freeze two new delta CSVs that start with the same header as your wave delta files, `lot,before_route,before_status,after_route,after_status`. In `revised-input-delta.csv`, predict the changes from the wave 2 baseline to the revised wave's baseline, with OPEN held fixed. In `revised-policy-delta.csv`, predict the changes from the revised wave's baseline to its changed run, with the revised input held fixed. In a separate note, name each source cell that changed, state that every other row must stay unchanged, and state that rack precedence holds. If you predict no output changes, use a delta with just the header. Don't explain either effect with a comparison that changes the input and the policy at once.
+Download [wave2-revised.csv](batch/wave2-revised.csv) into `inputs`. Before you run it, compare its source cells with wave2.csv. Freeze two new delta CSVs that start with the same header as your wave delta files, `lot,before_route,before_status,after_route,after_status`. In `revised-input-delta.csv`, predict the changes from the wave 2 baseline to the revised wave's baseline, with OPEN held fixed. In `revised-policy-delta.csv`, predict the changes from the revised wave's baseline to its changed run, with the revised input held fixed. In a separate note, name each source cell that changed, and state that every other row must stay unchanged and that rack precedence holds. If you predict no output changes, use a delta with just the header. Don't explain either effect with a comparison that changes the input and the policy at once.
 
 **Expected:** Both predictions exist before either revised run. **Stop:** A prediction relies on results you've already seen. **Recovery:** Keep the observation, and label any new attempt as one made after you'd seen results.
 

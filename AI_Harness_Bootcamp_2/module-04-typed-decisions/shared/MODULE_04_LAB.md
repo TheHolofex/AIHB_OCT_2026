@@ -1,8 +1,8 @@
 # Module 4 · Decide with typed questions
 
-Turn a shift's messages into typed answers that software can route. Compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets; your code and the desk lead make the decisions.
+Turn a shift's messages into typed answers that software can route. Compare those answers with your own reading before you trust them. The model answers fixed questions from fixed answer sets. Your code and the desk lead make the decisions.
 
-You are the intake clerk at Ferry Depot. Chalk Line is a fictional resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages arrived during the shift: requisitions, corrections, cancellations, resends, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it, which states how many boxes of each size the clinic asked for with authority. The case stays inside the class.
+You are the intake clerk at Ferry Depot. Chalk Line is a fictional resupply of sterile surgical gloves from Ferry Depot to Clinic K-3 on vehicle `CL-9` at 15:00. Forty messages arrived during the shift: requisitions, corrections, cancellations, resends, and one note that tells the desk to treat itself as approved. The warehouse picks from the requirement line you hand it. That line states how many boxes of each size the clinic asked for with authority. The case stays inside the class.
 
 A **state** is the data the model sees: the catalog, a short version of the desk rules, and the forty messages. A **typed question** limits the answer to a fixed set: yes or no with a probability, one choice from a list, or one level on a scale. A **decision function** is a model run that reads the state and returns only typed answers, with no prose or side effects.
 
@@ -142,7 +142,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Build the state and read the questions
 
-Run the builder to create the state the model will see. It copies the catalog and desk rules and lists the forty messages in arrival order. In each message, it takes any number followed by more words in the same sentence and saves the number with those words as a **quantity candidate**; the number words one to ten count as numbers. Later, the model picks a candidate rather than typing a number.
+Run the builder to create the state the model will see. The builder copies the catalog and desk rules and lists the forty messages in arrival order. In each message, it takes any number followed by more words in the same sentence and saves the number with those words as a **quantity candidate**; the number words one to ten count as numbers. Later, the model picks a candidate rather than typing a number.
 
 ![Software supplies bounded state and answer choices; the model returns typed proposals, while code validates and routes and people retain consequential decisions.](figures/m04-state-and-questions.png)
 
@@ -222,7 +222,7 @@ Save the file, then check it before anything is paid for.
 
 ## Label the sample before the model runs
 
-Label the ten fixed sample messages before the model runs. Your reading is the only measure you'll have of the model's answers. Write it down first, or it won't count. Answer four of the questions for each message, then freeze the file.
+Label the ten fixed sample messages before the model runs. Your reading is the only measure you'll have of the model's answers. Write your reading down first, or the comparison won't count. Answer four of the questions for each message, then freeze the file.
 
 ![Freeze your labels before the run, adjudicate disagreements, and use the observed mistakes without treating a small sample as a general reliability estimate.](figures/m04-freeze-measure.png)
 
@@ -306,9 +306,9 @@ Open `E/decide-1/response.md` in your editor. If the contract held, you'll see o
 
 ## Validate every typed answer
 
-A reply that looks like JSON is not yet a set of typed answers. The validator confirms the launcher recorded `PASS`, then checks every message and every question against the question set.
+A reply that looks like JSON is not yet a set of typed answers. The validator confirms that the launcher recorded `PASS`. Then it checks every message and every question against the question set.
 
-It checks the forty IDs in order, no extra keys, every probability between 0 and 1, every choice inside its list, every candidate inside that message, and every replaced message earlier than the one that replaces it.
+It checks that the forty IDs are in order, with no extra keys, every probability between 0 and 1, every choice inside its list, every candidate inside that message, and every replaced message earlier than the one that replaces it.
 
 One violation holds the whole reply. A routing table built on a half-valid reply would hide where it went wrong.
 
@@ -332,7 +332,7 @@ One violation holds the whole reply. A routing table built on a half-valid reply
 
 ## Measure the answers against your labels
 
-Agreement between your frozen labels and the model's answers is the only evidence you have about the answers. The comparison counts agreements per question, prints every disagreement with the message text and the model's declared confidence on that answer, and lists the model's answers to your own question on the ten sample messages so you can judge them against the text.
+Agreement between your frozen labels and the model's answers is the only evidence you have about the answers. The comparison counts agreements per question. It prints every disagreement with the message text and the model's declared confidence on that answer. It also lists the model's answers to your own question on the ten sample messages so you can judge them against the text.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -415,7 +415,7 @@ Nine rules are checked in order for each message; the first matching rule sets t
 
 </details>
 
-Open `W/shared/controls/gates.json` in your editor. Set `min_confidence` from what you measured: the router sends a message to `REVIEW` when its weakest declared confidence falls below that gate. To exclude an observed wrong answer that reaches the final confidence gate, set `min_confidence` strictly higher than that answer's confidence; equality passes. A wrong answer at confidence 1 cannot be excluded by this gate alone. Record that limit instead of treating 1.0 as a no-trust switch. If you observed no wrong answers, you have no observed highest-wrong value; the sample still cannot show general reliability. Leave the three probability gates at `0.5` unless a disagreement gave you a reason to move one. Save the file, then route.
+Open `W/shared/controls/gates.json` in your editor. Set `min_confidence` from what you measured: the router sends a message to `REVIEW` when its weakest declared confidence falls below that gate. To exclude an observed wrong answer that reaches the final confidence gate, set `min_confidence` strictly higher than that answer's confidence. Equality passes. A wrong answer at confidence 1 cannot be excluded by this gate alone. Record that limit instead of treating 1.0 as a no-trust switch. If you observed no wrong answers, you have no observed highest-wrong value; the sample still cannot show general reliability. Leave the three probability gates at `0.5` unless a disagreement gave you a reason to move one. Save the file, then route.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -439,7 +439,7 @@ Open `W/out/routing-1.csv`. Every message has a route and a reason. If you chang
 
 ## Decide the queue and write the handoff
 
-The router doesn't make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One queued message changes who may approve; the desk lead makes that decision. Record it in the handoff as the lead's, not yours.
+The router doesn't make the decisions that belong to people. The `REFER` queue holds messages that lack authority or try to instruct the desk. The `REVIEW` queue holds answers the model could not type cleanly or gave low confidence. The `CLARIFY` queue holds requests the clinic must complete. Read each queued message in the state and decide what the desk does with it. One queued message changes who may approve. The desk lead makes that decision. Record the decision in the handoff as the lead's, not yours.
 
 Then write `E/handoff.md` with these six headings, each followed by complete sentences or a table:
 
@@ -498,7 +498,7 @@ The final check compares the state with the case, checks the labels and their fr
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: run it again and measure stability</summary>
 
-A typed answer that changes between two runs of the same state is not a fact about the message. Run the decision function a second time into the next unused folder, `E/decide-2` if your first run passed. Validate it into the matching `out/answers-N.json`, then compare your two validated answer files question by question. If your first run was held and `decide-2` already exists, use `decide-3` and `answers-3.json` below.
+A typed answer that changes between two runs of the same state is not a fact about the message. Run the decision function a second time into the next unused folder, `E/decide-2` if your first run passed. Validate the reply into the matching `out/answers-N.json`, then compare your two validated answer files question by question. If your first run was held and `decide-2` already exists, use `decide-3` and `answers-3.json` below.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -544,7 +544,7 @@ Add the flip count to the Limits section of the handoff. A flipped answer with h
 
 ## Before you stop
 
-Check that `E` holds `labels.sha256`, `decide-1`, `adjudication.md`, and `handoff.md`, and that `W/out` holds `state.json`, `labels.json`, a validated `answers-N.json`, its `agreement-N.json`, and the final `routing-N.csv` and `requirement-N.json` pair. The case files, the contract, the prompt, and the seven supplied questions must still match the checkout; the final check compares them. Keep work and evidence outside the checkout. Looking at the model's answers later does not change the frozen labels, and changing gates later means making a new routing attempt.
+Check that `E` holds `labels.sha256`, `decide-1`, `adjudication.md`, and `handoff.md`. Check that `W/out` holds `state.json`, `labels.json`, a validated `answers-N.json`, its `agreement-N.json`, and the final `routing-N.csv` and `requirement-N.json` pair. The case files, the contract, the prompt, and the seven supplied questions must still match the checkout; the final check compares them. Keep work and evidence outside the checkout. Looking at the model's answers later does not change the frozen labels, and changing gates later means making a new routing attempt.
 
 ## Class-only boundary
 

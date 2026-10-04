@@ -1,6 +1,6 @@
 # Module 8 · Evaluate a change with variation controls
 
-Decide whether a proposed change can be adopted without losing a required source check. Freeze the cases, configurations, and decision rule before you look at any outcomes. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate, even when its other results look better.
+Decide whether a proposed change can be adopted without losing a required source check. Freeze the cases, configurations, and decision rule before you open any results. Compare every candidate with its baseline on the same cases. One hard-gate violation rejects a candidate, even when its other results look better.
 
 The fictional movement carries heater-fuel cans from Ridge Depot to Clinic T-8 on vehicle SB-4. The forty case packets, each with three briefs, are practice data written in advance, not records of OpenRouter calls. Nothing here authorizes a real load sheet or movement.
 

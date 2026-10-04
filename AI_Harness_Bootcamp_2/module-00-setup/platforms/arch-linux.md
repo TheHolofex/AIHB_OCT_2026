@@ -1,14 +1,14 @@
 # Arch Linux setup for Module 0
 
-With an ordinary Arch Linux desktop account, you'll install and verify Oh My Pi, get the course checkout, and run a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step performs a full system upgrade, so wait for the prompt to return before you paste the next box.
+With an ordinary Arch Linux desktop account, you'll install and check Oh My Pi, get the course checkout, and run a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step upgrades the whole system. Wait for your terminal prompt to return before pasting the next box.
 
-You need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. This path does not install Node, npm, or a second AI tool, and it does not ask you to log in to a model vendor.
+You'll need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. You won't install Node, npm, or a second AI tool, and you won't need to log in to a model vendor.
 
-Every command box is one paste. Select every line in the box, paste it once, and press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine, because every path is quoted.
+Paste every line of each box at once, then press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine because every path is quoted.
 
 ## 1. Check this computer
 
-Use official Arch Linux on x86-64 only. Arch Linux ARM is a different distribution and is not supported here. Check the operating system, architecture, shell, account, free space, missing packages, and Python interpreter before downloading anything. Use an ordinary account with device-owner approval for package installation.
+Use official Arch Linux on x86-64, not Arch Linux ARM, which is a different distribution. Before downloading anything, check your operating system, architecture, shell, account, free space, packages, and Python version. Use an ordinary account; get the device owner's approval before installing packages.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, current window.**
 
@@ -50,7 +50,7 @@ course_check_computer() {
 course_check_computer
 ```
 
-**Expected:** The OS line shows `arch` and the ARCH line shows `x86_64`. Available is at least 15G. The package line is `PACKAGES present` or names some of `git curl python ca-certificates less obsidian`. The last lines are a `PY` path with `Python 3.12` or newer, or `PY missing: step 2 installs or upgrades python`.
+**Expected:** The OS line shows `arch`, and ARCH shows `x86_64`. Available space is at least 15G. The package line is `PACKAGES present` or names some of `git curl python ca-certificates less obsidian`. The last lines show a `PY` path with `Python 3.12` or newer, or `PY missing: step 2 installs or upgrades python`.
 
 **Stop:** Any STOP line appears, or Available is below 15G.
 
@@ -58,9 +58,9 @@ course_check_computer
 
 ## 2. Install missing packages
 
-Skip this box when step 1 printed `PACKAGES present` and a `PY` path. Arch does not support partial upgrades, so the command performs a full system upgrade with `-Syu` and installs the missing packages in the same transaction. Read the entire transaction. Type `y` only after the device owner has approved every package listed; otherwise type `n` and stop. The `python` package from core provides the interpreter, and `obsidian` is the signed package from extra.
+Skip this box if step 1 printed both `PACKAGES present` and a `PY` path. Arch does not support partial upgrades. This command upgrades the whole system with `-Syu` and installs the listed packages in the same transaction. Read the entire transaction. Type `y` only if the device owner has approved every package listed; otherwise type `n` and stop. The `python` package from core provides Python, and `obsidian` is the signed package from extra.
 
-If step 1 named `obsidian` as missing, look in your application menu first. If Obsidian is already installed outside pacman (Flatpak, an AppImage, or a vendor package), stop and ask the device owner before installing a second copy, and remove `obsidian` from the command only with their approval.
+If step 1 lists `obsidian` as missing, check your application menu first. If Obsidian is already installed outside pacman (Flatpak, an AppImage, or a vendor package), stop and ask the device owner before installing a second copy. Remove `obsidian` from the command only with their approval.
 
 **Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates the approved full upgrade.**
 
@@ -76,7 +76,7 @@ sudo pacman -Syu --needed git python curl ca-certificates diffutils less obsidia
 
 ## 3. Install Oh My Pi
 
-Download the pinned v18.3.5 release asset for x86_64 and its checksum file. Verify the checksum, install only if the bytes match, place the binary at `$HOME/.local/bin/omp`, add the user bin directory to PATH in the current shell's startup files (only if the exact line is absent), and print the version. The download folder is never reused. Never execute unverified bytes.
+Download Oh My Pi's pinned v18.3.5 x86_64 release and checksum file. The command checks the downloaded binary against the checksum and installs it at `$HOME/.local/bin/omp` only if they match. It adds that folder to PATH in your current shell's startup files only if the exact line is absent, then prints the version. Each download uses a new folder. Never run unverified bytes.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -161,11 +161,11 @@ course_install_omp
 
 **Stop:** Any STOP, checksum mismatch, wrong version, or write error.
 
-**Recovery:** Leave the download folder and any existing `omp` in place. For checksum or download errors keep the attempt and ask the owner. For a conflicting destination ask the owner before any change. Do not switch assets or disable checks.
+**Recovery:** Keep the download folder and any existing `omp` in place. For a checksum or download error, keep the attempt and ask the owner. If the destination conflicts, ask the owner before you change anything. Do not switch assets or disable checks.
 
 ## 4. Get the course files
 
-The box checks private-repository access, then clones the course to `"$HOME/Documents/AIHB_OCT_2026"`. If that folder is already a checkout of the course origin, the box leaves it unchanged and does not reset, pull, or clean it. GitHub credentials are separate from your course-site password and OpenRouter key.
+This command checks access to the private repository, then clones the course into the checkout at `"$HOME/Documents/AIHB_OCT_2026"`. If that folder is already a checkout of the course origin, the command leaves it unchanged and does not reset, pull, or clean it. GitHub credentials are separate from your course-site password and OpenRouter key.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -202,11 +202,11 @@ course_use_checkout() {
 course_use_checkout
 ```
 
-**Expected:** For a new clone, a commit hash followed by `HEAD`, then Git's `Cloning into` progress. For an existing checkout, `USE: existing checkout; no reset, pull, or clean`. Either way, the last lines are `R` and `M` paths under your home folder.
+**Expected:** For a new clone, a commit hash followed by `HEAD`, then Git's `Cloning into` progress. For an existing checkout, `USE: existing checkout; no reset, pull, or clean`. Either way, the last lines are the `R` and `M` paths under your home folder.
 
 **Stop:** Authentication, network, or not-found error on ls-remote; any STOP from the function.
 
-**Recovery:** Keep the error. For network ask the owner. For missing credentials use the subsection below. If the account lacks access, the repository owner must invite it.
+**Recovery:** Keep the error. For a network problem ask the owner. For missing credentials use the subsection below. If the account lacks access, the repository owner must invite it.
 
 ### If GitHub access fails
 
@@ -218,7 +218,7 @@ Check whether `gh` is present.
 if command -v gh >/dev/null 2>&1; then gh --version; else printf 'GH MISSING\n'; fi
 ```
 
-**Expected:** A `gh version` line or `GH MISSING`. Skip the install box when a version is shown.
+**Expected:** A `gh version` line or `GH MISSING`. Skip the install command when a version is shown.
 
 **Stop:** Existing gh fails to run.
 
@@ -246,13 +246,13 @@ Sign in through your browser. The terminal shows a one-time code and may ask you
 gh auth login --hostname github.com --git-protocol https --web
 ```
 
-**Expected:** Browser completes and terminal confirms login for the invited account.
+**Expected:** Browser completes and the terminal confirms login for the invited account.
 
 **Stop:** Login fails or wrong account.
 
 **Recovery:** Stop; ask owner or account owner to resolve. Never paste a password or token.
 
-Check status (storage location must be approved by device policy).
+Check status. The storage location must be approved by device policy.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -266,7 +266,7 @@ gh auth status --hostname github.com
 
 **Recovery:** Ask owner for approved credentials/storage.
 
-Set up helper and recheck access.
+Set up the helper and recheck access.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -328,7 +328,7 @@ course_confirm_new_terminal
 
 ## 6. Enter your OpenRouter key
 
-The box reads the key without displaying it. Paste the box, press Return, then paste or type the key and press Return. Characters are not shown. The key exists only in this process.
+The launcher reads your OpenRouter key only from this terminal's environment. This box reads the key without showing it; step 7 makes it available to the commands you run here. Paste the box by itself and press Return. Then type or paste the key and press Return again; nothing appears while you do. The key exists only in this terminal process.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -338,13 +338,13 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 **Expected:** Nothing echoed. Prompt returns after Return (may stay on same line).
 
-**Stop:** Any character of the key appears, or you paste the key into the command box.
+**Stop:** Any character of the key appears, or you paste the key into the box.
 
-**Recovery:** Treat displayed key as exposed. Follow [credentials](../shared/CREDENTIALS.md). Use a replacement key in a new window.
+**Recovery:** Treat displayed key as exposed. Follow [credentials](../shared/CREDENTIALS.md). Use a replacement key in a new terminal.
 
 ## 7. Confirm the key is loaded
 
-Export makes the variable visible to programs started from this window. `SET` confirms a non-empty value in this process only.
+Export makes the variable visible to programs started from this terminal. `SET` confirms a non-empty value in this process only. A closed terminal forgets the key.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
@@ -438,9 +438,9 @@ course_save_and_read
 
 ## Set up local Obsidian
 
-Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 15 minutes. Use the signed Extra `obsidian` package from the approved full `pacman -Syu` transaction. It is the [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR or vendor binary. Pacman verified signatures on install. Keep any existing profile and vaults.
+Obsidian lets you edit and link local notes for Module 2. Allow roughly 10 to 15 minutes. Use the signed Extra `obsidian` package from the approved full `pacman -Syu` transaction. It's the [Arch-maintained x86-64 package](https://archlinux.org/packages/extra/x86_64/obsidian/), not an AUR or vendor binary. Pacman checks signatures when it installs the package. Keep any existing profile and vaults.
 
-If you skipped the package step when it was needed, return and run the full upgrade. Record the version pacman reports.
+If you skipped the package step even though Obsidian was missing, go back and run the approved full upgrade. Record the version pacman reports.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -460,9 +460,9 @@ obsidian &
 
 ### Open a fresh practice vault and follow its links
 
-Use Obsidian to follow a note link, save an edit, and see a change made outside the app. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder; leave existing vaults and app profiles intact. No account, plugin, Sync, or MCP is needed. This work makes no provider call.
+Use Obsidian to follow a note link, save an edit, and see a change made outside the app. Allow roughly 10 to 15 minutes. A **vault** is a local folder of notes. Use only the fresh practice folder; leave existing vaults and app profiles alone. You don't need an account, plugin, Sync, or MCP. This work makes no provider call.
 
-Stay in the terminal with `PY`, `R`, and `M` from earlier steps. The `OBS_ROOT` is outside the OMP attempt and checkout.
+Stay in the terminal where you set `PY`, `R`, and `M`. `OBS_ROOT` is outside the OMP attempt and checkout.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -696,7 +696,7 @@ id -un && id -nG && docker context show && docker info && docker compose version
 
 ## 13. Generate the n8n configuration
 
-Use n8n 2.41.5. The installer source checked was 1.4.0. Because the live URL can change, use the review path: download, page the script with less, inspect, then run only the reviewed file. Destination must be absent (even as symlink or empty dir). Project name is fixed as `n8n-course`; the check below verifies it is unused on this engine before recording.
+Use n8n 2.41.5. The installer source checked was 1.4.0. The live URL can change, so use the review path. Download the script, page it with less, inspect it, then run only the reviewed file. The destination must be absent, even as a symlink or empty directory. The project name is fixed as `n8n-course`. The check below verifies the name is unused on this engine before recording it.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -755,7 +755,7 @@ course_run_reviewed_n8n
 
 ## 14. Start n8n on this computer only
 
-Edit the generated `compose.yml` with a scripted substitution that changes exactly one occurrence of the port mapping, then verify the result. Record the fixed project name `n8n-course` only after confirming it is unused. Define the helper that enforces the record and no exported overrides. Start only after the port and project checks.
+Edit the generated `compose.yml` with a scripted substitution that changes exactly one occurrence of the port mapping. Verify the result. Record the fixed project name `n8n-course` only after confirming it is unused. Define the helper that enforces the record and no exported overrides. Start only after the port and project checks.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -888,9 +888,9 @@ course_n8n exec -T n8n n8n --version
 
 ## 15. Save a blank workflow and confirm it persists
 
-Open `http://localhost:5678`. For a fresh instance complete owner setup with local name/email/password. For existing use its login. Keep Assistant off; do not enter any OpenRouter key.
+Open `http://localhost:5678`. If this is a fresh instance, complete the owner setup with a local name, email, and password. For an existing instance, use its login. Keep Assistant off and do not enter any OpenRouter key.
 
-Select Overview → Build a workflow (or Create workflow). Name it **Module 7 readiness**. Keep the canvas blank. Do not Publish. Reload and confirm the name and empty canvas remain.
+Select Overview → Build a workflow (or Create workflow). Name it **Module 7 readiness**. Keep the canvas blank. Do not Publish. Reload the page and confirm that the name and empty canvas remain.
 
 **Expected:** Named blank workflow reopens after reload and is unpublished.
 
@@ -912,7 +912,7 @@ course_n8n down
 
 **Recovery:** Keep output; never use `-v`.
 
-Start again.
+Start the stack again.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
 
@@ -928,7 +928,7 @@ course_n8n up -d
 
 ## If a step stops
 
-Organized by the step that produced the first error. Keep the exact error, attempt folder, and last observed state. Ask the device or course owner with that evidence. Never delete, rename, or overwrite an existing attempt, checkout, vault, or n8n directory to "start fresh."
+The list below is organized by the step that produced the first error. Keep the exact error, attempt folder, and last observed state. Ask the device or course owner with that evidence. Never delete, rename, or overwrite an existing attempt, checkout, vault, or n8n directory to "start fresh."
 
 - Computer check or Python below 3.12: free space or ask owner for a supported Arch x86_64 desktop with ordinary account and current python package.
 - Package transaction refused or conflicting: keep the exact pacman output; only the owner can approve the full `-Syu`.

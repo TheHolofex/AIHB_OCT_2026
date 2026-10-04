@@ -2,9 +2,9 @@
 
 Find a repeated failure in Blue Gauge's practice records. Turn it into a check that flags the same text in another run. Use your failure notes to define a **predicate**: a yes-or-no condition. Configure the supplied control with two exact pieces of text, test it on known-bad, known-good, and missing input, and record what it catches and misses.
 
-The eighty records are fictional practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations and don't measure model reliability. Your work stays inside the fictional class case and authorizes no real movement.
+The eighty records are fictional practice runs about oxygen cylinders moving from East Yard to Clinic O-2. They aren't real workplace observations and don't measure model reliability. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
 
-Plan for about three hours (a rough estimate, not a measured time).
+Plan for about three hours (a rough estimate).
 
 ## Copy a work folder
 
@@ -157,7 +157,7 @@ $E = "$HOME\course-evidence\module-06-$RUN\evidence"
 
 ## Pacing
 
-Most of the session is hands-on work. Reading the sample runs and writing first-failure notes takes the longest, followed by freezing the config copy and running the three checks. Reconciling the counts and choosing the two literals take less time, and freezing the sample rule and writing the handoff are quick. Your own pace may differ.
+Most of the session is hands-on work. Reading the sample runs and writing first-failure notes takes the longest. Freezing the config copy and running the three checks come next. Reconciling the counts and choosing the two literals take less time. Freezing the sample rule and writing the handoff are quick. Your own pace may differ.
 
 ## 1. Freeze the sample rule first
 
@@ -332,7 +332,7 @@ total: 16
 revisions to category names:
 ```
 
-The total must be 16. Each category's count must match the runs listed under it, and pass, fail, and other must add up to the total. If they don't, record `HOLD` and find the run that's missing or counted twice. Then state one conclusion that the failure categories in this sample support. Don't treat how often a failure appeared here as a rate for real work or current models.
+The total must be 16. Each category's count must match the runs listed under it. Pass, fail, and other must add up to the total. If they don't, record `HOLD` and find the run that's missing or counted twice. Then state one conclusion that the failure categories in this sample support. Don't treat how often a failure appeared here as a rate for real work or current models.
 
 If you revise a category label, keep the original first-failure notes visible next to it.
 

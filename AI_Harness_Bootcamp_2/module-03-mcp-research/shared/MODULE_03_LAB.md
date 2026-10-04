@@ -1,10 +1,10 @@
 # Module 3 · Research through an MCP server, with limits you can prove
 
-Connect an AI assistant to an Obsidian research vault through an MCP server. Research a supply problem, judge the handling calls it proposes, limit the connection so forbidden actions can't happen, then remove the connection and show the tools are gone.
+Connect an AI assistant to an Obsidian research vault through an MCP server. Research a supply problem and judge the handling calls it proposes. Limit the connection so forbidden actions can't happen, then remove the connection and show the tools are gone.
 
 You are a staff action officer in Task Force Marlin at Forward Base Brandt. The base clinic, Clinic B-2, is running low on burn-dressing cases. The Base Medical Logistics Officer wants to know what is known about getting 40 cases from Mill Depot to the clinic by 100600Z October 2026, what blocks it, and what is still unknown. Forty notes in the vault's `Sources` folder hold the evidence. A partner medical liaison cell has also asked for a short extract about the delivery, and only the Release Authority may decide what leaves the task force. The case is fictional and stays inside the class.
 
-**MCP** (Model Context Protocol) is the standard way an assistant's harness connects to a separate program (**server**) that offers tools. The server here is a small Python program that reads and writes notes in your vault. A connection entry in `mcp.json` names the program your machine will start; adding the entry means agreeing to let that program run with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes; Obsidian shows the links between them.
+**MCP** (Model Context Protocol) is the standard way an assistant's harness connects to a separate program (**server**) that offers tools. The server here is a small Python program that reads and writes notes in your vault. A connection entry in `mcp.json` names the program your machine will start. Adding the entry means agreeing to let that program run with your authority. An Obsidian **vault** is an ordinary folder of Markdown notes. Obsidian shows the links between them.
 
 Plan for about three hours on Tuesday (a rough estimate).
 
@@ -374,7 +374,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research run failed; preserve this a
 
 **Recovery:** Rename the held folder `research-attempt-1` and keep it. Move any notes the run created under `Drafts/research` into that folder because the server will not replace a note that already exists. Then run again into `E/research`. Never repair a changed source note by hand. A changed source means a limit failed, so keep the receipts and stop.
 
-Now read what the AI wrote in Obsidian. Open `Drafts/research/open-questions`, then each fact note. Click a `[[KH-…]]` link to open the source it cites. Open the Backlinks pane on a source note to see which findings cite it. Open the Graph view to spot source notes that no finding mentions. Search the vault for `QA hold`, `deadlined`, and `MLC`. Pick two conflicts and check what the AI claimed against the sources. Candidates: which stock count is current, whether the lot on hand is the lot that can be issued, whether the truck on the convoy table can run, whether the bridge on the main route takes its weight, and whether the approved flight falls inside the dust forecast. A finding without a source note it can be traced to is not yet a finding.
+Now read what the AI wrote in Obsidian. Open `Drafts/research/open-questions`, then each fact note. Click a `[[KH-…]]` link to open the source it cites. Open the Backlinks pane on a source note to see which findings cite it. Open the Graph view to spot source notes that no finding mentions. Search the vault for `QA hold`, `deadlined`, and `MLC`. Pick two conflicts and check what the AI claimed against the sources. Candidates: which stock count is current, whether the lot on hand is the lot that can be issued, whether the truck on the convoy table can run, whether the bridge on the main route takes its weight, and whether the approved flight falls inside the dust forecast. A finding that cannot be traced to a source note is not yet a finding.
 
 Open `E/research/mcp-audit.jsonl` and look for rows with `"allowed": false`. Each one is a call the server refused. If you see none, the AI never tried anything outside its limits during this run, and your probe is what shows that the limits hold.
 
@@ -441,7 +441,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the releasable folder was not staged; pr
 
 ## Narrow the connection for the partner extract
 
-Read `W/shared/prompts/PARTNER_EXTRACT.md` and set the new scopes as you did for research: allow reads only from material the extract may draw on, and writes only to the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md`, update the tools and scopes, and set the server's arguments in `mcp.json` to match. If the partner phase can still read `Sources`, it could repeat a STAFF fact no matter how carefully the extract is worded.
+Read `W/shared/prompts/PARTNER_EXTRACT.md` and set the new scopes as you did for research: allow reads only from material the extract may draw on, and writes only to the folder the prompt names. Change `phase` to `partner` in `AUTHORITY.md` and update its tools and scopes. Then set the server's arguments in `mcp.json` to match. If the partner phase can still read `Sources`, it could repeat a STAFF fact no matter how carefully the extract is worded.
 
 Prove the new limits before the live run, then run the partner phase.
 
@@ -567,4 +567,4 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: the receipts need attention; preserve th
 
 ## Class-only boundary
 
-All names, identifiers, places, and facts are fictional materials for this course. Do not use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. Use a module result only for class review.
+All names, identifiers, places, and facts are fictional course fixtures. Don't use this vault, these handling categories, or these notes to plan, authorize, or describe a real movement, or to handle real information. A module result is for class review only.

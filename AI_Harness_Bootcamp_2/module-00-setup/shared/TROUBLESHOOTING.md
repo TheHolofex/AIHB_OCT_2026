@@ -78,7 +78,7 @@ Keep **n8n READY/HOLD** separate from the OMP setup report and the live OMP read
 | The empty instance has no “Create Workflow” button or mandatory “Saved” label | On the Apple Silicon Mac where these steps were checked, the empty instance offers **Overview → Build a workflow**. Click the title, enter the readiness name, and press **Enter**; saving is automatic. Reload and confirm the name and blank canvas. Do not publish. If your screens don't allow this, keep the instance as it is and ask for help. |
 | The workflow disappears after reload or after `down` / `up -d` | Record n8n HOLD. Keep the directory and volumes. With the owner, confirm you are using the same engine, Compose path/project, and named data volume. Ordinary `down` keeps named data. Never use `down -v`, prune volumes, or create a replacement workflow to hide failed persistence. |
 
-The UI and n8n run were checked only on Apple Silicon. You still need successful checks on your own device. Share only errors with private details removed and a description of the system state you saw; never include `.env`, resolved Compose configuration, local passwords, or provider keys.
+The UI and n8n run were checked only on Apple Silicon. You still need successful checks on your own device. Share only errors with private details removed and a description of the system state you saw. Never include `.env`, resolved Compose configuration, local passwords, or provider keys.
 
 ## Confirm the command you are actually running
 

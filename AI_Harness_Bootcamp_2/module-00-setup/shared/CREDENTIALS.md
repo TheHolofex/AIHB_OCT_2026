@@ -12,15 +12,15 @@ Get each kind of access separately:
 - Your **GitHub account** needs read permission for the private `TheHolofex/AIHB_OCT_2026` repository. Accept the owner's invitation with the account you plan to use.
 - Your **OpenRouter key** lets you send model requests, which OpenRouter bills to the key's account. It does not log you in to Git or GitHub.
 
-Follow your platform's read check for the exact repository with prompts disabled. If your approved Git credentials work, you don't need another login tool. Otherwise, follow the platform's GitHub CLI (`gh`) browser-login steps. `gh` helps with repository access; it is not another AI tool or needed to run OMP.
+In your platform guide, test read access to that exact repository with prompts disabled. If your approved Git credentials work, you don't need another login tool. Otherwise, follow the platform's GitHub CLI (`gh`) browser-login steps. GitHub CLI helps you reach the repository. It isn't another AI tool, and you don't need it to run OMP.
 
-Before you authorize browser login, check the GitHub hostname, device code, and invited account. Then repeat the repository read check; login alone doesn't grant permission. If it fails, ask the owner to fix the invitation, organization approval, or network error. Don't log in again to try to gain permission.
+Before authorizing browser login, check the GitHub hostname, device code, and invited account. Then repeat the repository read check. Logging in alone doesn't grant permission. If the check fails, ask the owner to fix the invitation, organization approval, or network error. Don't log in again to try to gain permission.
 
-[GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Check the storage shown by `gh auth status --hostname github.com`. Don't add `--show-token` or put authentication output in shared evidence. If device policy forbids that storage, stop and ask the device owner for approved storage or Git credentials, not insecure storage. After the fallback is needed and storage is approved, follow the platform steps to set up `gh` as the Git credential helper only for `github.com`.
+[GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Check which storage `gh auth status --hostname github.com` shows. Don't add `--show-token` or put authentication output in shared evidence. If device policy forbids that storage, stop and ask the device owner for approved storage or Git credentials. Don't use insecure storage. Only if fallback storage is needed and approved, follow the platform steps to set up `gh` as the Git credential helper for `github.com` alone.
 
 ## Enter the key through a hidden prompt
 
-Choose your terminal's command. Paste only that command and press Enter. At the hidden prompt, type your OpenRouter key, which you enter in the terminal rather than save in a file, then press Enter. Don't paste export or conversion commands while it waits.
+Choose your terminal's command. Paste only that command and press Enter. At the hidden prompt, type your OpenRouter key, which you enter in the terminal rather than save in a file, then press Enter. Don't paste the export or conversion commands while the prompt waits.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -42,7 +42,7 @@ $secret = Read-Host 'OpenRouter key' -AsSecureString
 
 ## Make it available only to this process and its children
 
-Wait until hidden input finishes. In PowerShell, the next block briefly converts the secure string to the environment value, clears and frees its unmanaged buffer, and disposes of the secure-string object.
+Wait until hidden input finishes. In PowerShell, the next block briefly converts the secure string to an environment value. It then clears and frees the temporary memory and disposes of the secure-string object.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -74,7 +74,7 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 ## Check a separately opened terminal
 
-Open a new terminal independently of the one where you entered the key. It should report `MISSING`; a child shell started from the first terminal can inherit its environment. `SET` alone doesn't mean the key was saved in a profile or leaked.
+Open a new terminal independently of the one where you entered the key. It should report `MISSING`. A child shell started from the first terminal can inherit its environment, so it isn't an independent check. `SET` alone doesn't mean the key was saved in a profile or leaked.
 
 **Terminal: Bash or zsh, ordinary user, independently opened window.**
 

@@ -2,23 +2,23 @@
 
 **Serves oracle:** S02, S05, S06, S07, S09, S12, S13, S19, S20, S21, S24, S26
 
-Standalone course repository: <https://github.com/TheHolofex/AIHB_OCT_2026>. The standard checkout is `~/Documents/AIHB_OCT_2026`. Course sources, publishing tools, and required reference files live in this repository; no parent checkout is needed.
+This course is in its own repository: <https://github.com/TheHolofex/AIHB_OCT_2026>. The standard checkout is `~/Documents/AIHB_OCT_2026`. You'll find the course sources, publishing tools, and required reference files here; you don't need a parent checkout.
 
 ## Course identity
 
-Reformation is an **ungraded bootcamp** for a **professional domain user** doing accountable AI-assisted work at the smallest sufficient operating complexity. It develops professional AI-user and **harness operator** skills, not builder or software-engineering skills. Exercises produce work and observations, not learner scores or qualification decisions.
+Reformation is an **ungraded bootcamp** for a **professional domain user** doing accountable AI-assisted work without more operating complexity than the work needs. It builds professional AI-user and **harness operator** skills, not builder or software-engineering skills. Exercises produce work and observations, not learner scores or qualification decisions.
 
-A harness is the environment around a model: direction, context, sources, tools, permissions, working artifacts, saved controls, feedback, checks, and traces. The learner specifies bounded behavior, configures supplied controls, inspects evidence, and owns consequential decisions. An **adapter** implements and protects executable mechanics and supplies each module's case. A builder owns APIs, MCP, retrieval pipelines, agent runtimes, and deployment.
+A harness is everything around a model that shapes and records its work: direction, context, sources, tools, permissions, working artifacts, saved controls, feedback, checks, and traces. The learner sets limits on the model's behavior, configures supplied controls, inspects evidence, and owns consequential decisions. An **adapter** builds and protects the executable mechanics and supplies each module's case. A builder owns APIs, MCP, retrieval pipelines, agent runtimes, and deployment.
 
-The core is designed for a **nondeveloper** who can use workplace files and applications and inspect plain-language configuration. A preflighted accessible environment supplies the mechanics.
+The core targets a **nondeveloper** who can use workplace files and applications and inspect plain-language configuration. A ready accessible environment, checked in advance, supplies the mechanics.
 
-The learner course is published under [`site/`](site/). Existing Markdown in [`AI_Harness_Bootcamp_2/`](AI_Harness_Bootcamp_2/) is maintainer source, not a second learner reading path. [`MISSION_THREAD_SCENARIOS.md`](MISSION_THREAD_SCENARIOS.md) owns the independent case specifications. [`evidence/exercise-runs.json`](evidence/exercise-runs.json) records observed exercise outcomes and explicit unverified lanes; design budgets are not pilot evidence.
+The learner course is published under [`site/`](site/). Existing Markdown in [`AI_Harness_Bootcamp_2/`](AI_Harness_Bootcamp_2/) is maintainer source, not a second learner reading path. [`MISSION_THREAD_SCENARIOS.md`](MISSION_THREAD_SCENARIOS.md) holds the independent case specifications. [`evidence/exercise-runs.json`](evidence/exercise-runs.json) records observed exercise outcomes and explicit unverified lanes; design budgets are not pilot evidence.
 
 ## Core promise
 
-The first-result design target is about the first hour for producing and checking a useful bounded artifact; it is not a measured learner-completion promise. Before any consequential release, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change with explicit treatment of model variation, and transfers the method.
+The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, diagnoses failure, improves from observed runs, operates one fixed workflow, evaluates change while accounting for model variation, and transfers the method.
 
-The core runs as **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry; Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two. These are rough estimates, not measured times. Every module owns one outcome, receives its own supplied case, and leaves **one evidence bundle per module**. The independent-person attempt remains separately scheduled outside the four course days.
+The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**. The independent-person attempt is scheduled separately, outside the four course days.
 
 ## Target sequence
 
@@ -36,7 +36,7 @@ The core runs as **four teaching days, Monday through Thursday, instructor-led a
 | 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
 | 10 | Stand up a local uncensored AI and hand it off | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, and enable another person to repeat bring-up from the kit alone. |
 
-Cases and evidence bundles are **independent**: no gate consumes an earlier module’s product. Capabilities are cumulative: earlier skills are assumed, not retaught as new objectives. Authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) owns the module contract.
+Cases and evidence bundles are **independent**: no gate relies on a product from an earlier module. Skills build on one another, but earlier skills are assumed rather than retaught as new objectives. The authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) defines the module contract.
 
 ### Module 02 mastery
 
@@ -48,7 +48,7 @@ The three enabling objectives are:
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source checking is an inherited quality bar from Module 01, and bounded direction is an earlier capability. Saved instructions and load proof are newly taught in Module 02. Its independent Ledger Pike case retains all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and inspects retrieval from a frozen copy containing only navigation and admitted knowledge. Hidden-fault diagnosis remains Module 05's capability; person-to-person transfer remains Module 10's.
+Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Diagnosing hidden faults remains Module 05's capability; independent-person transfer remains Module 10's.
 
 ## Core and advanced boundary
 
@@ -60,11 +60,11 @@ The core requires zero programming objectives. Dynamic checker implementation, A
 
 - A person owns consequential acceptance, release, refusal, authority expansion, and residual risk.
 - A material acceptance uses independent evidence from a source, deterministic check, or observed state. Public practice files are inspectable.
-- Preserve the identity of inputs and checks across a comparison. Authored practice data, hashes, model authorship, and agent role-play do not establish a person's observed performance.
-- Every learner both decides and operates. A supported `no-use`, `no-release`, or `no-tool` decision is professional performance and is recorded and studied; it does not satisfy or replace the operation claim.
-- A material failure is preserved before repair. Localization-only is held, not recovery completion.
-- File presence and refusal prose do not prove execution. Keep actual tool calls, execution results, guard records, and disk snapshots. A technical replay establishes only the behavior it exercised.
-- `PASS` and `HOLD` describe technical checks and work decisions, not grades. Preserve a failed attempt, repair its cause, and keep later attempts separate.
+- Keep input and check identities the same across a comparison. Authored practice data, hashes, model authorship, and agent role-play don't prove how a person performed.
+- Every learner makes decisions and operates the tools. A supported `no-use`, `no-release`, or `no-tool` decision is professional performance: record and study it, but don't treat it as proof of operation.
+- Keep evidence of a material failure before repairing it. Finding the fault alone is held, not completed recovery.
+- A file's presence or a written refusal doesn't prove execution. Keep actual tool calls, execution results, guard records, and disk snapshots. A technical replay proves only the behavior it exercised.
+- `PASS` and `HOLD` describe technical checks and work decisions, not grades. Keep the failed attempt, fix its cause, and keep later attempts separate.
 - Clean-session restartability and independent-person transfer are separate; neither can substitute for the other.
 - Each module bundle contains the artifact/state, decisive evidence, decision, claim result, failure or `HOLD`, scope boundary, and handoff.
 
@@ -91,34 +91,34 @@ The 32 instructional destinations share the local Sirocco reader. Edit `ui/cours
 - The homepage hero is the first `.webp` in `ui_assets` and must be exactly 1672×941. Optional photo bands map an id to a declared 1672×716 `.webp` under the top-level `home_bands` key, and each id appears exactly once on the home page as an empty `<div data-photo-band="ID"></div>`. An unknown, repeated, unused, non-empty, or non-home placeholder fails the build. Bands render as decorative, lazy-loaded figures outside search, the outline, and the figure dialog. The publisher reads WebP dimensions from the file header. Course-owned photographs live in `ui/images/`, not in the vendored Sirocco directory; `ui/images/ART_DIRECTION.md` holds their style contract, exact prompts, encode budgets, and provenance.
 - The generated `assets/search-index.json` contains instructional prose and heading targets, not fenced commands, raw exercise contents, staff sources, or evidence. Search loads it only when opened.
 
-Do not publish standalone accessibility/equivalent-inspection pages or callouts, scoring rubrics, or exercise-grading guidance. Retain keyboard navigation, figure text, and technical checks.
+Do not publish standalone accessibility/equivalent-inspection pages or callouts, scoring rubrics, or exercise-grading guidance. Keep keyboard navigation, figure text, and technical checks.
 
 Every module overview and lab has an **Overview / Lab** switch immediately below its title. Both links come from the module's manifest routes; `aria-current="page"` marks the active page. Keep the switch visible on overview pages as well as labs, at narrow and wide widths, and without JavaScript.
 
 Guided reading keeps commands and their expected, stop, and recovery conditions together. The publisher renders each labeled fence as a command card with a copy control, pairs adjacent Bash and PowerShell cards into one shell switch (the chosen shell is remembered; print shows both), and renders Expected/Stop/Recovery as callouts. Numbered steps carry step numbers and a "Mark done" control; the rail stepper mirrors them. Read full page exposes all procedure bodies and optional/transcript disclosures. Without JavaScript, core instructions, both shells, outcomes, and the static stepper remain visible, and navigation uses ordinary links and native disclosures. Existing heading fragments remain valid.
 
-Appearance, reading mode, shell choice, explicitly selected reading positions, and step completion use only `reformation-ui:v1:{course-root-pathname}` in local storage (state version 2; version 1 preferences migrate). Progress is per device and per module: the overview panel, the header bar, and the home course map count done steps out of the lab and setup steps. "Reset progress on this device" clears positions and completion but retains appearance, reading mode, and shell choice. These preferences store no work, credentials, or check results, and a done mark never establishes a passed technical check. Root and prefixed publications use separate keys.
+Appearance, reading mode, shell choice, explicitly selected reading positions, and step completion use only `reformation-ui:v1:{course-root-pathname}` in local storage (state version 2; version 1 preferences migrate). Progress is per device and per module: the overview panel, the header bar, and the home course map count done steps out of the lab and setup steps. "Reset progress on this device" clears positions and completion but keeps appearance, reading mode, and shell choice. These preferences store no work, credentials, or check results, and a done mark never establishes a passed technical check. Root and prefixed publications use separate keys.
 
 
 ## Pinned execution and publication
 
-Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. The only provider credential is `OPENROUTER_API_KEY`, supplied to the current process. Every live exercise selects **`openrouter/anthropic/claude-sonnet-4.6`** through `shared/run_omp.py`. The launcher creates fresh runtime state, exposes only course tools, disables retries and model fallback, and preserves evidence separately from work. The guard is an OMP tool boundary, not an operating-system sandbox.
+Participants need Git, Python 3.12+, Oh My Pi **18.3.5**, a browser, and an ordinary text editor. The only provider credential is `OPENROUTER_API_KEY`, supplied to the current process. Every live exercise selects **`openrouter/anthropic/claude-sonnet-4.6`** through `shared/run_omp.py`. The launcher creates fresh runtime state, exposes only course tools, disables retries and model fallback, and keeps evidence separate from work. The guard is an OMP tool boundary, not an operating-system sandbox.
 
 Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
 
-Modules 02–10 use `shared/prepare_work.py`; Module 01 retains its nine-source starter and Module 00 retains its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
+Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 keeps its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
 Module 7 instead uses local **n8n 2.41.5** on the full approved official Docker stack. The learner builds the router from blank in the browser; no OMP or paid model call participates in routing or comparison. Its preparation path copies only three unchanged wave CSVs, `validate-batch.js`, and `receipt-checker.json`. Original/changed router exports, staff predictions, and native evidence remain private. Run its control regressions with `node --test AI_Harness_Bootcamp_2/module-07-batch-workflow/tests/test_controls.mjs`; native graph and byte-level evidence live under that module's `evidence/native/`.
 
 The child working directory is inside its redirected, fresh HOME. In pinned OMP, `--no-rules` does not disable [ancestor context-file discovery](https://github.com/can1357/oh-my-pi/blob/v18.3.5/packages/coding-agent/src/discovery/helpers.ts); placing cwd beside HOME allowed an outside ancestor's instructions to load. An actual offline OMP replay observed the leak before this placement fix and its absence afterward, with zero provider requests.
 
-`.gitattributes` keeps text checkouts at LF so frozen source/control digests survive Git's automatic line-ending conversion. Native Windows setup also disables `core.autocrlf` for the clone command only. Do not renormalize or reset an existing dirty checkout to repair a hash failure; retain the mismatch and use an intact fresh copy.
+`.gitattributes` keeps text checkouts at LF so frozen source/control digests survive Git's automatic line-ending conversion. Native Windows setup also disables `core.autocrlf` for the clone command only. Do not renormalize or reset an existing dirty checkout to repair a hash failure; keep the mismatch and use an intact fresh copy.
 
 Native OMP can exit 0 after an extension preparation error. The launcher still holds an attempt without exactly one completed terminal turn, the expected model identity, complete guard lifecycle, and matching tool/disk receipts. An offline host-invoked guard smoke verifies extension APIs and allow/deny behavior; it is not a model tool call or provider evidence. Runtime evidence files are local audit records, not cryptographic proof against an operator who can rewrite the whole evidence directory.
 
 The saved-evidence audit joins each successful call to its authorization, independent execution check, tool/path identity, and filesystem effect. It also binds `response.md` to the final assistant event; changing only the extracted answer cannot change the recorded model response.
 
-The MCP cutover retires the `hash_tool` policy field. Historical receipts containing that field require the launcher revision that produced them; the current auditor rejects the obsolete schema. Preserve those receipts unchanged rather than removing fields to make an old run pass a new auditor.
+The MCP cutover retires the `hash_tool` policy field. Historical receipts containing that field require the launcher revision that produced them; the current auditor rejects the obsolete schema. Keep those receipts unchanged rather than removing fields to make an old run pass a new auditor.
 
 Maintainers need Python 3.12+ and Node.js 22 to publish the course and run the offline checks. From the repository root, create the Python environment once if it does not already exist:
 
@@ -138,7 +138,7 @@ Reuse that environment for publication and checks. `node scripts/render_figures.
 
 On native Windows, use `.venv\Scripts\python.exe` for the virtual-environment interpreter. Reuse the environment during correction loops. `check_course.py` never starts paid model calls; live verification is explicit and separately recorded. Serve only `site`, not the repository or staff source tree.
 
-The publisher reports instructional pages, raw downloads, and UI/generated assets separately. `--check` is read-only and compares exact bytes, including search and styles. After a UI change, exercise the built pages in a real browser in Dark and Sand, on narrow and wide viewports, with keyboard navigation, full reading, no JavaScript, print, and a prefixed mount. Preserve screenshots and first-failure records outside the checkout. Browser proof is not native-platform, assistive-technology, provider, or learner-performance evidence.
+The publisher reports instructional pages, raw downloads, and UI/generated assets separately. `--check` is read-only and compares exact bytes, including search and styles. After a UI change, exercise the built pages in a real browser in Dark and Sand, on narrow and wide viewports, with keyboard navigation, full reading, no JavaScript, print, and a prefixed mount. Keep screenshots and first-failure records outside the checkout. Browser proof is not native-platform, assistive-technology, provider, or learner-performance evidence.
 
 `site/` is generated output and is not committed. On a fresh clone, install the pinned build dependency and run the publication commands above before serving or deploying. Publish the contents of `site/` as a static site; do not point a host at the repository root. The generated site needs no application server or provider credentials.
 
@@ -148,7 +148,7 @@ The GitHub repository is private. Give participants repository read access befor
 
 The five owning procedures are under `AI_Harness_Bootcamp_2/module-00-setup/platforms/`. Keep their commands aligned with the shared credential, version, troubleshooting, and source pages. The supported routes are native Windows PowerShell 5.1; Windows plus WSL 2 Ubuntu 24.04/26.04; macOS 15+ on Apple Silicon or Intel; Ubuntu 24.04/26.04 on x86-64/ARM64; and official Arch x86-64. Intel Homebrew is Tier 3, not equivalent support. Arch package installation is a full upgrade, never a partial `pacman -Sy`.
 
-Preserve the setup boundaries: install only missing prerequisites; verify the exact OMP checksum before execution; preserve conflicting installs, profiles, and dirty checkouts; check saved PATH in an independent terminal without repairing it inside the check; and keep the prerequisite report separate from the live readiness check and actual disk readback. Both report helpers execute Python candidates until a usable 3.12+ interpreter is found. The native helper also tries the Python launcher's version selectors and rejects Store aliases/reparse paths.
+Keep the setup boundaries: install only missing prerequisites; verify the exact OMP checksum before execution; keep conflicting installs, profiles, and dirty checkouts; check saved PATH in an independent terminal without repairing it inside the check; and keep the prerequisite report separate from the live readiness check and actual disk readback. Both report helpers execute Python candidates until a usable 3.12+ interpreter is found. The native helper also tries the Python launcher's version selectors and rejects Store aliases/reparse paths.
 
 Call the setup activity a **readiness check**. Its verifier reports `READINESS CHECK PASS` or `READINESS CHECK HOLD`; the executable remains `verify_tool_proof.py`. The name does not change the token, receipt, identity, or disk-content acceptance checks.
 
@@ -164,11 +164,11 @@ The native Module 7 cutover passed all 27 current scoped gates: 32 instructional
 
 The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
 
-Root `netlify.toml` selects Python 3.12 and Node.js 22, installs `requirements-dev.txt`, runs the publisher and all course gates, and publishes only `site/`. A failed command blocks publication. Pretty URLs are disabled to preserve the generated `.html` routes.
+Root `netlify.toml` selects Python 3.12 and Node.js 22, installs `requirements-dev.txt`, runs the publisher and all course gates, and publishes only `site/`. A failed command blocks publication. Pretty URLs are disabled to keep the generated `.html` routes.
 
 Manage the shared password in [the Netlify project](https://app.netlify.com/projects/reformation-aihb-oct-2026) under **Project configuration → General → Visitor access → Project visibility**. Keep **Password** selected with **Production and previews** scope. This protects pages, assets, downloads, and immutable deploy URLs. Keep credentials out of Git and build environment variables; the local `NETLIFY_PAT` stays in ignored `.env`.
 
-To reconnect GitHub, open **Project configuration → Developer settings → Continuous deployment → Repository → Manage repository → Link to a different repository** and select `TheHolofex/AIHB_OCT_2026` through the existing Netlify GitHub App. Preserve existing App repository grants. After relinking, confirm `main`, the `netlify.toml` build settings, private deploy logs, and all-deploy password protection. Push a deployment-owned change and confirm the published production deploy's commit matches that push; a successful clone or a build started by relinking does not prove push notifications work.
+To reconnect GitHub, open **Project configuration → Developer settings → Continuous deployment → Repository → Manage repository → Link to a different repository** and select `TheHolofex/AIHB_OCT_2026` through the existing Netlify GitHub App. Keep existing App repository grants. After relinking, confirm `main`, the `netlify.toml` build settings, private deploy logs, and all-deploy password protection. Push a deployment-owned change and confirm the published production deploy's commit matches that push; a successful clone or a build started by relinking does not prove push notifications work.
 
 In the native deploy log, confirm `build.command from netlify.toml`, `PASS: all 29 scoped gates`, and the byte-for-byte publication check. Then check the live password gate and an authenticated download; a ready deploy alone does not verify access protection.
 

@@ -4,7 +4,7 @@ Draft a checked internal email about North Shelf for the Field Clinic S-3 supply
 
 North Shelf is fictional. The email stays with named class participants. It is not a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite, material fact, or decision owner is unresolved.
 
-Plan for about three hours (rough estimate). Get a first checked draft in the first hour. Use remaining time for a failing check, the changed input, comparison, and handoff record.
+Plan for about three hours (a rough estimate). Get a first checked draft in the first hour. Use remaining time for a failing check, the changed input, comparison, and handoff record.
 
 ## 1. Create the four-file work folder
 
@@ -48,7 +48,7 @@ $E = "$HOME\course-evidence\module-00-$RUN\evidence"
 
 ### If you open a new terminal
 
-Every command on this page uses the variables from the block above, and a terminal forgets them when it closes. Run this block in any new terminal to return to the same attempt instead of preparing a second one. It reads the attempt identifier that the first block saved.
+Every command on this page uses the variables from the block above. A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one. It reads the attempt identifier that the first block saved.
 
 **Terminal: Bash or zsh, ordinary user.**
 

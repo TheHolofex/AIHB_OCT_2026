@@ -1,6 +1,6 @@
 # Module 10 · Stand up a local uncensored AI and hand it off
 
-Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line, drives bring-up, and fills in package fields; the adapter scripts check the package's claims.
+Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line and the bring-up steps and fills in package fields; you approve and run the server line, and the adapter scripts check the package's claims.
 
 The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. You must keep every boundary.
 
@@ -25,4 +25,4 @@ The declared kit lists `shared/PACKAGE.md` (instructions), `scripts/` (adapters)
 
 ## Bounded use
 
-Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. Results are for class review only. This kit is a limited local service, not a deployment; completing the run authorizes nothing beyond its evidence bundle.
+Bind the service only to `127.0.0.1`. Keep the weights on this laptop under your own account. Don't re-upload them, share the endpoint, or serve anyone else's traffic. The harness records prompts and replies in your evidence folder. Results are for class review only. This kit is a limited local service, not a deployment. Completing the run authorizes nothing beyond its evidence bundle.

@@ -61,8 +61,8 @@
       "directory": "module-00-setup",
       "title": "Module 0 · Set up the harness and direct bounded work",
       "case_name": "North Shelf",
-      "summary": "Direct a bounded task and produce a source-checked internal email.",
-      "nav_summary": "Oh My Pi · directing bounded work",
+      "summary": "Give an AI tool a clearly limited job and check the internal email it drafts against the sources.",
+      "nav_summary": "Oh My Pi · giving AI a limited job",
       "outcomes": {
         "can": "Give an AI tool one clearly limited writing job, check what it wrote against the source facts yourself, and decide whether the result is fit for its stated internal use.",
         "will": [
@@ -108,8 +108,8 @@
       "directory": "module-01-mission-thread",
       "title": "Module 1 · Verify sources and outputs",
       "case_name": "Cold Lantern",
-      "summary": "Challenge a polished brief using the right sources and your own calculations.",
-      "nav_summary": "Source and claim verification",
+      "summary": "Check a polished brief against the right sources and your own calculations.",
+      "nav_summary": "Checking sources and claims",
       "outcomes": {
         "can": "Test a polished AI recommendation against its sources and your own arithmetic, and give a supported accept, revise, reject, or hold verdict.",
         "will": [
@@ -217,7 +217,7 @@
       "title": "Module 3 · Operate MCP tools under limited authority",
       "case_name": "Kiln Hold",
       "summary": "Research an Obsidian vault through an MCP server, check the AI's handling calls against the rules, and prove the limits you set on the connection.",
-      "nav_summary": "MCP operation · classification · limited authority",
+      "nav_summary": "MCP tools · handling decisions · limited access",
       "outcomes": {
         "can": "Connect an AI assistant to a tool server only after reading what the server claims about itself, limit the connection to the folders and actions each phase needs, prove those limits with a probe, and remove the connection with proof that it is gone.",
         "will": [
@@ -249,7 +249,7 @@
       "title": "Module 4 · Decide with typed questions",
       "case_name": "Chalk Line",
       "summary": "Turn a shift's pile of raw messages into typed answers that software can route, and measure those answers before you trust them.",
-      "nav_summary": "Typed questions · measured confidence · code-owned routes",
+      "nav_summary": "Typed questions · measured confidence · routing in code",
       "outcomes": {
         "can": "Work with questions that each ask one thing and have fixed answer sets, add one of your own, run a model once to answer them without letting it act, validate its answers and measure them against labels you wrote first, and set gates so that code and a named person, not the model, decide what happens to each message.",
         "will": [
@@ -293,11 +293,11 @@
       "summary": "Find the first failing boundary, make one reversible correction, and prove recovery.",
       "nav_summary": "Failure diagnosis · verified recovery",
       "outcomes": {
-        "can": "Preserve a hidden failure instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized reversible correction, and prove the recovery holds.",
+        "can": "Keep a hidden failure on record instead of patching over it, find the exact boundary where the work last passed and first failed, make one authorized correction you can undo, and prove the recovery holds.",
         "will": [
                 "Seal the first miss, then compare it with a known-good run to find where the fault begins.",
                 "Use one probe to tell two competing causes apart.",
-                "Correct or revert once, rerun the focused check and the full check, and confirm the clean condition does not recur."
+                "Correct or revert once, then confirm the fix with a focused check, a full check, and a run in a fresh folder."
         ]
       },
       "pages": [
@@ -325,7 +325,7 @@
       "title": "Module 6 · Improve from observed failures",
       "case_name": "Blue Gauge",
       "summary": "Turn observed practice failures into one precise control and check its limits.",
-      "nav_summary": "Derive and check bounded controls from failures",
+      "nav_summary": "Failure notes · an exact text check",
       "outcomes": {
         "can": "Turn failures you observed into one exact rule a program can check, configure that rule in a supplied control, and measure what it still misses.",
         "will": [
@@ -429,7 +429,7 @@
       "summary": "Test a proposed change against frozen cases and hard gates, and tell its effect apart from ordinary model variation.",
       "nav_summary": "Change evaluation · model variation",
       "outcomes": {
-        "can": "Decide whether a proposed change is safe to adopt by fixing your rejection rule before you see any result, comparing it case by case against the current version, and proving you can put the current version back.",
+        "can": "Decide whether a proposed change is safe to adopt by setting your rejection rule before you see any result, comparing it case by case against the current version, and proving you can put the current version back.",
         "will": [
                 "Write down which failures reject a change, and freeze the exact files under test, before opening any candidate output.",
                 "Compare two candidates with the baseline on the same cases and trace every failure to its source record, without letting an average hide a single violation.",

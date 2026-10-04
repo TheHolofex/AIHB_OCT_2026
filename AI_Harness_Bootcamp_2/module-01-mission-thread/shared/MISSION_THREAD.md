@@ -43,7 +43,7 @@ Check what each recorded state means. A custody record alone doesn't show permis
 - Was the record current at the decision time?
 - What does the next step require?
 
-The same pattern repeats in every step. When they matter, check these seven parts:
+The same pattern repeats in every step. When questions like these matter, check these seven parts:
 
 | Part | Plain question |
 |---|---|

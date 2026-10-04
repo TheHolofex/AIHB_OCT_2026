@@ -8,7 +8,7 @@ Plan for about three hours on Thursday (a rough estimate). Your recipient's atte
 
 ## Prepare separate work and transfer locations
 
-Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work copy for the kit; `E` is the evidence folder; `F` is the received package location. Commands work from any directory. Don't create `F` until the transfer step.
+Use the checkout and Python you verified in [setup](../../module-00-setup/README.md). `W` is your work folder for the kit. `E` is the evidence folder. `F` is the received package location. Commands work from any directory. Don't create `F` until the transfer step.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -45,7 +45,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 & $PY -c "from pathlib import Path; import sys; e,f=map(Path,sys.argv[1:]); (f.exists() or f.is_symlink()) and sys.exit('HOLD: received destination exists'); e.mkdir(); print('EVIDENCE',e); print('FRESH DESTINATION',f)" "$E" "$F"
 ```
 
-**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work path. Ignore the printed `Next` suggestion; this lab gives you the next command. The block then prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
+**Expected:** `RUN=` and this attempt's identifier (note it down), then `PASS: created` followed by the work folder's path. Ignore the printed `Next` suggestion; this lab gives you the next command. The block then prints `EVIDENCE` and `FRESH DESTINATION` with their paths. `W` holds the case, control, baseline, package, and script files. `E` exists beside it, and the received-package folder printed after `FRESH DESTINATION` doesn't exist yet.
 
 **Stop:** A destination exists, a prerequisite is missing, or preparation fails.
 
@@ -95,7 +95,7 @@ $F = "$BASE/received package"
 
 Open these files in your editor: `W/shared/case/SERVICE_RULES.md`, `W/shared/case/model-card.json`, `W/shared/case/task.json`, `W/shared/case/hostile-note.md`, and `W/shared/PACKAGE.md`.
 
-In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check, and say why neither carries any authority here. Name what the uncensored model won't do for you: refuse, warn, or apply judgment.
+In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check. Say why neither carries any authority here. Name what the uncensored model won't do for you: refuse, warn, or apply judgment.
 
 ![Loopback limits network reach, and the identity check identifies the checked weight file; neither establishes the model's safety, accuracy, or fitness for publication.](figures/m10-operator-boundary.png)
 

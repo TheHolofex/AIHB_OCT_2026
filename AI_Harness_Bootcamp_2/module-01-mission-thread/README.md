@@ -32,5 +32,5 @@ The AI system's confidence, citation list, and self-review do not count as indep
 
 ## Class-only boundary
 
-The names, routes, documents, quantities, and organizations are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class review only.
+The names, routes, documents, quantities, and organizations are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
 

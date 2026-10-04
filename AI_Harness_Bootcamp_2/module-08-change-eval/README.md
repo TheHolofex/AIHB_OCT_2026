@@ -1,22 +1,22 @@
 # Module 8 · Evaluate a change with variation controls
 
-Decide whether a proposed change produces desk briefs that meet every required condition. Freeze the cases, configurations, and rejection rule before opening results. Compare each candidate with its baseline on the same 40 cases, keep every failure, and restore the original controls.
+Decide whether a proposed change produces desk briefs that meet every required condition. Freeze the cases, configurations, and rejection rule before you open the results. Compare each candidate with its baseline on the same 40 cases, keep every failure, and restore the original controls.
 
-The Slope Brief case covers heater-fuel cans moving from Ridge Depot to Clinic T-8 on vehicle SB-4. The core comparison uses practice briefs written in advance, so it can't show that a live model improved. The optional live comparison repeats attempts to separate an instruction's effect from ordinary differences between runs.
+The Slope Brief case follows heater-fuel cans moving from Ridge Depot to Clinic T-8 on vehicle SB-4. The main comparison uses practice briefs written in advance, so it can't show whether a live model improved. The optional live comparison repeats calls to help you tell an instruction's effect from ordinary differences between runs.
 
 Plan for a little over two hours on Thursday (a rough estimate).
 
 ## Start here
-1. [Evaluate the paired cases](shared/MODULE_08_LAB.md). Save your decision rule before you see results.
+1. [Evaluate the paired cases](shared/MODULE_08_LAB.md). Save your decision rule before you open the results.
 
 ## The hard gates
-A **hard gate** is a required condition that a better result elsewhere can't make up for. One violation rejects a candidate, even if its average looks better.
+A **hard gate** is a condition every brief must meet. A better result elsewhere can't make up for a failed gate: one violation rejects a candidate, even if its average looks better.
 
 - The brief must use the required three-row form; a malformed brief fails the format gate.
-- Payload mass must match the exact number in the authoritative `#payload` record. The Source cell must name that record. A **locator**, such as `#payload`, identifies the source record for a value.
+- Payload mass must match the exact number in the authoritative `#payload` record. The Source cell must name that record. A **locator**, such as `#payload`, points to the source record for a value.
 - Gate times must give both the UTC and MDT values exactly as they appear in the authoritative `#gate` record. The Source cells must name that locator.
 
-Each time value needs its zone label in the correct cell. A UTC label elsewhere can't fix a missing one. A clock value without its zone fails the gate.
+Each time value needs its zone label in the correct cell. A UTC label in another cell can't fix a missing one. A clock value without its zone fails the gate.
 
 A malformed source packet, or one from another case, stops the comparison before results are written. It isn't a candidate failure and doesn't count toward repair cost. A malformed candidate brief with valid sources fails the format gate and stays in the comparison.
 

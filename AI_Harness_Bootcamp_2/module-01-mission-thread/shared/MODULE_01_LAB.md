@@ -353,7 +353,7 @@ Don't ask the producing AI to check its own work. Its citation list, confidence 
 
 ## 7. Run the producer rebuttal
 
-Choose one rebuttal path. The practice path uses a supplied fictional rebuttal. The live path uses the pinned OMP/OpenRouter launcher and writes only to `producer-rebuttal.md`; it requires your OpenRouter key in the terminal.
+Choose one rebuttal path. The practice path uses a supplied fictional rebuttal. The live path uses the pinned OMP/OpenRouter launcher and writes only to `producer-rebuttal.md`. The live path requires your OpenRouter key in the terminal.
 
 **For practice (always available):**
 

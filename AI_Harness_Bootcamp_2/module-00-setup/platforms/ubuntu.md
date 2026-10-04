@@ -1,6 +1,6 @@
 # Ubuntu setup for Module 0
 
-With an ordinary Ubuntu desktop account, you'll install Oh My Pi, get the course files, and run a live readiness check that writes one file. Plan for 45 to 90 minutes, plus download time.
+With an ordinary Ubuntu desktop account, you'll install Oh My Pi, get the course files, and run a live readiness check that writes one file. Plan for about 45 to 90 minutes (a rough estimate), plus download time.
 
 You need Git, Python 3.12 or newer, a web browser, a text editor, and one OpenRouter key. The readiness check uses Oh My Pi 18.3.5 with the model `openrouter/anthropic/claude-sonnet-4.6`.
 
@@ -8,7 +8,7 @@ Every command box is one paste: select all of it, paste it once, and press Retur
 
 ## 1. Check this computer
 
-Use Ubuntu 24.04 or 26.04 on x86-64 or ARM64. This box checks the system, your account, free space, missing packages, and Python. It changes nothing.
+Use Ubuntu 24.04 or 26.04 on x86-64 or ARM64. This box checks your system, account, free space, installed packages, and Python without changing anything.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, current window.**
 
@@ -40,15 +40,15 @@ course_check() {
 course_check
 ```
 
-**Expected:** `OS ubuntu 24.04` or `26.04`, a disk table with at least 15G available, a `PACKAGES` line, and either a `PY` line with Python 3.12 or newer or `PYTHON 3.12+ not found yet`.
+**Expected:** `OS ubuntu 24.04` or `26.04`; a disk table showing at least 15G available; a `PACKAGES` line; and either a `PY` line with Python 3.12 or newer, or `PYTHON 3.12+ not found yet`.
 
 **Stop:** Any `STOP:` line.
 
-**Recovery:** Free space if needed and paste the box again; for anything else see [If a step stops](#if-a-step-stops). If packages or Python are missing, continue to step 2.
+**Recovery:** If space is low, free some and paste the box again. For anything else, see [If a step stops](#if-a-step-stops). If packages or Python are missing, continue to step 2.
 
 ## 2. Install missing packages
 
-Skip this box if step 1 printed `PACKAGES present` and a `PY` line. Ubuntu 24.04's `python3` is Python 3.12 and 26.04's is 3.14, so Ubuntu's own package is enough. `sudo` asks for your password and shows nothing while you type.
+If step 1 printed `PACKAGES present` and a `PY` line, skip this box. Otherwise, install the missing packages. Ubuntu 24.04's `python3` is Python 3.12 and 26.04's is 3.14, so Ubuntu's own package is enough. `sudo` asks for your password; nothing appears while you type.
 
 **Terminal: Ubuntu, Bash or Zsh, same window; sudo elevates package installation.**
 
@@ -64,7 +64,7 @@ sudo apt-get update && sudo apt-get install -y git python3 ca-certificates curl
 
 ## 3. Install Oh My Pi
 
-This box downloads the pinned [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5) and its checksum list into a fresh folder. A **checksum** is a file's fingerprint: the box installs the file to `~/.local/bin/omp` only if its SHA-256 matches the one listed entry for your processor. It never overwrites a different `omp`, and it adds `~/.local/bin` to PATH, the list of folders your shell searches for commands, in your shell's startup files.
+This box downloads the pinned [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5) and its checksum list into a fresh folder. A **checksum** is a file's fingerprint. The box installs the file to `~/.local/bin/omp` only if its SHA-256 matches the one listed entry for your processor. It won't overwrite a different `omp`. It also adds `~/.local/bin` to PATH, the list of folders your shell searches for commands, in your shell's startup files.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -301,7 +301,7 @@ course_confirm_new_terminal
 
 ## 6. Enter your OpenRouter key
 
-The next box reads the key without showing it. Paste the box, press Return, then paste the key and press Return; nothing appears while you do. The key stays in this terminal's memory only. Read [credentials](../shared/CREDENTIALS.md) first if the key may have been exposed.
+The launcher reads your OpenRouter key only from this terminal's environment, so a new terminal starts without it. The next box reads the key without showing it. Paste the box and press Return. Then type or paste the key and press Return again; nothing appears while you do. The key stays in this terminal's memory only. Read [credentials](../shared/CREDENTIALS.md) first if the key may have been exposed.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -334,7 +334,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 ## 8. Run the readiness check
 
-This prepares a fresh attempt folder outside the checkout, starts the launcher with OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`, and lets the model write only `from-omp.txt`. The checker then confirms the file holds `omp works` and this attempt's token, and that the receipts show the course tool wrote it.
+This prepares a fresh attempt folder outside the checkout. It starts the launcher with OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`, and lets the model write only `from-omp.txt`. The checker then confirms the file holds `omp works` and this attempt's token, and that the receipts show the course tool wrote it.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -379,7 +379,7 @@ course_run_readiness
 
 ## 9. Save the setup report and read the result
 
-The report checks the machine, tools, checkout, and key variable; it cannot replace the live check above. The second function prints the result file from disk. Its token identifies this run and is not your API key.
+The report checks the machine, tools, checkout, and key variable. It cannot replace the live readiness check above. The second function prints the result file from disk. Its token identifies this run and is not your API key.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
 
@@ -412,11 +412,11 @@ course_read_back_proof
 
 ## Set up local Obsidian
 
-Obsidian edits and links local notes for Module 2; allow 10 to 20 minutes plus download time. First check your application menu. If Obsidian is already installed, open that copy, skip the download and install boxes, and record its version; don't reinstall or downgrade it.
+Obsidian edits and links local notes for Module 2. Plan for about 10 to 20 minutes (a rough estimate), plus download time. First check your application menu. If Obsidian is already installed, open that copy, skip the download and install boxes, and record its version. Don't reinstall or downgrade it.
 
 ### Download and verify
 
-For a fresh install, this box downloads the official 1.13.7 `.deb` on x86-64 or the AppImage on ARM64 from the [release page](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7) and checks its SHA-256. An **AppImage** is an application file you run directly.
+For a fresh install, this box downloads the official 1.13.7 `.deb` on x86-64 or the AppImage on ARM64 from the [release page](https://github.com/obsidianmd/obsidian-releases/releases/tag/v1.13.7). It checks the SHA-256. An **AppImage** is an application file you run directly.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -531,7 +531,7 @@ course_obsidian_fuse && course_launch_obsidian_arm64
 
 ### Open the practice vault and follow its links
 
-A **vault** is a folder of notes. This box creates a fresh practice vault outside the checkout; it needs no account, plugin, or API key. Use the terminal where step 5 set `PY`, `R`, and `M`.
+A **vault** is a folder of notes. This box creates a fresh practice vault outside the checkout. It needs no account, plugin, or API key. Use the terminal where step 5 set `PY`, `R`, and `M`.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same window; no sudo.**
 
@@ -656,7 +656,7 @@ fi
 
 ## 11. Install Docker
 
-Use this box only on a clean machine: step 10 showed no Docker packages, keyring, or repository. It follows [Docker's Ubuntu instructions](https://docs.docker.com/engine/install/ubuntu/), with owner approval for the repository, the five packages, and Docker starting at boot.
+Use this box only on a clean machine. Step 10 showed no Docker packages, keyring, or repository. It follows [Docker's Ubuntu instructions](https://docs.docker.com/engine/install/ubuntu/), with owner approval for the repository, the five packages, and Docker starting at boot.
 
 **Terminal: Ubuntu, Bash or Zsh, same window; sudo elevates approved repository and package changes.**
 
@@ -750,7 +750,7 @@ id -nG && docker context show && docker info && docker compose version && docker
 
 ## 13. Generate the n8n configuration
 
-Use n8n 2.41.5. You download the official installer script, read it, run it with `--no-start` so nothing starts yet, and then limit the browser port to this computer. The [one-line setup docs](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) describe these options.
+Use n8n 2.41.5. You download the official installer script, read it, and run it with `--no-start` so nothing starts yet. Then limit the browser port to this computer. The [one-line setup docs](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) describe these options.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
 
@@ -806,7 +806,7 @@ course_run_n8n_installer
 
 **Recovery:** Keep the destination and error for the owner; don't rerun the installer over it or change the version.
 
-The generated `compose.yml` publishes port 5678 on every network interface. This box checks that exactly one `- '5678:5678'` line exists and that no Docker resources already use the project name `n8n-course`, then changes that line to `- '127.0.0.1:5678:5678'` and records the project name. A Compose **project name** groups the stack's containers, volumes, and networks.
+The generated `compose.yml` publishes port 5678 on every network interface. This box checks that exactly one `- '5678:5678'` line exists and that no Docker resources already use the project name `n8n-course`. It then changes that line to `- '127.0.0.1:5678:5678'` and records the project name. A Compose **project name** groups the stack's containers, volumes, and networks.
 
 **Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
 

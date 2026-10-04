@@ -1,6 +1,6 @@
 # Module 5 · Diagnose and recover
 
-Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result, use the probe to tell missing source data from a rendering fault, make one authorized correction you can undo, then prove the card recovered under the original requirements.
+Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result. Use the probe to tell whether the source lacks the field or the renderer dropped it. Make one authorized correction you can undo, then prove the card recovered under the original acceptance requirements.
 
 Plan for about three hours (a rough estimate).
 
@@ -14,7 +14,7 @@ Bring the source checks, permission limits, and evidence records from earlier mo
 
 ## What you inspect
 
-The supplied **renderer** turns ledger rows into a duty card; the clean version writes both required fields. Check that restore works, place a practice fault, keep the first failure and its probe output, then replace the renderer once. Prove the repair three ways: a focused field check, a complete render, and a new process in a fresh folder.
+The supplied **renderer** turns ledger rows into a duty card. The clean version writes both required fields. First check that restore works. Then place a practice fault, keep the first failure and its probe output, and replace the renderer once. Prove the repair three ways: a focused field check, a complete render, and a new process in a fresh folder.
 
 ## Class-only boundary
 

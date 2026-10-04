@@ -1,6 +1,6 @@
 # Module 5 · Diagnose and recover
 
-Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result, use the probe to tell missing source data from a rendering fault, make one authorized correction you can undo, then prove the card recovered under the original acceptance requirements.
+Find where a required field disappears from a Copper Span duty card before you change anything. Keep the failed result. Use the probe to tell whether the source lacks the field or the renderer dropped it. Make one authorized correction you can undo, then prove the card recovered under the original acceptance requirements.
 
 Plan for about three hours (a rough estimate).
 
@@ -129,7 +129,7 @@ Then read the rules for this card in [shared/case/DUTY_CARD.md](case/DUTY_CARD.m
 
 ## 2. Verify restore before any swap
 
-Test restore before you place the fault. The restore command checks the clean baseline's **digest** (a fingerprint of its file bytes), saves your current renderer and `out/` files under `attempts/`, then copies the baseline over the work renderer.
+Test restore before you place the fault. The restore command checks the clean baseline's **digest** (a fingerprint of its file bytes). The command saves your current renderer and `out/` files under `attempts/`, then copies the baseline over the work renderer.
 
 ![Confirm the restore reproduces the clean renderer before placing a fault, while preserving the existing attempt and output.](figures/m05-restore-precondition.png)
 
@@ -202,7 +202,7 @@ Render the card again with the faulty renderer:
 
 **Recovery:** Keep the output. Check that the ledger path is the one under `W`, then repeat with a new output filename.
 
-Before you run the probe, write down how you would tell a field missing from the source from one lost while rendering. The read-only **probe** compares the required fields in the selected source rows with the rendered card. The command runs it from the checkout, not your work copy, so the fault can't disable it:
+Before you run the probe, write down how you would tell whether a field is missing from the source or lost while rendering. The read-only **probe** compares the required fields in the selected source rows with the rendered card. The command runs it from the checkout, not your work copy, so the fault can't disable it:
 
 ![Compare the selected source and rendered card, preserve the first mismatch, and read the probe's classifications before replacing anything.](figures/m05-first-divergence.png)
 
@@ -251,7 +251,7 @@ Still present:
 
 ## 4. One authorized replace
 
-Replace the renderer only if the probe isolated it as the first failing boundary (`renderer_omission`). Make one authorized replacement by running restore, which first saves the failed renderer and `out/` under `attempts/`, then copies the clean baseline back. Don't hand-edit the card, and don't drop a required field from the acceptance requirements.
+Replace the renderer only if the probe isolated it as the first failing boundary (`renderer_omission`). Make one authorized replacement by running restore. The command first saves the failed renderer and `out/` under `attempts/`, then copies the clean baseline back. Don't hand-edit the card, and don't drop a required field from the acceptance requirements.
 
 ![Replace the renderer only when the evidence isolates it; preserve the failed attempt instead of patching the card or relaxing acceptance.](figures/m05-authorized-correction.png)
 
@@ -316,7 +316,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Focused render held.' }
 & $PY "$M\scripts\probe_fields.py" "$W\shared\case\ledger.json" --review "$W\out\focused.md"
 ```
 
-Second, the end-to-end check: render the complete card from the work-copy ledger, then open `complete.md` and check both fields.
+Second, the end-to-end check: render the complete card from the work-copy ledger. Then open `complete.md` and check both fields.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -330,7 +330,7 @@ Second, the end-to-end check: render the complete card from the work-copy ledger
 & $PY "$W\scripts\render_review.py" "$W\shared\case\ledger.json" "$W\out\complete.md"
 ```
 
-Third, the clean-condition check: copy the renderer and ledger to a fresh folder, then run them in a new process from your home folder, a working directory unrelated to the work copy.
+Third, the clean-condition check: copy the renderer and ledger to a fresh folder. Then run them in a new process from your home folder, a working directory unrelated to the work copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -375,7 +375,7 @@ Set-Location "$HOME"
 
 Keep the three outputs, the focused probe result, and the sealed miss for your handoff.
 
-Finally, check that the commands still work when the work path contains a space. This block prepares a separate attempt, renders a baseline (restore needs an output to save), then restores and probes it. Your main attempt stays untouched.
+Finally, check that the commands still work when the work path contains a space. This block prepares a separate attempt and renders a baseline (restore needs an output to save), then restores the renderer and probes a new render. Your main attempt stays untouched.
 
 **Terminal: Bash or zsh, ordinary user.**
 

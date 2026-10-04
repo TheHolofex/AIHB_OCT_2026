@@ -1,10 +1,10 @@
 # Windows WSL 2 with Ubuntu setup
 
-Windows Subsystem for Linux 2 (WSL 2) runs a real Ubuntu system on your Windows computer. You install the course tools inside that Ubuntu and keep every course file in your Linux home folder. Never put course work under `/mnt/c`, which is the Windows C: drive as Linux sees it. Plan for 60 to 120 minutes, plus a restart if WSL is new on this computer; that is an estimate, not a measured time.
+Windows Subsystem for Linux 2 (WSL 2) runs Ubuntu on your Windows computer. Install the course tools inside Ubuntu and keep all course files in your Linux home folder. Never put course work under `/mnt/c`: from Ubuntu, that's the Windows C: drive. Plan for 60 to 120 minutes, plus a restart if WSL is new on this computer. This is an estimate, not a measured time.
 
-Setup has four parts. First you choose and open Ubuntu from Windows PowerShell. Next, nine Ubuntu steps install Oh My Pi 18.3.5 and end with a live readiness check and a setup report. Then you set up Linux Obsidian, which WSLg shows as an ordinary window on your Windows desktop. Last, you set up local n8n 2.41.5 through Docker Desktop for Module 7. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You don't install Node, npm, or another agent.
+Start in Windows PowerShell to choose and open Ubuntu. Then follow nine steps in the Ubuntu window to install Oh My Pi 18.3.5, run a live readiness check, and save a setup report. After that, set up Linux Obsidian; WSLg shows its window on your Windows desktop. Finally, set up local n8n 2.41.5 through Docker Desktop for Module 7. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You don't install Node, npm, or another agent.
 
-Paste each box as one block into the window its **Terminal:** label names. **Expected:** describes a good result, **Stop:** names results that mean you shouldn't continue, and **Recovery:** gives the first fix. Longer fixes are in [If a step stops](#if-a-step-stops). Get the device owner's approval before you install software or change Windows features. Keep any existing Ubuntu installation; never unregister or reset it.
+Paste each box as one block into the window named by its **Terminal:** label. **Expected:** shows what success looks like. **Stop:** tells you when not to continue, and **Recovery:** gives the first fix; longer fixes are in [If a step stops](#if-a-step-stops). Get the device owner's approval before installing software or changing Windows features. Keep any existing Ubuntu installation; never unregister or reset it.
 
 ## Choose and open Ubuntu
 
@@ -27,7 +27,7 @@ wsl --list --verbose
 
 **Recovery:** If no Ubuntu is installed, use the install box next, even if `wsl --version` failed; `wsl --install` also installs WSL itself. If an Ubuntu is installed and `wsl --version` failed, the Ubuntu shows VERSION `1`, or a policy blocks WSL, see [Windows and WSL problems](#windows-and-wsl-problems).
 
-If no Ubuntu is installed, install Ubuntu 24.04 by its exact name. Open PowerShell with **Run as administrator** for this box only. New installations run as WSL 2.
+If no Ubuntu is installed, install Ubuntu 24.04 using its exact name. Open PowerShell with **Run as administrator** for this box only. A new installation runs as WSL 2.
 
 **Terminal: Windows PowerShell, elevated (Run as administrator); only when no Ubuntu is installed.**
 
@@ -42,7 +42,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: keep the install message; restart Window
 
 **Recovery:** After a restart, run the first box again before you install anything else. For other failures, see [Windows and WSL problems](#windows-and-wsl-problems).
 
-Open your Ubuntu by its exact NAME from the list. The box checks that the name is installed and runs as WSL 2, then opens Ubuntu in your Linux home folder in this same window. Opening it by name keeps you in the same Ubuntu even when the computer has several.
+Use the exact Ubuntu NAME from the list to open it. The box checks that this NAME is installed and runs as WSL 2. It then opens Ubuntu in your Linux home folder in the same window. Opening it by name keeps you in the same Ubuntu even when the computer has several Ubuntu installations.
 
 **Terminal: Windows PowerShell, ordinary user, opened from Start.**
 
@@ -65,7 +65,7 @@ wsl --distribution $CourseDistro --cd ~
 
 ## 1. Check this Ubuntu
 
-This box checks your account, Ubuntu release, processor, and free space, and lists any packages you still need. It also finds a Python 3.12 or newer program and saves its full path as `PY` for later steps.
+This box checks your Linux account, Ubuntu release, processor, and free space. It lists packages you still need and finds Python 3.12 or newer. It saves Python's full path as `PY` for later steps.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, the window you just opened.**
 
@@ -123,7 +123,7 @@ course_check_wsl
 
 ## 2. Install missing packages
 
-Skip this step if step 1 printed `PACKAGES_TO_INSTALL none`. `sudo` runs one command with administrator rights inside Ubuntu. At its password prompt, type your Linux password; nothing appears while you type.
+If step 1 printed `PACKAGES_TO_INSTALL none`, skip this step. Otherwise, run this box to install the packages. `sudo` runs one command with administrator rights inside Ubuntu. At its password prompt, type your Linux password; nothing appears while you type.
 
 **Terminal: Ubuntu Bash, ordinary Linux user using sudo for package changes, same window.**
 
@@ -139,7 +139,7 @@ sudo apt-get update && sudo apt-get install -y git python3 curl ca-certificates 
 
 ## 3. Install Oh My Pi
 
-This box downloads the pinned Linux build of [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5) and its `SHA256SUMS.txt` into a new folder. A SHA-256 checksum is a fingerprint of the file's exact bytes. The box installs the binary at `~/.local/bin/omp` only when the fingerprint matches, and it never replaces a different `omp` that is already there. PATH is the list of folders Bash searches for commands, so the box also adds `~/.local/bin` to the startup files new Ubuntu windows read.
+This box downloads the pinned Linux build of [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5) and its `SHA256SUMS.txt` into a new folder. A SHA-256 checksum identifies the file's exact contents. The box installs the binary at `~/.local/bin/omp` only if the checksum matches; it never replaces a different `omp` already there. PATH is the list of folders Bash searches for commands. The box adds `~/.local/bin` to the startup files that new Ubuntu windows read.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -216,7 +216,7 @@ course_install_omp
 
 ## 4. Get the course files
 
-The course lives in a private GitHub repository. This box first checks that your existing Git credentials can read it. If they can, it uses the checkout already at `~/Documents/AIHB_OCT_2026` or clones a new one there. It never replaces, resets, or cleans an existing folder.
+The course files are in a private GitHub repository. This box checks whether your existing Git credentials can read it. If they can, it uses the checkout at `~/Documents/AIHB_OCT_2026` or clones one there. It never replaces, resets, or cleans an existing folder.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -269,7 +269,7 @@ course_get_files
 
 ### If GitHub access fails
 
-GitHub CLI (`gh`) can sign you in through your browser and give Git the credentials it needs. Use it only when the access check above failed. This first box uses an existing Linux `gh` or installs Ubuntu's package.
+GitHub CLI (`gh`) can sign you in through your browser and give Git the credentials it needs. Use it only if the access check above failed. This first box uses `gh` if it's already installed in Ubuntu; otherwise it installs Ubuntu's package.
 
 **Terminal: Ubuntu Bash, ordinary Linux user using sudo only if gh is missing, same window.**
 
@@ -283,7 +283,7 @@ if type -P gh >/dev/null; then gh --version; else sudo apt-get update && sudo ap
 
 **Recovery:** Ask the owner to enable Ubuntu's approved package sources; don't add another source.
 
-Sign in with the GitHub account that was invited to the repository. The command prints a one-time code, then asks you to press Enter to open GitHub in a browser. Press Enter; if Ubuntu can't open a browser, it prints an error and keeps waiting for you. Open https://github.com/login/device in your Windows browser, enter the code, and check the account name before you approve. If gh asks whether to set up Git, answer no; the next box does that.
+Sign in with the GitHub account invited to the repository. The command prints a one-time code and asks you to press Enter to open GitHub in a browser. Press Enter. If Ubuntu can't open a browser, it prints an error and keeps waiting. Open https://github.com/login/device in your Windows browser, enter the code, and check the account name before approving. If gh asks whether to set up Git, answer no; the next box does that.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window; interactive sign-in.**
 
@@ -313,7 +313,7 @@ gh auth status --hostname github.com && gh auth setup-git --hostname github.com 
 
 ## 5. Open a new Ubuntu window and confirm
 
-A window you open fresh shows what every future session will see. It must find `omp` without help, and it must not have a key yet. Open a new **Windows PowerShell** window from Start and run the [open box](#choose-and-open-ubuntu) again with the same NAME. Don't type `bash` in the old window instead; a shell started from the old window inherits its settings. This box sets `R`, `M`, and `PY` for the rest of setup.
+A freshly opened window shows what every future session will see. Open a new **Windows PowerShell** window from Start. Run the [open box](#choose-and-open-ubuntu) again with the same NAME. Don't type `bash` in the old window instead: a shell started there would inherit the old window's settings. The new Ubuntu window must find `omp` on its own and must not have a key yet. This box also sets `R`, `M`, and `PY` for the rest of setup.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, the newly opened window.**
 
@@ -353,7 +353,7 @@ course_confirm_window
 
 ## 6. Enter your OpenRouter key
 
-The next box waits for your key at a hidden prompt. Paste or type the key and press Enter; nothing appears on screen. Never put the key in a command, a file, a profile, or a chat. [Connect the course account without leaking a key](../shared/CREDENTIALS.md) explains where a key must not go.
+The next box waits for your OpenRouter key at a hidden prompt. Paste or type the key and press Enter; nothing appears on screen. Never put the key in a command, a file, a profile, or a chat. [Connect the course account without leaking a key](../shared/CREDENTIALS.md) explains where a key must not go.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same new window.**
 
@@ -369,7 +369,7 @@ IFS= read -r -s OPENROUTER_API_KEY
 
 ## 7. Confirm the key is loaded
 
-Exporting the key makes it available to programs you start from this window, such as the course launcher. The box prints only `SET` or `MISSING`, never the key.
+Export the key so programs started from this Ubuntu window, including the course launcher, can use it. The box prints only `SET` or `MISSING`, never the key.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -386,7 +386,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 ## 8. Run the readiness check
 
-The readiness check is a short live task. The box creates a fresh attempt folder with a random token under `~/course-evidence`, outside the checkout. Then the course launcher runs Oh My Pi once and allows it to write only `from-omp.txt`. Finally, the checker confirms that the file holds `omp works` and this attempt's token, and that the write receipt agrees. Allow a few minutes for the model call.
+The readiness check is a short live task. The box creates a fresh attempt folder with a random token under `~/course-evidence`, outside the checkout. The course launcher then runs Oh My Pi once, allowing it to write only `from-omp.txt`. Finally, the checker confirms that the file contains `omp works` and this attempt's token, and that the write receipt agrees. Allow a few minutes for the model call.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
@@ -435,7 +435,7 @@ course_readiness_check
 
 ## 9. Save the setup report and read the result
 
-The setup report checks the prerequisites: Git, Python, Oh My Pi, the checkout, and whether the key is present. It doesn't replace the readiness check you just passed. The box saves the report inside the attempt folder, then shows the file Oh My Pi wrote so you can read it yourself.
+The setup report checks Git, Python, Oh My Pi, the checkout, and whether the key is present. It doesn't replace the readiness check you just passed. This box saves the report inside the attempt folder. It then shows the file Oh My Pi wrote so you can read it yourself.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 

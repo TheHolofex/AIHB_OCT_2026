@@ -2,7 +2,7 @@
 
 Setup takes this Windows laptop from no course tools to a live readiness check, in which Oh My Pi writes one file you can verify. It has three parts. First you install Oh My Pi and pass the readiness check in Steps 1 to 9. Then you set up local Obsidian, and finally local n8n for Module 7. Plan for roughly 60 to 120 minutes for Steps 1 to 9 and about 20 to 30 minutes for Obsidian. The n8n time depends on downloads and restarts.
 
-You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course files, and your key all stay on native Windows. Module 7's n8n runs in Docker Desktop and is controlled from an Ubuntu window under WSL 2. You use that Ubuntu window only for n8n. You don't install Node, npm, or another agent.
+You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course checkout, and your key stay on native Windows. Module 7's n8n runs in Docker Desktop, controlled from an Ubuntu window under WSL 2. Use that Ubuntu window only for n8n. Don't install Node, npm, or another agent.
 
 Open **Windows PowerShell** (version 5.1) from the Start menu as your ordinary user. Check with the device owner that you're allowed to install these tools. If an installer asks for administrator approval, use the owner's approved route. If policy denies an installer, stop and keep the message. Don't open an Administrator window to get around a denial.
 
@@ -10,7 +10,7 @@ To run a block, copy all of it, paste it into the PowerShell window, and press E
 
 ## 1. Check this computer
 
-This step checks Windows, PowerShell, free disk space, and your processor. It also finds Git and a real Python 3.12 or newer and lists anything you still need to install. Windows includes a Python shortcut that only opens the Microsoft Store, so the check skips anything under `WindowsApps` and asks each candidate for its real path. Your Windows edition must still get security updates. WinGet, Microsoft's package installer, needs at least build 17763. See [WinGet requirements](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
+This step checks Windows, PowerShell, free disk space, and your processor. It also looks for Git and a real Python 3.12 or newer, then lists anything you still need to install. Windows includes a Python shortcut that only opens the Microsoft Store, so the check skips anything under `WindowsApps` and asks each Python candidate for its actual path. Your Windows edition must still get security updates. WinGet, Microsoft's package installer, needs at least build 17763. See [WinGet requirements](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, opened from Start.**
 
@@ -103,7 +103,7 @@ Skip this step if Step 1 printed `MISSING TOOLS: none`. Otherwise WinGet install
 
 ## 3. Install Oh My Pi
 
-This block downloads the Oh My Pi program and its published checksum file into a new folder. A **checksum** is a fingerprint of a file. The program is allowed to run only if its fingerprint matches the published one exactly. The block then copies it to `omp\omp.exe` under your local app data folder. It won't replace a different `omp.exe` that's already there. Last, it saves that folder on your user **PATH**, the list of folders Windows searches when you type a command name, so new windows can find `omp`. The release is [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5), and the fingerprint comes from [Get-FileHash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash).
+This block downloads the Oh My Pi program and its published checksum file into a new folder. A **checksum** is a file's fingerprint. The program runs only after its fingerprint matches the published one exactly. The block then copies it to `omp\omp.exe` under your local app data folder. If a different `omp.exe` is already there, it stops without replacing it. Finally, it saves that folder on your user **PATH**, the list of folders Windows searches when you type a command name. New terminals can then find `omp`. The release is [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5), and the fingerprint comes from [Get-FileHash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 1.**
 
@@ -165,7 +165,7 @@ This block downloads the Oh My Pi program and its published checksum file into a
 
 ## 4. Get the course files
 
-The course repository is private, so this block first checks that your saved Git sign-in can read it, without asking for a password in the window. Then it clones the course into `Documents\AIHB_OCT_2026` in your home folder, or reuses a checkout of the same course that's already there. The clone keeps Git from changing line endings, the hidden character at the end of each line, because later checks compare exact bytes. The block then reads three frozen course files and puts the checkout on hold if their line endings were rewritten. See [git ls-remote](https://git-scm.com/docs/git-ls-remote).
+The course repository is private. This block checks whether your saved Git sign-in can read it, without asking for a password in the terminal. Then it clones the course into `Documents\AIHB_OCT_2026` in your home folder, or reuses a checkout of the same course already there. The clone keeps Git from changing line endings, the hidden character at the end of each line, because later checks compare exact bytes. The block reads three frozen course files and puts the checkout on hold if their line endings have changed. See [git ls-remote](https://git-scm.com/docs/git-ls-remote).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 1.**
 
@@ -228,7 +228,7 @@ git ls-remote --exit-code https://github.com/TheHolofex/AIHB_OCT_2026.git HEAD
 
 ## 5. Open a new window and confirm
 
-A window opened from Start is a new process, and a **process** is one running program with its own settings. A new process reads your saved PATH, but it should not have any key. Seeing `MISSING` here shows that no key was saved where new windows pick it up. Close every terminal window, including Windows Terminal tabs and editor terminals, then open **Windows PowerShell** from Start. Don't type `powershell` inside an old window, because a child window inherits the parent's settings.
+Opening PowerShell from Start creates a new process, and a **process** is one running program with its own settings. A new process reads your saved PATH, but it should not have any key. Seeing `MISSING` here shows that no key was saved where new windows pick it up. Close every terminal window, including Windows Terminal tabs and editor terminals. Then open **Windows PowerShell** from Start. Don't type `powershell` inside an old window, because a child window inherits the parent's settings.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, newly opened from Start.**
 
@@ -271,7 +271,7 @@ A window opened from Start is a new process, and a **process** is one running pr
 
 ## 6. Enter your OpenRouter key
 
-Run this command by itself, then type or paste the key at the hidden prompt and press Enter. The command only waits for your input. Never put the key in a command, a file, a profile, or a chat. See [Use one OpenRouter key without putting it in your work](../shared/CREDENTIALS.md).
+Run this command by itself. Type or paste your OpenRouter key at the hidden prompt, then press Enter. The command only waits for your input. Never put the key in a command, a file, a profile, or a chat. See [Use one OpenRouter key without putting it in your work](../shared/CREDENTIALS.md).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 5.**
 
@@ -287,7 +287,7 @@ $secret = Read-Host -Prompt 'OpenRouter API key' -AsSecureString
 
 ## 7. Confirm the key is loaded
 
-This block copies the hidden value into this window's environment only, clears the temporary copy, and prints `SET` or `MISSING`. To read the hidden value it briefly uses a BSTR, an unmanaged string, and then zeroes that memory with [ZeroFreeBSTR](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.zerofreebstr). Nothing is written to a file, a profile, or your saved user settings.
+This block puts the hidden key into this terminal's environment only, clears the temporary copy, and prints `SET` or `MISSING`. To read the hidden value, it briefly uses a BSTR, an unmanaged string, then zeroes that memory with [ZeroFreeBSTR](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.zerofreebstr). It writes nothing to a file, a profile, or your saved user settings.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 6.**
 
@@ -322,7 +322,7 @@ try {
 
 ## 8. Run the readiness check
 
-This block makes a fresh attempt folder under `course-evidence\reformation-qa` in your home folder, outside the course checkout. It writes a random token beside the work folder and copies it in. Then it runs the course launcher once. The launcher starts Oh My Pi with permission to write only `from-omp.txt`. Last, the verifier checks that the file holds `omp works`, one space, and this run's token, and that Oh My Pi's write receipt matches the file on disk. Don't create the evidence folder or `from-omp.txt` yourself.
+This block creates a fresh attempt folder under `course-evidence\reformation-qa` in your home folder, outside the course checkout. It writes a random token beside the work folder and copies the token into it. Then it runs the course launcher once. The launcher starts Oh My Pi with permission to write only `from-omp.txt`. Finally, the verifier checks that the file contains `omp works`, one space, and this attempt's token. It also checks that Oh My Pi's write receipt matches the file on disk. Don't create the evidence folder or `from-omp.txt` yourself.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Steps 5 to 7.**
 
@@ -362,7 +362,7 @@ This block makes a fresh attempt folder under `course-evidence\reformation-qa` i
 
 ## 9. Save the setup report and read the result
 
-The setup report is a separate check of your prerequisites: Git, Python, Oh My Pi, the checkout, and whether the key is present in this window. It doesn't repeat the live write, so you need both `SETUP CHECK PASS` and `READINESS CHECK PASS`. Open `scripts\verify-setup.ps1` under the Module 0 folder in your text editor and read it before you run it. Run this block only if you have permission to run that reviewed checker. Windows PowerShell's **execution policy** decides which scripts may run. The block first checks for any explicitly configured restrictive policy on non-Process scopes (or an explicit Process restriction). If a restrictive policy is configured, the block stops. If your current effective policy already allows local scripts (and no restrictive policy is configured), the block runs the checker directly. If no policy has been set on this computer at all (default Restricted), Windows blocks scripts by default, so the block runs the checker in a child PowerShell with `-ExecutionPolicy RemoteSigned`, which lasts only for that one child process. See [about_Execution_Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1). Last, the block reads `from-omp.txt` straight from disk.
+The setup report checks your prerequisites separately: Git, Python, Oh My Pi, the checkout, and whether this terminal has the key. It doesn't repeat the live write, so you need both `SETUP CHECK PASS` and `READINESS CHECK PASS`. Open `scripts\verify-setup.ps1` under the Module 0 folder in your text editor and read it before running it. Run this block only if you have permission to run the checker you've reviewed. Windows PowerShell's **execution policy** controls which scripts can run. First, the block checks for a restrictive policy explicitly set outside the Process scope, or an explicit Process restriction. If it finds one, it stops. If the current effective policy allows local scripts and no restrictive policy is set, it runs the checker directly. If no policy has been set anywhere on this computer, the default Restricted policy blocks scripts. In that case, the block runs the checker in a child PowerShell with `-ExecutionPolicy RemoteSigned`, only for that child process. See [about_Execution_Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1). Finally, the block reads `from-omp.txt` directly from disk.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 8.**
 
@@ -515,7 +515,7 @@ Record **Obsidian READY** only if you saw every one of those actions in the app 
 
 n8n is a visual workflow editor. You'll run it locally in Docker Desktop, reach it only from this laptop at `http://localhost:5678`, and confirm that a saved workflow survives a stop and restart. The commands that control n8n run in an Ubuntu window under WSL 2, Windows' built-in Linux layer. Keep this result separate from `SETUP CHECK PASS` and `READINESS CHECK PASS`; Module 7 needs n8n ready.
 
-Before you install anything, get the device owner's answers to three questions. First, does this laptop meet [Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/)? They include WSL 2.1.5 or newer, Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or newer, 8 GB of RAM, hardware virtualization, and the Windows Server service (`LanmanServer`) set to Automatic. Windows on Arm uses an Early Access build. Second, does your use qualify under [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)? Third, may you run the [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml)? Its sandbox runner uses privileged Docker-in-Docker. Keep n8n's Assistant off, and never enter a provider key into n8n.
+Before you install anything, get the device owner's answers to three questions. First: does this laptop meet [Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/)? These include WSL 2.1.5 or newer, Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or newer, 8 GB of RAM, hardware virtualization, and the Windows Server service (`LanmanServer`) set to Automatic. Windows on Arm uses an Early Access build. Second: does your use qualify under [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)? Third: may you run the [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml)? Its sandbox runner uses privileged Docker-in-Docker. Keep n8n's Assistant off, and never enter a provider key into n8n.
 
 ### Check Windows, WSL, and Docker
 

@@ -1,10 +1,10 @@
 # Module 0 · Set up the harness and direct bounded work
 
-Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, decide what to delegate, and accept the email only for its stated use.
+Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and accept the email only for its stated use.
 
-First follow one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check: the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep their results separate from the checked email.
+Start with one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check. In that check, the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep those results separate from the checked email.
 
-Allow roughly one to three hours for setup, more if downloads, desktop readiness, or owner approvals take longer. The bounded-work assignment takes about three hours (rough estimates).
+Plan for about one to three hours for setup (a rough estimate). Downloads, desktop readiness, or owner approvals may take longer. Plan for about three hours for the bounded-work assignment (a rough estimate).
 
 ## Start here
 
@@ -18,7 +18,7 @@ Choose one platform path and stay in it. A **terminal** is the text window where
 | Ubuntu desktop | [Ubuntu](platforms/ubuntu.md) |
 | Arch Linux desktop | [Arch Linux](platforms/arch-linux.md) |
 
-On Windows, choose WSL if your organization permits it and you can restart the machine. Choose PowerShell to keep OMP, Python, Git, credentials, and course work native to Windows; its WSL Ubuntu bridge is only for n8n. Both routes require approved WSL 2 and Docker Desktop for n8n. If WSL is blocked, keep the native OMP result and record n8n HOLD until the owner resolves it. Don't complete both OMP routes.
+On Windows, choose WSL if your organization permits it and you can restart the machine. Choose PowerShell if you want to keep OMP, Python, Git, credentials, and course work native to Windows; its WSL Ubuntu bridge is only for n8n. Both routes require approved WSL 2 and Docker Desktop for n8n. If WSL is blocked, keep the native OMP result and record n8n HOLD until the owner resolves it. Don't complete both OMP routes.
 
 ## What you will install
 
@@ -30,9 +30,9 @@ On Windows, choose WSL if your organization permits it and you can restart the m
 
 The platform guide keeps **PATH**, the saved list of folders your shell searches for commands. Check it in a new terminal after installation, not just the install window.
 
-Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password doesn't provide it. Your guide checks approved Git credentials first. Use GitHub CLI (`gh`) for browser login only if that fails; it isn't needed to run the AI.
+Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password doesn't grant it. Your guide checks approved Git credentials first. Use GitHub CLI (`gh`) for browser login only if that fails; you don't need it to run the AI.
 
-For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. It bills the account behind your key. Use an account you're authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
+For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. The call bills the account behind your key. Use an account you're authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
 
 Module 7 uses the local visual workflow editor without a paid model call. You don't need n8n Cloud or an Assistant provider key. Keep Assistant off and workflows unpublished; don't copy the OpenRouter key into n8n.
 
@@ -77,7 +77,7 @@ Check each tool on its own. In a new terminal, inspect the prerequisite report. 
 
 </details>
 
-- `origin` reports `https://github.com/TheHolofex/AIHB_OCT_2026.git`, and `git rev-parse HEAD` reports a 40-character id (the setup check prints the first 12). `git status --short` is informational; keep unrelated changes, which don't block setup or QA;
+- `origin` reports `https://github.com/TheHolofex/AIHB_OCT_2026.git`, and `git rev-parse HEAD` reports a 40-character id (the setup check prints the first 12). `git status --short` is informational; keep unrelated changes. They don't block setup or QA;
 - the platform resolver selects an absolute Python executable reporting 3.12 or higher and saves it as `PY` (`$PY` in PowerShell);
 - the setup check prints `omp/18.3.5` and the absolute command path;
 - the key check shows `SET` in that terminal without printing the key;
@@ -85,15 +85,15 @@ Check each tool on its own. In a new terminal, inspect the prerequisite report. 
 - the expected absolute tool path works in that new terminal without repairing PATH; and
 - the setup report stays outside the checkout and contains no key, token, or password.
 
-The setup report shows PASS, WARN or FAIL for version, path, repository, and key presence. Run `verify_tool_proof.py` separately on the tool-written file, token, and saved run record; it reports `READINESS CHECK PASS` or `READINESS CHECK HOLD`. A passing setup report cannot replace this live check.
+The setup report shows PASS, WARN or FAIL for version, path, repository, and key presence. Run `verify_tool_proof.py` separately on the tool-written file, token, and saved run record; it reports `READINESS CHECK PASS` or `READINESS CHECK HOLD`. Even a passing setup report cannot replace the live check.
 
-A **receipt** records a run's inputs, tool calls, results, and file effects. Keep receipts and your **work folder**, the editable exercise copy, outside the checkout so corrections don't overwrite supplied inputs or earlier attempts.
+A **receipt** records a run's inputs, tool calls, results, and file effects. Keep receipts and your **work folder** (the editable exercise copy) outside the checkout. That way, corrections won't overwrite supplied inputs or earlier attempts.
 
 Open and read the result file from disk before accepting it. A tool saying “done” doesn't prove the file exists.
 
 ## Set up local Obsidian
 
-Follow links, edit local notes, and see changes made outside the app with Obsidian. This check takes roughly 15 to 30 minutes after installation. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+Use Obsidian to follow links, edit local notes, and see changes made outside the app. This check takes roughly 15 to 30 minutes after installation. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
 
 Complete **Set up local Obsidian** in your existing guide: [native Windows](platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](platforms/windows-wsl.md#set-up-local-obsidian), [macOS](platforms/macos.md#set-up-local-obsidian), [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian), or [Arch](platforms/arch-linux.md#set-up-local-obsidian). Follow its install, hash, display, and approval steps before opening the practice vault. The [release and asset table](shared/VERSIONS.md#local-obsidian-for-module-2) identifies the exact fresh downloads. Keep personal vaults, installed versions, and application profiles.
 
@@ -101,13 +101,13 @@ On the WSL route, run Linux Obsidian and the helper in the same Ubuntu Linux hom
 
 Keep **Settings → Community plugins → Restricted mode** on in the practice vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. No Obsidian account, community plugin, or MCP service is required. Keep the existing [hidden-input credential procedure](shared/CREDENTIALS.md); never put a key in a note or another secret file.
 
-In your platform guide, create one fresh vault, follow its links, save an edit, watch for a change made to a file outside Obsidian, save again, and close and reopen the same vault. Keep that attempt and note what you saw. Do not create a second practice vault by following another platform's instructions.
+In your platform guide, create one fresh vault. Follow its links, save an edit, watch for a change made to a file outside Obsidian, save again, then close and reopen the same vault. Keep that attempt and note what you saw. Do not create a second practice vault by following another platform's instructions.
 
-Record **Obsidian READY** only after both disk passes and a separate check in the Obsidian window. Note the platform and architecture, app version, practice-vault location, link you followed, first saved edit, changed token shown in the app, second saved edit, and same reply visible after reopening. Record who watched and the date, and keep credentials out of any screenshot. A disk PASS or an `.obsidian` folder alone cannot show what happened in the app. If that window check is missing or fails, record **Obsidian HOLD**; keep the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
+Record **Obsidian READY** only after both disk passes and a separate check in the Obsidian window. Note the platform and architecture, app version, practice-vault location, link you followed, first saved edit, changed token shown in the app, second saved edit, and same reply visible after reopening. Record who watched and the date, and keep credentials out of any screenshot. A disk PASS or an `.obsidian` folder alone cannot show what happened in the app. If the window check is missing or fails, record **Obsidian HOLD**; keep the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
 
 ## Local n8n readiness for Module 7
 
-Complete your platform guide’s n8n path as an ordinary user. On the native PowerShell route, run only the n8n steps in the selected WSL Ubuntu; keep the earlier OMP environment intact. The fresh destination is `$HOME/n8n-course` in the intended shell, outside the checkout.
+Complete your platform guide's n8n path as an ordinary user. On the native PowerShell route, run only the n8n steps in the selected WSL Ubuntu; keep the earlier OMP environment intact. The fresh destination is `$HOME/n8n-course` in the intended shell, outside the checkout.
 
 Record **n8n READY** only after checking all of the following. Keep these checks separate from the OMP report and live OMP proof:
 
@@ -115,7 +115,7 @@ Record **n8n READY** only after checking all of the following. Keep these checks
 - The running n8n reports exactly `2.41.5`, and the published browser port is exactly `127.0.0.1:5678`.
 - All six services appear: `n8n`, `runners`, `sandbox-api`, `sandbox-runner-1`, and `searxng` remain running; the one-shot `sandbox-certs` shows `Exited (0)`. Health checks are healthy where shown.
 - At `http://localhost:5678`, the local owner can reopen a named blank, unpublished readiness workflow after reload. Assistant remains off.
-- The same workflow survives the course stack’s ordinary `down` then `up -d`, using the same approved engine, directory, recorded project name, and named data volumes. Use the guide’s `course_n8n` helper; keep `.course-project` between restarts. Never use `down -v`.
+- The same workflow survives the course stack's ordinary `down` then `up -d`, using the same approved engine, directory, recorded project name, and named data volumes. Use the guide's `course_n8n` helper; keep `.course-project` between restarts. Never use `down -v`.
 
 On a fresh instance with the UI shown, complete **Set up owner account → Next**. If the optional survey appears, continue with **Get started**. Choose **Skip** on the free-license offer and **Set up later in Settings** on the Assistant screen. From **Overview**, select **Build a workflow** on an empty instance. Click the workflow title, enter **Module 7 readiness**, and press **Enter**. The editor saves automatically, so you do not need to see a **Saved** label. Reload and check that the name and blank canvas remain. If an instance already exists, use its local login and never reset its owner. If a workflow with that name already contains work, leave it in place and use a different name.
 
