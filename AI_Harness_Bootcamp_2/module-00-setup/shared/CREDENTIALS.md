@@ -1,6 +1,6 @@
 # Use one OpenRouter key without putting it in your work
 
-Use the OpenRouter key you were given for `openrouter/anthropic/claude-sonnet-4.6`. An SDK cost estimate is not a bill, even when a local script reports it.
+Use the OpenRouter key you were given for `openrouter/anthropic/claude-sonnet-4.6`.
 
 Keep the key in your approved password manager. Don't put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The launcher reads it from this process's environment and gives OMP an isolated configuration; you don't need another provider login.
 
@@ -10,7 +10,7 @@ Get each kind of access separately:
 
 - The **hosted-course password** opens the website but does not give you GitHub repository access.
 - Your **GitHub account** needs read permission for the private `TheHolofex/AIHB_OCT_2026` repository. Accept the owner's invitation with the account you plan to use.
-- Your **OpenRouter key** lets you send model requests, which OpenRouter bills to the key's account. It does not log you in to Git or GitHub.
+- Your **OpenRouter key** lets you send model requests. It does not log you in to Git or GitHub.
 
 In your platform guide, test read access to that exact repository with prompts disabled. If your approved Git credentials work, you don't need another login tool. Otherwise, follow the platform's GitHub CLI (`gh`) browser-login steps. GitHub CLI helps you reach the repository. It isn't another AI tool, and you don't need it to run OMP.
 
@@ -66,7 +66,7 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** Only `SET` prints. The key is present in this process; this doesn't check validity, credit, model availability, or a successful provider call.
+**Expected:** Only `SET` prints. The key is present in this process; this doesn't check validity, model availability, or a successful provider call.
 
 **Stop:** The result is `MISSING`, conversion fails, or any key value appears in output.
 
@@ -88,7 +88,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `MISSING` in an independent window. Enter the key again there when you need a paid turn.
+**Expected:** `MISSING` in an independent window. Enter the key again there when you need another model turn.
 
 **Stop:** If a new terminal window unexpectedly shows `SET`, find out why before describing the key as process-only.
 
