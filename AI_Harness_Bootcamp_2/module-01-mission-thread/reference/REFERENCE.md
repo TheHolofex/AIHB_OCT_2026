@@ -255,7 +255,7 @@ The learner runs `run_producer_rebuttal.py`. If a live producer is unavailable, 
 
 ### Phase 7 — Inspect the desk packet
 
-The learner renders `review.html` as the decision surface: a Cold Lantern desk packet with the verdict, thread strip, blockers, standing rule, and five questions. From that page, another person must be able to answer:
+The learner renders `review.html` as the decision surface: a Cold Lantern desk packet with the verdict, thread strip, blockers, standing rule, and five questions. The page alone must answer:
 
 - What can proceed?
 - What cannot proceed?
@@ -290,7 +290,7 @@ These are design targets until piloted.
 | Source inspection and claim ledger | ≥60 minutes |
 | Baseline verdict frozen | by minute 105 |
 | Changed-source challenge | 25 minutes |
-| Handoff and protected check | 20 minutes |
+| Handoff | 20 minutes |
 | Source files | 9 baseline + 1 sealed change |
 | Thread rows | 8 |
 | Material AI-brief claims | 6–10 |
@@ -317,7 +317,7 @@ Kill the case or simplify it if novice pilots spend more than 25% of learner tim
 | ID | Criterion | Evidence |
 |---|---|---|
 | M1-06 | The learner traces the end-to-end claim through all eight thread steps. | Required ledger rows and human review |
-| M1-07 | Every material step addresses identity, authority, time, quantity/condition, dependency, handoff, and unresolved uncertainty where applicable. | Ledger-schema test and protected rubric |
+| M1-07 | Every material step addresses identity, authority, time, quantity/condition, dependency, handoff, and unresolved uncertainty where applicable. | Ledger-schema test |
 | M1-08 | The recursive stop rule prevents unsupported decomposition and infinite elaboration. | Learner instructions and judge review |
 | M1-09 | Receipt, release, authorization, arrival, delivery, and usable effect remain distinct states. | Case answer tests and human judge |
 | M1-10 | A locally true fact cannot pass an end-to-end claim whose next handoff fails. | Baseline hard gate |
@@ -327,11 +327,11 @@ Kill the case or simplify it if novice pilots spend more than 25% of learner tim
 | ID | Criterion | Evidence |
 |---|---|---|
 | M1-11 | Every material claim is labeled fact, calculation, inference, decision, or unsupported. | Ledger validation |
-| M1-12 | At least one consequential claim is traced to exact source ID, version, locator, excerpt, and warrant. | Protected source-trace check |
+| M1-12 | At least one consequential claim is traced to exact source ID, version, locator, excerpt, and warrant. | Thread ledger and source register |
 | M1-13 | Source authority is claim-specific; no source is globally labeled trustworthy. | Source register and judge review |
-| M1-14 | The learner independently recomputes all six required calculations from supported premises and units. | Visible arithmetic checker plus protected case |
-| M1-15 | The learner rejects stale, similar-identifier, receipt/effect, irrelevant, and hostile-instruction sources with a reason. | Challenge matrix and protected check |
-| M1-16 | The producing AI's citation, confidence, or self-review never counts as independent evidence. | Instructions, evidence audit, and grader observation |
+| M1-14 | The learner independently recomputes all six required calculations from supported premises and units. | Visible arithmetic checker |
+| M1-15 | The learner rejects stale, similar-identifier, receipt/effect, irrelevant, and hostile-instruction sources with a reason. | Challenge matrix |
+| M1-16 | The producing AI's citation, confidence, or self-review never counts as independent evidence. | Instructions and evidence audit |
 | M1-17 | The corrected result is inspected in the supplied decision surface, not inferred from files or narration. | Functional surface procedure |
 | M1-18 | Any material unsupported or contradicted claim blocks `ACCEPT`. | Rubric hard gate |
 
@@ -348,12 +348,11 @@ Kill the case or simplify it if novice pilots spend more than 25% of learner tim
 
 | ID | Criterion | Evidence |
 |---|---|---|
-| M1-23 | Visible practice checks are clearly separated from protected grading. | Wording scan and custody contract |
 | M1-24 | A missing, inaccessible, compromised, or unstable decisive source produces `HOLD`, not simulated credit. | Accessibility and degraded-case review |
 | M1-25 | Every decisive source has semantic text, stable local identity, keyboard access, and no color-only meaning. | Accessibility audit |
 | M1-26 | Facilitator coaching cannot supply source authority, arithmetic premise, rejection rationale, delta, or verdict. | Runbook and observed delivery |
 | M1-27 | Learner prose scores 100/100 human craft authority and 0/100 AI mannerisms under the cited-sentence panel rubric. | Three-person panel |
-| M1-28 | Another person can reconstruct the verdict from the handoff without live coaching. | Transfer spot check |
+| M1-28 | The handoff alone contains the thread, source boundary, traced claim, rejected sources, changed-source delta, current verdict, and next check, so the verdict can be reconstructed from it. | Handoff template |
 
 ### Empirical criteria
 
@@ -361,8 +360,6 @@ Kill the case or simplify it if novice pilots spend more than 25% of learner tim
 |---|---|---|
 | M1-29 | At least 80% of domain novices complete the practice case without logistics coaching. | Pilot, n≥10 |
 | M1-30 | Median time is about three hours or less. | Timestamped pilot |
-| M1-31 | At least 90% of graders agree on all binary hard gates; ordinal rationale κ ≥0.70. | Double-scored pilot |
-| M1-32 | Median scoring time is ≤15 minutes and p90 ≤25 minutes. | Scorer telemetry |
 | M1-33 | Provider spend remains inside the course's declared learner budget. | Usage telemetry |
 
 ## 11. Absolute failures
@@ -380,7 +377,7 @@ The module fails regardless of other scores if:
 - 20:50Z is treated as 20:50 MDT;
 - delivery or usable effect is claimed before it occurs;
 - the source change overwrites baseline evidence or changes unrelated claims;
-- the visible checker is described as the graded evidence;
+- the visible checker's result is described as the evidence for the verdict;
 - logistics expertise or outside research is required;
 - inaccessible source presentation is treated as learner failure;
 - the exercise becomes a real logistics recommendation; or
@@ -390,7 +387,7 @@ The module fails regardless of other scores if:
 
 One case carries the module. Shared instructions appear once. The source packet contains only facts or distractors needed by an acceptance criterion. The ledger is the only central learner record; other files are brief, verdict, change prediction, and handoff.
 
-Every file must name a learner action, facilitator action, source fact, checker, protected control, accessibility need, or review artifact. Anything else is removed.
+Every file must name a learner action, facilitator action, source fact, checker, accessibility need, or review artifact. Anything else is removed.
 
 ## 13. Obsolescence
 
@@ -399,12 +396,24 @@ Revisit this Reference if any of these occur:
 - the Reformation PO-01 gate changes;
 - current AI systems reliably expose cryptographically verifiable claim-to-source lineage in ordinary work;
 - indirect prompt injection through retrieved documents is prevented by the common harness layer rather than user procedure;
-- mission-thread practice adopts a materially different authoritative definition;
-- pilot evidence shows logistics context, not verification judgment, drives performance; or
-- the visible/protected assessment boundary becomes unworkable at cohort scale.
+- mission-thread practice adopts a materially different authoritative definition; or
+- pilot evidence shows logistics context, not verification judgment, drives performance.
 
-The earliest warning would be novice learners asking for logistics coaching before they ask how to inspect a source, or graders disagreeing because the case requires unstated domain judgment.
+The earliest warning would be novice learners asking for logistics coaching before they ask how to inspect a source, or learners reaching different verdicts because the case requires unstated domain judgment.
 
 ## Standalone repository path amendment
 
 Repository-authority paths now resolve from the `AIHB_OCT_2026` root. Research, supplied case facts, and historical evidence are unchanged. `REFERENCE.sha256` records the amended file; earlier observations retain their original repository context.
+
+## 2026-10-04 amendment — no peer review, instructor grading, or protected grading
+
+The owner directed on 2026-10-04 that the course is hands-on, individual work with no graded exercise and no homework, and that no classmate or instructor grades a learner's work. The thread walk and claim defense, chosen by an instructor or classmate, are removed from the lab and runbook, and the classmate review of the review page becomes the learner's own check that the page alone answers the five questions.
+
+- Phase 7: the page alone must answer the five questions.
+- Time budget: the handoff row no longer includes a protected check.
+- M1-07 and M1-12 keep their criteria; their evidence no longer names a protected rubric or protected check. M1-14, M1-15, and M1-16 drop the protected case, protected check, and grader observation.
+- M1-23 (visible checks separated from protected grading), M1-31 (grader agreement), and M1-32 (scoring time) are removed; no protected or graded case exists.
+- M1-28 is restated as a property of the handoff rather than another person's reconstruction.
+- §11, §12, and §13 drop the graded-evidence, protected-control, protected-assessment, and grader wording.
+
+`REFERENCE.sha256` records the amended file. Historical evidence is unchanged.

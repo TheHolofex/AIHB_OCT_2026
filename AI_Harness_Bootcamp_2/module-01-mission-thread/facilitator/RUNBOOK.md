@@ -14,9 +14,9 @@ Logistics knowledge outside the packet is not tested. If learners need facts tha
 3. Run the staff reference calculator and visible checker against staff passing and failing specimens. Do not give the calculator's answer output to learners before they freeze their calculations.
 4. Confirm the sealed practice change is in the facilitator fixtures; prepare decisive checks.
 5. Confirm the learner's Module 0 setup; do not reuse Module 0 answers.
-7. Keep `SEALED_CHANGE.md` closed until each baseline ledger, prediction, and verdict hash is recorded.
-8. Prepare a domain-novice observer to flag any instruction that requires unstated logistics knowledge.
-9. Inspect the generated `review.html` at a 390px viewport and 200% zoom. Long identifiers in notes must wrap without widening the page; ledgers may scroll inside their own containers. Check the keyboard decision link and the revealed-source link with JavaScript disabled.
+6. Keep `SEALED_CHANGE.md` closed until each baseline ledger, prediction, and verdict hash is recorded.
+7. Prepare a domain-novice observer to flag any instruction that requires unstated logistics knowledge.
+8. Inspect the generated `review.html` at a 390px viewport and 200% zoom. Long identifiers in notes must wrap without widening the page; ledgers may scroll inside their own containers. Check the keyboard decision link and the revealed-source link with JavaScript disabled.
 
 ## Route
 
@@ -88,9 +88,7 @@ A well-documented `HOLD` can complete practice. It does not satisfy the module r
 - baseline and changed verdicts;
 - baseline hashes and change-release order;
 - handoff;
-- visible checker output;
-- selected thread-walk result;
-- selected claim-defense result; and
+- visible checker output; and
 - result or reason for `HOLD`.
 
 Do not collect credentials, private local files, outside operational details, or model chat history unrelated to the case.

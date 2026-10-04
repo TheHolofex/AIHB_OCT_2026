@@ -1,9 +1,9 @@
 # Reference: Module 0 and the initial course setup
 
-**Version:** 6 · **Frozen on:** 2026-10-02 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling
+**Version:** 8 · **Frozen on:** 2026-10-04 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling and the peer-review, qualification, and evaluator lanes; replaces the class-review decision with a send-or-hold decision
 **Scope:** Module 0 learner material, shared setup contract, five platform setup paths, and the acceptance machinery that decides them
 **Supported paths:** Windows PowerShell with an n8n-only WSL bridge, Windows with WSL 2 and Ubuntu for course work, macOS, Ubuntu, Arch Linux
-**Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability or replace a named independent evaluator. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.
+**Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.
 **Changes are recorded in `AMENDMENTS.md`.** The research survey below is retained; the active requirements in §§3–8 supersede the obsolete multi-tool setup, thin-case examples, and assertions that a public practice checker is secret.
 
 ---
@@ -109,13 +109,13 @@ The new capability is directing and checking one bounded AI-assisted job while r
 
 The supplied Harbor Depot → Field Clinic S-3 case remains unchanged: request 40 water-treatment kits, baseline on-hand count 27, pen 4 custody rather than release, Ivo Marsh's release ownership, no assigned vehicle/approved permit/confirmed receipt, and the Thursday/Friday 9:00 a.m.–5:00 p.m. paperwork window rather than pickup authority. Preserve the supplied contact, class-only audience, and all packet wording. The provided changed-input fact changes the count to 19; it does not add movement authority.
 
-The core preserves every stage: inspect the four-file work copy and public checker; decide delegate/human/refuse; record the responsibility screen; freeze direction and a falsifier; obtain a real bounded `artifact.md` write; read and check the 130–190-word email; trace a material claim; execute a failing falsifier copy; distinguish observed model capability, product surface, harness control and human decision; make a bounded class-review decision; predict and apply the changed count; observe the original checker's expected stale-count failure; compare changes/nonchanges; leave a reconstructable handoff. Keep original outputs and failed attempts.
+The core preserves every stage: inspect the four-file work copy and public checker; decide delegate/human/refuse; record the responsibility screen; freeze direction and a falsifier; obtain a real bounded `artifact.md` write; read and check the 130–190-word email; trace a material claim; execute a failing falsifier copy; distinguish observed model capability, product surface, harness control and human decision; decide whether the email is ready to send; predict and apply the changed count; observe the original checker's expected stale-count failure; compare changes/nonchanges; leave a reconstructable handoff. Keep original outputs and failed attempts.
 
 The stretch repairs the supplied count/staging-and-paperwork sentence without introducing new authority. It must explicitly preserve custody-not-release and paperwork-not-pickup, all source-supported nonchanges, the original artifact, and the same word range.
 
 ### Timing and availability
 
-The roughly three-hour session, the first-result goal of about the first hour, and the setup-duration ranges are **design targets, not measured performance or automatic qualification gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. No automatic paid retries are permitted.
+The roughly three-hour session, the first-result goal of about the first hour, and the setup-duration ranges are **design targets, not measured performance or automatic gates**. Record actual elapsed time and assistance when a human pilot occurs. The 15 GB free-disk floor (25 GB for WSL) is a prerequisite check, not a prediction of completion time. No automatic paid retries are permitted.
 
 Report native platform execution separately for macOS, Ubuntu, Arch, Windows PowerShell and WSL. A parser run or PowerShell-on-macOS replay is not native Windows evidence. Browser, terminal and assistive-technology observations must identify the actual surface used.
 
@@ -123,7 +123,7 @@ Report native platform execution separately for macOS, Ubuntu, Arch, Windows Pow
 
 The case, practice checker and mechanical expectations are inspectable. A location outside the model's work root limits that model's tools; it does not make a repository file secret from its owner.
 
-Technical acceptance uses the visible practice checker and human decision record. No separate hidden case or qualification lane is supplied; a documented HOLD is valid technical evidence when a prerequisite or decision condition is unresolved.
+Technical acceptance uses the visible practice checker and human decision record. No separate hidden case is supplied; a documented HOLD is valid technical evidence when a prerequisite or decision condition is unresolved.
 
 The checker is deliberately limited. It checks recognized polarity, quantities attached to their subjects, unsupported promises and the word range. It cannot settle source applicability, tone, the responsible professional decision, or authorship. A recognized negated fact such as “No vehicle is assigned” must not fail because its shorter positive substring occurs inside it; a separate contradictory assertion must still fail.
 
@@ -143,7 +143,7 @@ Use meaningful behavior and integrity gates, not source-wording, incidental form
 | Changed input | Original unchanged; correct revised count and expected old-checker failure | New authority, untraced material change, overwritten original |
 | Falsifier | Actually executed wrong copy with named observed failure | Merely stated or invented failure |
 | Publication | Generated public HTML, working resources, terminal/privilege/expected/stop/recovery labels | Missing path, unsafe link, unlisted staff artifact, copy button including output |
-| Decision record | Named decision owner and source evidence for the class review | Agent role-play or missing decision owner |
+| Send decision | `READY TO SEND` or `HOLD`, with the source evidence behind it | Agent role-play, or a decision with no evidence behind it |
 
 `tests/test_module_00.py` and the checker adequacy suite use disposable copies. Mutations must kill real behavior/safety boundaries. Shared runtime/publication tests own shared contracts; do not add duplicate prose assertions to every module. Reference and frozen case integrity remain checked. The reference digest changes only with an explicit amendment.
 
@@ -151,9 +151,9 @@ Use meaningful behavior and integrity gates, not source-wording, incidental form
 
 Give each action its purpose, exact input/command, expected observation, observable stop and recovery. Use complete, calm sentences; define new terms at first use. Preserve learner agency and the distinction between a machine result and a professional decision. Do not ship curriculum-design rationale in learner pages.
 
-Each evidence claim names its command, cwd, inputs/control hashes, actual status/output, elapsed time and provenance. Preserve the first failure and link its repair/recheck. Separate core, stretch, live-provider, platform, accessibility, peer-review and human-qualification lanes. Missing dependencies are blocked; unobserved performance is not measured. Synthetic receipts exercise verifier boundaries only and never count as live calls.
+Each evidence claim names its command, cwd, inputs/control hashes, actual status/output, elapsed time and provenance. Preserve the first failure and link its repair/recheck. Separate core, stretch, live-provider, platform, and accessibility lanes. Missing dependencies are blocked; unobserved performance is not measured. Synthetic receipts exercise verifier boundaries only and never count as live calls.
 
-A technical reviewer may find defects without being a novice learner. An agent may operate a procedure without being an independent classmate or qualifying human. Score neither role by impersonation or a perfect-looking aggregate.
+A technical reviewer may find defects without being a novice learner. An agent may operate a procedure without impersonating a learner. Score neither role by impersonation or a perfect-looking aggregate.
 
 ## 8. Drift and non-goals
 
