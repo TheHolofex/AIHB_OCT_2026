@@ -20,21 +20,32 @@ The first-result target is about an hour to a frozen plan and a first AI-drafted
 
 The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
+The day order, with each module's case, is:
+
+| Day | Cases, in order |
+|---|---|
+| Monday | North Shelf (00), Cold Lantern (01) |
+| Tuesday | Ledger Pike (02), Kiln Hold (03), Chalk Line (04) |
+| Wednesday | Copper Span (05), Blue Gauge (06), White Rack (07) |
+| Thursday | Slope Brief (08), Night Desk (09), Cold Foundry (10) |
+
+The clocks and break points are in [COURSE_MAP.md](COURSE_MAP.md).
+
 ## Target sequence
 
-| ID | Module | Primary capability |
-|---:|---|---|
-| 00 | Get a long document you can trust from AI | Screen responsibility, plan and test a long document before any prose, have AI draft it one section at a time, check it against references outside it, revise only what's flagged, and decide whether to send it. |
-| 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
-| 02 | Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
-| 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
-| 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
-| 05 | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
-| 06 | Design a workflow for a decision model | Select and pin a structured decision model as the harness judge through OpenRouter, design questions and a code split around its weak spots, set thresholds from its probabilities on tuning notes, and measure the frozen screen on held-out notes. |
-| 07 | Automate a spreadsheet with an agent | Connect an n8n agent to a spreadsheet-writing tool, trace its call to an actual download, and inspect the file against the source and rules. |
-| 08 | Control hallucinations | Operate a source-bound review-and-correction loop; prevent schema-valid or unanimously endorsed errors from entering accepted work, and retain unknowns in the human decision. |
-| 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 10 | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions/controls (weights excluded) so fresh-terminal structure check passes, and close out distinguishing live runtime proof from structure-only evidence. All work individual in the Thursday session. |
+| ID | Case | Module | Primary capability |
+|---:|---|---|---|
+| 00 | North Shelf | Get a long document you can trust from AI | Screen responsibility, plan and test a long document before any prose, have AI draft it one section at a time from six sources, check it against references outside it, revise only what's flagged, and decide whether to send it. |
+| 01 | Cold Lantern | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
+| 02 | Ledger Pike | Build and control a reusable second brain | Construct source-traceable knowledge in Obsidian, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
+| 03 | Kiln Hold | Operate MCP tools under limited authority | Connect a supplied MCP server, research a folder of notes, check the assistant's markings against the written rules, prove each limit including actions the model never tries, and remove the connection with proof. |
+| 04 | Chalk Line | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
+| 05 | Copper Span | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
+| 06 | Blue Gauge | Design a workflow for a decision model | Select and pin Jev (`openrouter/typesafe/jev-1.13`) as the harness judge, design questions and a code split around its weak spots, set thresholds from its probabilities on tuning notes, and measure the frozen screen on held-out notes. |
+| 07 | White Rack | Automate a spreadsheet with an agent | Connect a local n8n AI Agent to OpenRouter with the learner's key, have it write a spreadsheet from the supplied batch, download that file, and check it against the source lots. |
+| 08 | Slope Brief | Control hallucinations | Run structured source checks and independent agent reviews, correct only what the evidence supports, and keep unknowns visible in the human decision. |
+| 09 | Night Desk | Constrain agent behavior | Enforce a live agent's declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
+| 10 | Cold Foundry | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on the learner's own laptop under OMP, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions and controls (weights excluded) so a fresh-terminal structure check passes, and close out by separating live runtime proof from structure-only evidence. Thursday's session is individual work. |
 
 Cases and evidence bundles are **independent**: no gate relies on a product from an earlier module. Skills build on one another, but earlier skills are assumed rather than retaught as new objectives. The authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) defines the module contract.
 
@@ -80,7 +91,7 @@ Detailed scenarios, commands, forms, answer keys, fixtures, and platform procedu
 
 ## Reader UI and manifest
 
-The 32 instructional destinations share the local Sirocco reader. Edit `ui/course.css` for composition, `ui/course.js` for progressive enhancement, and `ui/theme-init.js` for the before-paint appearance preference. `ui/vendor/sirocco/` contains the byte-identical selected reference assets and their font licenses; course overrides belong outside that vendor directory. No JavaScript bundler, package installation, CDN, or external font service is required.
+The current manifest publishes 35 instructional pages. They share the local Sirocco reader. Edit `ui/course.css` for composition, `ui/course.js` for progressive enhancement, and `ui/theme-init.js` for the before-paint appearance preference. `ui/vendor/sirocco/` contains the byte-identical selected reference assets and their font licenses; course overrides belong outside that vendor directory. No JavaScript bundler, package installation, CDN, or external font service is required. `course.json` declares 39 UI assets; the publisher also emits `assets/search-index.json`.
 
 `course.json` remains the single publication registry:
 
@@ -164,6 +175,8 @@ Release evidence remains incomplete: native Windows/WSL, Intel macOS, the other 
 
 The native Module 7 cutover passed all 27 current scoped gates: 32 instructional pages, 692 raw downloads, and 38 UI/generated assets. n8n 2.41.5 ran in the approved isolated six-service stack on Apple Silicon Docker Desktop. Native form submissions produced both 80-row baselines, the predicted three-lot policy change, and byte-identical restored receipts; independent downloaded checker reports also cover revised inputs, malformed batches, empty routes, and tampered evidence. See `AI_Harness_Bootcamp_2/module-07-batch-workflow/evidence/REVIEW_VERDICT.md` for execution IDs and limits. Bash/zsh and PowerShell parsing plus controlled shell-boundary checks cover all five authored setup routes; they are not native Windows/WSL/Linux runs.
 
+Those page, download, and asset counts are the records of the checks named above. They are not the current publication size. The current manifest declares 35 instructional pages and 39 UI assets. `scripts/check_course.py` now runs 31 scoped gates; that count is the manifest plus the shared publication, runtime, and figure checks, not a new claim that every live lane was rerun.
+
 ## Netlify deployment
 
 The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
@@ -174,6 +187,6 @@ Manage the shared password in [the Netlify project](https://app.netlify.com/proj
 
 To reconnect GitHub, open **Project configuration → Developer settings → Continuous deployment → Repository → Manage repository → Link to a different repository** and select `TheHolofex/AIHB_OCT_2026` through the existing Netlify GitHub App. Keep existing App repository grants. After relinking, confirm `main`, the `netlify.toml` build settings, private deploy logs, and all-deploy password protection. Push a deployment-owned change and confirm the published production deploy's commit matches that push; a successful clone or a build started by relinking does not prove push notifications work.
 
-In the native deploy log, confirm `build.command from netlify.toml`, `PASS: all 29 scoped gates`, and the byte-for-byte publication check. Then check the live password gate and an authenticated download; a ready deploy alone does not verify access protection.
+In the native deploy log, confirm `build.command from netlify.toml`, `PASS: all 31 scoped gates`, and the byte-for-byte publication check. Then check the live password gate and an authenticated download; a ready deploy alone does not verify access protection.
 
 If a private-repository push appears missing, check **Deploys** for **Pending Review** before relinking. Netlify can hold an unrecognized Git author as `unverified-committer`, and the ordinary deploy-list API can omit that request; the site's builds API still lists it. For an author who is already a team member, use **Start approval process → Further action required → Approve and match with existing team member**, select that person, and confirm the match. Do not enable team-wide auto-approval to resolve one author's identity.
