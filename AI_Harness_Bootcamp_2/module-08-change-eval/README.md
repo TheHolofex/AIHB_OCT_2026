@@ -2,7 +2,7 @@
 
 Turn a plausible brief into a claim-by-claim account of what the sources support, what needs correction, and what remains unknown. Have separate agents challenge the claims, then check their corrections yourself. A clean JSON response can contain a false fact. Two reviewers can agree and still be wrong.
 
-Plan for a little over two hours on Thursday (a rough estimate). The work uses five paid model turns: two initial reviews, one correction, and two fresh reviews of the correction.
+Plan for a little over two hours on Thursday (a rough estimate). The work uses five paid agent sessions: two initial reviews, one correction, and two fresh reviews of the correction. Each session may make several provider requests.
 
 [Open the hallucination-control lab](shared/MODULE_08_LAB.md).
 
@@ -10,7 +10,7 @@ Plan for a little over two hours on Thursday (a rough estimate). The work uses f
 
 Slope Brief concerns heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. A desk brief gives the mass, gate times, and a claim about permission to depart. If an unsupported number or an unlabeled clock reaches the next desk as fact, a fluent answer has become a bad operating instruction.
 
-You have three source packets and seven material claims—claims that could change a decision. The draft is authored practice data with deliberate defects, not a recorded model failure. Your agents' reviews and corrections are live outputs. Keep those two kinds of evidence separate.
+You have seven material claims—claims that could change a decision—across three separate case packets, PC-01, PC-02, and PC-03. Keep each claim with its own packet; don't combine their masses or clocks into one shipment record. The draft is authored practice data with deliberate defects, not a recorded model failure. Your agents' reviews and corrections are live outputs. Keep those two kinds of evidence separate.
 
 The supplied sources can establish facts about a shipment. They don't supply every fact or permission needed to dispatch it. An honest brief must preserve that gap.
 
@@ -26,7 +26,7 @@ A **hallucination** is an assertion presented as established when the available 
 
 ## Use a model for a narrow judgment
 
-[Jev](https://docs.typesafe.ai/introduction) takes a **state**—the facts to inspect—and **typed questions**, which have fixed answer types. That pattern makes a judgment inspectable: ask one question about one claim, return a named answer, and let code decide which checks or holds follow.
+Keep each judgment as narrow as the decision-model questions you've already written: one question about one claim, a fixed set of answers, and code that decides which checks or holds follow.
 
 Here the question is: **Does this source packet establish this exact claim?** Each reviewer must choose `supported`, `contradicted`, or `unknown`, identify the source, quote it, and explain the connection. `unknown` means the packet doesn't settle the claim; it doesn't mean the claim is false. Use the [typed-question discipline](../module-04-typed-decisions/README.md) you already practiced, now on a draft's factual claims.
 

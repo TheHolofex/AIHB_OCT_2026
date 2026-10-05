@@ -1,5 +1,35 @@
 # Module 8 verification record
 
+## Contract alignment and learner-lab review — 2026-10-04
+
+The Module 7 core specification now describes the shipped agent-spreadsheet exercise and uses the course map's `VERIFY:PREFLIGHT`, `VERIFY:CASE`, `VERIFY:BATCH_WORKLOAD` → `AGENT_SHEET`, `PO07_RESULT` boundary. Active schedule, authoring, and progression statements no longer require the retired fixed router. Historical router evidence remains labeled historical.
+
+The learner-lab review corrected these findings:
+
+- **Case isolation:** the repeated shipment names could make three independent packets look like one combined movement record. The overview and lab now retain each claim's `case_id` and prohibit mixing masses or clocks across packets.
+- **Completion versus acceptance:** the final stop instruction mixed invalid execution evidence with a valid report containing content errors. The lab now records an incomplete attempt in notes, while a complete report still receives a human decision even when it contains a hold.
+- **Unknowns:** nullable citations, `KEEP_UNKNOWN` versus `HOLD`, and an unidentified authority owner are explicit. No invented citation, person, or permission is needed to finish the record.
+- **Resume and cost:** learners resume at the first unfinished stage instead of overwriting an existing report. Five agent sessions may make more than five provider requests.
+- **Readability:** the three report fields use full-width labeled bullets, preserving readable identifiers at desktop and mobile widths. The typed-question reminder links the existing prerequisite and Jev's primary documentation without implying a Jev API call.
+
+All 18 Bash/PowerShell command blocks are byte-identical to the previously live-exercised lab. The documented Bash preparation and freeze commands ran successfully in an isolated home folder. A missing-key review and a report without reviews both returned `HOLD`; no human-decision file was created for that incomplete attempt.
+
+Before the concurrent Module 5/6 integration, the runtime re-audited all five original live sessions and all seven corrected claims, retaining unknown authority with no content holds. No new provider calls were made. Chromium checks exercised the revised desktop/mobile decision guidance and no-JavaScript access, with no horizontal overflow or browser errors.
+
+`tests/test_core_standard.py` now passes the complete eleven-module supply graph. Before integration, `scripts/check_course.py` passed all 30 scoped gates, including the current spreadsheet checker, all 18 Module 8 regressions, and byte-for-byte publication checking. That complete output is retained in `course-gates.txt` under the review evidence root. The Module 7 integration HOLD recorded below is resolved.
+
+The later merge preserves the current Module 5 orchestration and Module 6 decision-model work. It changes the shared launcher and guard hashes; the original live campaign remains evidence for its frozen runtime, not a new campaign on the merged runtime. Fresh merged-runtime smoke checks prepared Modules 5, 6, and 8, froze the seven claims, and confirmed that a missing key and an incomplete report both hold without creating a human decision. The merged desktop/mobile lab also retained readable decision fields, no horizontal overflow, and no browser errors. `integrated-preparation-smoke.json` and `integrated-publication-review.json` retain those observations. Obsolete generated publication files and a retired Module 6 test-cache directory were preserved outside the checkout before rebuilding.
+
+The first merged course run passed 29 of 30 gates; Module 2's mutation gate hit the unchanged 600-second limit. A profile attributed 209.572 of 215.219 seconds to its existing `safe()` path guard, including 65,330,040 sibling `Path` constructions. The guard now compares `os.listdir()` names and folds the requested name once per ancestor, retaining its exact-case/collision predicate and all link, junction, and traversal checks. No cache, timeout increase, or mutation reduction was introduced. A real-filesystem smoke preserved exact file contents and rejected incorrect case, traversal, a file symlink, and a linked parent. The initial gate log, profile, diagnosis, and smoke results remain under the review evidence root.
+
+The final merged `scripts/check_course.py` run passed all 30 scoped gates, including all eight Module 2 mutation kills, the eleven-module supply graph, all 18 Module 8 regressions, and byte-for-byte publication checking. The build published 35 instructional pages, 419 raw downloads, and 40 UI/generated assets. Complete output is retained in `integrated-course-gates-final.txt`.
+
+After that full run, `main` gained Copper Span's exact-stage-brief receipt fix (`026225e`). The final integration retained it and passed all 12 Module 5 Python tests, all eight orchestration-guard tests, the eleven-module supply graph, and a fresh byte-for-byte publication check. `post-course-receipt-check.json` records this incremental verification; the full 30-gate result above precedes that final Module 5 integration.
+
+Concurrent commits `9704eef` and `4a84550` supplied matching Module 7 contract corrections and made Module 6's exact-check/semantic-judgment split an explicit Module 8 prerequisite. Those corrections were retained. The subsequent checks passed the supply graph, all 18 Module 8 regressions, eight publication tests, 34 builder tests, and regenerated publication byte equality. `post-progression-checks.json` retains the commands and results. The final mobile overview rendered the prerequisite reminder without overflow or browser errors; final-tab screenshot helpers timed out, recorded in `post-progression-browser.json`. Earlier screenshots retain the visual evidence for the unchanged learner-lab decision guidance.
+
+**Review evidence:** `$HOME/course-evidence/module08-hallucination-20261004T195428Z-62c876a8/followup-review-1791154694549/`. This review does not measure learner comprehension, completion time, or native Windows execution.
+
 ## Hallucination-control rewrite — 2026-10-04
 
 The current exercise replaces variation comparison with structured source checks, two blind reviewer roles, an evidence-bound correction, and two fresh reviews of the complete correction.
