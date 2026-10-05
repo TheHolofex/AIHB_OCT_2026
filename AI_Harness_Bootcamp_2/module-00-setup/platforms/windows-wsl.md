@@ -123,9 +123,11 @@ course_check_wsl
 
 **Recovery:** Use the Ubuntu and user the STOP line asks for, or free space inside Ubuntu. See [Ubuntu check and package problems](#ubuntu-check-and-package-problems).
 
-## 2. Install missing packages
+## 2. Install Git and the other missing packages
 
-If step 1 printed `PACKAGES_TO_INSTALL none`, skip this step. Otherwise, run this box to install the packages. `sudo` runs one command with administrator rights inside Ubuntu. At its password prompt, type your Linux password; nothing appears while you type.
+**Git** copies the course files from GitHub to your computer and records exactly which version you have. Step 4 uses it to make your checkout in your Linux home. Install Git inside Ubuntu with Ubuntu's `git` package, as the [Git project](https://git-scm.com/install/linux) recommends for Linux. Git for Windows doesn't count here: Ubuntu needs its own Git, and step 1 ignores Windows programs under `/mnt/c`.
+
+If step 1 printed `PACKAGES_TO_INSTALL none`, skip the install box and go to [Confirm Git works](#confirm-git-works). Otherwise, run this box to install the packages. `sudo` runs one command with administrator rights inside Ubuntu. At its password prompt, type your Linux password; nothing appears while you type.
 
 **Terminal: Ubuntu Bash, ordinary Linux user using sudo for package changes, same window.**
 
@@ -138,6 +140,22 @@ sudo apt-get update && sudo apt-get install -y git python3 curl ca-certificates 
 **Stop:** apt reports no installation candidate, an unreachable source, or permission denied.
 
 **Recovery:** Keep the apt output and ask the owner to fix Ubuntu's package sources; don't add other sources. See [Ubuntu check and package problems](#ubuntu-check-and-package-problems).
+
+### Confirm Git works
+
+This box shows which Git Ubuntu finds and asks it for its version. Run it even if you skipped the install box.
+
+**Terminal: Ubuntu Bash, ordinary Linux user, same window.**
+
+```bash
+command -v git && git --version
+```
+
+**Expected:** `/usr/bin/git`, then `git version 2.` followed by more numbers.
+
+**Stop:** the box prints nothing, no `git version` line appears, or the path starts with `/mnt/`.
+
+**Recovery:** Paste the step 2 box again in this Ubuntu window, not in PowerShell. See [Ubuntu check and package problems](#ubuntu-check-and-package-problems).
 
 ## 3. Install Oh My Pi
 

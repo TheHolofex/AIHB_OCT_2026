@@ -56,9 +56,11 @@ course_check_computer
 
 **Recovery:** Free space if needed, then paste this box again. For an unsupported OS, shell, architecture, or account, ask the device owner for a supported environment. A missing package or `PY missing` is not a stop; step 2 handles it.
 
-## 2. Install missing packages
+## 2. Install Git and the other missing packages
 
-Skip this box if step 1 printed both `PACKAGES present` and a `PY` path. Arch does not support partial upgrades. This command upgrades the whole system with `-Syu` and installs the listed packages in the same transaction. Read the entire transaction. Type `y` only if the device owner has approved every package listed; otherwise type `n` and stop. The `python` package from core provides Python, and `obsidian` is the signed package from extra.
+**Git** copies the course files from GitHub to your computer and records exactly which version you have. Step 4 uses it to make your checkout. Arch packages Git as `git`, and the [Git project](https://git-scm.com/install/linux) installs it on Arch with `pacman`. Here it comes in the same full upgrade as the other packages.
+
+Skip this box if step 1 printed both `PACKAGES present` and a `PY` path, and go to [Confirm Git works](#confirm-git-works). Arch does not support partial upgrades. This command upgrades the whole system with `-Syu` and installs the listed packages in the same transaction. Read the entire transaction. Type `y` only if the device owner has approved every package listed; otherwise type `n` and stop. The `python` package from core provides Python, and `obsidian` is the signed package from extra.
 
 If step 1 lists `obsidian` as missing, check your application menu first. If Obsidian is already installed outside pacman (Flatpak, an AppImage, or a vendor package), stop and ask the device owner before installing a second copy. Remove `obsidian` from the command only with their approval.
 
@@ -73,6 +75,22 @@ sudo pacman -Syu --needed git python curl ca-certificates diffutils less obsidia
 **Stop:** sudo missing, password rejected, policy refusal, conflict, or unapproved replacement in the list.
 
 **Recovery:** Stop. Do not use AUR, partial `-Sy`, or other workarounds. When the owner approves the full transaction, paste again. Use [when setup stops](../shared/TROUBLESHOOTING.md) for the exact error.
+
+### Confirm Git works
+
+This box shows which Git your terminal finds and asks it for its version. Run it even if you skipped the install box.
+
+**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+
+```bash
+command -v git && git --version
+```
+
+**Expected:** `/usr/bin/git`, then `git version 2.` followed by more numbers.
+
+**Stop:** the box prints nothing, or no `git version` line appears.
+
+**Recovery:** Paste the step 2 box again and approve the full transaction. Don't use AUR or a partial upgrade to get Git; see [If a step stops](#if-a-step-stops).
 
 ## 3. Install Oh My Pi
 

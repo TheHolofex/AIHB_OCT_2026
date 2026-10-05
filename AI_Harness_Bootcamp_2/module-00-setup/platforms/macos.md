@@ -99,9 +99,11 @@ course_check_mac
 
 **Recovery:** Fix the condition it names, then paste this box again. For Rosetta, an old macOS, or low space, see [Tools and Homebrew](#tools-and-homebrew).
 
-## 2. Install missing tools
+## 2. Install Git and Python
 
-If step 1 printed `NOTHING TO INSTALL`, skip this step. Otherwise, this box installs [Homebrew](https://brew.sh/), a package manager for macOS, if needed. It then uses Homebrew to install any missing Git or [Python 3.12](https://formulae.brew.sh/formula/python@3.12). If Apple's Command Line Tools are missing, the Homebrew installer installs them too; they include Git.
+**Git** copies the course files from GitHub to your Mac and records exactly which version you have. Step 4 uses it to make your checkout. On a Mac, Git comes with Apple's Command Line Tools, a free set of developer tools. The [Git project](https://git-scm.com/install/mac) lists these tools and Homebrew as ways to install it, and this step uses both.
+
+If step 1 printed `NOTHING TO INSTALL`, skip the install box and go to [Confirm Git works](#confirm-git-works). Otherwise, this box installs [Homebrew](https://brew.sh/), a package manager for macOS, if needed. If Apple's Command Line Tools are missing, the Homebrew installer adds them, and Git comes with them. The box installs Homebrew's `git` only if Git still doesn't run after that. Then it installs [Python 3.12](https://formulae.brew.sh/formula/python@3.12) if Python is missing.
 
 The Homebrew installer lists what it will change, asks you to press **Return**, and asks for your administrator password. The password won't appear as you type. If an Apple dialog opens, click **Install**, wait for it to finish, then return to Terminal and press a key. The installer needs an administrator account. Never run `sudo brew`.
 
@@ -146,6 +148,22 @@ course_install_missing
 **Stop:** The installer fails or you can't approve it, or any `STOP` line appears.
 
 **Recovery:** Keep the first error and don't install anything else by hand. If you don't have an administrator account, ask the device owner to finish this step; see [Tools and Homebrew](#tools-and-homebrew).
+
+### Confirm Git works
+
+This box shows which Git your Terminal window finds and asks it for its version. Run it even if you skipped the install box.
+
+**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
+
+```bash
+command -v git && git --version
+```
+
+**Expected:** a path, usually `/usr/bin/git` for Apple's Git or `/opt/homebrew/bin/git` for Homebrew's (`/usr/local/bin/git` on an Intel Mac), then `git version 2.` followed by more numbers. Apple's Git also shows `(Apple Git-` and a build number.
+
+**Stop:** the box prints nothing, Terminal prints `xcode-select: note: No developer tools were found` instead of a version, or an Apple dialog offers to install the command line developer tools.
+
+**Recovery:** That Apple dialog is Apple's Git installer. If you're allowed to install software, click **Install**, wait for it to finish, and paste this box again. Otherwise, ask the device owner to finish the installation. If no dialog appeared, paste the step 2 box again and keep its first error; see [Tools and Homebrew](#tools-and-homebrew).
 
 ## 3. Install Oh My Pi
 

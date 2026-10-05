@@ -8,7 +8,8 @@ Review and apply the fix, then rerun the failed check. If it still fails, paste 
 
 | What you see | What to do next |
 |---|---|
-| Git or Python is missing | Return to the named platform's prerequisite step. On a managed device, stop when policy blocks installation and send the support packet below. |
+| Git or Python is missing | Return to step 2 of your platform guide; for Git, finish with its **Confirm Git works** box. On a managed device, stop when policy blocks installation and send the support packet below. |
+| `git --version` fails right after Git installs | Open a new terminal window and run it again; a window opened before the install can miss the new Git. On Windows, close every terminal window and open Windows PowerShell from Start. On a Mac, a dialog that offers the command line developer tools is Apple's Git installer; approve it only if the device owner allows you to install software. |
 | A download fails | Keep the HTTP, proxy, or certificate error. Use the official release URLs. Do not disable TLS verification or execute an incomplete download. |
 | The checksum fails or the selected asset has no unique checksum entry | Do not install or execute the binary. Keep the failed download separate. Check the filename, release, and source before downloading into a new directory. |
 | `omp` is not found | Check the resolved command path below. Add only the user-bin directory named by your platform guide, then check again in the intended terminal. |

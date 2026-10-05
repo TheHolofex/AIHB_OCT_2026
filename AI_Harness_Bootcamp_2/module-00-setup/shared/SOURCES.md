@@ -18,6 +18,7 @@
 - [Apple command-line tools through Homebrew prerequisites](https://docs.brew.sh/Installation)
 - [Homebrew support tiers, including Intel](https://docs.brew.sh/Support-Tiers)
 - [Apple Gatekeeper · Open a blocked app](https://support.apple.com/en-us/102445)
+- [Install Git on macOS: Homebrew or Apple's Command Line Tools](https://git-scm.com/install/mac)
 
 ## Ubuntu and Arch
 
@@ -29,6 +30,7 @@
 - [Arch Linux pacman](https://wiki.archlinux.org/title/Pacman)
 - [Arch Linux Python](https://wiki.archlinux.org/title/Python)
 - [Arch GitHub CLI package](https://archlinux.org/packages/extra/x86_64/github-cli/)
+- [Install Git on Linux with the distribution's package manager](https://git-scm.com/install/linux)
 
 ## Shared tools
 
