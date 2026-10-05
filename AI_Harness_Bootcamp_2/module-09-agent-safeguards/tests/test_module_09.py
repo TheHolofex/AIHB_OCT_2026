@@ -15,6 +15,8 @@ MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE.parents[1]))
 from shared import run_omp as runtime
 
+# Synthetic version data for fixture receipts only; validates recorded identity binding for safeguards tests.
+SYNTH_OMP_VERSION = "omp/18.3.5"
 SPEC = importlib.util.spec_from_file_location("night_desk_verifier", MODULE / "shared/case/verify_safeguards.py")
 verifier = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(verifier)
@@ -51,7 +53,7 @@ class ReceiptBoundaries(unittest.TestCase):
         overlay = {"retry": {"enabled": False, "modelFallback": False}, "providers": {"cacheWarming": "off"}, "tools": {"approval": {name: "allow" for name in runtime.DECLARATION["tools"]}, "intentTracing": False}}
         (attempt / "runtime-config.yml").write_bytes(runtime.json_bytes(overlay))
         policy = dict.fromkeys(runtime.POLICY_KEYS)
-        policy.update(schema_version=1, run_id=run_id, work_root=str(self.work), profile="declared", tools=runtime.DECLARATION["tools"], write_files=[], write_root="artifacts", provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION, declaration={"path": str(self.work / "AGENT_POLICY.md"), "sha256": runtime.file_hash(self.work / "AGENT_POLICY.md")}, python=sys.executable, guard_source_sha256=runtime.file_hash(runtime.GUARD), runtime_config_sha256=runtime.file_hash(attempt / "runtime-config.yml"), guard_log=str(attempt / "guard.jsonl"), watch_paths=[str(self.watch)])
+        policy.update(schema_version=1, run_id=run_id, work_root=str(self.work), profile="declared", tools=runtime.DECLARATION["tools"], write_files=[], write_root="artifacts", provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION, declaration={"path": str(self.work / "AGENT_POLICY.md"), "sha256": runtime.file_hash(self.work / "AGENT_POLICY.md")}, python=sys.executable, guard_source_sha256=runtime.file_hash(runtime.GUARD), runtime_config_sha256=runtime.file_hash(attempt / "runtime-config.yml"), guard_log=str(attempt / "guard.jsonl"), watch_paths=[str(self.watch)])
         probe_name = {"out-of-jail": "OUT_OF_JAIL.md", "undeclared-tool": "UNDECLARED_TOOL.md", "planted-note": "PLANTED_QUESTION.md"}[child]
         prompt = (self.work / "shared/case/probes" / probe_name).read_bytes()
         if child != "planted-note":
@@ -108,7 +110,7 @@ class ReceiptBoundaries(unittest.TestCase):
             (attempt / f"{name}.jsonl").write_text("".join(json.dumps(row) + "\n" for row in item[name]))
         (attempt / "snapshots.json").write_bytes(runtime.json_bytes(snapshots))
         (attempt / "response.md").write_text(item["response"])
-        result = {"run_id": policy["run_id"], "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "started_at": "2026-01-01T00:00:00+00:00", "finished_at": "2026-01-01T00:00:01+00:00", "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(attempt / "guard.jsonl"), "declared_policy_sha256": policy["declaration"]["sha256"], "instruction_sha256": None, "input_sha256": {key: value["sha256"] for key, value in snapshots["before"]["work"].items() if value["type"] == "file"}, "output_sha256": {key: value["sha256"] for key, value in snapshots["after"]["work"].items() if value["type"] == "file" and value != snapshots["before"]["work"].get(key)}, "status": "PASS", "reason": "synthetic unit-test receipt, not a live call"}
+        result = {"run_id": policy["run_id"], "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "started_at": "2026-01-01T00:00:00+00:00", "finished_at": "2026-01-01T00:00:01+00:00", "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(attempt / "guard.jsonl"), "declared_policy_sha256": policy["declaration"]["sha256"], "instruction_sha256": None, "input_sha256": {key: value["sha256"] for key, value in snapshots["before"]["work"].items() if value["type"] == "file"}, "output_sha256": {key: value["sha256"] for key, value in snapshots["after"]["work"].items() if value["type"] == "file" and value != snapshots["before"]["work"].get(key)}, "status": "PASS", "reason": "synthetic unit-test receipt, no provider contact."}
         (attempt / "result.json").write_bytes(runtime.json_bytes(result))
 
     def test_no_prohibited_call_is_not_an_observed_denial(self):

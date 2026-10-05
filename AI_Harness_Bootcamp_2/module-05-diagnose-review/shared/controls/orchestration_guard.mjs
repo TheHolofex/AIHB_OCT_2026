@@ -57,7 +57,7 @@ export default function orchestrationGuard(pi) {
   const policyBytes = readRegular(policyFile);
   const policyHash = digest(policyBytes);
   const policy = JSON.parse(policyBytes.toString("utf8"));
-  require(policy.schema_version === 1 && policy.provider === "openrouter" && policy.model === "anthropic/claude-sonnet-4.6" && policy.omp_version === "omp/18.3.5", "invalid pinned policy");
+  require(policy.schema_version === 1 && policy.provider === "openrouter" && policy.model === "anthropic/claude-sonnet-4.6" && typeof policy.omp_version === "string" && /^omp\/[0-9]+\.[0-9]+\.[0-9]+$/.test(policy.omp_version), "invalid frozen policy");
   require(digest(readRegular(sourceFile)) === policy.guard_source_sha256, "guard source identity differs");
   require(Array.isArray(policy.parent_tools) && policy.reads && policy.role_files, "missing context permissions");
   require(Number.isInteger(policy.max_provider_requests) && policy.max_provider_requests > 0, "invalid provider request bound");

@@ -87,7 +87,7 @@ The schema represents both complete and blocked handoffs. The acceptance check a
 
 For three independent assignments, put three complete items in the same `tasks` array. For work that consumes their results, make a later call after collecting and accepting those results. There is no public `dependsOn` field and no automatic insertion of one child's output into the next child's context.
 
-[Native task schema and flow, OMP v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/tools/task.md)
+[Native task schema and flow](https://github.com/can1357/oh-my-pi/blob/main/docs/tools/task.md)
 
 ## Roles, tools and model selection
 
@@ -116,7 +116,7 @@ Outside this bounded run, an ordinary OMP read-only role can use the native `rea
 
 The role selects the course's pinned OpenRouter model. Do not assume a child inherits every parent setting: the observed child thinking level can differ from the parent's. Check `resolvedModelIdentity`, `resolvedThinkingLevel` and `resolvedModelIsFallback` in the native result rather than inferring them from a parent command.
 
-[Role discovery and frontmatter](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/task-agent-discovery.md) · [Task executor](https://github.com/can1357/oh-my-pi/blob/v18.3.5/packages/coding-agent/src/task/executor.ts)
+[Role discovery and frontmatter](https://github.com/can1357/oh-my-pi/blob/main/docs/task-agent-discovery.md) · [Task executor](https://github.com/can1357/oh-my-pi/blob/main/packages/coding-agent/src/task/executor.ts)
 
 ## Bound the team before dispatch
 
@@ -135,7 +135,7 @@ Native headless children use noninteractive `yolo` approval mode. That does **no
 
 Children have separate session histories, not separate operating-system sandboxes. Default native work can share a working directory. Independent read-only assignments avoid races; one named owner writes the combined artifact. A tool allowlist is not an OS security boundary.
 
-[Settings](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/settings.md) · [Extension lifecycle and subagent context](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/extensions.md)
+[Settings](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md) · [Extension lifecycle and subagent context](https://github.com/can1357/oh-my-pi/blob/main/docs/extensions.md)
 
 ## Join requested, executed and returned work
 

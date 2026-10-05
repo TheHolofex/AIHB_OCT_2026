@@ -2,7 +2,7 @@
 
 **Serves oracle:** S04, S12, S14, S17, S19
 **Primary objective:** PO-06 — Design a workflow for a decision model
-**Prerequisites:** Bounded direction, source verification, and typed questions with labels frozen before a run; a preflighted accessible environment, pinned OMP launcher with its judge profile, and this module's supplied case and controls
+**Prerequisites:** Bounded direction, source verification, and typed questions with labels frozen before a run; a preflighted accessible environment, the course launcher on the latest stable OMP release with its judge profile, and this module's supplied case and controls
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:JUDGE_ROUTE; VERIFY:DESK_LABELS
 **Produces:** JUDGE_SELECTION; DECISION_QUESTIONS; RISK_THRESHOLDS; HELD_OUT_MEASURE; PO06_RESULT
 **Rough time:** about 3 hours

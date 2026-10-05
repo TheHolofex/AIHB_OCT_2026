@@ -4,12 +4,9 @@ Build a checked status brief for fictional CS-2, carrying IV fluid cases from Ba
 
 ## Before the first wave
 
-Plan 90–150 minutes. Keep one ordinary terminal open for the four stages. Use Python 3.12+, the verified OMP 18.3.5 executable and the course OpenRouter credential in the current process. Restore a missing prerequisite through [setup](../../module-00-setup/README.md) or [credential handling](../../module-00-setup/shared/CREDENTIALS.md), not by switching providers or borrowing another login.
+Plan 90–150 minutes. Keep one ordinary terminal open for the four stages. Use Python 3.12+, a latest stable OMP release (the launcher records the observed `omp/<semver>` from a successful `--version`) and the course OpenRouter credential in the current process. Restore a missing prerequisite through [setup](../../module-00-setup/README.md) or [credential handling](../../module-00-setup/shared/CREDENTIALS.md), not by switching providers or borrowing another login.
 
 The launcher starts a fresh isolated OMP runtime for each stage. Your terminal retains the work and evidence paths; the model does not inherit your personal OMP profile.
-
-Technical statuses are not movement decisions. A `PASS` means the stage's evidence meets its contract. The combined brief may correctly say `HOLD`. All case facts are fictional; no result authorizes real movement.
-
 ## Prepare a work attempt
 
 Set `R` to your existing checkout. Change that one path if your checkout is elsewhere. The preparer creates `W` outside the repository and refuses to overwrite an earlier attempt. Stage evidence paths must not already exist; the launcher creates them.
@@ -87,12 +84,9 @@ Use the [native task and role contract](ORCHESTRATION_GUIDE.md#native-task-argum
 & $PY "$W\scripts\orchestrate.py" inspect --work "$W"
 ```
 
-**Expected:** JSON with `status: "PASS"`, the required model/version, the graph and three assignments. Each assignment identifies its brief, input, existence and fingerprint. Timing names `shared/case/timing-pending.json` and has `source_exists: false`.
+**Expected:** JSON with `status: "PASS"`, release policy `"latest"`, the model, the graph and three assignments. Each assignment identifies its brief, input, existence and fingerprint. Timing names `shared/case/timing-pending.json` and has `source_exists: false`.
 
-Inspect is offline. Its PASS does not prove the installed OMP version, credential, provider access or a child execution; run preflight checks those prerequisites before dispatch.
-
-Compare the graph and permissions with your plan. A child must not need another child's unfinished answer. Every dependent action must have a later owner and an explicit input.
-
+Inspect is offline. Its PASS does not prove the installed OMP release, credential, provider access or a child execution; run preflight checks those prerequisites before dispatch.
 **Stop:** The graph, assigned paths or permissions differ from your plan, or inspect returns HOLD. **Recover:** Correct the named work brief or restore an accidentally changed control from the supplied preparation source; inspect again before dispatch.
 
 ## Run the independent wave
@@ -109,7 +103,9 @@ Compare the graph and permissions with your plan. A child must not need another 
 & $PY "$W\scripts\orchestrate.py" run --work "$W" --evidence "$FANOUT_E" --stage fanout
 ```
 
-If you maintain multiple OMP installations, `--omp` can name the absolute path to the verified 18.3.5 executable. The launcher rejects another version; do not treat a newer global installation as the pinned one.
+If you maintain multiple OMP installations, `--omp` can name the absolute path to a verified latest stable executable. The launcher records the actual `omp/<semver>` reported by a successful `--version`; it rejects malformed or unsuccessful identity output. Do not treat an unverified global installation as the one under test.
+
+Keep the same OMP version throughout one chain. If you upgrade between stages, start a fresh fanout chain and preserve the earlier evidence; handoffs from different runtime versions cannot be combined.
 
 **Expected for the supplied failure case:** Exit 1 and JSON `status: "HOLD"`; `dispatched` contains inventory, authority and timing; `accepted_roles` contains inventory and authority; `blocked_roles` contains timing. The issue names the missing Timing input. No combined brief is written.
 

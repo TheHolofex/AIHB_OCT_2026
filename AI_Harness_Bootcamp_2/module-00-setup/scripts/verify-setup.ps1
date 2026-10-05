@@ -86,7 +86,7 @@ function Add-Result {
 function Test-VersionCommand {
     param(
         [string]$Name,
-        [string]$Expected,
+        [string]$Pattern = '',
         [string]$Command,
         [string[]]$Arguments = @()
     )
@@ -95,17 +95,17 @@ function Test-VersionCommand {
         Add-Result FAIL $Name "$Command is not on PATH" "Install $Command with the step for it in your platform guide, open a new PowerShell window, and run this check again."
         return
     }
-    $versionOutput = & $Command @Arguments 2>$null
+    $versionOutput = @(& $Command @Arguments 2>$null)
     $commandExit = $LASTEXITCODE
     $out = [string]($versionOutput | Select-Object -First 1)
     $out = $out.Trim() -replace '\r',''
-    if ($commandExit -ne 0 -or -not $out) {
+    if ($commandExit -ne 0 -or $versionOutput.Count -ne 1 -or -not $out) {
         Add-Result FAIL $Name "$Command did not return a successful version result" 'Preserve the failed command and repair this prerequisite.'
         return
     }
     $shown = (Get-Redacted $resolved) + " - " + $out
-    if ($Expected -and $out -ne $Expected) {
-        Add-Result FAIL $Name "want $Expected, observed $out at $shown" "Install the exact version and re-run in a new PowerShell window."
+    if ($Pattern -and $out -cnotmatch $Pattern) {
+        Add-Result FAIL $Name "Unrecognized version at $shown" "Install and verify the latest stable release, then re-run in a new PowerShell window."
     } else {
         Add-Result PASS $Name $shown
     }
@@ -128,7 +128,7 @@ if ($free -ge 15) {
 
 # ------------------------------------------------------------------------------- tools
 
-Test-VersionCommand -Name git -Expected '' -Command git -Arguments @('--version')
+Test-VersionCommand -Name git -Command git -Arguments @('--version')
 $pythonCmd = $null
 $pythonCandidates = @()
 foreach ($cmd in @(Get-Command py -CommandType Application -All -ErrorAction SilentlyContinue)) {
@@ -165,7 +165,7 @@ if (-not $pythonCmd) {
     Add-Result FAIL python 'No runnable Python 3.12+ found on PATH' 'Install or select Python 3.12+ using the platform guide.'
 }
 
-Test-VersionCommand -Name omp -Expected 'omp/18.3.5' -Command omp -Arguments @('--version')
+Test-VersionCommand -Name omp -Pattern '^omp/[0-9]+\.[0-9]+\.[0-9]+$' -Command omp -Arguments @('--version')
 
 # ---------------------------------------------------------------------- course clone
 

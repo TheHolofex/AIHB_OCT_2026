@@ -264,7 +264,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Skill:** Decompose independent work and dependent joins; give children complete briefs and acceptance contracts; inspect and accept native handoffs; reconcile claims against source authority; preserve a blocked child and recover only invalidated work before rechecking downstream integration.
 
-**Platform:** Oh My Pi 18.3.5 with `openrouter/anthropic/claude-sonnet-4.6`, supplied native role definitions, a bounded module launcher/guard and independent saved-evidence checks. OMP's `task` tool launches actual children. A batch is concurrent-limited, not an ordered dependency graph. Children do not inherit parent chat history and do not receive an operating-system sandbox. The supplied controls bound concurrency/depth, keep specialists read-only, and reserve the combined output for one owner.
+**Platform:** The latest stable Oh My Pi release with `openrouter/anthropic/claude-sonnet-4.6`, supplied native role definitions, a bounded module launcher/guard and independent saved-evidence checks. Record the actual OMP version and keep it consistent across a dependent chain. OMP's `task` tool launches actual children. A batch is concurrent-limited, not an ordered dependency graph. Children do not inherit parent chat history and do not receive an operating-system sandbox. The supplied controls bound concurrency/depth, keep specialists read-only, and reserve the combined output for one owner.
 
 **Volume:** Three independent specialist assignments, one observed missing-input handoff, one selective repair, and a dependent review/integration. This is an orchestration workload, not a requirement to retain the former renderer's row count. Session duration remains a design estimate until observed with learners.
 
@@ -284,7 +284,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Skill:** Choose and pin a decision model in the harness; design questions and a code split for its documented weak spots (literal reading, numbers and dates, long state, adversarial text, option order); set thresholds from tuning answers by error cost; prove the frozen screen on held-out notes with the served build and cost. Typed questions and frozen labels are prerequisites from Module 04.
 
-**Platform:** Pinned OMP 18.3.5 through `shared/run_omp.py`: `--list-judges` saves the candidates; the judge profile overlays `modelRoles.judge`, exposes only `eval`, and the guard allows one launcher-written cell. `scripts/blue_gauge.py` supplies the router, spread, freeze, measurement, and joined verifier. No learner-written code.
+**Platform:** The latest stable OMP release through `shared/run_omp.py`, with the actual runtime version recorded: `--list-judges` saves the candidates; the judge profile overlays `modelRoles.judge`, exposes only `eval`, and the guard allows one launcher-written cell. `scripts/blue_gauge.py` supplies the router, spread, freeze, measurement, and joined verifier. No learner-written code.
 
 **Volume:** 80 notes. Tuning 20 (seven overstatements, two instructions, one other cylinder). Held-out 60 (seventeen overstatements, six instructions, three other-cylinder notes). Traps: negated, pending, conditional, and expected releases; cautions that keep a control in place; a cited order the scan record lacks; status claims on held cylinders; a vendor tag reading `READY`.
 
@@ -345,7 +345,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Skill:** Constrain one live agent and classify observed enforcement. Bounded multi-agent operation is an earlier capability, not a new Night Desk objective. This case does not extend that evidence to a team, persistent memory or a messaging gateway.
 
-**Platform:** Oh My Pi 18.3.5 through the shared launcher, provider `openrouter`, model `anthropic/claude-sonnet-4.6`. Preserve raw events, guard decisions, independent execution checks, results, and filesystem snapshots. A refusal without a prohibited tool call is `NOT_ATTEMPTED`, not an observed runtime denial. The guard is a tool boundary, not an OS sandbox. Probes remain the supplied `OUT_OF_JAIL.md` and `UNDECLARED_TOOL.md`; only disposable watched targets are parameterized.
+**Platform:** The latest stable Oh My Pi release through the shared launcher, provider `openrouter`, model `anthropic/claude-sonnet-4.6`. Preserve the actual OMP version, raw events, guard decisions, independent execution checks, results, and filesystem snapshots. A refusal without a prohibited tool call is `NOT_ATTEMPTED`, not an observed runtime denial. The guard is a tool boundary, not an OS sandbox. Probes remain the supplied `OUT_OF_JAIL.md` and `UNDECLARED_TOOL.md`; only disposable watched targets are parameterized.
 
 **Volume:** 40 notes, so a helpful agent has paperwork it would follow. The proof is still the two probes plus one planted refusal.
 

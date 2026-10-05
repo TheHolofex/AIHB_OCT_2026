@@ -22,7 +22,7 @@ TypeSafe documentation, read 2026-10-04:
 - OpenRouter: [Jev hub](https://openrouter.ai/docs/guides/community/jev.md) (Decisions API `POST /api/alpha/decisions`; System One API `POST /api/v1/systemone`; OpenRouter key only; input billed, output free; 32,000-token context; `~typesafe/jev-latest` follows the newest release), [Gate agent tool calls with Jev](https://openrouter.ai/docs/cookbook/building-agents/gate-tool-calls-with-jev) (approve only if every Noul ≥ 0.9, block if any ≤ 0.1, review otherwise; never treat a failed check as approval), [Classify and tag text at scale](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-classification) (thresholds from 100–200 labeled items; 150-item calibration: confidence ≥ 0.8 right on 114/122, 0.5–0.8 on 9/18, below 0.5 on 4/10).
 - TypeSafe's launch post (2026-09-15) states Jev's type safety as a guarantee and its speed, cost, and calibration from its own workflow evals against reference models. Treat those as vendor claims; the module measures only its own sample.
 
-Oh My Pi at tag `v18.3.5`:
+Historical Oh My Pi observations at tag `v18.3.5` follow. Current installation tracks the latest stable release; the launcher records its actual version rather than requiring this historical tag.
 
 - `modelRoles.judge` selects the judge role chain (`packages/coding-agent/src/config/model-roles.ts`, `src/judgment/index.ts`). OpenRouter models whose API is `openrouter-decisions` go to the Decisions endpoint (`docs/models.md`). After the first native judge in a chain, only native candidates remain, so a failed Jev call does not fall back to a prompted chat model.
 - Eval exposes `judge` and `judgeBatch` in JS (`judge_batch` in Python). The bridge maps `bool` to Noul and returns `{type: "bool", bool}`; `choice` and `score` keep their names (`src/eval/judgment-bridge.ts`). Choice option descriptions must be strings in this version (observed: object descriptions are refused).
@@ -40,7 +40,7 @@ The state sent to the model is the note text alone. The scan record, cylinder ID
 
 ## 4. Mechanics
 
-- `shared/run_omp.py` judge profile: validates `JUDGE.yml` (exactly the two-line setting, pinned selector only), the question file (shapes the 18.3.5 bridge accepts), and the states folder; freezes the questions, setting, and plan into the evidence folder; overlays `modelRoles.judge`; exposes only `eval`; and after the run checks one completed frozen cell, every answer's shape against the frozen questions, one served `jev-1.13` build, a finished batch with cost, and no work-folder change beyond the declared output. `--list-judges` saves the candidate list with no model call.
+- `shared/run_omp.py` judge profile: validates `JUDGE.yml` (exactly the two-line setting, pinned model selector only), the question file's supported judge shapes, and the states folder; records the actual OMP version; freezes the questions, setting, and plan into the evidence folder; overlays `modelRoles.judge`; exposes only `eval`; and after the run checks one completed frozen cell, every answer's shape against the frozen questions, one served `jev-1.13` build, a finished batch with cost, and no work-folder change beyond the declared output. `--list-judges` saves the candidate list and actual runtime version with no model call.
 - `shared/course_guard.mjs`: in a judge run, allows `eval` only for the frozen cell in JS, once, and aborts if any judge input changes.
 - `shared/judge_runner.mjs`: reads the plan, runs one `judgeBatch` with no retries, drains to a deadline, cancels unfinished work, and writes `judgments.jsonl` and `batch-status.json` exclusively.
 - `scripts/blue_gauge.py`: `check-questions` (router contract and design rules a file can show), `report`, `spread`, `freeze`, `measure`, `verify`. Router order: other cylinder → cited order → instruction → scan holds a release order → release claim or settled status above the scan → unsettled status → pass below → review. A missing judgment never passes. `verify` audits completed tuning runs and lists held ones as kept; the first tuning run with saved judgments sets the first-miss comparison whatever its recorded status, so relabelling a run cannot excuse its misses.
@@ -73,3 +73,9 @@ These runs exercise the mechanics and one staff question set. They are not learn
 ## 7. Revision note
 
 Revision 4 replaces revision 3 (eighty `R-` runs, outcome-blind sample, two-literal predicate in a supplied control) with this module. The old corpus, predicate control, figures, and historical evidence are retired from the active module; earlier evidence records stay where they were published.
+
+## 8. Latest-runtime compatibility smoke, 2026-10-05 UTC
+
+The checksum-verified latest `omp/18.6.1` binary listed 14 live judge candidates, including the unchanged `openrouter/typesafe/jev-1.13` selection. A separate guarded batch judged one practice state with bool, choice and score questions. The served model was `openrouter/typesafe/jev-1.13-20260917`; the receipt and output audit passed, with reported judge cost USD 0.000016548. Run ID: `07428752-46d3-400b-9a3c-2899235c01b3`; private evidence: `~/course-evidence/omp-latest-20261004/judge/` and `judge-list/`.
+
+This is a native macOS arm64 compatibility check, not a rerun of the full tuning/held-out workflow or a new accuracy claim. Runtime versions are recorded observations rather than course pins; the selected and served judge-model constraints remain unchanged.

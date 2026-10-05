@@ -2,7 +2,7 @@
 
 Correct the Slope Brief claims without filling gaps by guesswork. Check each claim against its own source packet, run two reviewer agents separately, have another agent correct the claims, and review the correction afresh. You own the final decision.
 
-Plan for a little over two hours (a rough estimate). The complete sequence makes five paid agent sessions, each of which may make several provider requests. You need the Python, pinned Oh My Pi, and OpenRouter access verified in [setup](../../module-00-setup/README.md). The supplied commands use Sonnet 4.6, not Jev's API.
+Plan for a little over two hours (a rough estimate). The complete sequence makes five paid agent sessions, each of which may make several provider requests. You need the Python, latest stable Oh My Pi release, and OpenRouter access verified in [setup](../../module-00-setup/README.md). The supplied commands use Sonnet 4.6, not Jev's API.
 
 ## The decision rule
 
