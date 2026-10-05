@@ -8,11 +8,13 @@ Plan for about three hours on Thursday. That is a rough estimate. You work on yo
 
 ## Start here
 
+Ask staff for the approved `hf` and `llama-server` executable paths, then [check local-model readiness](shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before downloading or launching. Keep existing installations. A preflight reports capacity and prerequisites without downloading or starting a service; each machine still needs a complete exact-model rehearsal.
+
 1. [Stand the model up and keep the files](shared/MODULE_10_LAB.md) from the first command through close-out.
 2. Read the [service rules](shared/case/SERVICE_RULES.md) before you start the server.
-3. After your own run is done, freeze the ten files in the [package](shared/PACKAGE.md) and copy them. Check that copy from a new terminal. Do not copy the model file again, and do not download it again.
+3. After your own run is done, freeze the eleven files in the [package](shared/PACKAGE.md) and copy them. Check that copy from a new terminal. Do not copy the model file again, and do not download it again.
 
-The copy has only the ten files the package names: the instructions, the check scripts, the case and rules, the on/off control, and the saved baseline. Leave the model file where you downloaded it. Evidence, including the stop receipt, and the chat stay outside the copy. The fresh-copy check reads the named sections and confirms the named files are in the folder. It does not run the commands, and it does not start the server again.
+The copy has only the eleven files the package names: the instructions, the check scripts, the case and rules, the on/off control, and the saved baseline. Leave the model file where you downloaded it. Evidence, including the stop receipt, and the chat stay outside the copy. The fresh-copy check reads the named sections and confirms the named files are in the folder. It does not run the commands, and it does not start the server again.
 
 ## Keep it on this laptop
 

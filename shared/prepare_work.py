@@ -13,22 +13,19 @@ from pathlib import Path
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
     "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case", "controls", "prompts", "agents"),
-    "06": ("case", "controls"), "07": ("batch", "controls"),
+    "06": ("case", "controls"), "07": ("batch",),
     "08": ("case", "controls"), "09": ("case", "controls"),
     "10": ("case", "controls", "baseline"), "04": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
     "02": ("second_brain.py",), "03": (), "05": ("orchestrate.py", "orchestration_evidence.py"), "06": ("blue_gauge.py",),
-    "07": (), "08": (),
-    "09": (), "10": ("local_ai.py", "check_package.py"),
+    "07": ("check_sheet.py",), "08": (),
+    "09": (), "10": ("local_ai.py", "check_package.py", "check_readiness.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_07_DOWNLOADS = (
     "shared/batch/wave1.csv",
-    "shared/batch/wave2.csv",
-    "shared/batch/wave2-revised.csv",
-    "shared/controls/validate-batch.js",
-    "shared/controls/receipt-checker.json",
+    "shared/SHEET_RULES.md",
 )
 EXCLUDED = {"figures", "__pycache__", "staff", "reference", "reviews", "evidence", "tests", "facilitator", "history", "assessment", "ACCESSIBILITY.md", "PUBLIC_RUBRIC.md", "CUSTODY_CONTRACT.md"}
 
@@ -185,11 +182,10 @@ def main() -> int:
     if args.module_id == "07":
         print(f"PASS: created {work}")
         print("Next: open your local n8n editor in the browser and follow the Module 7 lab.")
-        print(f"Upload the wave CSVs from {work / 'shared/batch'} through the workflow test form.")
-        print(f"Copy Check batch code from {work / 'shared/controls/validate-batch.js'}.")
-        print(f"Import {work / 'shared/controls/receipt-checker.json'} into a separate NEW BLANK workflow.")
-        print("Keep workflows unpublished. Arm Execute workflow, then use that workflow's current Test URL.")
-        print(f"Download receipts and reports in the browser; retain unchanged bytes under unique names in {work / 'out'}.")
+        print(f"Upload {work / 'shared/batch/wave1.csv'} through the agent workflow's current Test URL.")
+        print(f"Keep {work / 'shared/SHEET_RULES.md'} open while checking the spreadsheet.")
+        print("Keep both workflows unpublished. Download the spreadsheet from the tool's run.")
+        print(f"Retain the unchanged download under a unique name in {work / 'out'}, then run scripts/check_sheet.py on it.")
         return 0
     command = next_arguments(args.module_id)
     ps_quote = lambda value: "'" + str(value).replace("'", "''") + "'"

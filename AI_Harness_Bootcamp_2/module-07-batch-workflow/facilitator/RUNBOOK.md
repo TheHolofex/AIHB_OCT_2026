@@ -19,3 +19,9 @@ The checker prints `PASS: sheet has the 80 source lots` when the download has ea
 ## Close
 
 Look for the attempt folder, both workflow names, the execution the file came from, the download, the checker output, and a note naming wrong rows. No score. An unfinished agent run stays `HOLD`.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: agent and tool workflows; downloaded sheet and checker PASS.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

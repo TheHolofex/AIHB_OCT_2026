@@ -1,6 +1,6 @@
 # Reference: Module 0 and the initial course setup
 
-**Version:** 9 · **Frozen on:** 2026-10-04 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling and the peer-review, qualification, and evaluator lanes; replaces the class-review decision with a send-or-hold decision; rebuilds the assignment around planned, checked long-form drafting
+**Version:** 10 · **Frozen on:** 2026-10-05 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling and the peer-review, qualification, and evaluator lanes; replaces the class-review decision with a send-or-hold decision; rebuilds the assignment around planned, checked long-form drafting; requires the latest stable OMP release and records each attempt's actual runtime identity
 **Scope:** Module 0 learner material, shared setup contract, five platform setup paths, and the acceptance machinery that decides them
 **Supported paths:** Windows PowerShell with an n8n-only WSL bridge, Windows with WSL 2 and Ubuntu for course work, macOS, Ubuntu, Arch Linux
 **Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.

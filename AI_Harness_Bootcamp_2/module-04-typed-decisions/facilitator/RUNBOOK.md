@@ -49,3 +49,9 @@ Module 4 is the third Tuesday block, about two and a half hours. Pacing marks be
 - Agreement is high and no disagreement carried high confidence: the learner may keep `min_confidence` at `0.7` and must say in the handoff that ten messages cannot establish a rate. That is a correct result, not a missing one.
 - `HOLD state: ... differs from the supplied copy`: the learner edited a case file, the contract, the prompt, or a supplied question. Only `gates.json` and the learner's own question are theirs to change; restore the file from the checkout.
 - `HOLD answers: ... labels written after a run do not count`: the labels on disk when the run started differ from the frozen ones. The launcher's input snapshot is the evidence; start a fresh attempt.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: labels frozen before model answers/adjudication; ten-message sample limits stated in handoff.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

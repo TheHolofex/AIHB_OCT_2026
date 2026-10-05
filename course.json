@@ -441,7 +441,7 @@
         "will": [
                 "Download the named model file under your own account, check that it is the right file, and point OMP at a server only this laptop can reach.",
                 "Get one real reply, then stop the server and bring the saved settings back so the wiring matches.",
-                "Save the ten files, copy them, and check that copy from a new terminal using only those files."
+                "Save the eleven files, copy them, and check that copy from a new terminal using only those files."
         ]
       },
       "pages": [
@@ -456,11 +456,12 @@
       ],
       "scripts": [
         {"source": "scripts/local_ai.py", "dest": "scripts/local_ai.py"},
-        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"}
+        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"},
+        {"source": "scripts/check_readiness.py", "dest": "scripts/check_readiness.py"}
       ],
       "download_dirs": ["shared/case", "shared/controls", "shared/baseline"],
       "raw_downloads": ["shared/PACKAGE.md"],
-      "tests": ["tests/test_module_10.py", "tests/test_adequacy.py"]
+      "tests": ["tests/test_module_10.py", "tests/test_adequacy.py", "tests/test_readiness.py"]
     }
   ],
   "shared_downloads": [

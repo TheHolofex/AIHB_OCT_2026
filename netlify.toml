@@ -1,5 +1,5 @@
 [build]
-  command = "python3 -m pip install -r requirements-dev.txt && python3 scripts/build_course.py && python3 scripts/check_course.py"
+  command = "bash scripts/bootstrap_parsers.sh bash -c 'python3 -m pip install -r requirements-dev.txt && python3 scripts/build_course.py && python3 scripts/check_course.py'"
   publish = "site"
 
 [build.environment]

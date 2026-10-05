@@ -12,7 +12,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
-| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; five-turn paid review/correction sequence uses one pinned model per turn |
+| Variable model/tool spend | Provisional US$40 learner allowance, confirmed by the account owner; at most two concurrent paid attempts | Not an enforced ceiling or an observed total; requires an actual usage ledger. The five-turn paid review/correction sequence uses one pinned model per turn. Separately authorized staff verification has its own aggregate budget and admission controls. |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
 No unmeasured budget is reported as achieved. Delivery may vary support and optional stretch work; it may not hide required work outside the course days or weaken a technical check.
@@ -74,7 +74,7 @@ The Copper Span break follows inspection of the first fan-out and its blocked ha
 
 ### Thursday timetable
 
-Thursday starts around 08:00 and ends around 16:00. Times are approximate.
+Thursday starts around 08:00 and ends around 16:30. Times are approximate.
 
 | Roughly | Work |
 |---|---|
@@ -85,6 +85,20 @@ Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 | 13:30–16:30 | Cold Foundry |
 
 The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its pacing route.
+
+Cold Foundry keeps its full 13:30–16:30 block. Each learner runs, stops, restores, and checks their own saved package within that session.
+
+### Readiness deadlines
+
+Let **T** be the first teaching day confirmed by the course coordinator. Until that date is confirmed, retain these relative deadlines without inventing calendar dates.
+
+| Due | Owner | Required action |
+|---|---|---|
+| T−7 days | Course coordinator | Send setup instructions, repository invitations and account/access requirements through approved channels. |
+| T−3 days | Each participant and course coordinator | Return the readiness evidence required by the selected setup route and the separate Local model check, with blockers. Confirm the participant's route, OS/version/architecture and device/support owner. |
+| T−1 day | Device/support owner and facilitators | Resolve approved installation/access blockers and complete exact-model capstone downloads and full rehearsals on the intended machines. Record unresolved items as named HOLDs. |
+
+The Module 00 facilitator runbook owns the privacy-safe intake/register procedure and required checks. Names, consent and contact details stay outside the repository. A missed deadline is HOLD, not presumed readiness. Record actual novice-pilot, facilitator, platform and human peer observations separately from automated checks; later class-time learner records remain future operating evidence. Publication authorization does not complete an unobserved lane. Cold Foundry is individual work, not an independent-recipient requirement.
 
 Sessions run in this order. Each capability assumes earlier skills, while **no module depends on another module's evidence**. Every module receives its own case and machinery, verified at entry. Recover missing prerequisites explicitly. A technical `HOLD` identifies work that needs attention; it does not block later participation.
 

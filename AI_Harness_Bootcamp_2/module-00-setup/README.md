@@ -128,3 +128,11 @@ Record **n8n READY** only after checking all of the following. Keep these checks
 On a fresh instance with the UI shown, complete **Set up owner account → Next**. If the optional survey appears, continue with **Get started**. Choose **Skip** on the free-license offer and **Set up later in Settings** on the Assistant screen. From **Overview**, select **Build a workflow** on an empty instance. Click the workflow title, enter **Module 7 readiness**, and press **Enter**. The editor saves automatically, so you do not need to see a **Saved** label. Reload and check that the name and blank canvas remain. If an instance already exists, use its local login and never reset its owner. If a workflow with that name already contains work, leave it in place and use a different name.
 
 Run these checks on your device. The n8n app and stack were checked only on Apple Silicon. If the UI differs or any check fails, record **n8n HOLD** and use [When setup stops](shared/TROUBLESHOOTING.md). Keep an OMP pass even if n8n is on HOLD; an OMP pass does not show that n8n is ready.
+
+## Local model readiness for Module 10
+
+Staff provision the capstone tools before class. Run the checks in a fresh terminal on the machine you'll use for Module 10. Keep results separate from OMP, Obsidian, and n8n readiness.
+
+[Check local-model readiness](../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before any download or launch, using the approved [tool identities](shared/VERSIONS.md#local-model-readiness-lane-module-10). The pre-download policy requires 35 GiB total free space on the actual destination and applicable cache volumes. A 24 GiB installed-RAM planning floor does not establish performance; every machine needs a complete exact-model rehearsal.
+
+Record the platform, architecture, tool paths/versions, free space (bytes and GiB), RAM, port status, and device-owner approval. A base setup PASS does not clear capstone capacity. Unmeasured platform or architecture combinations remain unobserved until exercised on a qualifying machine.

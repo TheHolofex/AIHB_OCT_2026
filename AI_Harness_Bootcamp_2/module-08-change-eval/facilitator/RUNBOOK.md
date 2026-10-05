@@ -59,3 +59,9 @@ The human template uses per-claim `USE`, `KEEP_UNKNOWN`, or `HOLD`, with a sourc
 ## Evidence limits
 
 Authored defects are exercise inputs, not observed hallucinations from the provider. Model-produced reviews and correction are live observations only when their receipts pass the audit. One five-turn sequence establishes no general hallucination rate, calibration, or model superiority. Previous paired-comparison and restore evidence belongs to the retired module revision and does not verify this workflow.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: five audited runs; human decision on holds.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

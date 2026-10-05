@@ -921,3 +921,7 @@ export PATH="$HOME/.docker/bin${PATH:+:$PATH}"
 ```
 
 Then open a new terminal window from the Shell menu and re-run the Docker check. Wrong context or exported Compose override: ask the owner, then use a clean shell that does not have those variables exported. Existing `~/n8n-course`, port 5678 in use, or project resources for n8n-course: preserve everything; reuse an existing course instance only after the owner confirms its version and settings (skip the generate box). Slow startup: wait for the engine to settle and re-run the check box. Port exposed beyond 127.0.0.1: run `course_n8n down` (this stack only), keep the volumes, and ask the owner to correct the bind in compose.yml before restarting. To review the installer script before execution: use the optional review box that appears before the generate step (it runs `less` on the downloaded file before any execution).
+
+## Local model (capstone) readiness lane
+
+Ask staff for the approved `hf` and `llama-server` paths, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Quoted executable paths support spaces. Missing tools, insufficient capacity, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner.

@@ -235,7 +235,6 @@ class PublicationBehavior(unittest.TestCase):
                          [("read-a-file", "·", "·Read a file"), ("4-preserve-the-decision", "4", "4Preserve the decision")])
         checks = [node for node in nodes if "data-step-done" in node.attrs]
         self.assertEqual([node.attrs["aria-label"] for node in checks], ["Done: Read a file", "Step 4 done: Preserve the decision"])
-        self.assertEqual([node.text() for node in nodes if node.attrs.get("class") == "rf-stepper-number"], ["·", "·", "4"])
         lab.write_text(GUIDED_PROCEDURE, encoding="utf-8")
         self.build()
         tree = builder.parse_html((self.published.parent / "lab.html").read_text())

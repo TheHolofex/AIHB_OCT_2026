@@ -10,7 +10,7 @@ The supplied North Shelf packet (the request, six sources, the style rules, and 
 
 ## Before learners arrive
 
-1. Run the relevant setup path on the actual classroom images, including local Obsidian before Module 2 and its full local n8n path before Module 7.
+1. Run the relevant setup path on the actual classroom images, including the separate local Obsidian and n8n readiness checks.
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
 4. Confirm the latest stable Oh My Pi (the observed `omp/<semver>` is recorded in receipts), the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic retry.
@@ -19,10 +19,15 @@ The supplied North Shelf packet (the request, six sources, the style rules, and 
 7. Prepare a support owner for managed-machine and account problems.
 8. Put a visible clock where learners can observe the 60-minute first-result design target: a frozen plan and a first section checked against its sources. Record actual timing and assistance; this target has not been validated with learners.
 9. Confirm the classroom network reaches OpenRouter. The lab runs about 14 short launcher sessions per learner (one outline, five or six sections, five review sessions, two revisions); a second review round adds six.
+10. Confirm T (first teaching day). At T-7 the coordinator sends setup instructions and access requirements. At T-3 each participant returns readiness status, evidence, and blockers via the register below. By T-1 device/support owners resolve blockers and staff complete capstone rehearsals/downloads on intended machines. Missing deadlines produce named HOLD records.
+11. Maintain one privacy-safe readiness register (participant alias only, no real names/contact; route/platform, OS/architecture, device owner, required check, due date, status, evidence locator + date + redacted hash, support owner, disposition). Private details stay outside the repo and public site. Use actual cohort intake; do not assume availability of people or machines.
+12. Record separately: GitHub account/invitation acceptance and repository read probe; participant-authorized OpenRouter access/key readiness and funded-credit readiness; HF access/conditions; device-owner installation approval; local n8n runtime/access and Local model tool/storage/RAM/port status. Exact local paths and private approvals belong in the external register, not this source. The US$25 staff verification admission remains separate from learner instructions.
+13. Freeze the platform rehearsal matrix from the actual cohort inventory plus the mandatory changed-path routes (host macOS/Apple Silicon, native Windows PowerShell 5.1, clean Arch). At least one clean owner-approved machine per required combination completes the checks. Missing required machines hold release; unrepresented advertised routes remain explicitly runtime-unobserved.
+14. Exercise the published commands for each required live lane on actual machines and preserve failures. Confirm class-work authorization and funded-credit readiness with the participant's account owner. Staff verification campaigns use their separately authorized [campaign ledger](../../../evidence/exercise-runs.json); its additional admission controls do not change the learner contract.
 
-## Keep three readiness lanes separate
+## Keep four readiness lanes separate
 
-Record **OMP**, **Obsidian**, and **n8n** separately. The OMP lane retains both its prerequisite report and live `READINESS CHECK PASS/HOLD`; a passing report never replaces the live tool-write proof. Record **Obsidian READY/HOLD** from its two disk checks plus separate actual GUI observation, and **n8n READY/HOLD** from its runtime, browser, and persistence checks. No lane establishes another. Preserve every earlier result when a different lane holds. Obsidian HOLD blocks Module 2's local vault operation; n8n HOLD blocks Module 7's local operating path.
+Record **OMP**, **Obsidian**, **n8n**, and **Local model** separately. The OMP lane retains both its prerequisite report and live `READINESS CHECK PASS/HOLD`; a passing report never replaces the live tool-write proof. Record **Obsidian READY/HOLD** from its two disk checks plus separate actual GUI observation, and **n8n READY/HOLD** from runtime, browser, and persistence checks. Record **Local model READY/HOLD** from approved tool identities, actual destination/cache volumes, installed and available RAM, a free `127.0.0.1:8080` before launch, and the complete exact-model lifecycle in Module 10. A preflight alone cannot make the Local model lane READY. No lane establishes another lane's result.
 
 ## Set up local Obsidian
 
@@ -138,6 +143,10 @@ Collect or verify:
 - OMP setup report path and separate live readiness result;
 - Obsidian READY/HOLD, both disk-check paths, refresh record, actual version/platform, and separate GUI observations;
 - separate n8n READY/HOLD, observed platform/version/port/service state, workflow name, reload and stop/start persistence observations, and unresolved owner approvals;
+- separate Local model readiness status, preflight report, intended machine, and complete exact-model rehearsal evidence or the missing prerequisite;
+- readiness-register entries with evidence locators and platform-matrix status;
+- actual pilot observations, facilitator rehearsal records with source hashes and machines, and human peer-review records where observed;
+- the relevant staff-verification ledger entry for campaign work, kept separate from class-work authorization;
 - `brief.md`, `tests.md`, `outline-proposed.md`, and the corrected `outline.md`, with `E/plan.json`;
 - the time the first section was checked;
 - `draft/v1/` to `draft/v3/` and the assembled versions;
@@ -149,3 +158,31 @@ Collect or verify:
 - support packet for any blocked dependency.
 
 Do not collect API keys, environment dumps, account screenshots, or the learner's full home path.
+
+## Pre-release operational evidence requirements
+
+These procedures are exercised on actual cohort machines and participants. Record actual observations only; do not fabricate participants, approvals, or results. Report missing people, machines, authorizations, and any unresolved staff-campaign admission prerequisite.
+
+**Readiness register and schedule:** Use the privacy-safe register defined above. Collect from actual intake. T-7 / T-3 / T-1 deadlines govern; missing items produce named HOLDs. Staff-verification spending and its additional admission controls belong in the separate campaign ledger.
+
+**Platform matrix:** Mandatory: host macOS/Apple Silicon, native Windows PowerShell 5.1, clean Arch. Plus every OS/version/arch in the confirmed cohort. One clean owner-approved machine per required combo must complete install + fresh-terminal + repo auth + OMP + Obsidian GUI + n8n + capstone where assigned. WSL2 Ubuntu, native Ubuntu, Intel macOS added where present in cohort. Unrepresented routes: explicitly unobserved.
+
+**Three nondeveloper pilots (Modules 00-02):** Recruit three representative nondevelopers. Exercise Modules 00, 01, 02 in order on the candidate generated site served locally. Observe setup, source verification, Obsidian workflow, navigation/search, elapsed time, questions, interventions, friction, outcomes. Record failures and assistance. Fix instruction/UI defects and re-observe affected path. No scores or qualification decisions.
+
+**Current Module 00-10 facilitator controls (rehearsals):** Facilitators perform each current lab using its owning runbook. Record source/config hashes, operator alias, actual machine/date, outputs, assistance, HOLDs. Particular controls:
+- 00: separate OMP/Obsidian/n8n/Local model lanes + register.
+- 01: baseline/prediction before sealed change; thread walk and claim defense.
+- 02: real Obsidian GUI + cold retrieval + admission.
+- 03: human contract inspection, six human-first calibration decisions (model does not supply baseline), unbounded then bounded probes in order, forty-note handling, narrowed partner, final revoked.
+- 04: labels before model answers/adjudication; ten-message sample limits stated.
+- 05: restore before fault/sealed first miss/authorized correction/three recovery runs.
+- 06: sample before categories/held-out labels after prediction; first-failure notes.
+- 07: blank-canvas build, frozen deltas, both waves, restored reports; three-hour block preserved.
+- 08: pre-result policy, 120 authored rows, six designated failures, restoration; 38-call stretch only after mandatory lanes and budget gate.
+- 09: three core probes + strict planted-question verifier; human peer review of policy/probe/measurement evidence.
+- 10: individual in-session exact-model lifecycle (weights, 127.0.0.1:8080, 32768, health after listening, OMP reply, stop/unreachable, digest restore, frozen copy and fresh-terminal structure check); no recipient or after-hours attempt.
+
+**Module 09 human peer review:** Obtain real human peer review of current Module 09 policy/probe/measurement evidence and handoff from someone able to inspect the mechanisms. Technical peer critique is distinct from novice pilot. Current evidence is ungraded observation.
+
+
+**Billing and evidence integrity:** Record every paid staff-verification attempt in its campaign ledger, including facilitator, pilot, and platform work. Preserve receipts, planned/attempted/completed/held counts, and actual billing when observable. No synthetic evidence. Retired evidence stays in the archived prior report.

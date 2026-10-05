@@ -65,6 +65,8 @@ Frozen sources, briefs, roles and controls support selective invalidation. Paren
 
 Agent Hub and native agent/history/proc URIs are process-scoped. A separately launched TUI cannot observe a headless stage's in-memory team. Interactive supervision is a transfer pattern, not an unobserved claim about this scripted run.
 
+Do not collect credentials, private local files, outside operational details, or model chat history unrelated to the case.
+
 ## Verification and history
 
 Run the deterministic Python evidence tests and Node guard boundary tests, then exercise the real four-stage workflow with the latest stable OMP release. Test fixtures are explicitly synthetic and never live proof. Build the allowlisted course and inspect the published overview, lab, guide, downloads and figure alternatives in a browser.
@@ -72,3 +74,5 @@ Run the deterministic Python evidence tests and Node guard boundary tests, then 
 Record actual platform/shell/browser limits in `reference/REFERENCE.md` after verification. Native Windows/ARM64, WSL, Linux, screen-reader operation and learner timing require their own observations; a macOS run does not establish them.
 
 Pre-cutover renderer scripts, field-drop probes, restoration exercise and old adequacy/mutation checks are retired. Existing `evidence/` and `reviews/` record the former contract only. They are not validation of native orchestration. The current staff review challenge is `reference/GAUNTLET_PROMPT.md`.
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: first blocked native handoff, corrected Timing dispatch, accepted handoffs and dependent review.

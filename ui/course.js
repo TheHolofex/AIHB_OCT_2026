@@ -21,6 +21,9 @@
   let storageAvailable = true;
   let storageAnnounced = false;
   let printing = false;
+  let landing = 0;
+  let navigationSerial = 0;
+  let refreshLocation = () => {};
   const listeners = [];
   const onProgress = handler => listeners.push(handler);
   const announce = text => { const status = one('#rf-state-status'); if (status) status.textContent = text; };
@@ -170,16 +173,18 @@
   // Removing [hidden] prepares a native dialog; only showModal makes it visible.
   function dialogController(dialog, fallback = false) {
     let trigger;
+    let restoreOnClose = true;
     function restoreFocus() {
       const destination = trigger?.getClientRects().length ? trigger : one('.rf-brand');
       destination?.focus({preventScroll: true});
     }
-    function close() {
+    function close(restore = true) {
+      restoreOnClose = restore;
       if (modalSupported) dialog.close();
-      else { dialog.hidden = true; delete dialog.dataset.inFlow; restoreFocus(); }
+      else { dialog.hidden = true; delete dialog.dataset.inFlow; if (restore) restoreFocus(); }
     }
-    all('[data-dialog-close]', dialog).forEach(button => button.addEventListener('click', close));
-    dialog.addEventListener('close', restoreFocus);
+    all('[data-dialog-close]', dialog).forEach(button => button.addEventListener('click', () => close()));
+    dialog.addEventListener('close', () => { if (restoreOnClose) restoreFocus(); });
     dialog.addEventListener('click', event => {
       if (event.target !== dialog) return;
       const box = dialog.getBoundingClientRect();
@@ -193,6 +198,7 @@
     return {
       close,
       open(source) {
+        restoreOnClose = true;
         if (!dialog.open && !dialog.hasAttribute('data-in-flow')) trigger = source || document.activeElement;
         if (modalSupported) { if (!dialog.open) dialog.showModal(); }
         else if (fallback) { dialog.dataset.inFlow = ''; dialog.hidden = false; }
@@ -205,7 +211,7 @@
     const dialog = one('#rf-course-dialog');
     const controller = dialogController(dialog);
     trigger.addEventListener('click', () => controller.open(trigger));
-    all('a', dialog).forEach(link => link.addEventListener('click', event => { if (plainClick(event)) controller.close(); }));
+    all('a', dialog).forEach(link => link.addEventListener('click', event => { if (plainClick(event)) controller.close(false); }));
     trigger.hidden = false;
     one('.rf-course-fallback').hidden = true;
   }
@@ -307,33 +313,42 @@
     const dialog = one('#rf-search-dialog');
     const trigger = one('[data-search-open]');
     const input = one('#rf-search-input');
+    const scope = one('#rf-search-scope');
     const results = one('#rf-search-results');
     const status = one('#rf-search-status');
     const recovery = one('.rf-search-recovery');
     const controller = dialogController(dialog, true);
     let index = null;
     let request = null;
-    function find() {
-      const query = input.value.toLowerCase().trim().replace(/\s+/g, ' ');
+    let shown = 20;
+    if (!data.moduleId) one('option[value="module"]', scope).remove();
+    const normalize = text => text.toLowerCase().trim().replace(/\s+/g, ' ');
+    const eligible = page => pages.has(page.path) && (scope.value === 'all' ||
+      (scope.value === 'page' ? page.path === data.page : page.moduleId === data.moduleId));
+    function find(query) {
       if (!query) {
-        const list = data.modules.map(module => ({path: module.overview, title: module.caseName, context: `${module.id} · Overview`, anchor: '', excerpt: ''}));
-        const resume = resumeRecord();
+        const list = scope.value === 'all' ?
+          data.modules.map(module => ({path: module.overview, title: module.caseName, context: `${module.id} · Overview`, anchor: '', excerpt: ''})) :
+          index.pages.filter(eligible).map(page => ({path: page.path, title: page.title, context: '', anchor: '', excerpt: ''}));
+        const resume = scope.value === 'all' && resumeRecord();
         if (resume) list.unshift({path: resume.page.path, anchor: resume.section?.id || '', title: `Continue · ${resume.module.caseName}`, context: resume.section?.title || resume.page.title, excerpt: 'Last opened on this device'});
         return list;
       }
       const tokens = query.split(' ');
       const list = [];
       for (const page of index.pages) {
-        if (!pages.has(page.path)) continue;
+        if (!eligible(page)) continue;
         for (const section of page.sections) {
           const title = section.title || page.title;
-          const headings = `${page.title} ${title}`.toLowerCase();
+          const lower = normalize(title);
+          const pageTitle = normalize(page.title);
+          const headings = `${pageTitle} ${lower}`;
           const prose = section.text || '';
-          const haystack = `${headings} ${prose.toLowerCase()}`;
-          if (!tokens.every(token => haystack.includes(token))) continue;
-          const lower = title.toLowerCase();
-          const rank = lower === query || page.title.toLowerCase() === query ? 0 :
-            lower.startsWith(query) || page.title.toLowerCase().startsWith(query) ? 1 : tokens.every(token => headings.includes(token)) ? 2 : 3;
+          const body = normalize(prose);
+          if (!tokens.every(token => `${headings} ${body}`.includes(token))) continue;
+          const rank = lower === query || pageTitle === query ? 0 :
+            lower.includes(query) || pageTitle.includes(query) ? 1 :
+            tokens.every(token => headings.includes(token)) ? 2 : body.includes(query) ? 3 : 4;
           const matches = tokens.map(token => prose.toLowerCase().indexOf(token)).filter(at => at >= 0);
           const start = matches.length ? Math.max(0, Math.min(...matches) - 45) : 0;
           const excerpt = (start ? '…' : '') + prose.slice(start, start + 180) + (prose.length > start + 180 ? '…' : '');
@@ -342,14 +357,30 @@
             context: `${module ? `${module.id} · ${module.caseName} · ` : ''}${page.title}${section.optional ? ' · Optional stretch' : ''}`, excerpt});
         }
       }
-      return list.sort((a, b) => a.rank - b.rank || a.order - b.order).slice(0, 20);
+      return list.sort((a, b) => a.rank - b.rank || a.order - b.order);
     }
-    function render() {
+    function highlightedText(span, text, query) {
+      if (!query) { span.textContent = text; return; }
+      const tokens = [...new Set(query.split(' '))].sort((a, b) => b.length - a.length);
+      const pattern = new RegExp(tokens.map(token => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'gi');
+      let end = 0;
+      for (const match of text.matchAll(pattern)) {
+        span.append(document.createTextNode(text.slice(end, match.index)));
+        const mark = document.createElement('mark');
+        mark.textContent = match[0];
+        span.append(mark);
+        end = match.index + match[0].length;
+      }
+      span.append(document.createTextNode(text.slice(end)));
+    }
+    function render(focusIndex = null) {
       if (!index) return;
-      const found = find();
+      const query = normalize(input.value);
+      const found = find(query);
       results.replaceChildren();
-      status.textContent = found.length ? `${found.length} results` : 'No matches.';
-      for (const item of found) {
+      status.textContent = `${scope.selectedOptions[0].textContent}: ` + (found.length ?
+        `${found.length} results; showing ${Math.min(shown, found.length)}.` : 'No matches.');
+      for (const item of found.slice(0, shown)) {
         const li = document.createElement('li');
         const link = document.createElement('a');
         link.href = urlFor(item.path, item.anchor);
@@ -357,13 +388,25 @@
           if (!content) continue;
           const span = document.createElement('span');
           span.className = className;
-          span.textContent = content;
+          if (className === 'rf-search-excerpt') highlightedText(span, content, query);
+          else span.textContent = content;
           link.append(span);
         }
-        link.addEventListener('click', event => { if (plainClick(event)) controller.close(); });
+        link.addEventListener('click', event => { if (plainClick(event)) controller.close(false); });
         li.append(link);
         results.append(li);
       }
+      if (found.length > shown) {
+        const li = document.createElement('li');
+        const more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'sc-btn rf-btn sc-btn--secondary';
+        more.textContent = `Show more (${found.length - shown} remaining)`;
+        more.addEventListener('click', () => { const firstNew = shown; shown += 20; render(firstNew); });
+        li.append(more);
+        results.append(li);
+      }
+      if (focusIndex !== null) all('a', results)[focusIndex]?.focus();
     }
     async function loadIndex(retry = false) {
       if (retry) request = null;
@@ -383,7 +426,8 @@
     }
     function open(source) { controller.open(source); input.focus(); input.select(); loadIndex(); }
     trigger.addEventListener('click', () => open(trigger));
-    input.addEventListener('input', render);
+    input.addEventListener('input', () => { shown = 20; render(); });
+    scope.addEventListener('change', () => { shown = 20; render(); });
     one('[data-search-retry]').addEventListener('click', () => loadIndex(true));
     document.addEventListener('keydown', event => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k' && !event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) {
@@ -392,7 +436,7 @@
     });
     dialog.addEventListener('keydown', event => {
       if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
-      const links = all('a', results);
+      const links = all('a, button', results);
       const at = links.indexOf(document.activeElement);
       if (!links.length || (event.target !== input && at < 0)) return;
       event.preventDefault();
@@ -405,16 +449,44 @@
   function revealDetails(target) {
     for (let node = target; node && node !== main; node = node.parentElement) if (node.tagName === 'DETAILS') node.open = true;
   }
-  function placeTarget(target, focus) {
-    requestAnimationFrame(() => {
-      if (!target.isConnected) return;
-      target.scrollIntoView({block: 'start'});
-      if (focus) {
-        const control = one(':scope > .rf-step-toggle', target) || (target.tagName === 'DETAILS' ? one(':scope > summary', target) : target);
-        if (!control.matches('button, a, summary')) control.setAttribute('tabindex', '-1');
-        control.focus({preventScroll: true});
+  function targetOffset() {
+    const outline = one('.rf-inline-outline');
+    return outline?.getClientRects().length ? one(':scope > summary', outline).getBoundingClientRect().height + 16 : 16;
+  }
+  async function placeTarget(target, focus) {
+    const transaction = landing || ++navigationSerial;
+    landing = transaction;
+    const outline = one('.rf-inline-outline');
+    if (outline) outline.open = false;
+    // Font metrics, dialog closure and reader disclosure changes precede placement.
+    await document.fonts.ready;
+    let previous = null;
+    let previousOffset = null;
+    let stable = 0;
+    for (let frame = 0; frame < 60 && stable < 3; frame++) {
+      await new Promise(requestAnimationFrame);
+      if (landing !== transaction || !target.isConnected) return;
+      const box = target.getBoundingClientRect();
+      const offset = targetOffset();
+      // Native fragment scrolling must use the same offset as explicit placement.
+      if (offset !== previousOffset) {
+        main.style.setProperty('--rf-target-offset', `${offset}px`);
+        previousOffset = offset;
       }
-    });
+      const position = box.top + scrollY;
+      const desired = Math.max(0, Math.min(position - offset, document.documentElement.scrollHeight - innerHeight));
+      window.scrollTo({top: desired, behavior: 'instant'});
+      stable = previous !== null && Math.abs(previous - position) < 1 && Math.abs(scrollY - desired) < 1 ? stable + 1 : 0;
+      previous = position;
+    }
+    if (landing !== transaction) return;
+    if (focus) {
+      const control = one(':scope > .rf-step-toggle', target) || (target.tagName === 'DETAILS' ? one(':scope > summary', target) : target);
+      if (!control.matches('button, a, summary')) control.setAttribute('tabindex', '-1');
+      control.focus({preventScroll: true});
+    }
+    landing = 0;
+    refreshLocation();
   }
   const headingTitle = heading => [...heading.childNodes].filter(node => !(node.classList?.contains('rf-step-number'))).map(node => node.textContent).join('').trim();
   function initReader() {
@@ -432,7 +504,7 @@
     let targetId = selected;
     let detailSnapshot = null;
     let locationSeen = '';
-    const details = () => all('details', main);
+    const details = () => all('details:not(.rf-inline-outline)', main);
     function display() {
       const read = state.view === 'read';
       document.body.dataset.view = state.view;
@@ -451,20 +523,11 @@
       }
       all('[data-view-choice]', controls).forEach(button => button.setAttribute('aria-pressed', String(button.dataset.viewChoice === state.view)));
       all('.rf-step-actions', main).forEach(nav => { nav.hidden = read; });
-      const target = document.getElementById(targetId);
-      const optional = target?.closest('.rf-stretch, .rf-optional');
-      all('#rf-outline a').forEach(link => {
-        const anchor = decode(new URL(link.href).hash);
-        const linkTarget = document.getElementById(anchor);
-        const current = optional ? !!linkTarget?.closest('.rf-stretch, .rf-optional') : anchor === (target?.closest('.rf-context') ? target.closest('.rf-context').dataset.contextId : selected);
-        if (current) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-        link.closest('.rf-stepper-item')?.toggleAttribute('data-current', current);
-      });
     }
     function select(id, {scroll = false, focus = false, record = false} = {}) {
       const target = document.getElementById(id);
       if (!target) return;
+      if (scroll) landing = ++navigationSerial;
       targetId = id;
       const owner = target.closest('.rf-step, .rf-context');
       const item = owner && byId.get(owner.dataset.stepId || owner.dataset.contextId);
@@ -495,7 +558,7 @@
       const saved = !hasHash && (initial ? state.positions[data.page] : entry?.page === data.page ? entry.anchor : null);
       const id = explicit ? fragment : saved && byId.get(saved)?.core ? saved : steps[0].id;
       steps.forEach(item => { item.open = item.id === selected; });
-      select(id, {scroll: !!explicit || !!saved || !initial});
+      select(id, {scroll: !!explicit || !!saved || !initial, focus: !!explicit || !!saved || !initial});
       if (initial) history.replaceState(historyState(id), '', location.href);
       locationSeen = location.href;
     }
@@ -592,22 +655,12 @@
       setView(state.view, false);
       all('[data-view-choice]', controls).forEach(button => button.addEventListener('click', () => setView(button.dataset.viewChoice, true)));
       function placeControls() {
-        const slot = one(matchMedia('(min-width: 1280px)').matches ? '.rf-reader-desktop-slot' : '.rf-reader-mobile-slot');
+        const slot = one(matchMedia('(min-width: 1280px) and (min-height: 720px)').matches ? '.rf-reader-desktop-slot' : '.rf-reader-mobile-slot');
         if (controls.parentElement !== slot) slot.append(controls);
       }
       placeControls();
       addEventListener('resize', placeControls);
       controls.hidden = false;
-      document.addEventListener('click', event => {
-        const link = event.target.closest('a[href]');
-        if (!link || !plainClick(event) || link.target || link.hasAttribute('download')) return;
-        const url = new URL(link.href);
-        if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search) return;
-        const id = decode(url.hash);
-        if (!id || id === 'main' || !document.getElementById(id)) return;
-        event.preventDefault();
-        navigate(id);
-      });
       all('.rf-stretch > summary', main).forEach(summary => summary.addEventListener('click', event => {
         if (!plainClick(event)) return;
         const detail = summary.parentElement;
@@ -615,10 +668,7 @@
         if (detail.open) detail.open = false;
         else navigate(detail.id);
       }));
-      function locationChanged() { if (locationSeen !== location.href) fromLocation(false); }
-      addEventListener('hashchange', locationChanged);
-      addEventListener('popstate', locationChanged);
-      return {select};
+      return {select, navigate, fromLocation, locationChanged() { if (locationSeen !== location.href) fromLocation(false); }};
     } catch (error) {
       sections.forEach(item => { item.heading.replaceChildren(...item.nodes); item.body.hidden = false; item.section.removeAttribute('data-selected'); });
       all('.rf-step-actions, .rf-step-footer', main).forEach(node => node.remove());
@@ -628,6 +678,68 @@
       console.warn('Guided reading unavailable; the full document remains open.', error);
       return null;
     }
+  }
+  function initNavigation(reader) {
+    function navigate(id, push = true) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      if (reader) { if (push) reader.navigate(id); else reader.locationChanged(); return; }
+      landing = ++navigationSerial;
+      if (push && decode(location.hash) !== id) history.pushState(history.state, '', '#' + encodeURIComponent(id));
+      revealDetails(target);
+      placeTarget(target, true);
+    }
+    document.addEventListener('click', event => {
+      const link = event.target.closest('a[href]');
+      if (!link || !plainClick(event) || link.target || link.hasAttribute('download')) return;
+      const url = new URL(link.href);
+      if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search) return;
+      const id = decode(url.hash);
+      if (!id || id === 'main' || !document.getElementById(id)) return;
+      event.preventDefault();
+      navigate(id);
+    });
+    const changed = () => { if (reader) reader.locationChanged(); else navigate(decode(location.hash), false); };
+    addEventListener('hashchange', changed);
+    addEventListener('popstate', changed);
+    if (!reader && location.hash) changed();
+
+    const links = all('#rf-outline a, .rf-inline-outline a');
+    const ids = new Set(links.map(link => decode(new URL(link.href).hash)));
+    const targets = all('[id]', main).filter(node => ids.has(node.id));
+    let pending = false;
+    let current = '';
+    function update() {
+      pending = false;
+      if (landing || printing) return;
+      const visible = targets.filter(target => target.getClientRects().length);
+      const offset = targetOffset() + 8;
+      let target = visible[0];
+      for (const candidate of visible) {
+        const heading = candidate.tagName === 'DETAILS' ? one(':scope > summary', candidate) : candidate;
+        if (heading.getBoundingClientRect().top <= offset) target = candidate;
+      }
+      if (!target || target.id === current) return;
+      current = target.id;
+      for (const link of links) {
+        const selected = decode(new URL(link.href).hash) === current;
+        if (selected) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+        link.closest('li')?.toggleAttribute('data-current', selected);
+      }
+      const label = one('.rf-outline-current');
+      if (label) { label.textContent = links.find(link => decode(new URL(link.href).hash) === current)?.textContent.trim() || ''; label.hidden = false; }
+    }
+    refreshLocation = () => { if (!pending) { pending = true; requestAnimationFrame(update); } };
+    addEventListener('scroll', refreshLocation, {passive: true});
+    addEventListener('resize', refreshLocation);
+    main.addEventListener('toggle', refreshLocation, true);
+    main.addEventListener('load', refreshLocation, true);
+    if (typeof ResizeObserver === 'function') new ResizeObserver(refreshLocation).observe(main);
+    document.fonts.ready.then(refreshLocation);
+    // An explicit user action cancels deferred placement instead of pulling them back.
+    for (const event of ['wheel', 'pointerdown', 'keydown']) addEventListener(event, () => { if (landing) { landing = 0; refreshLocation(); } }, {passive: true});
+    refreshLocation();
   }
   function initPrint() {
     let snapshot;
@@ -661,12 +773,5 @@
   [initTheme, initCopy, initShell, initCourse, initFigures, initSearch, initReset, renderHomeResume, renderModuleProgress, initPrint].forEach(independently);
   const reader = initReader();
   one('.sc-skip-link').addEventListener('click', () => main.focus({preventScroll: true}));
-  if (!reader) {
-    const target = document.getElementById(decode(location.hash));
-    if (target) { revealDetails(target); placeTarget(target, false); }
-    addEventListener('hashchange', () => {
-      const changed = document.getElementById(decode(location.hash));
-      if (changed) { revealDetails(changed); placeTarget(changed, false); }
-    });
-  }
+  independently(() => initNavigation(reader));
 })();

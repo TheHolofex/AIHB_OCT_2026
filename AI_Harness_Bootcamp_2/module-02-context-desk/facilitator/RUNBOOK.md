@@ -64,3 +64,9 @@ Require a focal Knowledge note and a substantive weakness, before/after, expecte
 The missing-rule route renames only the work-copy rule, requires exit 2/no provider/no evidence, then restores identical bytes. Use cold-v2 for the positive. Check v1 still passes after legitimate edits to live Knowledge, reasons, and Obsidian state. A remaining substantive gap requires another reviewed revision/fresh run, not overwriting v1/v2 or retrying unchanged questions.
 
 Retain context map, screen predictions/observations, Knowledge and MOC, human reasons, immutable admission records, both identities/snapshots, actual run evidence, focal audit, missing-rule observation, and bounded internal-use decision. Separate runtime completion, provenance, semantic judgment, and actual human/desktop observation. Record an unresolved HOLD without presenting it as complete mastery. Do not collect credentials or unrelated personal files.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: real Obsidian GUI + cold retrieval + admission on actual device.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

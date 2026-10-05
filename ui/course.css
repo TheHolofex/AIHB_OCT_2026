@@ -8,6 +8,7 @@
   --rf-shell: 1600px;
   --rf-rail: 240px;
   --rf-outline: 208px;
+  --rf-outline-max: min(50dvh, 28rem);
   --rf-gutter: 1.5rem;
   --rf-read: 1.125rem;
   --rf-ui: 0.875rem;
@@ -100,8 +101,14 @@ h1,
 h2,
 h3,
 [id] {
-  scroll-margin-top: 1rem;
+  scroll-margin-top: var(--rf-target-offset, 5rem);
   scroll-margin-bottom: 1rem;
+}
+
+/* Native disclosure links cannot close the outline without JavaScript. */
+.rf-reading:has(> .rf-inline-outline[open]) [id],
+.rf-home-content:has(> .rf-inline-outline[open]) [id] {
+  scroll-margin-top: calc(var(--rf-outline-max) + 4rem);
 }
 
 /* Reading measure. UI chrome below stays 14–16px. */
@@ -568,6 +575,10 @@ body[data-view="read"] [data-view-choice="read"] {
 }
 
 .rf-inline-outline {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--sc-void);
   margin: 0 0 1.25rem;
   border-top: 1px solid var(--sc-line);
   border-bottom: 1px solid var(--sc-line);
@@ -576,6 +587,8 @@ body[data-view="read"] [data-view-choice="read"] {
 .rf-inline-outline > summary {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.75rem;
   min-height: 44px;
   color: var(--sc-gold);
   font-family: var(--sc-font-mono);
@@ -583,6 +596,44 @@ body[data-view="read"] [data-view-choice="read"] {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.rf-outline-label {
+  flex: 0 0 auto;
+}
+
+.rf-outline-current {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--sc-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.rf-inline-outline > nav {
+  max-height: var(--rf-outline-max);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.rf-inline-outline ol,
+.rf-outline-children {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rf-outline-children {
+  grid-column: 1 / -1;
+  margin-left: 1rem;
+  border-left: 1px solid var(--sc-line);
+}
+
+.rf-home .rf-inline-outline {
+  display: block;
 }
 
 #rf-outline {
@@ -1473,7 +1524,8 @@ label[for="rf-search-input"] {
 
 .rf-stepper-item--aside > a {
   grid-column: 1 / -1;
-  padding-left: 1.6rem;
+  grid-template-columns: minmax(0, 1fr);
+  padding-left: 0.5rem;
 }
 
 .rf-stepper-number {
@@ -1876,38 +1928,34 @@ label[for="rf-search-input"] {
   }
 }
 
-/* No right rail from 960 through 1279. Inline outline remains. */
-@media (min-width: 960px) and (max-width: 1279px) {
-  .rf-section-rail {
-    display: none;
-  }
-
-  .rf-inline-outline {
-    display: block;
-  }
-}
-
-@media (min-width: 1280px) {
+@media (min-width: 1280px) and (min-height: 720px) {
   .rf-layout {
     grid-template-columns: var(--rf-rail) minmax(0, 1fr) var(--rf-outline);
-  }
-
-  .rf-section-rail {
-    display: block;
-  }
-
-  .rf-inline-outline {
-    display: none;
   }
 }
 
 @media (min-width: 1280px) and (min-height: 720px) {
+  .rf-section-rail {
+    display: block;
+  }
+  .rf-inline-outline {
+    display: none;
+  }
   .rf-course-rail,
   .rf-section-rail {
     position: sticky;
     top: 1rem;
     max-height: calc(100dvh - 2rem);
     overflow: auto;
+  }
+}
+
+@media (max-width: 1279px), (max-height: 719px) {
+  .rf-section-rail {
+    display: none;
+  }
+  .rf-inline-outline {
+    display: block;
   }
 }
 

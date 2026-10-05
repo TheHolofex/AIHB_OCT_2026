@@ -76,3 +76,9 @@ A well-documented `HOLD` can complete practice. It does not pass as a complete t
 - residual-risk owner.
 
 Do not collect credentials, private local files, or model chat history unrelated to the case.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: three core probes + strict planted-question verifier (40 distinct AG before planted, exact 1.84 m, no write); human peer review of policy/probe/measurement evidence.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

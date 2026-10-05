@@ -481,8 +481,8 @@ def _section_records(tree: Node, title: str) -> list[dict]:
     """Attribute prose once, to its nearest heading; never index fenced bytes."""
     sections = []
 
-    def new_section(anchor: str, text: str, optional: bool):
-        record = {"id": anchor, "title": text, "text": [], "optional": optional}
+    def new_section(anchor: str, text: str, optional: bool, level: int = 0):
+        record = {"id": anchor, "title": text, "text": [], "optional": optional, "level": level}
         sections.append(record)
         return record
 
@@ -500,14 +500,14 @@ def _section_records(tree: Node, title: str) -> list[dict]:
             previous = current
             if "rf-stretch" in classes:
                 summary = next(child for child in node.children if isinstance(child, Node) and child.tag == "summary")
-                current = new_section(node.attrs["id"], summary.text(), True)
+                current = new_section(node.attrs["id"], summary.text(), True, 2)
             for child in node.children:
                 if not isinstance(child, Node) or child.tag != "summary":
                     visit(child, True)
             current = previous
             return
         if node.tag in {"h2", "h3"}:
-            current = new_section(node.attrs["id"], node.text(), optional)
+            current = new_section(node.attrs["id"], node.text(), optional, int(node.tag[1]))
             return
         for child in node.children:
             visit(child, optional)
@@ -734,24 +734,46 @@ def _step_labels(steps: list[dict]) -> dict[str, str]:
     return {item["id"]: str(index + 1) for index, item in enumerate(steps)}
 
 
-def _outline(items: list[dict], *, inline: bool = False, steps: list[dict] | None = None) -> str:
-    if steps is not None and not inline:
-        rows, labels = [], _step_labels(steps)
-        for item in items:
-            anchor = html.escape(item["id"], quote=True)
-            title = html.escape(item["title"])
-            if item in steps:
-                number = labels[item["id"]]
-                done = f"Step {number} done: {title}" if number.isdigit() else f"Done: {title}"
-                rows.append(f'<li class="rf-stepper-item" data-step-ref="{anchor}"><input class="rf-stepper-check" type="checkbox" id="rf-done-{anchor}" data-step-done="{anchor}" aria-label="{done}">'
-                            f'<a href="#{anchor}"><span class="rf-stepper-number" aria-hidden="true">{number}</span><span class="rf-stepper-title">{title}</span></a></li>')
-            else:
-                rows.append(f'<li class="rf-stepper-item rf-stepper-item--aside"><a href="#{anchor}"><span class="rf-stepper-number" aria-hidden="true">·</span><span class="rf-stepper-title">{title}</span></a></li>')
-        return f'<nav id="rf-outline" class="rf-stepper-nav" aria-label="Steps"><h2 class="sc-label">Steps</h2><ol class="rf-stepper">{"".join(rows)}</ol></nav>'
-    links = "".join(f'<a href="#{html.escape(item["id"], quote=True)}">{html.escape(item["title"])}</a>' for item in items)
-    if inline:
-        return f'<details class="rf-inline-outline"><summary>On this page</summary><nav aria-label="Page sections">{links}</nav></details>'
-    return f'<nav id="rf-outline" aria-label="Page sections"><h2 class="sc-label">On this page</h2>{links}</nav>'
+def _outline(items: list[dict], *, compact: bool = False, steps: list[dict] | None = None) -> str:
+    labels = _step_labels(steps or [])
+    grouped: list[tuple[dict, list[dict]]] = []
+    for item in items:
+        if item["level"] == 3 and grouped:
+            grouped[-1][1].append(item)
+        else:
+            grouped.append((item, []))
+
+    def row(item: dict, children: list[dict]) -> str:
+        anchor = html.escape(item["id"], quote=True)
+        title = html.escape(item["title"])
+        if compact:
+            number = labels.get(item["id"], "")
+            prefix = f"Step {number} · " if number.isdigit() else ""
+            opening = '<li class="rf-outline-item">'
+            content = f'<a href="#{anchor}">{prefix}{title}</a>'
+        elif item["id"] in labels:
+            number = labels[item["id"]]
+            done = f"Step {number} done: {title}" if number.isdigit() else f"Done: {title}"
+            opening = f'<li class="rf-stepper-item" data-step-ref="{anchor}">'
+            content = (f'<input class="rf-stepper-check" type="checkbox" id="rf-done-{anchor}" data-step-done="{anchor}" aria-label="{done}">'
+                       f'<a href="#{anchor}"><span class="rf-stepper-number" aria-hidden="true">{number}</span><span class="rf-stepper-title">{title}</span></a>')
+        elif steps is not None:
+            opening = '<li class="rf-stepper-item rf-stepper-item--aside">'
+            content = f'<a href="#{anchor}"><span class="rf-stepper-title">{title}</span></a>'
+        else:
+            opening = '<li class="rf-outline-item">'
+            content = f'<a href="#{anchor}">{title}</a>'
+        nested = f'<ol class="rf-outline-children">{"".join(row(child, []) for child in children)}</ol>' if children else ""
+        return opening + content + nested + "</li>"
+
+    rows = "".join(row(item, children) for item, children in grouped)
+    if compact:
+        return (f'<details class="rf-inline-outline"><summary><span class="rf-outline-label">On this page</span>'
+                f'<span class="rf-outline-current" hidden></span></summary>'
+                f'<nav aria-label="On this page"><ol>{rows}</ol></nav></details>')
+    label = "Steps" if steps is not None else "On this page"
+    css = ' class="rf-stepper-nav"' if steps is not None else ""
+    return f'<nav id="rf-outline"{css} aria-label="{label}"><h2 class="sc-label">{label}</h2><ol class="rf-stepper">{rows}</ol></nav>'
 
 
 def _decorate_reading(tree: Node, dest: PurePosixPath, assets: dict, kind: str):
@@ -795,6 +817,8 @@ def _dialogs(navigation: str, home: str) -> str:
 <dialog id="rf-search-dialog" class="sc-palette rf-dialog" aria-labelledby="rf-search-title" hidden>
 <div class="rf-dialog-head"><h2 id="rf-search-title">Search course</h2>{close}</div>
 <label for="rf-search-input">Search the lessons</label><input id="rf-search-input" class="sc-input" type="search" autocomplete="off">
+<label for="rf-search-scope">Search scope</label><select id="rf-search-scope" class="sc-select">
+<option value="all">Whole course</option><option value="module">This module</option><option value="page">This page</option></select>
 <p id="rf-search-status" role="status"></p><ol id="rf-search-results" class="rf-search-results"></ol>
 <div class="rf-search-recovery" hidden><button type="button" class="sc-btn rf-btn sc-btn--secondary" data-search-retry>Retry</button>
 <a class="sc-btn rf-btn sc-btn--secondary" href="{home}#work-through-the-assignments">Course map</a></div></dialog>
@@ -835,6 +859,15 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             if isinstance(heading.children[0], str) and STEP_NUMBER.match(heading.children[0]):
                 heading.children[0] = STEP_NUMBER.sub("", heading.children[0], count=1)
             heading.children.insert(0, Node("span", {"class": "rf-step-number", "aria-hidden": "true"}, [labels[section.attrs["data-step-id"]]]))
+    nav_items = [{"id": section["id"], "title": section["title"], "level": section["level"]}
+                 for section in prepared["sections"] if section["level"] in {2, 3}]
+    if kind == "overview":
+        nav_items.insert(0, {"id": "rf-outcomes-title", "title": "After this assignment you can", "level": 2})
+    step_titles = {item["id"]: item["title"] for item in prepared["steps"]}
+    for item in nav_items:
+        if item["id"] in step_titles:
+            item["title"] = step_titles[item["id"]]
+    inline_outline = _outline(nav_items, compact=True, steps=prepared["steps"])
     if kind == "home":
         lead = next(node for node in tree.children if isinstance(node, Node) and node.tag == "p")
         tree.children.remove(lead)
@@ -849,7 +882,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
 <div class="rf-hero-actions"><a id="rf-home-primary" class="sc-btn rf-btn sc-btn--primary" href="{setup}">Start with setup</a>
 <a class="sc-btn rf-btn sc-btn--secondary" href="#work-through-the-assignments">Explore the course</a></div>
 <p id="rf-resume-note" hidden></p><a id="rf-home-setup" href="{setup}" hidden>Start with setup</a></div></section>
-<div class="rf-home-content">{tree.render()}</div></main>'''
+<div class="rf-home-content">{inline_outline}{tree.render()}</div></main>'''
     else:
         role = {"overview": "Overview", "lab": "Lab", "setup": "Setup", "reference": "Reference"}[kind]
         breadcrumb = f'<nav class="rf-breadcrumb" aria-label="Breadcrumb"><a href="{home}">Course</a><span aria-hidden="true"> / </span><a href="{_relative(dest, routes["overview"])}">{module_id} · {html.escape(module["case_name"])}</a><span aria-hidden="true"> / </span><span>{role}</span></nav>'
@@ -887,7 +920,6 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             progress = (f'<p class="rf-outcome-line"><span class="rf-outcome-label">After this assignment you can</span> {can}</p>'
                         f'<div class="rf-progress" data-progress data-step-total="{total}"><div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div>'
                         f'<p class="rf-progress-text">{total} steps. Mark each step done as you finish it; progress is saved on this device.</p></div>')
-        inline_outline = "" if kind in {"lab", "setup"} else _outline([{"id": "rf-outcomes-title", "title": "After this assignment you can"}, *prepared["outline"]] if kind == "overview" else prepared["outline"], inline=True)
         if prepared["steps"]:
             last = next(node for node in tree.walk() if node.attrs.get("data-step-id") == prepared["steps"][-1]["id"])
             actions = []
@@ -905,7 +937,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             actions.append(Node("a", {"href": next_href, "class": "sc-btn rf-btn sc-btn--secondary"}, [next_label]))
             last.children[-1].children.append(Node("nav", {"class": "rf-end-actions", "aria-label": "Continue reading"}, actions))
         back = f'<p class="rf-back-to-lab"><a class="sc-btn rf-btn sc-btn--secondary" href="{_relative(dest, routes["lab"])}">Back to lab</a></p>' if kind == "reference" else ""
-        rail_outline = _outline(prepared["outline"], steps=prepared["steps"]) if kind in {"lab", "setup"} else _outline(prepared["outline"])
+        rail_outline = _outline(nav_items, steps=prepared["steps"] if kind in {"lab", "setup"} else None)
         main = f'''<div class="rf-layout"><aside class="rf-course-rail">{_course_navigation(common["modules"], dest, module_id, True)}</aside>
 <main id="main" class="rf-reading" tabindex="-1"><header class="rf-page-header sc-grid">{breadcrumb}{h1.render()}</header>{local}{progress}
 <div class="rf-intro">{Node("", {}, intro).render()}</div>{panel}<div class="rf-reader-mobile-slot">{controls}</div>{inline_outline}{tree.render()}{back}</main>

@@ -1,4 +1,6 @@
-# Module 10 review verdict
+# Module 04 review verdict
+
+**Historical numbering:** Previously titled "Module 10 review verdict" in early records (body, date 2026-10-02, commands, and outcomes preserved unchanged as historical evidence for that run).
 
 **Date:** 2026-10-02  
 **Reference:** `reference/REFERENCE.md` revision 2, hash in `reference/REFERENCE.sha256`

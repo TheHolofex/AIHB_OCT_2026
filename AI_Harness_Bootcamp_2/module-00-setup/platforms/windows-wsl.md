@@ -1027,3 +1027,7 @@ printf 'WSLENV names: %s\nPROFILE SCAN DONE\n' "${WSLENV:-none}"
 **The installer version changed.** The live script no longer matches the reviewed `1.4.0`. Keep the review folder and ask the owner to review the new script.
 
 **Port 5678 is in use, or a service keeps restarting.** Keep the configuration and volumes, and review the error with the owner. Don't stop other applications, delete volumes, or disable services to force a pass.
+
+## Local model (capstone) readiness lane
+
+Ask staff for the approved Linux `hf` and `llama-server` paths in this distribution, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Use Linux paths, not Windows executables or a different distribution's observations. Missing tools, insufficient assigned memory or storage, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner.
