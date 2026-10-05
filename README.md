@@ -189,6 +189,12 @@ The generated setup pages were exercised in an isolated Chromium browser at desk
 
 All manifest module gates, the additional Module 01 content check, shared launcher/guard tests, publication/build tests, and figure check passed individually. Module 02's eight-mutation adequacy run required an extended deadline: its first run hit 600 seconds, and the isolated rerun passed in 823 seconds. The combined course gate is not claimed green: its 600-second per-command limit is unchanged, and the previously documented Module 07 core-contract HOLD was neither rerun nor changed.
 
+### Integrated latest OMP verification — 2026-10-05 UTC
+
+After integrating the current long-form Module 0 changes, the publisher rebuilt 35 instructional pages, 435 raw downloads, and 40 UI/generated assets. The complete `scripts/check_course.py` run passed all 31 scoped gates in 255 seconds with a dedicated `TMPDIR`; the 600-second per-command deadline was unchanged. This supersedes the earlier combined-gate limitation above. The copied worktree's untracked, cache-only retired Module 06 directory was preserved outside the checkout before verification.
+
+The entire generated site, including search data and downloads, contains no `18.3.5` reference, numeric OMP release requirement, or hard-coded OMP release URL. Browser checks covered all five setup routes; the final merged version table shows `latest stable release`. A fresh macOS install verified the official release checksum and resolved `omp/18.6.1` in a new login shell. A fresh, read-only MCP run passed the independent saved-receipt audit after restoring the result's required MCP metadata; all 32 shared runtime tests passed. The observed executable version is evidence, not a new pin. Logs, the regression's failing/passing runs, and desktop/mobile browser proof are retained under `~/course-evidence/omp-latest-site-check-1791162031193/`. Native Windows/WSL/Linux installation is not claimed.
+
 ## Netlify deployment
 
 The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
