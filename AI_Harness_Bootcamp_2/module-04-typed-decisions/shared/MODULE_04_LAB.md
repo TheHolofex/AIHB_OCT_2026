@@ -296,7 +296,7 @@ Run it once. In one paid call, about two to four minutes, the model answers all 
 & $PY "$R\shared\run_omp.py" --workdir "$W" --prompt "$W\shared\prompts\DECIDE.md" --evidence "$E\decide-1" --instruction "$W\shared\controls\CONTRACT.md"; Write-Output "EXIT=$LASTEXITCODE"
 ```
 
-**Expected:** The last two lines are `PASS: complete guarded OMP turn; module content still requires its own check` and `EXIT=0`. `E/decide-1` now holds `policy.json`, `events.jsonl`, `guard.jsonl`, `snapshots.json`, `response.md`, and `result.json`. The reply itself is in `response.md`.
+**Expected:** The last two lines are `PASS: all checks passed` and `EXIT=0`. `E/decide-1` now holds `policy.json`, `events.jsonl`, `guard.jsonl`, `snapshots.json`, `response.md`, and `result.json`. The reply itself is in `response.md`.
 
 **Stop:** Stop on `EXIT=2` with a `HOLD:` line about the key, the OMP installation or version report, or an existing evidence folder. Stop on `EXIT=1` with a `HOLD:` line about the receipts. Stop if there is no output for more than six minutes.
 
@@ -512,7 +512,7 @@ An answer that changes between two runs of the same packet is not a fact about t
 & $PY "$R\shared\run_omp.py" --workdir "$W" --prompt "$W\shared\prompts\DECIDE.md" --evidence "$E\decide-2" --instruction "$W\shared\controls\CONTRACT.md"; Write-Output "EXIT=$LASTEXITCODE"
 ```
 
-**Expected:** `PASS: complete guarded OMP turn; module content still requires its own check` and `EXIT=0`, with a new `E/decide-2` folder.
+**Expected:** `PASS: all checks passed` and `EXIT=0`, with a new `E/decide-2` folder.
 
 **Stop:** Stop on `EXIT=2` or `EXIT=1` with a `HOLD:` line.
 

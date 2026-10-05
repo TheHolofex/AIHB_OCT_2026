@@ -233,7 +233,7 @@ The outline is the cheapest place to fix a document. A wrong fact in the plan ta
 & $PY "$M\scripts\longform.py" outline "$W" "$E"
 ```
 
-**Expected:** `RUNNING outline`, and about a minute later `PASS: complete guarded OMP turn`, then `PASS: OMP wrote outline-proposed.md; your copy to correct is outline.md`, then `Receipts:` and a folder in `E`. A **receipt** records a run's inputs, tool calls, and file effects.
+**Expected:** `RUNNING outline`, and about a minute later `PASS: all checks passed`, then `PASS: OMP wrote outline-proposed.md; your copy to correct is outline.md`, then `Receipts:` and a folder in `E`. A **receipt** records a run's inputs, tool calls, and file effects.
 
 **Stop:** A `HOLD` line before the run names a missing label or test heading, the key, or `omp`; a `HOLD` after the run means the file is missing or doesn't match its receipt.
 
@@ -683,7 +683,7 @@ if ($LASTEXITCODE -ne 0) { throw 'The one-prompt folder was not made.' }
 & $PY "$R\shared\run_omp.py" --workdir "$W\..\oneshot" --prompt "$W\oneshot-prompt.txt" --evidence "$E\oneshot" --allow-write oneshot.md
 ```
 
-**Expected:** The path of the new `oneshot` folder beside `W`, then `PASS: complete guarded OMP turn`. The brief is in that folder as `oneshot.md`.
+**Expected:** The path of the new `oneshot` folder beside `W`, then `PASS: all checks passed`. The brief is in that folder as `oneshot.md`.
 
 **Stop:** The folder already exists, or the launcher holds.
 

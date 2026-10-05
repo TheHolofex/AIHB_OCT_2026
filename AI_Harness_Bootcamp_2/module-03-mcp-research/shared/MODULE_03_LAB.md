@@ -347,7 +347,7 @@ Try a small request first. The smoke prompt asks the assistant to list the folde
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the smoke run failed; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: complete guarded OMP turn`. In `E/smoke`, `mcp-audit.jsonl` is the server's own record of what it was asked, and `response.md` holds the model's answer. That answer should name only folders you declared readable.
+**Expected:** `PASS: all checks passed`. In `E/smoke`, `mcp-audit.jsonl` is the server's own record of what it was asked, and `response.md` holds the model's answer. That answer should name only folders you declared readable.
 
 **Stop:** The launcher prints `HOLD`, exits with 2, or the answer names a folder you did not declare.
 
@@ -368,7 +368,7 @@ Now run the research. The prompt asks the assistant to read every source note, w
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the research run failed; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: complete guarded OMP turn`, and a `Drafts/research` folder in the vault with at least six `fact-` notes, `open-questions`, and `handling-proposal`. The run can take several minutes.
+**Expected:** `PASS: all checks passed`, and a `Drafts/research` folder in the vault with at least six `fact-` notes, `open-questions`, and `handling-proposal`. The run can take several minutes.
 
 **Stop:** The launcher prints `HOLD`, a run ends before the model finishes, or any source note changed.
 
@@ -532,7 +532,7 @@ Three parts follow one another. Nothing carries over.
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the revoked run failed; preserve this attempt.' }
 ```
 
-**Expected:** `PASS: complete guarded OMP turn`. In `E/revoked`, the guard log shows every provider request with an empty tool list, and no `mcp-audit.jsonl` exists because no server started.
+**Expected:** `PASS: all checks passed`. In `E/revoked`, the guard log shows every provider request with an empty tool list, and no `mcp-audit.jsonl` exists because no server started.
 
 **Stop:** The launcher refuses the revoked declaration or the run offered a tool.
 

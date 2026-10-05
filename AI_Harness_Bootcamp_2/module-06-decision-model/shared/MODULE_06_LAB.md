@@ -255,7 +255,7 @@ OMP makes judge calls from its code tool inside a session. The launcher starts a
 & $PY "$R\shared\run_omp.py" --workdir "$W" --evidence "$E\tuning-1" --judge-config "$W\JUDGE.yml" --judge-questions "$W\QUESTIONS.json" --judge-states "$W\shared\case\notes\tuning" --judge-output out/tuning-1
 ```
 
-**Expected:** `JUDGE: 20 judged by`, then a dated build such as `openrouter/typesafe/jev-1.13-20260917` and the cost in US dollars, then `PASS: complete guarded OMP turn`. The answers land in `W/out/tuning-1`. The receipts land in `E/tuning-1`.
+**Expected:** `JUDGE: 20 judged by`, then a dated build such as `openrouter/typesafe/jev-1.13-20260917` and the cost in US dollars, then `PASS: all checks passed`. The answers land in `W/out/tuning-1`. The receipts land in `E/tuning-1`.
 
 **Stop:** Stop if the launcher prints `HOLD`, if a judgment is missing, or if a build other than `jev-1.13` answered.
 
