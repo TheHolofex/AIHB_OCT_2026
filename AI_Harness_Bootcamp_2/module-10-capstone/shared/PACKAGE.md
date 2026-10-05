@@ -2,15 +2,15 @@
 
 ## Purpose
 
-Bring the pinned uncensored model up as a loopback-only service on this laptop, prove one live interaction through it, stop it, restore it, and hand the kit to the next owner.
+Bring the named uncensored model up on this laptop, where only this laptop can reach it. Get one real reply, stop it, and bring it back. Then save the eleven files and check a fresh copy from a new terminal on this same machine. You keep this. You are not handing it to someone else.
 
 ## Bounds
 
-One operator at a time. The service binds `127.0.0.1` only. The weights stay on this machine: no re-upload, no sharing the endpoint, no serving another person's traffic. Prompts and replies are recorded in the evidence directory. The model is uncensored; every boundary in this section is the operator's responsibility, not the model's.
+One person at a time, and that person is you. The server listens on `127.0.0.1` only. The model file stays on this machine. Don't upload it again, don't share the address, and don't let anyone else send requests to it. Prompts and replies are recorded in the evidence folder. The model is uncensored. Every limit in this section is yours to hold, not the model's.
 
 ## Inputs
 
-The received package carries every file except the weights:
+The fresh copy carries only these eleven files. The model file is not one of them:
 
 - `shared/PACKAGE.md`
 - `scripts/local_ai.py`
@@ -24,11 +24,11 @@ The received package carries every file except the weights:
 - `shared/baseline/run.json`
 - `shared/baseline/run.json.sha256`
 
-The 15.7 GB weights are not copied into the package. The next owner downloads them under their own account against the pinned identity in `model-card.json`.
+The 15.7 GB model file stays where you downloaded it. The final check uses only `scripts/check_package.py` and the other copied files. It does not need a second download, and it does not need the server to be running.
 
 ## Controls / config identity
 
-`shared/controls/run.json` is the active control; only a Boolean `enabled` field is accepted, and every adapter command rechecks it before acting. `shared/baseline/run.json` plus `shared/baseline/run.json.sha256` is the restore source; validate the digest before restoring. The wire outputs `omp-local.yml` and `omp-launch.json` are generated fresh by the adapter in the work directory and compared byte for byte after any rerun. A digest detects a change against the retained record; it is not proof of authorship.
+`shared/controls/run.json` is the on/off switch. It accepts only a true or false `enabled` field, and every check command looks at it before acting. `shared/baseline/run.json` plus `shared/baseline/run.json.sha256` is the copy you restore from. Check the fingerprint before you restore. The wire step writes `omp-local.yml` and `omp-launch.json` fresh in the work folder, and you compare those bytes after any rerun. A fingerprint shows that a file changed against the record you kept. It does not prove who wrote the file.
 
 ## Run
 
@@ -138,6 +138,8 @@ if ($LASTEXITCODE -ne 0) { throw 'HOLD: do not start a server.' }
 
 Wait for this new process to report loading complete and listening. Using the machine's process/network inspector, retain its process ID, executable/arguments and loopback listener as evidence for this attempt. Only then open a second terminal inside the package folder. Run only [Resolve approved tool paths](#resolve-approved-tool-paths) above to set `PY`, `HF`, and `LLAMA`, then run the probe below. Resolving paths does not check capacity or contact the service. Do not run either capacity check against the service you just started.
 
+
+
 ```bash
 "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
 ```
@@ -188,11 +190,11 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 
 **Stop:** Any check holds.
 
-**Recovery:** Preserve the first failure. The structural check does not execute commands and does not show that another person can operate the kit.
+**Recovery:** Keep the first failure. The structure check does not run the commands. It tells you the named sections and files are present. It does not start the server, and it does not mean someone else can run this. You run it. The final fresh-copy check, after you freeze the files, runs only `check_package.py` from the new terminal on the copied files. It does not download anything, and it does not start the server.
 
 ## Stop
 
-Interrupt the server process, then prove the stopped state.
+Interrupt the server process, then prove it stopped.
 
 ```bash
 "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
@@ -212,7 +214,7 @@ Interrupt the server process, then prove the stopped state.
 & $PY -c "from pathlib import Path; import json,sys; p=Path(sys.argv[1]); p.write_text(json.dumps({'action':'stop','port':8080,'stopped_by':'operator Ctrl+C at the server terminal'})+'\n',encoding='utf-8'); print(p.read_text(encoding='utf-8'))" "stop-receipt.json"
 ```
 
-Confirm the receipt against the unreachable endpoint:
+**Expected:** The probe exits 1 with `HOLD: service is not reachable`. Only after observing this, write a UTF-8 receipt of the stop you performed:
 
 ```bash
 "$PY" scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
@@ -222,11 +224,11 @@ Confirm the receipt against the unreachable endpoint:
 & $PY scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
 ```
 
-**Expected:** `PASS: service is stopped and unreachable on loopback`. No stopped-state proof, no handoff.
+**Expected:** `PASS: service is stopped and unreachable on loopback`. If you do not have that line, you do not have a stopped server.
 
-**Stop:** The probe still reports the service reachable.
+**Stop:** The check still says the server can be reached.
 
-**Recovery:** Terminate the server process and re-probe. Do not record a stop that did not happen.
+**Recovery:** Stop the server process and check again. Do not record a stop that did not happen.
 
 ## Restore
 
@@ -279,16 +281,18 @@ Restoring the control does not restart the server. In its separate terminal, rep
 ```powershell
 & $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
 ```
-
 **Expected:** `RESTORE OK; wire bytes unchanged`, followed by a reachable probe from the newly started owned server. After retaining the restored-service evidence, repeat **Stop** and retain the final unreachable proof.
 
-**Stop:** The baseline digest fails, the probe fails, or the wire bytes differ.
+**Stop:** The baseline fingerprint fails, the check fails, or the wire bytes differ.
 
-**Recovery:** Preserve every artifact. Do not run the next command after a failed restore.
+
+**Stop:** The baseline fingerprint fails, the check fails, or the wire bytes differ.
+
+**Recovery:** Keep every file from the failed attempt. Do not run the next command after a failed restore.
 
 ## Strongest evidence
 
-The verify identity card, the live interaction transcript naming `llama.cpp` as provider at zero cost, the stop receipt, and the byte-identical restore comparison. Together these show the pinned weights, a loopback-only service, and a stopped state that another operator can reach again.
+The identity card from the verify step, the live reply that names `llama.cpp` as the provider at zero cost, the stop receipt, and the restore comparison that matches byte for byte. Together these show the named model file, a server only this laptop can reach, and a stopped state you can reach again after you restore from the saved baseline.
 
 ## Limitations
 
@@ -296,4 +300,4 @@ The identity card identifies the downloaded file; it does not guarantee any answ
 
 ## Next owner
 
-The receiving colleague for their independent attempt, then course staff for the retained evidence bundle.
+You keep the kit and the evidence on your laptop. You are the owner. Finish the live run, the stop and restore proof, and the fresh-copy check in this session. If a required step cannot finish, write the reason for `HOLD` and close the attempt before the session ends.

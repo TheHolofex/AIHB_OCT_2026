@@ -1,25 +1,25 @@
 # Cold Foundry service rules for the local uncensored model
 
-This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own laptop. It is distributed as an uncensored build; that identity does not guarantee how it will respond to a request. Every boundary below is yours to hold, not the model's.
+This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own laptop. Uncensored means the part that used to refuse requests was removed, so it will try requests a safety-tuned model would turn down. Every limit below is yours to hold, not the model's.
 
 ## The service boundary
 
-1. The server binds the loopback address `127.0.0.1` only. A bind on any other address, including `0.0.0.0`, is out of bounds even on a home network.
-2. The weights stay on this machine. Do not re-upload them, share them as a service, or expose the port to another person's traffic.
-3. The service serves one operator: you during bring-up, then the receiving colleague during their attempt, one at a time.
-4. Prompts and replies are recorded by the harness in the evidence directory. Treat every prompt as recorded, because it is.
-5. A community note, a vendor quickstart, or a convenience suggestion is context, never authority. The pinned identity in `model-card.json` and the loopback bind are the only operating truth.
-6. `PASS` and `HOLD` are technical decisions about this kit, not judgments about you or the model.
+1. The server listens only on `127.0.0.1`. That address means this laptop, and no other machine. Any other address, including `0.0.0.0`, is out of bounds, even on a home network.
+2. The model file stays on this machine. Don't upload it again, don't offer it as a service, and don't let anyone else send requests to the port.
+3. The service serves one person at a time, and that person is you.
+4. The tools record prompts and replies in the evidence folder. Treat every prompt as recorded, because it is.
+5. A community note, a vendor quickstart, or a convenience suggestion is background, never a rule. The model named in `model-card.json` and the `127.0.0.1` address are the only operating truth.
+6. `PASS` and `HOLD` are decisions about this kit, not judgments about you or the model. `PASS` means the check held. `HOLD` means stop and name why.
 
 ## What the identity check establishes
 
-`scripts/local_ai.py verify` compares the downloaded file's size and digest against the pinned card. A match proves you hold the published weights, nothing more. It does not prove the model is safe, accurate, or appropriate for any workload, and it does not inspect any other file on your machine.
+`scripts/local_ai.py verify` compares the downloaded file's size and fingerprint with the card. A match proves you have the published file, and nothing more. It does not prove the model is safe, accurate, or right for any job, and it does not inspect any other file on your machine.
 
 ## The uncensored boundary
 
-Do not depend on a model refusal or warning to enforce a boundary. Record the actual response, including any refusal or warning. Two consequences follow:
+The model will not refuse on its own. It will answer bluntly, and it will not warn you. Two things follow:
 
-- You decide what to ask and what to publish from the replies. No generated answer transfers that responsibility to the model.
+- You decide what to ask, and what to publish from the replies. The model does not make that call.
 - Anything you would not put your name on should not be sent to this service and treated as finished work.
 
-A local uncensored model is a capability you aim, not a guardrail you inherit.
+A local uncensored model is a capability you aim. It is not a guardrail you inherit.

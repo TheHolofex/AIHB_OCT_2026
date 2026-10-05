@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import hashlib
 import os
 import shutil
 import sys
@@ -13,23 +12,20 @@ from pathlib import Path
 
 REFORMATION = Path(__file__).resolve().parents[1]
 SHARED = {
-    "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case",),
-    "06": ("controls", "corpus", "checks"), "07": ("batch", "controls"),
-    "08": ("cases", "controls", "baseline"), "09": ("case", "controls"),
+    "02": ("case", "controls"), "03": ("vault", "mcp", "prompts"), "05": ("case", "controls", "prompts", "agents"),
+    "06": ("case", "controls"), "07": ("batch",),
+    "08": ("case", "controls"), "09": ("case", "controls"),
     "10": ("case", "controls", "baseline"), "04": ("case", "controls", "prompts"),
 }
 SCRIPTS = {
-    "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
-    "07": (), "08": ("evaluate_pairs.py", "restore_baseline.py"),
+    "02": ("second_brain.py",), "03": (), "05": ("orchestrate.py", "orchestration_evidence.py"), "06": ("blue_gauge.py",),
+    "07": ("check_sheet.py",), "08": (),
     "09": (), "10": ("local_ai.py", "check_package.py", "check_readiness.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_07_DOWNLOADS = (
     "shared/batch/wave1.csv",
-    "shared/batch/wave2.csv",
-    "shared/batch/wave2-revised.csv",
-    "shared/controls/validate-batch.js",
-    "shared/controls/receipt-checker.json",
+    "shared/SHEET_RULES.md",
 )
 EXCLUDED = {"figures", "__pycache__", "staff", "reference", "reviews", "evidence", "tests", "facilitator", "history", "assessment", "ACCESSIBILITY.md", "PUBLIC_RUBRIC.md", "CUSTODY_CONTRACT.md"}
 
@@ -58,6 +54,15 @@ def prepare_module_03(stage: Path, dest: Path) -> None:
     inside_json = json.dumps(str(dest))[1:-1]
     (stage / "mcp.json").write_text(template.read_text(encoding="utf-8").replace("{{WORK}}", inside_json), encoding="utf-8")
     shutil.copyfile(stage / "shared/mcp/AUTHORITY.template.md", stage / "AUTHORITY.md")
+
+
+MODULE_06_EDITABLE = (("QUESTIONS.starter.json", "QUESTIONS.json"), ("THRESHOLDS.template.json", "THRESHOLDS.json"), ("SELECTION.template.md", "SELECTION.md"))
+
+
+def prepare_module_06(stage: Path) -> None:
+    """Place the three files the lab edits at the work root."""
+    for template, name in MODULE_06_EDITABLE:
+        shutil.copyfile(stage / "shared/controls" / template, stage / name)
 
 
 def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path:
@@ -102,6 +107,9 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
         source = module / "scripts" / name
         require_regular(source, module)
         copies.append((source, Path("scripts") / name))
+    if module_id == "06":
+        for template, _ in MODULE_06_EDITABLE:
+            require_regular(module / "shared/controls" / template, module)
     if module_id == "10":
         source = module / "shared/PACKAGE.md"
         require_regular(source, module)
@@ -118,14 +126,10 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
             target = stage / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
-        if module_id == "05":
-            baseline = stage / "baseline"
-            baseline.mkdir()
-            content = (stage / "scripts/render_review.py").read_bytes()
-            (baseline / "render_review.py").write_bytes(content)
-            (baseline / "render_review.py.sha256").write_text(hashlib.sha256(content).hexdigest() + "\n", encoding="utf-8")
         if module_id == "03":
             prepare_module_03(stage, dest)
+        if module_id == "06":
+            prepare_module_06(stage)
         if dest.exists() or dest.is_symlink():
             raise FileExistsError(f"destination already exists: {dest}")
         # Reserve the destination exclusively; never let POSIX rename replace an
@@ -144,18 +148,20 @@ def next_arguments(module_id: str) -> list[str]:
     python = str(Path(sys.executable).resolve())
     if module_id == "02":
         return [python, "scripts/second_brain.py", "initialize", "--work", "."]
+    if module_id == "06":
+        return [python, "scripts/blue_gauge.py", "check-questions", "QUESTIONS.json"]
     if module_id == "03":
         return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "05":
-        return [python, "scripts/render_review.py", "shared/case/ledger.json", "out/baseline.md"]
+        return [python, "scripts/orchestrate.py", "inspect", "--work", "."]
     if module_id == "07":
         return []
     if module_id == "08":
-        code = 'from pathlib import Path; print(Path("shared/controls/policy.json").read_text(encoding="utf-8"))'
+        code = 'from pathlib import Path; print(Path("shared/case/LEGEND.txt").read_text(encoding="utf-8"))'
     elif module_id == "10":
         code = 'from pathlib import Path; print(Path("shared/case/model-card.json").read_text(encoding="utf-8"))'
     else:
-        folder = "shared/corpus" if module_id == "06" else "shared/case"
+        folder = "shared/case"
         code = f'from pathlib import Path; print("\\n".join(p.as_posix() for p in sorted(Path("{folder}").rglob("*")) if p.is_file()))'
     return [python, "-c", code]
 
@@ -176,11 +182,10 @@ def main() -> int:
     if args.module_id == "07":
         print(f"PASS: created {work}")
         print("Next: open your local n8n editor in the browser and follow the Module 7 lab.")
-        print(f"Upload the wave CSVs from {work / 'shared/batch'} through the workflow test form.")
-        print(f"Copy Check batch code from {work / 'shared/controls/validate-batch.js'}.")
-        print(f"Import {work / 'shared/controls/receipt-checker.json'} into a separate NEW BLANK workflow.")
-        print("Keep workflows unpublished. Arm Execute workflow, then use that workflow's current Test URL.")
-        print(f"Download receipts and reports in the browser; retain unchanged bytes under unique names in {work / 'out'}.")
+        print(f"Upload {work / 'shared/batch/wave1.csv'} through the agent workflow's current Test URL.")
+        print(f"Keep {work / 'shared/SHEET_RULES.md'} open while checking the spreadsheet.")
+        print("Keep both workflows unpublished. Download the spreadsheet from the tool's run.")
+        print(f"Retain the unchanged download under a unique name in {work / 'out'}, then run scripts/check_sheet.py on it.")
         return 0
     command = next_arguments(args.module_id)
     ps_quote = lambda value: "'" + str(value).replace("'", "''") + "'"

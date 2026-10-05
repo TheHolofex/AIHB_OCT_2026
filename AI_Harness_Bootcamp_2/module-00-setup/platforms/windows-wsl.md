@@ -623,7 +623,7 @@ n8n is a visual workflow editor. You'll run it on this laptop through Docker Des
 
 ### Check Windows for Docker Desktop
 
-[Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/) are stricter than WSL's. You need WSL 2.1.5 or later, and Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or later in an Enterprise, Pro, or Education edition. You also need 8 GB of RAM, hardware virtualization turned on, and the Windows Server service (`LanmanServer`) set to start automatically. On Windows on Arm, Docker Desktop is Early Access. Ask the owner to confirm [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/): it's free for personal use, education, non-commercial open source, and small businesses, and other professional use needs a paid subscription.
+[Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/) are stricter than WSL's. You need WSL 2.1.5 or later, and Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or later in an Enterprise, Pro, or Education edition. You also need 8 GB of RAM, hardware virtualization turned on, and the Windows Server service (`LanmanServer`) set to start automatically. On Windows on Arm, Docker Desktop is Early Access. Ask the owner to confirm [Docker Desktop licensing](https://docs.docker.com/subscription/desktop-license/).
 
 The [n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml) runs six services, and one of them, the sandbox runner, uses privileged Docker-in-Docker. Get the owner's approval for that before you start it. Keep n8n's Assistant off, and don't enter a provider key into n8n.
 
@@ -971,7 +971,7 @@ printf 'WSLENV names: %s\nPROFILE SCAN DONE\n' "${WSLENV:-none}"
 
 **`LAUNCH_EXIT 2`.** A prerequisite failed before any work began, and the `HOLD:` line names it. `OPENROUTER_API_KEY unavailable` means you should repeat steps 6 and 7 in this window. A message about `omp` on PATH or its version means you should return to step 5 in a new window. A missing `course_guard.mjs` means the checkout is incomplete.
 
-**`LAUNCH_EXIT 1`.** The live attempt started and failed. Check your network, key, and OpenRouter credit, then run step 8 again; it creates a new attempt. Don't change the provider or model.
+**`LAUNCH_EXIT 1`.** The live attempt started and failed. Check your network and key, then run step 8 again; it creates a new attempt. Don't change the provider or model.
 
 **`READINESS CHECK HOLD`.** The checker names what didn't match. Keep that attempt, fix the cause, and run step 8 again. Writing `from-omp.txt` yourself never counts.
 

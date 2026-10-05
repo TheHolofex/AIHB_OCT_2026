@@ -66,7 +66,7 @@ The Obsidian window was checked only on **Obsidian 1.13.7, Darwin arm64**. It ha
 - [Docker Desktop for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
 - [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
 - [Docker Desktop WSL integration](https://docs.docker.com/desktop/features/wsl/)
-- [Docker Desktop licensing](https://docs.docker.com/subscription-billing/desktop-license/)
+- [Docker Desktop licensing](https://docs.docker.com/subscription/desktop-license/)
 - [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 - [Docker Linux post-install access and docker-group privileges](https://docs.docker.com/engine/install/linux-postinstall/)
 - [Docker Compose installation](https://docs.docker.com/compose/install/)

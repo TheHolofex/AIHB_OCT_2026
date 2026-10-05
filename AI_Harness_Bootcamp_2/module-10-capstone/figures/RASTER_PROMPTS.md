@@ -49,49 +49,6 @@ A two-column table with the headers 'Evidence' and 'Supports'. Four equal rows, 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
 
-## m10-independent-transfer
-
-- Title: Three kinds of transfer evidence
-- Native size: 1536×1024; published SHA-256: `1d3f2dbfb67ec4cee206690c147acdef3c15a6533ab9e175e33d9f204589640b`
-- Accepted attempt: 02 of 2
-- Earlier attempts were rejected in review for relationship or layout defects; the last revision requirements are included at the end of the prompt.
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "Three kinds of transfer evidence"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Your own rerun"
-- "Fresh-session technical replay, including an agent replay"
-- "Technical evidence only; neither counts as another person operating the kit"
-- "Another person"
-- "Runs the kit from the package alone"
-- "Records: questions, commands, observed outcomes"
-- "Any help you gave is recorded"
-- "An assisted attempt stays labelled assisted, not independent"
-- "No recipient available"
-- "Record independent operation as unobserved, with the missing prerequisite"
-
-LAYOUT AND RELATIONSHIPS:
-Three stacked horizontal lanes in separate bordered panels with gaps between them. Lane 1 (short): 'Your own rerun'. Lane 2 (short): 'Fresh-session technical replay, including an agent replay'. A single bracket on the right spans lanes 1 and 2 with the note 'Technical evidence only; neither counts as another person operating the kit'. No line runs from lanes 1 or 2 into lane 3. Lane 3, outlined more heavily, read left to right: 'Another person' (a text label only, no avatar or silhouette) → 'Runs the kit from the package alone' → 'Records: questions, commands, observed outcomes' → 'Any help you gave is recorded' → 'An assisted attempt stays labelled assisted, not independent'. A side branch drops from 'Another person' at the start of lane 3 to the condition box 'No recipient available', then an arrow to 'Record independent operation as unobserved, with the missing prerequisite'. Neutral palette; no checkmarks or success marks.
-
-REVISION REQUIREMENTS (a previous attempt was rejected; fix all of these):
-- An unlabelled arrow drops from the 'Another person' box to 'No recipient available'. Read as a flow, this says 'another person → no recipient available', which contradicts itself. The no-recipient case is the alternative to having another person, not a step after it. The spec asked for this and the problem slipped through. Fix for full regeneration: start lane 3 with a short entry stub at its left edge that splits into two paths. Upper path: 'Another person' → 'Runs the kit from the package alone' → 'Records: questions, commands, observed outcomes' → 'Any help you gave is recorded' → 'An assisted attempt stays labelled assisted, not independent'. Lower path: 'No recipient available' → 'Record independent operation as unobserved, with the missing prerequisite'. Draw no line from the 'Another person' box to the lower path. Keep lanes 1–2, the bracket note and all labels unchanged.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
 ## m10-launch-approval
 
 - Title: You approve and start the launch
@@ -163,48 +120,6 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 
 LAYOUT AND RELATIONSHIPS:
 Centre-left: a rectangle outlined as the service boundary, labelled 'Service bound to 127.0.0.1 only' (127.0.0.1 in monospace). Inside it are two boxes, 'One operator' and 'Local weights', joined by a two-way arrow labelled 'Requests and replies'. Along the inner bottom edge is a strip 'Prompts and replies are recorded', with nothing crossing it. One arrow leaves the boundary on the right to a box outside it: 'Operator reviews output before any use'. There is no arrow from that box onward and no arrow anywhere toward publishing or other people. On the boundary's outer edge (top or right) is a short red barred segment with the list 'Blocked at the boundary: no shared endpoint, no traffic from other people', written as an edge annotation, not as destinations. A small separate grey callout, 'Identity check confirms the weight file only, not its safety or accuracy', attaches by one thin line to 'Local weights'. It does not cross the recording strip and does not enclose the boundary. No shield, lock, port number or model name.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
-## m10-package-boundary
-
-- Title: What travels in the kit
-- Native size: 1536×1024; published SHA-256: `e68fe5c4b19e127a28f66894893a877aff577fe9282db26ec68b0740864e00f2`
-- Accepted attempt: 01 of 1
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "What travels in the kit"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Declared kit"
-- "shared/PACKAGE.md (instructions)"
-- "scripts/ (adapters)"
-- "shared/case/ (case and rules)"
-- "shared/controls/ (active control)"
-- "shared/baseline/ (baseline)"
-- "Freeze the declared paths"
-- "Digest-checked copy"
-- "Fresh received folder"
-- "Not in the kit"
-- "Model weights: the recipient downloads them separately"
-- "Run evidence, including the stop receipt: kept separately"
-- "Conversation history"
-
-LAYOUT AND RELATIONSHIPS:
-Top row, read left to right. A box headed 'Declared kit' lists five monospace path rows, each with its role in plain text: 'shared/PACKAGE.md (instructions)', 'scripts/ (adapters)', 'shared/case/ (case and rules)', 'shared/controls/ (active control)', 'shared/baseline/ (baseline)'. A single arrow goes to the step box 'Freeze the declared paths', then an arrow to 'Digest-checked copy', then an arrow into the box 'Fresh received folder'. That box shows five short unlabelled rows standing for the same five members. Below the top row, separated by a gap, one panel headed 'Not in the kit' lists three parallel lines: 'Model weights: the recipient downloads them separately', 'Run evidence, including the stop receipt: kept separately', 'Conversation history'. No line connects this panel to the copy path or the received folder. Flat strokes; no file counts, sizes, digests or model names.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````

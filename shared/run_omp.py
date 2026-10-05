@@ -7,6 +7,12 @@ invalid invocation/prerequisites; exit 1 preserves an attempted but held run.
 The `mcp` profile (--mcp-config and --authority) connects one declared MCP server and
 joins the harness events, the guard decisions, the server's own audit log, and the
 files on disk.
+
+The `judge` profile (--judge-config, --judge-questions, --judge-states, --judge-output)
+sets OMP's judge model role to the pinned OpenRouter decision model and lets the model
+call `eval` once, with the frozen cell that runs shared/judge_runner.mjs. The launcher
+then checks every saved judgment, the build that answered it, and the work folder.
+`--list-judges` saves the judge models OMP offers through the course key.
 """
 from __future__ import annotations
 
@@ -28,9 +34,13 @@ MODEL = "anthropic/claude-sonnet-4.6"
 SELECTOR = f"{PROVIDER}/{MODEL}"
 OMP_VERSION = "omp/18.3.5"
 GUARD = Path(__file__).with_name("course_guard.mjs")
+JUDGE_RUNNER = Path(__file__).with_name("judge_runner.mjs")
+JUDGE_SELECTOR = "openrouter/typesafe/jev-1.13"
+JUDGE_MODEL = re.compile(r"openrouter/typesafe/jev-1\.13(?:-\d{8})?")
+EVAL_KEYS = {"language", "code", "title", "timeout", "reset"}
 DECLARATION = {"schema_version": 1, "yolo": False, "read_root": ".", "write_root": "artifacts", "tools": ["course_read", "course_write"], "skills": False, "gateway": False}
 POLICY_KEYS = {"schema_version", "run_id", "work_root", "profile", "tools", "write_files", "write_root", "provider", "model", "omp_version", "prompt_sha256", "instruction", "declaration", "python", "guard_source_sha256", "runtime_config_sha256", "guard_log", "watch_paths"}
-OPTIONAL_POLICY_KEYS = {"mcp", "snapshot_exclude"}
+OPTIONAL_POLICY_KEYS = {"mcp", "snapshot_exclude", "judge"}
 MODULE_03_MCP = Path(__file__).resolve().parents[1] / "AI_Harness_Bootcamp_2" / "module-03-mcp-research" / "shared" / "mcp"
 MCP_SERVER = "vault"
 MCP_ENV = {"OMP_MCP_REQUIRE_READY": "1", "OMP_MCP_TIMEOUT_MS": "30000"}
@@ -101,6 +111,188 @@ def parse_declaration(path: Path) -> dict:
     if declaration != DECLARATION or set(declaration) != set(DECLARATION) or type(declaration.get("schema_version")) is not int:
         raise ValueError("AGENT_POLICY.md must use the fixed class policy without extra keys or broader permissions")
     return declaration
+
+
+SNAKE = re.compile(r"[a-z][a-z0-9_]{0,63}")
+
+
+def learner_text(path: Path) -> str:
+    """Read a file the learner edits; a byte-order mark is refused by name rather than misread."""
+    text = path.read_text(encoding="utf-8")
+    if text.startswith("\ufeff"):
+        raise ValueError(f"{path.name} starts with a byte-order mark; save it as UTF-8 without one")
+    return text
+
+
+def parse_judge_config(path: Path) -> str:
+    """Return the judge selector from the two-line OMP setting, refusing anything else."""
+    lines = [line.rstrip() for line in learner_text(path).splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    match = re.fullmatch(r" +judge: *(['\"]?)([A-Za-z0-9._~/:@+-]+)\1", lines[1]) if len(lines) == 2 and lines[0] == "modelRoles:" else None
+    if not match:
+        raise ValueError("JUDGE.yml must hold exactly two setting lines: 'modelRoles:' and an indented 'judge: <selector>'")
+    selector = match.group(2)
+    if selector != JUDGE_SELECTOR:
+        if "~" in selector:
+            raise ValueError(f"judge selector {selector} is an alias that follows the newest release; pin {JUDGE_SELECTOR}")
+        raise ValueError(f"judge selector {selector} is not the pinned decision model {JUDGE_SELECTOR}")
+    return selector
+
+
+def parse_questions(path: Path) -> dict:
+    """Check a question file against the shapes OMP 18.3.5's judge bridge accepts."""
+    data = strict_json(learner_text(path))
+    if not isinstance(data, dict) or set(data) != {"schema_version", "questions"} or data["schema_version"] != 1 or type(data["schema_version"]) is not int:
+        raise ValueError('the question file must be {"schema_version": 1, "questions": {...}}')
+    questions = data["questions"]
+    if not isinstance(questions, dict) or not 1 <= len(questions) <= 40:
+        raise ValueError("the question file must define 1 to 40 questions")
+    text = lambda value: isinstance(value, str) and bool(value.strip())
+    for qid, question in questions.items():
+        where = f"question {qid!r}"
+        if not SNAKE.fullmatch(qid):
+            raise ValueError(f"{where}: ids use lowercase letters, digits, and underscores")
+        if not isinstance(question, dict) or question.get("type") not in {"bool", "choice", "score"} or set(question) - {"type", "instructions", "criteria"} or not text(question.get("instructions")):
+            raise ValueError(f"{where}: needs type bool, choice, or score, text instructions, and no field other than criteria")
+        criteria = question.get("criteria")
+        if question["type"] == "bool":
+            fits = criteria is None or (isinstance(criteria, dict) and bool(criteria) and set(criteria) <= {"true", "false"} and all(text(value) for value in criteria.values()))
+        elif question["type"] == "choice":
+            fits = isinstance(criteria, dict) and 2 <= len(criteria) <= 255 and all(SNAKE.fullmatch(label) and text(value) for label, value in criteria.items())
+        else:
+            fits = isinstance(criteria, list) and 2 <= len(criteria) <= 11 and all(text(value) for value in criteria)
+        if not fits:
+            raise ValueError(f"{where}: criteria do not fit a {question['type']} question; option and level descriptions must be text")
+    return questions
+
+
+def parse_states(directory: Path, work: Path) -> dict:
+    folder = directory.expanduser().resolve()
+    if not folder.is_dir() or not folder.is_relative_to(work):
+        raise ValueError(f"the states folder must be inside the work folder: {folder}")
+    files = sorted(folder.iterdir())
+    if not 1 <= len(files) <= 200 or any(item.is_symlink() or not item.is_file() or item.suffix != ".json" for item in files):
+        raise ValueError("the states folder must hold 1 to 200 regular .json files and nothing else")
+    states = {}
+    for item in files:
+        record = strict_json(item.read_text(encoding="utf-8"))
+        if not isinstance(record, dict) or set(record) != {"id", "state"} or record["id"] != item.stem or not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", item.stem) or not isinstance(record["state"], (dict, str)) or len(json.dumps(record["state"])) > 20000:
+            raise ValueError(f'state file {item.name} must be {{"id": <file name>, "state": <text or object>}} under 20,000 characters')
+        states[item.stem] = {"path": str(item), "sha256": file_hash(item)}
+    return states
+
+
+def prepare_judge(args, work: Path) -> dict:
+    """Check the judge setting, questions, states, and output before anything runs."""
+    config = descriptor(args.judge_config, "JUDGE.yml")
+    selector = parse_judge_config(Path(config["path"]))
+    questions = descriptor(args.judge_questions, "question file")
+    if not Path(questions["path"]).is_relative_to(work):
+        raise ValueError("the question file must be inside the work folder")
+    parsed = parse_questions(Path(questions["path"]))
+    states_dir = Path(args.judge_states).expanduser().resolve()
+    states = parse_states(states_dir, work)
+    output = permission_path(args.judge_output, work)
+    target = work / output
+    if target.exists() or target.is_symlink():
+        raise ValueError(f"judge output already exists: {output}; keep it and choose a new name")
+    if not target.parent.is_dir():
+        raise ValueError(f"the folder that holds the judge output is missing: {target.parent}")
+    if not JUDGE_RUNNER.is_file():
+        raise ValueError("judge_runner.mjs is missing; restore the published shared helper")
+    return {"selector": selector, "config": config, "questions": questions, "parsed": parsed, "states": states, "states_dir": states_dir.relative_to(work).as_posix(), "output": output}
+
+
+def judge_launch_files(prep: dict, work: Path, evidence: Path) -> tuple[str, dict]:
+    """Freeze the exact question and setting bytes, write the plan, and return the prompt and policy.judge."""
+    frozen_questions = evidence / "questions.json"
+    frozen_questions.write_bytes(Path(prep["questions"]["path"]).read_bytes())
+    (evidence / "judge-config.yml").write_bytes(Path(prep["config"]["path"]).read_bytes())
+    plan = {"questions": str(frozen_questions), "states": {key: value["path"] for key, value in prep["states"].items()}, "output_dir": str(work / prep["output"]),
+            "intent": f"Judging {len(prep['states'])} states", "concurrency": 8, "retries": 0, "deadline_seconds": 240}
+    plan_file = evidence / "judge-plan.json"
+    plan_file.write_bytes(json_bytes(plan))
+    cell = f"return await (await import({json.dumps(JUDGE_RUNNER.resolve().as_uri())})).run({{ judgeBatch, plan: {json.dumps(plan_file.as_uri())} }});"
+    prompt = ("Call the eval tool exactly once, with language \"js\" and this code, character for character:\n\n"
+              f"```js\n{cell}\n```\n\nDo not call any other tool, and do not call eval a second time. When the result arrives, reply with the result text only.\n")
+    parsed = prep["parsed"]
+    judge = {"selector": prep["selector"], "config": prep["config"], "questions": prep["questions"],
+             "frozen_questions": {"path": str(frozen_questions), "sha256": file_hash(frozen_questions)},
+             "question_types": {qid: question["type"] for qid, question in parsed.items()},
+             "choice_options": {qid: list(question["criteria"]) for qid, question in parsed.items() if question["type"] == "choice"},
+             "score_levels": {qid: len(question["criteria"]) for qid, question in parsed.items() if question["type"] == "score"},
+             "states": prep["states"], "states_dir": prep["states_dir"], "output": prep["output"],
+             "runner": {"path": str(JUDGE_RUNNER.resolve()), "sha256": file_hash(JUDGE_RUNNER)},
+             "plan": {"path": str(plan_file), "sha256": file_hash(plan_file)}, "cell_code": cell}
+    return prompt, judge
+
+
+def _unit(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and 0 <= value <= 1
+
+
+def answer_problem(answer, kind: str, options: list | None, levels: int | None) -> str | None:
+    if not isinstance(answer, dict) or answer.get("type") != kind:
+        return f"expected a {kind} answer"
+    if kind == "bool":
+        return None if set(answer) == {"type", "bool"} and _unit(answer["bool"]) else "malformed yes probability"
+    probabilities = answer.get("probabilities")
+    if not isinstance(probabilities, dict) or not all(_unit(value) for value in probabilities.values()) or not _unit(answer.get("confidence")):
+        return "malformed probabilities or confidence"
+    if kind == "choice":
+        return None if answer.get("choice") in options and set(probabilities) == set(options) else "choice outside the frozen options"
+    score = answer.get("score")
+    fits = set(probabilities) == {str(level) for level in range(levels)} and isinstance(score, (int, float)) and not isinstance(score, bool) and 0 <= score <= levels - 1
+    return None if fits else "score outside the frozen levels"
+
+
+def judge_output_errors(policy: dict) -> tuple[list[str], dict]:
+    """Check saved judgments against the frozen questions and the pinned build; return errors and a summary."""
+    judge = policy["judge"]
+    folder = Path(policy["work_root"]) / judge["output"]
+    try:
+        rows = [strict_json(line) for line in (folder / "judgments.jsonl").read_text(encoding="utf-8").splitlines()]
+        status = strict_json((folder / "batch-status.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeError) as error:
+        return [f"judge output missing or malformed: {error}"], {}
+    errors, models, expected = [], set(), list(judge["states"])
+    if [row.get("key") if isinstance(row, dict) else None for row in rows] != expected:
+        errors.append("judgments do not list every state exactly once, in order")
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != {"key", "answers", "error", "model"}:
+            errors.append("malformed judgment row")
+            continue
+        key = row["key"]
+        if row["error"] is not None or not isinstance(row["answers"], dict):
+            errors.append(f"{key}: no judgment ({row['error']})")
+            continue
+        if not isinstance(row["model"], str) or not JUDGE_MODEL.fullmatch(row["model"]):
+            errors.append(f"{key}: answered by {row['model']!r}, not the pinned judge")
+        models.add(row["model"])
+        if set(row["answers"]) != set(judge["question_types"]):
+            errors.append(f"{key}: answers do not match the frozen question ids")
+            continue
+        for qid, kind in judge["question_types"].items():
+            problem = answer_problem(row["answers"][qid], kind, judge["choice_options"].get(qid), judge["score_levels"].get(qid))
+            if problem:
+                errors.append(f"{key}.{qid}: {problem}")
+    if len(models) > 1:
+        errors.append(f"more than one judge build answered: {sorted(map(str, models))}")
+    finished = isinstance(status, dict) and status.get("total") == len(expected) == status.get("done") and status.get("failed") == 0 and status.get("running") is False
+    if not finished:
+        errors.append("batch status does not show every state judged without failure")
+    cost = status.get("cost") if isinstance(status, dict) else None
+    if not isinstance(cost, (int, float)) or isinstance(cost, bool) or cost < 0:
+        errors.append("batch status lacks a cost")
+    if isinstance(status, dict) and status.get("model") not in models:
+        errors.append("batch status names a different judge build")
+    summary = {"selector": judge["selector"], "served_model": next(iter(models)) if len(models) == 1 else None, "items": len(rows), "cost_usd": cost,
+               "judgments_sha256": file_hash(folder / "judgments.jsonl"), "status_sha256": file_hash(folder / "batch-status.json")}
+    return errors, summary
+
+
+def judge_files(policy: dict) -> list[dict]:
+    judge = policy.get("judge")
+    return [judge["frozen_questions"], judge["runner"], judge["plan"], *judge["states"].values()] if judge else []
 
 
 def isolated_env(runtime: Path, policy: Path, key: str) -> dict[str, str]:
@@ -359,9 +551,9 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
         if not condition:
             errors.append(reason)
     require(child_exit == 0, f"OMP exited {child_exit}")
-    mcp = policy.get("mcp")
+    mcp, judge = policy.get("mcp"), policy.get("judge")
     require(set(policy) - OPTIONAL_POLICY_KEYS == POLICY_KEYS and set(policy) & OPTIONAL_POLICY_KEYS <= OPTIONAL_POLICY_KEYS and (mcp is not None) == (policy.get("profile") == "mcp")
-            and policy.get("schema_version") == 1, "resolved policy schema differs")
+            and (judge is not None) == (policy.get("profile") == "judge") and (not judge or policy.get("tools") == ["eval"]) and policy.get("schema_version") == 1, "resolved policy schema differs")
     require((policy.get("provider"), policy.get("model"), policy.get("omp_version")) == (PROVIDER, MODEL, OMP_VERSION), "pinned identity differs")
     terminal = [row for row in events if row.get("type") == "agent_end" and row.get("isTerminal") is not False]
     require(len(terminal) == 1, "expected exactly one terminal agent_end")
@@ -430,11 +622,13 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
     for identifier, call in calls.items():
         start, end, result = starts.get(identifier, {}), ends.get(identifier, {}), results.get(identifier, {})
         require(start.get("toolName") == end.get("toolName") == result.get("toolName") == call.get("name"), "tool name mismatch")
-        require(start.get("args") == call.get("arguments"), "tool arguments differ from assistant call")
+        # OMP drops empty optional eval arguments (for example "reset": null) before it executes the call.
+        arguments = normalize_arguments(call.get("arguments")) if judge and call.get("name") == "eval" else call.get("arguments")
+        require(start.get("args") == arguments, "tool arguments differ from assistant call")
         require(end.get("isError") == result.get("isError") and end.get("result", {}).get("content") == result.get("content"), "execution/result mismatch")
         decision = decisions.get(identifier)
         if decision:
-            require(decision.get("tool") == call.get("name") and decision.get("arguments") == call.get("arguments"), "guard decision does not match call")
+            require(decision.get("tool") == call.get("name") and decision.get("arguments") == arguments, "guard decision does not match call")
             if not decision.get("allow"):
                 require(end.get("isError") is True and identifier not in executed, "denied call executed successfully")
         else:
@@ -443,6 +637,10 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
         if end.get("isError") is False:
             if mcp and str(call.get("name", "")).startswith("mcp__"):
                 require(bool(decision and decision.get("allow")) and call.get("name") in mcp["allow_names"], "successful MCP call lacks a guard decision for a declared tool")
+            elif judge and call.get("name") == "eval":
+                arguments = call.get("arguments", {})
+                require(bool(decision and decision.get("allow")), "successful eval lacks an allowing guard decision")
+                require(set(arguments) <= EVAL_KEYS and arguments.get("language") == "js" and arguments.get("code") == judge["cell_code"], "eval ran code other than the frozen judge cell")
             else:
                 require(identifier in executed and bool(decision and decision.get("allow")), "successful call lacks actual guarded execution")
         if identifier in executed:
@@ -466,6 +664,16 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
         errors.extend(mcp_disk_errors(policy, records, before["work"], after["work"]))
         if mcp["phase"] == "revoked":
             require(all(record["classification"] == "DENIED_BY_RUNTIME" for record in records), "a revoked phase executed or reached a tool")
+    elif judge:
+        ran = [identifier for identifier, call in calls.items() if call.get("name") == "eval" and ends.get(identifier, {}).get("isError") is False]
+        require(len(ran) == 1, f"expected exactly one completed judge cell, observed {len(ran)}")
+        for relative, old in before["work"].items():
+            require(after["work"].get(relative) == old, f"existing input/control changed: {relative}")
+        declared = {judge["output"], f"{judge['output']}/judgments.jsonl", f"{judge['output']}/batch-status.json"}
+        added = set(after["work"]) - set(before["work"])
+        require(added == declared and after["work"].get(judge["output"], {}).get("type") == "directory", f"judge run changed the work folder beyond its declared output: {sorted(added ^ declared)}")
+        if added == declared:
+            errors.extend(judge_output_errors(policy)[0])
     else:
         for relative, old in before["work"].items():
             require(after["work"].get(relative) == old, f"existing input/control changed: {relative}")
@@ -544,6 +752,13 @@ def audit_evidence(evidence: Path) -> list[str]:
                 errors.append("saved connection files differ from the frozen policy")
         elif "mcp" in result:
             errors.append("a non-MCP run carries MCP evidence")
+        if policy.get("judge"):
+            expected["judge"] = judge_output_errors(policy)[1]
+            saved = {"questions.json": policy["judge"]["frozen_questions"]["sha256"], "judge-config.yml": policy["judge"]["config"]["sha256"], "judge-plan.json": policy["judge"]["plan"]["sha256"]}
+            if any(file_hash(evidence / name) != digest for name, digest in saved.items()):
+                errors.append("saved judge files differ from the frozen policy")
+        elif "judge" in result:
+            errors.append("a non-judge run carries judge evidence")
         for key, value in expected.items():
             if result.get(key) != value:
                 errors.append(f"{key} differs")
@@ -558,6 +773,9 @@ def audit_evidence(evidence: Path) -> list[str]:
         if policy.get("mcp"):
             # mcp.json and AUTHORITY.md legitimately change between phases; the evidence folder keeps the exact bytes each run used.
             frozen += [("server script", policy["mcp"].get("script"))]
+        if policy.get("judge"):
+            # JUDGE.yml and the question file legitimately change between runs; the evidence folder keeps the exact bytes each run used.
+            frozen += [("judge runner", policy["judge"]["runner"])] + [(f"state {key}", item) for key, item in policy["judge"]["states"].items()]
         for key, item in frozen:
             if item and file_hash(Path(item["path"])) != item["sha256"]:
                 errors.append(f"{key} file changed")
@@ -566,6 +784,8 @@ def audit_evidence(evidence: Path) -> list[str]:
         overlay = strict_json((evidence / "runtime-config.yml").read_text(encoding="utf-8"))
         if overlay.get("retry") != {"enabled": False, "modelFallback": False} or overlay.get("providers", {}).get("cacheWarming") != "off" or overlay.get("tools", {}).get("approval") != expected_approval(policy):
             errors.append("runtime overlay does not disable retries/fallback/warming and authorize only declared tools")
+        if overlay.get("modelRoles") != ({"judge": policy["judge"]["selector"]} if policy.get("judge") else None):
+            errors.append("runtime overlay judge role differs from the frozen policy")
         for path, observed in snapshots["after"]["watch"].items():
             if path_state(Path(path)) != observed:
                 errors.append(f"watched target changed after the run: {path}")
@@ -574,10 +794,63 @@ def audit_evidence(evidence: Path) -> list[str]:
         return [f"incomplete or malformed evidence: {error}"]
 
 
+def list_judges(evidence_arg: Path) -> int:
+    """Save and print the judge models OMP offers through the course key. No model is called."""
+    try:
+        evidence = evidence_arg.expanduser().absolute()
+        if evidence.exists() or evidence.is_symlink():
+            raise ValueError(f"evidence attempt already exists: {evidence}; choose a new directory")
+        key = os.environ.get("OPENROUTER_API_KEY", "")
+        if not key:
+            raise ValueError("OPENROUTER_API_KEY unavailable; enter and export the key in this terminal")
+        omp = shutil.which("omp")
+        if not omp:
+            raise ValueError("omp is not on PATH; install the pinned verified binary")
+    except (OSError, ValueError) as error:
+        print(f"HOLD: {error}", file=sys.stderr)
+        return 2
+    with tempfile.TemporaryDirectory(prefix="course-omp-runtime-") as temp:
+        runtime = Path(temp).resolve()
+        environment = isolated_env(runtime, runtime / "no-policy.json", key)
+        cwd = Path(environment["HOME"]) / "cwd"
+        cwd.mkdir()
+        try:
+            version = subprocess.run([omp, "--version"], cwd=cwd, env=environment, capture_output=True, text=True, timeout=15)
+            if version.returncode or version.stdout.strip() != OMP_VERSION:
+                raise ValueError(f"require {OMP_VERSION}; pinned executable version did not match")
+            listing = subprocess.run([omp, "models", "--kind", "judge", "--json"], cwd=cwd, env=environment, capture_output=True, text=True, timeout=120)
+            if key in listing.stdout or key in listing.stderr:
+                raise ValueError("the provider key appeared in the model listing; nothing was saved")
+            if listing.returncode:
+                raise ValueError(f"omp models exited {listing.returncode}: {listing.stderr.strip()[:300]}")
+            catalog = strict_json(listing.stdout)
+            models = catalog["models"]
+            if not isinstance(models, list) or any(not isinstance(row, dict) or not isinstance(row.get("selector"), str) for row in models):
+                raise ValueError("omp models returned an unexpected listing")
+        except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
+            print(f"HOLD: {error}", file=sys.stderr)
+            return 2
+    evidence.mkdir(parents=True)
+    (evidence / "candidates.json").write_bytes(json_bytes(catalog))
+    pinned = any(row["selector"] == JUDGE_SELECTOR for row in models)
+    (evidence / "result.json").write_bytes(json_bytes({"omp_version": OMP_VERSION, "fetched_at": datetime.now(timezone.utc).isoformat(), "candidates": len(models), "pinned": JUDGE_SELECTOR, "pinned_offered": pinned, "candidates_sha256": file_hash(evidence / "candidates.json")}))
+    price = lambda value: f"{value:.3f}" if isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 0 else "varies"
+    print(f"{'judge model selector':50} {'context':>9} {'$/M input':>10} {'$/M output':>11}")
+    for row in sorted(models, key=lambda row: row["selector"]):
+        cost = row.get("cost") if isinstance(row.get("cost"), dict) else {}
+        marker = "  <- course pin" if row["selector"] == JUDGE_SELECTOR else ""
+        print(f"{row['selector']:50} {str(row.get('contextWindow', '?')):>9} {price(cost.get('input')):>10} {price(cost.get('output')):>11}{marker}")
+    if not pinned:
+        print(f"HOLD: {JUDGE_SELECTOR} is not offered through this key; saved {len(models)} candidates to {evidence / 'candidates.json'}")
+        return 1
+    print(f"PASS: saved {len(models)} judge candidates to {evidence / 'candidates.json'}; {JUDGE_SELECTOR} is offered")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workdir", required=True, type=Path)
-    parser.add_argument("--prompt", required=True)
+    parser.add_argument("--workdir", type=Path)
+    parser.add_argument("--prompt")
     parser.add_argument("--evidence", required=True, type=Path)
     parser.add_argument("--instruction")
     access = parser.add_mutually_exclusive_group()
@@ -586,9 +859,28 @@ def main(argv: list[str] | None = None) -> int:
     access.add_argument("--write-root")
     parser.add_argument("--mcp-config")
     parser.add_argument("--authority")
+    parser.add_argument("--judge-config")
+    parser.add_argument("--judge-questions")
+    parser.add_argument("--judge-states")
+    parser.add_argument("--judge-output")
+    parser.add_argument("--list-judges", action="store_true")
     parser.add_argument("--watch-path", action="append", default=[])
     args = parser.parse_args(argv)
+    judge_args = (args.judge_config, args.judge_questions, args.judge_states, args.judge_output)
+    others = (args.instruction, args.policy, args.allow_write, args.write_root, args.mcp_config, args.authority)
+    if args.list_judges:
+        if args.workdir or args.prompt or args.watch_path or any(judge_args) or any(others):
+            print("HOLD: --list-judges takes only --evidence", file=sys.stderr)
+            return 2
+        return list_judges(args.evidence)
     try:
+        judging = any(value is not None for value in judge_args)
+        if judging and not all(value is not None for value in judge_args):
+            raise ValueError("--judge-config, --judge-questions, --judge-states, and --judge-output go together")
+        if judging and (args.prompt or any(others)):
+            raise ValueError("a judge run takes no --prompt, --instruction, --policy, --allow-write, --write-root, --mcp-config, or --authority; the launcher writes its own prompt")
+        if args.workdir is None or (not judging and args.prompt is None):
+            raise ValueError("--workdir and --prompt are required")
         work = args.workdir.expanduser().resolve()
         if not work.is_dir():
             raise ValueError(f"missing work directory: {work}")
@@ -598,7 +890,8 @@ def main(argv: list[str] | None = None) -> int:
         evidence = evidence_input.resolve()
         if overlap(work, evidence):
             raise ValueError("work and evidence directories must not overlap")
-        prompt = descriptor(args.prompt, "prompt")
+        prompt = None if judging else descriptor(args.prompt, "prompt")
+        judge_prep = prepare_judge(args, work) if judging else None
         instruction = descriptor(args.instruction, "saved instruction")
         declaration = descriptor(args.policy, "AGENT_POLICY.md")
         mcp_config = descriptor(args.mcp_config, "mcp.json")
@@ -618,6 +911,8 @@ def main(argv: list[str] | None = None) -> int:
         if mcp_config:
             mcp_prep = prepare_mcp(mcp_config, authority_file, work)
             profile, tools = "mcp", []
+        elif judge_prep:
+            profile, tools = "judge", ["eval"]
         elif declaration:
             parse_declaration(Path(declaration["path"]))
             profile, tools, write_root = "declared", DECLARATION["tools"], "artifacts"
@@ -663,7 +958,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"HOLD: {error}", file=sys.stderr)
             return 2
         evidence.mkdir(parents=True, exist_ok=False)
-        policy_mcp = None
+        policy_mcp = policy_judge = None
+        if judge_prep:
+            prompt_text, policy_judge = judge_launch_files(judge_prep, work, evidence)
+            (evidence / "prompt.md").write_text(prompt_text, encoding="utf-8")
+            prompt = {"path": str(evidence / "prompt.md"), "sha256": file_hash(evidence / "prompt.md")}
         if mcp_prep:
             hermetic, declared_json, policy_mcp = mcp_launch_files(mcp_prep, work, evidence)
             policy_mcp["config"], policy_mcp["authority"] = mcp_config, authority_file
@@ -672,11 +971,15 @@ def main(argv: list[str] | None = None) -> int:
             (cwd / ".omp").mkdir()
             (cwd / ".omp" / "mcp.json").write_bytes(hermetic)
         overlay = {"retry": {"enabled": False, "modelFallback": False}, "providers": {"cacheWarming": "off"}, "tools": {"approval": expected_approval({"tools": tools, "mcp": policy_mcp}), "intentTracing": False}}
+        if policy_judge:
+            overlay["modelRoles"] = {"judge": policy_judge["selector"]}
         overlay_file = evidence / "runtime-config.yml"
         overlay_file.write_bytes(json_bytes(overlay))
         policy = {"schema_version": 1, "run_id": str(uuid.uuid4()), "work_root": str(work), "profile": profile, "tools": tools, "write_files": write_files, "write_root": write_root, "provider": PROVIDER, "model": MODEL, "omp_version": OMP_VERSION, "prompt_sha256": prompt["sha256"], "instruction": instruction, "declaration": declaration, "python": str(Path(sys.executable).resolve()), "guard_source_sha256": file_hash(GUARD), "runtime_config_sha256": file_hash(overlay_file), "guard_log": str(evidence / "guard.jsonl"), "watch_paths": list(map(str, watches))}
         if policy_mcp:
             policy["mcp"], policy["snapshot_exclude"] = policy_mcp, ["vault/.obsidian"]
+        if policy_judge:
+            policy["judge"] = policy_judge
         policy_file = evidence / "policy.json"
         policy_file.write_bytes(json_bytes(policy))
         frozen_policy_hash = file_hash(policy_file)
@@ -725,7 +1028,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             if file_hash(policy_file) != frozen_policy_hash or file_hash(GUARD) != policy["guard_source_sha256"] or file_hash(overlay_file) != policy["runtime_config_sha256"]:
                 errors.append("frozen policy, guard, or configuration changed")
-            for item in (prompt, instruction, declaration, mcp_config, authority_file, (policy_mcp or {}).get("script")):
+            for item in (prompt, instruction, declaration, mcp_config, authority_file, (policy_mcp or {}).get("script"), *judge_files(policy), *([policy_judge["config"], policy_judge["questions"]] if policy_judge else [])):
                 if item and (not Path(item["path"]).is_file() or file_hash(Path(item["path"])) != item["sha256"]):
                     errors.append("frozen prompt/instruction/declaration/hash capability changed")
         except OSError as error:
@@ -737,6 +1040,12 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(f"malformed final assistant content: {error}")
         (evidence / "response.md").write_text(response, encoding="utf-8")
         result = {"run_id": policy["run_id"], "provider": PROVIDER, "model": MODEL, "omp_version": OMP_VERSION, "started_at": started, "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": child_exit, "policy_sha256": frozen_policy_hash, "guard_sha256": file_hash(evidence / "guard.jsonl") if (evidence / "guard.jsonl").is_file() else None, "declared_policy_sha256": declaration["sha256"] if declaration else None, "instruction_sha256": instruction["sha256"] if instruction else None, "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"}, "output_sha256": {relative: value.get("sha256") for relative, value in after["work"].items() if value["type"] == "file" and value != before["work"].get(relative)}, "status": "HOLD" if errors else "PASS", **({"mcp": {"config_sha256": mcp_config["sha256"], "authority_sha256": authority_file["sha256"], "audit_sha256": file_hash(evidence / "mcp-audit.jsonl") if (evidence / "mcp-audit.jsonl").is_file() else None, "calls": len(mcp_calls)}} if mcp_prep else {}), "reason": "; ".join(dict.fromkeys(errors)) if errors else "complete guarded OMP turn; module content still requires its own check"}
+        if policy_judge:
+            result["judge"] = judge_output_errors(policy)[1]
+            if result["judge"]:
+                cost = result["judge"]["cost_usd"]
+                shown = f"{cost:.6f}" if isinstance(cost, (int, float)) and not isinstance(cost, bool) else "unknown"
+                print(f"JUDGE: {result['judge']['items']} judged by {result['judge']['served_model']}; cost USD {shown}")
         (evidence / "result.json").write_bytes(json_bytes(result))
         print(f"{result['status']}: {result['reason']}")
         return 1 if errors else 0

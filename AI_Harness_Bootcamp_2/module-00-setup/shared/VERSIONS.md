@@ -6,6 +6,7 @@ Use the exact OMP and n8n releases and provider/model pair below. A newer execut
 |---|---|---|
 | Oh My Pi | 18.3.5 | The verified executable reports `omp/18.3.5`. |
 | Provider/model | `openrouter/anthropic/claude-sonnet-4.6` | The launcher and actual run receipts agree on OpenRouter and Sonnet 4.6. |
+| Judge model for Module 6 | `openrouter/typesafe/jev-1.13` | `run_omp.py --list-judges` shows it offered, and each judge run records the dated build that answered. |
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
 | Python | 3.12 or newer | Resolve its absolute executable path and inspect its version. |
 | Obsidian | Local desktop app required for Module 2; fresh reference 1.13.7 | Keep an existing version; record it, and watch the full GUI workflow in the Obsidian window separately from the disk check. |
@@ -40,7 +41,7 @@ Check your OS and architecture before installing. A binary may be available even
 
 The launcher keeps the runtime configuration separate, makes only the named course tools available, and turns off automatic retries, model fallback, cache warming, unrelated extensions, skills, and persistent sessions. Use it for exercises instead of your personal OMP profile. A prerequisite report shows what is set up, not what happened during a model turn; check the readiness receipts to see whether those controls worked.
 
-You don't need another model-provider key or agent CLI. For Module 2, you need local Obsidian with Sync off and community plugins restricted, but you don't need an account, plugin, or MCP service. For Module 7, you need local n8n and a local instance-owner login, but not n8n Cloud signup, an Assistant key, or a paid model call. If the pinned release or model is unavailable, keep the failure and put that part of setup on hold. Don't use an unreviewed substitute to get a passing label.
+You don't need another model-provider key or agent CLI. For Module 2, you need local Obsidian with Sync off and community plugins restricted, but you don't need an account, plugin, or MCP service. For Module 7, you need local n8n and a local instance-owner login, but not n8n Cloud signup or an Assistant key. If the pinned release or model is unavailable, keep the failure and put that part of setup on hold. Don't use an unreviewed substitute to get a passing label.
 
 ## Local Obsidian for Module 2
 

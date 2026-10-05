@@ -28,7 +28,7 @@ The learner completes research from bounded sources, verifies a material claim a
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
 3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
 
-Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, multi-agent writing, custom retrieval infrastructure, and MCP construction remain advanced. Hidden-fault diagnosis belongs to Module 05; person-to-person transfer belongs to Module 10.
+Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous knowledge updates, concurrent agent writes to shared knowledge, custom retrieval infrastructure, and MCP construction remain advanced. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
 **Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
@@ -47,32 +47,46 @@ Using bounded direction, source verification, a saved instruction, and the rule-
 **Evidence:** the supplied question set with the learner's added question and the judgment each question isolates; labels digest frozen before the run and bound to the run's input snapshot; a read-only receipt that read the state and the questions; validated typed answers or a preserved held reply; agreement table with adjudicated disagreements and the highest declared confidence among wrong answers; gate settings tied to that measurement; routing table and requirement line recomputable from the answers and gates; queue decisions and the authority change recorded as the desk lead's; and the stated limit that declared confidence is the model's claim.  
 **Owner:** Module 4
 
-## PO-05 — Diagnose and recover
+## PO-05 — Orchestrate an OMP agent team
 
-The learner preserves a material hidden failure, identifies the last passing and first failing boundary, runs a discriminating probe, makes one authorized reversible correction or verified revert, and proves recovery without weakening acceptance.
+**Mastery:** Using bounded direction, source verification, saved instructions, limited tool authority, and typed result contracts, supervise a dependency-aware OMP agent team, accept each evidence-bearing handoff, and recover partial failure without discarding valid work or prematurely accepting the integrated result.
 
-**Evidence:** sealed localization, supplied diagnostic comparison, probe result, correction/revert record, focused and end-to-end reruns, and clean-condition recurrence result. Localization alone does not establish recovery.
+**Enabling objectives:**
+
+1. Decompose a request into independent assignments and dependent joins, giving each child a complete brief, input scope, acceptance contract, stop condition, and output owner.
+2. Operate native OMP fan-out/fan-in and a subsequent independent review, distinguish executed work from accepted results, and reconcile conflicting claims against current authoritative sources rather than agent votes.
+3. Preserve a partial failure, correct the affected assignment, rerun only invalidated work, and recheck its dependent integration while retaining attributable unchanged results.
+
+Before this project, the learner could direct and verify one bounded assistant run. After it, the learner can supervise several separately executing agents whose results must form one coherent, checked product. Source checking, permission limits, and typed answers remain prerequisites; the new capability is dependency-aware delegation, acceptance, and recovery across agents.
+
+**Evidence:** operator-owned work graph and delegation briefs; native parent/child execution records and pinned identities; source-bearing specialist reports; preserved blocked attempt; selective repair with justified reuse; coordinator-owned brief, dependent review, and independent saved-evidence check. A completed child is not automatically an accepted handoff, and local receipts are not tamper-proof attestation.
 **Owner:** Module 05
 
-## PO-06 — Improve from observed failures
+## PO-06 — Design a workflow for a decision model
 
-Using preserved failures, source distinctions, and the freeze-before-outcome discipline, the learner fixes an outcome-blind sample of authored practice runs, records failures before grouping them, derives one bounded category conclusion, and specifies and validates a literal predicate in a supplied deterministic control.
+Using bounded direction, source verification, and typed questions with labels frozen before a run, the learner selects and pins a structured decision model as the harness judge through OpenRouter, designs the question set and code split around that model's documented weak spots, sets thresholds from its probabilities on tuning notes by the cost of each error, freezes them with a review ceiling, and measures the frozen screen once on held-out notes. Typed questions and frozen labels are this module's prerequisites; selection, design for the model class, risk-weighted thresholds, and held-out proof are its new capability.
 
-**Evidence:** frozen sample, first-failure notes, reconciled categories/counts, learner-specified literals, frozen configuration identity, known-bad/known-good/missing-input results, and measured false-positive/false-negative limitations.
+**Evidence:** saved judge candidate list and selection record naming the decision point, data boundary, and weak spots; the pinned two-line judge setting; a question set that passes the router check; every tuning run with launcher receipts, served build, and cost; first-miss notes recorded before revision; thresholds and review ceiling frozen before the held-out run; a held-out measurement with error counts, review share, served build, and cost per 1,000 notes; a handoff; and the verifier's joined result.
 **Owner:** Module 06
 
-## PO-07 — Build and control a fixed workflow
+## PO-07 — Automate a batch into a spreadsheet
 
-Using source-verification and bounded-predicate validation skills, the learner composes native visual steps into a saved n8n workflow that validates, routes, rejoins, and serializes complete batches. The learner predicts the complete effect of one saved policy change, proves every changed and unchanged row across two waves without hand patching, and restores the original workflow into a fresh blank canvas to reproduce both waves. Generated prose is excluded from deterministic acceptance before running.
+Using source checking as a quality bar, the learner puts an AI Agent on a local n8n workflow, connects that agent to OpenRouter with their own key, and has the agent call a tool that writes a spreadsheet from a supplied batch. The learner downloads the file and checks it against the source lots. A chat reply is not the spreadsheet, and a note inside the batch is not a rule.
 
-**Evidence:** learner-built saved graph and branch/exception map; input identities and provenance distinctions; per-wave predictions frozen from source cells before routing; baseline and changed receipts for both 80-row waves; independent full-file exact and predicted-change reports; unchanged rack-conflict holds; original JSON export and separately retained SHA-256 identity report recorded before the edit; separate changed export; original-export identity recheck against the retained digest; and byte-equal restored receipts for both waves.
+**Evidence:** unpublished agent workflow with an OpenRouter chat model and one spreadsheet tool; downloaded spreadsheet; structure check showing each source lot once; and a note naming rows the rules reject. The key stays out of exports, prompts, and notes.
 **Owner:** Module 07
 
-## PO-08 — Evaluate a change with variation controls
+## PO-08 — Control hallucinations
 
-Using exact workflow comparisons and the freeze-before-outcome discipline, the learner fixes cases, configurations and hard gates before outcomes, evaluates authored paired practice outputs without averaging away a violation, and verifies baseline restoration. A live instruction comparison controls the provider, model, sources, form, prompt and permissions while preserving run-to-run variation.
+Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, bounded agent handoffs, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner uses isolated agents to challenge and correct work and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, and splitting each claim into exact fact comparisons, semantic support judgments, and unavailable authority is assumed from Module 06; neither is a new objective here.
 
-**Evidence:** pre-result policy, all paired case results, separate format/mass/time-zone gates, failed-case repair proxy, bounded recommendation and restored-baseline identities. Live stretch evidence retains every preregistered repeat, paired disagreement, observed latency and costs, with SDK estimates separated from provider billing.
+**Enabling objectives:**
+1. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
+2. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
+
+Before this project, the learner could verify a source, obtain typed judgments, keep exact checks in code beside a decision model's judgments, supervise a bounded agent team, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
+
+**Evidence:** frozen original claims, source packets, controls, and exact checks; two blind initial reviews with typed verdicts and source quotations; the complete source-constrained correction; two fresh full-set reviews; five actual audited run receipts; a claim-by-claim report of source support, disagreements, unknowns, and regressions; individual USE, KEEP_UNKNOWN, or HOLD dispositions with reasons, an internal-summary decision, and the missing evidence and responsible owner. Operational dispatch remains HOLD. Retain malformed outputs and unsuccessful attempts.
 **Owner:** Module 08
 
 ## PO-09 — Constrain agent behavior
@@ -82,11 +96,11 @@ Using least-authority tool operation and frozen comparison criteria, the learner
 **Evidence:** frozen declared policy and per-run resolved policy; complete raw events and guard lifecycle; matched assistant calls/execution results; before/after snapshots; grounded planted-note measurement; observed enforcement classification; and the remaining limits of an OMP tool boundary.
 **Owner:** Module 09
 
-## PO-10 — Stand up a local uncensored AI and hand it off
+## PO-10 — Stand up and package a local uncensored AI
 
-The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves one live interaction through the loopback-only service, stops and restores it, and hands the complete kit to another person who repeats bring-up from the saved kit alone rather than the author's chat history.
+Using earlier source-verification, bounded-control, and recovery skills, the learner operates the pinned uncensored model on their own laptop as a loopback-only service and packages its instructions and controls without undeclared dependencies or reliance on chat history. The learner completes the live interaction, stop/restore, and fresh-copy structure check individually within Thursday's session.
 
-**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, recipient observations and questions, any assistance given, and final handoff. Record a missing recipient as an unobserved attempt.
+**Evidence:** verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out naming unresolved limits.
 **Owner:** Module 10
 ## Required workplace surfaces
 

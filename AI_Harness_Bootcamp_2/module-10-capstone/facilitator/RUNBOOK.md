@@ -2,9 +2,9 @@
 
 ## Session result
 
-A colleague can bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it using only the received package and the supplied task — without the author's chat history. The technical replay and the person-to-person attempt stay separate evidence. If no recipient is available, independent-person operation is unobserved, not passed.
+The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes a kit they can use again without the chat that built it. All work is individual within the Thursday session. The package carries everything except the weights. The structure check does not run the package commands and does not start the service. The learner keeps the kit and the evidence. This is the learner's own capability, not a handoff to another person.
 
-## Before class
+## Staff release validation
 
 Complete the current full lifecycle on every distinct intended runtime/architecture, including the facilitator's machine, before Thursday:
 
@@ -13,9 +13,8 @@ Complete the current full lifecycle on every distinct intended runtime/architect
 3. Let the account owner authenticate and accept repository conditions. Download the fixed revision/filename and verify the real byte count and SHA-256 already in `shared/case/model-card.json`; never replace the identity to admit a file. Preserve incomplete downloads and resume with the same pinned command.
 4. Complete verify, wire, approved launch line, owned listener at `127.0.0.1:8080`, context 32768, health after listening, one real OMP interaction, stop/unreachable, disabled-control refusal, digest-checked restore, byte comparison, frozen copy, cold technical replay and final stop. Record load/probe/interaction timings; no speed guarantee follows from RAM.
 5. Use 24 GiB installed RAM as a planning floor. At least 16 GiB but less than 24 GiB is conditional on the full rehearsal. Below 16 GiB, or after any failed full rehearsal, arrange an owner-approved qualified machine. Observing another person's probe loop supports participation but does not establish operating evidence.
-6. Arrange and observe at least one actual independent recipient rehearsal on the frozen package on an approved machine before publication. Record questions, commands, outputs and all help. Assisted stays assisted. The coordinator separately arranges each learner's after-hours recipient by T−3.
 
-Hold the affected lane and release when required machines, approvals, participants, or full current observations are missing. Never bind beyond loopback, change port/context/model, edit the pin, or claim another process's health response as this attempt.
+Hold the affected lane and release when required machines, approvals, or full current observations are missing. Never bind beyond loopback, change port/context/model, edit the pin, or claim another process's health response as this attempt.
 
 ## Provision only missing capstone tools
 
@@ -68,7 +67,7 @@ Retain the helper report and complete current lab/package observations outside t
 
 ## Thursday delivery route
 
-Total facilitated allocation: 180 minutes (13:30–16:30). The blocks are planning allocations, not measured learner times. Preserve the three-hour block and independent recipient attempt outside class hours.
+Total facilitated allocation: 180 minutes (13:30–16:30). The blocks are planning allocations, not measured learner times. Preserve the three-hour block. All work is individual within the Thursday session.
 
 | Block | Allocation | Facilitator action |
 |---|---|---|
@@ -78,19 +77,11 @@ Total facilitated allocation: 180 minutes (13:30–16:30). The blocks are planni
 | Bring-up and probe | 25 min | OMP-drafted launch line, learner approval, probe to green |
 | Live interaction and observation | 30 min | One real exchange, observed response/refusal/warning, named boundary |
 | Stop and restore | 25 min | Stopped-state proof, control disable/restore, byte comparison |
-| Package freeze and transfer | 25 min | Freeze, copy, fresh-terminal replay, recipient arrangement |
-| Close | 15 min | Evidence review, honest statement of what ran |
+| Package freeze and fresh-terminal check | 25 min | Freeze the declared ten-file bundle, make a digest-checked copy into `F`, then from a new terminal inside `F` run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked` or the observed HOLD |
+| Close | 15 min | Learner shuts down the service and records verified identity, live interaction, stop receipt, restore comparison, fresh-terminal structure check, what ran, and unresolved limits in `E/close-out.md` |
 
-## Handoff observations
+## Close-out observations
 
-Keep the recipient's evidence separate from the technical replay. Record their questions verbatim, what they ran before and after any help, and what failed. Their questions are the input to the next package version. An assisted attempt is not an independent attempt; label it.
+The learner records the checks they actually ran and their limits. The fresh-terminal structure check confirms named fields and files within `F`. It does not execute package commands, and it does not hand the model to anyone else. The learner is the one who runs it.
 
-## HOLD conditions
-
-Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; or no recipient can be scheduled. Preserve every artifact of a held attempt.
-
-## Operational readiness notes
-
-See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register (actual intake only), platform matrix, and evidence collection. This module: exact-model lifecycle on frozen package (weights, 127.0.0.1:8080, 32768, health after listening, OMP reply, stop/unreachable, digest restore, cold replay); separate pre-release independent recipient + per-learner after-hours. 180 min (13:30-16:30) preserved. No speed guarantees; provisional capacities base on actual rehearsal. Record machine/hash/outcome/HOLD. No blind provider retry.
-
-Report external human/platform prerequisites still missing. Real digest preserved; no rewrite.
+Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; the fresh-terminal structure check fails; or access, download, or hardware prevents required steps. Preserve every artifact of a held attempt. Access, hardware, or time misses close as honest HOLD in the session. No one else finishes the attempt, and no work continues after the session.

@@ -1,6 +1,6 @@
 # Module 0 · Set up the harness and direct bounded work
 
-Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and accept the email only for its stated use.
+Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and decide whether you'd send the email.
 
 Start with one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check. In that check, the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep those results separate from the checked email.
 
@@ -32,33 +32,39 @@ The platform guide keeps **PATH**, the saved list of folders your shell searches
 
 Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password doesn't grant it. Your guide checks approved Git credentials first. Use GitHub CLI (`gh`) for browser login only if that fails; you don't need it to run the AI.
 
-For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. The call bills the account behind your key. Use an account you're authorized to charge and your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
+For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. Use your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
 
-Module 7 uses the local visual workflow editor without a paid model call. You don't need n8n Cloud or an Assistant provider key. Keep Assistant off and workflows unpublished; don't copy the OpenRouter key into n8n.
+Module 7 uses the local visual workflow editor. You don't need n8n Cloud. Keep Assistant off and keep workflows unpublished during setup. In Module 7 you put your OpenRouter key into an n8n credential for the agent. Don't put that key in a file, a workflow export, a prompt, or your notes.
 
 ## Before the first command
 
-- Reserve a restart window and connect to a stable network.
 - Keep at least 15 GB free; WSL should have 25 GB.
 - Get administrator approval for operating-system packages.
-- Get device-owner approval for the full stack's privileged Docker-in-Docker runner, Docker access, and applicable Docker Desktop licensing. If denied, record n8n HOLD.
-- Keep existing Docker contexts, containers, volumes, applications, and setup attempts. Resolve an occupied port 5678 or existing `$HOME/n8n-course` with its owner before installation.
-- Keep credentials in the approved password manager or secure handoff.
-- **Do not paste a key into a command, Markdown file, shell profile, screenshot, ticket, or repository.**
-- If policy blocks a step on a managed laptop, stop and save the exact message for device support.
+
 
 ## When a step fails
 
-Save the first error before changing anything. Follow [When setup stops](shared/TROUBLESHOOTING.md), change one thing, and rerun the failed check.
+Copy and paste the error into the harness. Describe what you were doing when the error appeared and what you are trying to accomplish, then ask it to fix the issue:
 
-![Save the first error before changing anything, change one thing, and rerun the same check.](shared/figures/m00-recovery-loop.png)
+```text
+I'm trying to: [describe the outcome you want].
+I was doing this when the error appeared: [describe the command or action].
+Here is the error:
+[paste the error message]
 
-*Save the first error before changing anything, change one thing, and rerun the same check.*
+Fix this issue.
+```
+
+Review and apply the fix, then rerun the failed check. If it still fails, paste the new error into the same conversation and explain what you tried. If the harness itself cannot start, use [When setup stops](shared/TROUBLESHOOTING.md).
+
+![Give the harness the error, what you were doing, and your goal. Ask it to fix the issue, then check the result.](shared/figures/m00-recovery-loop.png)
+
+*Give the harness the error, what you were doing, and your goal. Ask it to fix the issue, then check the result.*
 
 <details markdown="1">
 <summary>Figure text</summary>
 
-Keep the first error and do not overwrite the first attempt. Change one thing, run the same check, then compare the result with the saved first error. If the problem remains, use the recovery guidance; if it is resolved, record what changed. Neither outcome starts an automatic retry.
+Copy and paste the error into the harness, describe what you were doing and what you are trying to accomplish, and ask “Fix this issue.” Review and apply the fix, then run the same check again. If it still fails, return to the harness with the new error and what you tried. If it succeeds, record the result.
 
 </details>
 
@@ -93,17 +99,19 @@ Open and read the result file from disk before accepting it. A tool saying “do
 
 ## Set up local Obsidian
 
-Use Obsidian to follow links, edit local notes, and see changes made outside the app. This check takes roughly 15 to 30 minutes after installation. No provider call is needed. Obsidian stores notes as [local Markdown files and refreshes external changes](https://github.com/obsidianmd/obsidian-help/blob/master/en/Files%20and%20folders/How%20Obsidian%20stores%20data.md).
+Obsidian is the note app for Module 2. A **vault** is a folder of notes on your laptop. Do this before Module 2, in the platform guide you already chose. You don't sign in to Obsidian, and you don't use your key here.
 
-Complete **Set up local Obsidian** in your existing guide: [native Windows](platforms/windows-powershell.md#set-up-local-obsidian), [WSL Ubuntu](platforms/windows-wsl.md#set-up-local-obsidian), [macOS](platforms/macos.md#set-up-local-obsidian), [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian), or [Arch](platforms/arch-linux.md#set-up-local-obsidian). Follow its install, hash, display, and approval steps before opening the practice vault. The [release and asset table](shared/VERSIONS.md#local-obsidian-for-module-2) identifies the exact fresh downloads. Keep personal vaults, installed versions, and application profiles.
+Open **Set up local Obsidian** in that guide and follow only those steps:
 
-On the WSL route, run Linux Obsidian and the helper in the same Ubuntu Linux home as OMP. WSLg requires [Windows 10 build 19044+ or Windows 11 and WSL 2](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps). Do not open a WSL UNC path in native Windows Obsidian or copy the vault to `/mnt/c`. On the native PowerShell route, Obsidian and course work stay native to Windows; the separate Ubuntu bridge remains for n8n only.
+- [Windows PowerShell](platforms/windows-powershell.md#set-up-local-obsidian)
+- [Windows with WSL](platforms/windows-wsl.md#set-up-local-obsidian)
+- [Mac](platforms/macos.md#set-up-local-obsidian)
+- [Ubuntu](platforms/ubuntu.md#set-up-local-obsidian)
+- [Arch Linux](platforms/arch-linux.md#set-up-local-obsidian)
 
-Keep **Settings → Community plugins → Restricted mode** on in the practice vault. Under **Settings → Core plugins**, turn **Sync** off if it is on. No Obsidian account, community plugin, or MCP service is required. Keep the existing [hidden-input credential procedure](shared/CREDENTIALS.md); never put a key in a note or another secret file.
+The guide installs the app if you don't have it, then has you practice in one new vault. If Obsidian is already installed, keep that copy and your existing notes. Don't mix steps from another platform.
 
-In your platform guide, create one fresh vault. Follow its links, save an edit, watch for a change made to a file outside Obsidian, save again, then close and reopen the same vault. Keep that attempt and note what you saw. Do not create a second practice vault by following another platform's instructions.
-
-Record **Obsidian READY** only after both disk passes and a separate check in the Obsidian window. Note the platform and architecture, app version, practice-vault location, link you followed, first saved edit, changed token shown in the app, second saved edit, and same reply visible after reopening. Record who watched and the date, and keep credentials out of any screenshot. A disk PASS or an `.obsidian` folder alone cannot show what happened in the app. If the window check is missing or fails, record **Obsidian HOLD**; keep the OMP and n8n results and every attempt. Use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops) for the named failure.
+You're done when the guide's checks pass and you saw the practice in the Obsidian window. Write **Obsidian READY** or **Obsidian HOLD** as the guide tells you. That result stays separate from your Oh My Pi and n8n results. If a step stops, use [Obsidian troubleshooting](shared/TROUBLESHOOTING.md#when-local-obsidian-stops).
 
 ## Local n8n readiness for Module 7
 

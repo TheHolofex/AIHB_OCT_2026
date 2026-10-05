@@ -821,7 +821,7 @@ def _dialogs(navigation: str, home: str) -> str:
 <option value="all">Whole course</option><option value="module">This module</option><option value="page">This page</option></select>
 <p id="rf-search-status" role="status"></p><ol id="rf-search-results" class="rf-search-results"></ol>
 <div class="rf-search-recovery" hidden><button type="button" class="sc-btn rf-btn sc-btn--secondary" data-search-retry>Retry</button>
-<a class="sc-btn rf-btn sc-btn--secondary" href="{home}#choose-your-assignment">Course map</a></div></dialog>
+<a class="sc-btn rf-btn sc-btn--secondary" href="{home}#work-through-the-assignments">Course map</a></div></dialog>
 <dialog id="rf-figure-dialog" class="sc-drawer rf-dialog" aria-labelledby="rf-figure-title" hidden>
 <div class="rf-dialog-head"><h2 id="rf-figure-title">Full-size figure</h2>{close}</div>
 <div class="rf-figure-scroll" tabindex="0" role="region" aria-label="Full-size figure"></div></dialog>'''
@@ -880,7 +880,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
         main = f'''<main id="main" class="rf-home-main" tabindex="-1"><section class="rf-hero sc-photo" data-sc-theme="dark">{image}
 <div class="rf-hero-content">{h1.render()}{lead.render()}
 <div class="rf-hero-actions"><a id="rf-home-primary" class="sc-btn rf-btn sc-btn--primary" href="{setup}">Start with setup</a>
-<a class="sc-btn rf-btn sc-btn--secondary" href="#choose-your-assignment">Explore the course</a></div>
+<a class="sc-btn rf-btn sc-btn--secondary" href="#work-through-the-assignments">Explore the course</a></div>
 <p id="rf-resume-note" hidden></p><a id="rf-home-setup" href="{setup}" hidden>Start with setup</a></div></section>
 <div class="rf-home-content">{inline_outline}{tree.render()}</div></main>'''
     else:
@@ -933,7 +933,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
                 if position + 1 < len(common["modules"]):
                     next_href, next_label = _relative(dest, common["modules"][position + 1]["overview"]), "Next assignment"
                 else:
-                    next_href, next_label = home + "#choose-your-assignment", "Course map"
+                    next_href, next_label = home + "#work-through-the-assignments", "Course map"
             actions.append(Node("a", {"href": next_href, "class": "sc-btn rf-btn sc-btn--secondary"}, [next_label]))
             last.children[-1].children.append(Node("nav", {"class": "rf-end-actions", "aria-label": "Continue reading"}, actions))
         back = f'<p class="rf-back-to-lab"><a class="sc-btn rf-btn sc-btn--secondary" href="{_relative(dest, routes["lab"])}">Back to lab</a></p>' if kind == "reference" else ""

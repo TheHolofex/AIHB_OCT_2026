@@ -1,36 +1,34 @@
 # Module 1 · Verify sources and outputs
 
-Check the Cold Lantern brief against the applicable sources and your own calculations. Decide whether to accept, revise, reject, or hold its recommendation for internal class review. A **mission thread** links each movement step to what the next step needs.
+You're going to check the Cold Lantern brief against the sources, and against math you do yourself. Then you decide whether to accept it, revise it, reject it, or hold it for class review. Follow the shipment step by step, and check that each step actually gives the next one what it needs.
 
-Plan for about three hours (a rough estimate).
+Plan for about three hours. That's a rough estimate, not a measured time.
 
-Check whether each record covers the right vehicle, route, cargo, and time. Then check what it proves and whether that's enough for the next step. The packet has every domain rule you need.
+For each record, check that it is about the right vehicle, route, cargo, and time. Then ask what it actually proves, and whether that is enough for the next step. Everything you need for this case is in the packet.
 
 ## Start here
 
-Use the bounded direction and source-checking habits you've already practiced. For each decision-changing claim, find the applicable record, redo the calculation, and check whether the result supports the next step. Make your own verdict.
+You already know how to give a model a limited job, and how to check a claim against a file. Do that here. For each claim that could change the decision, find the record that applies, redo the math, and see whether the result is enough for the next step. The verdict is yours.
 
 ## The brief under review
 
-The fictional Cold Lantern brief says 216 medicine kits can leave Red Mesa Depot on truck VX-204, use Route R-71, and reach Clinic H-17 by 16:00.
+The Cold Lantern brief is fictional. It says 216 medicine kits can leave Red Mesa Depot on truck VX-204, take Route R-71, and reach Clinic H-17 by 16:00.
 
-Check:
+While you read, check:
 
-- which lots are usable rather than merely scanned;
-- whether required refrigeration equipment counts toward payload;
-- whether the current gate time is UTC or local;
-- whether a permit was approved or only received for processing;
-- whether cited documents concern VX-204 and R-71; and
-- whether an expected arrival is being mistaken for completed delivery.
-
+- which lots are actually usable, not just scanned;
+- whether the required refrigeration equipment counts toward the load;
+- whether the current gate time is UTC or local time;
+- whether a permit was approved, or only received so someone could process it;
+- whether the documents it cites are really about VX-204 and R-71; and
+- whether an expected arrival is being treated as a delivery that already happened.
 
 ## What counts as evidence
 
-Open each source. Record its identity and version, quote the relevant text with a locator, and explain whether it supports the claim and why. Show the supported premises and units for each calculation.
+Open each source. Write down which file it is and which version, quote the line that matters, and say where you found it. Then say whether it supports the claim, and why. For each calculation, show the numbers you started from and the units.
 
-The AI system's confidence, citation list, and self-review do not count as independent evidence.
+The model's confidence, its list of citations, and a review it wrote of its own work are not an independent check.
 
 ## Class-only boundary
 
-The names, routes, documents, quantities, and organizations are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. A module result is for class review only.
-
+The names, routes, documents, quantities, and organizations are made up for class. Don't use this packet to plan, authorize, dispatch, or describe a real movement. What you produce here is for class review only.

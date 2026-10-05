@@ -2,7 +2,6 @@
 """Workspace safety regressions; every mutation is in a disposable source tree."""
 from __future__ import annotations
 
-import hashlib
 import importlib.util
 import json
 import tempfile
@@ -26,13 +25,16 @@ class WorkspaceBehavior(unittest.TestCase):
 
     def module(self, module_id):
         module = self.boot / f"module-{module_id}-test"
+        if module_id == "07":
+            for relative in ("shared/batch/wave1.csv", "shared/SHEET_RULES.md", "scripts/check_sheet.py"):
+                target = module / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b"exercise input\r\n")
+            return module
         for sub in prepare_work.SHARED[module_id]:
             directory = module / "shared" / sub
             directory.mkdir(parents=True)
             (directory / "input.txt").write_text("original input\n", encoding="utf-8")
-        if module_id == "07":
-            for relative in prepare_work.MODULE_07_DOWNLOADS:
-                (module / relative).write_bytes(b"exercise input\r\n")
         (module / "scripts").mkdir()
         for script in prepare_work.SCRIPTS[module_id]:
             (module / "scripts" / script).write_text("# authored test control\n", encoding="utf-8")
@@ -62,22 +64,12 @@ class WorkspaceBehavior(unittest.TestCase):
 
     def test_missing_control_holds_before_destination_creation(self):
         module = self.module("05")
-        (module / "scripts/restore.py").unlink()
+        (module / "scripts/orchestrate.py").unlink()
         work = self.base / "attempt/work"
         with self.assertRaisesRegex(ValueError, "required source"):
             prepare_work.prepare("05", work, self.root)
         self.assertFalse(work.exists())
         self.assertFalse(work.parent.exists())
-
-    def test_frozen_renderer_remains_distinct_after_work_control_changes(self):
-        self.module("05")
-        work = prepare_work.prepare("05", self.base / "work with spaces", self.root)
-        original = (work / "baseline/render_review.py").read_bytes()
-        frozen = (work / "baseline/render_review.py.sha256").read_text().strip()
-        (work / "scripts/render_review.py").write_text("faulty replacement", encoding="utf-8")
-        self.assertEqual(hashlib.sha256((work / "baseline/render_review.py").read_bytes()).hexdigest(), frozen)
-        self.assertEqual((work / "baseline/render_review.py").read_bytes(), original)
-        self.assertNotEqual(hashlib.sha256((work / "scripts/render_review.py").read_bytes()).hexdigest(), frozen)
 
     def test_linked_source_and_broken_destination_link_refuse(self):
         module = self.module("03")
@@ -106,14 +98,16 @@ class WorkspaceBehavior(unittest.TestCase):
         self.assertEqual((work / "AUTHORITY.md").read_text(), "# Authority\n")
         self.assertEqual(prepare_work.next_arguments("03")[1:], ["shared/mcp/mcp_inspect.py", "--config", "mcp.json"])
 
-    def test_module_07_copies_only_browser_inputs_without_changing_bytes(self):
+    def test_module_07_excludes_unpublished_inputs_and_preserves_source_bytes(self):
         module = self.module("07")
         for relative in ("shared/controls/CONTRACT.md", "shared/controls/router-private.json",
                          "shared/controls/compare-receipts.js", "shared/batch/answer.csv"):
-            (module / relative).write_text("private", encoding="utf-8")
+            target = module / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("private", encoding="utf-8")
         work = prepare_work.prepare("07", self.base / "browser work", self.root)
         copied = {p.relative_to(work).as_posix() for p in work.rglob("*") if p.is_file()}
-        self.assertEqual(copied, set(prepare_work.MODULE_07_DOWNLOADS))
+        self.assertEqual(copied, {"shared/batch/wave1.csv", "shared/SHEET_RULES.md", "scripts/check_sheet.py"})
         for relative in copied:
             self.assertEqual((work / relative).read_bytes(), (module / relative).read_bytes())
         self.assertTrue((work / "out").is_dir())
@@ -122,14 +116,14 @@ class WorkspaceBehavior(unittest.TestCase):
 
     def test_module_07_missing_or_linked_download_holds_before_creation(self):
         module = self.module("07")
-        source = module / "shared/controls/receipt-checker.json"
+        source = module / "shared/SHEET_RULES.md"
         source.unlink()
         work = self.base / "attempt/work"
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "SHEET_RULES.md"):
             prepare_work.prepare("07", work, self.root)
         self.assertFalse(work.parent.exists())
-        source.symlink_to(module / "shared/controls/validate-batch.js")
-        with self.assertRaises(ValueError):
+        source.symlink_to(module / "shared/batch/wave1.csv")
+        with self.assertRaisesRegex(ValueError, "SHEET_RULES.md"):
             prepare_work.prepare("07", work, self.root)
         self.assertFalse(work.parent.exists())
 

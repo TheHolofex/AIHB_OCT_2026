@@ -148,6 +148,44 @@ await handlers.get("before_agent_start")({},ctx);
 assert.deepEqual([...active].sort(),["mcp__vault_read_note","mcp__vault_search_notes"]);
 ''')
 
+    JUDGE_SETUP = '''
+const desc=file=>({path:file,sha256:digest(fs.readFileSync(file))});
+const questions=path.join(work,"QUESTIONS.json");fs.writeFileSync(questions,'{"schema_version":1,"questions":{}}');
+const config=path.join(work,"JUDGE.yml");fs.writeFileSync(config,"modelRoles:\\n  judge: openrouter/typesafe/jev-1.13\\n");
+const frozen=path.join(base,"questions.json");fs.copyFileSync(questions,frozen);
+const plan=path.join(base,"judge-plan.json");fs.writeFileSync(plan,"{}");
+const note=path.join(work,"BG-001.json");fs.writeFileSync(note,'{"id":"BG-001","state":{"note":"x"}}');
+const cell='return await (await import("file:///runner.mjs")).run({ judgeBatch, plan: "file:///plan.json" });';
+policy.profile="judge";policy.tools=["eval"];policy.write_root=null;
+policy.judge={selector:"openrouter/typesafe/jev-1.13",config:desc(config),questions:desc(questions),frozen_questions:desc(frozen),runner:desc(plan),plan:desc(plan),states:{"BG-001":desc(note)},cell_code:cell};
+pi.registerTool({name:"eval",execute:async()=>({content:[{type:"text",text:"judged 1/1"}]})});
+'''
+
+    def test_only_the_frozen_judge_cell_runs_and_only_once(self):
+        self.run_node(self.JUDGE_SETUP + '''
+start();await ready();
+assert.deepEqual(active,["eval"]);
+for(const [label,input] of [["python",{language:"py",code:cell}],["other code",{language:"js",code:"return 1;"}],["extra argument",{language:"js",code:cell,env:{}}]]){
+  const blocked=await call("eval",input,label);assert.equal(blocked.block,true,label);
+}
+const ran=await call("eval",{language:"js",code:cell,title:"Judge runner",timeout:120},"cell-1");assert.equal(ran.content[0].text,"judged 1/1");
+const again=await call("eval",{language:"js",code:cell},"cell-2");assert.equal(again.block,true);assert.match(again.reason,/already ran once/);
+const rows=fs.readFileSync(policy.guard_log,"utf8").trim().split("\\n").map(line=>JSON.parse(line)).filter(row=>row.type==="decision");
+assert.deepEqual(rows.map(row=>[row.call_id,row.allow]),[["python",false],["other code",false],["extra argument",false],["cell-1",true],["cell-2",false]]);
+''')
+
+    def test_eval_is_refused_outside_a_judge_run_and_a_changed_judge_input_aborts(self):
+        self.run_node('''
+pi.registerTool({name:"eval",execute:async()=>({content:[{type:"text",text:"ran"}]})});
+start();await ready();
+const refused=await call("eval",{language:"js",code:"return 1;"},"eval-1");assert.equal(refused.block,true);assert.match(refused.reason,/not declared/);
+''')
+        self.run_node(self.JUDGE_SETUP + '''
+start();await ready();fs.writeFileSync(questions,'{"schema_version":1,"questions":{"q":{"type":"bool","instructions":"x"}}}');
+assert.throws(()=>handlers.get("tool_call")({toolName:"eval",input:{language:"js",code:cell},toolCallId:"late-1"},ctx),/judge input changed/);
+assert.equal(aborted,true);
+''')
+
 
 if __name__ == "__main__":
     unittest.main()

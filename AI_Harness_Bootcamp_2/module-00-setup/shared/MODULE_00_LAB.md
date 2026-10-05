@@ -1,8 +1,8 @@
 # Module 0 · Give AI a clear, limited job
 
-Draft a checked internal email about North Shelf for the Field Clinic S-3 supply clerk. Decide what to delegate to AI, what judgment to keep, and what use to refuse. Give the tool clear limits, check the saved email against the packet, and decide whether named class participants may read it. Then change one supplied fact while keeping the other facts and limits.
+Draft a checked internal email about North Shelf for the Field Clinic S-3 supply clerk. Decide what to delegate to AI, what judgment to keep, and what use to refuse. Give the tool clear limits, check the saved email against the packet, and decide whether you'd send it. Then change one supplied fact while keeping the other facts and limits.
 
-North Shelf is fictional. The email stays with named class participants. It is not a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite, material fact, or decision owner is unresolved.
+North Shelf is fictional, and the email never leaves your work folder. It isn't a release, vehicle assignment, permit, receipt, dispatch, or public movement order. `HOLD` is a valid outcome when a prerequisite or a material fact is unresolved.
 
 Plan for about three hours (a rough estimate). Get a first checked draft in the first hour. Use remaining time for a failing check, the changed input, comparison, and handoff record.
 
@@ -10,7 +10,7 @@ Plan for about three hours (a rough estimate). Get a first checked draft in the 
 
 Finish your [setup path](../README.md) and its checks first. A **terminal** is the text window where you enter commands; use it as your ordinary user, with the verified Python interpreter—the program that runs the supplied Python commands. If a command cannot be found, check setup; **PATH** is the list of folders the terminal searches for programs. A **checkout** is the local copy of the course repository. A **work folder** holds the separate copies and outputs for one attempt. These commands work from any directory and create the work folder `W` and the evidence folder `E` beside it, outside the checkout. Earlier attempts stay untouched.
 
-Live drafting needs your OpenRouter key, which you enter in the terminal rather than save in a file. An API key is the credential the launcher uses to reach the account that pays for the model call. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
+Live drafting needs your OpenRouter key, which you enter in the terminal rather than save in a file. The course uses the fixed model `openrouter/anthropic/claude-sonnet-4.6` through `shared/run_omp.py`. You enter the key at the end of this step, after the folder exists.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -126,32 +126,21 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid or has credit.
+**Expected:** `SET`. That proves the key is present in this terminal; it doesn't prove the key is valid.
 
 **Stop:** `MISSING`, or any part of the key appears in the output.
 
 **Recovery:** Repeat the hidden prompt in this terminal. Never print the environment to troubleshoot a key, and never save the key in a file or a shell profile.
 
-## 2. Identify who decides acceptance
+## 2. Decide what the email must do
 
-A check reports a result; only a named person can accept the email for its use. Settle who that is before any draft exists. Open `W/check_artifact.py` in your editor. Create `W/acceptance-control.md`. Name the practice checker, who decides whether the email may be read in class, the acceptance requirements in the supplied request, and two qualities the checker cannot establish. If you cannot identify these, record `HOLD`. The checker is visible practice software, not an independent approval authority.
+You're the Harbor Depot inventory clerk, and this email goes out under your name. Before any draft exists, write down what a correct email does, so you judge the draft against your list instead of against how smooth it reads. Open `W/REQUEST.md` and `W/check_artifact.py` in your editor. Create `W/email-requirements.md` and list each thing the request asks the email to do. Then add two things the checker can't judge; its opening comment names some. If the request is unclear, record `HOLD`.
 
-![The checker reports mechanical results; a named person owns the supported decision about the email's stated use.](figures/m00-decision-owner.png)
+**Expected:** `email-requirements.md` lists everything the request asks for, plus two things only your own reading can settle, such as whether the clinic clerk could take the paperwork window as a delivery date.
 
-*The checker reports mechanical results; a named person owns the supported decision about the email's stated use.*
+**Stop:** You can't tell what the request asks for, or you're counting on the checker to decide whether the email is right.
 
-<details markdown="1">
-<summary>Figure text</summary>
-
-An AI draft goes through two separate checks. The practice checker tests mechanical conditions. Human review tests the draft against its sources and its meaning. Both results go to the named decision owner, who chooses PASS FOR CLASS REVIEW or HOLD. Neither choice is operational permission. The checker does not approve the draft and does not take the place of the owner.
-
-</details>
-
-**Expected:** Your record distinguishes a mechanical practice result from a supported use decision.
-
-**Stop:** You cannot identify who owns the decision or what evidence they require.
-
-**Recovery:** Resolve that responsibility before drafting. Do not let the producing model declare the result ready.
+**Recovery:** Reread `REQUEST.md` and the checker's opening comment before you draft. Don't let the model or the checker decide that the email is ready.
 
 ## 3. Read the packet and checker in full
 
@@ -159,7 +148,7 @@ Open `W/SOURCE_PACKET.md`, `W/REQUEST.md`, and `W/check_artifact.py` in your edi
 
 The packet distinguishes a request, custody, paperwork availability, and release authority. The request requires a 130–190-word email with a subject and contact line. The checker recognizes selected facts and prohibited claims, but it can miss meanings expressed in unfamiliar wording.
 
-In `acceptance-control.md`, add one example of a claim that still needs your reading even if the checker passes. Do not infer pickup readiness, a vehicle, a permit, or a confirmed receipt from a count or a paperwork window.
+In `email-requirements.md`, add one example of a claim that still needs your reading even if the checker passes. Do not infer pickup readiness, a vehicle, a permit, or a confirmed receipt from a count or a paperwork window.
 
 **Expected:** You can point to the source of each material requirement and explain at least one mechanical-check limitation.
 
@@ -181,14 +170,14 @@ Create `W/direction-brief.md`. Decide in writing what the tool may do, what stay
 
 Answer the questions that decide whether this job is safe to delegate at all, from what you inspected rather than from habit. Create `W/minimum-screen.md` and answer each line from what you inspected:
 
-![Resolve data authority and decision ownership before drafting, and name who could be affected by an unsupported implication.](figures/m00-responsibility-screen.png)
+![Settle source authority and who decides whether the email goes out before drafting, and name who could act on an unsupported implication.](figures/m00-responsibility-screen.png)
 
-*Resolve data authority and decision ownership before drafting, and name who could be affected by an unsupported implication.*
+*Settle source authority and who decides whether the email goes out before drafting, and name who could act on an unsupported implication.*
 
 <details markdown="1">
 <summary>Figure text</summary>
 
-The screen has two gates: source and data authority, and the human decision owner. Four other questions sit around the drafting job: sensitive data, affected people, disclosure, and consequential action. When authority and ownership are both resolved, only a class draft may proceed. Wider use stays closed. When either is unresolved, the job goes to HOLD, and you resolve it before drafting.
+The screen has two gates: source and data authority, and who decides whether this email goes out. Four other questions sit around the drafting job: sensitive data, affected people, disclosure, and consequential action. When both gates are resolved, you draft the email. When either is unresolved, the job goes to HOLD, and you resolve it before drafting.
 
 </details>
 
@@ -198,29 +187,29 @@ Sensitive data present:
 Affected audience or person:
 Disclosure needed:
 Consequential action this draft cannot authorize:
-Human decision owner:
+Who decides whether this email goes out:
 Unresolved item:
-Decision to proceed with a class draft, or HOLD:
+Draft now, or HOLD:
 ```
 
-**Expected:** You have permission to use the fictional sources, know the audience, and can name the person who owns the bounded decision.
+**Expected:** You may use the fictional sources, you know who reads the email, and you've written down that sending it is your call, while any release of the kits is Ivo Marsh's.
 
-**Stop:** Source/data authority or decision ownership is unresolved.
+**Stop:** You can't confirm that you may use the sources, or who decides whether the email goes out.
 
-**Recovery:** Resolve the missing authority with its actual owner. Do not draft while assuming someone else will accept the responsibility later.
+**Recovery:** Resolve it before you draft. Don't draft on the assumption that someone else will take responsibility for the email later.
 
 ## 6. Freeze a testable direction
 
-Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, acceptance condition, prohibited result, stop condition, and decision owner. Write the direction so that a finished draft can be checked against it line by line. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or defeat acceptance. “The email might be wrong” is not specific enough.
+Complete `direction-brief.md` with the outcome, audience, allowed sources, material constraints, what a correct email must show, prohibited result, stop condition, and who decides whether it goes out. Write the direction so that a finished draft can be checked against it line by line. State **precedence**: which instruction or source governs when they conflict. For this draft, the packet governs factual claims; a request or a helpful closing sentence cannot supply missing release authority. Include a specific **falsifier**: an observation that would disprove a material claim or show the email isn't ready. “The email might be wrong” is not specific enough.
 
-![Give the model a limited drafting job, name the evidence that could defeat acceptance, and keep consequential decisions with their owner.](figures/m00-bounded-direction.png)
+![Give the model a limited drafting job, name the evidence that would prove the email wrong, and keep the send-or-hold call yourself.](figures/m00-bounded-direction.png)
 
-*Give the model a limited drafting job, name the evidence that could defeat acceptance, and keep consequential decisions with their owner.*
+*Give the model a limited drafting job, name the evidence that would prove the email wrong, and keep the send-or-hold call yourself.*
 
 <details markdown="1">
 <summary>Figure text</summary>
 
-Three responsibilities feed one direction. The AI drafts from the supplied facts. The person interprets and decides. External action is refused. The direction names the outcome and audience, the allowed sources and constraints, precedence, the acceptance condition, the falsifier, the stop condition, and the decision owner. Freeze all of it before the run. The direction defines the job; it does not approve the draft.
+Three responsibilities feed one direction. The AI drafts from the supplied facts. You check the facts and make the send-or-hold call. Real sending, release, and any outside action are refused. The direction names the outcome and audience, the allowed sources and constraints, precedence, what a correct email must show, the falsifier, the stop condition, and who decides it goes out. Freeze all of it before the run. The direction defines the job; it doesn't approve the draft.
 
 </details>
 
@@ -364,15 +353,15 @@ Each of four layers gives its own evidence. The model gives the text it generate
 
 **Recovery:** Narrow the claim to the observation you have. Mark an unavailable live turn as blocked, not simulated success.
 
-## 12. Make the bounded human decision
+## 12. Decide whether you'd send it
 
-In `W/decision.md`, choose `PASS FOR CLASS REVIEW` or `HOLD`, name the owner, and explain the supporting evidence and remaining limit. The decision is yours and it has a boundary; write both down. This is not permission to send the email to a real operations list.
+You'd be the one sending this email to the Field Clinic S-3 supply clerk, so the call is yours. In `W/decision.md`, write `READY TO SEND` or `HOLD` on the first line. Under it, list the evidence behind the call: what your source check found, what the checker reported, and what the falsifier showed. Name any sentence the clinic clerk could still misread, or say how you checked that none remains. For `HOLD`, say exactly what must change before the email could go.
 
-**Expected:** The decision respects the source trace, responsibility screen, observed falsifier, and class-only audience.
+**Expected:** `decision.md` starts with `READY TO SEND` or `HOLD`, and each reason under it points to a file in `W`.
 
-**Stop:** Any material concern remains unresolved or the audience extends beyond the supplied authority.
+**Stop:** A material claim lacks support, or the clinic clerk could take the email as a release, a pickup time, or a delivery promise.
 
-**Recovery:** Keep the draft on hold and name who must resolve the issue. A mechanical pass does not resolve a missing source or sharing permission.
+**Recovery:** Write `HOLD` and name the fix. A passing checker doesn't settle a missing source or a sentence a reader could over-read.
 
 ## 13. Predict and apply the changed input
 
@@ -459,9 +448,9 @@ Run the original checker on the changed draft, then compare the two files. The o
 
 ## 15. Write the handoff
 
-Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, decision, observed limit, unresolved owner, and first file the next reader should inspect. The next reader has your folder and nothing else, so the handoff names where to look and what was decided. Keep work and receipts outside the checkout.
+Write `W/handoff.md` with the purpose, source boundary, draft locations, actual checks, send-or-hold decision, observed limit, anything unresolved and who can resolve it, and the first file the next reader should inspect. The next reader has your folder and nothing else, so the handoff names where to look and what was decided. Keep work and receipts outside the checkout.
 
-Before you stop, confirm that `W` holds the files this lab asked you to create: `acceptance-control.md`, `minimum-screen.md`, `direction-brief.md`, `prompt.txt`, `artifact.md`, `source-check.md`, `falsifier-probe.md`, `falsifier-observation.md`, `capability-limit.md`, `decision.md`, `changed-input-prediction.md`, `prompt-changed.txt`, `artifact-changed.md`, `changed-input-comparison.md`, and `handoff.md`, and that `E` holds the launcher receipts for both turns and `original-artifact.sha256`.
+Before you stop, confirm that `W` holds the files this lab asked you to create: `email-requirements.md`, `minimum-screen.md`, `direction-brief.md`, `prompt.txt`, `artifact.md`, `source-check.md`, `falsifier-probe.md`, `falsifier-observation.md`, `capability-limit.md`, `decision.md`, `changed-input-prediction.md`, `prompt-changed.txt`, `artifact-changed.md`, `changed-input-comparison.md`, and `handoff.md`, and that `E` holds the launcher receipts for both turns and `original-artifact.sha256`.
 
 <details class="rf-stretch" markdown="1">
 <summary>Optional stretch: remove an unsupported readiness implication</summary>

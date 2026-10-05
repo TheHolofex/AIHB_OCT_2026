@@ -450,7 +450,7 @@ if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\n'; else printf 'MISSING\n
 
 ## 8. Run the readiness check
 
-This box makes a fresh attempt folder under `~/course-evidence`, with a random token and a prompt. The token marks this attempt; it isn't a credential. The box then runs the course launcher. The launcher uses only OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It lets the model write only `from-omp.txt`. Last, the checker confirms that the file holds `omp works` plus this attempt's token and that the saved receipts show `course_write` wrote it. This step is a paid model call.
+This box makes a fresh attempt folder under `~/course-evidence`, with a random token and a prompt. The token marks this attempt; it isn't a credential. The box then runs the course launcher. The launcher uses only OpenRouter and `openrouter/anthropic/claude-sonnet-4.6`. It lets the model write only `from-omp.txt`. Last, the checker confirms that the file holds `omp works` plus this attempt's token and that the saved receipts show `course_write` wrote it.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -724,11 +724,11 @@ course_check_docker
 
 **Recovery:** If Docker is missing, install Docker Desktop as described below. For anything else, see [Docker and n8n](#docker-and-n8n). Don't stop other containers or delete anything to make room.
 
-**Install Docker Desktop only if it is missing.** Check the official [Mac requirements](https://docs.docker.com/desktop/setup/install/mac-install/): at least 4 GB of RAM and one of the three most recent major macOS releases. Docker Desktop is free for personal use, education, and small businesses; larger companies and government bodies need a paid subscription, so confirm with the device owner before you accept.
+**Install Docker Desktop only if it is missing.** Check the official [Mac requirements](https://docs.docker.com/desktop/setup/install/mac-install/): at least 4 GB of RAM and one of the three most recent major macOS releases. Confirm license eligibility with the device owner before you accept.
 
 1. On Docker's page, choose **Docker Desktop for Mac with Apple silicon** or **Docker Desktop for Mac with Intel chip** to match the `ARCH` line from step 1 (`arm64` or `x86_64`).
 2. Quit apps that use Docker, open `Docker.dmg`, and drag **Docker** onto **Applications**. Keep the disk image open until copying finishes.
-3. Open **Docker** from **Applications** and select **Accept** for the subscription agreement if the device owner approved it. Docker Desktop installs its command-line tools in `~/.docker/bin` and adds that folder to your PATH.
+3. Open **Docker** from **Applications** and select **Accept** if the device owner approved the license terms. Docker Desktop installs its command-line tools in `~/.docker/bin` and adds that folder to your PATH.
 4. Wait until Docker Desktop reports that the engine is running. Then open a new terminal window from the **Shell** menu and paste the box above again.
 
 ### Optional: review the installer script before it runs

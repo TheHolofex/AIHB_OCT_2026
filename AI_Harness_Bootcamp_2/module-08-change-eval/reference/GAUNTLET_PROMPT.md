@@ -1,9 +1,20 @@
-# Gauntlet challenge prompt — Module 8 paired briefs
+# Module 8 review brief
 
-Replace `[ASSIGNMENT]` before dispatch.
+Read the active reference and its digest, learner overview/lab, supplied claims and controls, runner, and behavioral tests. Review only the hallucination-control revision; historical comparison receipts do not verify it.
 
-Review only Module 8. Verify `reference/REFERENCE.sha256`. Class F / human panel is UNMEASURED for language-model seats.
+Inspect these failure paths:
 
-Review criteria: policy-first, baseline pass on all 40, only the six designated A and B rows fail their exact gate (sourced_mass or labeled_gate_time), 120-row evaluation with matching hashes, restore from hashed baseline, no averaging, independence, HOLD behavior, parsimony/voice.
+- Structurally valid, unanimously approved mass with the wrong value or source.
+- Corrected local clock accepted with its proper zone; mislabeled or bare clocks held.
+- Real quotation that belongs to the wrong case or fails to establish the assertion.
+- Missing, duplicated, extra, or identity-changed claims; invented quotations and malformed JSON.
+- An initially supported control damaged by correction.
+- Missing authority represented as explicit unknown, never a positive permission or a denial.
+- Before reviewers exposed to each other, or after reviewers exposed to prior verdicts.
+- Five parsed files presented without five distinct audited executions, required source reads, exact input identities, and saved instruction proof.
+- A parsed result edited after the provider response, or source/control drift after freeze.
+- An existing attempt or human decision overwritten, or a failed call silently retried or substituted.
 
-Required adversarial cases: policy rewritten after results; averaged score; baseline with unsourced mass; non-designated candidate failing; restore skipped or hash validation broken; banned tokens (246 kg etc or V-18 or 20:50Z); Module 1 source filenames; bare clock token treated as labeled time.
+Check the capability delta: source verification and typed questions are assumed; the new capability is controlling claim admission through a source-bound review-and-correction loop that can itself fail. Check both supported controls and explicit unknowns. There is no model vote-based release, learner score, or required classmate/instructor sign-off.
+
+Report concrete defects with file, behavior, consequence, and correction. Separate static review, offline tests, actual provider execution, browser observations, and unmeasured learner outcomes. Do not fabricate runs or convert an editorial judgment into performance evidence.

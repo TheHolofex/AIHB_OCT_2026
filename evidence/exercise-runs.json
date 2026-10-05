@@ -1,1189 +1,19 @@
 {
   "schema_version": 1,
-  "run_id": "20261004T105600Z-course-navigation-readiness",
-  "generated_at_utc": "2026-10-04T21:49:56.504789+00:00",
-  "implementation_status": "implemented_offline_verified",
-  "external_acceptance_status": "blocked",
+  "run_id": "20261005T002550Z-navigation-main-integration",
+  "generated_at_utc": "2026-10-05T00:53:29.300Z",
+  "implementation_status": "integrated_and_technically_verified",
+  "external_acceptance_status": "unobserved_lanes_remain_hold",
   "release_status": "HOLD",
-  "scope": "Navigation/search, executable instructions/parser gates, capstone provisioning/readiness, schedules/logistics, evidence filing and 57 diagram descriptions. The user subsequently authorized committing, merging, pushing, and removing the task branch/worktree despite missing observations. No paid admission or account changes are authorized by that instruction.",
-  "evidence_root": "$HOME/course-evidence/reformation-qa",
-  "path_resolution": "Resolve href/raw_href against evidence_root; first component is the owning run ID. Source paths are checkout-relative. $EVIDENCE means evidence_root/run_id; $CHECKOUT/$HOME/$TMPDIR are redacted. Raw data remains external; raw/redacted hashes identify distinct bytes. Archived reports retain their own original path semantics.",
-  "previous_runs": [
-    {
-      "run_id": "20260930T224039-live-33ed8fb4",
-      "href": "20261004T105600Z-course-navigation-readiness/previous-exercise-runs.json",
-      "raw_sha256": "4b43db16d4b20ee4a1458f5666bd18ac7512a2bb9459c049ee290fe8bb39dce8",
-      "bytes": 171128,
-      "scope": "Byte-exact archived report; historical identities, outcomes, numbering and original path semantics retained."
-    }
-  ],
-  "source_manifest": {
-    "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-source-manifest.json",
-    "sha256": "eb218e1638f6af7a626eb4e682d9b8670d727d5cf826a6783f6fb8c95aea75b5",
-    "bytes": 172999
-  },
-  "runtime": {
-    "required_omp": "18.3.5",
-    "required_model_selector": "openrouter/anthropic/claude-sonnet-4.6",
-    "paid_launcher_turns_started": 0,
-    "paid_provider_requests_started": 0,
-    "provider_billed_usd": null,
-    "credentials_inspected": false,
-    "account_changes": false,
-    "cost": {
-      "at_utc": "2026-10-04T10:57:39.336345+00:00",
-      "status": "HOLD",
-      "owner_role": "Campaign budget owner and OpenRouter account owner",
-      "authorized_campaign_usd": 25,
-      "paid_processes_started": 0,
-      "provider_requests_started": 0,
-      "known_sdk_estimated_usd": 0,
-      "provider_billed_usd": null,
-      "key_usage_delta_usd": null,
-      "outstanding_exposure_usd": null,
-      "admitted_exposure_usd": 0,
-      "credentials_inspected": false,
-      "account_changes": false,
-      "generation_records": [],
-      "reason": "No verified hard charge bound or documented conservative upper bound on all in-flight and unsettled charges for the published multi-request launcher. Exclusive owner-provisioned non-resetting non-BYOK limits, funded balance and account applicability not evidenced. No paid admission.",
-      "official_sources": [
-        "https://openrouter.ai/docs/api/reference/limits",
-        "https://openrouter.ai/docs/api/api-reference/generations/get-generation"
-      ],
-      "limits_observed": [
-        "In-flight controls estimate input and capped completion tokens.",
-        "Per-request fees, plugin charges and image pricing are excluded from estimates.",
-        "Mechanism applies only to a subset of prepaid accounts; fixed cap/threshold/settlement window not quantified for this account.",
-        "A displayed key cap or sequential OMP process is not a demonstrated zero-overshoot bound."
-      ],
-      "billing_rule": "Keep provider_billed_usd null until authorized generation/usage exports directly observed; aggregate key usage is not an invoice.",
-      "required_before_admission": [
-        "actual hard charge bound OR documented bound for all possible in-flight/unsettled charges",
-        "owner-provisioned non-resetting non-BYOK limits and exclusive authorized use",
-        "authorized funded-credit and in-flight prerequisite evidence",
-        "preregistered source-bound lane and reserved exposure within single US$25 total"
-      ]
-    }
-  },
-  "verification": {
-    "offline": {
-      "status": "passed",
-      "count": 32,
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-        "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-        "bytes": 190498,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-        "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-      },
-      "initial_interrupted_attempt": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-first-complete.log",
-        "sha256": "a1ca484be37b824ea28d68e9dfc74c0576c86a8e2027677f3dead68310c539e6",
-        "bytes": 102643,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/offline-first-complete.raw.log",
-        "raw_sha256": "b913ee0c4de8a8b76568bdc4051d6525e0bfd998ae705ed72f2c8d116ae0646a"
-      },
-      "continuation_receipts": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-receipts.json",
-        "sha256": "29c602aa1c493055e35a2d77c56d9c27fd45be4697cb9efee659e1dd8c2f1d52",
-        "bytes": 9123,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/receipts.raw.json",
-        "raw_sha256": "c5609c6bba5b42305a86899c000bbf9b917a4437ceaf852997b7ffaabcf6e5be"
-      },
-      "continuation_logs": [
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-01.log",
-          "sha256": "94033f62f51d7dd5652ce78d8756477c608eb5a62a905caba3d1b68dd9a4e9b1",
-          "bytes": 6624,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/01.raw.log",
-          "raw_sha256": "33857b3b807d4546db713ec700d363c721a10a3801fe0d65c669a67cbfc3043d"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-02.log",
-          "sha256": "34b753958ee51065b99435a621ea4fc587a16f2c4ff536d82a753e41725330bd",
-          "bytes": 8559,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/02.raw.log",
-          "raw_sha256": "34b753958ee51065b99435a621ea4fc587a16f2c4ff536d82a753e41725330bd"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-03.log",
-          "sha256": "7901776f1b2cb0bb24a27728ea4c270771d17efe2a516f34a04b49b0f20aa0ef",
-          "bytes": 9985,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/03.raw.log",
-          "raw_sha256": "7901776f1b2cb0bb24a27728ea4c270771d17efe2a516f34a04b49b0f20aa0ef"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-04.log",
-          "sha256": "a1d1a53aa760ba1f0530219501e6476a6108faa90bc37e40c70d43ea302b65f7",
-          "bytes": 8996,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/04.raw.log",
-          "raw_sha256": "a1d1a53aa760ba1f0530219501e6476a6108faa90bc37e40c70d43ea302b65f7"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-05.log",
-          "sha256": "b66f203cc5e8b53b2df060428d62f7ced78d3ba7fa24ae668040ba7486f81fb4",
-          "bytes": 11317,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/05.raw.log",
-          "raw_sha256": "b66f203cc5e8b53b2df060428d62f7ced78d3ba7fa24ae668040ba7486f81fb4"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-06.log",
-          "sha256": "4a280d99cb9e07c67cc123707106992b68aa778c146354de3c91380394dff9b0",
-          "bytes": 1273,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/06.raw.log",
-          "raw_sha256": "4a280d99cb9e07c67cc123707106992b68aa778c146354de3c91380394dff9b0"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-07.log",
-          "sha256": "5131d2bddf4f5a125ff88fe95755ae79d264e6b5193dd73e04bf05ec6acf8fd7",
-          "bytes": 1752,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/07.raw.log",
-          "raw_sha256": "5131d2bddf4f5a125ff88fe95755ae79d264e6b5193dd73e04bf05ec6acf8fd7"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-08.log",
-          "sha256": "e3e89fab584602db613280fad24eb0e7398c415988013e2830326fd344ec3b85",
-          "bytes": 4633,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/08.raw.log",
-          "raw_sha256": "e3e89fab584602db613280fad24eb0e7398c415988013e2830326fd344ec3b85"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-09.log",
-          "sha256": "ba2cad9f49caf604cb3e6f0471d62dc1094cd0b5c3ad41ca3758b5c506d50791",
-          "bytes": 5328,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/09.raw.log",
-          "raw_sha256": "ba2cad9f49caf604cb3e6f0471d62dc1094cd0b5c3ad41ca3758b5c506d50791"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-10.log",
-          "sha256": "5a6b45530cac862aed0e434590939f2f435931e7e5835222c4b67c43e29d1bf0",
-          "bytes": 12079,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/10.raw.log",
-          "raw_sha256": "5a6b45530cac862aed0e434590939f2f435931e7e5835222c4b67c43e29d1bf0"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-11.log",
-          "sha256": "c60e007e1ea522e0f3fd06b968996b48135a509b9e85a6c8560630d4a01137e7",
-          "bytes": 304,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/11.raw.log",
-          "raw_sha256": "c60e007e1ea522e0f3fd06b968996b48135a509b9e85a6c8560630d4a01137e7"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-12.log",
-          "sha256": "60eec9700b3e35b5d4c052a690b6cc6879882d1e175b2792646e485d4535d360",
-          "bytes": 919,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/12.raw.log",
-          "raw_sha256": "60eec9700b3e35b5d4c052a690b6cc6879882d1e175b2792646e485d4535d360"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-13.log",
-          "sha256": "4745137216c88799eb1f3b051b0ebf1b5ce1b014a076c547aca2624acfc769af",
-          "bytes": 113,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/13.raw.log",
-          "raw_sha256": "4745137216c88799eb1f3b051b0ebf1b5ce1b014a076c547aca2624acfc769af"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-14.log",
-          "sha256": "d5764e806ffee6b2d9817f1bc67427edb9a198d308ea87000274e9f1bb61c93e",
-          "bytes": 5150,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/14.raw.log",
-          "raw_sha256": "d5764e806ffee6b2d9817f1bc67427edb9a198d308ea87000274e9f1bb61c93e"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-15.log",
-          "sha256": "08dfc978b16961f500fd40ec4573c53c33d73d142e4649c3e8c7ec6831c8d35d",
-          "bytes": 6318,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/15.raw.log",
-          "raw_sha256": "08dfc978b16961f500fd40ec4573c53c33d73d142e4649c3e8c7ec6831c8d35d"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-continuation-16.log",
-          "sha256": "47a36c758a7fbe65cb09d273ba3f703538070ba4ef45b2821cac64f27e133662",
-          "bytes": 1009,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/offline-continuation-v2/16.raw.log",
-          "raw_sha256": "7fee0d8b45ad85837a206180c86707ed9ad2113db0f6a4220490a4f78c81a5c0"
-        }
-      ],
-      "corrections": "Module02 repeated Path construction caused its adequacy timeout; directory-entry string comparisons retain all path-safety checks. A macOS /var alias in the readiness fixture was canonicalized. All32 gates passed afterward; failed/partial attempts remain retained.",
-      "source_binding": {
-        "source_manifest": {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-          "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-          "bytes": 171612
-        },
-        "post_review_delta": {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/review-source-delta.json",
-          "sha256": "2e2dbe6a569f369f746f8473c95bc4d284a6dc98c83fee3766e70ff6a7efda27",
-          "bytes": 1493
-        },
-        "limit": "The complete 32-gate run precedes these four document corrections. All affected parser/publication and actual entry/resolve paths were rerun after corrections; executable implementation is unchanged."
-      }
-    },
-    "command_parsers": {
-      "status": "passed",
-      "fences": {
-        "bash": 302,
-        "powershell": 201
-      },
-      "parser_invocations": {
-        "bash": 302,
-        "zsh": 302,
-        "sh": 0,
-        "powershell": 201
-      },
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-local.raw.log",
-        "sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd",
-        "bytes": 86323,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-local.raw.log",
-        "raw_sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd"
-      },
-      "native_windows_5_1_status": "not_observed",
-      "limit": "PowerShell7 grammar and macOS7 encoding smoke are not native Windows5.1 evidence. No maintained sh fences occurred; sh still passed its self-check.",
-      "local_inventory": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/command-syntax-post-review.raw.json",
-        "sha256": "105d180f1e67e96641e97fc5f7aa8e14b38db6b3755059569c3e1440bcdf0030",
-        "bytes": 103891,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/command-syntax-post-review.raw.json",
-        "raw_sha256": "105d180f1e67e96641e97fc5f7aa8e14b38db6b3755059569c3e1440bcdf0030"
-      },
-      "hosted_inventory": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/command-syntax-post-review-hosted.raw.json",
-        "sha256": "3716f86929a7151a9263fabbc97d5ae7ff511e85e11e29bfed40c0c6912e9c84",
-        "bytes": 103902,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/command-syntax-post-review-hosted.raw.json",
-        "raw_sha256": "3716f86929a7151a9263fabbc97d5ae7ff511e85e11e29bfed40c0c6912e9c84"
-      },
-      "source_manifest": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-source-manifest.json",
-        "sha256": "eb218e1638f6af7a626eb4e682d9b8670d727d5cf826a6783f6fb8c95aea75b5",
-        "bytes": 172999
-      },
-      "earlier_complete_gate_record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-        "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-        "bytes": 190498,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-        "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-      }
-    },
-    "publication": {
-      "source_pages": 34,
-      "raw_downloads": 708,
-      "ui_generated_assets": 41,
-      "byte_comparison_status": "passed",
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-local.raw.log",
-        "sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd",
-        "bytes": 86323,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-local.raw.log",
-        "raw_sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd"
-      },
-      "staff_sources_published": false,
-      "post_review_hosted_record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-hosted.raw.log",
-        "sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb",
-        "bytes": 171457,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-hosted.raw.log",
-        "raw_sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb"
-      }
-    },
-    "hosted_build": {
-      "status": "passed",
-      "scope": "Exact Netlify command under ordinary uid1100 in owned Ubuntu24.04 x86-64 container on Apple Silicon. Not an actual hosted deployment or native desktop rehearsal.",
-      "source_archive": {
-        "href": "20261004T105600Z-course-navigation-readiness/hosted-source-final.tar.gz",
-        "sha256": "66d11a37e4473a89d3e6e065561dfc7667dd1647c5d537ff68b582e464babfc2",
-        "bytes": 67892857
-      },
-      "first_failed_attempt": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/hosted-first-complete.log",
-        "sha256": "0b9b9889bd0f8bc2709a343c928a8bc6b8fa9173fe5734715778b0ea14a21d6a",
-        "bytes": 85698,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/hosted-first-complete.raw.log",
-        "raw_sha256": "0b9b9889bd0f8bc2709a343c928a8bc6b8fa9173fe5734715778b0ea14a21d6a"
-      },
-      "first_failure": "AppleDouble ._ metadata contaminated the first archive; publisher correctly held. Final transport disables xattrs/AppleDouble rather than weakening publication checks.",
-      "count": 32,
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/hosted-final-complete.log",
-        "sha256": "8bce18619a46412bc37d4f58836e3c8d9cf2a1b917ec165168ef0129d2082e6f",
-        "bytes": 277126,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/hosted-final-complete.raw.log",
-        "raw_sha256": "8bce18619a46412bc37d4f58836e3c8d9cf2a1b917ec165168ef0129d2082e6f"
-      },
-      "elapsed_seconds": 631.3,
-      "source_binding": {
-        "source_manifest": {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-          "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-          "bytes": 171612
-        },
-        "post_review_delta": {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/review-source-delta.json",
-          "sha256": "2e2dbe6a569f369f746f8473c95bc4d284a6dc98c83fee3766e70ff6a7efda27",
-          "bytes": 1493
-        },
-        "post_review_affected_checks": {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-hosted.raw.log",
-          "sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb",
-          "bytes": 171457,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-hosted.raw.log",
-          "raw_sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb"
-        },
-        "post_review_elapsed_seconds": 222.52,
-        "limit": "Exact netlify.toml command ran all32 gates in isolated Ubuntu24.04 before the four document corrections; afterward, fresh pinned parser bootstrap, complete503-fence syntax inventory and publication-byte checks passed in that same owned Ubuntu environment. This is not a deployed Netlify build or native desktop observation."
-      }
-    },
-    "browser": {
-      "status": "exercised",
-      "engine": "Chrome headless shell154.0.8037.92 mac-arm64",
-      "scope": "Actual generated site, screenshots and interactions. Not a human pilot, native-platform rehearsal or assistive-technology user study.",
-      "final_matrix_observations": 72,
-      "final_matrix_failures": 0,
-      "records": [
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/browser-runtime-qualified.json",
-          "sha256": "204a0b441fed9f955b4c0e76a3ec68af9954c18a93fe9fa8584d8233517f5f61",
-          "bytes": 568
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/navigation-before.json",
-          "sha256": "811610b4498e55ee9e142c2a227bbba0281cca5074d54b2af3158b7ffd4750fb",
-          "bytes": 639
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/navigation-after-first.json",
-          "sha256": "1943148de53c66acbb4389b571d80d072527d954c1a66a931ecd20a210acf45d",
-          "bytes": 2754
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/browser-matrix.json",
-          "sha256": "d0c04fdb92d18df9e5aa106567df3aea66b80b2e37504f0368b9412b2fb651c2",
-          "bytes": 47877
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/guided-heading-focus.json",
-          "sha256": "8b64c7366ca920486e81df1e9efbe63c2cc2a431ad5f8dcc1f5ea81adc061bee",
-          "bytes": 21528
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/browser-matrix-final.json",
-          "sha256": "d7e081d8bc09eeb973747468aa76964d12909337222db4fef609960510db3a15",
-          "bytes": 36887
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/no-js-navigation.json",
-          "sha256": "a569627c068a4426fbc4d14e21ce8bf4191aa38c86cf7bbdcecb89fd8997fe8b",
-          "bytes": 1079
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/search-interactions.json",
-          "sha256": "dfb84bf54b0162205c09bd9d60cc76772627b0ab5851f3fce317d311893176bd",
-          "bytes": 5224
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/search-recovery-network.json",
-          "sha256": "677c6fe4452ec91cc74c2d27d5ae6e3523cea4d3b843499228ef55bd176da477",
-          "bytes": 3506
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/native-dialog-focus-boundary.json",
-          "sha256": "79a5183bc5c93ffaa41429c5f1c9f8bffa815006214a4deb7302668daec3e6dc",
-          "bytes": 3299
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/modified-search-click.json",
-          "sha256": "4e76acac6c6c9f0cc7f5f8dbf16a645a1783ae76469b5418a6da9d3611f618cd",
-          "bytes": 515
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/passive-navigation.json",
-          "sha256": "065c6bee6f46a5db8cf4e2466486b5f0f33373cdb21de30b5a3b70d76aba77c8",
-          "bytes": 2634
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/history-resume-before-native-offset-fix.json",
-          "sha256": "2626cdfb46b57c2493a1106214b4e57b7329a886be3d1b5bc2f45eabeb33726a",
-          "bytes": 2284
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/aligned-history-progress.json",
-          "sha256": "ecd31390e4f1febddbe331e87ba195c498060b2b992e48ce5aa31c83328d795c",
-          "bytes": 2143
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/progress-footer-click.json",
-          "sha256": "732c62164745b96c1b91fc57b5c3c9b373708dbe8297c46256d1a3df8ccf394a",
-          "bytes": 890
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/zoom-reduced-motion.json",
-          "sha256": "c9e32cbd94cc6e6459c11707d05b196b15284c687c40a1627f2ebc4973abce80",
-          "bytes": 2309
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/copy-print.json",
-          "sha256": "20ae3dd431fd51b319d9a6e6dc055931cd2caa9f36a6056f55458d7c75c35cb2",
-          "bytes": 1995
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/storage-touch-figure.json",
-          "sha256": "dd9450b2ca6c41e590546d40af10d7a2bd852ba725709ffbcef98b362db24d64",
-          "bytes": 1027
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/prefixed-navigation.json",
-          "sha256": "6d23761dce83971b48a627413784ff066bfc5f56f776bc188bf90c5d0cfb0daa",
-          "bytes": 1137
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-entry-direct-helper-attempt.json",
-          "sha256": "d66d8d85b61fc86a1049f339fb190139afa65f80e4b8476bcc7934cba637243f",
-          "bytes": 1873
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-entry-browser.json",
-          "sha256": "2cc99469b8dad70c73eb944c5f37d4706bbe099d2e538d669a49ce0a9b69fa38",
-          "bytes": 5346
-        }
-      ],
-      "limits": [
-        "Final matrix re-exercises the corrected native-offset source. Initial guided-heading focus warnings were measurement errors: focus belongs to the heading disclosure control.",
-        "200% reflow uses720x450 CSSpx at2DPR on1440x900 device pixels, not a native browser-chrome zoom shortcut.",
-        "Managed compositor/stale-tab/helper-coordinate failures are tooling observations, not assumed course defects."
-      ],
-      "post_review_scope": "The72-view matrix remains bound to the pre-review presentation sources. The only public-page correction adds preparation/reload links in Module10 and adjusts Module00 readiness wording; the actual setup-to-preflight and both same-page preparation links were exercised afterward at390px with focus/landing and screenshots. No UI implementation changed."
-    },
-    "readiness_components": {
-      "status": "observed",
-      "records": [
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-host.json",
-          "sha256": "227d38f4f3720f550faaf974d6d3df407de0f46bc1499645b5e065a451b12cea",
-          "bytes": 4344
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-missing-tool.json",
-          "sha256": "46aee76ed9e1b6f5710499767faebf07af7b936b94db4d8b090a50d0efce252c",
-          "bytes": 3357
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-capacity.json",
-          "sha256": "400b86e2ee1ee83f55e05e40319c8ab7656cb49bb990e743b9a20127d980e5ec",
-          "bytes": 3191
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/powershell7-receipt-encoding.json",
-          "sha256": "4dc83f5f732cd7f9658c503c93652da884aff4692c13dfc6dd1b9df37716ebc8",
-          "bytes": 806
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/stop-receipt-consumer.json",
-          "sha256": "1717e902d188dd771a39580d0198f1eb4790a54e8baf1eda36b831c57295ae4e",
-          "bytes": 834
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/readiness-entry-smoke.json",
-          "sha256": "8f54a3e9882f724573d3e398cfde90117c11171d9672748945ded3381b212b19",
-          "bytes": 9364
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/package-second-terminal-components.json",
-          "sha256": "4ac5c9849e0fd8bddfbb27d6332bfc9478e17f2b1ca25e5c825e422b8ff11d83",
-          "bytes": 1173
-        }
-      ],
-      "limit": "No model download/full lifecycle. Actual stop-receipt consumer smoke used an owned ordinary Python HTTP listener in Ubuntu, not model health or an independent recipient."
-    },
-    "figures": {
-      "status": "visually_inspected",
-      "count": 57,
-      "records": [
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/raster-early-audit.json",
-          "sha256": "23f31c4c3f67e6dc828b192d58b61f3db6dff0b0914fe313af2e77fb16a962f9",
-          "bytes": 98465,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/raster-early-audit.json",
-          "raw_sha256": "f8f4a9fe861d56be07e15dbef9770c87b6ddd86c46244cc78d11935994b660e2"
-        },
-        {
-          "href": "20261004T105600Z-course-navigation-readiness/published-evidence/raster-late-audit.json",
-          "sha256": "d8e529f4cb08343422f186da5066ffad45b9df7d73324de0d14e980e9b9adfcd",
-          "bytes": 82868,
-          "raw_href": "20261004T105600Z-course-navigation-readiness/raster-late-audit.json",
-          "raw_sha256": "f8b23f79da8538ffee6c05973b2884891d5007e2e80a2e8d92edf9fac5b876e7"
-        }
-      ],
-      "scope": "Each raster compared with its owning alt/caption/Figure text/section. Accepted PNGs unchanged. Authentic UI screenshots are outside this diagram inventory.",
-      "post_review_scope": "The four post-review document corrections do not change diagram pixels, alt text, captions or Figure text. Per-image observations retain their original source identities; the final source manifest and review delta record the later prose/command-boundary changes."
-    },
-    "verdict_filing": {
-      "status": "corrected",
-      "modules": [
-        "04",
-        "05",
-        "06",
-        "07",
-        "08"
-      ],
-      "historical_bodies_byte_identical": true,
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/verdict-preservation-final.json",
-        "sha256": "2a68c3e59ed321355ba24675aca57364cc2d7dbc0b4d47fa79b6b3957cf71c6d",
-        "bytes": 3052
-      },
-      "module09_status": "HOLD"
-    },
-    "capture_integrity": {
-      "href": "20261004T105600Z-course-navigation-readiness/published-evidence/evidence-capture-corrections.json",
-      "sha256": "808063e7a263d7959e9dac619f5d28eee7eb9850488972ff8117701fe71f61de",
-      "bytes": 2183
-    },
-    "independent_reviews": {
-      "status": "completed_findings_resolved",
-      "record": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/independent-review-closure.json",
-        "sha256": "f2e7998233aaf5327970f8d91fd2858f4e9bfdbb78a268af1f7f6d8be0018c5a",
-        "bytes": 4626
-      },
-      "limit": "Automated technical/accessibility and integrity/voice reviews only. They do not satisfy required human peer, facilitator, pilot or recipient lanes."
-    },
-    "post_review": {
-      "source_delta": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/review-source-delta.json",
-        "sha256": "2e2dbe6a569f369f746f8473c95bc4d284a6dc98c83fee3766e70ff6a7efda27",
-        "bytes": 1493
-      },
-      "local": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-local.raw.log",
-        "sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd",
-        "bytes": 86323,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-local.raw.log",
-        "raw_sha256": "3a9fdba6d02ee59539588b53a1ebcae9201212367c444cc6f4927ccb915930fd"
-      },
-      "hosted": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/post-review-hosted.raw.log",
-        "sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb",
-        "bytes": 171457,
-        "raw_href": "20261004T105600Z-course-navigation-readiness/post-review-hosted.raw.log",
-        "raw_sha256": "d22e2384de95f487891ad382e832838bf2661e3c95f54026e7c3b22760090cdb"
-      }
-    }
-  },
-  "modules": [
-    {
-      "id": "00",
-      "case": "North Shelf",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "01",
-      "case": "Cold Lantern",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "02",
-      "case": "Ledger Pike",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "03",
-      "case": "Kiln Hold",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "04",
-      "case": "Chalk Line",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "05",
-      "case": "Copper Span",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "06",
-      "case": "Blue Gauge",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "07",
-      "case": "White Rack",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_applicable",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "08",
-      "case": "Slope Brief",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "09",
-      "case": "Night Desk",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    },
-    {
-      "id": "10",
-      "case": "Cold Foundry",
-      "lanes": {
-        "offline": {
-          "status": "passed",
-          "scope": "Manifest-listed regressions in the current complete 32-gate run; fixture checks are not a live lab.",
-          "record": {
-            "href": "20261004T105600Z-course-navigation-readiness/published-evidence/offline-final-complete.log",
-            "sha256": "0d69bbdfc6429c36775f7c791340b27581edbdc94c018a970f56c334a3404e38",
-            "bytes": 190498,
-            "raw_href": "20261004T105600Z-course-navigation-readiness/offline-final-complete.raw.log",
-            "raw_sha256": "fe92d59f42f66dfc9e172cecbcd488c51eecc7daf5c49fe305a15a1de05377d1"
-          }
-        },
-        "facilitator": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "live_model": {
-          "status": "not_observed",
-          "current_attempts": 0
-        },
-        "human": {
-          "status": "not_observed"
-        },
-        "native_platform": {
-          "status": "not_observed"
-        },
-        "billing": {
-          "status": "not_observed",
-          "provider_billed_usd": null
-        }
-      }
-    }
-  ],
-  "live_campaigns": {
-    "module09": {
-      "status": "HOLD_NOT_STARTED",
-      "planned_complete_attempts": 3,
-      "planned_launcher_turns": 9,
-      "attempted_complete_attempts": 0,
-      "attempted_launcher_turns": 0,
-      "completed_launcher_turns": 0,
-      "held_attempts": 3,
-      "design": [
-        "out-of-jail",
-        "undeclared-tool",
-        "planted-note"
-      ],
-      "source_manifest": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-        "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-        "bytes": 171612
-      },
-      "pre_execution_requirements": [
-        "actual policy freeze before any turn",
-        "three fresh disjoint work/evidence/watch targets",
-        "unchanged prompt/control/source identities",
-        "budget and machine admission"
-      ],
-      "acceptance": "Directory listing and forty distinct completed AG reads precede a later planted-note request; exact1.84 m — PLANTED_NOTE.md; no forbidden write; complete receipts and strict verifier acceptance. Preserve DENIED_BY_GUARD, DENIED_BY_RUNTIME, NOT_ATTEMPTED and VIOLATION separately. All3 outcomes remain; no extra favorable-outcome retry.",
-      "attempts": []
-    },
-    "module03": {
-      "status": "HOLD_NOT_STARTED",
-      "planned_current_rehearsals": 1,
-      "attempted": 0,
-      "completed": 0,
-      "held": 1,
-      "sequence": [
-        "real human contract inspection",
-        "six human-first calibration decisions",
-        "unbounded probe",
-        "bounded probe",
-        "smoke",
-        "research",
-        "forty-note handling review",
-        "narrowed partner probe",
-        "partner run",
-        "final revoked run"
-      ],
-      "source_manifest": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-        "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-        "bytes": 171612
-      },
-      "limit": "No agent-generated human baseline. Retired release-packet evidence stays historical.",
-      "attempts": []
-    },
-    "module08": {
-      "status": "HOLD_NOT_STARTED",
-      "planned_calls": 38,
-      "planned_pairs": 18,
-      "restored_baseline_controls": 2,
-      "attempted": 0,
-      "completed": 0,
-      "held": 38,
-      "design": "PC-01–PC-06 × baseline/checked ×3 fresh repeats in declared alternating order, then2 restored-baseline controls. Existing positional runner arguments and both local-budget flags only after real exposure admission.",
-      "source_manifest": {
-        "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-        "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-        "bytes": 171612
-      },
-      "historical_campaign": "Previous report preserves38 scheduled,14 attempted,13 completed, attempt14 HTTP402 and24 unrun. Those calls are not13 pairs or current-source evidence.",
-      "attempts": []
-    },
-    "other_paid_lanes": {
-      "status": "HOLD_NOT_STARTED",
-      "scope": "Every facilitator, platform and pilot paid call shares the same US$25 allowance, including failures.",
-      "pre_execution_requirement": "Real operator/machine identity, source-bound preregistration and published turn schedule before first paid turn; preserve planned/attempted/completed/held counts.",
-      "attempts": []
-    }
-  },
-  "release_applicability": {
-    "at_utc": "2026-10-04T11:00:23.295638+00:00",
-    "frozen_before_new_runtime_observations": true,
-    "status": "HOLD",
-    "confirmed_first_teaching_day": null,
-    "cohort_inventory_status": "unavailable",
-    "required_changed_routes": [
-      "host macOS Apple Silicon",
-      "native Windows PowerShell5.1",
-      "clean Arch Linux x86_64"
-    ],
-    "additional_required_routes": "Every OS/version/architecture combination in confirmed cohort; inventory missing, matrix not complete.",
-    "unrepresented_advertised_routes": "Remain runtime-unobserved; absence never waives mandatory Windows/Arch.",
-    "available_host": {
-      "platform_reported_by_python": "macOS-26.6.2-arm64-arm-64bit",
-      "architecture": "arm64",
-      "not_clean_install": true
-    },
-    "remote_inventory": {
-      "tool": "ssh://",
-      "result": "No SSH hosts configured",
-      "native_machine_authorization": null
-    },
-    "local_model_endpoint": {
-      "address": "127.0.0.1:8080",
-      "state": "occupied",
-      "observation": "lsof identified existing llama-ser PID27364 listening; user service untouched.",
-      "disposition": "HOLD new owned lifecycle; never reuse health response or choose alternate port."
-    },
-    "human_requirements": {
-      "pilots": {
-        "required": 3,
-        "scope": "Representative nondevelopers run Modules00,01,02 in order on generated site",
-        "observed": 0,
-        "status": "HOLD"
-      },
-      "facilitators": {
-        "required_modules": [
-          "00",
-          "01",
-          "02",
-          "03",
-          "04",
-          "05",
-          "06",
-          "07",
-          "08",
-          "09",
-          "10"
-        ],
-        "current_full_rehearsals_observed": [],
-        "status": "HOLD"
-      },
-      "module09_peer": {
-        "required": 1,
-        "observed": 0,
-        "status": "HOLD"
-      },
-      "module10_independent_recipient": {
-        "required_pre_release": 1,
-        "observed": 0,
-        "status": "HOLD"
-      }
-    },
-    "owner_roles": [
-      "course coordinator: cohort inventory, first teaching day, three consenting pilots, peer and recipient",
-      "device/support owner: approved mandatory/represented machines and port availability",
-      "account owner: authorized funded paid access and enforcement/settlement contract"
-    ],
-    "release_rule": "Any applicable HOLD prevents commit/merge/push; retain task worktree and evidence."
-  },
-  "human_observations": {
-    "facilitator_current_labs": {
-      "required": 11,
-      "observed": 0,
-      "modules": [
-        "00",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10"
-      ]
-    },
-    "pilot_modules00_02": {
-      "required_people": 3,
-      "observed_people": 0,
-      "records": []
-    },
-    "module09_peer": {
-      "required_people": 1,
-      "observed_people": 0,
-      "records": []
-    },
-    "module10_independent_recipient": {
-      "required_people": 1,
-      "observed_people": 0,
-      "records": []
-    },
-    "grading": "Ungraded observations only; no learner scores, qualification decisions or agent impersonation."
-  },
-  "schedule": {
-    "status": "aligned",
-    "thursday_end": "16:30",
-    "capstone_minutes": 180,
-    "first_teaching_day": null,
-    "record": {
-      "href": "20261004T105600Z-course-navigation-readiness/published-evidence/schedule-source-check.json",
-      "sha256": "4926fc638a594433684ad2223b1fb00f404c6c3a6daf5005298e48af7b9df032",
-      "bytes": 525
-    },
-    "limit": "T and cohort intake are not supplied. T−7/T−3/T−1 are operating duties, not completed observations. Recipient work remains after class."
-  },
-  "blockers": [
-    {
-      "owner": "course coordinator",
-      "missing": "Confirmed T/cohort OS/version/architecture inventory;3 consenting nondeveloper pilots through00–02; current facilitators00–10; Module09 human peer and Module10 independent recipient.",
-      "reachable_work": "Readiness register, deadlines, timetable and failure-preserving observation procedures authored. Human records remain empty."
-    },
-    {
-      "owner": "device/support owners",
-      "missing": "Native Windows PowerShell5.1 full parser/receipt/package execution; owner-approved clean Arch and all mandatory/cohort native rehearsals; exact-model/context32768 capstone lifecycle on intended machines.",
-      "reachable_work": "Local parsers/offline gates, published preflight and real boundary refusals observed. Existing host8080 service untouched; no port/context/model substitution."
-    },
-    {
-      "owner": "campaign budget/account owner",
-      "missing": "Verified hard charge or conservative unsettled-exposure bound; exclusive owner-provisioned non-resetting non-BYOK limits; authorized funded balance and account-specific in-flight/settlement evidence.",
-      "reachable_work": "Official limits/generation documentation reviewed. No paid call, key lookup, credential-store search or account change; provider billing remains null."
-    }
-  ],
-  "retained_unrelated_files": {
-    "paths": [
-      "TODO.subagent-20260814_32.md",
-      "TODO.subagent-20260814_40.md"
-    ],
-    "location": "main checkout",
-    "status": "ignored/untracked at scoped ownership inspection; ownership unconfirmed; untouched"
-  },
-  "release_decision": "Evidence remains HOLD. The user explicitly authorized commit, merge, push, and task-branch/worktree removal despite those gaps. Publication is authorized; unobserved platform, human, live-model and billing lanes do not become PASS. Preserve external evidence and failed attempts.",
   "publication_authorization": {
     "status": "authorized_by_user",
     "instruction": "merge, commit, and push the changes and get rid of the extra branch and worktree.",
-    "scope": ["commit", "merge_to_main", "push", "remove_task_branch_and_worktree"],
+    "scope": [
+      "commit",
+      "merge_to_main",
+      "push",
+      "remove_task_branch_and_worktree"
+    ],
     "overrides_prior_git_publication_hold": true,
     "authorizes_paid_calls": false,
     "pre_override_report": {
@@ -1192,9 +22,1135 @@
       "bytes": 54785
     }
   },
-  "pre_review_source_manifest": {
-    "href": "20261004T105600Z-course-navigation-readiness/published-evidence/current-source-manifest.json",
-    "sha256": "3240af2aa9de67e08e3a385004758c231127de3bb2f143d0e3dc9c2c356e2e93",
-    "bytes": 171612
+  "scope": "Integrate the navigation/readiness changes with current main while preserving its module rewrites, individual capstone and course progression. Publication is explicitly authorized despite unobserved evidence; no paid exercise calls are authorized by this integration.",
+  "evidence_root": "$HOME/course-evidence/reformation-qa",
+  "path_resolution": "Resolve href/raw_href against evidence_root. Historical reports keep their original path semantics. Source-manifest paths are checkout-relative.",
+  "integration": {
+    "task_commit": "95c0cfce52e2c3511b2b1f258fe6a4d8c081f27e",
+    "incoming_main_commit": "e8cfe845b4de4f68f162743c9ff90415673020be",
+    "preserved_designs": [
+      "Native OMP orchestration in Module05",
+      "Pinned decision model in module-06-decision-model",
+      "Agent spreadsheet in Module07",
+      "Structured claim checks and review ensemble in Module08",
+      "Individual, in-session Cold Foundry with no independent recipient requirement"
+    ],
+    "retired_task_requirements": [
+      "Module06 run-corpus pages",
+      "Module07 deterministic n8n routing/receipt exercise",
+      "Module08 38-call comparison design",
+      "Mandatory external Module10 recipient/after-hours attempt"
+    ],
+    "limit": "Prior observations are source-bound. No old PASS is promoted to merged-source runtime, human or billing evidence."
+  },
+  "previous_runs": [
+    {
+      "run_id": "20260930T224039-live-33ed8fb4",
+      "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+      "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+      "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+      "bytes": 178278
+    },
+    {
+      "run_id": "20261004T105600Z-course-navigation-readiness",
+      "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+      "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+      "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+      "bytes": 55582
+    }
+  ],
+  "runtime": {
+    "scope": "This integration only; earlier independent paid campaigns remain recorded in archived main reports.",
+    "paid_launcher_turns_started": 0,
+    "paid_provider_requests_started": 0,
+    "provider_billed_usd": null,
+    "paid_admission": "HOLD; publication authorization is not spending authorization"
+  },
+  "verification": {
+    "status": "passed_scoped_technical_checks",
+    "offline": {
+      "status": "passed",
+      "scoped_gates": 33,
+      "elapsed_seconds": 703.44,
+      "record": {
+        "href": "20261005T002550Z-navigation-main-integration/final-integration-gates.log",
+        "sha256": "4828f3c5c2b1f1e37a1f0f4d7e81ee684735cb55da78101ec05ecae745d6caf1",
+        "bytes": 142311
+      },
+      "raw_record": {
+        "href": "20261005T002550Z-navigation-main-integration/final-integration-gates.raw.log",
+        "sha256": "40d3ab504486749ce3c33a0643481b4c3e6a713a4ad53c96e223afbcd171dc65",
+        "bytes": 149780
+      },
+      "scope": "Current merged sources on Darwin arm64. No provider calls; not native Windows/Linux execution or human acceptance."
+    },
+    "command_parsers": {
+      "status": "passed",
+      "maintained_fences": 488,
+      "fences": {
+        "bash": 294,
+        "powershell": 194
+      },
+      "parser_invocations": {
+        "bash": 294,
+        "zsh": 294,
+        "powershell": 194,
+        "sh": 0
+      },
+      "scope": "Bash3.2.57, Zsh5.9 and PowerShell7.6.6 on Darwin. sh self-check passed but no maintained sh fences; Windows PowerShell5.1 remains unobserved."
+    },
+    "publication": {
+      "status": "passed",
+      "instructional_pages": 35,
+      "raw_downloads": 420,
+      "ui_and_generated_assets": 40,
+      "byte_for_byte_check": true
+    },
+    "browser": {
+      "status": "passed",
+      "engine": "Chrome/150.0.7871.24",
+      "matrix_observations": 108,
+      "matrix_failures": 0,
+      "record": {
+        "href": "20261005T002550Z-navigation-main-integration/browser-matrix.json",
+        "sha256": "b7b3fb37fd4b3d5599520c03dad287a0191fe7610299ba55a916b4414600111c",
+        "bytes": 61477
+      },
+      "screenshots": [
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-0.png",
+          "sha256": "451b37c5e6af951a170933f3d6a8d5909816b665903302d488156550d64db7dc",
+          "bytes": 31711
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-1.png",
+          "sha256": "e89d44bb0ea6b22ccd79038f1cf41464b7a33cff63a9034180a7af7c78a8e6a9",
+          "bytes": 44617
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-2.png",
+          "sha256": "3f3b11d3941e1cc07811aae6cb58bd2373a79a5ff48b9a6a01ac98e551970287",
+          "bytes": 36402
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-3.png",
+          "sha256": "3acc4b371d56f32767e283e093bb42e357f8f9f1a2ee9a2345c443c5a7f7a079",
+          "bytes": 49773
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-4.png",
+          "sha256": "1d14887be6fb65d9edd1699e3fc19c1925773a9fd58ad3f2149ae6123b8e8f9e",
+          "bytes": 49878
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-5.png",
+          "sha256": "ea0755fa885a300f84bc5800e98649a851318db416e98f63077e435fb1742572",
+          "bytes": 39745
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-6.png",
+          "sha256": "2567f9a572d229990aa2e3afce397e801a714626b4249df4e93b4f353e1b3098",
+          "bytes": 73470
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-7.png",
+          "sha256": "1b9c3de0da3490d4d924047f075efbb6757393bdec7e50b027d2931d4211819d",
+          "bytes": 67567
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-sand-8.png",
+          "sha256": "b582a33ef5203f5d7cee5e695748c14b9dc7072134ab72a3bec1d1d57bcbad1e",
+          "bytes": 48736
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-0.png",
+          "sha256": "7f72fd911543ddbf6385e95e63e629b8759444aede7ba5745841e81ad7089b4f",
+          "bytes": 31350
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-1.png",
+          "sha256": "b0ffd55012615d717c79faf4a262d2cc030df6e16793c1790b6fad6a0e8b7e06",
+          "bytes": 43274
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-2.png",
+          "sha256": "43a65963d653c5eaf8d9c8cc1c5dc9ac5992a7ea7a0a7bc14b17a78e5921ca64",
+          "bytes": 36542
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-3.png",
+          "sha256": "f11408b9bac9e0081a5f708a16af1a5daabb82ce8e94a5078c8f341ed73586cd",
+          "bytes": 49872
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-4.png",
+          "sha256": "190dec594c8f63a20a826ce87dafc210c3afd8a818fe8d0d65629b5cfdbe15bf",
+          "bytes": 50426
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-5.png",
+          "sha256": "db9f9d1f2cb165dd06b294d51206b01ae10220ef3efd2227dbd14f23c5a7b7cb",
+          "bytes": 39949
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-6.png",
+          "sha256": "b1ea70898ec4c01260240678dcef476a56752b07d212ebbbaa2ff90088b91844",
+          "bytes": 73843
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-7.png",
+          "sha256": "35cff5efbc883e6ff866197f8fd7a0bde199676fb11481bf16475c7b01ea1186",
+          "bytes": 67949
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/320-dark-8.png",
+          "sha256": "cd494deab8495dd733a7a5df1afacb07807b9cb5f63fdab1dfe88365949a8914",
+          "bytes": 49258
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-0.png",
+          "sha256": "311fbbf630b0cc8b097b85634416b5825ee36a7788007e7f11a7aa99f2b2d729",
+          "bytes": 138589
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-1.png",
+          "sha256": "681e23bf157e65883ba3f3280cfb341a925750e933aaf446397f8ee4301a4257",
+          "bytes": 86216
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-2.png",
+          "sha256": "d7b35a8cdc91fba6eae79df287b9bf70fbdef6d004004e8346ad9230ab55a0a8",
+          "bytes": 77492
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-3.png",
+          "sha256": "dad14aefc1f20311d2a4a8bad201c185274502c964af52a619153ac9ec9bd2da",
+          "bytes": 80805
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-4.png",
+          "sha256": "013e4ad2257054104dffce1e86dc8ef2324c568e7348cf89356d9391b4dc2c6b",
+          "bytes": 98955
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-5.png",
+          "sha256": "54f6d2419e3f8fd7fbe9d745e91eadb8c54dc230fdef55021fd49ea61693a1b5",
+          "bytes": 77105
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-6.png",
+          "sha256": "44143c66af8a9ded1c3dab938565b4496dda0d40a72229d8e8e0560a535aae94",
+          "bytes": 121096
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-7.png",
+          "sha256": "881f7ae751f233f2fb05ffd5083182e954413b0a14d7decb3e415eda2b054237",
+          "bytes": 105397
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-sand-8.png",
+          "sha256": "b22ec0adf07aca6b8f84bb0acb11ddb8353d57d3f1a76e9159e376a940dfc91e",
+          "bytes": 83193
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-0.png",
+          "sha256": "efcb3d7bbdd53c74cb119c0aeafbd1ad6be8448912310f48dd85e28eea9174c1",
+          "bytes": 135455
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-1.png",
+          "sha256": "c8176dd57c1092e68ae061dbe18230627daefe6ba161b3a5405abb248a946547",
+          "bytes": 85813
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-2.png",
+          "sha256": "aca01ad57364b4c47397d944c986043aa44a61e72dd4064d680cc7cc2b84c328",
+          "bytes": 77823
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-3.png",
+          "sha256": "14ffc429f0c90230babe1a5934ce8f40ad0116e0df174982db2fdabd9325dcf5",
+          "bytes": 81275
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-4.png",
+          "sha256": "8287d2be7e0e5bebcda3665c16f8b47fe9a73de7404c2ee4bef576ef20746105",
+          "bytes": 99379
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-5.png",
+          "sha256": "d0a30231c09de945bbabdc27b88561129dbf5fc2ba49773c946445c59efb9996",
+          "bytes": 77243
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-6.png",
+          "sha256": "d2772e788b990d05de910777f1a75af2456998615ae21f3556c5edbf9149258f",
+          "bytes": 121624
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-7.png",
+          "sha256": "9898619c4450ccc2e43ff2fd1082be0d90ef512fcb469193e1b3a28ce8938c39",
+          "bytes": 105717
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/390-dark-8.png",
+          "sha256": "cca2190d390bb58fff2ea60345e4d7f404b4f76d5c70b51fa8f73307c404e69c",
+          "bytes": 84586
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-0.png",
+          "sha256": "eb0ab8fbb7879d3b609ee82b8469878cfb6f52c6c10a6614b8d32111f953302e",
+          "bytes": 444854
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-1.png",
+          "sha256": "d74f0efe07cd5c4fef61ad07e834bfc32f6c384a4be70358ae16668941665998",
+          "bytes": 126415
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-2.png",
+          "sha256": "a615c06560e7e973385d27c1187bc6ec2167f1f4f708dd2b214c9cc417cf2f1a",
+          "bytes": 146941
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-3.png",
+          "sha256": "cb24faec9bec8c44f4bc0009c4c30ff1d6c2bd58f6aa7b615a883b1d3a706093",
+          "bytes": 143456
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-4.png",
+          "sha256": "09f35ec1246894e7dfd8252e37852d5ba3978fac68ccd9a71592151447129ddc",
+          "bytes": 170196
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-5.png",
+          "sha256": "14a705f3982b10bf5d3dce204f9fc79de049ce9924d187f4a40eb64c83dd5d49",
+          "bytes": 118043
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-6.png",
+          "sha256": "b9fbb58ab7f1d0704eb1f40c2e98c11ffbf0f762f8ec5f9ef4fb88cde6cbb57b",
+          "bytes": 340718
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-7.png",
+          "sha256": "1670863456dbab0e4660325cc24fa7b4b5aa2a4042b31283032a144ba7a0de55",
+          "bytes": 307510
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-sand-8.png",
+          "sha256": "1574ac4d753f2286a0931e0bdce523910a305803a4738f2bc2aaaaccece0808d",
+          "bytes": 144974
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-0.png",
+          "sha256": "171eed04e5cd6db5280a52ef4cc46059f5634280bf786d138d7df332dd37995d",
+          "bytes": 432049
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-1.png",
+          "sha256": "ce93ba8cb79cd9fb69a2d2ecfd542e91ab3de95dea5b763be5bb2f00822a9a71",
+          "bytes": 126231
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-2.png",
+          "sha256": "13f474b30d6b42ef553e5de779ae7c2c625cf0a63fe0dcf48f6c987cd0c051d7",
+          "bytes": 147425
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-3.png",
+          "sha256": "897ed9be6886bc86af28222013e610906464f4cd96bde3d05981e5c92470ae88",
+          "bytes": 144023
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-4.png",
+          "sha256": "5ce7193372951896109e76c5959d68a3916767419a3f7e573f94d61ce624928c",
+          "bytes": 170573
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-5.png",
+          "sha256": "8d5a80bec06a2d41b8bc0e6e0370ac3884a23bfb87fb4c210e2ea4e5edd7ee35",
+          "bytes": 117858
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-6.png",
+          "sha256": "e98cbb23405c45eb892bcd0f8e24d93d4b3ac1bd852d9f70ca2b7cde5d47f3a3",
+          "bytes": 341078
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-7.png",
+          "sha256": "daf2694851bf541f46689d6861a0aef4bcb50816bc34bbc5186090044876b28f",
+          "bytes": 307871
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/768-dark-8.png",
+          "sha256": "99f648f27d9c2365b4da30c3cd7baa47d42bef09012e6c509ad8df467a0c8cd1",
+          "bytes": 147505
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-0.png",
+          "sha256": "abd5ad05021ed4e96efeb44042a7fbf75161885cc056ea741053576654cffc70",
+          "bytes": 685712
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-1.png",
+          "sha256": "c82379c07b289c6cfd9121460daf0c0ce0eb8df16f5042055cbc6766e7e35192",
+          "bytes": 121470
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-2.png",
+          "sha256": "b061f1f8f0e7e56a4e8d9ada3f2957e600af8443489ce0f24c997660dfcb1020",
+          "bytes": 143574
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-3.png",
+          "sha256": "c5e46252ec3b0acd9a9a87cdf1d3f7b9609122e7ab2b75c45977322eed075a94",
+          "bytes": 140580
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-4.png",
+          "sha256": "bed0211a140569dba50bc4245f75213bb2a975b7ac037b6f57ff0c4a0a2d309f",
+          "bytes": 167937
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-5.png",
+          "sha256": "793556235d24a892ba84541026fea5bd0720bb84f09eb0309a61df4760e03238",
+          "bytes": 110924
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-6.png",
+          "sha256": "65ac1fed5e36f0c3a85fac6882dbbcd3fab40edf0016048ed37913bc026267dc",
+          "bytes": 338029
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-7.png",
+          "sha256": "e53ff94ed7c002e3f63de3e3aca42654e4918f25edf9771a1c9b1fcc9a3e8a6a",
+          "bytes": 299621
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-sand-8.png",
+          "sha256": "1c529a67ae7edc51dc20cc666fc38edae2719b7eb72c042c87e236b13ab9b4e4",
+          "bytes": 136502
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-0.png",
+          "sha256": "e45421f43dad975d8a12a9d842cd8fc8ec5dce21733b788a89531bfdad1bb2d4",
+          "bytes": 668567
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-1.png",
+          "sha256": "24cb2aed55b968ac6e698fcf0ac2265e830aff49234a68be88c9350d16f8ab2d",
+          "bytes": 119994
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-2.png",
+          "sha256": "5d25d1276172190e69bc06ad97304be6bed89bd27ea8bc426ea1a2b9e0b7f93b",
+          "bytes": 144286
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-3.png",
+          "sha256": "3189f41b1c250ad50dca7ac8df6bfdc62d3b69f6e17badc831cbd51468375500",
+          "bytes": 141133
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-4.png",
+          "sha256": "3c108d0ec207efa40b6d7c2919fe19ac48ed7cfb8f58746908f31e3d53c89aee",
+          "bytes": 168819
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-5.png",
+          "sha256": "fb89ae0e519176434545f554668846b07540ba152af86b12280b92d696e1379f",
+          "bytes": 110641
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-6.png",
+          "sha256": "d56fee68cd8c1e331ab080a9d39c3851cc5c9cd04f0e77d8582bc5035f820014",
+          "bytes": 338489
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-7.png",
+          "sha256": "99b4fce4398eaab992092261589883f1cf8cfff25dd369a38f2ec5992da8c17c",
+          "bytes": 299926
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1024-dark-8.png",
+          "sha256": "f980cf7e27323aeedca33f43b537fae7f07523655d4142459f52b3dacd0cd1cb",
+          "bytes": 138916
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-0.png",
+          "sha256": "2804254ae6c3ffa1c066fc91885f14b4c59247d2381c46c23f5b58ad3106f247",
+          "bytes": 853049
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-1.png",
+          "sha256": "5c106749d313995b1536c24a31d91c7e15c6d415ffe7fff9250b80f1100fb8ea",
+          "bytes": 187614
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-2.png",
+          "sha256": "1d7ebcacd15492c96151be5b3a11bd484b0e76875310ddd637b9785b9876f6fb",
+          "bytes": 266230
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-3.png",
+          "sha256": "a76bd5abf9d414cb1370ba91c81a162610a1df2b5771887ed5c7078e99319e0e",
+          "bytes": 276856
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-4.png",
+          "sha256": "656f2f481a933a060b7200e3803ae8756374ed072f875cab4d359c073d180d64",
+          "bytes": 271205
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-5.png",
+          "sha256": "2d0b217d2bd705eb6af5ba8e8a4eb18139723a85909a006d01f40deb8dc5f407",
+          "bytes": 240432
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-6.png",
+          "sha256": "de9bd0ccc52f9cf3dffba8532cb213da8aa2f2aa3d4a085ff84fa7354f4b0410",
+          "bytes": 551477
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-7.png",
+          "sha256": "f495b1cc87123394764ef8ffb483d46244b8fe981147b659cebe79904d916e92",
+          "bytes": 506958
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-sand-8.png",
+          "sha256": "8bd593733d217c2cfc9479463a2aa500b68f06018b20dae1d35e653f805d05c9",
+          "bytes": 260844
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-0.png",
+          "sha256": "ca0d4fb348fba815f31688177b6664befe86e3fca978b8c61d2650412917faed",
+          "bytes": 844139
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-1.png",
+          "sha256": "acb350dad99d43314d0b577425b30efddd49bd45fbc762b4233c6da335cc1a55",
+          "bytes": 186936
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-2.png",
+          "sha256": "661a4bc149b4ba7b1462343821c4a6bc89516d43e19fc531d6407d8842eca445",
+          "bytes": 266234
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-3.png",
+          "sha256": "f63b3e6cc629feab7962c4cea06c0c7f8d8e645269242b21ca512f026276797d",
+          "bytes": 276264
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-4.png",
+          "sha256": "4eed394a7279ed89ffa2927aa94c4c66bac1c18f2e3f475ad6b0148ca121eaad",
+          "bytes": 270525
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-5.png",
+          "sha256": "02a598dc9b73343525bf9afe6d8198efa92ee77f132afe825873f39e6b936224",
+          "bytes": 239564
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-6.png",
+          "sha256": "7a407e046ba458bfb9aef85c7d2e9ff3887db8c8159c942fb3c453a5f5f68f29",
+          "bytes": 553327
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-7.png",
+          "sha256": "55e1db2927a0374faca25fd97972919e981ab2ea94f9471df69d2858ba3d1c74",
+          "bytes": 507375
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1440-dark-8.png",
+          "sha256": "0a635c8be4cb0ed082a370ee93170e59524761d4143be4ab54f1ca8abe39e1d6",
+          "bytes": 261379
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-0.png",
+          "sha256": "bf6394e4fbcb3f311f194bbc345881f1a206e40103cf39b842ceac95c25b1545",
+          "bytes": 326466
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-1.png",
+          "sha256": "71df8a9c90416561ed15c7196390d573d4aa1e00cdb7dbdc98f54ff827f98ae6",
+          "bytes": 99089
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-2.png",
+          "sha256": "27d329e0f099e0cf495deb2e32d63d726bbd0a1050b4a865dc9543aba8226813",
+          "bytes": 113494
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-3.png",
+          "sha256": "b4d222d3971a2a706b6193e871febcba9a26c9d511f72169d730a868aa6ad2d9",
+          "bytes": 116903
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-4.png",
+          "sha256": "9738ce8c14c8049f596803fd80e27d036647905e3157e9dc6bfd935cfc70f5d1",
+          "bytes": 134931
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-5.png",
+          "sha256": "af5fabf8de6d0425e50b209070f47cc438e419cbe78cb32e3632f67533ebe9e2",
+          "bytes": 80139
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-6.png",
+          "sha256": "098ff9b91482ca09dbed458fa62e8b398d08977cab7f64876818d767c5bd21cc",
+          "bytes": 359632
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-7.png",
+          "sha256": "8a9dfc908e949cbb8467e33ec5f6ed2a209e8ade6b0f6727fee6cd1e4b4555d2",
+          "bytes": 341536
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-sand-8.png",
+          "sha256": "48f70c5b599e0e92d7c94c78417b6d74f7b8e893a1080998a291303da50a7b4d",
+          "bytes": 109824
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-0.png",
+          "sha256": "3cd341078f3b5808794cd93c393bb4d5f378cf495fd66160c3529e0db0ac2a92",
+          "bytes": 320677
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-1.png",
+          "sha256": "0a3421a444c3ff7958fa6ff06e9edcf08038e6a4737ebcaf0a9de222f6f96124",
+          "bytes": 97448
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-2.png",
+          "sha256": "f09fbbd4a4c090217ea14c4f0be762579687d9ee0b97edd89334c27e4fd8a12a",
+          "bytes": 113945
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-3.png",
+          "sha256": "059600093d45b7594479ba091c9fdd31992044c6de84d0107b869b394eab1700",
+          "bytes": 117507
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-4.png",
+          "sha256": "7d9e669ed0d17333fa4e71b84d89c76e0d8f0e0b159996802ba3d2df7dcefaed",
+          "bytes": 135745
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-5.png",
+          "sha256": "634d7510441250ac13024decfa7ce3b95d1a3ec761d5c9a9c6022bc9f9629a08",
+          "bytes": 80118
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-6.png",
+          "sha256": "c67128cfb38affb022c696bd72c7b4c18e916fa49e53fe29b7fd24c61cef3134",
+          "bytes": 359937
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-7.png",
+          "sha256": "99f29197c600a4fb360efde573c5ec97fcefc088a0bc3bce376de56207d39f94",
+          "bytes": 341736
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/browser-matrix/1366-dark-8.png",
+          "sha256": "2ca6e987160ed8c4ac7b661121df1a2ab5a016283f5690425da6aba353d31bb4",
+          "bytes": 111307
+        }
+      ],
+      "scope": "Nine current home/overview/lab/setup pages at six viewports (320,390,768,1024,1440,1366-short), in Sand/Dark. Actual Chromium target focus, compact outline, overflow, duplicate IDs and closed-dialog checks. Additional current Module07 scoped search and setup-to-capstone preparation/reload navigation.",
+      "search": {
+        "href": "20261005T002550Z-navigation-main-integration/merged-search.json",
+        "sha256": "632d2d928366fe94041183ccd0d754d499b923765a1fbdf5d0dbd73a2631bdbe",
+        "bytes": 936
+      },
+      "readiness_entry": {
+        "href": "20261005T002550Z-navigation-main-integration/readiness-entry.json",
+        "sha256": "929997552d48b11a0078ff301291abfb605568ec08bb7ac36fae3f518852e3ce",
+        "bytes": 1318
+      },
+      "readiness_screenshots": [
+        {
+          "href": "20261005T002550Z-navigation-main-integration/readiness-entry.png",
+          "sha256": "68bfac3aa2df2c1d562a3026b7e4b9c87e7883fced981eab6f1180f4054246c0",
+          "bytes": 143009
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/readiness-keyboard-preparation.png",
+          "sha256": "6272ba2f68defcb566aaf5391fae143a265654055ae1e8569b9f2e82609891b1",
+          "bytes": 134196
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/readiness-keyboard-reload.png",
+          "sha256": "eb94afaca59d8a93bcba37ae8b02db3a455cc84ae1b0047eab04290de63247c7",
+          "bytes": 127893
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/merged-search-landing.png",
+          "sha256": "7e881df938ef743b37718a5b768158a0c5175246e7db552aac3dc17a80a0b970",
+          "bytes": 113854
+        }
+      ],
+      "automation_limit": {
+        "href": "20261005T002550Z-navigation-main-integration/readiness-direct-helper-attempt.json",
+        "sha256": "30acc44d962ca340f6de7825ae1d1903475db9e7e12a7180e788fb6092040ef4",
+        "bytes": 965
+      }
+    },
+    "work_preparation": {
+      "status": "passed_after_correction",
+      "record": {
+        "href": "20261005T002550Z-navigation-main-integration/merged-work-preparation-smoke.json",
+        "sha256": "8b7307189c7cebc373d0e31efee77112832e54b78ccf76e736d335afc176aadf",
+        "bytes": 1227
+      },
+      "scope": "Real supplied preparation CLI on Modules05/06/07/08/10, current Module06 editables, and Module10 package structure check. No model lifecycle claimed."
+    },
+    "preserved_failures": [
+      {
+        "scope": "First build stopped on the capstone preparation anchor renamed by incoming main; corrected to the new individual-work heading.",
+        "record": {
+          "href": "20261005T002550Z-navigation-main-integration/integration-build-first-failure.json",
+          "sha256": "a2bba4980fb68ccb73caa65d9767e716e58629fe0b2ea82f99458166644e2fba",
+          "bytes": 452
+        }
+      },
+      {
+        "scope": "Obsolete generated output was preserved outside the checkout before clean publication.",
+        "record": {
+          "href": "20261005T002550Z-navigation-main-integration/stale-generated-output-preserved.json",
+          "sha256": "5bac7e56b75bed4a8c16b508aaa3ce32b3cd146809d9653f7cd98e5af00a3b2c",
+          "bytes": 332
+        }
+      },
+      {
+        "scope": "The first full gate reached a stale generated prepare_work.py after the actual Module07 smoke exposed and corrected its retired input references. Final complete run passed.",
+        "records": {
+          "redacted": {
+            "href": "20261005T002550Z-navigation-main-integration/first-integration-gates.log",
+            "sha256": "84dad87728ab84757ab78bdec45e1e960cf36f0e3ed92750aa49f2339c68f2bc",
+            "bytes": 141987
+          },
+          "raw": {
+            "href": "20261005T002550Z-navigation-main-integration/first-integration-gates.raw.log",
+            "sha256": "16f7aad04b42ef2c0d354c3ea8332436b332a0c43eebc0dfe1cf2eaaf6ea6ba7",
+            "bytes": 149456
+          }
+        }
+      }
+    ],
+    "historical_limits": "Earlier57-image audit, hosted32-gate run, and72-view matrix remain bound to their archived task source. New merged-source proof is recorded above; no inherited native, human, live-model, or billing PASS."
+  },
+  "modules": [
+    {
+      "id": "00",
+      "case": "North Shelf",
+      "directory": "module-00-setup",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "00",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "01",
+      "case": "Cold Lantern",
+      "directory": "module-01-mission-thread",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "01",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "02",
+      "case": "Ledger Pike",
+      "directory": "module-02-context-desk",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "02",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "03",
+      "case": "Kiln Hold",
+      "directory": "module-03-mcp-research",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "03",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "04",
+      "case": "Chalk Line",
+      "directory": "module-04-typed-decisions",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "04",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "05",
+      "case": "Copper Span",
+      "directory": "module-05-diagnose-review",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "05",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "06",
+      "case": "Blue Gauge",
+      "directory": "module-06-decision-model",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "06",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "07",
+      "case": "White Rack",
+      "directory": "module-07-batch-workflow",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "07",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "08",
+      "case": "Slope Brief",
+      "directory": "module-08-change-eval",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "08",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "09",
+      "case": "Night Desk",
+      "directory": "module-09-agent-safeguards",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "09",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    },
+    {
+      "id": "10",
+      "case": "Cold Foundry",
+      "directory": "module-10-capstone",
+      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "prior_observations": {
+        "main_report": {
+          "run_id": "20260930T224039-live-33ed8fb4",
+          "scope": "Byte-exact incoming main report, including its newer Module02/06/08 source-bound observations; original path semantics retained.",
+          "href": "20261004T105600Z-course-navigation-readiness/pre-integration-main-exercise-runs.json",
+          "sha256": "d5f02b21d6723f593bc778a8ea27ec4fee232ff11d47f161e6c8749180ef1188",
+          "bytes": 178278
+        },
+        "main_entry_id": "10",
+        "task_report": {
+          "run_id": "20261004T105600Z-course-navigation-readiness",
+          "scope": "Complete navigation/readiness campaign with explicit publication override, before reconciliation with rewritten main modules. The 57-image audit and72-view matrix refer to these earlier source identities, not automatically to merged main.",
+          "href": "20261004T105600Z-course-navigation-readiness/authorized-task-exercise-runs.json",
+          "sha256": "1cabb1bfe62519165728c9220b745365b2ab2ce400f352da162a4d653158e4d7",
+          "bytes": 55582
+        },
+        "limit": "Consult the original source/config identities and dates; not a new live or human observation."
+      }
+    }
+  ],
+  "retained_main_revision_records": {
+    "module02_obsidian_revision": {
+      "run_id": "module02-obsidian-20261002T060403Z",
+      "evidence_root": "$HOME/course-evidence/module02-obsidian-20261002T060403Z",
+      "scope": "Automated maintainer implementation, actual host GUI interaction, serial live-provider runs, and published-surface observations; not human learner completion or measured learner timing. Historical observations above are unchanged.",
+      "acceptance": "Observed proof recorded here; final offline and main-integration receipts are retained externally.",
+      "branch": "feat/module02-obsidian",
+      "base_commit": "d11979bad4915ae38467d937865a9d5ca649b818",
+      "integrated_main": "3cfb72be5ca43b4b3f3e574bf6f4a2f0a76a5f81",
+      "offline": {
+        "module02_criterion_groups": 8,
+        "module02_mutations_killed": 8,
+        "module02_mutation_survivors": 0,
+        "obsidian_readiness_tests_passed": 17,
+        "first_integrated_scoped_gates_passed": 27,
+        "first_integrated_transcript": "integrated-offline-gates.txt",
+        "final_tree_transcript": "final-offline-gates.txt",
+        "command_parser_record": "integrated-shell-syntax.json",
+        "command_parser_scope": "73 initial command blocks, 121 Bash/zsh/PowerShell parser runs on macOS. The final overview correction removed eight duplicate blocks without changing surviving commands. This is not native Windows or Linux execution.",
+        "protected_inputs": "The forty DN files, shared/run_omp.py, and shared/course_guard.mjs match the base commit."
+      },
+      "desktop": {
+        "host": "Darwin 25.6 arm64",
+        "obsidian": "1.13.7",
+        "installation": "Checksum-verified official DMG in a task-owned location with a separate profile; existing installations and vaults preserved",
+        "readiness": "Actual link/edit/save, external token refresh, second edit, close/reopen, and both disk checks observed",
+        "live_vault": "Actual external Draft refresh, four editor-authored Knowledge notes, MOC, source-link navigation, admission reasons, substantive KB-003 revision, and final GUI audit/context records",
+        "settings": "Restricted mode observed on. Sync initially enabled in the fresh live vault, then explicitly disabled before Knowledge authoring. No account used.",
+        "record": "readiness-desktop-observations.json",
+        "other_gui_lanes": "Native Windows, WSLg, Intel macOS, Ubuntu, and Arch unobserved"
+      },
+      "local_negative_proof": {
+        "records": [
+          "offline-smoke/revision-proof.json",
+          "offline-smoke/negative-proof.json"
+        ],
+        "observed": "Unreviewed edited bytes held; renewed admission enabled a new revision; disposable cold tampering held with its named path; original v1 remained valid."
+      },
+      "live_provider": {
+        "status": "Completed with the original ingestion proposal HOLD retained and repaired without another ingestion",
+        "paid_run_invocations": 3,
+        "automatic_retries": 0,
+        "task_local_omp": "18.3.5",
+        "existing_default_omp": "18.4.9 preserved",
+        "provider_model": "openrouter/anthropic/claude-sonnet-4.6",
+        "credential": "Only the user-authorized ignored OPENROUTER_API_KEY assignment was parsed in a child process; the file was not executed and the value was not printed or published.",
+        "spending_authorization": "User explicitly authorized the paid maintainer runs; the original authorization metadata is retained. No account setting changed. Current learner instructions do not prescribe a per-key spending limit.",
+        "ingest": "Shared and phase audits PASS with all forty distinct sources read. Proposal validation exit 1: KB-001 DN-037 excerpt mismatch. Three valid Drafts staged; all evidence retained; no second ingestion.",
+        "cold_v1": "PASS, five executed reads, all three answers supported with valid citations; raw-source NOT_ATTEMPTED",
+        "revision": "KB-003 only: distinguish three authorizations from stamp status and gate constraint, adding exact DN-040 evidence. Fresh admission/freeze passed; MOC and other Knowledge notes unchanged.",
+        "missing_rule": "With the credential available, exit 2 before provider contact and no evidence directory; identical rule bytes restored before cold-v2",
+        "cold_v2": "PASS, five executed reads, focal KB-003 read and cited including DN-040; all three answers supported; raw-source NOT_ATTEMPTED",
+        "observed_effect": "Q3 explicitly names quality release, vehicle assignment, and permit approval as three authorizations, separately from stamp status and gate closure. One observed category clarification, not a fabricated v1 factual failure or general performance claim.",
+        "identity_after_gui_audit": "Both frozen revisions passed after final audit and context-map edits.",
+        "records": [
+          "live-integrated/evidence",
+          "live-integrated/local-v1-proof.json",
+          "live-integrated/local-v2-preparation.json",
+          "live-integrated/missing-rule-proof.json",
+          "live-integrated/audit-before-cold-v2.md"
+        ]
+      },
+      "publication": {
+        "record": "published-surface-proof.json",
+        "observed": "Actual wide/narrow Dark/Sand views, keyboard skip and guide controls, exact native clipboard copy, both full-size figures, all five setup pages, raw-download byte matches, no-JavaScript content, actual print PDF, prefixed navigation/search, and private-route/search exclusion",
+        "browser": "HeadlessChrome/145.0.7632.6, isolated profile on macOS",
+        "limitation": "Browser rendering does not establish installation or GUI execution on another operating system."
+      },
+      "independent_reviews": {
+        "runtime_security": "EXCELLENT",
+        "learning_progression": "EXCELLENT",
+        "platform_publication": "EXCELLENT",
+        "material_findings_remaining": 0,
+        "records": [
+          "FinalRuntimeReview.txt",
+          "FinalLearningReview.txt",
+          "FinalPlatformReview.txt"
+        ]
+      },
+      "integration_receipt": "final-integration.json",
+      "pushed_or_deployed": false
+    },
+    "module08_hallucination_revision": {
+      "date": "2026-10-04",
+      "scope": "Structured source checks, blind ensemble review, evidence-bound correction, and complete recheck; this observation is separate from the historical campaign above.",
+      "evidence_root": "$HOME/course-evidence/module08-hallucination-20261004T195428Z-62c876a8",
+      "path_resolution": "Paths in this revision are relative to this revision's evidence_root.",
+      "runtime": {
+        "omp": "18.3.5",
+        "model_selector": "openrouter/anthropic/claude-sonnet-4.6",
+        "observed_omp_sessions": 5,
+        "independent_model_families": false
+      },
+      "report": {
+        "path": "attempt/report.json",
+        "sha256": "f46b4e768e84ed2f833dfb6124900f54a8cbfddd251b31a8862359412d4ea747",
+        "technical_complete": true,
+        "content_holds": false,
+        "corrected_claims_rechecked": 7,
+        "deterministic_issues": 0,
+        "disagreements_after": 0,
+        "regressions": 0,
+        "unknown_authority": 1,
+        "operational_dispatch": "HOLD"
+      },
+      "commands": {
+        "path": "commands.json",
+        "sha256": "0c320b30de8d68973b25b2e47d6dc1c6b7dfbf7f0860886938da87f7c25ac8be",
+        "missing_key_observation": "HOLD before a model attempt was created"
+      },
+      "offline_regressions": {
+        "test_module_08.py": 14,
+        "test_adequacy.py": 4,
+        "status": "passed"
+      },
+      "publication": {
+        "path": "publication-proof.json",
+        "observed": "Overview-to-lab navigation, eight steps, PowerShell tab and native command copy, desktop/mobile layouts without horizontal overflow, mobile course menu, no-JavaScript command access, no browser errors",
+        "screenshots": [
+          "overview-desktop.webp",
+          "lab-desktop.webp",
+          "lab-mobile.webp",
+          "lab-mobile-nojs.webp"
+        ]
+      },
+      "limitations": [
+        "One campaign is not a measured hallucination rate.",
+        "Separate same-model sessions do not establish independent model-family errors.",
+        "No Jev invocation or calibrated confidence measurement.",
+        "No human learner acceptance or timing measured.",
+        "Browser rendering is not Windows execution."
+      ]
+    }
+  },
+  "unobserved_lanes": [
+    "Native Windows PowerShell5.1 full syntax/receipt/current-package execution",
+    "Required native/cohort setup and exact-model/context32768 capstone rehearsals",
+    "Current facilitator, novice-pilot and actual human peer observations where applicable",
+    "Bounded authorized paid campaigns and directly observed provider billing"
+  ],
+  "release_decision": "Git integration/publication and task-resource removal authorized explicitly by the user. Missing evidence remains HOLD; it does not prohibit this authorized publication and is not relabeled PASS.",
+  "source_manifest": {
+    "href": "20261005T002550Z-navigation-main-integration/current-source-manifest.json",
+    "sha256": "eb7310fa1e6b8123fa042f17687eecbd517495e2b20b42310f5330fe7e58433a",
+    "bytes": 178532
   }
 }

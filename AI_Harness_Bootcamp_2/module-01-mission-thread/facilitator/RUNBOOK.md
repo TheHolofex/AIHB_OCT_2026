@@ -14,9 +14,9 @@ Logistics knowledge outside the packet is not tested. If learners need facts tha
 3. Run the staff reference calculator and visible checker against staff passing and failing specimens. Do not give the calculator's answer output to learners before they freeze their calculations.
 4. Confirm the sealed practice change is in the facilitator fixtures; prepare decisive checks.
 5. Confirm the learner's Module 0 setup; do not reuse Module 0 answers.
-7. Keep `SEALED_CHANGE.md` closed until each baseline ledger, prediction, and verdict hash is recorded.
-8. Prepare a domain-novice observer to flag any instruction that requires unstated logistics knowledge.
-9. Inspect the generated `review.html` at a 390px viewport and 200% zoom. Long identifiers in notes must wrap without widening the page; ledgers may scroll inside their own containers. Check the keyboard decision link and the revealed-source link with JavaScript disabled.
+6. Keep `SEALED_CHANGE.md` closed until each baseline ledger, prediction, and verdict hash is recorded.
+7. Prepare a domain-novice observer to flag any instruction that requires unstated logistics knowledge.
+8. Inspect the generated `review.html` at a 390px viewport and 200% zoom. Long identifiers in notes must wrap without widening the page; ledgers may scroll inside their own containers. Check the keyboard decision link and the revealed-source link with JavaScript disabled.
 
 ## Route
 
@@ -30,8 +30,8 @@ Clock marks are approximate planning guides: follow the learners' progress, not 
 | 1:20–1:45 | Learner recomputes and challenges the brief | Calculations and six rejection reasons |
 | 1:45–2:05 | Learner writes and inspects corrected brief | Review surface answers five decision questions |
 | 2:05–2:20 | Learner freezes baseline verdict and source-change prediction | Hashes and timestamps precede reveal |
-| 2:20–2:45 | Release v6; learner updates dependent claims | Preserved baseline and exact changed-source delta |
-| 2:45–3:00 | Select one handoff and one claim for live defense | Thread-walk and claim-defense result or `HOLD` |
+| 2:20–2:40 | Release v6; learner updates dependent claims | Preserved baseline and exact changed-source delta |
+| 2:40–3:00 | Learner runs two fresh sessions with their own AI: one writes the handoff, the next tests that handoff against the sources only | Receipted handoff, a separate scrutiny session, and the learner's own reading of that scrutiny |
 
 ## Coaching boundary
 
@@ -53,16 +53,12 @@ You may not supply:
 - the baseline or changed verdict; or
 - wording for the standing rule.
 
-If you cross that line, mark the work as guided practice. Select the examples yourself when you ask a learner to defend.
+Do not sit in as the second reader of the handoff, and do not ask a classmate to do it. The learner's new session does that check.
+If you cross that line, mark the work as guided practice.
 
-## Thread walk and claim defense
+## After the two sessions
 
-After the handoff is complete, select the examples yourself.
-
-- Choose one adjacent pair from the eight-step thread. Ask the learner to show the first step's output, the next step's entry condition, whether the handoff passes, its evidence, and one break condition.
-- Choose one material claim row. Ask the learner to open the exact source, identify the current entity/version, explain the warrant or calculation, reject one plausible competing source, and name a falsifier.
-- Use an unseen selection for the practice case. Do not allow the learner to choose a rehearsed row.
-- Review the explanation for inspectable support and reasoning.
+Do not choose a handoff or a claim for the learner to defend out loud. Step 12 is their model writing `handoff.md` from the files they saved. Step 13 is a new session that sees only that handoff and the source files. You may help them run the supplied commands. You do not supply the scrutiny, and you do not treat either model's text as the verdict.
 
 ## Domain-overload check
 
@@ -92,9 +88,7 @@ A well-documented `HOLD` can complete practice. It does not satisfy the module r
 - baseline and changed verdicts;
 - baseline hashes and change-release order;
 - handoff;
-- visible checker output;
-- selected thread-walk result;
-- selected claim-defense result; and
+- visible checker output; and
 - result or reason for `HOLD`.
 
 Do not collect credentials, private local files, outside operational details, or model chat history unrelated to the case.

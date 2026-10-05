@@ -1,40 +1,57 @@
-# Module 8 · Evaluate a change with variation controls
+# Module 8 · Control hallucinations
 
-Decide whether a proposed change produces desk briefs that meet every required condition. Freeze the cases, configurations, and rejection rule before you open the results. Compare each candidate with its baseline on the same 40 cases, keep every failure, and restore the original controls.
+Turn a plausible brief into a claim-by-claim account of what the sources support, what needs correction, and what remains unknown. Have separate agents challenge the claims, then check their corrections yourself. A clean JSON response can contain a false fact. Two reviewers can agree and still be wrong.
 
-The Slope Brief case follows heater-fuel cans moving from Ridge Depot to Clinic T-8 on vehicle SB-4. The main comparison uses practice briefs written in advance, so it can't show whether a live model improved. The optional live comparison repeats calls to help you tell an instruction's effect from ordinary differences between runs.
+Plan for a little over two hours on Thursday (a rough estimate). The work uses five paid agent sessions: two initial reviews, one correction, and two fresh reviews of the correction. Each session may make several provider requests.
 
-Plan for a little over two hours on Thursday (a rough estimate).
+[Open the hallucination-control lab](shared/MODULE_08_LAB.md).
 
-## Start here
-1. [Evaluate the paired cases](shared/MODULE_08_LAB.md). Save your decision rule before you open the results.
+## The brief someone might act on
 
-## The hard gates
-A **hard gate** is a condition every brief must meet. A better result elsewhere can't make up for a failed gate: one violation rejects a candidate, even if its average looks better.
+Slope Brief concerns heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. A desk brief gives the mass, gate times, and a claim about permission to depart. If an unsupported number or an unlabeled clock reaches the next desk as fact, a fluent answer has become a bad operating instruction.
 
-- The brief must use the required three-row form; a malformed brief fails the format gate.
-- Payload mass must match the exact number in the authoritative `#payload` record. The Source cell must name that record. A **locator**, such as `#payload`, points to the source record for a value.
-- Gate times must give both the UTC and MDT values exactly as they appear in the authoritative `#gate` record. The Source cells must name that locator.
+You have seven material claims—claims that could change a decision—across three separate case packets, PC-01, PC-02, and PC-03. Keep each claim with its own packet; don't combine their masses or clocks into one shipment record. The draft is authored practice data with deliberate defects, not a recorded model failure. Your agents' reviews and corrections are live outputs. Keep those two kinds of evidence separate.
 
-Each time value needs its zone label in the correct cell. A UTC label in another cell can't fix a missing one. A clock value without its zone fails the gate.
+The supplied sources can establish facts about a shipment. They don't supply every fact or permission needed to dispatch it. An honest brief must preserve that gap.
 
-A malformed source packet, or one from another case, stops the comparison before results are written. It isn't a candidate failure and doesn't count toward repair cost. A malformed candidate brief with valid sources fails the format gate and stays in the comparison.
+## Keep three questions separate
 
-![Supplied-file checks do not measure model variation; repeated live pairs separate observed between-instruction disagreements from within-instruction variation.](shared/figures/m08-evidence-lanes.png)
+| Question | What checks it | What it cannot establish |
+|---|---|---|
+| Does the answer have the required shape? | A **schema**, the list of required fields and allowed values. The checker also requires every claim exactly once. | Valid JSON doesn't make a number or a judgment true. |
+| Does this source support this claim? | Exact checks for values, units, zones, shipment identity, and source locators; separate agent reviews of the claim and evidence; your reading of the original source. | A real citation doesn't establish a claim beyond what its text says. |
+| May someone act on it? | The responsible person's authority and any required operational facts. | A supported mass, an open gate, or unanimous reviewers do not authorize departure. |
 
-*Supplied-file checks do not measure model variation; repeated live pairs separate observed between-instruction disagreements from within-instruction variation.*
+A **hallucination** is an assertion presented as established when the available evidence doesn't establish it. It can be an invented fact, a claim attached to the wrong source, or a stronger conclusion than the source permits. Control the claim at the point it would become usable work; don't rely on a reminder to “be accurate.”
 
-<details markdown="1">
-<summary>Figure text</summary>
+## Use a model for a narrow judgment
 
-Separate change from variation. There are two evidence lanes, and their results are never pooled.
+Keep each judgment as narrow as the decision-model questions you've already written: one question about one claim, a fixed set of answers, and code that decides which checks or holds follow.
 
-- **Supplied files.** The same 40 cases each have a baseline, A, and B brief. Deterministic checks read these fixed files. Repeating those checks gives the same answer, so they do not measure model variation. One violation rejects a candidate.
-- **Optional live comparison.** Six cases (PC-01 to PC-06) are planned. Each case has three repeat slots for the baseline instruction and three for the checked instruction. Same-case pairs join a baseline attempt to a checked attempt on the same case. Within-instruction variation compares the repeats of one instruction on one case. Every attempt is retained. One violation rejects adoption.
+Here the question is: **Does this source packet establish this exact claim?** Each reviewer must choose `supported`, `contradicted`, or `unknown`, identify the source, quote it, and explain the connection. `unknown` means the packet doesn't settle the claim; it doesn't mean the claim is false. Use the [typed-question discipline](../module-04-typed-decisions/README.md) you already practiced, now on a draft's factual claims.
 
-The live lane follows a sequence recorded before any call runs. Calls alternate the order of baseline and checked instructions. Within each pair, the model, source/form pair, prompt, and permissions stay fixed. That makes 36 comparison calls. After them, the baseline is restored and two restored controls run on PC-01 and PC-02. These are planned observations, not results. A finished sequence does not prove that either instruction is better.
+These runs use the pinned course model through Oh My Pi, not Jev's service. The model generates JSON and a supplied checker validates it; this is not provider-enforced structured output. Jev's [probabilities and confidence](https://docs.typesafe.ai/confidence) are separate from the evidence that establishes a fact. A model's confident wording is not a calibrated probability, and no confidence threshold replaces a source check here.
 
-</details>
+## Let reviewers challenge before they confer
+
+An **ensemble** uses several model or agent judgments on the same work. Give the reviewers different jobs and keep their first judgments separate.
+
+| Agent | Job | What it can see |
+|---|---|---|
+| Source reviewer | Check the exact claim against the appropriate source, including units and zone labels. | The claim set and original source packets. |
+| Skeptical reviewer | Look for a wrong shipment, a misleading citation, an omitted condition, or a fact being treated as permission. | The same claims and sources, without the other reviewer's verdicts. |
+| Correcting agent | Repair only what the sources support and keep missing facts explicitly unknown. | The original claims and sources, deterministic findings, and both completed reviews. |
+
+After correction, both reviewers start fresh again. They see the revised claims and original sources, not their earlier verdicts. The supplied tool checks every claim again, including the ones that were already correct.
+
+All five turns use separate sessions of `openrouter/anthropic/claude-sonnet-4.6`. Separate sessions prevent one reviewer from copying the other's answer; they do not create independent model families or independent sources. The agents can share the same blind spot. In workplace use, an approved different model can add another perspective, but it still needs the same evidence checks.
+
+## Decide from evidence, not votes
+
+If both reviewers approve a mass that disagrees with the inventory record, the mass stays on hold. If they disagree, read the cited passages and identify which supports the exact claim; don't ask a third agent to break the tie by vote. If neither source establishes permission to depart, keep that permission unknown.
+
+A correction is another model output, not a trusted repair. Preserve the original, check every changed value, and check that a previously supported claim wasn't damaged or dropped. You can accept a useful internal source summary with a clearly stated unknown. You cannot turn that acceptance into dispatch authority.
 
 ## Class-only boundary
+
 The Slope Brief case is fictional: heater-fuel cans move from Ridge Depot to Clinic T-8 on vehicle SB-4. Names, hours, and masses used as defects are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class review only.

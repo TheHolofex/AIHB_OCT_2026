@@ -2,90 +2,66 @@
 
 ## What the harness changes
 
-The supplied evaluate_pairs and restore now operate on the 40 paired cases with per-cell authoritative locators and hashed baseline restore instead of the two-pair historical thin lab.
+A plausible Slope Brief would otherwise reach the next desk with an invented mass, misleading clocks or citation, and unsupported dispatch authority. Exact claim checks, isolated reviewer agents, constrained correction, and fresh full-set review expose those defects without treating agreement as evidence. The human accepts only a bounded source summary or retains the hold.
 
-## Session result
-The learner freezes the policy, confirms all baselines pass, records the six designated one-violation failures on the two candidates (three each), runs the 120-row evaluator, and restores work copies that pass. The learner does not average.
+## Capability and prerequisites
+
+The new capability is operating an evidence-bound review-and-correction loop, including mistakes introduced or endorsed by its reviewers. Source verification, typed questions, the split between exact checks, model judgments, and decisions reserved for a person, bounded agent handoffs, and bounded model-and-tool operation are inherited skills; giving each claim its exact check, support judgment, or held authority applies that split. Repair a missing prerequisite explicitly; do not count it as new mastery here.
+
+The independent case has three source packets and seven authored claims. Five live turns use the same pinned model: before-source, before-skeptic, correct, after-source, after-skeptic. Fresh sessions prevent answer sharing, not correlated model errors. Jev supplies the state-plus-typed-question design reference, not a new account or runtime dependency.
 
 ## Before class
-1. Confirm the policy file names hard gate and any single violation.
-2. Run hard_gates.py on a few baselines (exit 0) and the six designated failing briefs (exit 1 with the expected reason).
-3. Run evaluate_pairs.py on the case directory and confirm 120 rows with the six designated failures only.
-4. Run restore_baseline.py on a test work copy and confirm baselines pass again.
-5. Confirm the case pairs and the evaluator script are ready for the technical checks.
 
-The checked live instruction keeps the two clock values separate: UTC in `Gate time in source`, MDT in `Gate time for desk`. An older instruction ambiguously asked both cells to include both labels. Preserve that version and its results if a batch has started; do not replace a frozen instruction or repair its briefs. The clarified instruction needs a fresh preregistered comparison. A rejection of the old wording is not evidence that the revision passes or improves outcomes.
+Follow the actual learner preparation procedure in a fresh external work folder. Use Python 3.12+, OMP 18.3.5, and `openrouter/anthropic/claude-sonnet-4.6` through the shared launcher. Do not replace a missing model or credential with a fixture.
 
-## Thursday delivery route
+1. Run `freeze --work W --out E` through the repository's `scripts/hallucination.py`. Check that the frozen sources and controls, manifest, and initial findings exist. `PASS: frozen 7 claims` describes preservation and checking, not a correct original draft.
+2. Run the two before reviews independently. Parsed answers belong in `reviews/`; actual execution receipts belong in `runs/`. Inspect actual source-read proof, not just a final response.
+3. Run correction, both after reviews, and report. Check every original/corrected claim and the two supported controls. Five distinct audited executions are required for technical completion.
+4. Confirm that an existing output is refused rather than overwritten. The no-key path must stop before creating a model attempt. Preserve failed runs and use a new attempt after repairing a prerequisite.
+5. Check the published Overview/Lab routes and the Bash and PowerShell command cards. Any observed verification applies only to the exercised host, model, and case; representative learner timing remains unmeasured.
 
-Module 8 is the first Thursday block, a little over two hours. Pacing marks below count minutes from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. The day's clock is in `COURSE_MAP.md` and on the public homepage.
+Only explicit live execution calls the provider. The five turns are the core sequence, not a price cap. Use the approved account budget and preserve failures; do not add retries, model fallback, or an autonomous campaign.
 
-Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, the supplied cases, controls, evaluator and restore scripts, and a work-copy preparation that runs. This verifies existing prerequisites. It adds no homework.
+## Thursday pacing
 
-| Roughly (minutes in) | Action and result |
+The first Thursday block has a little over two hours. This approximately 130-minute allocation is a design budget, not a measured learner time. Follow progress and retain unfinished work honestly.
+
+| Minutes | Work and observation |
 |---|---|
-| 0–10 | Fixed authored comparisons versus model variation, the pre-result policy, any-single-violation gates, and source-invalid versus candidate-invalid boundaries. Remind learners of their earlier comparison and restoration skills; do not reteach them. |
-| 10–30 | Learners prepare the independent attempt, write the decision rule, and freeze identities without opening candidates. |
-| 30–50 | Learners check all forty baselines. |
-| 50–85 | Learners evaluate all baseline/A/B pairs, inspect all 120 result rows, and trace material failures to their authoritative locators. |
-| 85–105 | Learners apply the frozen rule, record the distinct-failed-case repair proxy and the bounded decision, and recheck identities. |
-| 105–125 | Learners execute baseline restoration, rerun the evaluation, and compare the restored output bytes. |
-| 125–130 | Learners preserve the decision, raw evidence, restoration result, and handoff. |
-| 130–135 | Review the decision boundary and why deterministic reruns cannot prove a live-model improvement. |
+| 0–15 | Read the claim set and field legend. Predict one supported claim, one defect, and one uncertain claim. Resolve the two-reviewer wrong-shipment counterexample from the actual PC-01 sources. |
+| 15–30 | Inspect the typed contract and reviewer roles. Freeze the packet; compare exact findings with the initial human reading. |
+| 30–55 | Run blind source and skeptical reviews. Compare every verdict, source, quotation, and reason. Record disagreements and mistakes before correction. |
+| 55–75 | Run the correcting agent on the original evidence and completed findings. Inspect complete claim coverage and explicit unknowns. |
+| 75–95 | Run both fresh after reviews on the corrected claims and original sources, without prior verdicts. Inspect unchanged controls as well as repaired claims. |
+| 95–120 | Generate the audited report. Resolve disagreements by source evidence or retain a hold. Complete each human disposition and the overall internal-summary decision. |
+| 120–130 | Preserve the original failure, all five receipts, complete findings, notes, decision, and the missing evidence and responsible owner. State why dispatch remains on hold. |
 
-Keep the format, mass, and time-zone gates separate; no average may erase a violation. The repeated live comparison (all 36 paired calls and the two restored controls) stays in the lab as an **optional** paid stretch. It has no time in this route, and the core authored-case comparison does not measure stochastic variation.
+Do not move required work into homework or describe an unexecuted lane as completed. If a provider or environment prerequisite blocks execution, retain the unaffected source-check evidence and name the live lane as unobserved. That is an honest operating limit, not learner failure.
 
-Hold the clock without cutting the work:
+## Coaching
 
-- Save time by shortening repeated plenaries, using the lab's existing prerequisite reminders, and coaching while learners operate. Do not remove a lab explanation or supply a defect name, row, or answer to meet the clock.
-- If a learner cannot finish a required operation in its window, preserve the first failure and the current state, record the unfinished lane as `HOLD`, and start the next independent block on schedule. Do not add a teaching day, move required hands-on work into homework, or label an incomplete technical claim complete.
+Help learners identify the active folder, read a field, or interpret an error. When a source settles a disagreement, have the learner name the exact record and explain the relationship to the claim. Teach the distinction between a contradicted assertion and an unestablished one. A missing authorization does not establish a denial.
 
-## Coaching boundary
-You may point to a file or help run a supplied command. You may not supply the defect names, rewrite the policy after results, average the pairs, or tell the learner which rows to mark failed. If you cross that line, mark the work as guided practice.
+Do not overwrite model findings, hide the first failed attempt, or present a facilitator's explanation as a model execution. No classmate or instructor grades the work, and no peer sign-off is required. The handoff must be inspectable in itself.
 
-## `HOLD` conditions
-Use `HOLD` when the policy changes after results, a baseline fails, a non-designated candidate passes its gate, the evaluator does not produce 120 rows or the hashes do not match, restore fails or does not restore a passing baseline, or the learner handoff requires coaching to be understood.
+## Work decisions and failure handling
 
-## Staff-only local campaign stop
+- A malformed review or correction stops the affected stage. Retain the raw response and receipts.
+- A well-formed but wrong correction is re-reviewed and exposed in the report. Do not retry it until it looks favorable.
+- Reviewer disagreement remains visible. Agreement cannot defeat an exact source check.
+- A real quote can still be irrelevant or insufficient. The person judges its relationship to the claim.
+- A supported claim changed unnecessarily is a regression to inspect, even when the other defects were repaired.
+- `technical_complete` means the report audited all five runs. `content_holds` separately records unresolved exact failures, reviewer conflicts, and regressions.
+- A withdrawn unsupported assertion represented by `null` can remain in a usable internal summary. Its authority remains unknown; operational dispatch stays `HOLD`.
 
-The learner command does not query the provider for usage. It stops after an
-attempt once the SDK cost estimates it has recorded total US$40 or more. An
-explicitly authorized staff campaign can instead supply both local-stop flags to
-add a soft stop on key usage:
+The human template uses per-claim `USE`, `KEEP_UNKNOWN`, or `HOLD`, with a source-backed `reason`. `internal_summary_decision` and `unresolved_evidence_and_owner` record the overall boundary. The tool does not automatically verify those human judgments.
 
-```bash
-"$PY" "$M/scripts/stretch_runner.py" "$W" "$E/live-comparison" \
-  --local-budget-usd "$REMAINING_USD" --usage-baseline-usd "$Upre"
-```
+## Evidence limits
 
-Immediately before launch, obtain `Upre = usage + byok_usage` from the authenticated
-OpenRouter `GET /api/v1/key` response. `REMAINING_USD` is the campaign's remaining
-allowance, greater than zero and no more than US$40. Subtract the maximum of the
-campaign's cumulative key-usage delta, known SDK estimate subtotal, and previous
-admission high-water charge from its approved allowance. Do not round upward,
-reset the campaign baseline, or exclude failed calls. Keep all other paid
-processes stopped while the comparison runs. Pass the API key through the
-environment, never through command arguments or evidence files.
-
-The runner queries key usage before and after each attempted launcher call,
-including the two restored controls. It admits a call only while the maximum of
-usage since the supplied baseline and known SDK estimates remains below the
-remaining allowance. Missing estimates stay explicitly incomplete; invalid or
-decreasing metadata stops further admissions. A failed child retains its output,
-exit status, receipts, and post-call accounting without a retry.
-
-This is a soft stop, not a hard spending cap. One in-flight turn can make several
-provider requests; delayed accounting or other activity on the key can cause an
-overshoot. The final observation can leave a complete 38-attempt comparison
-`COMPLETE` with a recorded overshoot, but no more paid work may be admitted.
-Inspect `comparison.json.local_budget` and the campaign ledger before any later
-paid operation. Aggregate key usage is not exact per-generation billing.
-
-Local mode does not establish available account credit or waive learner
-prerequisites.
+Authored defects are exercise inputs, not observed hallucinations from the provider. Model-produced reviews and correction are live observations only when their receipts pass the audit. One five-turn sequence establishes no general hallucination rate, calibration, or model superiority. Previous paired-comparison and restore evidence belongs to the retired module revision and does not verify this workflow.
 
 ## Operational readiness notes
 
-See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: pre-result policy freeze, 120 authored rows, six designated failures, restoration. 38-call stretch only after mandatory lanes and budget gate, separate preregistration.
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: five audited runs; human decision on holds.
 
 Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

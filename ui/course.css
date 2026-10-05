@@ -114,8 +114,7 @@ h3,
 /* Reading measure. UI chrome below stays 14–16px. */
 .rf-reading,
 .rf-home-content,
-.rf-intro,
-.rf-lead {
+.rf-intro {
   font-family: var(--sc-font-ui);
   font-size: var(--rf-read);
   line-height: 1.65;
@@ -128,8 +127,7 @@ h3,
 .rf-home-content p,
 .rf-home-content li,
 .rf-intro p,
-.rf-intro li,
-.rf-lead {
+.rf-intro li {
   max-width: 72ch;
   overflow-wrap: break-word;
 }
@@ -154,10 +152,13 @@ h3,
 
 .rf-lead {
   margin: 0.75rem 0 0;
-  max-width: 38rem;
+  max-width: 56rem;
   color: var(--sc-ink);
-  font-family: var(--sc-font-doc);
+  font-family: var(--sc-font-display);
+  font-size: var(--rf-read);
   font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
 }
 
 .rf-reading h1,
@@ -1904,7 +1905,7 @@ label[for="rf-search-input"] {
   }
 
   .rf-hero-content {
-    width: min(42rem, 52%);
+    width: min(62rem, 80%);
     padding: 2rem 2.5rem;
   }
 

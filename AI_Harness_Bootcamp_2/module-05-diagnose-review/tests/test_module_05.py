@@ -1,199 +1,348 @@
 #!/usr/bin/env python3
-"""Structural, semantic, and safety oracle for Module 5."""
-
+"""Isolated synthetic native-record fixtures; never presented as live OMP proof."""
 from __future__ import annotations
 
-import hashlib
+import contextlib
+import copy
+import io
 import json
-import re
-import subprocess
+import shutil
 import sys
 import tempfile
-import os
+import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-PASS: list[str] = []
-FAIL: list[str] = []
+MODULE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(MODULE / "scripts"))
+import orchestrate
+import orchestration_evidence as evidence
 
 
-
-def check(cid: str, condition: bool, detail: str) -> None:
-    (PASS if condition else FAIL).append(f"{cid}: {detail}")
-
-
-def read(path: Path) -> str:
-    return path.read_text(encoding="utf-8") if path.exists() else ""
+def jsonl(path, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
 
 
-ref = ROOT / "reference/REFERENCE.md"
-hash_file = ROOT / "reference/REFERENCE.sha256"
-expected_hash = read(hash_file).split()[0] if hash_file.exists() else ""
-actual_hash = hashlib.sha256(ref.read_bytes()).hexdigest() if ref.exists() else ""
-check("M5-REF", bool(expected_hash) and expected_hash == actual_hash, f"reference hash {actual_hash}")
+class NativeFixture:
+    """Minimal records in the observed v18.3.5 shape, with real local source files."""
 
-required = {
-    "ledger": ROOT / "shared/case/ledger.json",
-    "clean": ROOT / "scripts/render_review.py",
-    "restore": ROOT / "scripts/restore.py",
-    "place": ROOT / "scripts/place_practice_fault.py",
-    "probe": ROOT / "scripts/probe_fields.py",
-}
+    def __init__(self, work, output, policy):
+        self.work, self.output, self.policy = work, output, policy
+        self.parent_path = output / "sessions/fixture-parent.jsonl"
+        self.guard = []
+        self.sequences = {}
+        self.reports = {}
 
-# M5-CARD: ledger volume and identity (no old thin values)
-ledger = {}
-try:
-    ledger = json.loads(read(required["ledger"]))
-except Exception:
-    pass
-check("M5-CARD", isinstance(ledger.get("rows"), list) and len(ledger["rows"]) == 80, "ledger 80 rows")
-check("M5-CARD", any(r.get("row_id") == "BK-200" for r in ledger.get("rows", [])), "ledger has BK-200")
-check("M5-CARD", ledger.get("clinic") == "Clinic F-9", "ledger clinic Clinic F-9")
+    def agent(self, role):
+        return {"kind": "main", "id": "Main", "name": "main", "depth": 0} if role == "main" else {
+            "kind": "sub", "id": role.title(), "name": role, "depth": 1, "parentId": "Main"}
 
-with tempfile.TemporaryDirectory() as tmp:
-    # clean render with explicit ledger (disposable)
-    dest = Path(tmp) / "review.md"
-    clean_run = subprocess.run(
-        [sys.executable, str(required["clean"]), str(required["ledger"]), str(dest)],
-        capture_output=True,
-        text=True,
-        cwd=str(ROOT),
-    )
-    rendered = read(dest)
-    check("M5-CLEAN", clean_run.returncode == 0, "clean renderer runs")
-    check("M5-CLEAN", "permit_status" in rendered and "gate_time_mdt" in rendered, "clean renderer emits both fields")
+    def log(self, role, kind, **fields):
+        self.guard.append({"run_id": self.policy["run_id"], "stage": self.policy["stage"],
+                           "agent": self.agent(role), "type": kind, **fields})
 
-    # drop via place on disposable W structure (source fixture not mock)
-    w = Path(tmp) / "w"
-    (w / "scripts").mkdir(parents=True)
-    (w / "baseline").mkdir(parents=True)
-    (w / "shared/case").mkdir(parents=True)
-    (w / "out").mkdir()
-    (w / "out/dummy.txt").write_text("x\n")
-    clean_bytes = required["clean"].read_bytes()
-    (w / "scripts/render_review.py").write_bytes(clean_bytes)
-    (w / "baseline/render_review.py").write_bytes(clean_bytes)
-    sha = hashlib.sha256(clean_bytes).hexdigest() + "\n"
-    (w / "baseline/render_review.py.sha256").write_text(sha, encoding="utf-8")
-    (w / "shared/case/ledger.json").write_bytes(required["ledger"].read_bytes())
-    place_run = subprocess.run(
-        [sys.executable, str(required["place"]), str(w), "--variant", "A"],
-        capture_output=True,
-        text=True,
-    )
-    check("M5-DROP", place_run.returncode == 0, "place runs")
-    fault_dest = Path(tmp) / "fault.md"
-    fault_run = subprocess.run(
-        [sys.executable, str(w / "scripts/render_review.py"), str(w / "shared/case/ledger.json"), str(fault_dest)],
-        capture_output=True,
-        text=True,
-        cwd=str(w),
-    )
-    fault_text = read(fault_dest)
-    check("M5-DROP", fault_run.returncode == 0, "faulty work renderer runs")
-    check("M5-DROP", "permit_status" not in fault_text, "faulty omits permit_status")
-    # test B
-    wB = Path(tmp) / "wB"
-    (wB / "scripts").mkdir(parents=True)
-    (wB / "baseline").mkdir(parents=True)
-    (wB / "shared/case").mkdir(parents=True)
-    (wB / "out").mkdir()
-    (wB / "scripts/render_review.py").write_bytes(clean_bytes)
-    (wB / "baseline/render_review.py").write_bytes(clean_bytes)
-    (wB / "baseline/render_review.py.sha256").write_text(sha, encoding="utf-8")
-    (wB / "shared/case/ledger.json").write_bytes(required["ledger"].read_bytes())
-    placeB = subprocess.run([sys.executable, str(required["place"]), str(wB), "--variant", "B"], capture_output=True, text=True)
-    check("M5-DROP", placeB.returncode == 0, "place B runs")
-    destB = Path(tmp) / "faultB.md"
-    runB = subprocess.run([sys.executable, str(wB / "scripts/render_review.py"), str(wB / "shared/case/ledger.json"), str(destB)], capture_output=True, text=True, cwd=str(wB))
-    textB = read(destB)
-    check("M5-DROP", runB.returncode == 0, "B renderer runs")
-    check("M5-DROP", "gate_time_mdt" not in textB, "B omits gate")
-    check("M5-DROP", "permit_status" in textB, "B keeps permit")
-    # probe boundary tests (current rows, causes)
-    probe_runA = subprocess.run(
-        [sys.executable, str(required["probe"]), str(w / "shared/case/ledger.json"), "--review", str(fault_dest)],
-        capture_output=True, text=True
-    )
-    poutA = probe_runA.stdout + probe_runA.stderr
-    check("M5-PROBE", "renderer_omission" in poutA, "probe reports renderer_omission")
-    check("M5-PROBE", "selected_source_ids" in poutA, "probe reports selected ids from classify")
-    check("M5-PROBE", "review_present yes" in poutA, "probe reports review present")
-    # source omission (stretch has empty on current; render would HOLD)
-    stretch = ROOT / "shared/case/ledger-stretch.json"
-    if stretch.exists():
-        psrc = subprocess.run([sys.executable, str(required["probe"]), str(stretch)], capture_output=True, text=True)
-        ps = psrc.stdout + psrc.stderr
-        check("M5-PROBE", "source_omission" in ps, "probe reports source_omission on current empty")
-    # wrong input version (stale vs intended identity)
-    intendedp = ROOT / "shared/case/ledger-intended.json"
-    stalep = ROOT / "shared/case/ledger-stale.json"
-    if intendedp.exists() and stalep.exists():
-        pver = subprocess.run([sys.executable, str(required["probe"]), str(stalep), "--intended", str(intendedp)], capture_output=True, text=True)
-        pv = pver.stdout + pver.stderr
-        check("M5-PROBE", "wrong_input_version" in pv, "probe reports wrong_input_version on selected identity diff")
-        check("M5-PROBE", "intended_source_ids" in pv, "probe prints intended ids")
-    # restore on disposable (state transition)
-    bad = w / "scripts/render_review.py"
-    bad.write_text("broken\n", encoding="utf-8")
-    restore_run = subprocess.run(
-        [sys.executable, str(required["restore"]), str(w)],
-        capture_output=True,
-        text=True,
-    )
-    check(
-        "M5-RESTORE",
-        restore_run.returncode == 0 and "RESTORE OK" in restore_run.stdout,
-        "restore prints RESTORE OK",
-    )
-    check("M5-RESTORE", bad.read_bytes() == clean_bytes, "restore makes files identical")
-    # tamper
-    tw = Path(tmp)/"tw"
-    for d in ["scripts","baseline","shared/case","out"]: (tw/d).mkdir(parents=True)
-    (tw/"scripts/render_review.py").write_bytes(clean_bytes)
-    (tw/"baseline/render_review.py").write_bytes(clean_bytes)
-    (tw/"baseline/render_review.py.sha256").write_text("0"*64+"\n",encoding="utf-8")
-    (tw/"shared/case/ledger.json").write_bytes(required["ledger"].read_bytes())
-    trun = subprocess.run([sys.executable,str(required["place"]),str(tw),"--variant","A"],capture_output=True,text=True)
-    check("M5-RESTORE",trun.returncode!=0,"tamper fails")
-    check("M5-RESTORE","HOLD" in trun.stdout+trun.stderr,"tamper HOLD")
-    # symlink
-    sw = Path(tmp)/"sw"
-    rs = Path(tmp)/"rs"
-    rs.mkdir()
-    (rs/"render_review.py").write_bytes(clean_bytes)
-    for d in ["baseline","shared/case","out"]: (sw/d).mkdir(parents=True)
-    (sw/"baseline/render_review.py").write_bytes(clean_bytes)
-    (sw/"baseline/render_review.py.sha256").write_text(sha,encoding="utf-8")
-    (sw/"shared/case/ledger.json").write_bytes(required["ledger"].read_bytes())
-    os.symlink(str(rs), str(sw/"scripts"))
-    srun = subprocess.run([sys.executable,str(required["restore"]),str(sw)],capture_output=True,text=True)
-    check("M5-RESTORE",srun.returncode!=0,"symlink fails")
-    check("M5-RESTORE","HOLD" in srun.stdout+srun.stderr,"symlink HOLD")
+    def start(self, role):
+        header = {"type": "session", "id": f"fixture-{role}", "cwd": str(self.output / ".runtime/home/cwd")}
+        if role != "main":
+            header["parentSession"] = str(self.parent_path)
+        rows = [{"type": "title", "title": "SYNTHETIC TEST FIXTURE — NOT A LIVE RUN"}, header,
+                {"type": "model_change", "model": evidence.SELECTOR, "resolvedModelIsFallback": False}]
+        self.log(role, "guard_ready", provider=evidence.PROVIDER, model=evidence.MODEL,
+                 policy_sha256=evidence.digest(evidence.json_bytes(self.policy)),
+                 active_tools=self.policy["parent_tools"] if role == "main" else ["course_read", "yield"],
+                 role_sha256=None if role == "main" else self.policy["role_files"][role]["sha256"])
+        self.sequences[role] = 0
+        return rows
 
-    later = json.loads(json.dumps(ledger))
-    later["rows"][0]["source_revision"] = "2"
-    later_path = Path(tmp) / "same-id-later-revision.json"
-    later_path.write_text(json.dumps(later), encoding="utf-8")
-    version_probe = subprocess.run(
-        [sys.executable, str(required["probe"]), str(required["ledger"]), "--intended", str(later_path)],
-        capture_output=True, text=True,
-    )
-    check("M5-VERSION", version_probe.returncode == 0 and version_probe.stdout.count("wrong_input_version") == 2,
-          "a later revision under the same source ID is not mistaken for the intended input")
-    unreadable = Path(tmp) / "unreadable-review.md"
-    unreadable.write_bytes(b"\xff")
-    unreadable_probe = subprocess.run(
-        [sys.executable, str(required["probe"]), str(required["ledger"]), "--review", str(unreadable)],
-        capture_output=True, text=True,
-    )
-    check("M5-READ", unreadable_probe.returncode == 1 and "HOLD:" in unreadable_probe.stderr
-          and "Traceback" not in unreadable_probe.stderr, "an unreadable review holds without a false omission diagnosis")
+    def assistant(self, rows, role, content):
+        self.sequences[role] += 1
+        sequence = self.sequences[role]
+        self.log(role, "provider_request", sequence=sequence, provider=evidence.PROVIDER, model=evidence.MODEL)
+        rows.append({"type": "message", "message": {"role": "assistant", "provider": evidence.PROVIDER,
+                     "model": evidence.MODEL, "responseId": f"synthetic-{role}-{sequence}",
+                     "usage": {"totalTokens": 1}, "content": content}})
 
-print(f"PASS {len(PASS)}")
-for item in PASS:
-    print("  PASS", item)
-print(f"FAIL {len(FAIL)}")
-for item in FAIL:
-    print("  FAIL", item)
-sys.exit(1 if FAIL else 0)
+    def tool(self, rows, role, name, args, details, *, failed=False, execution=None):
+        call_id = f"fixture-{role}-{len(rows)}-{name}"
+        self.assistant(rows, role, [{"type": "toolCall", "id": call_id, "name": name, "arguments": args}])
+        self.log(role, "decision", call_id=call_id, tool=name, arguments=args, allow=True)
+        if execution is not None:
+            self.log(role, "execution_result", call_id=call_id, tool=name, **execution)
+        self.log(role, "tool_result", call_id=call_id, tool=name, isError=failed, details=details)
+        rows.append({"type": "message", "message": {"role": "toolResult", "toolName": name, "toolCallId": call_id,
+                     "isError": failed, "details": details, "content": [{"type": "text", "text": "synthetic fixture result"}]}})
+        return call_id
+
+    def read_inputs(self, rows, role):
+        for logical, binding in self.policy["reads"].get(role, {}).items():
+            if binding["sha256"] is None:
+                self.tool(rows, role, "course_read", {"path": logical}, {}, failed=True,
+                          execution={"path": logical, "ok": False, "code": "ENOENT"})
+            else:
+                details = {"path": logical, "sha256": binding["sha256"]}
+                self.tool(rows, role, "course_read", {"path": logical}, details,
+                          execution={**details, "ok": True})
+
+    def report(self, role):
+        logical, binding = next(iter(self.policy["reads"][role].items()))
+        if binding["sha256"] is None:
+            return {"role": role, "status": "blocked", "source_path": logical, "source_sha256": None,
+                    "source_id": None, "revision": None, "supersedes": None, "facts": {},
+                    "reason": f"Missing assigned file: {logical}; ENOENT"}
+        source = evidence.load_json(self.output / f"inputs/sources/{role}.json")
+        # The fixture's truth is explicit revision 2, not the checker under test.
+        record = next(row for row in source["records"] if row["revision"] == 2)
+        return {"role": role, "status": "complete", "source_path": logical, "source_sha256": binding["sha256"],
+                "source_id": source["source_id"], "revision": 2, "supersedes": 1,
+                "facts": record["facts"], "reason": "Explicit revision 2 supersedes revision 1."}
+
+    def child(self, item, index):
+        role = item["agent"]
+        rows = self.start(role)
+        task = "Complete assignment thoroughly:\n\n" + item["task"].strip()
+        rows.append({"type": "session_init", "agent": role, "resolvedModel": evidence.SELECTOR,
+                     "tools": ["course_read", "yield"], "outputSchema": item["outputSchema"], "outputSchemaMode": "strict",
+                     "systemPrompt": evidence.role_body((self.output / f"inputs/roles/{role}.md").read_text(), role) + "\n" + evidence.CONTEXT,
+                     "task": task})
+        self.read_inputs(rows, role)
+        payload = self.report(role) if role in evidence.ROLES else {
+            "role": "review", "status": "accepted", "candidate_sha256": evidence.file_hash(self.output / "candidate.json"), "issues": []}
+        self.tool(rows, role, "yield", {"data": payload}, {"data": payload, "status": "success"})
+        child_path = self.parent_path.with_suffix("") / f"{item['name']}.jsonl"
+        jsonl(child_path, rows)
+        evidence.write_json(child_path.with_suffix(".json"), payload)
+        child_path.with_suffix(".md").write_bytes(evidence.json_bytes(payload))
+        self.log("main", "subagent_spawn", requested_role=role, spawnKey=item["name"], invocationKind="task", allow=True)
+        return {"index": index, "id": item["name"], "agent": role, "agentSource": "project",
+                "assignment": item["task"].strip(), "task": task, "exitCode": 0, "aborted": False, "truncated": False,
+                "resolvedModelIdentity": evidence.SELECTOR, "resolvedModelIsFallback": False,
+                "structuredOutput": {"source": "caller", "mode": "strict", "status": "valid", "data": payload},
+                "output": evidence.json_bytes(payload).decode(), "outputPath": str(child_path.with_suffix(".md"))}
+
+    def finish(self, reports):
+        parent = self.start("main")
+        events = []
+        if self.policy["dispatched"]:
+            children = [self.child(item, index) for index, item in enumerate(self.policy["task_call"]["tasks"])]
+            details = {"results": children}
+            task_id = self.tool(parent, "main", "task", self.policy["task_call"], details)
+            events.append({"type": "tool_execution_end", "toolName": "task", "toolCallId": task_id,
+                           "result": {"details": details}, "isError": False})
+        else:
+            self.read_inputs(parent, "main")
+            provenance = {role: {"attempt_id": value["attempt_id"], "child_id": value["child_id"],
+                                "source_id": value["report"]["source_id"], "revision": 2,
+                                "sha256": value["report"]["source_sha256"]} for role, value in reports.items()}
+            candidate = {"movement": "CS-2", "quantity_scanned": 72, "quantity_usable": 68, "release_status": "HOLD",
+                         "not_before": "2026-10-16T18:00:00-06:00", "decision": "HOLD",
+                         "decision_reasons": ["AUTHORITY_HOLD", "TIMING_NOT_OPEN"], "evidence": provenance}
+            evidence.write_json(self.work / evidence.CANDIDATE, candidate)
+            evidence.write_json(self.output / "candidate.json", candidate)
+            details = {"path": evidence.CANDIDATE, "sha256": evidence.file_hash(self.output / "candidate.json")}
+            self.tool(parent, "main", "course_write", {"path": evidence.CANDIDATE, "content": evidence.json_bytes(candidate).decode()}, details,
+                      execution={**details, "ok": True})
+        self.assistant(parent, "main", [{"type": "text", "text": "Synthetic fixture complete, not a provider observation."}])
+        jsonl(self.parent_path, parent)
+        jsonl(self.output / "stdout.jsonl", events + [{"type": "agent_end"}])
+        jsonl(self.output / "guard.jsonl", self.guard)
+        (self.output / "stderr.txt").write_text("")
+        evidence.write_json(self.output / "process.json", {"returncode": 0, "aborted": False, "timed_out": False,
+                            "omp_version": evidence.OMP_VERSION, "binary_sha256": "f" * 64, "fixture": True})
+        evidence.write_json(self.output / "work-after.json", evidence.work_snapshot(self.work))
+        audit = evidence.audit_attempt(self.work, self.output, sealed=False)
+        evidence.write_json(self.output / "reports.json", audit["reports"])
+        evidence.write_json(self.output / "result.json", evidence.summary(audit))
+        evidence.seal_attempt(self.output)
+        return audit
+
+
+class OrchestrationBehavior(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="copper-evidence-test-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        self.work = self.root / "work"
+        shutil.copytree(MODULE / "scripts", self.work / "scripts", ignore=shutil.ignore_patterns("__pycache__"))
+        for directory in ("case", "controls", "agents", "prompts"):
+            shutil.copytree(MODULE / "shared" / directory, self.work / "shared" / directory)
+        (self.work / "out").mkdir()
+        self.serial = 0
+
+    def stage(self, stage, prior=None):
+        self.serial += 1
+        assignments = orchestrate.inspect_work(self.work)
+        reference, reports, reused, dispatched = orchestrate.select_prior(self.work, stage, prior, assignments)
+        output, policy, _cwd, _prompt = orchestrate.prepare_attempt(self.work, self.root / f"{stage}-{self.serial}", stage,
+                                                                   assignments, reference, reports, reused, dispatched)
+        audit = NativeFixture(self.work, output, policy).finish(reports)
+        return output, audit
+
+    def repair_input(self):
+        brief = self.work / "shared/prompts/timing.md"
+        brief.write_text(brief.read_text().replace("Input: shared/case/timing-pending.json", "Input: shared/case/timing.json", 1))
+
+    def repaired(self):
+        first, first_audit = self.stage("fanout")
+        self.repair_input()
+        repair, repaired = self.stage("repair", first)
+        return first, first_audit, repair, repaired
+
+    def test_partial_completion_and_selective_repair_keep_original_attribution(self):
+        first, initial, repair, repaired = self.repaired()
+        self.assertEqual(evidence.summary(initial)["accepted_roles"], ["inventory", "authority"])
+        self.assertEqual(evidence.summary(initial)["blocked_roles"], ["timing"])
+        self.assertEqual(repaired["dispatched"], ["timing"])
+        self.assertEqual(repaired["reused"], ["inventory", "authority"])
+        self.assertEqual(evidence.summary(repaired)["status"], "PASS")
+        self.assertEqual(repaired["reports"]["inventory"], initial["reports"]["inventory"])
+        self.assertEqual(repaired["reports"]["authority"], initial["reports"]["authority"])
+        self.assertNotEqual(repaired["reports"]["timing"]["attempt_id"], initial["reports"]["timing"]["attempt_id"])
+        evidence.verify_seal(first)
+        self.assertEqual(evidence.summary(evidence.audit_attempt(self.work, repair))["status"], "PASS")
+
+    def test_integration_and_review_require_their_actual_dependencies(self):
+        first, _ = self.stage("fanout")
+        for stage in ("integrate", "review"):
+            with self.subTest(stage=stage), self.assertRaises(ValueError):
+                orchestrate.select_prior(self.work, stage, first, orchestrate.inspect_work(self.work))
+        self.repair_input()
+        repair, _ = self.stage("repair", first)
+        integrate, integrated = self.stage("integrate", repair)
+        review, reviewed = self.stage("review", integrate)
+        self.assertEqual(evidence.summary(integrated)["status"], "PASS")
+        self.assertEqual(evidence.summary(reviewed)["status"], "PASS")
+        self.assertEqual(evidence.load_json(self.work / evidence.CANDIDATE)["decision"], "HOLD")
+        evidence.write_json(self.work / evidence.CANDIDATE, {"movement": "CS-2", "decision": "READY"})
+        with self.assertRaises(ValueError):
+            evidence.audit_attempt(self.work, review)
+
+    def test_changed_source_invalidates_its_consumer_not_independent_work(self):
+        _first, _initial, repair, repaired = self.repaired()
+        source = self.work / "shared/case/authority.json"
+        source.write_text(source.read_text() + "\n")
+        audit = evidence.audit_attempt(self.work, repair)
+        self.assertEqual(evidence.summary(audit)["accepted_roles"], ["inventory", "timing"])
+        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work))
+        self.assertEqual(reusable, ["inventory", "timing"])
+        self.assertEqual(dispatched, ["authority"])
+        with self.assertRaises(ValueError):
+            orchestrate.select_prior(self.work, "integrate", repair, orchestrate.inspect_work(self.work))
+
+    def test_changed_role_and_brief_invalidate_their_handoffs(self):
+        _first, _initial, repair, _repaired = self.repaired()
+        for relative in ("shared/agents/inventory.md", "shared/prompts/authority.md"):
+            path = self.work / relative
+            path.write_text(path.read_text() + "\nKeep the source boundary explicit.\n")
+        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work))
+        self.assertEqual(reusable, ["timing"])
+        self.assertEqual(dispatched, ["inventory", "authority"])
+
+    def test_unchanged_consumer_line_endings_do_not_make_frozen_briefs_stale(self):
+        for stage, newline in (("integrate", b"\r\n"), ("review", b"\n")):
+            path = self.work / f"shared/prompts/{stage}.md"
+            path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", newline))
+        _first, _initial, repair, _repaired = self.repaired()
+        integrate, integrated = self.stage("integrate", repair)
+        self.assertEqual(evidence.summary(integrated)["status"], "PASS")
+        review, _reviewed = self.stage("review", integrate)
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            status = orchestrate.check_stage(self.work, review)
+        self.assertEqual(status, 0)
+        self.assertEqual(json.loads(output.getvalue())["status"], "PASS")
+
+    def test_changed_consumer_instructions_invalidate_review_not_specialists(self):
+        _first, _initial, repair, _repaired = self.repaired()
+        integrate, _integrated = self.stage("integrate", repair)
+        review, _reviewed = self.stage("review", integrate)
+        for relative in ("shared/prompts/integrate.md", "shared/prompts/review.md", "shared/agents/review.md"):
+            with self.subTest(relative=relative):
+                path = self.work / relative
+                original = path.read_text()
+                try:
+                    path.write_text(original + "\nRequire explicit source authority in the decision.\n")
+                    output = io.StringIO()
+                    with contextlib.redirect_stdout(output):
+                        status = orchestrate.check_stage(self.work, review)
+                    self.assertEqual(status, 1)
+                    self.assertEqual(json.loads(output.getvalue())["status"], "HOLD")
+                    self.assertEqual(evidence.summary(evidence.audit_attempt(self.work, repair))["status"], "PASS")
+                    if relative == "shared/prompts/integrate.md":
+                        with self.assertRaises(ValueError):
+                            orchestrate.select_prior(self.work, "review", integrate, orchestrate.inspect_work(self.work))
+                finally:
+                    path.write_text(original)
+
+    def test_missing_child_or_guard_execution_cannot_be_replaced_by_summary(self):
+        for damage in ("child", "execution"):
+            with self.subTest(damage=damage):
+                first, _ = self.stage("fanout")
+                if damage == "child":
+                    next((first / "sessions").rglob("Inventory.jsonl")).unlink()
+                else:
+                    path = first / "guard.jsonl"
+                    rows = [row for row in evidence.read_jsonl(path) if not (row.get("type") == "execution_result" and row["agent"]["id"] == "Inventory")]
+                    jsonl(path, rows)
+                # Reseal to reach semantic validation, rather than only testing a hash mismatch.
+                evidence.seal_attempt(first)
+                output = io.StringIO()
+                with contextlib.redirect_stdout(output):
+                    status = orchestrate.check_stage(self.work, first)
+                self.assertEqual(status, 1)
+                self.assertEqual(json.loads(output.getvalue())["status"], "HOLD")
+
+    def test_duplicate_spawn_and_wrong_model_are_rejected_after_reseal(self):
+        for damage in ("duplicate", "model"):
+            with self.subTest(damage=damage):
+                first, _ = self.stage("fanout")
+                path = first / "guard.jsonl"
+                rows = evidence.read_jsonl(path)
+                if damage == "duplicate":
+                    rows.append(copy.deepcopy(next(row for row in rows if row["type"] == "subagent_spawn")))
+                else:
+                    next(row for row in rows if row["type"] == "guard_ready" and row["agent"]["id"] == "Inventory")["model"] = "unapproved-model"
+                jsonl(path, rows)
+                evidence.seal_attempt(first)
+                with self.assertRaises(ValueError):
+                    evidence.audit_attempt(self.work, first)
+
+    def test_prior_and_native_record_changes_are_not_reusable(self):
+        first, _initial, repair, _repaired = self.repaired()
+        reports = first / "reports.json"
+        reports.write_text(reports.read_text() + "\n")
+        with self.assertRaises(ValueError):
+            evidence.audit_attempt(self.work, repair)
+        evidence.seal_attempt(first)
+        with self.assertRaises(ValueError):
+            evidence.audit_attempt(self.work, repair)
+
+    def test_current_revision_beats_later_archive_receipt_and_unresolved_branch_holds(self):
+        source = evidence.load_json(self.work / "shared/case/authority.json")
+        self.assertGreater(source["records"][0]["recorded_at"], source["records"][1]["recorded_at"])
+        self.assertEqual(evidence.current_record(source)["facts"]["release_status"], "HOLD")
+        source["records"].append({"revision": 3, "supersedes": None, "recorded_at": "2026-10-16T12:14:00-06:00",
+                                  "authority": "Conflicting office", "facts": {"release_status": "RELEASED"}})
+        with self.assertRaises(ValueError):
+            evidence.current_record(source)
+
+    def test_wrong_source_role_and_unsafe_inputs_stop_before_dispatch(self):
+        brief = self.work / "shared/prompts/authority.md"
+        text = brief.read_text()
+        brief.write_text(text.replace("Input: shared/case/authority.json", "Input: shared/case/inventory.json"))
+        with self.assertRaises(ValueError):
+            orchestrate.inspect_work(self.work)
+        for path in ("../secret", "/secret", "file://secret", "shared/case/inventory.json:1-3"):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                evidence.work_file(self.work, path)
+
+    def test_fresh_evidence_never_overwrites_existing_attempt(self):
+        first, _ = self.stage("fanout")
+        original_seal = (first / "seal.json").read_bytes()
+        assignments = orchestrate.inspect_work(self.work)
+        with self.assertRaises(ValueError):
+            orchestrate.prepare_attempt(self.work, first, "fanout", assignments, None, {}, [], list(evidence.ROLES))
+        self.assertEqual((first / "seal.json").read_bytes(), original_seal)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -12,13 +12,12 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
-| Variable model/tool spend | Provisional US$40 learner allowance, confirmed by the account owner; at most two concurrent paid attempts | Not an enforced spending ceiling or an observed total; requires actual usage records. Module 08 stretch has 36 paired calls and two restored controls. Separately authorized staff verification uses its own aggregate budget and admission controls. |
-| Independent-recipient session | One per learner, outside the four course days | Provisional; requires recruitment and scheduling evidence |
+| Variable model/tool spend | Provisional US$40 learner allowance, confirmed by the account owner; at most two concurrent paid attempts | Not an enforced ceiling or an observed total; requires an actual usage ledger. The five-turn paid review/correction sequence uses one pinned model per turn. Separately authorized staff verification has its own aggregate budget and admission controls. |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
 No unmeasured budget is reported as achieved. Delivery may vary support and optional stretch work; it may not hide required work outside the course days or weaken a technical check.
 
-Time estimates exclude meals and breaks, setup, optional stretches, and the separately scheduled independent-recipient session.
+Time estimates exclude meals and breaks, setup, and optional stretches.
 
 ## Schedule and independence
 
@@ -38,12 +37,12 @@ Eleven instructor-led, hands-on module blocks run across four teaching days, Mon
 | 3 | Tuesday · Block 1 | 02 Build and control a reusable second brain |
 | 4 | Tuesday · Block 2 | 03 Operate MCP tools under limited authority |
 | 5 | Tuesday · Block 3 | 04 Decide with typed questions |
-| 6 | Wednesday · Block 1 | 05 Diagnose and recover |
-| 7 | Wednesday · Block 2 | 06 Improve from observed failures |
-| 8 | Wednesday · Block 3 | 07 Build and control a fixed workflow through change |
-| 9 | Thursday · Block 1 | 08 Evaluate a change with variation controls |
+| 6 | Wednesday · Block 1 | 05 Orchestrate an OMP agent team |
+| 7 | Wednesday · Block 2 | 06 Design a workflow for a decision model |
+| 8 | Wednesday · Block 3 | 07 Automate a spreadsheet with an agent |
+| 9 | Thursday · Block 1 | 08 Control hallucinations |
 | 10 | Thursday · Block 2 | 09 Constrain agent behavior |
-| 11 | Thursday · Block 3 | 10 Stand up a local uncensored AI and hand it off |
+| 11 | Thursday · Block 3 | 10 Stand up and package a local uncensored AI |
 
 ### Tuesday timetable
 
@@ -71,7 +70,7 @@ Wednesday starts around 08:00 and ends around 18:30. Times are approximate.
 | 15:00–15:20 | Meal break |
 | 15:20–18:30 | White Rack |
 
-The Copper Span break follows the sealed first miss, the Blue Gauge break follows the sixteen first-failure notes, and the White Rack break follows initial graph construction.
+The Copper Span break follows inspection of the first fan-out and its blocked handoff, the Blue Gauge break follows the first-miss notes and precedes the question revision, and the White Rack break follows initial graph construction.
 
 ### Thursday timetable
 
@@ -87,7 +86,7 @@ Thursday starts around 08:00 and ends around 16:30. Times are approximate.
 
 The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its pacing route.
 
-Cold Foundry keeps its full 13:30–16:30 block. Its independent-recipient attempt is separately scheduled outside class hours; it is not part of that three-hour allocation.
+Cold Foundry keeps its full 13:30–16:30 block. Each learner runs, stops, restores, and checks their own saved package within that session.
 
 ### Readiness deadlines
 
@@ -96,10 +95,10 @@ Let **T** be the first teaching day confirmed by the course coordinator. Until t
 | Due | Owner | Required action |
 |---|---|---|
 | T−7 days | Course coordinator | Send setup instructions, repository invitations and account/access requirements through approved channels. |
-| T−3 days | Each participant; coordinator for recipient arrangements | Return separate OMP, Obsidian, n8n and Local model readiness evidence and blockers. Confirm the participant's route, OS/version/architecture and device/support owner. Arrange the after-hours recipient attempt. |
+| T−3 days | Each participant and course coordinator | Return the readiness evidence required by the selected setup route and the separate Local model check, with blockers. Confirm the participant's route, OS/version/architecture and device/support owner. |
 | T−1 day | Device/support owner and facilitators | Resolve approved installation/access blockers and complete exact-model capstone downloads and full rehearsals on the intended machines. Record unresolved items as named HOLDs. |
 
-The Module 00 facilitator runbook owns the privacy-safe intake/register procedure and required checks. Names, consent and contact details stay outside the repository. A missed deadline is HOLD, not presumed readiness. Three actual novice pilots, current facilitator/platform observations, a Module 09 human peer review and an independently observed Module 10 recipient rehearsal are pre-release requirements; later class-time learner records remain future operating evidence.
+The Module 00 facilitator runbook owns the privacy-safe intake/register procedure and required checks. Names, consent and contact details stay outside the repository. A missed deadline is HOLD, not presumed readiness. Record actual novice-pilot, facilitator, platform and human peer observations separately from automated checks; later class-time learner records remain future operating evidence. Publication authorization does not complete an unobserved lane. Cold Foundry is individual work, not an independent-recipient requirement.
 
 Sessions run in this order. Each capability assumes earlier skills, while **no module depends on another module's evidence**. Every module receives its own case and machinery, verified at entry. Recover missing prerequisites explicitly. A technical `HOLD` identifies work that needs attention; it does not block later participation.
 
@@ -112,9 +111,9 @@ Adapters share [CASE_FAMILY.md](CASE_FAMILY.md); every module still receives its
 | **Guided** | Use and challenge a supplied bounded method. | Opening of session 1 |
 | **Independent** | Author task-specific direction, evidence, and decisions. | 1–5 |
 | **Adversarial** | Preserve standards under changed, misleading, malformed, over-authorized, hidden, or variable conditions. | 6–10 |
-| **Transferred** | Operate from saved artifacts and enable another person to use the package. | 11 |
+| **Transferred** | Operate from saved artifacts and package the work so it checks out from a fresh copy without the author's chat history. | 11 |
 
-File presence cannot establish observed performance. An authored practice output is not a live-model receipt. A technical replay can establish observed software behavior; it cannot establish a real classmate's independent reading or recipient performance.
+File presence cannot establish observed performance. An authored practice output is not a live-model receipt. A technical replay establishes only the software behavior it exercised.
 
 ## Sequence, supplied inputs, and evidence
 
@@ -125,12 +124,12 @@ File presence cannot establish observed performance. An authored practice output
 | 02 | Build and control a reusable second brain | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT` | Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher | Source-traceable admitted knowledge and useful links; explicit saved-rule load and frozen-content identity; actual knowledge reads and citations without the source-processing chat or raw packet; one substantive improvement in a reviewed revision and fresh run, preserving earlier evidence |
 | 03 | Operate MCP tools under limited authority | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:MCP_SERVER` | `MCP_CONNECTION`; `HANDLING_REGISTER`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Read a server's contract, connect it with declared limits and prove them with a probe, check an AI's handling classifications against stated rules, and disconnect with proof |
 | 04 | Decide with typed questions | about 2½h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:QUESTION_SET`; `VERIFY:DECISION_CONTROLS` | `TYPED_ANSWERS`; `LABEL_AGREEMENT`; `CONFIDENCE_GATES`; `ROUTED_REQUIREMENT`; `PO04_RESULT` | Typed question set and code-owned router | Labels frozen before a read-only run; every typed answer validated against the question set; agreement and declared confidence measured on the sample; gates set from the measurement; routes and requirement recomputable from answers and gates; queues and the authority change decided by a person |
-| 05 | Diagnose and recover | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RESTORE_PATH`; `VERIFY:FAULT_ENV` | `LOCALIZATION_RESULT`; `RECOVERY_RESULT`; `PO05_RESULT` | Unfamiliar faulty harness | Inspect localization separately from authorized correction or verified revert; retain focused, end-to-end, and clean-condition evidence |
-| 06 | Improve from observed failures | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:RUN_SAMPLE`; `VERIFY:DETERMINISTIC_CONTROL` | `SAMPLE_MANIFEST`; `PREDICATE_SPEC`; `DETERMINISTIC_CONTROL_RESULT`; `PO06_RESULT` | Observed-run corpus | Outcome-blind analysis supports a mechanically decidable predicate configured and validated in the supplied deterministic control; arbitrary semantic implementation is held |
-| 07 | Build and control a fixed workflow through change | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD`; `VERIFY:N8N_CONTROLS` | `FIXED_BASELINE`; `EXCEPTION_RULE`; `DETERMINISTIC_DELTA`; `CONFIG_ID`; `RESTORE_ACTION`; `PO07_RESULT` | **structured-data/batch** work | Learner builds a saved native n8n graph from blank, extending source checks and predicate validation into batch orchestration; frozen source-based predictions and independent complete 80-row comparisons cover both waves before/after one pending_status edit; preserve original export and separate pre-edit SHA-256 report, export changed graph, verify original identity, restore into blank workflow, and reproduce both waves byte-for-byte; no manual patches or generated prose in acceptance |
-| 08 | Evaluate a change with variation controls | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BASELINE_CONFIG`; `VERIFY:CANDIDATE` | `PRE_RESULT_POLICY`; `CHANGE_DECISION`; `COST_PROXY`; `RESTORED_BASELINE`; `PO08_RESULT` | Frozen paired cases | Pre-result repetition/exclusion rule, hard gates, paired evidence, bounded recommendation, and restored baseline support the decision |
+| 05 | Orchestrate an OMP agent team | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:NATIVE_TASK`; `VERIFY:ORCHESTRATION_CONTROLS` | `WORK_GRAPH`; `AGENT_HANDOFFS`; `PARTIAL_RECOVERY`; `INTEGRATED_BRIEF`; `PO05_RESULT` | Native OMP parent and child sessions | Complete briefs and dependency graph; native execution and accepted source-bearing reports; preserved blocked child; selective repair with justified reuse; one coordinator-owned brief and a dependent read-only review |
+| 06 | Design a workflow for a decision model | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:JUDGE_ROUTE`; `VERIFY:DESK_LABELS` | `JUDGE_SELECTION`; `DECISION_QUESTIONS`; `RISK_THRESHOLDS`; `HELD_OUT_MEASURE`; `PO06_RESULT` | Decision-model screen for AI-drafted notes | Saved judge candidates and a selection naming the data boundary and weak spots; the pinned judge setting; a question set passing the router check; launcher-audited tuning runs with served build and cost; first-miss notes before revision; thresholds and review ceiling frozen before one held-out run; held-out errors, review share, and cost per 1,000 notes; no release or load authorized |
+| 07 | Automate a spreadsheet with an agent | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD` | `AGENT_SHEET`; `PO07_RESULT` | **structured-data/batch** work | Learner connects an n8n AI Agent to OpenRouter and has it write a spreadsheet from the White Rack batch; the downloaded file is checked against the source lots |
+| 08 | Control hallucinations | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CLAIMS` | `FROZEN_CLAIMS`; `BEFORE_REVIEWS`; `CORRECTION`; `AFTER_REVIEWS`; `REPORT`; `HUMAN_DISPOSITION`; `PO08_RESULT` | Structured claim checks and a fixed read-only ensemble | Seven claims on three frozen source packets; blind source and skeptical reviews; one source-constrained correction; two fresh full-set reviews; all five actual runs audited; disagreements and regressions resolved by evidence or held; individual human disposition retains unknown authority. |
 | 09 | Constrain agent behavior | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO09_RESULT` | Constrained agent run | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
-| 10 | Stand up a local uncensored AI and hand it off | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live interaction, stop/restore receipts, recipient observations and questions, and a handoff that names unresolved limits |
+| 10 | Stand up and package a local uncensored AI | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop | Verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out naming unresolved limits. ~180 min allocation (unmeasured). Access/hardware/time misses: honest in-session HOLD. Learner retains ownership. |
 ## Minimum screen and release authority
 
 `MIN_SCREEN` covers source/data authority, sensitive-data boundary, affected audience/person, disclosure need, consequential authority, and human decision owner. It is a standing rule: every module applies it to its own supplied case, and an unresolved item is `HOLD`. Modules 00–02 can claim only bounded internal acceptance.
@@ -146,26 +145,24 @@ A refusal to connect, or an AI proposal accepted without checking, is not credit
 
 ## Complexity and implementation boundary
 
-Fixed workflow is the highest mandatory operation. Core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, adaptive flow, multi-agent operation or writing, custom retrieval infrastructure, and MCP construction remain advanced.
+Core operation includes bounded native OMP teams and task-bounded automation. Module 05 uses read-only specialists and a reviewer, one coordinator-owned output, explicit dependencies, and bounded selective recovery. Module 07 connects one n8n agent to one spreadsheet-writing tool. Module 08 adds a bounded human-started read-only ensemble: isolated reviews, one correction, and fresh re-review through supplied controls. Core also permits a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, custom retrieval infrastructure, and MCP construction remain advanced.
 
-Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Hidden-fault diagnosis remains Module 05's capability, and person-to-person transfer remains Module 10's.
+Module 02 assumes earlier source verification and bounded direction. Saved instructions and load proof are newly taught there. Its local Obsidian vault uses Restricted community plugins and Sync off, with no account, plugin, or MCP service. OMP readiness, Obsidian GUI link/edit/save/external-refresh/reopen evidence, and n8n readiness are separate observations; a disk check alone does not establish GUI operation. Bounded multi-agent orchestration belongs to Module 05; checking a local-model package from a fresh copy remains Module 10's.
 
-The learner specifies and configures bounded behavior in supplied controls. In Module 07, the learner also composes native visual n8n nodes into a saved batch workflow; the adapter supplies the unchanged validator and independent comparison workflow. In Module 03 the learner also operates and configures a supplied MCP server and its limits; building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
+The learner specifies and configures bounded behavior in supplied controls. In Module 05, the learner owns the work graph, native role instructions, handoff acceptance and recovery; the adapter supplies the launcher, guard and independent evidence checks, not a second scheduler. In Module 07, the learner connects an n8n agent, a pinned chat model, and a supplied-purpose tool workflow that creates a downloadable spreadsheet. The supplied file checker establishes lot coverage; a person checks the routes and statuses against the rules. In Module 03, the learner operates and configures a supplied MCP server and its limits. Building an MCP server, custom RAG, custom runtime implementation, and deployment remain builder work.
 
 Module 07 requires local n8n 2.41.5 on the full official six-service Docker stack, localhost access, and unpublished workflows. The platform setup owns installation and readiness. The native Windows PowerShell path uses WSL Ubuntu only as the n8n bridge; it keeps OMP, Python, Git, credentials, and other course work native. Neither an OMP pass nor a supplied receipt substitutes for n8n operation.
 
 ## Degraded and 10x policy
 
-If a **model**, **tool**, **source**, **supplied fixture**, **recipient**, or **restore** path is missing, retain only bounded unaffected evidence and record the missing prerequisite. No replay or narration becomes operation. A substituted dependency is named in the work record with the basis for comparison. Because no module depends on another's evidence, a missing dependency does not cascade into later sessions.
+If a **model**, **tool**, **source**, **supplied fixture**, or **restore** path is missing, retain only bounded unaffected evidence and record the missing prerequisite. No replay or narration becomes operation. A substituted dependency is named in the work record with the basis for comparison. Because no module depends on another's evidence, a missing dependency does not cascade into later sessions.
 
-All live runs use Oh My Pi 18.3.5, `openrouter/anthropic/claude-sonnet-4.6`, and `OPENROUTER_API_KEY` through `shared/run_omp.py`. Missing credentials, unavailable pinned version/model, rate limits, exhausted credits, or failed receipts hold the live lane. Do not switch provider/model, borrow a direct-provider login, retry implicitly, or report a fixture as live evidence.
+Live OMP exercises use Oh My Pi 18.3.5, `openrouter/anthropic/claude-sonnet-4.6`, and `OPENROUTER_API_KEY`. Module 05 uses its native-task orchestration launcher; other OMP exercises use `shared/run_omp.py`. Module 06 also sets OMP's judge role to `openrouter/typesafe/jev-1.13` through the same key and launcher; the launcher records the dated build that answered. Missing credentials, unavailable pinned version/model, rate limits, exhausted credits, or failed receipts hold the live lane. Do not switch provider/model or judge, use a moving alias, borrow a direct-provider login, retry implicitly, or report a fixture as live evidence.
 
-Public practice controls and fictional corpora are inspectable. The shared extension enforces an OMP tool boundary, not an operating-system sandbox. Time estimates in this map are rough design figures, not measurements, until they are observed with people.
+Public practice controls and fictional corpora are inspectable. The course extensions enforce OMP tool boundaries, not operating-system sandboxes. Module 05 must check each child's resolved tools, model and native execution instead of assuming the parent's interactive approvals propagate. Time estimates in this map are rough design figures, not measurements, until they are observed with people.
 
-At 200 learners, preserve the same capabilities, supplied cases, technical checks, and transfer practice. The scale plan must account for machine support, troubleshooting, facilitator availability, and recipient capacity. Missing staffing or budget evidence remains provisional.
+At 200 learners, preserve the same capabilities, supplied cases, technical checks, and fresh-copy package checks. The scale plan must account for machine support, troubleshooting, and facilitator availability. Missing staffing or budget evidence remains provisional.
 
 ## Transfer practice
 
-Clean-session restartability and person-to-person transfer are separate observations. Run the supplied task from the saved package in a fresh session, then ask another person to operate it from the package without relying on your chat history.
-
-Preserve the recipient's actions and questions, including any help you provide. Use those observations to improve the package. If no recipient is available, record that the person-to-person attempt was not observed; a technical replay does not replace it. There are no recipient scores, learner pass/fail decisions, or reassessment requirements.
+Freeze the declared ten-file bundle in `E/bundle-before.json`, then make a digest-checked copy in the received folder `F`. In a new terminal inside `F`, run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked`. The structure check reads named fields and confirms every named file is inside `F`; it does not run the package's commands or show that another person can operate the kit. Record the check and unresolved limits in `E/close-out.md`. There are no scores, learner pass/fail decisions, or reassessment requirements.

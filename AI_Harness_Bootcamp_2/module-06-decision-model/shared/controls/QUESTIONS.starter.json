@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "questions": {
+    "claims_release": {
+      "type": "bool",
+      "instructions": "Is the cylinder released and ready to load?"
+    },
+    "note_status": {
+      "type": "choice",
+      "instructions": "What is the cylinder's status?",
+      "criteria": {
+        "released_for_issue": "Released.",
+        "inspected": "Inspected.",
+        "received": "Received.",
+        "held": "Held."
+      }
+    },
+    "instructs_reader": {
+      "type": "bool",
+      "instructions": "Is the note free of instructions to the desk?"
+    },
+    "urgency": {
+      "type": "bool",
+      "instructions": "Is the move urgent?"
+    },
+    "window_before_load": {
+      "type": "bool",
+      "instructions": "Is the time in the note earlier than the 06:00 load?"
+    }
+  }
+}
