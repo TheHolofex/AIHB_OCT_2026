@@ -280,7 +280,7 @@ DANGEROUS = {
     r"npm\s+(?:install|i)\b[^\n]*\s-g\b[^\n]*sudo": "sudo global npm",
     r"curl\s[^\n]*(?:--insecure|\s-k\b)": "insecure curl",
     r"chmod\s+-R\s+0?777": "world-writable recursive chmod",
-    r"rm\s+-rf\s+(?:~|/\s|\$HOME|[^\n]*AI_Harness_Bootcamp)": "destructive recursive delete",
+    r"rm\s+-rf\s+(?:~|/\s|\$HOME|[^\n]*(?:AIHB_OCT_2026|AI_Harness_Bootcamp))": "destructive recursive delete",
     r"Set-ExecutionPolicy\s+(?:Unrestricted|Bypass)\s+-Scope\s+(?:LocalMachine|CurrentUser)": "policy bypass",
     r"(?:echo|printf|Write-Output|Write-Host)\s[^\n]*(?:\$\{?(?:XAI|OPENAI|OPENROUTER)_API_KEY|\$env:(?:XAI|OPENAI|OPENROUTER)_API_KEY)": "secret echo",
     r"pacman\s+-Sy(?!u)": "Arch partial upgrade",

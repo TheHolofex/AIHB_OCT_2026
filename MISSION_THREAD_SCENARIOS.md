@@ -369,4 +369,4 @@ Use the mechanism. Leave the tank scenario in `mission_flesh/`.
 
 ## Build-status fact
 
-As of 2026-09-25, `reformation/AI_Harness_Bootcamp_2/module-00-setup` through `module-10-capstone` contain learner labs. `reformation/README.md` previously said Modules 02–10 had case-family slots only. That sentence was stale. The README pointer added with this file is the current inventory: thin labs exist; replacement specs for 02–10 are adopted. Retired thin-adapter references are not active work.
+As of 2026-09-25, `AI_Harness_Bootcamp_2/module-00-setup` through `module-10-capstone` contain learner labs. `README.md` previously said Modules 02–10 had case-family slots only. That sentence was stale. The README pointer added with this file is the current inventory: thin labs exist; replacement specs for 02–10 are adopted. Retired thin-adapter references are not active work.

@@ -83,6 +83,8 @@ MUTATIONS: list[Mutation] = [
                  "# Extra handout\n\n```text\nsudo npm install --global something -g\n```\n", encoding="utf-8")),
     Mutation("C2", "a dangerous command hides in a ```text fence",
              append(LAB, "\n```text\nsudo npm install --global whatever -g\n```\n")),
+    Mutation("C2", "a learner block deletes the course checkout",
+             append(LAB, '\n```bash\nrm -rf "$HOME/Documents/AIHB_OCT_2026"\n```\n')),
     Mutation("C7", "an internal token reaches a learner file",
              append(LAB, "\nRecord PO00_RESULT when the run finishes.\n")),
     # Class D
