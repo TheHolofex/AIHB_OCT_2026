@@ -16,4 +16,4 @@ The copy has only the ten files the package names: the instructions, the check s
 
 ## Keep it on this laptop
 
-Start the server only on `127.0.0.1`. Keep the model file on this laptop, under your own account. Don't upload it again, don't share the address, and don't let anyone else send requests to it. The tools record prompts and replies in your evidence folder. What you produce is for class review only. This is a local service you can run yourself. Finishing the run does not authorize anything beyond the evidence you saved.
+Start the server only on `127.0.0.1`. Keep the model file on this laptop, under your own account. Don't upload it again, don't share the address, and don't let anyone else send requests to it. The tools record prompts and replies in your evidence folder. What you produce is for class use only. This is a local service you can run yourself. Finishing the run does not authorize anything beyond the evidence you saved.

@@ -1,6 +1,6 @@
 # Module 1 · Verify sources and outputs
 
-You're going to check the Cold Lantern brief against the sources, and against math you do yourself. Then you decide whether to accept it, revise it, reject it, or hold it for class review. Follow the shipment step by step, and check that each step actually gives the next one what it needs.
+You're going to check the Cold Lantern brief against the sources, and against math you do yourself. Then you decide whether to accept it, revise it, reject it, or hold it. Follow the shipment step by step, and check that each step actually gives the next one what it needs.
 
 Plan for about three hours. That's a rough estimate, not a measured time.
 
@@ -31,4 +31,4 @@ The model's confidence, its list of citations, and a review it wrote of its own 
 
 ## Class-only boundary
 
-The names, routes, documents, quantities, and organizations are made up for class. Don't use this packet to plan, authorize, dispatch, or describe a real movement. What you produce here is for class review only.
+The names, routes, documents, quantities, and organizations are made up for class. Don't use this packet to plan, authorize, dispatch, or describe a real movement. What you produce here is for class use only.

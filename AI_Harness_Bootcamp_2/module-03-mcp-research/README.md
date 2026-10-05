@@ -22,4 +22,4 @@ Use the checkout, Python, and OMP you already checked in [setup](../module-00-se
 
 ## Class-only boundary
 
-The names, places, and facts are fictional. Don’t use this folder, these markings, or these notes to plan, authorize, or describe a real movement, or to handle real information. Your result is for class review only.
+The names, places, and facts are fictional. Don’t use this folder, these markings, or these notes to plan, authorize, or describe a real movement, or to handle real information. Your result is for class use only.

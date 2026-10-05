@@ -24,4 +24,4 @@ A saved rule tells the model how to treat the paperwork. A file screen flags lin
 
 ## Class-only boundary
 
-The names, crates, offices, and quoted blocks are fictional. Results are for class review only. They don’t authorize a release, assignment, dispatch, or real movement.
+The names, crates, offices, and quoted blocks are fictional. Results are for class use only. They don’t authorize a release, assignment, dispatch, or real movement.

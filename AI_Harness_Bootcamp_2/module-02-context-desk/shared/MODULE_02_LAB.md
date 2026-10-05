@@ -2,7 +2,7 @@
 
 You'll build linked notes in Obsidian, then ask a new chat to answer from the notes you've accepted. Keep the original paperwork separate from the model's suggestions. You decide which notes to accept. After that first new chat, fix one weakness that changes the answer.
 
-This is an ungraded exercise with fictional Ledger Pike paperwork. Your result supports internal class review only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
+This is an ungraded exercise with fictional Ledger Pike paperwork. Your result is for class use only. It does not authorize a release, vehicle assignment, permit approval, or real movement.
 
 ## The route
 

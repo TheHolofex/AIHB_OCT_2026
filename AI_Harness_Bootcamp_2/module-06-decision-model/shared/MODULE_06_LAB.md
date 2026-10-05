@@ -487,4 +487,4 @@ List each note whose route changed and the biggest change you see in any probabi
 
 ## Class-only boundary
 
-All the names, ids, records, and notes are made up for class. Don't use them to plan, authorize, or describe a real movement or handling decision. What you produce here is for class review only.
+All the names, ids, records, and notes are made up for class. Don't use them to plan, authorize, or describe a real movement or handling decision. What you produce here is for class use only.

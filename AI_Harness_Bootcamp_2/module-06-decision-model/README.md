@@ -22,4 +22,4 @@ TypeSafe's Jev is one of these models. Oh My Pi calls it as the judge through Op
 
 ## Class-only boundary
 
-The eighty notes, scan records, and desk labels are made up for class. They're about oxygen cylinders moving from East Yard to Clinic O-2. Don't use them to plan, authorize, or describe a real movement. What you produce here is for class review only.
+The eighty notes, scan records, and desk labels are made up for class. They're about oxygen cylinders moving from East Yard to Clinic O-2. Don't use them to plan, authorize, or describe a real movement. What you produce here is for class use only.

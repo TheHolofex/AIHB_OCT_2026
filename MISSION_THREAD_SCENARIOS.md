@@ -138,7 +138,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 
 **Stake:** Trusting the brief marks a movement ready when a local fact is true and a handoff is not: scanned is not released, intake is not approval, expected arrival is not delivery, the gate window is a different zone from the clock on the wall.
 
-**Skill:** Verify sources and outputs. Compositional truth. Accept, revise, reject, or hold for class review.
+**Skill:** Verify sources and outputs. Compositional truth. Accept, revise, reject, or hold.
 
 **Platform:** Local inbox, `scripts/hash_inbox.py`, `scripts/compute_thread.py`, `scripts/render_review.py`. The model's brief is the thing under review. Its confidence is not evidence.
 

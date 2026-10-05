@@ -2,7 +2,7 @@
 
 ## Session result
 
-The learner builds and controls a reusable second brain: source-backed Knowledge with useful relationships, explicit saved-rule load proof, human admission, and a fresh knowledge-only run. One substantive audit finding leads to reviewed content changes and a new cold run. This exercise is ungraded and supports only fictional internal class review.
+The learner builds and controls a reusable second brain: source-backed Knowledge with useful relationships, explicit saved-rule load proof, human admission, and a fresh knowledge-only run. One substantive audit finding leads to reviewed content changes and a new cold run. This exercise is ungraded and its fictional results are for class use only.
 
 Use the staff [reference](../reference/REFERENCE.md) for semantics and reuse provenance. Keep it out of public pages, prepared copies, prompts, and model roots. Do not seed a completed graph or staff answer into learner templates.
 

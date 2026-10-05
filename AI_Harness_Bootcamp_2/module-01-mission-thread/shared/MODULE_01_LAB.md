@@ -1,6 +1,6 @@
 # Module 1 · Verify a logistics mission thread
 
-You're going to decide whether the Cold Lantern brief's `GO` holds up. Open the sources, redo the math, and write a verdict you can support: accept, revise, reject, or hold, for class review. Every fact for this case is in the packet.
+You're going to decide whether the Cold Lantern brief's `GO` holds up. Open the sources, redo the math, and write a verdict you can support: accept, revise, reject, or hold. Every fact for this case is in the packet.
 
 Plan for about three hours. That's a rough estimate, not a measured time.
 
