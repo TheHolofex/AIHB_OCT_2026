@@ -46,9 +46,11 @@ course_check
 
 **Recovery:** If space is low, free some and paste the box again. For anything else, see [If a step stops](#if-a-step-stops). If packages or Python are missing, continue to step 2.
 
-## 2. Install missing packages
+## 2. Install Git and the other missing packages
 
-If step 1 printed `PACKAGES present` and a `PY` line, skip this box. Otherwise, install the missing packages. Ubuntu 24.04's `python3` is Python 3.12 and 26.04's is 3.14, so Ubuntu's own package is enough. `sudo` asks for your password; nothing appears while you type.
+**Git** copies the course files from GitHub to your computer and records exactly which version you have. Step 4 uses it to make your checkout. Ubuntu packages Git as `git`, and the [Git project](https://git-scm.com/install/linux) recommends installing it with your distribution's package manager. The box below installs `git` together with the other packages step 1 checks.
+
+If step 1 printed `PACKAGES present` and a `PY` line, skip this box and go to [Confirm Git works](#confirm-git-works). Otherwise, install the missing packages. Ubuntu 24.04's `python3` is Python 3.12 and 26.04's is 3.14, so Ubuntu's own package is enough. `sudo` asks for your password; nothing appears while you type.
 
 **Terminal: Ubuntu, Bash or Zsh, same window; sudo elevates package installation.**
 
@@ -61,6 +63,22 @@ sudo apt-get update && sudo apt-get install -y git python3 ca-certificates curl
 **Stop:** The password is refused, policy blocks the install, or `apt-get` prints an error.
 
 **Recovery:** Do not add a PPA, download Python, or use pip; save the error and see [If a step stops](#if-a-step-stops).
+
+### Confirm Git works
+
+This box shows which Git your terminal finds and asks it for its version. Run it even if you skipped the install box.
+
+**Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
+
+```bash
+command -v git && git --version
+```
+
+**Expected:** `/usr/bin/git`, then `git version 2.` followed by more numbers.
+
+**Stop:** the box prints nothing, or no `git version` line appears.
+
+**Recovery:** Paste the step 2 box again and keep any error it prints. Don't add a PPA or download Git from another site; see [If a step stops](#if-a-step-stops).
 
 ## 3. Install Oh My Pi
 
@@ -971,7 +989,7 @@ Find the step that stopped. Keep the exact error, the attempt folder, and the la
 ### Steps 1 to 3
 
 - Unsupported OS, shell, or account: ask the device owner for a supported Ubuntu 24.04 or 26.04 account. Don't choose another processor's binary.
-- Package install refused: save the error and ask the device owner. Don't add a PPA, download Python, or use pip.
+- Package install refused: save the error and ask the device owner. Don't add a PPA, download Git or Python, or use pip.
 - Download or certificate error: keep the failed folder. Install `ca-certificates` through step 2 if it is missing; ask the owner about a proxy. Then paste step 3 again; it uses a new folder.
 - Checksum mismatch: keep the files and ask the course owner. Don't switch to a musl file.
 - A different `omp`, or a symlinked `~/.local/bin` or startup file: leave it and ask the device owner before anything is replaced.

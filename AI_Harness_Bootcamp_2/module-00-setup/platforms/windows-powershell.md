@@ -72,9 +72,11 @@ This step checks Windows, PowerShell, free disk space, and your processor. It al
 
 **Recovery:** settle permission and support questions with the device owner first. For other stops, see [If a step stops](#steps-1-and-2-tools).
 
-## 2. Install missing tools
+## 2. Install Git and Python
 
-Skip this step if Step 1 printed `MISSING TOOLS: none`. Otherwise WinGet installs only the missing tools: Git for the machine, which may ask for approval, and Python 3.12 for your user only. If WinGet shows source or package agreements, read them and accept only if you're authorized. See [WinGet install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install).
+**Git** copies the course files from GitHub to your computer and records exactly which version you have. Step 4 uses it to make your checkout. On Windows, the course uses [Git for Windows](https://git-scm.com/install/windows), the Windows build that the Git project links to. It includes Git Credential Manager, which lets Git sign you in to GitHub through your browser. WinGet installs it as the package `Git.Git`.
+
+If Step 1 printed `MISSING TOOLS: none`, skip the install block and go to [Confirm Git works](#confirm-git-works). Otherwise WinGet installs only the missing tools: Git for the machine, which may ask for approval, and Python 3.12 for your user only. If WinGet shows source or package agreements, read them and accept only if you're authorized. See [WinGet install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install).
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 1.**
 
@@ -100,6 +102,28 @@ Skip this step if Step 1 printed `MISSING TOOLS: none`. Otherwise WinGet install
 **Stop:** a `STOP:` line, a denied approval prompt, or Step 1 still lists a tool after reopening.
 
 **Recovery:** keep the installer message for the device owner. If WinGet is missing, see [If a step stops](#steps-1-and-2-tools).
+
+### Confirm Git works
+
+This block shows which `git.exe` PowerShell finds and asks it for its version. Run it in a window you opened after the install, even if you skipped the install block.
+
+**Terminal: Windows PowerShell 5.1, ordinary user, opened from Start.**
+
+```powershell
+. {
+  $git = Get-Command git -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+  if (-not $git) { throw 'STOP: this window does not find Git.' }
+  Write-Output ('GIT_PATH ' + $git.Source)
+  & $git.Source --version
+  if ($LASTEXITCODE -ne 0) { throw 'STOP: Git did not run.' }
+}
+```
+
+**Expected:** `GIT_PATH` and the full path to `git.exe`, usually `C:\Program Files\Git\cmd\git.exe`, then `git version 2.` followed by more numbers and `.windows.`, such as `.windows.1`.
+
+**Stop:** a `STOP:` line.
+
+**Recovery:** Close every terminal window, including Windows Terminal tabs and editor terminals, then open Windows PowerShell from Start and run this block again. A window opened before the install doesn't see the new Git. If it still stops, run [Step 1](#1-check-this-computer) and this step again, or see [If a step stops](#steps-1-and-2-tools).
 
 ## 3. Install Oh My Pi
 
@@ -775,6 +799,7 @@ Work through the first failure only, and keep its exact message. Keep every exis
 - **Low disk space:** free space on the drive that holds your home folder, then run Step 1 again.
 - **No published binary for this processor:** save the message and ask for a supported laptop. Don't download the other architecture.
 - **Python still missing after installing:** open **Settings → Apps → Advanced app settings → App execution aliases**, turn off the `python.exe` and `python3.exe` aliases, reopen PowerShell from Start, and run Step 1 again. Don't type a guessed Python path.
+- **Git still not found after installing:** close every terminal window, including Windows Terminal tabs and editor terminals, then open Windows PowerShell from Start and run [Confirm Git works](#confirm-git-works) again. A window opened before the install keeps the old PATH.
 - **WinGet missing:** with the owner's approval, install only the missing tools from the official [Git for Windows installer](https://git-scm.com/downloads/win) and [Python Windows installer](https://www.python.org/downloads/windows/). For Python, choose 3.12 or newer, install for your user, and select **Add python.exe to PATH**.
 - **Installer denied or failed:** keep the message for the device owner. Don't reinstall over an existing tool that fails for an unknown reason.
 

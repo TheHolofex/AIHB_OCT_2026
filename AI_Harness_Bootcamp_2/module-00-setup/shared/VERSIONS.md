@@ -12,7 +12,7 @@ Use the latest stable Oh My Pi release and the exact provider/model pair in your
 | Obsidian | Local desktop app required for Module 2; fresh reference 1.13.7 | Keep an existing version; record it, and watch the full GUI workflow in the Obsidian window separately from the disk check. |
 | n8n | 2.41.5, local full official Docker stack | Check the running container version, service state, localhost port, editor access, and saved-workflow persistence separately from OMP. |
 | Docker and Compose | Approved local engine and modern `docker compose` plugin | `docker info` and `docker compose version` succeed as the ordinary user in the intended new shell; version 5 is acceptable. |
-| Git | A supported release for your operating system | Git runs and the intended checkout is readable. |
+| Git | Git 2 from your platform guide's official route: Git for Windows, Apple's Command Line Tools or Homebrew, or the Ubuntu or Arch `git` package | `git --version` prints `git version 2.` followed by more numbers, and the intended checkout is readable. |
 | Browser and text editor | An accessible combination you can operate | You can read instructions, edit plain-text work files, and inspect actual outputs. |
 
 You need read access to the private course repository on GitHub. If your existing approved Git credentials work, you don't need another login tool. Otherwise, follow the platform steps to log in through your browser with [GitHub CLI (`gh`)](https://cli.github.com/manual/gh_auth_login). The package is `GitHub.cli` in WinGet, `gh` in Homebrew and Ubuntu Universe, and `github-cli` in Arch's official repositories. GitHub CLI helps you reach the repository; you don't need it to run the AI tools.

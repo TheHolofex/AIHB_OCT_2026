@@ -199,7 +199,7 @@ capture_version omp '^omp/[0-9]+\.[0-9]+\.[0-9]+$' omp --version
 # ---------------------------------------------------------------------- course clone
 
 if ! command -v git >/dev/null 2>&1; then
-  record FAIL repo.clone "git not found" "Install git."
+  record FAIL repo.clone "git not found" "Install Git with step 2 of your platform guide, open a new terminal, and run this check again."
 else
   remote="$(git -C "$ROOT" remote get-url origin 2>/dev/null)" || remote=""
   revision="$(git -C "$ROOT" rev-parse --verify HEAD 2>/dev/null)" || revision=""

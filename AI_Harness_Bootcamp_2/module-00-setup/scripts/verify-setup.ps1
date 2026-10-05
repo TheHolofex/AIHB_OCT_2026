@@ -170,7 +170,7 @@ Test-VersionCommand -Name omp -Pattern '^omp/[0-9]+\.[0-9]+\.[0-9]+$' -Command o
 # ---------------------------------------------------------------------- course clone
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Add-Result FAIL repo.clone 'git not found' 'Install git.'
+    Add-Result FAIL repo.clone 'git not found' 'Install Git with Step 2 of your platform guide, open Windows PowerShell from Start, and run this check again.'
 } else {
     $remote = (& git -C $Root remote get-url origin 2>$null).Trim()
     $revision = (& git -C $Root rev-parse --verify HEAD 2>$null).Trim()

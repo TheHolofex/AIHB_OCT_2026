@@ -22,7 +22,7 @@ On Windows, choose WSL if your organization permits it and you can restart the m
 
 ## What you will install
 
-- Install Git and get a **checkout**, your local copy of the private course repository.
+- Install [Git](#install-git) and get a **checkout**, your local copy of the private course repository.
 - Install Python 3.12 or newer.
 - Install Oh My Pi (`omp`) from the latest stable release (the setup prints the observed `omp/<semver>`).
 - Before Module 2, install local Obsidian. A **vault** is a folder of linked Markdown notes on your laptop. For a fresh install, use release **1.13.7**; if it's already installed, keep it and record its version.
@@ -35,6 +35,22 @@ Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password
 For the live readiness check, use `shared/run_omp.py` with OpenRouter and the fixed model `openrouter/anthropic/claude-sonnet-4.6`. Use your own [OpenRouter key](shared/CREDENTIALS.md), which you enter in the terminal rather than save in a file. If you lack account or repository access, ask its owner before continuing.
 
 Module 7 uses the local visual workflow editor. You don't need n8n Cloud. Keep Assistant off and keep workflows unpublished during setup. In Module 7 you put your OpenRouter key into an n8n credential for the agent. Don't put that key in a file, a workflow export, a prompt, or your notes.
+
+## Install Git
+
+**Git** is a version-control tool. It copies the course files from GitHub to your computer and records exactly which version you have. Your platform guide uses Git in step 4 to make your checkout, so Git comes first.
+
+Step 1 of your guide reports whether Git is missing. Step 2 installs it from your operating system's official source, the same routes the [Git project lists](https://git-scm.com/downloads):
+
+| Your machine | Where Git comes from | Install step |
+|---|---|---|
+| Windows, PowerShell route | Git for Windows, which WinGet installs as `Git.Git` | [Install Git and Python](platforms/windows-powershell.md#2-install-git-and-python) |
+| Windows with WSL | Ubuntu's `git` package, installed inside Ubuntu | [Install Git and the other missing packages](platforms/windows-wsl.md#2-install-git-and-the-other-missing-packages) |
+| Mac | Apple's Command Line Tools, which the Homebrew installer adds, or Homebrew's `git` | [Install Git and Python](platforms/macos.md#2-install-git-and-python) |
+| Ubuntu | Ubuntu's `git` package | [Install Git and the other missing packages](platforms/ubuntu.md#2-install-git-and-the-other-missing-packages) |
+| Arch Linux | Arch's `git` package, in a full system upgrade | [Install Git and the other missing packages](platforms/arch-linux.md#2-install-git-and-the-other-missing-packages) |
+
+Git is ready when `git --version` prints `git version 2.` followed by more numbers. Each guide's **Confirm Git works** box runs that check right after the install. If an installer is blocked, or asks for approval you can't give, stop and ask the device owner. Don't download Git from any other website.
 
 ## Before the first command
 
