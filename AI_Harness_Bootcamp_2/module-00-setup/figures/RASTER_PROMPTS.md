@@ -5,13 +5,13 @@ Staff-only record. Not published (absent from `course.json`).
 - Generator: `codex-cli 0.154.0` (`codex exec`, built-in `image_gen`). No reference images attached.
 - Style: flat light instructional diagram (warm off-white ground, white boxes, thin neutral borders, one ochre accent, muted red only for stop/HOLD, muted green only for allowed). Sentence-case titles and plain-language labels.
 - Post-processing: composited onto the opaque `#FAF7F0` ground and saved as lossless RGB PNG at native size; no other pixel changes.
-- Run evidence (all attempts, prompts, logs): `~/course-evidence/image-remake-20261003T204449`; `m00-bounded-direction` and `m00-responsibility-screen` were regenerated on 2026-10-04 with concrete decision labels, evidence in `~/course-evidence/image-remake-20261004T161818Z-north-shelf`.
+- Run evidence (all attempts, prompts, logs): `~/course-evidence/image-remake-20261003T204449`. The long-form rewrite of 2026-10-04 added `m00-longform-loop`, `m00-plan-first`, and `m00-critique-passes`, regenerated `m00-falsifier` and `m00-change-isolation`, and retired `m00-bounded-direction` and `m00-responsibility-screen`; evidence in `~/course-evidence/image-remake-20261004T235455Z-longform`.
 - These figures replace an earlier set that used dark, glowing styling and slogan-style labels.
 
-## m00-bounded-direction
+## m00-change-isolation
 
-- Title: Write a testable direction before the run
-- Native size: 1536×1024; published SHA-256: `70d9208f16b4f30c50a91a8ea85cbebc2aa3e7148eda7fc423415aa85505694c`
+- Title: Change only the sections that use the new fact
+- Native size: 1536×1024; published SHA-256: `83b4fdf3038550a8a6a29f428c4e18d78a0524da4d2a7f727ecae20622ae8aae`
 - Accepted attempt: 01 of 1
 
 ### Final prompt
@@ -27,67 +27,20 @@ VISUAL STYLE (strict):
 - Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
 - Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
 
-TITLE (top-left): "Write a testable direction before the run"
+TITLE (top-left): "Change only the sections that use the new fact"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "AI: drafts from the supplied facts"
-- "You: check the facts and make the send-or-hold call"
-- "Refused: real sending, release or any outside action"
-- "direction-brief.md"
-- "Outcome and audience"
-- "Allowed sources and constraints"
-- "Precedence: which source governs a conflict"
-- "What a correct email must show"
-- "Falsifier: an observation that would prove the email wrong"
-- "Stop condition"
-- "Who decides it goes out: you"
-- "Freeze the direction before the first run"
-
-LAYOUT AND RELATIONSHIPS:
-Top row: three equal, separate boxes side by side in neutral fill. Left to right: 'AI: drafts from the supplied facts', 'You: check the facts and make the send-or-hold call', 'Refused: real sending, release or any outside action' (only this box may carry the red blocked accent). From each, one short vertical line drops into the top edge of one large bordered frame below. The lines mean 'is written into'. The frame is headed 'direction-brief.md' and holds seven equal cells in two rows. Row 1: Outcome and audience | Allowed sources and constraints | Precedence: which source governs a conflict. Row 2: What a correct email must show | Falsifier: an observation that would prove the email wrong | Stop condition | Who decides it goes out: you. No cell is highlighted. The frame footer reads 'Freeze the direction before the first run'. No arrow leaves the frame, so nothing implies approval.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
-## m00-change-isolation
-
-- Title: Change only what depends on the new fact
-- Native size: 1536×1024; published SHA-256: `b2da7482aa248ba56c227527d1eb0cfae3ef8429ea19316a1ed6f740cda94078`
-- Accepted attempt: 02 of 2
-- Earlier attempts were rejected in review for relationship or layout defects; the last revision requirements are included at the end of the prompt.
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "Change only what depends on the new fact"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Keep the original draft"
-- "Write down what must change and what must not"
-- "Apply the one changed fact"
-- "Update the statements that depend on it"
-- "Keep authority, audience and other facts unchanged"
-- "Compare both drafts"
-- "Changed draft: artifact-changed.md"
-- "The original checker still expects the old count"
-- "So the changed draft fails that check"
+- "New fact: 19 kits on hand"
+- "Find the sections whose Facts line uses the on-hand count"
+- "Rewrite only those sections"
+- "Copy every other section unchanged"
+- "Compare versions: unchanged sections match byte for byte"
+- "The checker still expects 27"
+- "So the new version fails that one check"
 - "Do not edit the checker to hide the failure"
 
 LAYOUT AND RELATIONSHIPS:
-Top row, left to right, 'then' arrows: 'Keep the original draft' → 'Write down what must change and what must not' → 'Apply the one changed fact'. From the third box, a fork with two orthogonal branches: upper 'Update the statements that depend on it', lower 'Keep authority, audience and other facts unchanged'. The two branches stay apart and rejoin only at 'Compare both drafts' on the right. Below, a separate branch drawn in the warning colour starts at 'Changed draft: artifact-changed.md' (a box placed after the fork, fed by the upper branch). It runs to 'The original checker still expects the old count' → 'So the changed draft fails that check' → 'Do not edit the checker to hide the failure'. No arrow points into the checker box from an edit action. Centred text in every box; no icons, badges or document glyphs; no counts.
-
-REVISION REQUIREMENTS (a previous attempt was rejected; fix all of these):
-- The red warning connector leaves from the left edge of 'Update the statements that depend on it' (x≈855, y≈345), right beside the incoming gold fork arrow. It then drops vertically and crosses the gold connector into 'Keep authority, audience and other facts unchanged' at about (855, 565). The crossing makes the warning branch look as if it comes off the fork or cuts through the 'keep unchanged' branch. The spec requires the two branches to stay apart, with the changed-draft box fed only by the upper branch. Regenerate with the red connector leaving from the top or right side of the update box, or from a point after it. Route it above the fork, or around the right of the 'Compare both drafts' column, down to 'Changed draft: artifact-changed.md', with no crossing of any gold connector. Alternatively, place the changed-draft box directly after the update box on the upper branch. Keep all text unchanged.
+Top row, left to right, joined by ochre arrows: 'New fact: 19 kits on hand' -> 'Find the sections whose Facts line uses the on-hand count', which then splits with two orthogonal ochre arrows into two boxes stacked on the right: upper 'Rewrite only those sections' and lower 'Copy every other section unchanged'. Both of those feed one box further right: 'Compare versions: unchanged sections match byte for byte'. Bottom row, separate and read right to left with muted red arrows: 'The checker still expects 27' -> 'So the new version fails that one check' -> 'Do not edit the checker to hide the failure' (this last box has a muted red outline). One muted red arrow runs from the compare box down to 'The checker still expects 27'.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
@@ -130,12 +83,56 @@ Top chain, left to right, 'then' arrows: 'Material claim' → 'Source and locato
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
 
+## m00-critique-passes
+
+- Title: Check the draft against something outside it
+- Native size: 1536×1024; published SHA-256: `0ae963fd610e9d4e7e8dbe2b9a9a4fad25c7bc44ed37d48f5ba8f4bea2a17245`
+- Accepted attempt: 01 of 1
+
+### Final prompt
+
+````text
+$imagegen
+Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
+
+VISUAL STYLE (strict):
+- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
+- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
+- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
+- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
+- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
+
+TITLE (top-left): "Check the draft against something outside it"
+
+TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
+- "Check"
+- "Compares the draft with"
+- "Checker"
+- "Required facts and banned promises"
+- "Number list"
+- "Every number and code, and the source that has it"
+- "Tests pass"
+- "Your tests.md"
+- "Facts pass"
+- "Questions from the draft, answered from the sources without the draft"
+- "Reader pass"
+- "What the clinic clerk would do after reading it"
+- "Style pass"
+- "The rules in STYLE.md"
+- "Each finding quotes the sentence, names the rule or source, and proposes a fix"
+- "You verify every finding before anything changes"
+
+LAYOUT AND RELATIONSHIPS:
+A two-column table with header row 'Check' | 'Compares the draft with'. Six rows in this order: Checker | Required facts and banned promises; Number list | Every number and code, and the source that has it; Tests pass | Your tests.md; Facts pass | Questions from the draft, answered from the sources without the draft; Reader pass | What the clinic clerk would do after reading it; Style pass | The rules in STYLE.md. The first two rows (Checker, Number list) share a thin left bracket in neutral grey; the last four rows share a thin left bracket in ochre. Below the table, separated by a rule, two plain footer lines stacked: 'Each finding quotes the sentence, names the rule or source, and proposes a fix' and then 'You verify every finding before anything changes'. No arrows, no icons, no checkmarks.
+
+Before returning, check every text element is present, spelled exactly, and nothing else was added.
+````
+
 ## m00-falsifier
 
 - Title: Test the checker on a copy
-- Native size: 1536×1024; published SHA-256: `f5adfea450274ea6ac019c61bd2b7dbc4c03b97a63e07d37e4e83807e0c76569`
-- Accepted attempt: 02 of 2
-- Earlier attempts were rejected in review for relationship or layout defects; the last revision requirements are included at the end of the prompt.
+- Native size: 1536×1024; published SHA-256: `2bbbd1a117d6dfb43c231adf0a2c30eaabc6801667bca456aa7f670bf0a7ffc6`
+- Accepted attempt: 01 of 1
 
 ### Final prompt
 
@@ -153,11 +150,11 @@ VISUAL STYLE (strict):
 TITLE (top-left): "Test the checker on a copy"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Original: artifact.md"
+- "Original: draft-v1.md"
 - "Keep the original unchanged"
 - "Record its hash"
 - "Later, confirm the hash is unchanged"
-- "Test copy: falsifier-probe.md"
+- "Test copy: checker-test.md"
 - "Make a separate copy"
 - "Add one deliberate error"
 - "Run the same checker"
@@ -166,10 +163,93 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 - "It does not show the original is correct"
 
 LAYOUT AND RELATIONSHIPS:
-Two columns separated by a full-height vertical rule, with no connector crossing it. Left column headed 'Original: artifact.md', three boxes top to bottom with downward 'then' arrows: 'Keep the original unchanged' → 'Record its hash' → 'Later, confirm the hash is unchanged'. Right column headed 'Test copy: falsifier-probe.md', four boxes top to bottom with downward arrows: 'Make a separate copy' → 'Add one deliberate error' → 'Run the same checker' → 'Expected result: the checker rejects the copy'. A two-line plain-sentence footer spans both columns below the rule: 'A rejection shows the check catches this error' / 'It does not show the original is correct'. No arrow from the rejection toward the left column or toward any 'correct' endpoint. No icons, gears or byte glyphs; show no hash value and no count.
+Two columns separated by a thin vertical rule. Left column headed 'Original: draft-v1.md' with three stacked boxes joined by downward ochre arrows: 'Keep the original unchanged' -> 'Record its hash' -> 'Later, confirm the hash is unchanged'. Right column headed 'Test copy: checker-test.md' with four stacked boxes joined by downward ochre arrows: 'Make a separate copy' -> 'Add one deliberate error' -> 'Run the same checker' -> 'Expected result: the checker rejects the copy'. Centered under both columns, two plain lines: 'A rejection shows the check catches this error' and 'It does not show the original is correct'. No arrow crosses the vertical rule.
 
-REVISION REQUIREMENTS (a previous attempt was rejected; fix all of these):
-- The two left-column arrows carry the word 'then' (beside the arrows at y≈388 and y≈608). 'then' is not a spec label, and the right column's identical 'then' arrows carry no label, so the two columns look inconsistent. The spec gives 'then' as the meaning of the arrows, not as visible text. Regenerate with no text on any arrow; leave the plain downward arrows in both columns. Keep every other label, the vertical rule and the two-line footer unchanged.
+Before returning, check every text element is present, spelled exactly, and nothing else was added.
+````
+
+## m00-longform-loop
+
+- Title: Get a long document you can trust
+- Native size: 1536×1024; published SHA-256: `edcacec30c265d97f272021233d7e35806e6ca28b2d6da35012bf605a5d0602a`
+- Accepted attempt: 01 of 1
+
+### Final prompt
+
+````text
+$imagegen
+Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
+
+VISUAL STYLE (strict):
+- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
+- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
+- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
+- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
+- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
+
+TITLE (top-left): "Get a long document you can trust"
+
+TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
+- "1. Plan before any prose"
+- "brief.md, tests.md, outline.md"
+- "2. Draft one section at a time"
+- "Each section: one job, its facts, a word budget"
+- "3. Check in separate passes"
+- "Checker, number list, four review sessions"
+- "4. Verify every finding"
+- "You accept or reject each one against the sources"
+- "5. Fix only the flagged sections"
+- "The other sections stay byte for byte"
+- "6. Decide"
+- "READY TO SEND or HOLD"
+- "At most two rounds"
+
+LAYOUT AND RELATIONSHIPS:
+Six numbered step boxes in reading order, left to right across two rows: row 1 holds steps 1, 2, 3; row 2 holds steps 4, 5, 6, read left to right. Each box has its bold step label and, under it, its plain sub-line: '1. Plan before any prose' / 'brief.md, tests.md, outline.md'; '2. Draft one section at a time' / 'Each section: one job, its facts, a word budget'; '3. Check in separate passes' / 'Checker, number list, four review sessions'; '4. Verify every finding' / 'You accept or reject each one against the sources'; '5. Fix only the flagged sections' / 'The other sections stay byte for byte'; '6. Decide' / 'READY TO SEND or HOLD'. Thin ochre arrows connect 1 to 2 to 3, then 3 down to 4, then 4 to 5 to 6. One additional thin dashed ochre arrow returns from box 5 back up to box 3, labelled 'At most two rounds' beside the dashed arrow. Box 6 has a muted green outline; all other boxes are neutral. No icons.
+
+Before returning, check every text element is present, spelled exactly, and nothing else was added.
+````
+
+## m00-plan-first
+
+- Title: Write the plan before the AI writes prose
+- Native size: 1536×1024; published SHA-256: `4bf65a9b663be87cfe89ff21466125c103e0956db605cd1556637944819f13c7`
+- Accepted attempt: 01 of 1
+
+### Final prompt
+
+````text
+$imagegen
+Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
+
+VISUAL STYLE (strict):
+- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
+- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
+- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
+- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
+- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
+
+TITLE (top-left): "Write the plan before the AI writes prose"
+
+TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
+- "brief.md"
+- "Reader and purpose"
+- "Sources it may use"
+- "What it can't authorize"
+- "Who decides it goes out: you"
+- "tests.md"
+- "What it must say"
+- "What it must never say or imply"
+- "Questions a reader must answer from it"
+- "outline.md"
+- "One job per section"
+- "The facts each section may use"
+- "A word budget sized to those facts"
+- "OMP proposes the outline. You correct it."
+- "Freeze the plan before drafting"
+
+LAYOUT AND RELATIONSHIPS:
+Three equal tall cards side by side, each headed by a monospace file name: 'brief.md', 'tests.md', 'outline.md'. Under 'brief.md' list four plain lines: 'Reader and purpose'; 'Sources it may use'; 'What it can't authorize'; 'Who decides it goes out: you'. Under 'tests.md' list three lines: 'What it must say'; 'What it must never say or imply'; 'Questions a reader must answer from it'. Under 'outline.md' list three lines: 'One job per section'; 'The facts each section may use'; 'A word budget sized to those facts'. Under the outline.md card only, a small note box reads 'OMP proposes the outline. You correct it.' Below all three cards, a full-width bordered bar with an ochre border reads 'Freeze the plan before drafting'. Thin ochre lines drop from the bottom of each card into the bar. No other arrows.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
@@ -268,48 +348,6 @@ Do not retain any old labels such as Change one thing, Use the recovery guidance
 Before returning, inspect all labels and arrows. Every stated label must appear, spelled exactly. The two decision edges must be unambiguous. Do not report an image as completed without actually generating it.
 ````
 
-## m00-responsibility-screen
-
-- Title: Screen the job before you delegate it
-- Native size: 1536×1024; published SHA-256: `e9983055f034c1edcbef4c934c2bb6c4d1caefa55108b998c0ed5a9555de54d4`
-- Accepted attempt: 01 of 1
-
-### Final prompt
-
-````text
-$imagegen
-Use the built-in image_gen tool to generate exactly ONE PNG instructional diagram. Do not write code or SVG. Return the absolute saved PNG path.
-
-VISUAL STYLE (strict):
-- Flat, clean technical diagram like a figure in a professional training manual or consulting report (think McKinsey/Stripe documentation). 1536x1024 landscape.
-- Opaque solid warm off-white background #FAF7F0. No texture, no grid, no vignette, no gradients, no glow, no shadows, no 3D, no shine, no decorative icons, no illustrations.
-- Boxes: white fill #FFFFFF, 1.5px solid border #C9C1B0, small 6px corner radius. Header strips or emphasis: deep ink #2B2A27 text; one accent colour, muted ochre #9A7B3C, for arrows and key borders; muted red #A23B2C only for stop/blocked items; muted green #4E6B3A only for allowed items. Arrows thin (2px), solid, simple arrowheads.
-- Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
-- Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
-
-TITLE (top-left): "Screen the job before you delegate it"
-
-TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
-- "Source and data authority"
-- "Who decides whether this email goes out"
-- "Both resolved?"
-- "Yes"
-- "No"
-- "Draft the email"
-- "HOLD"
-- "Resolve it before drafting"
-- "Also answer from what you inspected"
-- "Sensitive data present"
-- "Affected audience or person"
-- "Disclosure needed"
-- "Consequential action this draft cannot authorize"
-
-LAYOUT AND RELATIONSHIPS:
-Left: two stacked gate boxes, 'Source and data authority' above 'Who decides whether this email goes out'. Each has an arrow into one decision diamond 'Both resolved?' to their right. The 'Yes' edge goes right to an olive-outlined box 'Draft the email'. The 'No' edge goes down to a red HOLD token, then by arrow to 'Resolve it before drafting'. No arrow leads from that box back to drafting. Right side: a plain bordered panel headed 'Also answer from what you inspected', listing four lines (Sensitive data present; Affected audience or person; Disclosure needed; Consequential action this draft cannot authorize). The panel has no arrows to or from the gates or the outcomes: these questions are answers to record, not permissions. Flat fills, no halo, title centred.
-
-Before returning, check every text element is present, spelled exactly, and nothing else was added.
-````
-
 ## m00-tool-layers
 
 - Title: What each layer of the tool shows
@@ -352,4 +390,3 @@ Two-column table, four equal-height rows read top to bottom, with column headers
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
-

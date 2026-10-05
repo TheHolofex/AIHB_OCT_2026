@@ -75,7 +75,7 @@ Native child completion and artifact presence are not acceptance. Join actual re
 
 | Sub-problem | Owner |
 |---|---|
-| Delegation, first-use limits, minimum screen, direction, bounded internal acceptance | 00 |
+| Minimum screen, planned long-document drafting one session per section, separate review sessions with verified findings, targeted revision, bounded internal acceptance | 00 |
 | Source verification and output discernment | 01 |
 | Human-reviewed knowledge vault, saved instruction and load proof, source-as-data control, fresh-session retrieval | 02 |
 | MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
@@ -158,7 +158,7 @@ Keep all core/context bodies visible in static HTML. Guided controls, search, co
 Publication uses the existing environment from the repository root: `.venv/bin/python scripts/build_course.py`, then `.venv/bin/python scripts/check_course.py`, then `.venv/bin/python scripts/build_course.py --check`. The gate makes no paid model calls. Compare existing URLs, fragments, command bytes, labeled conditions, the class-only footer, and download/figure bytes when changing the reader. Exercise the actual HTML at root and prefixed mounts; keep visual, keyboard, clipboard, print, and fallback evidence outside the checkout. Do not put browser observations in the live-exercise ledger.
 
 
-Use `shared/prepare_work.py` for Modules 02–10, Module 01’s starter for its fixed source boundary, and Module 00’s four-file case copy. Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
+Use `shared/prepare_work.py` for Modules 02–10, Module 01’s starter for its fixed source boundary, and Module 00’s case copy (the request, the style rules, the checker, and six sources). Work and evidence stay outside the checkout. Refuse existing destinations and retain failed attempts. Only the documented restore operation may replace an authorized work-copy control.
 
 Use the supplied OMP launchers rather than direct vendor logins or alternate harness branches. Require Git, Python 3.12+, the latest stable Oh My Pi release, a browser, and a text editor. Setup resolves one official latest release and verifies its binary against the same release's checksums. Record the actual OMP version in each attempt; audit saved identities without imposing a numeric course version. The exact model is `openrouter/anthropic/claude-sonnet-4.6`; the only participant credential is `OPENROUTER_API_KEY`. Node is a maintainer-only figure prerequisite. Module 03 also uses the free Obsidian desktop application to open its supplied vault; it needs no account, Sync, or community plugin, and the module states the requirement itself. Keep hashing, arithmetic, predicates, routing, and comparisons deterministic.
 

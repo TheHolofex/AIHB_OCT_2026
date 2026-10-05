@@ -105,7 +105,15 @@ Owner direction (2026-10-04): eliminate `PASS FOR CLASS REVIEW`, the phrase "Nei
 
 The learner is the Harbor Depot inventory clerk who would send the email, so the final decision is `READY TO SEND` or `HOLD`, backed by the source check, the checker result, and the falsifier. §4's stage list and §6's decision row now name that decision. In the lab, step 2 becomes writing down what the email must do (`email-requirements.md` replaces `acceptance-control.md`), the step 5 screen and step 6 direction ask who decides whether the email goes out, and the decision-owner figure is removed. The case packet, checker, and changed input are unchanged: the email still states its class-participant readership, and Ivo Marsh still owns any release. The digest is re-frozen for this amendment.
 
-## v9 amendment — rolling latest OMP, 2026-10-05 UTC
+## v9 amendment — a long document you can trust, 2026-10-04
+
+Owner direction (2026-10-04): "Rewrite the module to teach this lesson using OMP," where the lesson is the best way to get good long-form content from AI: write the brief and the tests first, outline before drafting, draft section by section from the sources, critique in separate sessions against references outside the draft, revise only flagged spans, and keep the final call with a person.
+
+§4 now states that capability and the new stage list: the learner writes `brief.md` and `tests.md`, corrects and freezes an OMP-proposed outline, drafts one section per launcher session through `scripts/longform.py`, checks the 500–900-word draft with the practice checker, a failing copy, a number list, and four review passes run in isolated packets, verifies each finding, revises only the named sections, applies the changed count only where it is used, and decides `READY TO SEND` or `HOLD`. The case keeps its invariant facts but now sits in six source files; the email, its 130–190-word cap, the subject line, and the class-participants line are retired. The minimum responsibility screen moves into `brief.md`, which adds a disclosure line. §5 describes the checker's new shape checks, and §6 adds planned-drafting and review-and-revision rows. The stretch now compares a one-prompt draft with the planned one.
+
+Live calibration with the course model set the word range: the one-note packet produced 341 words against a 700-word plan, and the six-source packet with five clinic questions produced 578 and 555 words against 680 and 650. The checker was corrected against those live drafts (list items under a "must not:" lead-in, contracted denials, "Harbor Depot holds N kits", "a request ... for 40 water-treatment kits"), and its fixtures were rebuilt from a new canonical brief: two passing briefs and 26 one-change failures. The digest is re-frozen for this explicit amendment: `e4339f3f02ab799e7a8b2bcee7bf9a0b5f95e7d117c68b30dbaf45d644ed7ced`.
+
+## v10 amendment — rolling latest OMP, 2026-10-05 UTC
 
 Owner direction removes the fixed OMP release requirement throughout the active course. Each platform resolves the official latest stable release once, retains its metadata, and downloads the binary and checksum list from that selected tag. Checksum-before-execution, conflicting-install preservation, shell boundaries, process-local credentials, provider/model pins, and the Python/Obsidian/n8n requirements remain unchanged.
 
