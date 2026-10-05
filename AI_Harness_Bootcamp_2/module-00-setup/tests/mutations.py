@@ -67,9 +67,9 @@ MUTATIONS: list[Mutation] = [
     Mutation("B1-B6", "the practice checker stops binding numbers to their subject",
              lambda root: (p := root / "shared/case/check_artifact.py",
                            p.write_text(re.sub(
-                               r'    on_hand = attached\([\s\S]*?\)\s*',
-                               '    on_hand = {27} if re.search(r"on.?hand", text, re.I) else set()\n    ',
-                               p.read_text(encoding="utf-8"), flags=re.S),
+                               r'    on_hand = attached\(text, ON_HAND_SUBJECT, ON_HAND_PATTERNS\)',
+                               '    on_hand = {27} if re.search(r"on.?hand", text, re.I) else set()',
+                               p.read_text(encoding="utf-8")),
                            encoding="utf-8"))[0]),
     Mutation("B8", "the readiness check accepts any file with the right bytes",
              sub("shared/case/verify_tool_proof.py", r"        return 1", "        return 0")),

@@ -16,25 +16,36 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, designs a workflow for a decision model, has an agent write a spreadsheet, controls hallucinations through structured checks and independent agent review, and transfers the method.
+The first-result target is about an hour to a frozen plan and a first AI-drafted section checked against its sources. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner gets a long document they can trust from AI, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, designs a workflow for a decision model, has an agent write a spreadsheet, controls hallucinations through structured checks and independent agent review, and transfers the method.
 
 The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
+The day order, with each module's case, is:
+
+| Day | Cases, in order |
+|---|---|
+| Monday | North Shelf (00), Cold Lantern (01) |
+| Tuesday | Ledger Pike (02), Kiln Hold (03), Chalk Line (04) |
+| Wednesday | Copper Span (05), Blue Gauge (06), White Rack (07) |
+| Thursday | Slope Brief (08), Night Desk (09), Cold Foundry (10) |
+
+The clocks and break points are in [COURSE_MAP.md](COURSE_MAP.md).
+
 ## Target sequence
 
-| ID | Module | Primary capability |
-|---:|---|---|
-| 00 | Select, screen, and direct bounded work | Delegate appropriately, check one useful result, screen responsibility, and turn a request into accepted direction with a communication artifact. |
-| 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
-| 02 | Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
-| 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
-| 04 | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
-| 05 | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
-| 06 | Design a workflow for a decision model | Select and pin a structured decision model as the harness judge through OpenRouter, design questions and a code split around its weak spots, set thresholds from its probabilities on tuning notes, and measure the frozen screen on held-out notes. |
-| 07 | Automate a spreadsheet with an agent | Connect an n8n agent to a spreadsheet-writing tool, trace its call to an actual download, and inspect the file against the source and rules. |
-| 08 | Control hallucinations | Operate a source-bound review-and-correction loop; prevent schema-valid or unanimously endorsed errors from entering accepted work, and retain unknowns in the human decision. |
-| 09 | Constrain agent behavior | Enforce a live agent’s declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
-| 10 | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on your own laptop under OMP orchestration, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions/controls (weights excluded) so fresh-terminal structure check passes, and close out distinguishing live runtime proof from structure-only evidence. All work individual in the Thursday session. |
+| ID | Case | Module | Primary capability |
+|---:|---|---|---|
+| 00 | North Shelf | Get a long document you can trust from AI | Screen responsibility, plan and test a long document before any prose, have AI draft it one section at a time from six sources, check it against references outside it, revise only what's flagged, and decide whether to send it. |
+| 01 | Cold Lantern | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
+| 02 | Ledger Pike | Build and control a reusable second brain | Construct source-traceable knowledge in Obsidian, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
+| 03 | Kiln Hold | Operate MCP tools under limited authority | Connect a supplied MCP server, research a folder of notes, check the assistant's markings against the written rules, prove each limit including actions the model never tries, and remove the connection with proof. |
+| 04 | Chalk Line | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
+| 05 | Copper Span | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
+| 06 | Blue Gauge | Design a workflow for a decision model | Select and pin Jev (`openrouter/typesafe/jev-1.13`) as the harness judge, design questions and a code split around its weak spots, set thresholds from its probabilities on tuning notes, and measure the frozen screen on held-out notes. |
+| 07 | White Rack | Automate a spreadsheet with an agent | Connect a local n8n AI Agent to OpenRouter with the learner's key, have it write a spreadsheet from the supplied batch, download that file, and check it against the source lots. |
+| 08 | Slope Brief | Control hallucinations | Run structured source checks and independent agent reviews, correct only what the evidence supports, and keep unknowns visible in the human decision. |
+| 09 | Night Desk | Constrain agent behavior | Enforce a live agent's declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
+| 10 | Cold Foundry | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on the learner's own laptop under OMP, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions and controls (weights excluded) so a fresh-terminal structure check passes, and close out by separating live runtime proof from structure-only evidence. Thursday's session is individual work. |
 
 Cases and evidence bundles are **independent**: no gate relies on a product from an earlier module. Skills build on one another, but earlier skills are assumed rather than retaught as new objectives. The authoritative sequence and supplied inputs are in [COURSE_MAP.md](COURSE_MAP.md). Outcomes are in [LEARNING_OBJECTIVES.md](LEARNING_OBJECTIVES.md). [AUTHORING_GUIDE.md](AUTHORING_GUIDE.md) defines the module contract.
 
@@ -114,7 +125,7 @@ Module 02 also uses Obsidian to edit the local Markdown vault. It requires no co
 
 Module 06 also sets OMP's judge role to **`openrouter/typesafe/jev-1.13`**, TypeSafe's Jev decision model, through the same key and launcher. The course chat model makes exactly one `eval` call with a launcher-written cell; the guard refuses any other code. The launcher checks every saved judgment, the dated build that answered, the cost, and the work folder. A moving alias, the router, or a chat model as judge holds before any call.
 
-Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 keeps its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
+Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 copies its request, style rules, checker, and six sources. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
 Module 05 runs native `task` children rather than a second scheduler. Its three read-only specialists feed a coordinator-owned brief and a dependent read-only review. The first missing-input attempt remains on record; selective repair can reuse only still-valid independent results. The module checker joins requested assignments to native child records, source identities and permitted effects. A parent summary, finished task, or fixture transcript cannot substitute for accepted live handoffs.
 
@@ -188,7 +199,8 @@ The coordinator must confirm T and the cohort machine inventory and collect actu
 
 This staff verification campaign has one US$25 total authorization. Paid admission remains HOLD until its private budget register establishes the required enforcement, settlement, funding, and owner controls. No paid trial is used to discover whether that bound holds. The provisional US$40 learner allowance is separate future logistics, not an enforced cap or additional campaign spending authority. The user's publication override authorizes Git integration and publication, not additional spending or a change from unobserved to PASS.
 
-The integrated builder publishes 35 instructional pages, 420 raw downloads, and 40 UI/generated assets. Detailed current checks and evidence hashes belong in the ledger rather than being inferred from those counts. The Module 7 work-folder helper copies only the current batch, sheet rules, and spreadsheet checker; unpublished files stay out, and missing or linked inputs stop preparation before destination creation. The Module 02 path-safety name scan uses directory-entry strings instead of constructing a `Path` for every sibling; symlink/junction, traversal, and case-collision checks remain enforced.
+The publisher reports current page, download, and asset counts. Detailed checks and evidence hashes belong in the ledger rather than being inferred from those counts. The Module 7 work-folder helper copies only the current batch, sheet rules, and spreadsheet checker; unpublished files stay out, and missing or linked inputs stop preparation before destination creation. The Module 02 path-safety name scan uses directory-entry strings instead of constructing a `Path` for every sibling; symlink/junction, traversal, and case-collision checks remain enforced.
+
 ### Rolling latest OMP verification — 2026-10-05 UTC
 
 The official latest-release lookup selected `v18.6.1` for this verification, not as a new course pin. The authored macOS installer downloaded and verified that release in a disposable home; a separate login zsh resolved it from the saved profile. All 280 setup syntax, release-selection and failure-boundary checks passed, including optimized Python metadata validation and preservation of conflicting installed bytes.
@@ -198,6 +210,12 @@ The real latest binary passed the setup report, token-and-write readiness check,
 The generated setup pages were exercised in an isolated Chromium browser at desktop and 390-pixel widths. macOS and Windows copy controls returned the authored installer commands, and the version table showed the rolling latest requirement. Screenshots and clipboard observations are retained with the private evidence. The automation browser required explicit clipboard read/write permissions after a clipboard read left subsequent writes denied; no course code was changed to bypass that browser state.
 
 All manifest module gates, the additional Module 01 content check, shared launcher/guard tests, publication/build tests, and figure check passed individually. Module 02's eight-mutation adequacy run required an extended deadline: its first run hit 600 seconds, and the isolated rerun passed in 823 seconds. The combined course gate is not claimed green: its 600-second per-command limit is unchanged, and the previously documented Module 07 core-contract HOLD was neither rerun nor changed.
+
+### Integrated latest OMP verification — 2026-10-05 UTC
+
+After integrating the current long-form Module 0 changes, the publisher rebuilt 35 instructional pages, 435 raw downloads, and 40 UI/generated assets. The complete `scripts/check_course.py` run passed all 31 scoped gates in 255 seconds with a dedicated `TMPDIR`; the 600-second per-command deadline was unchanged. This supersedes the earlier combined-gate limitation above. The copied worktree's untracked, cache-only retired Module 06 directory was preserved outside the checkout before verification.
+
+The entire generated site, including search data and downloads, contains no `18.3.5` reference, numeric OMP release requirement, or hard-coded OMP release URL. Browser checks covered all five setup routes; the final merged version table shows `latest stable release`. A fresh macOS install verified the official release checksum and resolved `omp/18.6.1` in a new login shell. A fresh, read-only MCP run passed the independent saved-receipt audit after restoring the result's required MCP metadata; all 32 shared runtime tests passed. The observed executable version is evidence, not a new pin. Logs, the regression's failing/passing runs, and desktop/mobile browser proof are retained under `~/course-evidence/omp-latest-site-check-1791162031193/`. Native Windows/WSL/Linux installation is not claimed.
 
 ## Netlify deployment
 

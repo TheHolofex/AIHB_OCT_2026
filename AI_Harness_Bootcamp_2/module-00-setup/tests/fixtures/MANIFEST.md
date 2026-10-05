@@ -1,12 +1,14 @@
 # Fixture manifest
 
-Each failing fixture is the canonical draft with exactly one substitution.
+Each failing fixture is the canonical brief with exactly one substitution.
 The checker must reject it, and must name the listed check.
 
 | Fixture | Must fail on |
 |---|---|
-| `fail/too-short.md` | word count |
-| `fail/no-subject.md` | subject line |
+| `fail/no-title.md` | title line |
+| `fail/too-few-sections.md` | section count |
+| `fail/too-short.md` | word count 500-900 |
+| `fail/too-long.md` | word count 500-900 |
 | `fail/wrong-commodity.md` | commodity |
 | `fail/wrong-origin.md` | origin |
 | `fail/wrong-clinic.md` | destination |
@@ -22,14 +24,13 @@ The checker must reject it, and must name the listed check.
 | `fail/assigns-vehicle.md` | no vehicle |
 | `fail/approves-permit.md` | no permit |
 | `fail/confirms-receipt.md` | no receipt |
-| `fail/claims-supportable.md` | supportability |
-| `fail/missing-class.md` | class participants |
+| `fail/claims-supportable.md` | supportability unknown |
 | `fail/expect-window.md` | prohibited sentence |
 | `fail/hs3-assigned.md` | HS-3 |
-| `fail/stages-for-truck.md` | delivery promise |
+| `fail/stages-for-truck.md` | no delivery promise |
 | `fail/writes-go.md` | no GO |
-| `fail/invented-clock-time.md` | invented clock |
-| `fail/public-distribution.md` | prohibited distribution |
+| `fail/invented-clock-time.md` | no invented clock time |
+| `fail/public-distribution.md` | no prohibited distribution |
 
 | Fixture | Must pass |
 |---|---|

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "run_id": "20261005T002550Z-navigation-main-integration",
-  "generated_at_utc": "2026-10-05T01:31:27.730Z",
-  "implementation_status": "integration_in_progress",
+  "generated_at_utc": "2026-10-05T01:44:11.255Z",
+  "implementation_status": "integrated_and_technically_verified",
   "external_acceptance_status": "unobserved_lanes_remain_hold",
   "release_status": "HOLD",
   "publication_authorization": {
@@ -27,8 +27,9 @@
   "path_resolution": "Resolve href/raw_href against evidence_root. Historical reports keep their original path semantics. Source-manifest paths are checkout-relative.",
   "integration": {
     "task_commit": "95c0cfce52e2c3511b2b1f258fe6a4d8c081f27e",
-    "incoming_main_commit": "e8cfe845b4de4f68f162743c9ff90415673020be",
+    "incoming_main_commit": "27a9e4d",
     "preserved_designs": [
+      "Module00 long-document workflow and current-course README from concurrent upstream work",
       "Native OMP orchestration in Module05",
       "Pinned decision model in module-06-decision-model",
       "Agent spreadsheet in Module07",
@@ -64,6 +65,12 @@
       "href": "20261005T002550Z-navigation-main-integration/pre-latest-omp-merge-exercise-runs.json",
       "sha256": "ac9524d50e13b2853f046a3e49b65f7b055623bf586d5c396bb01e9cea5d3c73",
       "bytes": 59760
+    },
+    {
+      "scope": "Intermediate latest-OMP aggregate gate was HOLD. Its per-module phrases refer to the earlier verification, not a passing intermediate aggregate.",
+      "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/pre-final-exercise-runs.json",
+      "sha256": "309abf5540c04fb97084110a4070f733f8c5e6e52cd5e83503005634e58097d6",
+      "bytes": 62587
     }
   ],
   "runtime": {
@@ -74,35 +81,39 @@
     "paid_admission": "HOLD; publication authorization is not spending authorization"
   },
   "verification": {
-    "status": "HOLD",
+    "status": "passed_scoped_technical_checks",
     "offline": {
-      "status": "HOLD",
-      "scoped_gates": 33,
-      "passed_gates": 32,
-      "failed_gate": "Module02 mutation/adequacy: exceeded the 600-second course-runner deadline",
+      "status": "passed",
+      "scoped_gates": 34,
+      "elapsed_seconds": 223.68,
       "record": {
-        "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/course-gates.log",
-        "sha256": "c867b34c63470a71d30d0266e79951da3faeb8bf94f2ffca1721b1b77a2be830",
-        "bytes": 142004
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/course-gates.log",
+        "sha256": "df80f090df6e69bdf39bba8d83b59076749a8ce64dbd59cb3d07459e47e25197",
+        "bytes": 155468
       },
       "raw_record": {
-        "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/course-gates.raw.log",
-        "sha256": "462e147a1cf91a0861070a035c3034fa690e1881e7b88c78a476bb2ce4e550fd",
-        "bytes": 143192
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/course-gates.raw.log",
+        "sha256": "caa5377e26ee93e4f7b5193bc1e4329e66411a671941f0cefc286fc394ebd5bd",
+        "bytes": 156668
       },
-      "scope": "Navigation/readiness plus latest-OMP merge, before the newer longform/current-course upstream commits. No provider calls."
+      "environment": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/environment.json",
+        "sha256": "4ca0d8a7840dc31d7b140c0034392f3787256da06b1b2388fc57d515614db2ce",
+        "bytes": 402
+      },
+      "scope": "Final merged sources on Darwin arm64, dedicated TMPDIR, unchanged 600-second per-command deadline and complete oracles. No provider calls; not native Windows/Linux or human acceptance."
     },
     "command_parsers": {
       "status": "passed",
-      "maintained_fences": 488,
+      "maintained_fences": 502,
       "fences": {
-        "bash": 294,
-        "powershell": 194
+        "bash": 301,
+        "powershell": 201
       },
       "parser_invocations": {
-        "bash": 294,
-        "zsh": 294,
-        "powershell": 194,
+        "bash": 301,
+        "zsh": 301,
+        "powershell": 201,
         "sh": 0
       },
       "scope": "Bash3.2.57, Zsh5.9 and PowerShell7.6.6 on Darwin. sh self-check passed but no maintained sh fences; Windows PowerShell5.1 remains unobserved."
@@ -110,609 +121,657 @@
     "publication": {
       "status": "passed",
       "instructional_pages": 35,
-      "raw_downloads": 420,
+      "raw_downloads": 436,
       "ui_and_generated_assets": 40,
       "byte_for_byte_check": true
     },
     "browser": {
       "status": "passed",
       "engine": "Chrome/150.0.7871.24",
-      "matrix_observations": 108,
+      "matrix_observations": 120,
       "matrix_failures": 0,
       "record": {
-        "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix.json",
-        "sha256": "482f0b6810d522c00895a2b495367eacf80095f6d5009eafdcb20a7ee7c1f8b7",
-        "bytes": 61479
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix.json",
+        "sha256": "e615f80f8590367401e742ea6d0f793999228579b66a0a245b802958bcb5055c",
+        "bytes": 79255
       },
       "screenshots": [
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-0.png",
-          "sha256": "7d75ce18dd8fa91fec576ae4abadeaf6961b43a276c74b7440c17083b3a284c9",
-          "bytes": 31703
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/000-320-sand.png",
+          "sha256": "599235717ad3069392d0b1ac705e1bac39edcecb34f903a214294e1ac7ded667",
+          "bytes": 42243
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-1.png",
-          "sha256": "e89d44bb0ea6b22ccd79038f1cf41464b7a33cff63a9034180a7af7c78a8e6a9",
-          "bytes": 44617
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/001-320-sand.png",
+          "sha256": "43e10281d9ff585de9f00aad0b38ae88f7df1a97e672b1f59e1a922b52f64768",
+          "bytes": 70169
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-2.png",
-          "sha256": "3f3b11d3941e1cc07811aae6cb58bd2373a79a5ff48b9a6a01ac98e551970287",
-          "bytes": 36402
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/002-320-sand.png",
+          "sha256": "4f5edf05fd5b25eddd4183e8d4557480176760d5f4176fb947bb67f8c6d123d7",
+          "bytes": 55201
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-3.png",
-          "sha256": "3acc4b371d56f32767e283e093bb42e357f8f9f1a2ee9a2345c443c5a7f7a079",
-          "bytes": 49773
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/003-320-sand.png",
+          "sha256": "0ce4e3012d7c629569d1b8fa1d57ea9d8403319f4f2e8d9c62c655707a625e83",
+          "bytes": 74337
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-4.png",
-          "sha256": "1d14887be6fb65d9edd1699e3fc19c1925773a9fd58ad3f2149ae6123b8e8f9e",
-          "bytes": 49878
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/004-320-sand.png",
+          "sha256": "c7e4af2f0185b96929c049ed53b6a80f79de425caa3894d72ec83563f724d39b",
+          "bytes": 75905
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-5.png",
-          "sha256": "ea0755fa885a300f84bc5800e98649a851318db416e98f63077e435fb1742572",
-          "bytes": 39745
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/005-320-sand.png",
+          "sha256": "a1048d2c75637bd947ca0ab50bdadd09bd18a15671388c2349f91026808d3b62",
+          "bytes": 57999
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-6.png",
-          "sha256": "2567f9a572d229990aa2e3afce397e801a714626b4249df4e93b4f353e1b3098",
-          "bytes": 73470
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/006-320-sand.png",
+          "sha256": "8a38eb8fc17196eeafef5887b7264c2a2a19d01ff7c22f92647b6b8fa78a3559",
+          "bytes": 108994
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-7.png",
-          "sha256": "1b9c3de0da3490d4d924047f075efbb6757393bdec7e50b027d2931d4211819d",
-          "bytes": 67567
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/007-320-sand.png",
+          "sha256": "bbb9018ea797dc21600f3a2730cd3839c876058e9e25e748be063ab33d2b3265",
+          "bytes": 104502
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-sand-8.png",
-          "sha256": "b582a33ef5203f5d7cee5e695748c14b9dc7072134ab72a3bec1d1d57bcbad1e",
-          "bytes": 48736
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/008-320-sand.png",
+          "sha256": "1db1aec82a2f5a25443da810156ca913ec491f2b4a004cf3e1e3d836e0541bf1",
+          "bytes": 71837
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-0.png",
-          "sha256": "931f21ba144df9dec0390e46797747c0406b84768327dd00a1606b39978b5dc3",
-          "bytes": 31364
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/009-320-dark.png",
+          "sha256": "5b4861e22c262d173e84187dab42f00a479dbec0700355fa0e4c69a53aa7d624",
+          "bytes": 42329
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-1.png",
-          "sha256": "b0ffd55012615d717c79faf4a262d2cc030df6e16793c1790b6fad6a0e8b7e06",
-          "bytes": 43274
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/010-320-dark.png",
+          "sha256": "2f574b27090f2cd7bd47cb466390b2dce1c074389a9c857174455ecc26f6d4b8",
+          "bytes": 70959
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-2.png",
-          "sha256": "43a65963d653c5eaf8d9c8cc1c5dc9ac5992a7ea7a0a7bc14b17a78e5921ca64",
-          "bytes": 36542
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/011-320-dark.png",
+          "sha256": "b4a15f19fb463e25a9e63cd34f7d1b7cc8fd59e5da3fb32aefddcb1dfc9d3c36",
+          "bytes": 55823
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-3.png",
-          "sha256": "f11408b9bac9e0081a5f708a16af1a5daabb82ce8e94a5078c8f341ed73586cd",
-          "bytes": 49872
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/012-320-dark.png",
+          "sha256": "bf442d1da55f80c231c90d8c2e42ce23cd6c3d360035b3cc5e10925d8d54547e",
+          "bytes": 75354
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-4.png",
-          "sha256": "190dec594c8f63a20a826ce87dafc210c3afd8a818fe8d0d65629b5cfdbe15bf",
-          "bytes": 50426
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/013-320-dark.png",
+          "sha256": "297527f2c8a3f6915a50122c9ca974e1f170a20f6c3bd9699c601ba522a67b27",
+          "bytes": 76782
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-5.png",
-          "sha256": "db9f9d1f2cb165dd06b294d51206b01ae10220ef3efd2227dbd14f23c5a7b7cb",
-          "bytes": 39949
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/014-320-dark.png",
+          "sha256": "1a3e88a6efaa18d7dcd2c3d9a3851e22ef49f0ddc9a09cbefb87aff847eccf75",
+          "bytes": 58758
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-6.png",
-          "sha256": "b1ea70898ec4c01260240678dcef476a56752b07d212ebbbaa2ff90088b91844",
-          "bytes": 73843
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/015-320-dark.png",
+          "sha256": "ff2fc617f1fed663788054855f1e876d92e1ae862dc23749804fb05d3d1ab686",
+          "bytes": 109931
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-7.png",
-          "sha256": "35cff5efbc883e6ff866197f8fd7a0bde199676fb11481bf16475c7b01ea1186",
-          "bytes": 67949
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/016-320-dark.png",
+          "sha256": "288616585c49bdf2fd8e70983732cbab8e9439005eb5cba71d48845ef7cbdd61",
+          "bytes": 105435
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/320-dark-8.png",
-          "sha256": "cd494deab8495dd733a7a5df1afacb07807b9cb5f63fdab1dfe88365949a8914",
-          "bytes": 49258
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/017-320-dark.png",
+          "sha256": "e06f212b6da45eaed293ce7e04813202edab6669d05ec8aec99c39e0c215eaf6",
+          "bytes": 72197
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-0.png",
-          "sha256": "412670c1dfce24f88175fa96e4f3a717cd339a21ff08d1d0e6a0b12c68e5fc60",
-          "bytes": 138540
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/018-390-sand.png",
+          "sha256": "30b43e0af39abbb7685fe6119cf697aa6fad6d40466771a1feb746011d6de478",
+          "bytes": 211694
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-1.png",
-          "sha256": "681e23bf157e65883ba3f3280cfb341a925750e933aaf446397f8ee4301a4257",
-          "bytes": 86216
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/019-390-sand.png",
+          "sha256": "503382f006c57ce7db5c6fea4f987000aef89a11b05f94d962e9e086744e24ce",
+          "bytes": 116309
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-2.png",
-          "sha256": "d7b35a8cdc91fba6eae79df287b9bf70fbdef6d004004e8346ad9230ab55a0a8",
-          "bytes": 77492
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/020-390-sand.png",
+          "sha256": "e0092d02af6f8ec5909b22149d62b08ad1d2dc2669845c632185e417661c1333",
+          "bytes": 109388
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-3.png",
-          "sha256": "dad14aefc1f20311d2a4a8bad201c185274502c964af52a619153ac9ec9bd2da",
-          "bytes": 80805
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/021-390-sand.png",
+          "sha256": "eef5aa8d3b60b20b05f54ae3a64a746234c8163bcd872138eeb6e747b6073276",
+          "bytes": 113651
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-4.png",
-          "sha256": "013e4ad2257054104dffce1e86dc8ef2324c568e7348cf89356d9391b4dc2c6b",
-          "bytes": 98955
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/022-390-sand.png",
+          "sha256": "43f1df0f7578fda3d6c010a5031d95fafd541693ea298f1adcca76f317c1bea7",
+          "bytes": 135410
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-5.png",
-          "sha256": "54f6d2419e3f8fd7fbe9d745e91eadb8c54dc230fdef55021fd49ea61693a1b5",
-          "bytes": 77105
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/023-390-sand.png",
+          "sha256": "a82a24e59762899fb42d2c48f73de4385189ccaa96d1c72fe01d56e7a5888a26",
+          "bytes": 104526
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-6.png",
-          "sha256": "44143c66af8a9ded1c3dab938565b4496dda0d40a72229d8e8e0560a535aae94",
-          "bytes": 121096
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/024-390-sand.png",
+          "sha256": "7c2635486231d5d0af102b71ed2716f1b70541d63c13d13c1b46b026d19ce0d1",
+          "bytes": 170357
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-7.png",
-          "sha256": "881f7ae751f233f2fb05ffd5083182e954413b0a14d7decb3e415eda2b054237",
-          "bytes": 105397
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/025-390-sand.png",
+          "sha256": "1e69c9f87efea0c240892d3111d5b33db651a3944ae71abe814680065df478e7",
+          "bytes": 148688
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-sand-8.png",
-          "sha256": "b22ec0adf07aca6b8f84bb0acb11ddb8353d57d3f1a76e9159e376a940dfc91e",
-          "bytes": 83193
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/026-390-sand.png",
+          "sha256": "ed9b6de35993ed4b79ecc9d2294f2ef5a06d6220cd925ad5e88d1b06e5f3320d",
+          "bytes": 127068
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-0.png",
-          "sha256": "0f2f053af2fe8f2a46190af9a193c6d98c3d100f7287ad8fb910374fd32317ec",
-          "bytes": 135406
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/027-390-dark.png",
+          "sha256": "8258dd459504ee61e40972c840d043587bc9b0f17e60f3e8f1d4b2dc8c4d2c07",
+          "bytes": 209786
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-1.png",
-          "sha256": "c8176dd57c1092e68ae061dbe18230627daefe6ba161b3a5405abb248a946547",
-          "bytes": 85813
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/028-390-dark.png",
+          "sha256": "78a9e2fa7104434f854792f1ce2adc10d6e20b956d2f5e0fe4ce4b2d01043e61",
+          "bytes": 117770
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-2.png",
-          "sha256": "aca01ad57364b4c47397d944c986043aa44a61e72dd4064d680cc7cc2b84c328",
-          "bytes": 77823
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/029-390-dark.png",
+          "sha256": "9fa2232027bffeacb4a1d34f95170eec2bfda86fad9bb49b2db3d12a82cbcde6",
+          "bytes": 110647
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-3.png",
-          "sha256": "14ffc429f0c90230babe1a5934ce8f40ad0116e0df174982db2fdabd9325dcf5",
-          "bytes": 81275
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/030-390-dark.png",
+          "sha256": "ee3317af033fc00757d36678825d987ad76afd9cde491ada179fcf77521e9e49",
+          "bytes": 115213
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-4.png",
-          "sha256": "8287d2be7e0e5bebcda3665c16f8b47fe9a73de7404c2ee4bef576ef20746105",
-          "bytes": 99379
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/031-390-dark.png",
+          "sha256": "0c24ee3402d7163213e7fc662e1a1294707ecf02064bd923df26fd87799d594c",
+          "bytes": 136621
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-5.png",
-          "sha256": "d0a30231c09de945bbabdc27b88561129dbf5fc2ba49773c946445c59efb9996",
-          "bytes": 77243
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/032-390-dark.png",
+          "sha256": "64972717e2c98536c924f6a3fccc342ff29bf773ab3c3187fae1946bc9fc8e91",
+          "bytes": 105156
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-6.png",
-          "sha256": "d2772e788b990d05de910777f1a75af2456998615ae21f3556c5edbf9149258f",
-          "bytes": 121624
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/033-390-dark.png",
+          "sha256": "59cb93848320d0e53b9e19d06551e43f334ae06227785f42ecba2f78a3412a62",
+          "bytes": 171699
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-7.png",
-          "sha256": "9898619c4450ccc2e43ff2fd1082be0d90ef512fcb469193e1b3a28ce8938c39",
-          "bytes": 105717
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/034-390-dark.png",
+          "sha256": "6b562624db244dc7795803b83e38c5febb64869c8b85f034338c5681816b393b",
+          "bytes": 149600
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/390-dark-8.png",
-          "sha256": "cca2190d390bb58fff2ea60345e4d7f404b4f76d5c70b51fa8f73307c404e69c",
-          "bytes": 84586
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/035-390-dark.png",
+          "sha256": "86a2201c08aec4b5fb15c789cf1acdab8ab3a8772e78daa962a53227e21bba03",
+          "bytes": 128256
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-0.png",
-          "sha256": "eb0ab8fbb7879d3b609ee82b8469878cfb6f52c6c10a6614b8d32111f953302e",
-          "bytes": 444854
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/036-768-sand.png",
+          "sha256": "5eae6ca74a720cac6f05fcd3de32c31e0cfe5bb964732c3e6f238036a27bede5",
+          "bytes": 659002
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-1.png",
-          "sha256": "d74f0efe07cd5c4fef61ad07e834bfc32f6c384a4be70358ae16668941665998",
-          "bytes": 126415
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/037-768-sand.png",
+          "sha256": "4398d3244a23d566fe3a6a48426421474e9d66e3326679027a89831ed2d1dfca",
+          "bytes": 170630
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-2.png",
-          "sha256": "a615c06560e7e973385d27c1187bc6ec2167f1f4f708dd2b214c9cc417cf2f1a",
-          "bytes": 146941
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/038-768-sand.png",
+          "sha256": "bfb02baf3fb9c954910c1aead45c56718d46f2338aa4491d00eeb1e56e6756d5",
+          "bytes": 198690
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-3.png",
-          "sha256": "cb24faec9bec8c44f4bc0009c4c30ff1d6c2bd58f6aa7b615a883b1d3a706093",
-          "bytes": 143456
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/039-768-sand.png",
+          "sha256": "0010e0ce569c1d077d6e72697d5edea3be55ec571bd38e7c5cadbb302623b415",
+          "bytes": 190183
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-4.png",
-          "sha256": "09f35ec1246894e7dfd8252e37852d5ba3978fac68ccd9a71592151447129ddc",
-          "bytes": 170196
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/040-768-sand.png",
+          "sha256": "e2bd15c493bd6a6b547c8aa5be78a04124568ed1325bb6782a8b360bf2a97f5d",
+          "bytes": 235874
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-5.png",
-          "sha256": "14a705f3982b10bf5d3dce204f9fc79de049ce9924d187f4a40eb64c83dd5d49",
-          "bytes": 118043
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/041-768-sand.png",
+          "sha256": "8edb253448398aabd2758e0c4d90aa7ff532ce95c429195a26a39b9b46b58a12",
+          "bytes": 156131
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-6.png",
-          "sha256": "b9fbb58ab7f1d0704eb1f40c2e98c11ffbf0f762f8ec5f9ef4fb88cde6cbb57b",
-          "bytes": 340718
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/042-768-sand.png",
+          "sha256": "ab106db2b8664d585145c2ea70ae1bde06d8ac5491595affea26c4d0b3b93157",
+          "bytes": 495158
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-7.png",
-          "sha256": "1670863456dbab0e4660325cc24fa7b4b5aa2a4042b31283032a144ba7a0de55",
-          "bytes": 307510
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/043-768-sand.png",
+          "sha256": "7cdd11cb69a794bbb77f48822c1437164a9903e67ef3ded38467414c787b5b9c",
+          "bytes": 444419
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-sand-8.png",
-          "sha256": "1574ac4d753f2286a0931e0bdce523910a305803a4738f2bc2aaaaccece0808d",
-          "bytes": 144974
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/044-768-sand.png",
+          "sha256": "27b69c2014442c6c21edc539c18776b8b2e9c87c8fa7acfc2bb4811dd2f37969",
+          "bytes": 194764
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-0.png",
-          "sha256": "171eed04e5cd6db5280a52ef4cc46059f5634280bf786d138d7df332dd37995d",
-          "bytes": 432049
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/045-768-dark.png",
+          "sha256": "053cb288d1d7b050539b41c1be4fd56a38f14410a1f941ca4fde545bd32994ae",
+          "bytes": 645222
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-1.png",
-          "sha256": "ce93ba8cb79cd9fb69a2d2ecfd542e91ab3de95dea5b763be5bb2f00822a9a71",
-          "bytes": 126231
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/046-768-dark.png",
+          "sha256": "33efdc388b949f38602125ae94e765de06d37668e1cbbbc30629aa657ecdf49c",
+          "bytes": 172922
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-2.png",
-          "sha256": "13f474b30d6b42ef553e5de779ae7c2c625cf0a63fe0dcf48f6c987cd0c051d7",
-          "bytes": 147425
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/047-768-dark.png",
+          "sha256": "d4574b91b440f60947a8b82bf92903a227cd80affaef5ced6b16ec555750cee8",
+          "bytes": 199939
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-3.png",
-          "sha256": "897ed9be6886bc86af28222013e610906464f4cd96bde3d05981e5c92470ae88",
-          "bytes": 144023
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/048-768-dark.png",
+          "sha256": "c7774dc467ac42e856df817f239dd50ac74af3987d0af1cfca012a13e9440e13",
+          "bytes": 191346
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-4.png",
-          "sha256": "5ce7193372951896109e76c5959d68a3916767419a3f7e573f94d61ce624928c",
-          "bytes": 170573
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/049-768-dark.png",
+          "sha256": "441bfad8d950c559b384381f5e4210700e52ba90f784e7aa753e8f7c8eba5dd6",
+          "bytes": 237125
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-5.png",
-          "sha256": "8d5a80bec06a2d41b8bc0e6e0370ac3884a23bfb87fb4c210e2ea4e5edd7ee35",
-          "bytes": 117858
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/050-768-dark.png",
+          "sha256": "a8f897f9e7d8b94d81450c8f6db3355a7471df86f006af05d96957667500dd80",
+          "bytes": 156732
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-6.png",
-          "sha256": "e98cbb23405c45eb892bcd0f8e24d93d4b3ac1bd852d9f70ca2b7cde5d47f3a3",
-          "bytes": 341078
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/051-768-dark.png",
+          "sha256": "df2ef9a9125031e38bffe49908710d7342e0b1159d09ac7b9cd331ccabc7ced2",
+          "bytes": 496187
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-7.png",
-          "sha256": "daf2694851bf541f46689d6861a0aef4bcb50816bc34bbc5186090044876b28f",
-          "bytes": 307871
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/052-768-dark.png",
+          "sha256": "22a6db22a4b7e4ba23370be2aa040e5dfdd45a6380e5666be6c1f271f43736df",
+          "bytes": 445761
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/768-dark-8.png",
-          "sha256": "99f648f27d9c2365b4da30c3cd7baa47d42bef09012e6c509ad8df467a0c8cd1",
-          "bytes": 147505
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/053-768-dark.png",
+          "sha256": "89a348cbed1e723f22ff1e46f40d5cc81e78a87d382b82b8824d37fd9435619c",
+          "bytes": 196161
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-0.png",
-          "sha256": "abd5ad05021ed4e96efeb44042a7fbf75161885cc056ea741053576654cffc70",
-          "bytes": 685712
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/054-1024-sand.png",
+          "sha256": "6ed9d7ac1f15d1f3f48ba16bd8d1d2a15f20c85e4bf5b3b779fa3078de775428",
+          "bytes": 997076
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-1.png",
-          "sha256": "c82379c07b289c6cfd9121460daf0c0ce0eb8df16f5042055cbc6766e7e35192",
-          "bytes": 121470
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/055-1024-sand.png",
+          "sha256": "16a6951c9b614178d12cc8693ca49b33ebd27c7c8b4da87be6ef387a00803f40",
+          "bytes": 164584
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-2.png",
-          "sha256": "b061f1f8f0e7e56a4e8d9ada3f2957e600af8443489ce0f24c997660dfcb1020",
-          "bytes": 143574
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/056-1024-sand.png",
+          "sha256": "bf94f8349cea27034ffc2158ebcd48195a977da98798cb6675265e0df627a096",
+          "bytes": 193246
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-3.png",
-          "sha256": "c5e46252ec3b0acd9a9a87cdf1d3f7b9609122e7ab2b75c45977322eed075a94",
-          "bytes": 140580
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/057-1024-sand.png",
+          "sha256": "1980438facefba365c19f07feebc3976df4c9463e89e9c281439c0d1208ccc38",
+          "bytes": 187017
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-4.png",
-          "sha256": "bed0211a140569dba50bc4245f75213bb2a975b7ac037b6f57ff0c4a0a2d309f",
-          "bytes": 167937
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/058-1024-sand.png",
+          "sha256": "c24e705fb642968fe35ddf392312b4f2f91795e1cbcb8e6f6e5b718409a9272c",
+          "bytes": 230952
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-5.png",
-          "sha256": "793556235d24a892ba84541026fea5bd0720bb84f09eb0309a61df4760e03238",
-          "bytes": 110924
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/059-1024-sand.png",
+          "sha256": "0218e5795facaf4da47347f872ae59abb4e9fce2f0f6504f8b117ed1fd01402f",
+          "bytes": 146442
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-6.png",
-          "sha256": "65ac1fed5e36f0c3a85fac6882dbbcd3fab40edf0016048ed37913bc026267dc",
-          "bytes": 338029
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/060-1024-sand.png",
+          "sha256": "9224ce929de8f98567408f55c06bf93e755ebd59a93b4383c06e7e236863b495",
+          "bytes": 488139
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-7.png",
-          "sha256": "e53ff94ed7c002e3f63de3e3aca42654e4918f25edf9771a1c9b1fcc9a3e8a6a",
-          "bytes": 299621
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/061-1024-sand.png",
+          "sha256": "14dcf1b5970a019841a43cf053b61fa4ac4fbfc27bfba44df4052ac8d05bcc70",
+          "bytes": 432133
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-sand-8.png",
-          "sha256": "1c529a67ae7edc51dc20cc666fc38edae2719b7eb72c042c87e236b13ab9b4e4",
-          "bytes": 136502
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/062-1024-sand.png",
+          "sha256": "6f0b345b6237821b6e0783f75c1254bfb2a78258756df794c92102496e43d55f",
+          "bytes": 183330
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-0.png",
-          "sha256": "e45421f43dad975d8a12a9d842cd8fc8ec5dce21733b788a89531bfdad1bb2d4",
-          "bytes": 668567
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/063-1024-dark.png",
+          "sha256": "cf96e1b1439f8b73b0e812db3e3c691cd98f58158e7f54e3e5c6978d746b1dc4",
+          "bytes": 986876
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-1.png",
-          "sha256": "24cb2aed55b968ac6e698fcf0ac2265e830aff49234a68be88c9350d16f8ab2d",
-          "bytes": 119994
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/064-1024-dark.png",
+          "sha256": "d88678c8212b4346801c9934695f1da47dd19b52b9a9ddfa7833b695be267de2",
+          "bytes": 165171
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-2.png",
-          "sha256": "5d25d1276172190e69bc06ad97304be6bed89bd27ea8bc426ea1a2b9e0b7f93b",
-          "bytes": 144286
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/065-1024-dark.png",
+          "sha256": "5ca53715111c49be48c353e0ba1cb724b8653929ad72527185f00f5f240e2513",
+          "bytes": 194182
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-3.png",
-          "sha256": "3189f41b1c250ad50dca7ac8df6bfdc62d3b69f6e17badc831cbd51468375500",
-          "bytes": 141133
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/066-1024-dark.png",
+          "sha256": "a38ed4331b163289c421608518a929dffbc0642b6522163db2b736598198a589",
+          "bytes": 188006
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-4.png",
-          "sha256": "3c108d0ec207efa40b6d7c2919fe19ac48ed7cfb8f58746908f31e3d53c89aee",
-          "bytes": 168819
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/067-1024-dark.png",
+          "sha256": "2969b8b88dd789930662eb7b76e4f24d0fe176c95c0f9ad5c048b3bb9bc3c975",
+          "bytes": 232606
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-5.png",
-          "sha256": "fb89ae0e519176434545f554668846b07540ba152af86b12280b92d696e1379f",
-          "bytes": 110641
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/068-1024-dark.png",
+          "sha256": "9687c1599dd96ecf7731fa50561b6d938e5ff8607cd284a302b146b3b76b356d",
+          "bytes": 146775
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-6.png",
-          "sha256": "d56fee68cd8c1e331ab080a9d39c3851cc5c9cd04f0e77d8582bc5035f820014",
-          "bytes": 338489
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/069-1024-dark.png",
+          "sha256": "ca9e226bfe8b93c31660ba901a6ef7e212c898b36a664c0fc5ff1d71b2302e1a",
+          "bytes": 489230
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-7.png",
-          "sha256": "99b4fce4398eaab992092261589883f1cf8cfff25dd369a38f2ec5992da8c17c",
-          "bytes": 299926
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/070-1024-dark.png",
+          "sha256": "50b535e1b5f41f961cbc9071f06fdcd24fad82f0ee434934009d218f7332507e",
+          "bytes": 433353
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1024-dark-8.png",
-          "sha256": "f980cf7e27323aeedca33f43b537fae7f07523655d4142459f52b3dacd0cd1cb",
-          "bytes": 138916
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/071-1024-dark.png",
+          "sha256": "bd7fe9b2d7c39b0da5b0683066923374e1076e855c19ac2720e858c553d2ce99",
+          "bytes": 184880
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-0.png",
-          "sha256": "2804254ae6c3ffa1c066fc91885f14b4c59247d2381c46c23f5b58ad3106f247",
-          "bytes": 853049
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/072-1440-sand.png",
+          "sha256": "bd39ca774efc895518bfa72b3208dd0dbf28e72cb6125ca518474eda0ecaca3e",
+          "bytes": 1202489
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-1.png",
-          "sha256": "5c106749d313995b1536c24a31d91c7e15c6d415ffe7fff9250b80f1100fb8ea",
-          "bytes": 187614
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/073-1440-sand.png",
+          "sha256": "efc9eee163e35ac4225ab1012315e8ceedbd200f6436b535c561c2432ff622a9",
+          "bytes": 253208
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-2.png",
-          "sha256": "6969d07ea63ea07d1ec7ac549c9c4c6918882262e4dcbfe3e078f28bdf3b3863",
-          "bytes": 266230
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/074-1440-sand.png",
+          "sha256": "8af3b28564c7109cbe92de4e4457b45d0c5dfe550f03488ecee0b7d0d4493e05",
+          "bytes": 360183
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-3.png",
-          "sha256": "aa4d58df96a8950426d83462effb45a4b88e5bf6be84c13a4f3a9788b12f7ab8",
-          "bytes": 276848
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/075-1440-sand.png",
+          "sha256": "10a61e243d2cc12c1cb6ab36fa9bf58c56ac74aefc2495e0c2d48f5979590726",
+          "bytes": 368556
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-4.png",
-          "sha256": "656f2f481a933a060b7200e3803ae8756374ed072f875cab4d359c073d180d64",
-          "bytes": 271205
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/076-1440-sand.png",
+          "sha256": "3347e23d35dd2d88519b2f7436e816c11abfd3d732b769d27af53ebb5677e27f",
+          "bytes": 370081
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-5.png",
-          "sha256": "6854c46385e7b1c9510daf4fdf7f598ed1fe20982f404a92441017dc6efa763b",
-          "bytes": 240434
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/077-1440-sand.png",
+          "sha256": "b17f4f5da46e939a2e0d36ba2bca3883bb82842c106672437b5f3870eab93ce3",
+          "bytes": 324192
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-6.png",
-          "sha256": "72964086982233c54ffb34c792c79e36b68fd01e9e1e6f147fe96605b7e946f7",
-          "bytes": 551498
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/078-1440-sand.png",
+          "sha256": "2389964b8de42d7efa5ef6bc9d142a4062d349bfc7ac0ee7c8f8a33bc395c03c",
+          "bytes": 802666
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-7.png",
-          "sha256": "478799e0f560910b8be57356df691c4e7781186ee817d5fb6420b031fbe85f50",
-          "bytes": 506978
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/079-1440-sand.png",
+          "sha256": "f563905a2cd2444ad823e6e193c18234983dfb8f0d150e2666b1173fbe5bbd9c",
+          "bytes": 739664
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-sand-8.png",
-          "sha256": "8bd593733d217c2cfc9479463a2aa500b68f06018b20dae1d35e653f805d05c9",
-          "bytes": 260844
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/080-1440-sand.png",
+          "sha256": "4affb0cb99d488b48c2c6d645b1a28b4df888440f15fa455a26faced40be4372",
+          "bytes": 351520
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-0.png",
-          "sha256": "ca0d4fb348fba815f31688177b6664befe86e3fca978b8c61d2650412917faed",
-          "bytes": 844139
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/081-1440-dark.png",
+          "sha256": "85bebea286f76fd616df3e3bc7aaac3f15bdb672f3c3bcff61120808485a82b1",
+          "bytes": 1199817
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-1.png",
-          "sha256": "acb350dad99d43314d0b577425b30efddd49bd45fbc762b4233c6da335cc1a55",
-          "bytes": 186936
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/082-1440-dark.png",
+          "sha256": "a1062bc269d2c357edcb9bd7120f78ad405d10f131735969e657dabd4beb28c6",
+          "bytes": 254708
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-2.png",
-          "sha256": "64fe13edb1b729a4b3b02306169ae089699e86914ec5d8fa43a194fdd9ca675d",
-          "bytes": 266216
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/083-1440-dark.png",
+          "sha256": "14b268b191bd57ad470d11caa29340471545e977b3735c4d31c6a9abc7cafee9",
+          "bytes": 360561
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-3.png",
-          "sha256": "f63b3e6cc629feab7962c4cea06c0c7f8d8e645269242b21ca512f026276797d",
-          "bytes": 276264
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/084-1440-dark.png",
+          "sha256": "e7de5c9a20e8d292412463d3b355c6266928f5954ac211b587ae41992b7b66a9",
+          "bytes": 369169
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-4.png",
-          "sha256": "4eed394a7279ed89ffa2927aa94c4c66bac1c18f2e3f475ad6b0148ca121eaad",
-          "bytes": 270525
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/085-1440-dark.png",
+          "sha256": "a2cbef71d70550eb8c5604f23049bdfca306b28bd63ca71fe4301f36e5ec6bfb",
+          "bytes": 370986
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-5.png",
-          "sha256": "02a598dc9b73343525bf9afe6d8198efa92ee77f132afe825873f39e6b936224",
-          "bytes": 239564
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/086-1440-dark.png",
+          "sha256": "c66c64ece95d8eabbba25f0185bac1c41db756c9512b586f4f89084879eb972a",
+          "bytes": 324503
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-6.png",
-          "sha256": "b09e7292d676a2c16eaa84dfc479fa0d6fbd3fa6ad4f130e2adf54c462ea077b",
-          "bytes": 553304
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/087-1440-dark.png",
+          "sha256": "c4e4f239b5f981557f7143c318e729301afecb0efd0e45131b50d742562f03bc",
+          "bytes": 805823
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-7.png",
-          "sha256": "2e38229523a895b5f435d1c3e6f7455540348a3f6dd46609895eff15e1e6ab43",
-          "bytes": 507439
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/088-1440-dark.png",
+          "sha256": "866bea34a57d34f433b9b55d0096c8baaf704b8c3350270073f0a9000e83485b",
+          "bytes": 741367
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1440-dark-8.png",
-          "sha256": "0a635c8be4cb0ed082a370ee93170e59524761d4143be4ab54f1ca8abe39e1d6",
-          "bytes": 261379
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/089-1440-dark.png",
+          "sha256": "f8bfdc8436983f179a6387730e2aa8dd18bc0e11bc9c51a58f264e491909a4d1",
+          "bytes": 351238
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-0.png",
-          "sha256": "bf6394e4fbcb3f311f194bbc345881f1a206e40103cf39b842ceac95c25b1545",
-          "bytes": 326466
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/090-1366-sand.png",
+          "sha256": "6db016bb277a492f5064c81c7ae6a66d587f685ec9b9d151c19b8506b7dc9baa",
+          "bytes": 473149
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-1.png",
-          "sha256": "71df8a9c90416561ed15c7196390d573d4aa1e00cdb7dbdc98f54ff827f98ae6",
-          "bytes": 99089
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/091-1366-sand.png",
+          "sha256": "6b95478532bccb71c2f290018a3a9f35fe608b5edde8e796bf0d0349ed4aeca1",
+          "bytes": 133491
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-2.png",
-          "sha256": "27d329e0f099e0cf495deb2e32d63d726bbd0a1050b4a865dc9543aba8226813",
-          "bytes": 113494
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/092-1366-sand.png",
+          "sha256": "b751c98dee039ce1e3967ead1be630e535a9667dc3404271f555c1f2d96b1aff",
+          "bytes": 152772
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-3.png",
-          "sha256": "b4d222d3971a2a706b6193e871febcba9a26c9d511f72169d730a868aa6ad2d9",
-          "bytes": 116903
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/093-1366-sand.png",
+          "sha256": "64dfbfeaf1fae545d8407f4c26971ff4e4b40dced7b5adec33a332e5cddebbe2",
+          "bytes": 153601
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-4.png",
-          "sha256": "9738ce8c14c8049f596803fd80e27d036647905e3157e9dc6bfd935cfc70f5d1",
-          "bytes": 134931
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/094-1366-sand.png",
+          "sha256": "ace0486fc024476d81d1c7f9e9a6c2cd2ec0b06c8dbffdd5ae10cdb34d11866d",
+          "bytes": 182376
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-5.png",
-          "sha256": "af5fabf8de6d0425e50b209070f47cc438e419cbe78cb32e3632f67533ebe9e2",
-          "bytes": 80139
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/095-1366-sand.png",
+          "sha256": "b1e5cd6968a6e9c91c77188bd7b820fd6b606655147acd5cf3d37b6e00964bff",
+          "bytes": 106367
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-6.png",
-          "sha256": "098ff9b91482ca09dbed458fa62e8b398d08977cab7f64876818d767c5bd21cc",
-          "bytes": 359632
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/096-1366-sand.png",
+          "sha256": "fee5ff447233db398b84546860770c1f43e374825292479266129ff2083a892b",
+          "bytes": 528210
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-7.png",
-          "sha256": "8a9dfc908e949cbb8467e33ec5f6ed2a209e8ade6b0f6727fee6cd1e4b4555d2",
-          "bytes": 341536
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/097-1366-sand.png",
+          "sha256": "3aec999846b042f117e6016652ccaea4ca9e45b32c072103bd988598e538a3d9",
+          "bytes": 508949
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-sand-8.png",
-          "sha256": "48f70c5b599e0e92d7c94c78417b6d74f7b8e893a1080998a291303da50a7b4d",
-          "bytes": 109824
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/098-1366-sand.png",
+          "sha256": "d73e5e298a7e7e907187370abc21ca887b329493765b2f3957edead9ec644bb9",
+          "bytes": 144836
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-0.png",
-          "sha256": "3cd341078f3b5808794cd93c393bb4d5f378cf495fd66160c3529e0db0ac2a92",
-          "bytes": 320677
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/099-1366-dark.png",
+          "sha256": "5c6239f6964d3ff35a78457fbc96a29b6d6bd5180038c2668c52cbcd094d6641",
+          "bytes": 467411
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-1.png",
-          "sha256": "0a3421a444c3ff7958fa6ff06e9edcf08038e6a4737ebcaf0a9de222f6f96124",
-          "bytes": 97448
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/100-1366-dark.png",
+          "sha256": "c53f81311c353c5974b42924d17d6a017bc651e62bc9eba2be1681e2a0452672",
+          "bytes": 133136
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-2.png",
-          "sha256": "f09fbbd4a4c090217ea14c4f0be762579687d9ee0b97edd89334c27e4fd8a12a",
-          "bytes": 113945
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/101-1366-dark.png",
+          "sha256": "f5d89af60d83092ff71d9a6d20dbf1eab8962f4ad1352677a4ce4f5699ab2951",
+          "bytes": 153857
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-3.png",
-          "sha256": "059600093d45b7594479ba091c9fdd31992044c6de84d0107b869b394eab1700",
-          "bytes": 117507
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/102-1366-dark.png",
+          "sha256": "ddf51e440b150667f10a41a52f8e6840554a9bf6540023d11040a567e1d9bedd",
+          "bytes": 154610
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-4.png",
-          "sha256": "7d9e669ed0d17333fa4e71b84d89c76e0d8f0e0b159996802ba3d2df7dcefaed",
-          "bytes": 135745
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/103-1366-dark.png",
+          "sha256": "7a7fbeea61f18923eca4347dc7513549d3b2b464265a7ba9c9880d4712d168b3",
+          "bytes": 183252
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-5.png",
-          "sha256": "634d7510441250ac13024decfa7ce3b95d1a3ec761d5c9a9c6022bc9f9629a08",
-          "bytes": 80118
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/104-1366-dark.png",
+          "sha256": "750a1507f2f6af548ecacb0f1128c4e670e99eea5d8eef8fb96ea708c00c3e1e",
+          "bytes": 106451
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-6.png",
-          "sha256": "c67128cfb38affb022c696bd72c7b4c18e916fa49e53fe29b7fd24c61cef3134",
-          "bytes": 359937
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/105-1366-dark.png",
+          "sha256": "353423b3c9629a9010cfcc19077bb0ac3dc7272a4ed894f7a67a5191f97a0a5b",
+          "bytes": 528848
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-7.png",
-          "sha256": "99f29197c600a4fb360efde573c5ec97fcefc088a0bc3bce376de56207d39f94",
-          "bytes": 341736
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/106-1366-dark.png",
+          "sha256": "3f6a24d5f342258a88488483e6b11cbb204286d50b0f08116016cdf11c4ada08",
+          "bytes": 509731
         },
         {
-          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/browser-matrix/1366-dark-8.png",
-          "sha256": "2ca6e987160ed8c4ac7b661121df1a2ab5a016283f5690425da6aba353d31bb4",
-          "bytes": 111307
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/107-1366-dark.png",
+          "sha256": "49a52342eef5ef86dfe3a0591cbcf8367e14d4f32f68a8bd9a28c6d2320dafa2",
+          "bytes": 145323
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/108-320-sand.png",
+          "sha256": "7619e0f2b0dd4411c632bf9ae6938dda71881d5581c725d7456a0246234b4335",
+          "bytes": 109915
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/109-320-dark.png",
+          "sha256": "65d7396b8d35b2f8fcfdb159d640387e7db713cd98a3bbc9c8b5a62be8b08653",
+          "bytes": 111038
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/110-390-sand.png",
+          "sha256": "4a7d471fba7e39ccac36b2b1d5d5362a5327a0dd970dc5778a1d8fd8a2af18d6",
+          "bytes": 166131
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/111-390-dark.png",
+          "sha256": "1f2526cfa2495a34a132ff8cc5a1de34c60f8fee76abb5f0f0f3a719c26229c1",
+          "bytes": 167449
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/112-768-sand.png",
+          "sha256": "5bc08e3996c932cf90700697f9ce18a42783830abf48e808b4ea3bf0c83b9f7a",
+          "bytes": 477918
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/113-768-dark.png",
+          "sha256": "f8d74766e7060f885ad6a468d6b66388ff45856cc380058ed7c73449d51848a2",
+          "bytes": 478386
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/114-1024-sand.png",
+          "sha256": "13c12791e5b899ced0658b70a89ac7c0cec22323955704ceb8ddde6d6372138f",
+          "bytes": 458199
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/115-1024-dark.png",
+          "sha256": "266f3424effea5b80d02685ef01435fd688006f458d0719a40afa188efd9e764",
+          "bytes": 459245
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/116-1440-sand.png",
+          "sha256": "e90c68668d66a8ad020255a4280b02e31f690b487e7220d29f9abb4f142ea7d9",
+          "bytes": 760367
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/117-1440-dark.png",
+          "sha256": "6765484432b3a7a7105fa4709e14424630782f69605c890da896255f4addbd74",
+          "bytes": 761584
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/118-1366-sand.png",
+          "sha256": "2df9721a6e18a00261871b93f54557eb55bc9225f6f205ca6c1f4dcb9a6dbf78",
+          "bytes": 444890
+        },
+        {
+          "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-settled/119-1366-dark.png",
+          "sha256": "5c71641fd57fce8f53cb6a8ae0fedef08734ccf844661204ec4f641f9b51f6e2",
+          "bytes": 445578
         }
       ],
-      "scope": "108 real Chromium observations after the latest-OMP merge; before the newer upstream Module00 longform rewrite.",
       "search": {
-        "href": "20261005T002550Z-navigation-main-integration/merged-search.json",
-        "sha256": "632d2d928366fe94041183ccd0d754d499b923765a1fbdf5d0dbd73a2631bdbe",
-        "bytes": 936
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/search.json",
+        "sha256": "05aad427469a1b676c91f7aefe99902253641ef0e597669825482763072e2c30",
+        "bytes": 739
       },
-      "readiness_entry": {
-        "href": "20261005T002550Z-navigation-main-integration/readiness-entry.json",
-        "sha256": "929997552d48b11a0078ff301291abfb605568ec08bb7ac36fae3f518852e3ce",
-        "bytes": 1318
+      "search_screenshot": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/search-landing.png",
+        "sha256": "08d3871616e21a2d0f645696f8281bf962ba22d44d0655e3b0cba1b06370ae8d",
+        "bytes": 150959
       },
-      "readiness_screenshots": [
-        {
-          "href": "20261005T002550Z-navigation-main-integration/readiness-entry.png",
-          "sha256": "68bfac3aa2df2c1d562a3026b7e4b9c87e7883fced981eab6f1180f4054246c0",
-          "bytes": 143009
-        },
-        {
-          "href": "20261005T002550Z-navigation-main-integration/readiness-keyboard-preparation.png",
-          "sha256": "6272ba2f68defcb566aaf5391fae143a265654055ae1e8569b9f2e82609891b1",
-          "bytes": 134196
-        },
-        {
-          "href": "20261005T002550Z-navigation-main-integration/readiness-keyboard-reload.png",
-          "sha256": "eb94afaca59d8a93bcba37ae8b02db3a455cc84ae1b0047eab04290de63247c7",
-          "bytes": 127893
-        },
-        {
-          "href": "20261005T002550Z-navigation-main-integration/merged-search-landing.png",
-          "sha256": "7e881df938ef743b37718a5b768158a0c5175246e7db552aac3dc17a80a0b970",
-          "bytes": 113854
-        }
-      ],
-      "automation_limit": {
-        "href": "20261005T002550Z-navigation-main-integration/readiness-direct-helper-attempt.json",
-        "sha256": "30acc44d962ca340f6de7825ae1d1903475db9e7e12a7180e788fb6092040ef4",
-        "bytes": 965
-      }
+      "progressive_reading": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/progressive-reading.json",
+        "sha256": "4b0835a9077a2acffdb995df76a609c09720d23ff58123c870635872770987ae",
+        "bytes": 256
+      },
+      "no_script_screenshot": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/longform-no-script.png",
+        "sha256": "03ef27bc7184f7e8ae272c8efb0aa081e99acca10c7b6fe32d922db8a70a6efb",
+        "bytes": 217600
+      },
+      "print_pdf": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/longform-print.pdf",
+        "sha256": "482e4fd71d41c9024c9803cf6242508a922809def7f8158fa1ca53287821aea2",
+        "bytes": 7643350
+      },
+      "scope": "Ten current destinations including the new Module00 longform lab; six viewports in Sand/Dark. Actual keyboard focus transfer, visible anchor placement, no overflow/duplicate IDs/open dialogs. Current Module00 search landing; all15 longform steps exposed without JavaScript and in print. Earlier prefixed-mount and full image-audit receipts remain historical."
     },
     "work_preparation": {
-      "status": "passed_after_correction",
+      "status": "passed",
       "record": {
-        "href": "20261005T002550Z-navigation-main-integration/merged-work-preparation-smoke.json",
-        "sha256": "8b7307189c7cebc373d0e31efee77112832e54b78ccf76e736d335afc176aadf",
-        "bytes": 1227
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/work-preparation.json",
+        "sha256": "5e3fd1c8d130d40aa17a0e9f529136f13ccabb410775c7e118f46c59bcb80018",
+        "bytes": 7256
       },
-      "scope": "Real supplied preparation CLI on Modules05/06/07/08/10, current Module06 editables, and Module10 package structure check. No model lifecycle claimed."
+      "scope": "Actual fresh preparation commands for Modules05/06/07/08/10; Module10 package structure check only, not command execution or model/human performance."
     },
     "preserved_failures": [
       {
@@ -745,6 +804,39 @@
             "bytes": 149456
           }
         }
+      },
+      {
+        "scope": "The intermediate latest-OMP integration hit the unchanged 600-second Module02 mutation deadline. The final full run used a dedicated TMPDIR, retained every gate/oracle and deadline, and passed.",
+        "record": {
+          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/course-gates.log",
+          "sha256": "c867b34c63470a71d30d0266e79951da3faeb8bf94f2ffca1721b1b77a2be830",
+          "bytes": 142004
+        },
+        "raw_record": {
+          "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/course-gates.raw.log",
+          "sha256": "462e147a1cf91a0861070a035c3034fa690e1881e7b88c78a476bb2ce4e550fd",
+          "bytes": 143192
+        }
+      },
+      {
+        "scope": "Browser harness corrections only: press API argument order, numeric-leading DOM ID lookup, and waiting for actual focus settlement rather than sampling after two frames. No product code changed for these capture errors.",
+        "records": [
+          {
+            "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-harness-first-attempt.json",
+            "sha256": "173bc569705fe42f3b645c5f9b5f6d28b4618dde13162173b6f53c88fdded6a6",
+            "bytes": 150
+          },
+          {
+            "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-harness-second-attempt.json",
+            "sha256": "733bcbbaee4b6b953f6c58e9cb6891e36b229e46b5f28c3dd0022890a2c98edf",
+            "bytes": 188
+          },
+          {
+            "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/browser-matrix-before-focus-settlement.json",
+            "sha256": "1b2e8fd9a21a606a796dd8ab7fb8b6dde7b80d024a5b6a0cea695a2835a6560b",
+            "bytes": 144191
+          }
+        ]
       }
     ],
     "historical_limits": "Earlier57-image audit, hosted32-gate run, and72-view matrix remain bound to their archived task source. New merged-source proof is recorded above; no inherited native, human, live-model, or billing PASS."
@@ -754,7 +846,7 @@
       "id": "00",
       "case": "North Shelf",
       "directory": "module-00-setup",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -778,7 +870,7 @@
       "id": "01",
       "case": "Cold Lantern",
       "directory": "module-01-mission-thread",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -802,7 +894,7 @@
       "id": "02",
       "case": "Ledger Pike",
       "directory": "module-02-context-desk",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -826,7 +918,7 @@
       "id": "03",
       "case": "Kiln Hold",
       "directory": "module-03-mcp-research",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -850,7 +942,7 @@
       "id": "04",
       "case": "Chalk Line",
       "directory": "module-04-typed-decisions",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -874,7 +966,7 @@
       "id": "05",
       "case": "Copper Span",
       "directory": "module-05-diagnose-review",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -898,7 +990,7 @@
       "id": "06",
       "case": "Blue Gauge",
       "directory": "module-06-decision-model",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -922,7 +1014,7 @@
       "id": "07",
       "case": "White Rack",
       "directory": "module-07-batch-workflow",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -946,7 +1038,7 @@
       "id": "08",
       "case": "Slope Brief",
       "directory": "module-08-change-eval",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -970,7 +1062,7 @@
       "id": "09",
       "case": "Night Desk",
       "directory": "module-09-agent-safeguards",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -994,7 +1086,7 @@
       "id": "10",
       "case": "Cold Foundry",
       "directory": "module-10-capstone",
-      "current_technical_verification": "passed_current_integrated_offline_gates; no new live or human observation",
+      "current_technical_verification": "passed_final_integrated_offline_gates; no new live or human observation",
       "prior_observations": {
         "main_report": {
           "run_id": "20260930T224039-live-33ed8fb4",
@@ -1157,8 +1249,8 @@
   ],
   "release_decision": "Git integration/publication and task-resource removal authorized explicitly by the user. Missing evidence remains HOLD; it does not prohibit this authorized publication and is not relabeled PASS.",
   "source_manifest": {
-    "href": "20261005T002550Z-navigation-main-integration/latest-omp-integration/resolved-source-manifest.json",
-    "sha256": "44c13d1d948298ba944c508efd593923438e5fef39ce7aa59891c8a65201e2c3",
-    "bytes": 178497
+    "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/source-manifest.json",
+    "sha256": "2e143fd1e822b27df84a4ff6bcbad77cb02a32d3a8def25ccbabe26efebfa57f",
+    "bytes": 182189
   }
 }

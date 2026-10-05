@@ -4,11 +4,11 @@
 
 Each outcome adds one capability and has one owning module. Earlier capabilities remain prerequisites and quality bars, not new objectives. Every module supplies an independent case, so it needs earlier skills without depending on an earlier evidence bundle.
 
-## PO-00 — Select, screen, and direct bounded work
+## PO-00 — Get a long document you can trust from AI
 
-Given a supplied low-risk professional case, the learner explains relevant capabilities and limitations, chooses what to delegate and what to retain human judgment over, refuses one unsuitable use, applies the minimum responsibility screen, converts the request into accepted direction with audience, outcome, sources, constraints, precedence, falsifier, stop condition, and decision owner, and produces a checked communication artifact for bounded internal use.
+Given a supplied low-risk professional case with several sources, the learner applies the minimum responsibility screen and writes the brief and the tests before any prose; has an AI tool propose an outline, then corrects and freezes it; has the tool draft one section per session within that plan; checks the draft against references outside it (a practice checker the learner has made fail on purpose, a list of every number, and separate review sessions for tests, facts, reader actions, and style); verifies each finding before accepting it; revises only the flagged sections; applies one changed fact only where it is used; and decides whether to send the document on that evidence.
 
-**Evidence:** use/delegate/refuse decision, checked first artifact, capability-limit statement, minimum-screen result, frozen direction, communication artifact, supplied practice acceptance result, changed-input result, and bounded internal-acceptance decision.
+**Evidence:** brief with the minimum screen, tests, AI-proposed and corrected outline, frozen plan, section drafts and their receipts, practice-checker result and failing copy, number list, review findings with accepted and rejected fixes, section comparison after each revision, changed-input revision, send-or-hold decision, and handoff.
 **Owner:** Module 00
 
 ## PO-01 — Verify sources and outputs

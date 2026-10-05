@@ -1,6 +1,6 @@
 # Reference: Module 0 and the initial course setup
 
-**Version:** 8 · **Frozen on:** 2026-10-04 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling and the peer-review, qualification, and evaluator lanes; replaces the class-review decision with a send-or-hold decision
+**Version:** 9 · **Frozen on:** 2026-10-04 · incorporates the v3 single-OMP/OpenRouter contract, the recorded v4 ungraded amendment, and native local n8n readiness; removes the nonexistent per-key spending ceiling and the peer-review, qualification, and evaluator lanes; replaces the class-review decision with a send-or-hold decision; rebuilds the assignment around planned, checked long-form drafting
 **Scope:** Module 0 learner material, shared setup contract, five platform setup paths, and the acceptance machinery that decides them
 **Supported paths:** Windows PowerShell with an n8n-only WSL bridge, Windows with WSL 2 and Ubuntu for course work, macOS, Ubuntu, Arch Linux
 **Artifact type:** procedural learner material and technical acceptance checks. Executable checks verify bounded behavior; they do not grade human capability. Time-to-first-checked-artifact and learner failure rates remain unmeasured until observed with people.
@@ -105,13 +105,13 @@ Fourteen systems, selected because each one settles a specific decision. Confide
 
 ## 4. Module 0 capability and invariant case facts
 
-The new capability is directing and checking one bounded AI-assisted job while retaining human responsibility. Installation is an entry condition, not a second mastery objective.
+The new capability is getting a long document you can trust from AI: plan and test before any prose, one limited job per session, checks against references outside the draft, verified findings, targeted revision, and a send-or-hold decision kept by the learner. Installation is an entry condition, not a second mastery objective.
 
-The supplied Harbor Depot → Field Clinic S-3 case remains unchanged: request 40 water-treatment kits, baseline on-hand count 27, pen 4 custody rather than release, Ivo Marsh's release ownership, no assigned vehicle/approved permit/confirmed receipt, and the Thursday/Friday 9:00 a.m.–5:00 p.m. paperwork window rather than pickup authority. Preserve the supplied contact, class-only audience, and all packet wording. The provided changed-input fact changes the count to 19; it does not add movement authority.
+The supplied Harbor Depot → Field Clinic S-3 case keeps its invariant facts: request 40 water-treatment kits, baseline on-hand count 27, pen 4 custody rather than release, Ivo Marsh's release ownership, no assigned vehicle/approved permit/confirmed receipt, unknown supportability, and the Thursday/Friday 9:00 a.m.–5:00 p.m. paperwork window rather than pickup authority, with contact 555-0194. Since v9 they sit in six source files (request, count sheet, paperwork notice, release desk, yard board, clinic message), which add the stated weekly need, kit condition, paperwork examples, the three-step release requirement, no advance release dates, direct notification of the clinic clerk, and the clinic's five questions. The brief is for the Field Clinic S-3 supply team only. The provided changed-input fact changes the count to 19; it does not add movement authority.
 
-The core preserves every stage: inspect the four-file work copy and public checker; decide delegate/human/refuse; record the responsibility screen; freeze direction and a falsifier; obtain a real bounded `artifact.md` write; read and check the 130–190-word email; trace a material claim; execute a failing falsifier copy; distinguish observed model capability, product surface, harness control and human decision; decide whether the email is ready to send; predict and apply the changed count; observe the original checker's expected stale-count failure; compare changes/nonchanges; leave a reconstructable handoff. Keep original outputs and failed attempts.
+The core preserves every stage: read the request, sources, and public checker; write `brief.md` (which carries the minimum screen) and `tests.md` before any prose; have OMP propose `outline-proposed.md`, correct `outline.md`, and freeze the plan; draft section 1 in its own session and read it against its quoted sources and receipts; draft the remaining sections one session each; run the checker on the 500–900-word `draft-v1.md` and execute a failing copy; list every number and code against the sources; run separate review sessions (tests, facts answered from the sources without the draft, reader actions, style); verify each finding into `review/r1/fixes.md`; revise only the named sections and confirm the rest are byte-identical; apply the changed count only where it is used and observe the original checker's expected stale-count failure; confirm `draft-v1.md` is unchanged; decide `READY TO SEND` or `HOLD`; leave a reconstructable handoff. Revision stops after two rounds. Keep original outputs and failed attempts.
 
-The stretch repairs the supplied count/staging-and-paperwork sentence without introducing new authority. It must explicitly preserve custody-not-release and paperwork-not-pickup, all source-supported nonchanges, the original artifact, and the same word range.
+The stretch asks a fresh session for the whole brief in one prompt, in a separate folder holding only the request and the sources, and compares that draft with the planned one.
 
 ### Timing and availability
 
@@ -125,7 +125,7 @@ The case, practice checker and mechanical expectations are inspectable. A locati
 
 Technical acceptance uses the visible practice checker and human decision record. No separate hidden case is supplied; a documented HOLD is valid technical evidence when a prerequisite or decision condition is unresolved.
 
-The checker is deliberately limited. It checks recognized polarity, quantities attached to their subjects, unsupported promises and the word range. It cannot settle source applicability, tone, the responsible professional decision, or authorship. A recognized negated fact such as “No vehicle is assigned” must not fail because its shorter positive substring occurs inside it; a separate contradictory assertion must still fail.
+The checker is deliberately limited. It checks the brief's shape (title, 5–6 sections, 500–900 words), recognized polarity, quantities attached to their subjects, and unsupported promises. It cannot settle source applicability, tone, the responsible professional decision, or authorship. A recognized negated fact such as “No vehicle is assigned” must not fail because its shorter positive substring occurs inside it; a separate contradictory assertion must still fail.
 
 ## 6. Acceptance and negative evidence
 
@@ -139,7 +139,9 @@ Use meaningful behavior and integrity gates, not source-wording, incidental form
 | Checkout/work separation | Intended clone and fresh external work, unrelated changes preserved | Existing work destination, unrelated checkout, dangerous escape |
 | Local n8n readiness | Full pinned stack; loopback editor; expected service states; owner access and saved-workflow restart persistence | Unapproved privilege/licence change, occupied install/project, inherited Compose overrides, wrong version/binding, lost existing state |
 | Guarded execution | Real raw lifecycle, authorized tool joins, exact file readback and hashes | Missing/unready guard, outside path, missing instruction, stale or hand-created proof |
-| Practice draft | Faithful source-supported email, recognized negative facts, all quantity bindings | Contradiction, unsupported pickup/release, wrong subject/count, wrong audience |
+| Practice draft | Faithful source-supported brief, recognized negative facts, all quantity bindings | Contradiction, unsupported pickup/release, wrong subject/count, wrong audience |
+| Planned drafting | Brief and tests before the outline; frozen plan hashes; one receipted session per section | Plan changed after drafting began, section file without a matching receipt |
+| Review and revision | Findings from isolated sessions verified by the learner; only named sections change | Accepting a finding without a source, test, or rule; an unnamed section changing |
 | Changed input | Original unchanged; correct revised count and expected old-checker failure | New authority, untraced material change, overwritten original |
 | Falsifier | Actually executed wrong copy with named observed failure | Merely stated or invented failure |
 | Publication | Generated public HTML, working resources, terminal/privilege/expected/stop/recovery labels | Missing path, unsafe link, unlisted staff artifact, copy button including output |

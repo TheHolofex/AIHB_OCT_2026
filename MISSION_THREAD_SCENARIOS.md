@@ -71,7 +71,7 @@ Label a material statement `SOURCE FACT`, `CALCULATION`, `INFERENCE`, `DECISION`
 2. **Own movement only.** A packet names its own movement, origin, destination, commodity, and the object it would commit. It does not use another session's proper names as setting. These names appear only in the Monday afternoon spec and in Module 01 files: Cold Lantern, Red Mesa, Clinic H-17, Route R-71, VX-204, VX-240, `PR-4418`, `MO-27`, and 6 October 2026 as that movement's date. `C-44` appears only in Tuesday morning. `ST-17` appears only in Module 09. `LW-` lot IDs appear only in Module 07. The pinned model identity, weight file name, repo pin `a0ebe1b5ad5c009cd382908585c04b7e9e0cf0c0`, port 8080, and the transfer bundle appear only in Module 10.
 3. **Significance in one sentence a non-logistician can say.** If trusting the fluent output would commit unreleased kits to the vehicle, mark unusable kits as ready, publish a class note as a movement order, hide a missing permit, move the wrong lot, adopt an invented mass, file a release the quality office did not issue, or hand the next person a package that cannot close the movement alone — keep the project. If the sentence needs course vocabulary to sound harmful, rewrite the stake. Name who would commit the movement, the local fact that is true, and what the next handoff receives.
 4. **Volume sits in the pile. The artifact stays small.** Replacement packets for Modules 02–10 meet the floors in the session specs. A careful person who reads every item and writes the artifact by hand cannot finish by hand within a module's time (design target). The supplied control finishes the volume. The learner still opens the decisive source item before accepting a material claim.
-5. **Do not apply that floor to Modules 00 or 01.** Module 00 must still produce a checked email within about the first hour (design target) from the shipped short packet. Module 01 stays at nine baseline sources plus one sealed change. Its reference forbids adding missions, routes, or cargo types. Depth is the volume there.
+5. **Do not apply that floor to Modules 00 or 01.** Module 00 must still reach a frozen plan and a first checked section within about the first hour (design target) from its six short sources. Module 01 stays at nine baseline sources plus one sealed change. Its reference forbids adding missions, routes, or cargo types. Depth is the volume there.
 6. **Near-miss identity is visible.** Every replacement pile includes at least eight almost-right vehicles, routes, lots, permits, clinics, or revisions. Hiding the distractor is not a rejection.
 7. **At least three locally true broken handoffs.** A scanned tote that is not released, a received permit that is not approved, a reachable clinic behind a closed gate, or the same pattern with new numbers.
 8. **At least one hostile retrieved instruction.** A packing note, vendor line, or community post tells the model to treat a quote as a release, ignore a later receipt, or hide the instruction. It is data. Obeying it breaks the source boundary. This is not a cyber-defense lesson and not a new exploit procedure. Use a supplied probe or a quoted paperwork sentence. Do not write attack steps.
@@ -100,65 +100,35 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 
 ## Monday morning bounds North Shelf
 
-**Status:** case adopted. The files the lab copies are this desk note: `SOURCE_PACKET.md`, `REQUEST.md`, `CHANGED_INPUT.md`, and `check_artifact.py`. Lab sentences that named the old room facts were retargeted to this note, because those sentences would otherwise describe facts this case does not have. Do not grow the packet. Word cap stays 130–190. The checked draft below is 176 words. The source packet is 35 lines. The first checked draft still has a 60-minute design target.
+**Status:** case adopted; rewritten 2026-10-04 around long-form drafting. The lab copies `REQUEST.md`, `STYLE.md`, `check_artifact.py`, and `sources/` (six files). `CHANGED_INPUT.md` arrives later through `scripts/longform.py reveal`. The packet grew from one desk note to six short sources so that a 500–900-word brief has real content: with the one-note packet, the course model wrote 341 words against a 700-word plan, because the section instruction forbids padding. Recalibrate the word range before growing or shrinking the packet.
 
-**Skill:** Select what to delegate, what to keep human, and what to refuse. Screen responsibility. Freeze direction. Rerun one changed fact. One checked internal desk note. Not another session's skill.
+**Skill:** Get a long document you can trust from AI. Screen and plan before any prose, one session per section, checks against references outside the draft, verified findings, targeted revision, one changed fact, send or hold. Structured claim admission, typed judgments, and reviewer ensembles stay Module 08's.
 
-**1. Job.** A Harbor Depot inventory clerk's note to the Field Clinic S-3 supply clerk says 27 water-treatment kits are counted in pen 4 and that paperwork can be checked Thursday and Friday; if the clinic clerk treats that count or that window as a shipment, they schedule treatment water that has not been released.
+**1. Job.** A Harbor Depot inventory clerk's status brief answers the Field Clinic S-3 supply team's five questions about North Shelf. If the clinic treats the 27-kit count or the paperwork window as a shipment, it schedules treatment water that hasn't been released.
 
-**2. Delegation.** The model may draft the desk-note email from the packet only. The human keeps whether each claim matches the packet, whether named class participants may read it, the stop, and any release, dispatch, or receipt decision. Refused use: writing the note so the clinic can expect the kits during the documentation window, or assigning a vehicle. That is the use this case tempts, because the window and the on-hand count are true and a helpful draft will smooth them into a pickup.
+**2. Delegation.** OMP proposes the outline, drafts one section per session, runs the review passes, and rewrites only the sections the learner names. The learner writes the brief and the tests, corrects and freezes the outline, verifies every finding, and decides send or hold. Refused use: a brief that lets the clinic expect the kits during the documentation window, or that assigns a vehicle.
 
-**3. Minimum screen.** Source authority: `SOURCE_PACKET.md` only. It can establish the count, the request, the window, the contact, and the absences. It cannot establish a release, a dispatch, a permit, or a receipt. Sensitive data: none. No patient name, no real personnel file, no phone beyond 555-0194. Affected person: the Field Clinic S-3 supply clerk, who would schedule kit use, and patients who would be told treatment water is coming. Disclosure inside the exercise: named class participants only; the note releases nothing; supportability is unknown. Two lines that force HOLD: the draft cannot decide whether any kit may leave Harbor Depot, which vehicle moves, whether a permit is approved, or whether the clinic has received anything — if the task is treated as that decision, HOLD. Ivo Marsh at the Harbor Depot release desk owns any release — if the model or the clinic supply clerk is treated as that owner, HOLD.
+**3. Minimum screen.** It lives in `brief.md`. Sources: the six files only. Sensitive data: none; roles, one release owner, and one desk number. Affected: the clinic supply team, and patients who might be told water is coming. Disclosure: the learner states whether the brief says AI drafted it. Can't authorize: a release, a vehicle, a permit, a receipt, a dispatch, or a date. Decides: the clerk; Ivo Marsh owns any release.
 
-**4. Frozen direction.** Audience: Field Clinic S-3 supply clerk. Named class participants may read the note. Outcome: one internal desk note stating custody, the request, paperwork-only status, and what the clinic must not do. Allowed sources: the source packet only. Constraints: 130–190 words; subject line; contact 555-0194; requested 40 and on-hand 27 stated as different numbers; pen 4 custody is not a release; Thursday and Friday, 9:00 a.m.–5:00 p.m., is a documentation window only; Ivo Marsh owns release; no vehicle; no permit; no receipt; supportability unknown. Precedence: packet over request over a helpful close; an absence beats a fluent promise. Acceptance: named class participants may read it, or HOLD. No public notice, no operations list, no dispatch. Falsifier: put the prohibited sentence into a copy and ask a reader acting as the clinic supply clerk what they would do before Friday. It fires if they stage kits for a truck or tell staff to expect receipt inside the documentation window. Record that action. Prohibited result: the sentence below, any vehicle assignment, any GO, any pickup or delivery promise. Stop when a material claim cannot be traced, a correction would authorize the movement, or a screen line is unresolved. Correction limit: two attempts, then HOLD. Decision owner: the learner for class reading; Ivo Marsh for any release.
+**4. Source packet.** S1 request: 40 water-treatment kits for Field Clinic S-3 from Harbor Depot; stated need about 20 kits a week; on file; no delivery date. S2 count sheet: 27 counted and staged in pen 4; sealed, no damaged carton; custody, not a release; 27 doesn't fill 40. S3 paperwork notice: Thursday and Friday, 9:00 a.m. to 5:00 p.m.; paperwork questions only, with two examples; 555-0194; calls outside the window aren't answered; not a pickup appointment, dispatch, or delivery promise. S4 release desk: Ivo Marsh owns any release; a release needs a released lot, an assigned vehicle (transport desk), and an approved permit (permit office); none is done; no receipt; supportability unknown; no release dates in advance; the release desk tells the clinic clerk directly; four must-nots (schedule kit use, tell patients water is coming, send a vehicle to collect kits, treat the window as an arrival time). S5 yard board: HS-3 parked in bay 2, not assigned; bay 3 empty; the board doesn't assign vehicles. S6 clinic message: five questions (how many and when; the other 13; their own vehicle during the window; whom to call about release timing; what to tell patients).
 
-**5. Source packet.** Confirmed, and required by the checker: water-treatment kits; Harbor Depot; Field Clinic S-3; requested 40; on hand 27 in pen 4, counted and staged, not released; documentation window Thursday and Friday, 9:00 a.m. to 5:00 p.m.; Ivo Marsh owns release; contact 555-0194; named class participants only; no lot released; no vehicle assigned; no permit approved; no receipt confirmed; supportability unknown. True but not authority: custody in pen 4, the North Shelf request for 40, and the paperwork window. Absent: a release, a vehicle, a permit, a receipt, and any finding that the movement can go. Promises the checker rejects: `You can expect the kits during the Thursday and Friday documentation window.` Also rejected: HS-3 named as assigned, a GO, a pickup or delivery promise, a clock time other than 9:00 a.m. or 5:00 p.m., and distribution beyond named class participants.
+**5. Traps.** The yard board offers HS-3 and an irrelevant empty bay. "About 20 kits a week" invites a coverage calculation the sources don't make. "The other 13" invites a date or a quantity. "Whom do we call about release timing" invites an invented release-desk number. "What can we tell patients" invites advice beyond the one must-not. Live drafts also produced unsourced glosses ("received and recorded"), an unhelpful "Nothing." for the patient question, and an unlabeled 40 − 27 = 13 calculation.
 
-**6. Request the learner sees.** Audience is the Field Clinic S-3 supply clerk, not course coordinators. Text is `module-00-setup/shared/case/REQUEST.md`.
+**6. Request the learner sees.** `module-00-setup/shared/case/REQUEST.md`.
 
-**7. Changed input.** On-hand count moves from 27 to 19. Pen 4 does not move. Predicted change: the on-hand statement, and any comparison that uses 27 as the on-hand count. Must not move: requested 40, Thursday and Friday 9:00 a.m.–5:00 p.m., 555-0194, pen 4, not a release, assigns no vehicle, no permit, no receipt, supportability unknown, Ivo Marsh, class participants only. The practice checker still expects 27, so a correct revision fails `on-hand 27`. Do not edit the checker to hide that failure.
+**7. Changed input.** The pen 4 recount moves the on-hand count from 27 to 19. Must change: every sentence that states or calculates with the on-hand count. Must not move: requested 40, custody not a release, the release requirements, Ivo Marsh, the window and the contact, and the must-nots. The practice checker keeps expecting 27, so a correct revision fails exactly that check.
 
-**8. Practice-checker contract.** Mechanical affirms: subject line; word count 130–190; water-treatment kits; Harbor Depot; Field Clinic S-3; Thursday; Friday; 9:00 a.m. to 5:00 p.m.; 555-0194; requested 40 attached to the request; on-hand 27 attached to on-hand; pen 4; custody is not a release; Ivo Marsh; assigns no vehicle; no permit; no receipt; supportability unknown; class participants. Mechanical denials: the prohibited sentence; HS-3 assigned; a delivery or pickup promise; GO; an invented clock time; wider distribution. The checker cannot judge whether the writing is clear enough that a clerk would not over-read a true count, or whether anyone has authority to share the note.
+**8. Practice-checker contract.** Shape: a `# ` title line, 5 or 6 `## ` sections, 500–900 words. Affirms: water-treatment kits; Harbor Depot; Field Clinic S-3; Thursday; Friday; 9:00 a.m. to 5:00 p.m.; 555-0194; pen 4; custody not a release; Ivo Marsh; no vehicle assigned; no permit approved; no receipt confirmed; supportability unknown; requested 40 attached to the request; on-hand 27 attached to the on-hand count. Rejects: the prohibited window sentence, HS-3 assigned, a delivery promise, GO, any clock time but 9:00 and 5:00, and distribution beyond the clinic supply team. List items under a "must not:" lead-in read as denials. Fixtures: two passing briefs and 26 one-change failures (`tests/fixtures/MANIFEST.md`).
 
-**9. Drafts.** Bad draft, the helpful smooth. Failing sentences marked.
+**9. Calibration.** Live drafts with `openrouter/anthropic/claude-sonnet-4.6` on 2026-10-04: 341 words from the one-note packet, 418 from six sources with three questions, then 578 and 555 from six sources with five questions. With the current section instruction, a section session writes about 85% of its word budget.
 
-> Subject: Water-treatment kits ready for Field Clinic S-3
->
-> Harbor Depot holds 27 water-treatment kits on hand in pen 4, against a North Shelf request for 40 water-treatment kits for Field Clinic S-3. [FAIL: treats the short count as enough to move.] The 27 kits will cover the clinic. You can expect the kits during the Thursday and Friday documentation window.
->
-> [FAIL: prohibited sentence. Turns the paperwork window into a receipt promise.]
->
-> The documentation window is Thursday and Friday, 9:00 a.m. to 5:00 p.m. Please use that window as the pickup appointment and stage the kits for the truck.
->
-> [FAIL: pickup appointment and staging. A clerk reading this loads a truck.]
->
-> This note releases the lot and assigns vehicle HS-3. The movement is a GO.
->
-> [FAIL: release, HS-3 assigned, GO.]
->
-> Ivo Marsh has approved the move, so the supply clerk should schedule kit use and tell patients that treatment water is coming. Call 555-0194 to confirm the truck.
->
-> [FAIL: the release owner is overwritten, and patients are told water is coming.]
+**Platform:** Oh My Pi through `shared/run_omp.py`, driven by `module-00-setup/scripts/longform.py` (`outline`, `freeze`, `draft`, `ledger`, `critique`, `revise`, `reveal`, `compare`). Each model step is one launcher run that may write only its declared files; review sessions run in isolated packet folders under the evidence folder. n8n and Obsidian are installed in setup; they aren't this session's skill.
 
-Passing draft, 176 words. States custody. Does not authorize the movement.
+**Thread reading:** The brief names North Shelf. It doesn't decide whether that movement can go. Monday afternoon is a different movement. Don't merge them.
 
-> Subject: Water-treatment kits at Harbor Depot are not released to Field Clinic S-3
->
-> Harbor Depot holds 27 water-treatment kits on hand in pen 4. Those kits are counted and staged. Counted and staged is custody, not a release. The North Shelf request asks for 40 water-treatment kits for Field Clinic S-3. Those two counts are not the same. This note does not fill the gap.
->
-> The documentation window is Thursday and Friday, 9:00 a.m. to 5:00 p.m. That window is for paperwork questions only. It is not a pickup appointment, a dispatch, or a delivery promise.
->
-> This note releases no lot, assigns no vehicle, approves no permit, and confirms no receipt. Whether the movement is supportable is unknown. Ivo Marsh at the Harbor Depot release desk owns any release. The Field Clinic S-3 supply clerk does not. Do not schedule kit use from this note. Do not tell patients that treatment water is coming.
->
-> This note is for named class participants only. Call 555-0194 during the documentation window with a paperwork question.
+**Harness move:** A section session writes a GO, names `HS-3` as assigned, tells Field Clinic S-3 to expect receipt inside the documentation window, or answers a question the sources don't answer. The checker, the number list, and the facts and reader passes surface those; the learner decides which findings to accept.
 
-**Platform:** One AI CLI among Codex, OpenCode, Hermes, and Oh My Pi. Practice checker: `module-00-setup/shared/case/check_artifact.py`, pointed at these bounds. n8n and Obsidian are installed in setup. They are not this session's skill.
-
-**Thread reading:** The note names North Shelf. It does not decide whether that movement can go. Monday afternoon is a different movement. Do not merge them.
-
-**Harness move:** The model writes a GO, names vehicle `HS-3` as assigned, or tells Field Clinic S-3 to expect receipt inside the documentation window. The checker fails those. The artifact stays one email.
-
-**Independence:** Does not cite the Monday afternoon movement, Red Mesa, that packet's clinic, route, or vehicle, 12 Mesa Yard, or 555-0148. A learner who did not attend Monday afternoon can still write this note.
+**Independence:** Does not cite the Monday afternoon movement, Red Mesa, that packet's clinic, route, or vehicle, 12 Mesa Yard, or 555-0148. A learner who did not attend Monday afternoon can still write this brief.
 
 ## Monday afternoon verifies Cold Lantern
 
@@ -176,7 +146,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Answers:** Stay in `module-01-mission-thread/reference/REFERENCE.md` §7 and the calculator paths. Do not duplicate them here.
 
-**Independence:** Does not read the Monday morning email. Does not cite that session's movement, depot, clinic, or 555-0194. Do not add a second mission to this packet.
+**Independence:** Does not read the Monday morning status brief. Does not cite that session's movement, depot, clinic, or 555-0194. Do not add a second mission to this packet.
 
 ## A true crate measurement does not release Ledger Pike
 
@@ -232,7 +202,7 @@ Passing draft, 176 words. States custody. Does not authorize the movement.
 
 **Worked authoring example:** A note marked PARTNER lists supply-point hours and is derived from a STAFF note, so its effective handling is STAFF. A note marked OPEN holds a time, a route, and a cargo quantity, so aggregation raises it to STAFF. A notice from the clinic's supply clerk does not change a marking, and a notice printed in local time can be earlier than one printed in Zulu. The server's `manage_tags` is marked read-only and adds tags.
 
-**Independence:** Not the Tuesday morning crate or that session's vehicle, not the Monday email, not the Monday afternoon brief, not 12 Mesa Yard. The names `KH-`, Task Force Marlin, Forward Base Brandt, Clinic B-2, `MH-6`, and `MH-8` appear only here.
+**Independence:** Not the Tuesday morning crate or that session's vehicle, not the Monday morning status brief, not the Monday afternoon brief, not 12 Mesa Yard. The names `KH-`, Task Force Marlin, Forward Base Brandt, Clinic B-2, `MH-6`, and `MH-8` appear only here.
 
 ## A fluent total can load Chalk Line
 

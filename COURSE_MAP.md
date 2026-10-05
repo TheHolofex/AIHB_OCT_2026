@@ -32,7 +32,7 @@ Eleven instructor-led, hands-on module blocks run across four teaching days, Mon
 
 | Session | Day | Module |
 |---:|---|---|
-| 1 | Monday AM | 00 Select, screen, and direct bounded work |
+| 1 | Monday AM | 00 Get a long document you can trust from AI |
 | 2 | Monday PM | 01 Verify sources and outputs |
 | 3 | Tuesday · Block 1 | 02 Build and control a reusable second brain |
 | 4 | Tuesday · Block 2 | 03 Operate MCP tools under limited authority |
@@ -119,7 +119,7 @@ File presence cannot establish observed performance. An authored practice output
 
 | ID | Module | Rough time | Consumes | Produces | Work surface | Work to inspect |
 |---:|---|---:|---|---|---|---|
-| 00 | Select, screen, and direct bounded work | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_ACCEPTANCE` | `FIRST_RESULT`; `MIN_SCREEN`; `DIRECTION`; `INTERNAL_ARTIFACT`; `PO00_RESULT` | **communication artifact** | Checked useful artifact within about the first hour (design target); delegate/human/refuse choices and minimum screen support bounded internal acceptance; frozen direction and supplied changed-input check support internal accept/fix/hold |
+| 00 | Get a long document you can trust from AI | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_ACCEPTANCE` | `MIN_SCREEN`; `FROZEN_PLAN`; `SECTION_DRAFTS`; `REVIEW_FINDINGS`; `TARGETED_REVISION`; `PO00_RESULT` | Multi-section status brief, one OMP session per job | Brief with the minimum screen and tests before any prose; corrected, frozen outline; one session per section; checker shown to fail, number list, and separate review sessions; verified findings; only flagged sections revised; changed fact applied only where used; send or hold |
 | 01 | Verify sources and outputs | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SOURCE_FIXTURES` | `SOURCE_EVIDENCE`; `DISCERNMENT_RESULT`; `STANDING_RULE`; `PO01_RESULT` | **research/source** work | Known-answer, source-trace, misleading-source, changed-source, and real-use checks support internal accept/revise/reject/hold |
 | 02 | Build and control a reusable second brain | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:SUPPLIED_GUARD` | `CONTEXT_MAP`; `SOURCE_AS_DATA_CONTROL`; `KNOWLEDGE_VAULT`; `RELOAD_RESULT`; `PO02_RESULT` | Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher | Source-traceable admitted knowledge and useful links; explicit saved-rule load and frozen-content identity; actual knowledge reads and citations without the source-processing chat or raw packet; one substantive improvement in a reviewed revision and fresh run, preserving earlier evidence |
 | 03 | Operate MCP tools under limited authority | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:MCP_SERVER` | `MCP_CONNECTION`; `HANDLING_REGISTER`; `AUTHORITY_BOUNDARY`; `COMPOSED_NEGATIVE`; `REVOCATION_RESULT`; `PO03_RESULT` | Tool-assisted artifact | Read a server's contract, connect it with declared limits and prove them with a probe, check an AI's handling classifications against stated rules, and disconnect with proof |
