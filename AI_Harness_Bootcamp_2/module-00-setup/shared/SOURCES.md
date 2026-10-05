@@ -37,11 +37,11 @@
 - [GitHub CLI browser login and credential storage](https://cli.github.com/manual/gh_auth_login)
 - [GitHub CLI authentication status](https://cli.github.com/manual/gh_auth_status)
 - [GitHub CLI host-scoped Git credential helper](https://cli.github.com/manual/gh_auth_setup-git)
-- [Oh My Pi v18.3.5 release and assets](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5)
-- [OMP CLI at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/cli-reference.md)
-- [OMP model resolution at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/models.md)
-- [OMP approval policy at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/approval-mode.md)
-- [OMP extension API at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/extensions.md)
+- [Oh My Pi releases (latest stable)](https://github.com/can1357/oh-my-pi/releases/latest)
+- [OMP CLI reference](https://github.com/can1357/oh-my-pi/blob/main/docs/cli-reference.md)
+- [OMP model resolution](https://github.com/can1357/oh-my-pi/blob/main/docs/models.md)
+- [OMP approval policy](https://github.com/can1357/oh-my-pi/blob/main/docs/approval-mode.md)
+- [OMP extension API](https://github.com/can1357/oh-my-pi/blob/main/docs/extensions.md)
 - [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6)
 - [OpenRouter authentication](https://openrouter.ai/docs/api-reference/authentication)
 - [Python downloads](https://www.python.org/downloads/)
@@ -80,4 +80,4 @@ The n8n app and stack were checked only on Apple Silicon. On a fresh instance, t
 
 ## Source hierarchy
 
-Start with documentation for the pinned product release, then check operating-system documentation and the official package source. A community post may explain a symptom, but check the official source for required command. A post cannot grant permission to bypass device policy.
+Start with documentation for the release you're using, then check operating-system documentation and the official package source. A community post may explain a symptom, but check the official source for required command. A post cannot grant permission to bypass device policy.

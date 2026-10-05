@@ -18,16 +18,20 @@ import orchestrate
 import orchestration_evidence as evidence
 
 
+OMP_V1 = "omp/18.3.5"
+OMP_V2 = "omp/19.0.0"
+
+
 def jsonl(path, rows):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
 
 
 class NativeFixture:
-    """Minimal records in the observed v18.3.5 shape, with real local source files."""
+    """Synthetic native records with real local source files."""
 
-    def __init__(self, work, output, policy):
-        self.work, self.output, self.policy = work, output, policy
+    def __init__(self, work, output, policy, omp_version):
+        self.work, self.output, self.policy, self.omp_version = work, output, policy, omp_version
         self.parent_path = output / "sessions/fixture-parent.jsonl"
         self.guard = []
         self.sequences = {}
@@ -147,7 +151,7 @@ class NativeFixture:
         jsonl(self.output / "guard.jsonl", self.guard)
         (self.output / "stderr.txt").write_text("")
         evidence.write_json(self.output / "process.json", {"returncode": 0, "aborted": False, "timed_out": False,
-                            "omp_version": evidence.OMP_VERSION, "binary_sha256": "f" * 64, "fixture": True})
+                            "omp_version": self.omp_version, "binary_sha256": "f" * 64, "fixture": True})
         evidence.write_json(self.output / "work-after.json", evidence.work_snapshot(self.work))
         audit = evidence.audit_attempt(self.work, self.output, sealed=False)
         evidence.write_json(self.output / "reports.json", audit["reports"])
@@ -168,13 +172,13 @@ class OrchestrationBehavior(unittest.TestCase):
         (self.work / "out").mkdir()
         self.serial = 0
 
-    def stage(self, stage, prior=None):
+    def stage(self, stage, prior=None, omp_version=OMP_V1):
         self.serial += 1
         assignments = orchestrate.inspect_work(self.work)
-        reference, reports, reused, dispatched = orchestrate.select_prior(self.work, stage, prior, assignments)
+        reference, reports, reused, dispatched = orchestrate.select_prior(self.work, stage, prior, assignments, omp_version)
         output, policy, _cwd, _prompt = orchestrate.prepare_attempt(self.work, self.root / f"{stage}-{self.serial}", stage,
-                                                                   assignments, reference, reports, reused, dispatched)
-        audit = NativeFixture(self.work, output, policy).finish(reports)
+                                                                   assignments, reference, reports, reused, dispatched, omp_version)
+        audit = NativeFixture(self.work, output, policy, omp_version).finish(reports)
         return output, audit
 
     def repair_input(self):
@@ -204,7 +208,7 @@ class OrchestrationBehavior(unittest.TestCase):
         first, _ = self.stage("fanout")
         for stage in ("integrate", "review"):
             with self.subTest(stage=stage), self.assertRaises(ValueError):
-                orchestrate.select_prior(self.work, stage, first, orchestrate.inspect_work(self.work))
+                orchestrate.select_prior(self.work, stage, first, orchestrate.inspect_work(self.work), OMP_V1)
         self.repair_input()
         repair, _ = self.stage("repair", first)
         integrate, integrated = self.stage("integrate", repair)
@@ -222,18 +226,18 @@ class OrchestrationBehavior(unittest.TestCase):
         source.write_text(source.read_text() + "\n")
         audit = evidence.audit_attempt(self.work, repair)
         self.assertEqual(evidence.summary(audit)["accepted_roles"], ["inventory", "timing"])
-        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work))
+        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work), OMP_V1)
         self.assertEqual(reusable, ["inventory", "timing"])
         self.assertEqual(dispatched, ["authority"])
         with self.assertRaises(ValueError):
-            orchestrate.select_prior(self.work, "integrate", repair, orchestrate.inspect_work(self.work))
+            orchestrate.select_prior(self.work, "integrate", repair, orchestrate.inspect_work(self.work), OMP_V1)
 
     def test_changed_role_and_brief_invalidate_their_handoffs(self):
         _first, _initial, repair, _repaired = self.repaired()
         for relative in ("shared/agents/inventory.md", "shared/prompts/authority.md"):
             path = self.work / relative
             path.write_text(path.read_text() + "\nKeep the source boundary explicit.\n")
-        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work))
+        _prior, _reports, reusable, dispatched = orchestrate.select_prior(self.work, "repair", repair, orchestrate.inspect_work(self.work), OMP_V1)
         self.assertEqual(reusable, ["timing"])
         self.assertEqual(dispatched, ["inventory", "authority"])
 
@@ -269,7 +273,7 @@ class OrchestrationBehavior(unittest.TestCase):
                     self.assertEqual(evidence.summary(evidence.audit_attempt(self.work, repair))["status"], "PASS")
                     if relative == "shared/prompts/integrate.md":
                         with self.assertRaises(ValueError):
-                            orchestrate.select_prior(self.work, "review", integrate, orchestrate.inspect_work(self.work))
+                            orchestrate.select_prior(self.work, "review", integrate, orchestrate.inspect_work(self.work), OMP_V1)
                 finally:
                     path.write_text(original)
 
@@ -340,8 +344,26 @@ class OrchestrationBehavior(unittest.TestCase):
         original_seal = (first / "seal.json").read_bytes()
         assignments = orchestrate.inspect_work(self.work)
         with self.assertRaises(ValueError):
-            orchestrate.prepare_attempt(self.work, first, "fanout", assignments, None, {}, [], list(evidence.ROLES))
+            orchestrate.prepare_attempt(self.work, first, "fanout", assignments, None, {}, [], list(evidence.ROLES), OMP_V1)
         self.assertEqual((first / "seal.json").read_bytes(), original_seal)
+
+    def test_a_different_release_identity_accepts_an_independent_chain(self):
+        self.repair_input()
+        output, _audit = self.stage("fanout", omp_version=OMP_V2)
+        checked = evidence.audit_attempt(self.work, output)
+        self.assertEqual(evidence.summary(checked)["status"], "PASS")
+
+    def test_version_mismatch_rejects_saved_evidence_and_prior_reuse(self):
+        first, _audit = self.stage("fanout", omp_version=OMP_V1)
+        with self.assertRaises(ValueError):
+            orchestrate.select_prior(self.work, "repair", first, orchestrate.inspect_work(self.work), OMP_V2)
+        process_path = first / "process.json"
+        process = evidence.load_json(process_path)
+        process["omp_version"] = OMP_V2
+        evidence.write_json(process_path, process)
+        evidence.seal_attempt(first)
+        with self.assertRaises(ValueError):
+            evidence.audit_attempt(self.work, first)
 
 
 if __name__ == "__main__":

@@ -298,7 +298,7 @@ Run it once. In one paid call, about two to four minutes, the model answers all 
 
 **Expected:** The last two lines are `PASS: complete guarded OMP turn; module content still requires its own check` and `EXIT=0`. `E/decide-1` now holds `policy.json`, `events.jsonl`, `guard.jsonl`, `snapshots.json`, `response.md`, and `result.json`. The reply itself is in `response.md`.
 
-**Stop:** Stop on `EXIT=2` with a `HOLD:` line about the key, the pinned OMP version, or an existing evidence folder. Stop on `EXIT=1` with a `HOLD:` line about the receipts. Stop if there is no output for more than six minutes.
+**Stop:** Stop on `EXIT=2` with a `HOLD:` line about the key, the OMP installation or version report, or an existing evidence folder. Stop on `EXIT=1` with a `HOLD:` line about the receipts. Stop if there is no output for more than six minutes.
 
 **Recovery:** With `EXIT=2`, nothing ran. Restore the named prerequisite, then run again with the same evidence name if no folder was created, or with `decide-2` if one was. With `EXIT=1`, a run happened, but its receipts are held. Keep `E/decide-1` unchanged, read the `HOLD:` reason, run again into `E/decide-2`, and check `E/decide-2` instead of `E/decide-1` in the next step. Don't retry a run quietly, and don't delete it.
 

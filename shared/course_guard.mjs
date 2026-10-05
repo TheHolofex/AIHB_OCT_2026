@@ -92,7 +92,7 @@ export default function courseGuard(pi) {
   const policy = JSON.parse(policyBytes.toString("utf8"));
   const judge = policy.judge || null;
   const declaredTools = judge ? JSON.stringify(policy.tools) === JSON.stringify(["eval"]) : Array.isArray(policy.tools) && policy.tools.every(name => toolNames.has(name));
-  if (policy.schema_version !== 1 || policy.provider !== "openrouter" || policy.model !== modelId || policy.omp_version !== "omp/18.3.5" || !Array.isArray(policy.tools) || !declaredTools) throw new Error("invalid frozen course policy");
+  if (policy.schema_version !== 1 || policy.provider !== "openrouter" || policy.model !== modelId || typeof policy.omp_version !== "string" || !/^omp\/[0-9]+\.[0-9]+\.[0-9]+$/.test(policy.omp_version) || !Array.isArray(policy.tools) || !declaredTools) throw new Error("invalid frozen course policy");
   if (judge && (typeof judge.cell_code !== "string" || !judge.cell_code || judge.selector !== "openrouter/typesafe/jev-1.13")) throw new Error("invalid frozen judge policy");
   if (digest(fs.readFileSync(sourceFile)) !== policy.guard_source_sha256) throw new Error("guard source identity changed");
   const mcp = policy.mcp || null;

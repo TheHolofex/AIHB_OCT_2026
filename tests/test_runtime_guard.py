@@ -23,7 +23,7 @@ const work=path.join(base,"work"); fs.mkdirSync(work);
 const outside=path.join(base,"work-sibling"); fs.mkdirSync(outside);
 fs.writeFileSync(path.join(work,"source.txt"),"custody, not release");
 fs.writeFileSync(path.join(outside,"sentinel.txt"),"unchanged");
-const policy={schema_version:1,run_id:"synthetic-test",work_root:work,profile:"write_root",tools:["course_read","course_write"],write_files:[],write_root:"artifacts",provider:"openrouter",model:"anthropic/claude-sonnet-4.6",omp_version:"omp/18.3.5",prompt_sha256:"test",instruction:null,declaration:null,python:"python3.12",guard_source_sha256:digest(fs.readFileSync(''' + json.dumps(str(GUARD)) + ''')),guard_log:path.join(base,"guard.jsonl"),watch_paths:[]};
+const policy={schema_version:1,run_id:"synthetic-test",work_root:work,profile:"write_root",tools:["course_read","course_write"],write_files:[],write_root:"artifacts",provider:"openrouter",model:"anthropic/claude-sonnet-4.6",omp_version:"omp/99.2.0",prompt_sha256:"test",instruction:null,declaration:null,python:"python3.12",guard_source_sha256:digest(fs.readFileSync(''' + json.dumps(str(GUARD)) + ''')),guard_log:path.join(base,"guard.jsonl"),watch_paths:[]};
 fs.writeFileSync(path.join(base,"runtime-config.yml"),"{}\\n");
 policy.runtime_config_sha256=digest(fs.readFileSync(path.join(base,"runtime-config.yml")));
 const policyFile=path.join(base,"policy.json");

@@ -20,6 +20,8 @@ SPEC = importlib.util.spec_from_file_location("run_omp", LAUNCHER)
 runtime = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(runtime)
 
+SYNTH_OMP_VERSION = "omp/18.3.5"
+
 
 class LauncherBehavior(unittest.TestCase):
     def setUp(self):
@@ -80,7 +82,7 @@ class LauncherBehavior(unittest.TestCase):
 
     def receipt(self):
         policy = dict.fromkeys(runtime.POLICY_KEYS)
-        policy.update(schema_version=1, run_id="synthetic", work_root=str(self.work), profile="read", tools=["course_read"], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION)
+        policy.update(schema_version=1, run_id="synthetic", work_root=str(self.work), profile="read", tools=["course_read"], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION)
         assistant = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "stop", "content": [{"type": "text", "text": "Source describes custody only."}]}
         events = [{"type": "agent_start"}, {"type": "message_end", "message": assistant}, {"type": "agent_end", "isTerminal": True, "messages": [assistant]}]
         guard = [{"type": "guard_ready", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "active_tools": ["course_read"]}, {"type": "provider_request", "run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL}, {"type": "guard_end", "run_id": "synthetic", "ready": True, "failed": False, "provider_requests": 1}]
@@ -174,10 +176,13 @@ class LauncherBehavior(unittest.TestCase):
         for name, rows in (("events", events), ("guard", guard)):
             (self.evidence / f"{name}.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
         (self.evidence / "snapshots.json").write_bytes(runtime.json_bytes(snapshots))
-        result = {"run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "status": "PASS", "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(self.evidence / "guard.jsonl"), "instruction_sha256": None, "declared_policy_sha256": None, "input_sha256": {"source.txt": runtime.file_hash(self.work / "source.txt")}, "output_sha256": {}}
+        result = {"run_id": "synthetic", "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "status": "PASS", "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(self.evidence / "guard.jsonl"), "instruction_sha256": None, "declared_policy_sha256": None, "input_sha256": {"source.txt": runtime.file_hash(self.work / "source.txt")}, "output_sha256": {}}
         (self.evidence / "result.json").write_bytes(runtime.json_bytes(result))
         (self.evidence / "response.md").write_text("Source describes custody only.", encoding="utf-8")
         self.assertEqual(runtime.audit_evidence(self.evidence), [])
+        (self.evidence / "result.json").write_bytes(runtime.json_bytes({**result, "omp_version": "omp/99.0.0"}))
+        self.assertIn("result omp_version differs from policy", runtime.audit_evidence(self.evidence))
+        (self.evidence / "result.json").write_bytes(runtime.json_bytes(result))
         (self.evidence / "response.md").write_text("A substituted answer.", encoding="utf-8")
         self.assertIn("saved response differs from final assistant event", runtime.audit_evidence(self.evidence))
         (self.evidence / "response.md").write_text("Source describes custody only.", encoding="utf-8")
@@ -202,7 +207,7 @@ class LauncherBehavior(unittest.TestCase):
         flags = {"read_only": False, "read_prefixes": ["Sources/"], "write_prefixes": ["Drafts/"], "no_overwrite": True, "max_results": 20}
         offered = [name.removeprefix("mcp__vault_") for name in known]
         policy = dict.fromkeys(runtime.POLICY_KEYS)
-        policy.update(schema_version=1, run_id="synthetic", work_root=str(self.work), profile="mcp", tools=[], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION)
+        policy.update(schema_version=1, run_id="synthetic", work_root=str(self.work), profile="mcp", tools=[], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION)
         policy["mcp"] = {"server": "vault", "script": {"path": "vault_mcp.py", "sha256": "script"}, "phase": "research", "allow_tools": ["read_note", "write_note"], "allow_names": allow, "known_names": known,
                          "read_scope": ["Sources/"], "write_scope": ["Drafts/"], "create_only": True, "flags": flags, "tools_offered": offered}
         policy["snapshot_exclude"] = ["vault/.obsidian"]
@@ -279,6 +284,41 @@ class LauncherBehavior(unittest.TestCase):
         guard[0]["active_tools"] = []
         guard[-2]["tools"] = []
         self.assertTrue(any("revoked phase executed or reached a tool" in error for error in runtime.validate_run(policy, events, guard, snapshots, 0, audit)))
+
+    def test_completed_revoked_mcp_run_remains_independently_auditable(self):
+        config = self.work / "mcp.json"
+        authority = self.work / "AUTHORITY.md"
+        config.write_text('{"mcpServers": {}}\n', encoding="utf-8")
+        declared = {"schema_version": 1, "phase": "revoked", "allow_tools": [], "read_scope": [], "write_scope": [], "create_only": False}
+        authority.write_text("```json\n" + json.dumps(declared) + "\n```\n", encoding="utf-8")
+        self.prompt.write_text("State that no tools are authorized.", encoding="utf-8")
+
+        def launch(*args, **kwargs):
+            policy_file = Path(kwargs["env"]["COURSE_GUARD_POLICY"])
+            policy = json.loads(policy_file.read_text(encoding="utf-8"))
+            _, events, guard, _ = self.receipt()
+            events[1]["message"]["content"] = [{"type": "text", "text": "No tools are authorized."}]
+            guard[0]["active_tools"] = []
+            guard[1]["tools"] = []
+            for row in guard:
+                row["run_id"] = policy["run_id"]
+                if row["type"] in {"guard_ready", "guard_end"}:
+                    row["policy_sha256"] = runtime.file_hash(policy_file)
+            Path(policy["guard_log"]).write_text("".join(json.dumps(row) + "\n" for row in guard), encoding="utf-8")
+            stream = "".join(json.dumps(row) + "\n" for row in events).encode()
+            return SimpleNamespace(returncode=0, communicate=lambda *a, **kw: (stream, b""))
+
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "synthetic-test-key"}), \
+             patch.object(runtime.shutil, "which", return_value="/synthetic/omp"), \
+             patch.object(runtime.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="omp/99.2.0\n")), \
+             patch.object(runtime.subprocess, "Popen", side_effect=launch):
+            self.assertEqual(runtime.main(["--workdir", str(self.work), "--prompt", str(self.prompt), "--evidence", str(self.evidence),
+                                           "--mcp-config", str(config), "--authority", str(authority)]), 0)
+        self.assertEqual(runtime.audit_evidence(self.evidence), [])
+        result = json.loads((self.evidence / "result.json").read_text(encoding="utf-8"))
+        result["mcp"]["calls"] = 1
+        (self.evidence / "result.json").write_bytes(runtime.json_bytes(result))
+        self.assertIn("mcp differs", runtime.audit_evidence(self.evidence))
 
     def test_a_connection_that_differs_from_its_declaration_is_refused_before_any_model_call(self):
         work = self.base / "mcp-work"
@@ -361,7 +401,7 @@ class LauncherBehavior(unittest.TestCase):
         prompt, judge = runtime.judge_launch_files(runtime.prepare_judge(args, work), work, self.evidence)
         self.assertIn(judge["cell_code"], prompt)
         policy = dict.fromkeys(runtime.POLICY_KEYS)
-        policy.update(schema_version=1, run_id="synthetic", work_root=str(work), profile="judge", tools=["eval"], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION, judge=judge)
+        policy.update(schema_version=1, run_id="synthetic", work_root=str(work), profile="judge", tools=["eval"], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION, judge=judge)
         before = runtime.snapshot(work, [])
         call_args = {"language": "js", "code": judge["cell_code"], "title": "Judge runner", "timeout": 120, "reset": None}
         executed_args = runtime.normalize_arguments(call_args)
@@ -445,6 +485,18 @@ class LauncherBehavior(unittest.TestCase):
                 self.assertIn(message, result.stderr)
                 self.assertFalse(self.evidence.exists())
 
+    def test_a_different_release_identity_is_accepted_without_a_course_pin(self):
+        policy, events, guard, snapshots = self.receipt()
+        policy["omp_version"] = "omp/99.2.0"
+        self.assertEqual(runtime.validate_run(policy, events, guard, snapshots, 0), [])
+
+    def test_malformed_recorded_runtime_identities_hold_the_audit(self):
+        policy, events, guard, snapshots = self.receipt()
+        for version in (None, "", "omp/", "omp/latest", "18.3.5", "omp/18.6"):
+            with self.subTest(version=version):
+                policy["omp_version"] = version
+                self.assertIn("omp_version is not a recorded valid OMP identity",
+                              runtime.validate_run(policy, events, guard, snapshots, 0))
 
 if __name__ == "__main__":
     unittest.main()

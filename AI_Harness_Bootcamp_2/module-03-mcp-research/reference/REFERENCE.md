@@ -15,9 +15,11 @@ The module adds one capability: the learner connects an MCP server, uses it for 
 ## 2. Authority and field survey
 
 - **Model Context Protocol, specification 2025-11-25.** Servers declare capabilities, list tools with a name, a description, an input schema, and optional annotations, and return results with an `isError` flag. The client decides which tools the model sees.
-- **Oh My Pi 18.3.5 (the pinned harness).** Verified by running the pinned binary against a scripted local provider: a project `.omp/mcp.json` stdio entry is discovered when the launcher passes `--no-tools` without `--tools`; MCP tools register as `mcp__<server>_<tool>`; an extension's `setActiveTools` at `session_start` does not hold because OMP activates MCP tools afterward, so the guard declares the set again in `before_agent_start` and checks the provider payload's tool list before every request; a call to a tool that is not offered returns a runtime "not found" error and never reaches the server.
+- **Historical Oh My Pi 18.3.5 observation.** Verified by running that binary against a scripted local provider: a project `.omp/mcp.json` stdio entry is discovered when the launcher passes `--no-tools` without `--tools`; MCP tools register as `mcp__<server>_<tool>`; an extension's `setActiveTools` at `session_start` does not hold because OMP activates MCP tools afterward, so the guard declares the set again in `before_agent_start` and checks the provider payload's tool list before every request; a call to a tool that is not offered returns a runtime "not found" error and never reaches the server.
 - **Obsidian.** A vault is a folder of Markdown files plus a hidden `.obsidian` configuration folder. Restricted mode runs no community plugin. The supplied server reads and writes the vault's files directly, so Obsidian may be open or closed.
 - **Least privilege.** The declaration names tools and folders, and a consistency check refuses a connection whose server arguments differ from the declaration.
+
+Current setup follows the latest stable OMP release, and the launcher records the actual version in each attempt. The version-specific observation above remains historical; exercise the MCP and tool boundaries again when the runtime changes.
 
 ## 3. Learner and case boundary
 
@@ -124,3 +126,9 @@ Plan about three hours: short instructor briefings, then eight hands-on blocks (
 ## 9. Lanes not exercised
 
 The authors exercised the shared launcher, the guard, the server, the probe, and the verifier with the real pinned Oh My Pi 18.3.5 binary against a scripted local provider on macOS arm64. They did not run a live OpenRouter model, did not measure human completion times, did not exercise the Windows PowerShell commands, and did not exercise the Obsidian application interface. Live-model behavior, including whether the model attempts the actions the hostile notes ask for, varies by run.
+
+## 10. Latest-runtime compatibility smoke, 2026-10-05 UTC
+
+A separate live OpenRouter run used the checksum-verified latest `omp/18.6.1` binary through `shared/run_omp.py`. Its declaration exposed only `read_note` in `Handbook/`, with read-only and no-overwrite server limits. The real read of `Handbook/Handling rules.md` passed the launcher's tool/receipt/filesystem audit; no output file was written. Run ID: `87337736-c45e-4ea9-b9d7-979a387e7e50`; private evidence: `~/course-evidence/omp-latest-20261004/mcp/evidence/`.
+
+This verifies bounded MCP compatibility on macOS arm64, not the whole research/probe/partner/revocation exercise, hostile-note behavior, Obsidian GUI operation, or another platform. The version is an observed run identity; installation continues to track latest stable.

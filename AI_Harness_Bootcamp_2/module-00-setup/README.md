@@ -24,7 +24,7 @@ On Windows, choose WSL if your organization permits it and you can restart the m
 
 - Install Git and get a **checkout**, your local copy of the private course repository.
 - Install Python 3.12 or newer.
-- Install Oh My Pi (`omp`) pinned at version 18.3.5.
+- Install Oh My Pi (`omp`) from the latest stable release (the setup prints the observed `omp/<semver>`).
 - Before Module 2, install local Obsidian. A **vault** is a folder of linked Markdown notes on your laptop. For a fresh install, use release **1.13.7**; if it's already installed, keep it and record its version.
 - Before Module 7, install local n8n **2.41.5** with the full official Docker stack and a working modern `docker compose` plugin. Follow your platform guide's n8n path.
 
@@ -85,7 +85,7 @@ Check each tool on its own. In a new terminal, inspect the prerequisite report. 
 
 - `origin` reports `https://github.com/TheHolofex/AIHB_OCT_2026.git`, and `git rev-parse HEAD` reports a 40-character id (the setup check prints the first 12). `git status --short` is informational; keep unrelated changes. They don't block setup or QA;
 - the platform resolver selects an absolute Python executable reporting 3.12 or higher and saves it as `PY` (`$PY` in PowerShell);
-- the setup check prints `omp/18.3.5` and the absolute command path;
+- the setup check prints the observed `OMP_VERSION omp/<semver>` and the absolute command path;
 - the key check shows `SET` in that terminal without printing the key;
 - the tool writes `from-omp.txt` through the course launcher, and you read the file from disk;
 - the expected absolute tool path works in that new terminal without repairing PATH; and
