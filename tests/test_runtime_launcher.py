@@ -285,6 +285,41 @@ class LauncherBehavior(unittest.TestCase):
         guard[-2]["tools"] = []
         self.assertTrue(any("revoked phase executed or reached a tool" in error for error in runtime.validate_run(policy, events, guard, snapshots, 0, audit)))
 
+    def test_completed_revoked_mcp_run_remains_independently_auditable(self):
+        config = self.work / "mcp.json"
+        authority = self.work / "AUTHORITY.md"
+        config.write_text('{"mcpServers": {}}\n', encoding="utf-8")
+        declared = {"schema_version": 1, "phase": "revoked", "allow_tools": [], "read_scope": [], "write_scope": [], "create_only": False}
+        authority.write_text("```json\n" + json.dumps(declared) + "\n```\n", encoding="utf-8")
+        self.prompt.write_text("State that no tools are authorized.", encoding="utf-8")
+
+        def launch(*args, **kwargs):
+            policy_file = Path(kwargs["env"]["COURSE_GUARD_POLICY"])
+            policy = json.loads(policy_file.read_text(encoding="utf-8"))
+            _, events, guard, _ = self.receipt()
+            events[1]["message"]["content"] = [{"type": "text", "text": "No tools are authorized."}]
+            guard[0]["active_tools"] = []
+            guard[1]["tools"] = []
+            for row in guard:
+                row["run_id"] = policy["run_id"]
+                if row["type"] in {"guard_ready", "guard_end"}:
+                    row["policy_sha256"] = runtime.file_hash(policy_file)
+            Path(policy["guard_log"]).write_text("".join(json.dumps(row) + "\n" for row in guard), encoding="utf-8")
+            stream = "".join(json.dumps(row) + "\n" for row in events).encode()
+            return SimpleNamespace(returncode=0, communicate=lambda *a, **kw: (stream, b""))
+
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "synthetic-test-key"}), \
+             patch.object(runtime.shutil, "which", return_value="/synthetic/omp"), \
+             patch.object(runtime.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="omp/99.2.0\n")), \
+             patch.object(runtime.subprocess, "Popen", side_effect=launch):
+            self.assertEqual(runtime.main(["--workdir", str(self.work), "--prompt", str(self.prompt), "--evidence", str(self.evidence),
+                                           "--mcp-config", str(config), "--authority", str(authority)]), 0)
+        self.assertEqual(runtime.audit_evidence(self.evidence), [])
+        result = json.loads((self.evidence / "result.json").read_text(encoding="utf-8"))
+        result["mcp"]["calls"] = 1
+        (self.evidence / "result.json").write_bytes(runtime.json_bytes(result))
+        self.assertIn("mcp differs", runtime.audit_evidence(self.evidence))
+
     def test_a_connection_that_differs_from_its_declaration_is_refused_before_any_model_call(self):
         work = self.base / "mcp-work"
         script = work / "shared/mcp/vault_mcp.py"

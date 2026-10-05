@@ -80,4 +80,4 @@ The n8n app and stack were checked only on Apple Silicon. On a fresh instance, t
 
 ## Source hierarchy
 
-Start with documentation for the pinned product release, then check operating-system documentation and the official package source. A community post may explain a symptom, but check the official source for required command. A post cannot grant permission to bypass device policy.
+Start with documentation for the release you're using, then check operating-system documentation and the official package source. A community post may explain a symptom, but check the official source for required command. A post cannot grant permission to bypass device policy.

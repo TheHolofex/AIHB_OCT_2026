@@ -193,6 +193,12 @@ Integration preserved main's independently committed Module 02 path-check optimi
 
 The final remote integration retained the new Module 0 long-form lesson and repository README. All 31 scoped gates passed, and publication passed byte-for-byte checking with 35 instructional pages, 435 raw downloads and 40 UI/generated assets. Three generated files retired by the new manifest were preserved outside `site/` before rebuilding. Chromium confirmed overview-to-macOS navigation, the latest-release installer at 390 pixels without document overflow, and the rendered latest-stable requirement. The new long-form adapter also accepted the retained real `omp/18.6.1` readiness receipt; this is receipt compatibility evidence, not a new full long-form exercise run.
 
+### Integrated latest OMP verification — 2026-10-05 UTC
+
+After integrating the current long-form Module 0 changes, the publisher rebuilt 35 instructional pages, 435 raw downloads, and 40 UI/generated assets. The complete `scripts/check_course.py` run passed all 31 scoped gates in 255 seconds with a dedicated `TMPDIR`; the 600-second per-command deadline was unchanged. This supersedes the earlier combined-gate limitation above. The copied worktree's untracked, cache-only retired Module 06 directory was preserved outside the checkout before verification.
+
+The entire generated site, including search data and downloads, contains no `18.3.5` reference, numeric OMP release requirement, or hard-coded OMP release URL. Browser checks covered all five setup routes; the final merged version table shows `latest stable release`. A fresh macOS install verified the official release checksum and resolved `omp/18.6.1` in a new login shell. A fresh, read-only MCP run passed the independent saved-receipt audit after restoring the result's required MCP metadata; all 32 shared runtime tests passed. The observed executable version is evidence, not a new pin. Logs, the regression's failing/passing runs, and desktop/mobile browser proof are retained under `~/course-evidence/omp-latest-site-check-1791162031193/`. Native Windows/WSL/Linux installation is not claimed.
+
 ## Netlify deployment
 
 The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
