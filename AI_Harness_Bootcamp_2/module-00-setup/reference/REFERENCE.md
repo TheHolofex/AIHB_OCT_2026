@@ -91,9 +91,9 @@ Fourteen systems, selected because each one settles a specific decision. Confide
 
 ## 3. Active execution and setup contract
 
-1. Participants use Git, Python 3.12 or newer, a browser, an ordinary text editor, and **OMP 18.3.5**. The sole provider/model is **`openrouter/anthropic/claude-sonnet-4.6`**, with a participant-supplied process-local `OPENROUTER_API_KEY`. Node is a maintainer figure-build dependency, not a participant prerequisite.
+1. Participants use Git, Python 3.12 or newer, a browser, an ordinary text editor, and the latest stable Oh My Pi release. The sole provider/model is **`openrouter/anthropic/claude-sonnet-4.6`**, with a participant-supplied process-local `OPENROUTER_API_KEY`. Node is a maintainer figure-build dependency, not a participant prerequisite.
 2. OMP, Python, Git, credentials and course work stay in each platform's named shell. The native Windows PowerShell route uses a WSL 2 Ubuntu bridge only for the official n8n Docker stack, then returns to PowerShell. The separate WSL course route keeps course work in Linux home, not a Windows mount. Native Windows has both x64 and ARM64 official OMP assets; an unavailable native test host is a verification blocker, not a missing-release claim.
-3. Download the selected binary and `SHA256SUMS.txt` directly from release v18.3.5. Verify the unique exact-filename digest before installing, making executable, or executing those bytes. Preserve a conflicting installation and every failed download.
+3. Resolve the latest stable release, then download the selected binary and `SHA256SUMS.txt` from that tag. Verify the unique exact-filename digest before installing, making executable, or executing those bytes. Preserve a conflicting installation and every failed download.
 4. Put the verified user binary on PATH through explicit, non-secret configuration. Verify it again in a newly opened terminal without repairing PATH in that verification step. Preserve existing profiles and append idempotently. OS installation and managed-device approval remain with the device owner.
 5. Hidden key entry runs as one isolated command; export follows separately. Print SET/MISSING only. Do not put a key in argv, profiles, reports, screenshots or committed files. An independently opened terminal normally lacks the previous terminal's process-local key; a child may inherit it.
 6. Preserve existing related checkout changes. Inspect an unrelated occupied path and stop; never reset, pull, clean, or replace it automatically. Learner work and run evidence live in fresh external directories. Scoped LF checkout attributes preserve frozen source/control bytes across platforms.
@@ -157,6 +157,14 @@ A technical reviewer may find defects without being a novice learner. An agent m
 
 ## 8. Drift and non-goals
 
-Revalidate when the pinned OMP CLI, extension API, context discovery, OpenRouter model/tool behavior, official assets, Python floor, OS shell or checkout path changes. Migrate launcher, guards, platform guides, proof checker and their consumers together; no legacy provider aliases or silent substitutions.
+Revalidate when the latest stable OMP CLI, extension API, context discovery, OpenRouter model/tool behavior, official assets, Python floor, OS shell or checkout path changes. Migrate launcher, guards, platform guides, proof checker and their consumers together; no legacy provider aliases or silent substitutions.
 
 Do not add participant toolchains beyond Git/Python/OMP and the approved local n8n stack, an alternate agent runtime, provider fallbacks, a new installation framework, AI-authorship detection, or claims that local hashes resist an owner rewriting the entire evidence set. Preserve historical reviews/run records as historical, not current-platform or current-provider proof.
+
+## 9. Rolling latest verification, 2026-10-05 UTC
+
+The official latest-release API selected `v18.6.1`; this is an observation, not a course pin. The darwin-arm64 binary matched its release's `SHA256SUMS.txt` entry and API digest: `b5ca5cd17b8cc09ece36845988fd401f7d1002e1ab5b95600e0f328924246d52`. The authored macOS install block ran in disposable HOME/ZDOTDIR, saved `release.json`, verified the checksum before execution, and reported `omp/18.6.1`. An independently constructed login zsh resolved that installed binary through the saved profile.
+
+The 280 setup checks covered Bash/zsh and PowerShell 7 fence parsing, all five release-metadata validators, optimized Python execution, unstable/malformed metadata, missing or duplicate assets, inconsistent download URLs, and macOS installer rejection before execution on invalid metadata, bad checksum, or conflicting existing bytes. Controlled fault cases replayed the previously verified official downloads; the positive macOS install used the real network. This is not native Windows PowerShell 5.1, WSL, Linux, or a GUI-terminal transition observation.
+
+`verify-setup.sh` returned SETUP CHECK PASS with the actual version and process-local key presence. `shared/run_omp.py` then performed a real guarded read/write; `verify_tool_proof.py` accepted the exact fresh token, output path, and write hash with READINESS CHECK PASS. Separate latest-runtime runs exercised a bounded MCP read, a three-type Jev batch, and the full Copper Span dependency chain. Private evidence: `~/course-evidence/omp-latest-20261004/`. Historical setup campaigns remain unchanged.

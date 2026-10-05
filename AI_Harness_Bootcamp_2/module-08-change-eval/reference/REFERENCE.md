@@ -15,7 +15,7 @@ The three enabling capabilities are assigning the appropriate evidence check to 
 
 [Jev's introduction](https://docs.typesafe.ai/introduction) describes state plus atomic typed questions and directly structured results. Its [confidence documentation](https://docs.typesafe.ai/confidence) distinguishes returned distributions and derived confidence. These are design references, checked on 2026-10-04, not a course API integration or a claim that generated confidence is calibrated.
 
-The actual runtime is the existing shared OMP 18.3.5 launcher and `openrouter/anthropic/claude-sonnet-4.6`, using only `OPENROUTER_API_KEY`. It generates JSON, which the supplied Python checker validates. Neither provider-enforced structured output nor Jev probability semantics is claimed.
+The runtime is the existing shared launcher with the latest stable OMP release and `openrouter/anthropic/claude-sonnet-4.6`, using only `OPENROUTER_API_KEY`. Each attempt records its actual OMP version. It generates JSON, which the supplied Python checker validates. Neither provider-enforced structured output nor Jev probability semantics is claimed.
 
 ## Independent supplied case
 

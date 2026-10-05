@@ -216,7 +216,7 @@ def ubuntu(args) -> None:
         w = window("first")
         run.paste(w, "course_check() {", expect=(r"^OS ubuntu 24\.04", r"^PACKAGES", r"^PY /"))
         run.paste(w, "sudo apt-get update && sudo apt-get install -y git", timeout=1800)
-        run.paste(w, "course_install_omp() {", expect=(r"^OMP_VERSION omp/18\.3\.5$", r"^PATH_LINE"), timeout=600)
+        run.paste(w, "course_install_omp() {", expect=(r"^OMP_VERSION omp/[0-9.]+$", r"^PATH_LINE"), timeout=600)
         run.paste(w, "GIT_TERMINAL_PROMPT=0 git ls-remote --exit-code", heading="4. Get the course files", status="failed",
                   note="expected: a new learner has no GitHub credentials yet")
         run.paste(w, "command -v gh >/dev/null 2>&1 || { sudo apt-get", expect=(r"gh version",), timeout=1200)
@@ -228,13 +228,13 @@ def ubuntu(args) -> None:
 
         if args.zsh:
             w = window("new-terminal")
-            run.paste(w, "course_confirm_new_terminal() {", expect=(r"^OMP_PATH /home/learner/\.local/bin/omp$", r"^OMP_VERSION omp/18\.3\.5$", r"^MISSING$"))
+            run.paste(w, "course_confirm_new_terminal() {", expect=(r"^OMP_PATH /home/learner/\.local/bin/omp$", r"^OMP_VERSION omp/[0-9.]+$", r"^MISSING$"))
             run.action("scope", "zsh variant", "steps 1 to 5 only")
             run.summary("PASS")
             return
 
         w = window("new-terminal")
-        run.paste(w, "course_confirm_new_terminal() {", expect=(r"^OMP_PATH /home/learner/\.local/bin/omp$", r"^OMP_VERSION omp/18\.3\.5$", r"^MISSING$"))
+        run.paste(w, "course_confirm_new_terminal() {", expect=(r"^OMP_PATH /home/learner/\.local/bin/omp$", r"^OMP_VERSION omp/[0-9.]+$", r"^MISSING$"))
         hidden = run.paste(w, "IFS= read -r -s OPENROUTER_API_KEY", after_enter=[(1.5, run.key + "\r")])
         if "[REDACTED-0]" in hidden.output:
             raise Failed("the key was echoed")
@@ -403,7 +403,7 @@ def wsl(args) -> None:
         w = window("opened-by-name")
         run.paste(w, "course_find_python() {", expect=(r"UBUNTU ubuntu 24\.04", r"WSL_DISTRO Ubuntu-24\.04", r"PACKAGES_TO_INSTALL"))
         run.paste(w, "sudo apt-get update && sudo apt-get install", heading="2.", expect=(r"PACKAGES_TO_INSTALL none", r"CHECK DONE"), timeout=1800)
-        run.paste(w, "course_install_omp() {", expect=(r"SHA256 VERIFIED", r"PATH_LINE", r"OMP_VERSION omp/18\.3\.5"), timeout=600)
+        run.paste(w, "course_install_omp() {", expect=(r"SHA256 VERIFIED", r"PATH_LINE", r"^OMP_VERSION omp/[0-9.]+"), timeout=600)
         run.paste(w, "course_get_files() {", status="failed", note="expected: a new learner has no GitHub credentials yet")
         run.paste(w, "if type -P gh >/dev/null; then gh --version;", expect=(r"gh version",), timeout=1200)
         run.gh_sign_in(w)
@@ -412,7 +412,7 @@ def wsl(args) -> None:
         w.close()
 
         w = window("new-window")
-        run.paste(w, "course_confirm_window() {", expect=(r"OMP_PATH /home/learner/\.local/bin/omp", r"OMP_VERSION omp/18\.3\.5", r"^MISSING$"))
+        run.paste(w, "course_confirm_window() {", expect=(r"OMP_PATH /home/learner/\.local/bin/omp", r"^OMP_VERSION omp/[0-9.]+", r"^MISSING$"))
         hidden = run.paste(w, "IFS= read -r -s OPENROUTER_API_KEY", after_enter=[(1.5, run.key + "\r")])
         if "[REDACTED-0]" in hidden.output:
             raise Failed("the key was echoed")
@@ -530,7 +530,7 @@ def arch(args) -> None:
         w = window("first")
         run.paste(w, "course_check_computer() {", expect=(r"^OS arch", r"^ARCH x86_64$", r"^PACKAGES"))
         run.paste(w, "sudo pacman -Syu --needed git python curl", respond=pacman, timeout=3600)
-        run.paste(w, "course_install_omp() {", expect=(r"OMP_VERSION omp/18\.3\.5", r"PATH_LINE"), timeout=600)
+        run.paste(w, "course_install_omp() {", expect=(r"^OMP_VERSION omp/[0-9.]+", r"PATH_LINE"), timeout=600)
         run.paste(w, "course_use_checkout() {", status="failed", note="expected: a new learner has no GitHub credentials yet")
         run.paste(w, "if command -v gh >/dev/null 2>&1; then gh --", expect=(r"GH MISSING",))
         run.paste(w, "sudo pacman -Syu --needed github-cli", respond=pacman, timeout=1800)
@@ -541,7 +541,7 @@ def arch(args) -> None:
         w.close()
 
         w = window("new-terminal")
-        run.paste(w, "course_confirm_new_terminal() {", expect=(r"OMP_PATH /home/learner/\.local/bin/omp", r"OMP_VERSION omp/18\.3\.5", r"^MISSING$"))
+        run.paste(w, "course_confirm_new_terminal() {", expect=(r"OMP_PATH /home/learner/\.local/bin/omp", r"^OMP_VERSION omp/[0-9.]+", r"^MISSING$"))
         hidden = run.paste(w, "IFS= read -r -s OPENROUTER_API_KEY", after_enter=[(1.5, run.key + "\r")])
         if "[REDACTED-0]" in hidden.output:
             raise Failed("the key was echoed")
@@ -842,7 +842,7 @@ def macos(args) -> None:
         run.action("environment", "no saved GitHub credential", "GIT_CONFIG_NOSYSTEM=1 hides the system osxkeychain helper, as for a learner with nothing stored")
         run.paste(w, "course_find_python() {", expect=(r"^MACOS ", r"^ARCH arm64$", r"^FREE_GB "))
         run.paste(w, "course_install_missing() {", expect=(r"^Homebrew ", r"^TOOLS READY /"), note="nothing missing on this Mac, so nothing installs")
-        run.paste(w, "course_add_line() {", expect=(r"^SHA256 VERIFIED ", r"^OMP_VERSION omp/18\.3\.5$"), timeout=600)
+        run.paste(w, "course_add_line() {", expect=(r"^SHA256 VERIFIED ", r"^OMP_VERSION omp/[0-9.]+"), timeout=600)
         run.paste(w, "course_get_checkout() {", status="failed", expect=(r"^ACCESS HOLD",), note="expected: no GitHub credentials yet")
         w.close()
         w = window("github", GIT_CONFIG_NOSYSTEM="1", GH_TOKEN=run.token)
@@ -854,7 +854,7 @@ def macos(args) -> None:
         w.close()
 
         w = window("new-terminal")
-        run.paste(w, "course_confirm_new_terminal() {", expect=(r"OMP_PATH .*/\.local/bin/omp$", r"OMP_VERSION omp/18\.3\.5", r"^MISSING$"))
+        run.paste(w, "course_confirm_new_terminal() {", expect=(r"OMP_PATH .*/\.local/bin/omp$", r"^OMP_VERSION omp/[0-9.]+", r"^MISSING$"))
         hidden = run.paste(w, "IFS= read -r -s OPENROUTER_API_KEY", after_enter=[(1.5, run.key + "\r")])
         if "[REDACTED-0]" in hidden.output:
             raise Failed("the key was echoed")

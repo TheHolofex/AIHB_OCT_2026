@@ -8,7 +8,7 @@ The new capability is supervising a dependency-aware native agent team: complete
 
 Use the fictional CS-2 packet only. No class result authorizes movement. The course is ungraded; technical work checks can return PASS/HOLD, but no learner scores or qualification decision are required.
 
-Allow 90–150 minutes as an unmeasured planning estimate. Confirm the ordinary-user setup: Python 3.12+, verified OMP 18.3.5, current-process OpenRouter key, pinned `anthropic/claude-sonnet-4.6`, external fresh work/evidence paths. The version requirement in inspect is configuration, not installation proof. Actual run preflight rejects another binary version or missing key. No provider substitution or implicit retry.
+Allow 90–150 minutes as an unmeasured planning estimate. Confirm the ordinary-user setup: Python 3.12+, latest stable OMP (observed `omp/<semver>` recorded at runtime), current-process OpenRouter key, pinned `anthropic/claude-sonnet-4.6`, external fresh work/evidence paths. Inspect reports release policy `latest`; actual run preflight records the observed identity and rejects a malformed or unsuccessful `--version` or missing key. No provider substitution or implicit retry.
 
 ## Observe the operator's decisions
 
@@ -67,7 +67,7 @@ Agent Hub and native agent/history/proc URIs are process-scoped. A separately la
 
 ## Verification and history
 
-Run the deterministic Python evidence tests and Node guard boundary tests, then exercise the real pinned four-stage workflow. Test fixtures are explicitly synthetic and never live proof. Build the allowlisted course and inspect the published overview, lab, guide, downloads and figure alternatives in a browser.
+Run the deterministic Python evidence tests and Node guard boundary tests, then exercise the real four-stage workflow with the latest stable OMP release. Test fixtures are explicitly synthetic and never live proof. Build the allowlisted course and inspect the published overview, lab, guide, downloads and figure alternatives in a browser.
 
 Record actual platform/shell/browser limits in `reference/REFERENCE.md` after verification. Native Windows/ARM64, WSL, Linux, screen-reader operation and learner timing require their own observations; a macOS run does not establish them.
 

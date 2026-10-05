@@ -6,7 +6,7 @@ Staff-only contract and verification record. Revision: 2026-10-04, native orches
 
 Before Copper Span, the learner can direct and verify one bounded assistant run. After it, the learner can supervise a dependency-aware native OMP team: assign independent work, accept attributable handoffs, gate dependent integration/review, and recover only invalidated work without erasing valid evidence.
 
-Source verification, typed answers and basic tool boundaries are prerequisites. A graph, log or installed tool is evidence, not the objective. Course authority is `modules/core/05-diagnose-recover.md`, `LEARNING_OBJECTIVES.md`, `AUTHORING_GUIDE.md`, `MISSION_THREAD_SCENARIOS.md` and the pinned native sources below.
+Source verification, typed answers and basic tool boundaries are prerequisites. A graph, log or installed tool is evidence, not the objective. Course authority is `modules/core/05-diagnose-recover.md`, `LEARNING_OBJECTIVES.md`, `AUTHORING_GUIDE.md`, `MISSION_THREAD_SCENARIOS.md` and the native sources below.
 
 ## 2026-10-04 amendment — no graded cases
 
@@ -27,7 +27,7 @@ The learner writes an ownership/dependency plan and revises Inventory's target/a
 
 `shared/prepare_work.py 05 W` copies the case, roles, briefs, guard and both Python controls into a new external work root. `scripts/orchestrate.py` exposes only `inspect`, `run` and `check`.
 
-- **Inspect:** offline graph, assignments, required version/model and fingerprints. Not proof of installation, credentials or execution.
+- **Inspect:** offline graph, assignments, release policy `latest` and model, fingerprints. Not proof of installation, credentials or execution.
 - **Fanout:** one native `task` call with Inventory, Authority and Timing. Three read-only child sessions. The first expected technical result is HOLD/exit 1, with two accepted and Timing blocked after a real ENOENT read.
 - **Repair:** verified `--prior` required; only blocked or fingerprint-invalid specialists are dispatched. Reused reports retain their original attempt_id and child_id. Expected PASS/exit 0 with only Timing dispatched.
 - **Integrate:** accepted, current specialist evidence required. The coordinator reads accepted-handoffs and all three sources before one write to `out/status-brief.json`. No child. Expected PASS/exit 0; candidate snapshot retained.
@@ -36,7 +36,7 @@ The learner writes an ownership/dependency plan and revises Inventory's target/a
 
 Each stage creates exactly its new evidence directory; existing destinations are refused. Run preflight failures return HOLD on stderr and exit 2 before provider dispatch. Runtime failures, incomplete records and failed acceptance remain held. `check` makes no provider call and returns exit 1 for invalid or stale evidence. A malformed chain may yield only status/issues, rather than a reconstructed stage summary.
 
-The pin is OMP 18.3.5 and `openrouter/anthropic/claude-sonnet-4.6`. Native `task` owns child execution; there is no alternate provider client or Python child scheduler. The isolated runtime has a fresh HOME/cwd, explicit requested roles, no personal profile, disabled runtime retry/model fallback, synchronous result collection, concurrency 3, recursion depth 1, 12 provider requests per session and a 300-second run deadline with shutdown allowance.
+Release policy is latest stable. Each execution records the observed `omp/<semver>` returned by a successful native `--version` (provider/model `openrouter/anthropic/claude-sonnet-4.6` remains pinned). Native `task` owns child execution; there is no alternate provider client or Python child scheduler. The isolated runtime has a fresh HOME/cwd, explicit requested roles, no personal profile, disabled runtime retry/model fallback, synchronous result collection, concurrency 3, recursion depth 1, 12 provider requests per session and a 300-second run deadline with shutdown allowance.
 
 The re-bound extension validates actual `ctx.agent` identity, exact task/spawn contracts, model/role/control identity, assigned read attempts and terminal yield. Child initial/active tools are course_read/yield. course_write is registered only for coordinator-only integration. Exact input bindings do not grant directory-wide access. Missing input produces a real filesystem error; no synthetic blocked receipt is inserted.
 
@@ -49,6 +49,7 @@ Changed specialist inputs invalidate their consumers. Changed integration instru
 Retained private evidence: `~/course-evidence/copper-span-native-20261004/`, with work, fanout, repair, integrate and review siblings. Provider credential was passed privately in the process environment, not published. Inventory's target and acceptance were rewritten before this fanout.
 
 The separately downloaded official darwin-arm64 18.3.5 binary reported `omp/18.3.5`; its official checksum matched `3ad34e91a474ea239674b593a5ff1544727a22f7afd3c8a8729260128a5febd1`. A newer global binary was not substituted.
+The numeric OMP observations, run IDs, binary checksums and dates in these historical proof tables identify the binaries actually used. They remain unchanged; they do not define the current installation requirement.
 
 | Stage | Producing run ID | Observed run/check result |
 |---|---|---|
@@ -104,24 +105,43 @@ On the isolated feature branch before integration with concurrent main changes:
 
 The merge retains main's spreadsheet-agent and structured hallucination-control work, along with its revised local-model scope. After integration, the 11 orchestration tests, 8 guard tests and all 65 root unit tests passed. A fresh Module 05 preparation/inspect succeeded, and the merged launcher independently accepted the retained real review. The rebuilt publication passed exact checking and figure-link validation: 35 instructional pages, 423 raw downloads and 40 UI/generated assets. Chromium confirmed the combined homepage and the orchestration overview.
 
-Current main already records a separate Module 07 core-contract mismatch: the course map produces AGENT_SHEET while `modules/core/07-fixed-workflow.md` still names retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` records that inherited `test_core_standard.py` HOLD. This integration does not claim a green combined full-course gate or rewrite that unrelated Module 07 contract.
+At that integration, main recorded a separate Module 07 core-contract mismatch: the course map produced AGENT_SHEET while `modules/core/07-fixed-workflow.md` still named retired fixed-workflow products. `module-08-change-eval/evidence/REVIEW_VERDICT.md` recorded that inherited `test_core_standard.py` HOLD. That integration did not claim a green combined full-course gate or rewrite the unrelated Module 07 contract.
 
 The subsequent Blue Gauge decision-model merge also retained Module 05's preparation/runtime contract. The 11 orchestration tests, 8 guard tests and now 71 root unit tests passed. Publication and figure-link checks at that merge passed with 35 instructional pages, 420 raw downloads and 40 UI/generated assets. Obsolete generated Module 06 pages and its test-created bytecode cache were removed after that module's directory rename.
 
 The separately committed ungraded-course changes for Modules 00, 01 and 04, plus the course-gap analysis, were then retained without changing the orchestration controls. Publication and figure-link checks passed again: 35 instructional pages, 419 raw downloads and 40 UI/generated assets.
 
+## Rolling latest proof, 2026-10-05 UTC
+
+Installation now follows the official latest stable release; actual runtime identity is saved per attempt. A dependent stage must use the same OMP version as its prior evidence. Saved checks remain offline. Provider/model pins and all source, role, tool, effect, and prior-seal checks remain in force.
+
+A fresh Apple Silicon run used the verified latest `omp/18.6.1` binary, SHA-256 `b5ca5cd17b8cc09ece36845988fd401f7d1002e1ab5b95600e0f328924246d52`. Private evidence: `~/course-evidence/omp-latest-20261004/copper-final/`. This observed version is not a new pin.
+
+| Stage | Producing run ID | Observed result |
+|---|---|---|
+| Fanout | `b38df5f9-9db3-42c6-804a-0c31502afb49` | HOLD/1; Inventory and Authority accepted, Timing blocked on the absent assigned input. |
+| Repair | `cc605122-d81d-40cd-81cc-010b6f1d8b46` | PASS/0; only Timing dispatched, Inventory and Authority reused. |
+| Integrate | `315048f8-2288-4557-bb62-da77f931f95f` | PASS/0; no child, candidate written from accepted handoffs. |
+| Review | `7c3420d9-8d6a-43c6-999a-653eb57a9944` | PASS/0; only Review dispatched. |
+
+The independent fanout check returned the expected HOLD/1 before repair. Repair, integration and review independently returned PASS/0 and the recorded runtime identity. All 14 Python behavior tests and 9 Node guard tests passed, including acceptance of a different valid runtime version and refusal of malformed policy types, mismatched saved/process identities, or cross-version prior reuse. The array-to-string coercion regression failed before the explicit type check and passed afterward. No native Windows, WSL or Linux execution is established by these checks.
+
+Final run controls: `orchestrate.py` SHA-256 `4a293896f56a8ab818e64b6aa46af7816f7d13c0f63ceabae095f901c466dd72`; `orchestration_evidence.py` `2ca721a730f8ce34c28f87ae528132d7d7bb9bf395784549adbb1dc80b74472a`; guard `57ff622173be1e70417b8faae7998067150900cffd80386142f038ad1d2208e7`. The earlier latest-runtime chain remains preserved under the sibling `copper/` directory.
+
+The later rolling-latest integration retained main's independently committed Module 02 path-check optimization and Module 07 contract corrections. All 30 combined course gates passed with their standard per-command deadlines, followed by byte-for-byte publication checking: 35 instructional pages, 419 raw downloads and 40 UI/generated assets. An ignored, bytecode-only retired Module 06 directory initially confused module discovery; it was preserved outside the checkout before the successful rerun. The runtime controls and native records above were unchanged by that integration.
+
 ## Limits and historical boundary
 
-The 90–150 minute allocation is a planning estimate, not a measured learner duration. No representative learner study, human panel, native Windows/WSL/Linux execution, Intel macOS run or screen-reader operation is claimed. Interactive Agent Hub/steering is explained from the pinned native sources; the headless smoke does not prove an interactive supervision session. Child outputs and timestamps are nondeterministic; contracts and checked identities determine acceptance.
+The 90–150 minute allocation is a planning estimate, not a measured learner duration. No representative learner study, human panel, native Windows/WSL/Linux execution, Intel macOS run or screen-reader operation is claimed. Interactive Agent Hub/steering is explained from the native sources; the headless smoke does not prove an interactive supervision session. Child outputs and timestamps are nondeterministic; contracts and checked identities determine acceptance.
 
 Historical `evidence/`, `reviews/` and the repository's earlier exercise-run registry describe the retired renderer/probe/restore contract. Keep them unchanged and do not use their outcomes as orchestration proof. Current learner publication, runtime, tests and review challenge contain no compatibility path back to that exercise.
 
-## Pinned primary sources
+## Primary sources
 
-- [Native task arguments and execution](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/tools/task.md)
-- [Role discovery and frontmatter](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/task-agent-discovery.md)
-- [Settings](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/settings.md)
-- [Extensions and child context](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/extensions.md)
-- [Task executor and native artifacts](https://github.com/can1357/oh-my-pi/blob/v18.3.5/packages/coding-agent/src/task/executor.ts)
+- [Native task arguments and execution](https://github.com/can1357/oh-my-pi/blob/main/docs/tools/task.md)
+- [Role discovery and frontmatter](https://github.com/can1357/oh-my-pi/blob/main/docs/task-agent-discovery.md)
+- [Settings](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md)
+- [Extensions and child context](https://github.com/can1357/oh-my-pi/blob/main/docs/extensions.md)
+- [Task executor and native artifacts](https://github.com/can1357/oh-my-pi/blob/main/packages/coding-agent/src/task/executor.ts)
 
 `REFERENCE.sha256` records this staff source. Runtime/control hashes above bind the measured native run; the prose digest is not a substitute for those records.

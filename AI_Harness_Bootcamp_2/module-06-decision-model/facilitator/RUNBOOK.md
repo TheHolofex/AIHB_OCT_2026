@@ -6,7 +6,7 @@ The learner selects and pins a decision model for OMP's judge role through OpenR
 
 ## Before class
 
-1. Confirm OMP reports `omp/18.3.5` and each learner's OpenRouter key has credit.
+1. Confirm the verified latest stable OMP release is installed, record its actual `omp --version` output, and confirm each learner's OpenRouter key has credit.
 2. Run `run_omp.py --list-judges --evidence <new folder>` with a course key and confirm `openrouter/typesafe/jev-1.13` is offered. If it isn't, the live work holds for everyone; do not substitute another judge or the `~typesafe/jev-latest` alias.
 3. Keep `reference/WORKED_QUESTIONS.json` to yourself. It is a working question set for diagnosing a stuck learner, not something to hand out.
 
@@ -32,7 +32,7 @@ You may point to a file, a rule in the lab's table, or a supplied command. You m
 
 ## `HOLD` conditions
 
-- The pinned judge isn't offered, the key lacks credit, or OMP isn't 18.3.5: hold the live work; keep the candidate list.
+- The pinned judge isn't offered, the key lacks credit, or the OMP installation/version report is unusable: hold the live work; keep any candidate list already saved.
 - `JUDGE.yml` names the alias, the router, or a chat model: the launcher holds before any call.
 - A judgment is missing, malformed, or from another build: the run holds; keep the folder and rerun under a new name.
 - The questions changed after the tuning run a freeze names, or the held-out run started before the freeze: no measurement.
