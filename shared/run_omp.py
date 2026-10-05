@@ -589,8 +589,8 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
     require(all((message.get("provider"), message.get("model")) == (PROVIDER, MODEL) for message in assistants), "assistant identity drift")
     if terminal and assistants:
         final = [message for message in terminal[0].get("messages", []) if message.get("role") == "assistant"]
-        # OMP 18.3.5 stamps completedAt on the message_end snapshot, not the
-        # agent-loop message retained in agent_end. All other fields must match.
+        # The streamed OMP message can carry completedAt without it appearing
+        # in the terminal agent-loop message. All other fields must match.
         streamed = dict(assistants[-1])
         if final and "completedAt" not in final[-1]:
             streamed.pop("completedAt", None)
@@ -1048,6 +1048,13 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(f"malformed final assistant content: {error}")
         (evidence / "response.md").write_text(response, encoding="utf-8")
         result = {"run_id": policy["run_id"], "provider": PROVIDER, "model": MODEL, "omp_version": omp_version, "started_at": started, "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": child_exit, "policy_sha256": frozen_policy_hash, "guard_sha256": file_hash(evidence / "guard.jsonl") if (evidence / "guard.jsonl").is_file() else None, "declared_policy_sha256": declaration["sha256"] if declaration else None, "instruction_sha256": instruction["sha256"] if instruction else None, "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"}, "output_sha256": {relative: value.get("sha256") for relative, value in after["work"].items() if value["type"] == "file" and value != before["work"].get(relative)}, "status": "PASS" if child_exit == 0 and not errors else "HOLD", "reason": "all checks passed" if child_exit == 0 and not errors else "; ".join(errors) or "OMP exited non-zero"}
+        if policy_mcp:
+            result["mcp"] = {
+                "config_sha256": mcp_config["sha256"] if mcp_config else None,
+                "authority_sha256": authority_file["sha256"] if authority_file else None,
+                "audit_sha256": file_hash(evidence / "mcp-audit.jsonl") if (evidence / "mcp-audit.jsonl").is_file() else None,
+                "calls": len(mcp_calls),
+            }
         if policy_judge:
             result["judge"] = judge_output_errors(policy)[1]
             if result["judge"]:
