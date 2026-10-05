@@ -1,10 +1,10 @@
 # Required tool identities
 
-Use the exact OMP and n8n releases and provider/model pair below. A newer executable or a similarly named model is not an automatic substitute.
+Use the latest stable Oh My Pi release and the exact provider/model pair in your run policy. Verify the selected release's checksum before executing it and retain its reported version with the run evidence. A similarly named model is not a substitute.
 
 | Component | Required value | Check |
 |---|---|---|
-| Oh My Pi | 18.3.5 | The verified executable reports `omp/18.3.5`. |
+| Oh My Pi | latest stable release (resolved once per install) | The verified executable reports `omp/<semver>` matching the tag from the selected release; checksums are from the same tag's SHA256SUMS.txt. |
 | Provider/model | `openrouter/anthropic/claude-sonnet-4.6` | The launcher and actual run receipts agree on OpenRouter and Sonnet 4.6. |
 | Judge model for Module 6 | `openrouter/typesafe/jev-1.13` | `run_omp.py --list-judges` shows it offered, and each judge run records the dated build that answered. |
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
@@ -17,7 +17,7 @@ Use the exact OMP and n8n releases and provider/model pair below. A newer execut
 
 You need read access to the private course repository on GitHub. If your existing approved Git credentials work, you don't need another login tool. Otherwise, follow the platform steps to log in through your browser with [GitHub CLI (`gh`)](https://cli.github.com/manual/gh_auth_login). The package is `GitHub.cli` in WinGet, `gh` in Homebrew and Ubuntu Universe, and `github-cli` in Arch's official repositories. GitHub CLI helps you reach the repository; you don't need it to run the AI tools.
 
-Download the OMP binary and `SHA256SUMS.txt` from the [same v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5). Select the asset for the operating system in which it will run:
+Download the OMP binary and `SHA256SUMS.txt` from the latest stable release selected once by the platform resolver (the tag and assets are recorded with the download). Select the asset for the operating system in which it will run:
 
 | Runtime | ARM64 asset | x86-64 asset |
 |---|---|---|
@@ -41,7 +41,7 @@ Check your OS and architecture before installing. A binary may be available even
 
 The launcher keeps the runtime configuration separate, makes only the named course tools available, and turns off automatic retries, model fallback, cache warming, unrelated extensions, skills, and persistent sessions. Use it for exercises instead of your personal OMP profile. A prerequisite report shows what is set up, not what happened during a model turn; check the readiness receipts to see whether those controls worked.
 
-You don't need another model-provider key or agent CLI. For Module 2, you need local Obsidian with Sync off and community plugins restricted, but you don't need an account, plugin, or MCP service. For Module 7, you need local n8n and a local instance-owner login, but not n8n Cloud signup or an Assistant key. If the pinned release or model is unavailable, keep the failure and put that part of setup on hold. Don't use an unreviewed substitute to get a passing label.
+You don't need another model-provider key or agent CLI. For Module 2, you need local Obsidian with Sync off and community plugins restricted, but you don't need an account, plugin, or MCP service. For Module 7, you need local n8n and a local instance-owner login, but not n8n Cloud signup or an Assistant key. If the latest OMP release, pinned n8n release, or specified model is unavailable, keep the failure and put that part of setup on hold. Don't use an unreviewed substitute to get a passing label.
 
 ## Local Obsidian for Module 2
 

@@ -3,7 +3,7 @@
 **Serves oracle:** S04, S14, S15, S19, S22
 **Primary objective:** PO-05 — Orchestrate an OMP agent team
 **Mastery:** Supervise a dependency-aware OMP agent team, accept each evidence-bearing handoff, and recover partial failure without discarding valid work or prematurely accepting the integrated result.
-**Prerequisites:** Preflighted pinned OMP environment; bounded direction, source verification, saved instructions, limited tool authority, typed result contracts, and this module's independent supplied case
+**Prerequisites:** Preflighted latest-release OMP environment with its actual runtime version recorded; bounded direction, source verification, saved instructions, limited tool authority, typed result contracts, and this module's independent supplied case
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:NATIVE_TASK; VERIFY:ORCHESTRATION_CONTROLS
 **Produces:** WORK_GRAPH; AGENT_HANDOFFS; PARTIAL_RECOVERY; INTEGRATED_BRIEF; PO05_RESULT
 **Rough time:** about 3 hours; a design estimate, not observed learner timing

@@ -18,6 +18,8 @@ REPO = MODULE.parents[1]
 sys.path.insert(0, str(REPO))
 from shared import run_omp as runtime
 
+# Synthetic fixture identity only; test data for sealed receipt validation of observed omp_version binding.
+SYNTH_OMP_VERSION = "omp/18.3.5"
 spec = importlib.util.spec_from_file_location('second_brain_oracle', MODULE / 'scripts/second_brain.py')
 brain = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(brain)
@@ -79,7 +81,7 @@ class Sealed:
         (evidence / 'runtime-config.yml').write_bytes(runtime.json_bytes(overlay))
         rule = work / 'shared/controls/SAVED_INSTRUCTION.md'
         self.policy = dict.fromkeys(runtime.POLICY_KEYS)
-        self.policy.update(schema_version=1, run_id='synthetic-module02', work_root=str(root), profile='read', tools=['course_read'], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION, prompt_sha256=runtime.file_hash(prompt), instruction={'path': str(rule), 'sha256': runtime.file_hash(rule)}, declaration=None, python=sys.executable, guard_source_sha256=runtime.file_hash(runtime.GUARD), runtime_config_sha256=runtime.file_hash(evidence / 'runtime-config.yml'), guard_log=str(evidence / 'guard.jsonl'), watch_paths=[])
+        self.policy.update(schema_version=1, run_id='synthetic-module02', work_root=str(root), profile='read', tools=['course_read'], write_files=[], write_root=None, provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION, prompt_sha256=runtime.file_hash(prompt), instruction={'path': str(rule), 'sha256': runtime.file_hash(rule)}, declaration=None, python=sys.executable, guard_source_sha256=runtime.file_hash(runtime.GUARD), runtime_config_sha256=runtime.file_hash(evidence / 'runtime-config.yml'), guard_log=str(evidence / 'guard.jsonl'), watch_paths=[])
         self.snapshots = {'before': runtime.snapshot(root, []), 'after': runtime.snapshot(root, [])}
         common = dict(run_id=self.policy['run_id'])
         self.guard = [dict(type='guard_ready', provider=runtime.PROVIDER, model=runtime.MODEL, active_tools=['course_read'], **common), dict(type='instruction_loaded', file_sha256=runtime.file_hash(rule), loaded_text_sha256=runtime.sha256(rule.read_bytes().decode().strip().encode()), **common), dict(type='provider_request', provider=runtime.PROVIDER, model=runtime.MODEL, **common)]
@@ -123,7 +125,7 @@ class Sealed:
             (e / (name + '.jsonl')).write_text(''.join(json.dumps(row) + '\n' for row in getattr(self, name)))
         (e / 'snapshots.json').write_bytes(runtime.json_bytes(self.snapshots))
         (e / 'response.md').write_text(self.response)
-        result = dict(run_id=p['run_id'], provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=runtime.OMP_VERSION, exit_code=0, policy_sha256=runtime.file_hash(e / 'policy.json'), guard_sha256=runtime.file_hash(e / 'guard.jsonl'), declared_policy_sha256=None, instruction_sha256=p['instruction']['sha256'] if p['instruction'] else None, input_sha256={k: v['sha256'] for k, v in self.snapshots['before']['work'].items() if v['type'] == 'file'}, output_sha256={}, status='PASS', reason='Explicitly synthetic sealed receipt; no provider contact.')
+        result = dict(run_id=p['run_id'], provider=runtime.PROVIDER, model=runtime.MODEL, omp_version=SYNTH_OMP_VERSION, exit_code=0, policy_sha256=runtime.file_hash(e / 'policy.json'), guard_sha256=runtime.file_hash(e / 'guard.jsonl'), declared_policy_sha256=None, instruction_sha256=p['instruction']['sha256'] if p['instruction'] else None, input_sha256={k: v['sha256'] for k, v in self.snapshots['before']['work'].items() if v['type'] == 'file'}, output_sha256={}, status='PASS', reason='Explicitly synthetic sealed receipt; no provider contact.')
         (e / 'result.json').write_bytes(runtime.json_bytes(result))
 
 

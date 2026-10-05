@@ -116,6 +116,6 @@ Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue
 
 **Recovery:** Close those processes. Revoke the provider key if access must end everywhere or the value was exposed.
 
-Record the provider/model identity, `omp/18.3.5`, whether the check showed `SET` or `MISSING`, and redacted run outcomes. Never save any part of the key. The current process environment limits persistence but doesn't shield it from other processes under your account.
+Record the provider/model identity, observed `omp/<semver>`, whether the check showed `SET` or `MISSING`, and redacted run outcomes. Never save any part of the key. The current process environment limits persistence but doesn't shield it from other processes under your account.
 
-Sources: [OpenRouter key settings](https://openrouter.ai/settings/keys), [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6), and [OMP model resolution at v18.3.5](https://github.com/can1357/oh-my-pi/blob/v18.3.5/docs/models.md).
+Sources: [OpenRouter key settings](https://openrouter.ai/settings/keys), [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6), and [OMP model resolution](https://github.com/can1357/oh-my-pi/blob/main/docs/models.md).

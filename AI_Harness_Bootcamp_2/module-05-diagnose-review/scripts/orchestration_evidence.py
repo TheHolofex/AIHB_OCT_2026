@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-OMP_VERSION = "omp/18.3.5"
+
 PROVIDER = "openrouter"
 MODEL = "anthropic/claude-sonnet-4.6"
 SELECTOR = f"{PROVIDER}/{MODEL}"
@@ -51,6 +51,10 @@ REVIEW_SCHEMA = {"type": "object", "properties": REVIEW_PROPERTIES,
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def valid_omp_version(version):
+    return isinstance(version, str) and bool(re.fullmatch(r"omp/[0-9]+\.[0-9]+\.[0-9]+", version))
 
 
 def strict_json(text):
@@ -361,12 +365,15 @@ def audit_attempt(work, evidence, *, sealed=True, current=True, ancestry=()):
         verify_seal(evidence)
     policy = load_json(evidence / "policy.json")
     require(policy.get("schema_version") == 1 and policy.get("stage") in STAGES, "invalid evidence policy")
-    require(policy.get("provider") == PROVIDER and policy.get("model") == MODEL and policy.get("omp_version") == OMP_VERSION, "pinned runtime identity differs")
+    require(policy.get("provider") == PROVIDER and policy.get("model") == MODEL, "pinned provider/model identity differs")
+    omp_ver = policy.get("omp_version")
+    require(valid_omp_version(omp_ver), "invalid omp_version format in policy")
     require(Path(policy["work_root"]).resolve() == work and Path(policy["evidence_root"]).resolve() == evidence, "evidence belongs to a different work root or location")
     require(policy["guard_source_sha256"] == file_hash(evidence / "inputs" / "controls" / "orchestration_guard.mjs"), "frozen guard identity differs")
     process = load_json(evidence / "process.json")
     require(process.get("returncode") == 0 and not process.get("aborted") and not process.get("timed_out"), "native process did not complete successfully")
-    require(process.get("omp_version") == OMP_VERSION and re.fullmatch(r"[0-9a-f]{64}", process.get("binary_sha256", "")), "native binary identity missing")
+    proc_ver = process.get("omp_version")
+    require(proc_ver == omp_ver and re.fullmatch(r"[0-9a-f]{64}", process.get("binary_sha256", "")), "native binary identity missing or mismatched with policy")
     overlay = load_json(evidence / "runtime-config.json")
     require(overlay.get("retry") == {"enabled": False, "modelFallback": False} and overlay.get("async") == {"enabled": False}, "retry/fallback/asynchronous dispatch enabled")
     require(overlay.get("task") == {"batch": True, "maxConcurrency": 3, "maxRecursionDepth": 1}, "team bounds differ")
@@ -380,6 +387,8 @@ def audit_attempt(work, evidence, *, sealed=True, current=True, ancestry=()):
         prior_path = Path(reference["path"]).resolve()
         require(file_hash(prior_path / "seal.json") == reference["seal_sha256"], "prior evidence identity changed")
         prior = audit_attempt(work, prior_path, current=current and stage == "review", ancestry=ancestry + (evidence,))
+    if prior is not None:
+        require(prior.get("omp_version") == omp_ver, "OMP version changed since the prior attempt; the saved chain is not consistent for reuse")
     require((stage == "fanout") == (prior is None), "stage/prior dependency differs")
     if stage in {"repair", "integrate"}:
         require(prior["stage"] in {"fanout", "repair"}, "specialist stage needs specialist prior evidence")
@@ -519,12 +528,12 @@ def audit_attempt(work, evidence, *, sealed=True, current=True, ancestry=()):
             if file_hash(work_file(work, "shared/agents/review.md")) != file_hash(evidence / "inputs/roles/review.md"):
                 issues.append("review: role changed; candidate acceptance is stale")
     return {"run_id": policy["run_id"], "stage": stage, "reports": reports, "issues": issues,
-            "dispatched": dispatch, "reused": reused}
+            "dispatched": dispatch, "reused": reused, "omp_version": omp_ver}
 
 
 def summary(audit):
     return {"status": "HOLD" if audit["issues"] else "PASS", "stage": audit["stage"],
-            "run_id": audit["run_id"], "issues": audit["issues"], "dispatched": audit["dispatched"],
+            "run_id": audit["run_id"], "omp_version": audit["omp_version"], "issues": audit["issues"], "dispatched": audit["dispatched"],
             "reused": audit["reused"],
             "accepted_roles": [role for role in ROLES if audit["reports"].get(role, {}).get("report", {}).get("status") == "complete" and not any(issue.startswith(role + ":") for issue in audit["issues"])],
             "blocked_roles": [role for role in ROLES if audit["reports"].get(role, {}).get("report", {}).get("status") == "blocked"]}

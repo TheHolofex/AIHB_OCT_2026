@@ -101,7 +101,7 @@ $ompCommand.Source
 if ($LASTEXITCODE -ne 0) { throw 'HOLD: the selected OMP executable failed its version check.' }
 ```
 
-**Expected:** The path is the installation you verified, and the version is exactly `omp/18.3.5`.
+**Expected:** The path is the installation you verified, and the version is the observed `omp/<semver>` from the resolved release.
 
 **Stop:** The command is missing, resolves to an unexpected installation, fails to run, or reports another version.
 

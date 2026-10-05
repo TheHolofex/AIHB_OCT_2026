@@ -12,7 +12,7 @@ The independent case has three source packets and seven authored claims. Five li
 
 ## Before class
 
-Follow the actual learner preparation procedure in a fresh external work folder. Use Python 3.12+, OMP 18.3.5, and `openrouter/anthropic/claude-sonnet-4.6` through the shared launcher. Do not replace a missing model or credential with a fixture.
+Follow the actual learner preparation procedure in a fresh external work folder. Use Python 3.12+, the verified latest stable OMP release, and `openrouter/anthropic/claude-sonnet-4.6` through the shared launcher. Retain the actual OMP version in each run's evidence. Do not replace a missing model or credential with a fixture.
 
 1. Run `freeze --work W --out E` through the repository's `scripts/hallucination.py`. Check that the frozen sources and controls, manifest, and initial findings exist. `PASS: frozen 7 claims` describes preservation and checking, not a correct original draft.
 2. Run the two before reviews independently. Parsed answers belong in `reviews/`; actual execution receipts belong in `runs/`. Inspect actual source-read proof, not just a final response.

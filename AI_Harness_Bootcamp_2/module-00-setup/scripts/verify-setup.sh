@@ -77,7 +77,7 @@ record() {
 # ------------------------------------------------------------------- version comparison
 
 capture_version() {
-  local name="$1" expected="$2" cmd="$3"
+  local name="$1" pattern="$2" cmd="$3"
   shift 3
   local resolved
   resolved="$(command -v "$cmd" 2>/dev/null)" || resolved=""
@@ -91,7 +91,6 @@ capture_version() {
     record FAIL "$name" "$cmd could not run successfully" "Keep the failed command and repair this prerequisite before continuing."
     return
   fi
-  out="${out%%$'\n'*}"
   out="${out//$'\r'/}"
   if [ -z "$out" ]; then
     record FAIL "$name" "$cmd returned no version" "Use the verified installation from the platform guide."
@@ -99,23 +98,13 @@ capture_version() {
   fi
   local shown
   shown="$(redact "$resolved") — $out"
-  if [ -n "$expected" ] && [ "$out" != "$expected" ]; then
-    record FAIL "$name" "want $expected, observed $out at $shown" \
-      "Install the exact version and re-run in a new terminal."
+  if [ -n "$pattern" ] && [[ ! "$out" =~ $pattern ]]; then
+    record FAIL "$name" "unrecognized version at $shown" \
+      "Install and verify the latest stable release, then re-run in a new terminal."
   else
     record PASS "$name" "$shown"
   fi
 }
-
-# ------------------------------------------------------------------------ course pins
-
-read_pin() {
-  local name="$1"
-  grep -E "^\|[[:space:]]*$name[[:space:]]*\|" "$pins_file" 2>/dev/null | head -n 1 | awk -F'|' '{gsub(/`/,"",$3); gsub(/^[ \t]+|[ \t]+$/,"",$3); print $3}' | xargs
-}
-
-pins_file="$MODULE_DIR/shared/VERSIONS.md"
-pin_omp="$(read_pin 'Oh My Pi' 2>/dev/null)" || pin_omp=""
 
 # ------------------------------------------------------------------ platform and machine
 
@@ -205,8 +194,7 @@ else
     fi
   fi
 fi
-
-capture_version omp "omp/$pin_omp" omp --version
+capture_version omp '^omp/[0-9]+\.[0-9]+\.[0-9]+$' omp --version
 
 # ---------------------------------------------------------------------- course clone
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run pinned OMP with course-only tools and independently checked receipts.
+"""Run OMP with course-only tools and independently checked receipts.
 
 This is an OMP tool boundary, not an operating-system sandbox. Exit 2 means
 invalid invocation/prerequisites; exit 1 preserves an attempted but held run.
@@ -32,7 +32,6 @@ from pathlib import Path, PureWindowsPath
 PROVIDER = "openrouter"
 MODEL = "anthropic/claude-sonnet-4.6"
 SELECTOR = f"{PROVIDER}/{MODEL}"
-OMP_VERSION = "omp/18.3.5"
 GUARD = Path(__file__).with_name("course_guard.mjs")
 JUDGE_RUNNER = Path(__file__).with_name("judge_runner.mjs")
 JUDGE_SELECTOR = "openrouter/typesafe/jev-1.13"
@@ -45,6 +44,10 @@ MODULE_03_MCP = Path(__file__).resolve().parents[1] / "AI_Harness_Bootcamp_2" / 
 MCP_SERVER = "vault"
 MCP_ENV = {"OMP_MCP_REQUIRE_READY": "1", "OMP_MCP_TIMEOUT_MS": "30000"}
 ENV_KEYS = {"PATH", "LANG", "SYSTEMROOT", "SystemRoot", "WINDIR", "COMSPEC", "PATHEXT", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY", "http_proxy", "https_proxy", "all_proxy", "no_proxy", "SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE", "NODE_EXTRA_CA_CERTS"}
+
+
+def valid_omp_version(version) -> bool:
+    return isinstance(version, str) and bool(re.fullmatch(r"omp/[0-9]+\.[0-9]+\.[0-9]+", version))
 
 
 def sha256(data: bytes) -> str:
@@ -139,7 +142,7 @@ def parse_judge_config(path: Path) -> str:
 
 
 def parse_questions(path: Path) -> dict:
-    """Check a question file against the shapes OMP 18.3.5's judge bridge accepts."""
+    """Check a question file against the supported OMP judge bridge shapes."""
     data = strict_json(learner_text(path))
     if not isinstance(data, dict) or set(data) != {"schema_version", "questions"} or data["schema_version"] != 1 or type(data["schema_version"]) is not int:
         raise ValueError('the question file must be {"schema_version": 1, "questions": {...}}')
@@ -554,7 +557,8 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
     mcp, judge = policy.get("mcp"), policy.get("judge")
     require(set(policy) - OPTIONAL_POLICY_KEYS == POLICY_KEYS and set(policy) & OPTIONAL_POLICY_KEYS <= OPTIONAL_POLICY_KEYS and (mcp is not None) == (policy.get("profile") == "mcp")
             and (judge is not None) == (policy.get("profile") == "judge") and (not judge or policy.get("tools") == ["eval"]) and policy.get("schema_version") == 1, "resolved policy schema differs")
-    require((policy.get("provider"), policy.get("model"), policy.get("omp_version")) == (PROVIDER, MODEL, OMP_VERSION), "pinned identity differs")
+    require(policy.get("provider") == PROVIDER and policy.get("model") == MODEL, "pinned provider/model differs")
+    require(valid_omp_version(policy.get("omp_version")), "omp_version is not a recorded valid OMP identity")
     terminal = [row for row in events if row.get("type") == "agent_end" and row.get("isTerminal") is not False]
     require(len(terminal) == 1, "expected exactly one terminal agent_end")
     require(not any(re.search(r"retry|fallback", row.get("type", "")) or row.get("type") in {"model_changed", "extension_error"} for row in events), "retry, fallback, model drift, or extension error observed")
@@ -762,8 +766,10 @@ def audit_evidence(evidence: Path) -> list[str]:
         for key, value in expected.items():
             if result.get(key) != value:
                 errors.append(f"{key} differs")
-        if (result.get("provider"), result.get("model"), result.get("omp_version")) != (PROVIDER, MODEL, OMP_VERSION):
-            errors.append("result provider/model/version differs")
+        if result.get("provider") != PROVIDER or result.get("model") != MODEL:
+            errors.append("result provider/model differs")
+        if result.get("omp_version") != policy.get("omp_version"):
+            errors.append("result omp_version differs from policy")
         if result.get("run_id") != policy.get("run_id") or result.get("status") != "PASS":
             errors.append("run identity or completion status differs")
         for row in guard:
@@ -805,7 +811,7 @@ def list_judges(evidence_arg: Path) -> int:
             raise ValueError("OPENROUTER_API_KEY unavailable; enter and export the key in this terminal")
         omp = shutil.which("omp")
         if not omp:
-            raise ValueError("omp is not on PATH; install the pinned verified binary")
+            raise ValueError("omp is not on PATH; install and verify the latest stable release")
     except (OSError, ValueError) as error:
         print(f"HOLD: {error}", file=sys.stderr)
         return 2
@@ -816,8 +822,9 @@ def list_judges(evidence_arg: Path) -> int:
         cwd.mkdir()
         try:
             version = subprocess.run([omp, "--version"], cwd=cwd, env=environment, capture_output=True, text=True, timeout=15)
-            if version.returncode or version.stdout.strip() != OMP_VERSION:
-                raise ValueError(f"require {OMP_VERSION}; pinned executable version did not match")
+            omp_version = version.stdout.strip()
+            if version.returncode or not valid_omp_version(omp_version):
+                raise ValueError("omp --version did not return a valid omp/<semver> identity")
             listing = subprocess.run([omp, "models", "--kind", "judge", "--json"], cwd=cwd, env=environment, capture_output=True, text=True, timeout=120)
             if key in listing.stdout or key in listing.stderr:
                 raise ValueError("the provider key appeared in the model listing; nothing was saved")
@@ -833,7 +840,7 @@ def list_judges(evidence_arg: Path) -> int:
     evidence.mkdir(parents=True)
     (evidence / "candidates.json").write_bytes(json_bytes(catalog))
     pinned = any(row["selector"] == JUDGE_SELECTOR for row in models)
-    (evidence / "result.json").write_bytes(json_bytes({"omp_version": OMP_VERSION, "fetched_at": datetime.now(timezone.utc).isoformat(), "candidates": len(models), "pinned": JUDGE_SELECTOR, "pinned_offered": pinned, "candidates_sha256": file_hash(evidence / "candidates.json")}))
+    (evidence / "result.json").write_bytes(json_bytes({"omp_version": omp_version, "fetched_at": datetime.now(timezone.utc).isoformat(), "candidates": len(models), "pinned": JUDGE_SELECTOR, "pinned_offered": pinned, "candidates_sha256": file_hash(evidence / "candidates.json")}))
     price = lambda value: f"{value:.3f}" if isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 0 else "varies"
     print(f"{'judge model selector':50} {'context':>9} {'$/M input':>10} {'$/M output':>11}")
     for row in sorted(models, key=lambda row: row["selector"]):
@@ -934,7 +941,7 @@ def main(argv: list[str] | None = None) -> int:
             raise ValueError("OPENROUTER_API_KEY unavailable; enter and export the key in this terminal")
         omp = shutil.which("omp")
         if not omp:
-            raise ValueError("omp is not on PATH; install the pinned verified binary")
+            raise ValueError("omp is not on PATH; install and verify the latest stable release")
     except (OSError, ValueError, UnicodeError) as error:
         print(f"HOLD: {error}", file=sys.stderr)
         return 2
@@ -952,8 +959,9 @@ def main(argv: list[str] | None = None) -> int:
         cwd.mkdir()
         try:
             version = subprocess.run([omp, "--version"], cwd=cwd, env=environment, capture_output=True, text=True, timeout=15)
-            if version.returncode or version.stdout.strip() != OMP_VERSION:
-                raise ValueError(f"require {OMP_VERSION}; pinned executable version did not match")
+            omp_version = version.stdout.strip()
+            if version.returncode or not valid_omp_version(omp_version):
+                raise ValueError("omp --version did not return a valid omp/<semver> identity")
         except (OSError, ValueError, subprocess.TimeoutExpired) as error:
             print(f"HOLD: {error}", file=sys.stderr)
             return 2
@@ -975,7 +983,7 @@ def main(argv: list[str] | None = None) -> int:
             overlay["modelRoles"] = {"judge": policy_judge["selector"]}
         overlay_file = evidence / "runtime-config.yml"
         overlay_file.write_bytes(json_bytes(overlay))
-        policy = {"schema_version": 1, "run_id": str(uuid.uuid4()), "work_root": str(work), "profile": profile, "tools": tools, "write_files": write_files, "write_root": write_root, "provider": PROVIDER, "model": MODEL, "omp_version": OMP_VERSION, "prompt_sha256": prompt["sha256"], "instruction": instruction, "declaration": declaration, "python": str(Path(sys.executable).resolve()), "guard_source_sha256": file_hash(GUARD), "runtime_config_sha256": file_hash(overlay_file), "guard_log": str(evidence / "guard.jsonl"), "watch_paths": list(map(str, watches))}
+        policy = {"schema_version": 1, "run_id": str(uuid.uuid4()), "work_root": str(work), "profile": profile, "tools": tools, "write_files": write_files, "write_root": write_root, "provider": PROVIDER, "model": MODEL, "omp_version": omp_version, "prompt_sha256": prompt["sha256"], "instruction": instruction, "declaration": declaration, "python": str(Path(sys.executable).resolve()), "guard_source_sha256": file_hash(GUARD), "runtime_config_sha256": file_hash(overlay_file), "guard_log": str(evidence / "guard.jsonl"), "watch_paths": list(map(str, watches))}
         if policy_mcp:
             policy["mcp"], policy["snapshot_exclude"] = policy_mcp, ["vault/.obsidian"]
         if policy_judge:
@@ -1039,7 +1047,7 @@ def main(argv: list[str] | None = None) -> int:
             response = ""
             errors.append(f"malformed final assistant content: {error}")
         (evidence / "response.md").write_text(response, encoding="utf-8")
-        result = {"run_id": policy["run_id"], "provider": PROVIDER, "model": MODEL, "omp_version": OMP_VERSION, "started_at": started, "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": child_exit, "policy_sha256": frozen_policy_hash, "guard_sha256": file_hash(evidence / "guard.jsonl") if (evidence / "guard.jsonl").is_file() else None, "declared_policy_sha256": declaration["sha256"] if declaration else None, "instruction_sha256": instruction["sha256"] if instruction else None, "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"}, "output_sha256": {relative: value.get("sha256") for relative, value in after["work"].items() if value["type"] == "file" and value != before["work"].get(relative)}, "status": "HOLD" if errors else "PASS", **({"mcp": {"config_sha256": mcp_config["sha256"], "authority_sha256": authority_file["sha256"], "audit_sha256": file_hash(evidence / "mcp-audit.jsonl") if (evidence / "mcp-audit.jsonl").is_file() else None, "calls": len(mcp_calls)}} if mcp_prep else {}), "reason": "; ".join(dict.fromkeys(errors)) if errors else "complete guarded OMP turn; module content still requires its own check"}
+        result = {"run_id": policy["run_id"], "provider": PROVIDER, "model": MODEL, "omp_version": omp_version, "started_at": started, "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": child_exit, "policy_sha256": frozen_policy_hash, "guard_sha256": file_hash(evidence / "guard.jsonl") if (evidence / "guard.jsonl").is_file() else None, "declared_policy_sha256": declaration["sha256"] if declaration else None, "instruction_sha256": instruction["sha256"] if instruction else None, "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"}, "output_sha256": {relative: value.get("sha256") for relative, value in after["work"].items() if value["type"] == "file" and value != before["work"].get(relative)}, "status": "PASS" if child_exit == 0 and not errors else "HOLD", "reason": "all checks passed" if child_exit == 0 and not errors else "; ".join(errors) or "OMP exited non-zero"}
         if policy_judge:
             result["judge"] = judge_output_errors(policy)[1]
             if result["judge"]:

@@ -2,7 +2,7 @@
 
 Produce a corrected Slope Brief that preserves the useful facts without filling gaps by guesswork. Check the claims against structured source data, run two independent reviewer agents, have another agent correct the draft, and review the correction afresh. You own the final decision.
 
-Plan for a little over two hours (a rough estimate). The complete sequence makes five paid model turns. You need the Python, pinned Oh My Pi, and OpenRouter access verified in [setup](../../module-00-setup/README.md). You won't write code or connect Jev's API.
+Plan for a little over two hours (a rough estimate). The complete sequence makes five paid model turns. You need the Python, latest stable Oh My Pi release, and OpenRouter access verified in [setup](../../module-00-setup/README.md). You won't write code or connect Jev's API.
 
 ## The decision rule
 
