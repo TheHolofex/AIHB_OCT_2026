@@ -12,7 +12,7 @@ You'll use Oh My Pi to work with files, supplied tools, and small agent teams; O
 
 ## Produce work you can check
 
-- **A source-checked email.** Give the model a request and a fact packet, inspect the draft it writes, and revise it when a fact changes.
+- **A long document you can trust.** Plan a status brief before any prose, have the model draft it one section at a time, check it in separate review sessions, and revise only what's wrong.
 - **A defensible brief.** Trace claims to the right sources, reproduce calculations, and separate supported facts from inference and unresolved questions.
 - **A reusable knowledge vault.** Review source-backed notes in Obsidian, link the useful claims, and prove that a fresh model session uses your saved instruction and only the notes you approved. Then fix one weakness that matters and show the difference in another fresh run.
 - **A checked agent-team brief.** Give OMP specialists separate assignments, inspect their sources and results, and combine only accepted work. If one agent is blocked, preserve the valid reports, repair that assignment, and recheck the combined brief.

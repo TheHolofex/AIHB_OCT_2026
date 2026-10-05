@@ -1,35 +1,35 @@
-# Module 00 — Select, screen, and direct bounded work
+# Module 00 — Get a long document you can trust from AI
 
 **Serves oracle:** S04, S06, S07, S08, S09, S10, S19  
-**Primary objective:** PO-00 — Select, screen, and direct bounded work  
+**Primary objective:** PO-00 — Get a long document you can trust from AI  
 **Prerequisites:** Preflighted accessible environment and this module's supplied case  
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:SUPPLIED_ACCEPTANCE  
-**Produces:** FIRST_RESULT; MIN_SCREEN; DIRECTION; INTERNAL_ARTIFACT; PO00_RESULT  
+**Produces:** MIN_SCREEN; FROZEN_PLAN; SECTION_DRAFTS; REVIEW_FINDINGS; TARGETED_REVISION; PO00_RESULT  
 **Rough time:** about 3 hours  
 **Performance stage:** Guided to Independent  
-**Work surface:** Communication artifact  
-**Practical work:** Confirm the supplied acceptance control; produce and check a useful artifact against the 60-minute first-result design target; choose one use, one human-retained judgment, and one refusal; apply the minimum responsibility screen; then freeze accepted direction and rerun after one controlled input change.  
-**Performance evidence:** Preserved FIRST_RESULT, independent source-of-record check, delegate/human/refuse record, capability-limit statement, MIN_SCREEN result, frozen DIRECTION, INTERNAL_ARTIFACT, supplied acceptance result, changed-input comparison, and bounded internal decision.  
-**Failure / HOLD:** Hold when preflight, the supplied case, permission, source, decision owner, affected audience, or acceptance control is missing; when constraints conflict; when the producer can alter the deciding check; or when correction changes the accepted mission. Public practice checks are inspectable.
-**Scope boundary:** Proves first-use judgment and independent direction for bounded internal use; it does not authorize consequential release.  
-**Handoff:** Give the next owner the artifact, its direction and source boundary, the screen result, the observed limitation, and the decision made.
-**Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module’s gate does not consume another module’s product.
+**Work surface:** Multi-section status brief drafted through the shared OMP launcher, one session per job  
+**Practical work:** Write the brief (which carries the minimum screen) and the tests before any prose; have OMP propose an outline, then correct and freeze it; have OMP draft one section per session; run the supplied practice checker and make it fail on a known-bad copy; list every number and code against the sources; run separate review sessions for tests, facts (questions answered from the sources without the draft), reader actions, and style; verify each finding; revise only the flagged sections; apply one changed fact only where it is used; decide send or hold.  
+**Performance evidence:** brief.md and tests.md that predate the outline; outline-proposed.md beside the corrected outline.md; plan.json hashes; per-section receipts; checker results and checker-test.md; number lists; review/r1 files with fixes.md; SAME/CHANGED section comparisons for each revision; change-fixes.md; decision.md and handoff.md.  
+**Failure / HOLD:** Hold when preflight, the supplied case, permission, a source, the decision owner, the affected audience, or the acceptance control is missing; when a screen line can't be answered; when the plan changes after drafting starts; when a session's file doesn't match its receipt; when a material finding remains after two revision rounds; or when a reader could take the brief as a release, a pickup time, or a delivery promise. Public practice checks are inspectable.
+**Scope boundary:** Proves planned, checked AI drafting of a long document for bounded internal use; it does not authorize consequential release. Structured claim admission, typed judgments, and reviewer ensembles remain Module 08's.  
+**Handoff:** Give the next owner the plan, every version, the review findings and decisions on them, the checks run, the observed AI capability and limit, and the send-or-hold decision.
+**Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module's gate does not consume another module's product.
 
 
 ## Why
 
-Useful work should come before architecture depth, but responsibility cannot wait until after release, and a vague request is not an executable work contract. The learner decides what the model does, what stays human, what the result must satisfy, and when the work stops.
+A long document fails quietly: a fact with no source, a section that repeats another, a sentence that promises what nothing supports. One prompt for the whole document hides those failures in fluent prose, and asking the drafting session whether its draft is good mostly returns approval. Planning before prose, one limited job per session, checks against references outside the draft, verified findings, and targeted revision keep each failure visible and fixable.
 
 ## Enabling objectives
 
-1. Distinguish model output, product surface, harness controls, and human decision, and state one observed capability and one limitation.
-2. Screen data and source authority, sensitive data, affected audience, disclosure need, consequential authority, and human owner.
-3. State outcome, audience, acceptance, falsifier, prohibited result, stop condition, and owner before execution, then predict and inspect one changed-input delta.
+1. Apply the minimum screen and write a brief, tests, and a corrected outline with facts and word budgets before any drafting, then have the AI draft one section per session within that plan.
+2. Check the draft against references outside it — a checker shown to fail on a known error, a number list, and separate review sessions — and accept only findings that rest on a source line, a test, or a style rule.
+3. Revise only flagged sections, confirm unchanged sections stay byte-identical, apply one changed fact only where it is used, and decide send or hold from the evidence.
 
 ## Check the work
 
-Inspect whether the first artifact serves its named internal task, the checked claim matches its source, use/human/refuse choices are defensible, MIN_SCREEN supports bounded internal acceptance, frozen DIRECTION predates the run, the falsifier fails visibly, the producer cannot edit or bypass the deciding check, and the controlled change produces the predicted delta. Record these observations in PO00_RESULT. Record actual elapsed time against the 60-minute target; do not treat an unmeasured target as achieved. Any unresolved screen item is `HOLD`; polished output cannot override it.
+Inspect whether brief.md and tests.md predate the outline, the corrected outline differs from the proposed one where the proposal was wrong, each section stays within its facts, the checker failed on the known-bad copy, every NOT IN SOURCES number was resolved, each accepted finding cites its source line, test, or rule, rejected findings give reasons, only named sections changed in each revision, the changed fact moved only where it was used, and the decision cites files in the work folder. Record these observations in PO00_RESULT. Any unresolved screen item is `HOLD`; polished output can't override it.
 
 ## Supplied-case domain (adapter)
 
-Internal 130–190-word email from the Harbor Depot inventory clerk to the Field Clinic S-3 supply clerk: custody, the request, and what the note does not authorize. Not the GO brief.
+A 500–900-word, five- or six-section status brief from the Harbor Depot inventory clerk to the Field Clinic S-3 supply team. It answers the clinic's five questions from six source files: the request, the pen 4 count, the paperwork notice, the release desk status, the yard board, and the clinic's message. It states custody, what a release needs, and what the clinic must not do yet. Not the GO brief.
