@@ -381,7 +381,6 @@
       "outcomes": {
         "can": "Control unsupported claims by combining structured source checks with independent agent reviews, correcting only what the evidence supports, and keeping unresolved facts visible in your final decision.",
         "will": [
-                "Check a draft claim by claim, keeping valid structure, source support, and permission to act separate.",
                 "Run two reviewers independently, compare their evidence, and use a correcting agent without letting agreement overrule a source check.",
                 "Recheck every corrected claim, retain unknowns and disagreements, and decide whether the brief is usable within its stated limits."
         ]

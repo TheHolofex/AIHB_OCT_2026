@@ -78,12 +78,11 @@ Using source checking as a quality bar, the learner puts an AI Agent on a local 
 
 ## PO-08 — Control hallucinations
 
-Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, bounded agent handoffs, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner distinguishes exact fact checks from semantic support judgments, uses isolated agents to challenge and correct work, and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, not new objectives here.
+Using source verification, typed questions, exact checks kept in code beside a decision model's judgments, bounded agent handoffs, and bounded model-and-tool operation, the learner controls the admission of model-generated claims through a source-bound review-and-correction loop. The learner uses isolated agents to challenge and correct work and prevents reviewer agreement or a plausible correction from overriding evidence or inventing authority. Team briefs, attributable handoffs and dependent review are assumed from Module 05, and splitting each claim into exact fact comparisons, semantic support judgments, and unavailable authority is assumed from Module 06; neither is a new objective here.
 
 **Enabling objectives:**
-1. Assign each material claim the appropriate evidence check, separating exact fact comparisons, semantic support judgments, and unavailable authority.
-2. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
-3. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
+1. Direct blind review and source-constrained correction without allowing reviewer consensus to override evidence or lose claim coverage.
+2. Adjudicate reviewer disagreements and correction regressions against the original sources, accepting a bounded summary with explicit unknowns or retaining the hold.
 
 Before this project, the learner could verify a source, obtain typed judgments, keep exact checks in code beside a decision model's judgments, supervise a bounded agent team, and have an agent produce a structured-data artifact. After this project, the learner can control unsupported claims through an independently reviewed correction loop, including failures introduced or endorsed by its reviewers.
 

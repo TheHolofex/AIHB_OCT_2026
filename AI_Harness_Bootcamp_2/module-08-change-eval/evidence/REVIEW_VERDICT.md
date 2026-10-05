@@ -26,6 +26,8 @@ The final merged `scripts/check_course.py` run passed all 30 scoped gates, inclu
 
 After that full run, `main` gained Copper Span's exact-stage-brief receipt fix (`026225e`). The final integration retained it and passed all 12 Module 5 Python tests, all eight orchestration-guard tests, the eleven-module supply graph, and a fresh byte-for-byte publication check. `post-course-receipt-check.json` records this incremental verification; the full 30-gate result above precedes that final Module 5 integration.
 
+Concurrent commits `9704eef` and `4a84550` supplied matching Module 7 contract corrections and made Module 6's exact-check/semantic-judgment split an explicit Module 8 prerequisite. Those corrections were retained. The subsequent checks passed the supply graph, all 18 Module 8 regressions, eight publication tests, 34 builder tests, and regenerated publication byte equality. `post-progression-checks.json` retains the commands and results. The final mobile overview rendered the prerequisite reminder without overflow or browser errors; final-tab screenshot helpers timed out, recorded in `post-progression-browser.json`. Earlier screenshots retain the visual evidence for the unchanged learner-lab decision guidance.
+
 **Review evidence:** `$HOME/course-evidence/module08-hallucination-20261004T195428Z-62c876a8/followup-review-1791154694549/`. This review does not measure learner comprehension, completion time, or native Windows execution.
 
 ## Hallucination-control rewrite — 2026-10-04

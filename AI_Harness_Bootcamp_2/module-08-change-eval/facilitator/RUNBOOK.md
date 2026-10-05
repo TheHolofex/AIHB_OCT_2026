@@ -6,7 +6,7 @@ A plausible Slope Brief would otherwise reach the next desk with an invented mas
 
 ## Capability and prerequisites
 
-The new capability is operating an evidence-bound review-and-correction loop, including mistakes introduced or endorsed by its reviewers. Source verification, typed questions, predicate checks, and fixed-flow operation are inherited skills. Repair a missing prerequisite explicitly; do not count it as new mastery here.
+The new capability is operating an evidence-bound review-and-correction loop, including mistakes introduced or endorsed by its reviewers. Source verification, typed questions, the split between exact checks, model judgments, and decisions reserved for a person, bounded agent handoffs, and bounded model-and-tool operation are inherited skills; giving each claim its exact check, support judgment, or held authority applies that split. Repair a missing prerequisite explicitly; do not count it as new mastery here.
 
 The independent case has three source packets and seven authored claims. Five live turns use the same pinned model: before-source, before-skeptic, correct, after-source, after-skeptic. Fresh sessions prevent answer sharing, not correlated model errors. Jev supplies the state-plus-typed-question design reference, not a new account or runtime dependency.
 
