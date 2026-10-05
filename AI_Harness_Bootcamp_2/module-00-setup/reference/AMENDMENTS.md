@@ -104,3 +104,9 @@ The header's artifact-type line no longer refers to an independent evaluator. §
 Owner direction (2026-10-04): eliminate `PASS FOR CLASS REVIEW`, the phrase "Neither outcome is operational permission," and the abstract "named decision owner"; North Shelf is an individual exercise.
 
 The learner is the Harbor Depot inventory clerk who would send the email, so the final decision is `READY TO SEND` or `HOLD`, backed by the source check, the checker result, and the falsifier. §4's stage list and §6's decision row now name that decision. In the lab, step 2 becomes writing down what the email must do (`email-requirements.md` replaces `acceptance-control.md`), the step 5 screen and step 6 direction ask who decides whether the email goes out, and the decision-owner figure is removed. The case packet, checker, and changed input are unchanged: the email still states its class-participant readership, and Ivo Marsh still owns any release. The digest is re-frozen for this amendment.
+
+## v9 amendment — rolling latest OMP, 2026-10-05 UTC
+
+Owner direction removes the fixed OMP release requirement throughout the active course. Each platform resolves the official latest stable release once, retains its metadata, and downloads the binary and checksum list from that selected tag. Checksum-before-execution, conflicting-install preservation, shell boundaries, process-local credentials, provider/model pins, and the Python/Obsidian/n8n requirements remain unchanged.
+
+Launchers record the successful executable's actual version in their policies and results. Saved-evidence audits compare those recorded identities offline, not against a hard-coded release or a new network lookup. A Copper Span dependency chain uses one runtime version; an upgrade requires a fresh fanout chain. Historical evidence retains the versions and hashes actually observed. The reference digest is re-frozen for this amendment; §9 records the new verification scope.

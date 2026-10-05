@@ -149,9 +149,9 @@ course_install_missing
 
 ## 3. Install Oh My Pi
 
-This box downloads OMP 18.3.5 and its checksum list into a new folder under `~/course-evidence`. A **checksum** is a file's fingerprint. The box computes the downloaded file's SHA-256 fingerprint with macOS's `shasum -a 256` and compares it with the one line in `SHA256SUMS.txt` that names your Mac's file. Only a match gets installed. The box copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
+Download the latest stable OMP release for your Mac's processor into a new folder under `~/course-evidence`. The commands save the selected release's details in `release.json` and download its binary and `SHA256SUMS.txt` together. A **checksum** is a file's fingerprint. The box computes the downloaded file's SHA-256 fingerprint with macOS's `shasum -a 256` and compares it with the one line in `SHA256SUMS.txt` that names your Mac's file. Only a match gets installed. The box copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
 
-Next, the box updates your shell's startup files so new terminal windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line. Both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they're your login file and `.bashrc`. The box keeps your existing lines and adds each new line only once. The files come from the [v18.3.5 release](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5).
+Next, the box updates your shell's startup files so new terminal windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line. Both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they're your login file and `.bashrc`. The box keeps your existing lines and adds each new line only once.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
 
@@ -166,7 +166,7 @@ course_add_line() {
   printf '%s\n' "$2" >> "$1"
 }
 course_install_omp() {
-  local download expected actual dest version profile login candidate
+  local download expected actual dest version profile login candidate py tag base
   case "${ASSET:-}" in
     omp-darwin-arm64|omp-darwin-x64) ;;
     *) printf 'STOP: paste the step 1 box in this window first\n' >&2; return 1 ;;
@@ -178,8 +178,33 @@ course_install_omp() {
   mkdir -p "$HOME/course-evidence" || return 1
   download="$HOME/course-evidence/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   mkdir "$download" || { printf 'STOP: could not create a fresh download folder\n' >&2; return 1; }
-  curl --fail --location --output "$download/$ASSET" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$ASSET" || return 1
-  curl --fail --location --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt" || return 1
+  py="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; from pathlib import Path; sys.exit(1) if sys.version_info < (3, 12) else print(Path(sys.executable).resolve())' 2>/dev/null && break; done)"
+  case "$py" in /*) ;; *) printf 'STOP: Python 3.12+ is required to read release metadata\n' >&2; return 1 ;; esac
+  curl --fail --location --output "$download/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' || return 1
+  tag="$("$py" - "$download/release.json" "$ASSET" <<'PYRELEASE'
+import json, re, sys
+from pathlib import Path
+try:
+    release = json.loads(Path(sys.argv[1]).read_text())
+    tag = release["tag_name"]
+    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
+        raise ValueError("invalid release tag")
+    if release.get("draft") is not False or release.get("prerelease") is not False:
+        raise ValueError("release is not stable")
+    base = "https://github.com/can1357/oh-my-pi/releases/download/%s/" % tag
+    for name in (sys.argv[2], "SHA256SUMS.txt"):
+        matches = [item for item in release.get("assets", []) if item.get("name") == name]
+        if len(matches) != 1 or matches[0].get("browser_download_url") != base + name:
+            raise ValueError("required release asset is missing or inconsistent")
+    print(tag)
+except (AttributeError, KeyError, TypeError, ValueError):
+    sys.exit("STOP: latest release metadata or required assets are invalid")
+PYRELEASE
+  )" || return 1
+  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
+  printf 'RELEASE %s (%s)\n' "$tag" "$download/release.json"
+  curl --fail --location --output "$download/$ASSET" "$base/$ASSET" || return 1
+  curl --fail --location --output "$download/SHA256SUMS.txt" "$base/SHA256SUMS.txt" || return 1
   expected="$(awk -v asset="$ASSET" '$2 == asset { count++; hash = $1; fields = NF } END { if (count == 1 && fields == 2 && length(hash) == 64 && hash ~ /^[0-9a-f]+$/) print hash; else exit 1 }' "$download/SHA256SUMS.txt")" || {
     printf 'STOP: SHA256SUMS.txt has no single valid entry for %s\n' "$ASSET" >&2
     return 1
@@ -235,18 +260,14 @@ course_install_omp() {
   case ":$PATH:" in ":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac
   version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: the installed omp did not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "$version"
-  if [ "$version" != omp/18.3.5 ]; then
-    printf 'STOP: expected omp/18.3.5\n' >&2
-    return 1
-  fi
+  [ "$version" = "omp/${tag#v}" ] || { printf 'STOP: installed version differs from selected %s\n' "$tag" >&2; return 1; }
 }
 course_install_omp
 ```
 
-**Expected:** `SHA256 VERIFIED` with your file name and its digest, then `INSTALLED` or `KEEP:`, two `PROFILE READY` lines, and `OMP_VERSION omp/18.3.5`.
+**Expected:** `RELEASE <tag>`, `SHA256 VERIFIED` with your file name and its digest, then `INSTALLED` or `KEEP:`, two `PROFILE READY` lines, and `OMP_VERSION omp/<semver>`.
 
-**Stop:** Any `STOP` line, including a checksum mismatch or a different existing `omp`.
-
+**Stop:** Any `STOP` line, including checksum mismatch, unavailable or malformed release metadata/assets, or a different existing `omp`.
 **Recovery:** Keep the download folder and any existing `omp`, and don't delete or replace them to get past this step. Fix the cause, then paste the box again; it uses a new folder each time. See [Oh My Pi install](#oh-my-pi-install).
 
 ## 4. Get the course files
@@ -390,10 +411,7 @@ course_confirm_new_terminal() {
   esac
   version="$(omp --version 2>/dev/null)"
   printf 'OMP_VERSION %s\n' "${version:-missing}"
-  if [ "$version" != omp/18.3.5 ]; then
-    printf 'STOP: expected omp/18.3.5\n' >&2
-    return 1
-  fi
+  [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
   if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ] || [ ! -f "$M/scripts/verify-setup.sh" ]; then
     printf 'STOP: the course checkout is missing or incomplete\n' >&2
     return 1
@@ -409,7 +427,7 @@ course_confirm_new_terminal() {
 course_confirm_new_terminal
 ```
 
-**Expected:** `PYTHON` with an absolute path and version 3.12 or newer, a Git path and version, `OMP_PATH` ending in `/.local/bin/omp`, `PATH_FIRST`, `OMP_VERSION omp/18.3.5`, `CHECKOUT`, and `MISSING` as the last line.
+**Expected:** `PYTHON` with an absolute path and version 3.12 or newer, a Git path and version, `OMP_PATH` ending in `/.local/bin/omp`, `PATH_FIRST`, `OMP_VERSION omp/<semver>`, `CHECKOUT`, and `MISSING` as the last line.
 
 **Stop:** Any `STOP` line, or `SET`.
 

@@ -13,7 +13,7 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 1. Run the relevant setup path on the actual classroom images, including local Obsidian before Module 2 and its full local n8n path before Module 7.
 2. Record each platform, architecture, installed versions, and date.
 3. Confirm the intended repository is reachable and its frozen inputs are intact. Preserve unrelated local changes; do not reset or clean it.
-4. Confirm OMP 18.3.5, the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic retry.
+4. Confirm the latest stable Oh My Pi (the observed `omp/<semver>` is recorded in receipts), the exact `openrouter/anthropic/claude-sonnet-4.6` selector, and a participant-supplied process-local `OPENROUTER_API_KEY`. There is no direct-provider login, model fallback, or automatic retry.
 5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. Confirm a same-state path for every control a learner must operate. Record any unverified operation explicitly.
 7. Prepare a support owner for managed-machine and account problems.

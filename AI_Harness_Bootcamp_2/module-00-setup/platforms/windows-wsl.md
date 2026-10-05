@@ -2,7 +2,7 @@
 
 Windows Subsystem for Linux 2 (WSL 2) runs Ubuntu on your Windows computer. Install the course tools inside Ubuntu and keep all course files in your Linux home folder. Never put course work under `/mnt/c`: from Ubuntu, that's the Windows C: drive. Plan for 60 to 120 minutes, plus a restart if WSL is new on this computer. This is an estimate, not a measured time.
 
-Start in Windows PowerShell to choose and open Ubuntu. Then follow nine steps in the Ubuntu window to install Oh My Pi 18.3.5, run a live readiness check, and save a setup report. After that, set up Linux Obsidian; WSLg shows its window on your Windows desktop. Finally, set up local n8n 2.41.5 through Docker Desktop for Module 7. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You don't install Node, npm, or another agent.
+Start in Windows PowerShell to choose and open Ubuntu. Then follow nine steps in the Ubuntu window to install the latest stable Oh My Pi release, run a live readiness check, and save a setup report. After that, set up Linux Obsidian; WSLg shows its window on your Windows desktop. Finally, set up local n8n 2.41.5 through Docker Desktop for Module 7. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. You don't install Node, npm, or another agent.
 
 Paste each box as one block into the window named by its **Terminal:** label. **Expected:** shows what success looks like. **Stop:** tells you when not to continue, and **Recovery:** gives the first fix; longer fixes are in [If a step stops](#if-a-step-stops). Get the device owner's approval before installing software or changing Windows features. Keep any existing Ubuntu installation; never unregister or reset it.
 
@@ -141,13 +141,13 @@ sudo apt-get update && sudo apt-get install -y git python3 curl ca-certificates 
 
 ## 3. Install Oh My Pi
 
-This box downloads the pinned Linux build of [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5) and its `SHA256SUMS.txt` into a new folder. A SHA-256 checksum identifies the file's exact contents. The box installs the binary at `~/.local/bin/omp` only if the checksum matches; it never replaces a different `omp` already there. PATH is the list of folders Bash searches for commands. The box adds `~/.local/bin` to the startup files that new Ubuntu windows read.
+This box resolves the latest stable release once, downloads the matching Linux build and its `SHA256SUMS.txt` into a new folder. A SHA-256 checksum identifies the file's exact contents. The box installs the binary at `~/.local/bin/omp` only if the checksum matches; it never replaces a different `omp` already there. PATH is the list of folders Bash searches for commands. The box adds `~/.local/bin` to the startup files that new Ubuntu windows read.
 
 **Terminal: Ubuntu Bash, ordinary Linux user, same window.**
 
 ```bash
 course_install_omp() {
-  local asset download version course_exit
+  local asset download version course_exit tag base
   if [ -z "${PY:-}" ] || [ ! -x "$PY" ]; then
     printf 'STOP: PY is not set; run the step 1 box in this window first\n'; return 1
   fi
@@ -158,8 +158,31 @@ course_install_omp() {
   esac
   download="$HOME/course-evidence/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
   mkdir -p -- "$HOME/course-evidence" && mkdir -- "$download" || return 1
-  curl --fail --location --show-error --output "$download/$asset" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$asset" || return 1
-  curl --fail --location --show-error --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt" || return 1
+  curl --fail --location --show-error --output "$download/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' || return 1
+  tag="$("$PY" - "$download/release.json" "$asset" <<'PYREL'
+import json, re, sys
+from pathlib import Path
+try:
+    release = json.loads(Path(sys.argv[1]).read_text())
+    tag = release["tag_name"]
+    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
+        raise ValueError("invalid release tag")
+    if release.get("draft") is not False or release.get("prerelease") is not False:
+        raise ValueError("release is not stable")
+    base = "https://github.com/can1357/oh-my-pi/releases/download/%s/" % tag
+    for name in (sys.argv[2], "SHA256SUMS.txt"):
+        matches = [item for item in release.get("assets", []) if item.get("name") == name]
+        if len(matches) != 1 or matches[0].get("browser_download_url") != base + name:
+            raise ValueError("required release asset is missing or inconsistent")
+    print(tag)
+except (AttributeError, KeyError, TypeError, ValueError):
+    sys.exit("STOP: latest release metadata or required assets are invalid")
+PYREL
+  )" || return 1
+  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
+  printf 'RELEASE %s (%s)\n' "$tag" "$download/release.json"
+  curl --fail --location --show-error --output "$download/$asset" "$base/$asset" || return 1
+  curl --fail --location --show-error --output "$download/SHA256SUMS.txt" "$base/SHA256SUMS.txt" || return 1
   "$PY" - "$download" "$asset" <<'PY'
 from pathlib import Path
 import hashlib, sys
@@ -205,14 +228,14 @@ PY
   case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
   version="$("$HOME/.local/bin/omp" --version)" || return 1
   printf 'OMP_VERSION %s\n' "$version"
-  [ "$version" = omp/18.3.5 ] || { printf 'HOLD: expected omp/18.3.5\n'; return 1; }
+  [ "$version" = "omp/${tag#v}" ] || { printf 'HOLD: installed version differs from selected %s\n' "$tag"; return 1; }
 }
 course_install_omp
 ```
 
-**Expected:** `SHA256 VERIFIED` with the file name, a `PATH_LINE` line for each startup file, then `OMP_VERSION omp/18.3.5`.
+**Expected:** `RELEASE <tag>`, `SHA256 VERIFIED` with the file name, a `PATH_LINE` line for each startup file, then `OMP_VERSION omp/<semver>`.
 
-**Stop:** a `HOLD:` line, a download error, or a version other than `omp/18.3.5`.
+**Stop:** a `HOLD:` line, a download error, unavailable/malformed release metadata/assets, or a version other than the resolved tag's.
 
 **Recovery:** Keep the download folder under `~/course-evidence`; running the box again uses a new folder. For an existing `omp`, a linked folder, or a download error, see [Oh My Pi install problems](#oh-my-pi-install-problems).
 
@@ -338,7 +361,7 @@ course_confirm_window() {
   [ "$found" = "$HOME/.local/bin/omp" ] || { printf 'STOP: this window did not find omp on its own\n'; return 1; }
   version="$(omp --version)" || return 1
   printf 'OMP_VERSION %s\n' "$version"
-  [ "$version" = omp/18.3.5 ] || { printf 'STOP: expected omp/18.3.5\n'; return 1; }
+  [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
   if [ -n "${OPENROUTER_API_KEY:-}" ]; then
     printf 'SET\nSTOP: a key is already present in this new window\n'; return 1
   fi
@@ -347,7 +370,7 @@ course_confirm_window() {
 course_confirm_window
 ```
 
-**Expected:** `R`, `M`, and `PY` paths, `OMP_PATH` ending in `/.local/bin/omp`, `OMP_VERSION omp/18.3.5`, and `MISSING` as the last line.
+**Expected:** `R`, `M`, and `PY` paths, `OMP_PATH` ending in `/.local/bin/omp`, `OMP_VERSION omp/<semver>`, and `MISSING` as the last line.
 
 **Stop:** a `STOP:` line, or `SET` before you've entered a key.
 
@@ -897,7 +920,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: list failed.' }
 
 ### Oh My Pi install problems
 
-**`HOLD: a different omp already exists`.** Another copy of Oh My Pi is at `~/.local/bin/omp`. Keep it, and ask the owner whether it can be replaced with 18.3.5; the box never overwrites it.
+**`HOLD: a different omp already exists`.** Another copy of Oh My Pi is at `~/.local/bin/omp`. Keep it, and ask the owner whether the latest stable release can replace it; the box never overwrites it.
 
 **`HOLD: ... is a link or not a folder` or `startup file is a link`.** A folder or startup file in your home is redirected. Ask the owner to fix that path; don't replace a linked file.
 

@@ -2,7 +2,7 @@
 
 With an ordinary Arch Linux desktop account, you'll install and check Oh My Pi, get the course checkout, and run a live readiness check that writes a file. Plan for roughly 45 to 90 minutes. Arch's package step upgrades the whole system. Wait for your terminal prompt to return before pasting the next box.
 
-You'll need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and Oh My Pi 18.3.5. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. You won't install Node, npm, or a second AI tool, and you won't need to log in to a model vendor.
+You'll need Git, Python 3.12 or newer, a web browser, an ordinary text editor, and the latest stable Oh My Pi release. The readiness check uses one OpenRouter key and the model `openrouter/anthropic/claude-sonnet-4.6`. You won't install Node, npm, or a second AI tool, and you won't need to log in to a model vendor.
 
 Paste every line of each box at once, then press Return. The commands use absolute paths, so your current folder does not matter. A home folder with spaces is fine because every path is quoted.
 
@@ -76,13 +76,13 @@ sudo pacman -Syu --needed git python curl ca-certificates diffutils less obsidia
 
 ## 3. Install Oh My Pi
 
-Download Oh My Pi's pinned v18.3.5 x86_64 release and checksum file. The command checks the downloaded binary against the checksum and installs it at `$HOME/.local/bin/omp` only if they match. It adds that folder to PATH in your current shell's startup files only if the exact line is absent, then prints the version. Each download uses a new folder. Never run unverified bytes.
+Download the latest stable release's x86_64 binary and `SHA256SUMS.txt` into a fresh folder. The commands save the selected release's details in `release.json`, verify the binary's checksum, and install it at `~/.local/bin/omp`. A different existing `omp` is left unchanged. The startup files gain a PATH entry so new terminals find the verified binary. Never run an unverified download.
 
 **Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
 
 ```bash
 course_install_omp() {
-  local arch asset attempt download sums expected actual dest version line startup login_file zdir
+  local arch asset attempt download sums expected actual dest version line startup login_file zdir tag base py candidate
   unset OMP_ASSET OMP_DOWNLOAD_DIR
   arch="$(uname -m)" || return 1
   case "$arch" in x86_64) asset="omp-linux-x64" ;; *) printf 'STOP: unsupported architecture\n' >&2; return 1 ;; esac
@@ -93,8 +93,34 @@ course_install_omp() {
   download="$HOME/course-evidence/reformation-qa/$attempt"
   if [ -e "$download" ] || [ -L "$download" ]; then printf 'STOP: download dir already exists\n' >&2; return 1; fi
   mkdir -p -- "$download" || return 1
-  curl -fL --output "$download/$asset" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/$asset" || { printf 'STOP: binary download failed\n' >&2; return 1; }
-  curl -fL --output "$download/SHA256SUMS.txt" "https://github.com/can1357/oh-my-pi/releases/download/v18.3.5/SHA256SUMS.txt" || { printf 'STOP: checksum download failed\n' >&2; return 1; }
+  py="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; from pathlib import Path; sys.exit(1) if sys.version_info < (3, 12) else print(Path(sys.executable).resolve())' 2>/dev/null && break; done)"
+  case "$py" in /*) ;; *) printf 'STOP: Python 3.12+ is required to read release metadata\n' >&2; return 1 ;; esac
+  curl -fL --output "$download/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' ||
+    { printf 'STOP: latest release metadata unavailable\n' >&2; return 1; }
+  tag="$("$py" - "$download/release.json" "$asset" <<'PYRELEASE'
+import json, re, sys
+from pathlib import Path
+try:
+    release = json.loads(Path(sys.argv[1]).read_text())
+    tag = release["tag_name"]
+    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
+        raise ValueError("invalid release tag")
+    if release.get("draft") is not False or release.get("prerelease") is not False:
+        raise ValueError("release is not stable")
+    base = "https://github.com/can1357/oh-my-pi/releases/download/%s/" % tag
+    for name in (sys.argv[2], "SHA256SUMS.txt"):
+        matches = [item for item in release.get("assets", []) if item.get("name") == name]
+        if len(matches) != 1 or matches[0].get("browser_download_url") != base + name:
+            raise ValueError("required release asset is missing or inconsistent")
+    print(tag)
+except (AttributeError, KeyError, TypeError, ValueError):
+    sys.exit("STOP: latest release metadata or required assets are invalid")
+PYRELEASE
+  )" || return 1
+  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
+  printf 'RELEASE %s (%s)\n' "$tag" "$download/release.json"
+  curl -fL --output "$download/$asset" "$base/$asset" || { printf 'STOP: binary download failed\n' >&2; return 1; }
+  curl -fL --output "$download/SHA256SUMS.txt" "$base/SHA256SUMS.txt" || { printf 'STOP: checksum download failed\n' >&2; return 1; }
   sums="$download/SHA256SUMS.txt"
   expected="$(awk -v asset="$asset" '
     BEGIN { count=0; hash="" }
@@ -120,7 +146,7 @@ course_install_omp() {
   chmod +x -- "$dest" || return 1
   version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: installed OMP would not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
-  [ "$version" = "omp/18.3.5" ] || { printf 'STOP: wrong version\n' >&2; return 1; }
+  [ "$version" = "omp/${tag#v}" ] || { printf 'STOP: installed version differs from selected %s\n' "$tag" >&2; return 1; }
   # persist PATH for Bash and Zsh
   line='case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac'
   if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then printf 'STOP: user bin is link\n' >&2; return 1; fi
@@ -157,9 +183,9 @@ course_install_omp() {
 course_install_omp
 ```
 
-**Expected:** `KEEP:` or `INSTALLED`, `OMP_VERSION omp/18.3.5`, and `PATH_LINE` messages for the startup files (added or already present).
+**Expected:** `RELEASE <tag>`, `KEEP:` or `INSTALLED`, `OMP_VERSION omp/<semver>` (observed from resolved release), and `PATH_LINE` messages for the startup files (added or already present).
 
-**Stop:** Any STOP, checksum mismatch, wrong version, or write error.
+**Stop:** Any STOP, checksum mismatch, unavailable/malformed release metadata or assets, wrong version vs selected tag, or write error.
 
 **Recovery:** Keep the download folder and any existing `omp` in place. For a checksum or download error, keep the attempt and ask the owner. If the destination conflicts, ask the owner before you change anything. Do not switch assets or disable checks.
 
@@ -313,14 +339,14 @@ course_confirm_new_terminal() {
   if [ "$resolved" != "$HOME/.local/bin/omp" ]; then printf 'STOP: omp is not the user binary\n' >&2; return 1; fi
   version="$("$HOME/.local/bin/omp" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
-  if [ "$version" != "omp/18.3.5" ]; then printf 'STOP: version is not omp/18.3.5\n' >&2; return 1; fi
+  [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
   if [ -n "${OPENROUTER_API_KEY:-}" ]; then printf 'SET\nSTOP: this window already has the key\n' >&2; return 1; fi
   printf 'MISSING\n'
 }
 course_confirm_new_terminal
 ```
 
-**Expected:** `R`, `M`, `PY`, `GIT_PATH`, `OMP_PATH`, `OMP_VERSION omp/18.3.5`, and final line `MISSING`.
+**Expected:** `R`, `M`, `PY`, `GIT_PATH`, `OMP_PATH`, `OMP_VERSION omp/<semver>`, and final line `MISSING`.
 
 **Stop:** Any failure, wrong paths/versions, or `SET` for the key.
 

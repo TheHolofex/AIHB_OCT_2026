@@ -10,7 +10,7 @@ import guard, { digest, resolveCoursePath } from "../shared/controls/orchestrati
 // They are not native OMP sessions or provider-backed execution evidence.
 const guardFile = fileURLToPath(new URL("../shared/controls/orchestration_guard.mjs", import.meta.url));
 
-async function fixture(t, { child = false, stage = "fanout", missing = false, cwdAlias = false } = {}) {
+async function fixture(t, { child = false, stage = "fanout", missing = false, cwdAlias = false, ompVersion = "omp/99.2.0" } = {}) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "copper-guard-test-")));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const work = path.join(root, "work"), evidence = path.join(root, "evidence"), cwd = path.join(root, "home", "cwd");
@@ -24,7 +24,7 @@ async function fixture(t, { child = false, stage = "fanout", missing = false, cw
   const task = { context: "fixture context", tasks: [{ name: "Inventory", agent: "inventory", task: "read the assigned file", solutionSpace: "one input" }] };
   const binding = { [input]: { file: inputFile, sha256: missing ? null : digest(fs.readFileSync(inputFile)) } };
   const policy = { schema_version: 1, run_id: "deterministic-guard-fixture", stage, work_root: work,
-    evidence_root: evidence, provider: "openrouter", model: "anthropic/claude-sonnet-4.6", omp_version: "omp/18.3.5",
+    evidence_root: evidence, provider: "openrouter", model: "anthropic/claude-sonnet-4.6", omp_version: ompVersion,
     guard_source_sha256: digest(fs.readFileSync(guardFile)), guard_log: path.join(evidence, "guard.jsonl"),
     parent_tools: stage === "integrate" ? ["course_read", "course_write"] : ["task"],
     reads: { main: stage === "integrate" ? binding : {}, inventory: binding },
@@ -57,6 +57,10 @@ async function fixture(t, { child = false, stage = "fanout", missing = false, cw
     execute: (name, args, callId = "fixture-call") => tools.get(name).execute(callId, args, undefined, undefined, ctx),
     records: () => fs.readFileSync(policy.guard_log, "utf8").trim().split("\n").map(line => JSON.parse(line)) };
 }
+
+test("a list containing a version is rejected before the guard can authorize work", async t => {
+  await assert.rejects(fixture(t, { ompVersion: ["omp/99.2.0"] }), /invalid .*policy/);
+});
 
 test("a child reads its assigned bytes but cannot read another in-root source or write", async t => {
   const f = await fixture(t, { child: true });

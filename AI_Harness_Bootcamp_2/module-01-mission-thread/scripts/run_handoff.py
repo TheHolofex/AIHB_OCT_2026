@@ -108,7 +108,7 @@ def precheck(work: Path) -> int | None:
         print(KEY_HOLD, file=sys.stderr)
         return 2
     if not shutil.which("omp"):
-        return hold("omp is not on PATH; install the pinned verified binary", 2)
+        return hold("omp is not on PATH; install the verified OMP binary", 2)
     try:
         shared_launcher()
         module_root()

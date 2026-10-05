@@ -58,7 +58,7 @@ def isolated_environment(runtime, policy, key):
     return environment
 
 
-def select_prior(work, stage, prior_path, assignments):
+def select_prior(work, stage, prior_path, assignments, omp_version):
     if stage == "fanout":
         evidence.require(prior_path is None, "fanout must not have --prior")
         evidence.require(not (work / evidence.CANDIDATE).exists(), "a first fanout needs a new work attempt without a candidate")
@@ -66,6 +66,8 @@ def select_prior(work, stage, prior_path, assignments):
     evidence.require(prior_path is not None, f"{stage} requires --prior")
     prior_path = Path(prior_path).expanduser().resolve(strict=True)
     prior = evidence.audit_attempt(work, prior_path, current=stage == "review")
+    evidence.require(prior["omp_version"] == omp_version,
+                     "OMP version changed since the prior attempt; start a fresh fanout chain")
     required_stages = {"integrate"} if stage == "review" else {"fanout", "repair"}
     evidence.require(prior["stage"] in required_stages, f"{stage}: incompatible prior stage")
     reports = prior["reports"]
@@ -86,12 +88,13 @@ def select_prior(work, stage, prior_path, assignments):
 
 def native_binary(explicit):
     located = explicit or shutil.which("omp")
-    evidence.require(located, "Oh My Pi is missing; complete the pinned platform setup")
+    evidence.require(located, "Oh My Pi is missing; complete platform setup for the latest stable release")
     binary = Path(located).expanduser().resolve(strict=True)
     result = subprocess.run([str(binary), "--version"], capture_output=True, text=True, timeout=20)
-    evidence.require(result.returncode == 0 and result.stdout.strip() == evidence.OMP_VERSION,
-                     f"expected {evidence.OMP_VERSION}; observed {result.stdout.strip() or result.stderr.strip()}")
-    return binary
+    version = result.stdout.strip()
+    evidence.require(result.returncode == 0 and evidence.valid_omp_version(version),
+                     f"invalid OMP version identity: {version or result.stderr.strip()}")
+    return binary, version
 
 
 def task_item(role, text):
@@ -106,7 +109,7 @@ def copy_input(source, target):
     target.write_bytes(source.read_bytes())
 
 
-def prepare_attempt(work, destination, stage, assignments, prior, reports, reused, dispatched):
+def prepare_attempt(work, destination, stage, assignments, prior, reports, reused, dispatched, omp_version):
     original = Path(destination).expanduser()
     evidence.require(not original.exists() and not original.is_symlink(), "evidence destination already exists; choose a new path")
     output = original.resolve()
@@ -160,7 +163,7 @@ def prepare_attempt(work, destination, stage, assignments, prior, reports, reuse
     policy = {
         "schema_version": 1, "run_id": str(uuid.uuid4()), "stage": stage,
         "work_root": str(work), "evidence_root": str(output), "provider": evidence.PROVIDER,
-        "model": evidence.MODEL, "omp_version": evidence.OMP_VERSION,
+        "model": evidence.MODEL, "omp_version": omp_version,
         "guard_source_sha256": evidence.file_hash(work / evidence.GUARD), "guard_log": str(output / "guard.jsonl"),
         "parent_tools": ["course_read", "course_write"] if stage == "integrate" else ["task"],
         "reads": reads, "write_file": evidence.CANDIDATE if stage == "integrate" else None,
@@ -186,7 +189,7 @@ def prepare_attempt(work, destination, stage, assignments, prior, reports, reuse
     return output, policy, cwd, prompt
 
 
-def execute_native(work, output, cwd, prompt, binary, key):
+def execute_native(work, output, cwd, prompt, binary, omp_version, key):
     environment = isolated_environment(output / ".runtime", output / "policy.json", key)
     command = [str(binary), "--provider", evidence.PROVIDER, "--model", evidence.MODEL, "--thinking", "low",
                "--mode", "json", "-p", "--no-title", "--no-skills", "--no-rules", "--no-extensions", "--no-lsp",
@@ -194,7 +197,7 @@ def execute_native(work, output, cwd, prompt, binary, key):
                "--tools", ",".join(evidence.load_json(output / "policy.json")["parent_tools"]),
                "--extension", str(work / evidence.GUARD), "--config", str(output / "runtime-config.json"),
                "--session-dir", str(output / "sessions")]
-    outcome = {"command": command, "omp_version": evidence.OMP_VERSION, "binary_sha256": evidence.file_hash(binary),
+    outcome = {"command": command, "omp_version": omp_version, "binary_sha256": evidence.file_hash(binary),
                "returncode": None, "aborted": False, "timed_out": False}
     with (output / "stdout.jsonl").open("wb") as stdout, (output / "stderr.txt").open("wb") as stderr:
         child = subprocess.Popen(command, cwd=cwd, env=environment, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr)
@@ -217,21 +220,21 @@ def execute_native(work, output, cwd, prompt, binary, key):
 
 def run_stage(work, destination, stage, prior_path, explicit_omp):
     assignments = inspect_work(work)
-    prior, reports, reused, dispatched = select_prior(work, stage, prior_path, assignments)
-    binary = native_binary(explicit_omp)
+    binary, omp_version = native_binary(explicit_omp)
+    prior, reports, reused, dispatched = select_prior(work, stage, prior_path, assignments, omp_version)
     key = os.environ.get("OPENROUTER_API_KEY", "").strip()
     evidence.require(key, "OPENROUTER_API_KEY is missing; load your current-process course credential")
-    output, policy, cwd, prompt = prepare_attempt(work, destination, stage, assignments, prior, reports, reused, dispatched)
+    output, policy, cwd, prompt = prepare_attempt(work, destination, stage, assignments, prior, reports, reused, dispatched, omp_version)
     try:
-        execute_native(work, output, cwd, prompt, binary, key)
+        execute_native(work, output, cwd, prompt, binary, omp_version, key)
         if stage == "integrate" and (work / evidence.CANDIDATE).is_file():
             copy_input(work / evidence.CANDIDATE, output / "candidate.json")
         audit = evidence.audit_attempt(work, output, sealed=False)
         evidence.write_json(output / "reports.json", audit["reports"])
         result = evidence.summary(audit)
     except (OSError, ValueError, KeyError, TypeError) as error:
-        result = {"status": "HOLD", "stage": stage, "run_id": policy["run_id"], "issues": [str(error)],
-                  "dispatched": dispatched, "reused": reused, "accepted_roles": [], "blocked_roles": []}
+        result = {"status": "HOLD", "stage": stage, "run_id": policy["run_id"], "omp_version": omp_version,
+                  "issues": [str(error)], "dispatched": dispatched, "reused": reused, "accepted_roles": [], "blocked_roles": []}
     evidence.write_json(output / "result.json", result)
     evidence.seal_attempt(output)
     print(evidence.json_bytes(result).decode(), end="")
@@ -260,7 +263,7 @@ def main(argv=None):
     run.add_argument("--evidence", required=True)
     run.add_argument("--stage", required=True, choices=evidence.STAGES)
     run.add_argument("--prior")
-    run.add_argument("--omp", help="explicit path to the pinned OMP executable")
+    run.add_argument("--omp", help="explicit path to a verified OMP executable")
     check = commands.add_parser("check", help="independently verify saved evidence without a model call")
     check.add_argument("--work", required=True)
     check.add_argument("--evidence", required=True)
@@ -270,7 +273,7 @@ def main(argv=None):
         work = validate_work(arguments.work)
         if arguments.command == "inspect":
             assignments = inspect_work(work)
-            result = {"status": "PASS", "omp_version": evidence.OMP_VERSION, "model": evidence.SELECTOR,
+            result = {"status": "PASS", "omp_release_policy": "latest", "model": evidence.SELECTOR,
                       "graph": [list(evidence.ROLES), ["integrate"], ["review"], ["human decision"]],
                       "assignments": {role: {key: value for key, value in value.items() if key != "text"} for role, value in assignments.items()}}
             print(evidence.json_bytes(result).decode(), end="")

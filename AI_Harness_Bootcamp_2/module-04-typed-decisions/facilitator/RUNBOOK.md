@@ -41,7 +41,7 @@ Module 4 is the third Tuesday block, about two and a half hours. Pacing marks be
 
 ## Common problems
 
-- `EXIT=2` with `require omp/18.3.5`: the pinned OMP version is not on PATH. This is a setup prerequisite; do not switch versions mid-class.
+- `EXIT=2` with an OMP prerequisite error: the verified latest-release installation is missing, unusable, or reporting an invalid version. Restore setup and record the actual `omp --version` output before starting a fresh attempt.
 - `HOLD: ... keys differ from the question set`: the model added or dropped a key. Keep the receipt; run again into `decide-2`.
 - The validator reports a candidate the message does not have: the model typed a quantity instead of choosing one. This is the behavior the candidate design exists to catch; show the class the held line.
 - `HOLD routing: ... route again after changing gates`: the learner edited `gates.json` after the last routing. Route as the next attempt number.

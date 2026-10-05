@@ -14,6 +14,8 @@ REPO = MODULE.parents[1]
 sys.path.insert(0, str(REPO / "shared"))
 import run_omp as runtime  # noqa: E402
 
+# Synthetic fixture data only. Used to construct observed-identity receipts for auditor tests.
+SYNTH_OMP_VERSION = "omp/18.3.5"
 BUILD = "openrouter/typesafe/jev-1.13-20260917"
 OPTIONS = ["released_for_issue", "inspected", "received", "held", "not_stated"]
 
@@ -47,7 +49,7 @@ def judge_run(work: Path, evidence_root: Path, name: str, split: str, answers: d
     (evidence / "runtime-config.yml").write_bytes(runtime.json_bytes(overlay))
     run_id = str(uuid.uuid4())
     policy = {"schema_version": 1, "run_id": run_id, "work_root": str(work), "profile": "judge", "tools": ["eval"], "write_files": [], "write_root": None,
-              "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "prompt_sha256": runtime.file_hash(evidence / "prompt.md"),
+              "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "prompt_sha256": runtime.file_hash(evidence / "prompt.md"),
               "instruction": None, "declaration": None, "python": sys.executable, "guard_source_sha256": runtime.file_hash(runtime.GUARD),
               "runtime_config_sha256": runtime.file_hash(evidence / "runtime-config.yml"), "guard_log": str(evidence / "guard.jsonl"), "watch_paths": [], "judge": judge}
     (evidence / "policy.json").write_bytes(runtime.json_bytes(policy))
@@ -86,7 +88,7 @@ def judge_run(work: Path, evidence_root: Path, name: str, split: str, answers: d
     errors = runtime.validate_run(policy, events, guard, snapshots, 0)
     if errors:
         raise AssertionError(f"synthetic run is not launcher-shaped: {errors}")
-    result = {"run_id": run_id, "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": runtime.OMP_VERSION, "started_at": started,
+    result = {"run_id": run_id, "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "started_at": started,
               "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(evidence / "guard.jsonl"),
               "declared_policy_sha256": None, "instruction_sha256": None,
               "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"},
@@ -100,4 +102,4 @@ def candidates(evidence_root: Path) -> None:
     folder = evidence_root / "judge-candidates"
     folder.mkdir(parents=True)
     (folder / "candidates.json").write_text(json.dumps({"models": [{"selector": runtime.JUDGE_SELECTOR}, {"selector": "openrouter/~typesafe/jev-latest"}]}), encoding="utf-8")
-    (folder / "result.json").write_text(json.dumps({"omp_version": runtime.OMP_VERSION, "candidates": 2, "pinned": runtime.JUDGE_SELECTOR, "pinned_offered": True}), encoding="utf-8")
+    (folder / "result.json").write_text(json.dumps({"omp_version": SYNTH_OMP_VERSION, "candidates": 2, "pinned": runtime.JUDGE_SELECTOR, "pinned_offered": True}), encoding="utf-8")

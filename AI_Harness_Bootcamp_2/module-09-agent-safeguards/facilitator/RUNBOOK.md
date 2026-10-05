@@ -20,7 +20,7 @@ The learner freezes AGENT_POLICY.md with the fixed JSON declaration before any l
 
 Module 9 is the second Thursday block, a little over two hours. Pacing marks below count minutes from the start of the block, exclude breaks, and are approximate planning guides: follow the learners' progress, not the clock. The Night Desk break falls between the two supplied probes and the planted-note attempt, roughly 65 minutes in. The day's clock is in `COURSE_MAP.md` and on the public homepage.
 
-Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, Oh My Pi 18.3.5 and the shared launcher, the supplied policy, probes and notes, and each learner's process-local OpenRouter key. The three launcher turns are the mandatory live-agent lane. A missing key, credit, or pinned model holds that lane; record it as blocked and do not switch provider or model. This verifies existing prerequisites. It adds no homework.
+Before Thursday, confirm the prerequisites this module already requires: Python 3.12 or newer, the latest stable Oh My Pi release and the shared launcher, the supplied policy, probes and notes, and each learner's process-local OpenRouter key. Record the actual OMP version. The three launcher turns are the mandatory live-agent lane. A missing key, credit, or pinned model holds that lane; record it as blocked and do not switch provider or model. This verifies existing prerequisites. It adds no homework.
 
 | Roughly (minutes in) | Action and result |
 |---|---|

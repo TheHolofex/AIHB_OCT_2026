@@ -2,7 +2,7 @@
 
 **Serves oracle:** S04, S12, S13, S14, S18, S19
 **Primary objective:** PO-09 — Constrain agent behavior
-**Prerequisites:** Earlier context controls, source-as-data judgment and paired evidence evaluation; a preflighted accessible environment, pinned OMP launcher, and supplied policy and probes
+**Prerequisites:** Earlier context controls, source-as-data judgment and paired evidence evaluation; a preflighted accessible environment, the course launcher on the latest stable OMP release, and supplied policy and probes
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:AGENT_POLICY; VERIFY:SUPPLIED_PROBE
 **Produces:** AGENT_POLICY; PROBE_REFUSE; PLANTED_REFUSE; PO09_RESULT
 **Rough time:** a little over 2 hours  

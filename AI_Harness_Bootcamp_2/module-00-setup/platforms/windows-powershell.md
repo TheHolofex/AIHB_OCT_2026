@@ -2,7 +2,7 @@
 
 Setup takes this Windows laptop from no course tools to a live readiness check, in which Oh My Pi writes one file you can verify. It has three parts. First you install Oh My Pi and pass the readiness check in Steps 1 to 9. Then you set up local Obsidian, and finally local n8n for Module 7. Plan for roughly 60 to 120 minutes for Steps 1 to 9 and about 20 to 30 minutes for Obsidian. The n8n time depends on downloads and restarts.
 
-You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and Oh My Pi 18.3.5. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course checkout, and your key stay on native Windows. Module 7's n8n runs in Docker Desktop, controlled from an Ubuntu window under WSL 2. Use that Ubuntu window only for n8n. Don't install Node, npm, or another agent.
+You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and the latest stable Oh My Pi release. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course checkout, and your key stay on native Windows. Module 7's n8n runs in Docker Desktop, controlled from an Ubuntu window under WSL 2. Use that Ubuntu window only for n8n. Don't install Node, npm, or another agent.
 
 Open **Windows PowerShell** (version 5.1) from the Start menu as your ordinary user. Check with the device owner that you're allowed to install these tools. If an installer asks for administrator approval, use the owner's approved route. If policy denies an installer, stop and keep the message. Don't open an Administrator window to get around a denial.
 
@@ -103,7 +103,7 @@ Skip this step if Step 1 printed `MISSING TOOLS: none`. Otherwise WinGet install
 
 ## 3. Install Oh My Pi
 
-This block downloads the Oh My Pi program and its published checksum file into a new folder. A **checksum** is a file's fingerprint. The program runs only after its fingerprint matches the published one exactly. The block then copies it to `omp\omp.exe` under your local app data folder. If a different `omp.exe` is already there, it stops without replacing it. Finally, it saves that folder on your user **PATH**, the list of folders Windows searches when you type a command name. New terminals can then find `omp`. The release is [Oh My Pi v18.3.5](https://github.com/can1357/oh-my-pi/releases/tag/v18.3.5), and the fingerprint comes from [Get-FileHash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash).
+This block resolves the latest stable release from the official GitHub endpoint once. It downloads the program and its published checksum file for that release into a new folder. A **checksum** is a file's fingerprint. The program runs only after its fingerprint matches the published one exactly. The block then copies it to `omp\omp.exe` under your local app data folder. If a different `omp.exe` is already there, it stops without replacing it. Finally, it saves that folder on your user **PATH**, the list of folders Windows searches when you type a command name. New terminals can then find `omp`. The fingerprint comes from Get-FileHash.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 1.**
 
@@ -120,7 +120,20 @@ This block downloads the Oh My Pi program and its published checksum file into a
   if ($other -and $other.Source -ine $dest) { throw ('STOP: another omp is already on PATH at ' + $other.Source + '. It was not replaced.') }
   $download = Join-Path $env:LOCALAPPDATA ('omp-downloads\' + [guid]::NewGuid().ToString('n'))
   New-Item -ItemType Directory -Path $download -ErrorAction Stop | Out-Null
-  $base = 'https://github.com/can1357/oh-my-pi/releases/download/v18.3.5'
+  $rel = & {
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' -UseBasicParsing -ErrorAction Stop | ConvertFrom-Json
+  }
+  if ($rel.draft -isnot [bool] -or $rel.draft -or $rel.prerelease -isnot [bool] -or $rel.prerelease) { throw 'STOP: latest release metadata is not a stable release' }
+  $tag = [string]$rel.tag_name
+  if ($tag -cnotmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'STOP: tag is not a stable release number' }
+  $base = "https://github.com/can1357/oh-my-pi/releases/download/$tag"
+  foreach ($name in @($asset, 'SHA256SUMS.txt')) {
+    $matches = @($rel.assets | Where-Object { $_.name -ceq $name })
+    if ($matches.Count -ne 1 -or $matches[0].browser_download_url -cne "$base/$name") { throw 'STOP: required release asset is missing or inconsistent' }
+  }
+  $rel | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $download 'release.json') -ErrorAction Stop
+  Write-Output "RELEASE $tag"
   $sumsPath = Join-Path $download 'SHA256SUMS.txt'
   $binaryPath = Join-Path $download $asset
   & {
@@ -151,13 +164,14 @@ This block downloads the Oh My Pi program and its published checksum file into a
   $env:Path = (@($destDir) + @($env:Path -split ';' | Where-Object { $_ -and $_ -ne $destDir })) -join ';'
   $found = (Get-Command omp -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
   if ($found -ine $dest) { throw 'STOP: omp resolves to a different or missing program.' }
+  $expectedVer = 'omp/' + ($tag -replace '^v','')
   $version = @(& $dest --version)
-  if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ([string]$version[0]).Trim() -ne 'omp/18.3.5') { throw 'STOP: omp --version did not print omp/18.3.5.' }
+  if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ([string]$version[0]).Trim() -ne $expectedVer) { throw "STOP: omp --version did not print $expectedVer." }
   Write-Output ('OMP_VERSION ' + ([string]$version[0]).Trim())
 }
 ```
 
-**Expected:** `CHECKSUM OK`, then `OMP_VERSION omp/18.3.5`. The version command is the first time the program runs, and it runs only after the fingerprint matched.
+**Expected:** `RELEASE <tag>`, `CHECKSUM OK`, then `OMP_VERSION omp/<semver>`. The version command is the first time the program runs, and it runs only after the fingerprint matched the selected release.
 
 **Stop:** any `STOP:` line. A download, checksum, link, or existing-file stop changes nothing. A stop at the final path or version check comes after `omp.exe` was copied and your PATH was saved, and a rerun reports `KEPT the identical omp.exe already installed`.
 
@@ -255,15 +269,16 @@ Opening PowerShell from Start creates a new process, and a **process** is one ru
   $found = (Get-Command omp -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
   if ($found -ine $dest) { throw 'STOP: omp is missing from PATH or points to a different program.' }
   $version = @(& $dest --version)
-  if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ([string]$version[0]).Trim() -ne 'omp/18.3.5') { throw 'STOP: omp --version did not print omp/18.3.5.' }
-  Write-Output ('OMP_VERSION ' + ([string]$version[0]).Trim())
+  $v = if ($version.Count -ge 1) { ([string]$version[0]).Trim() } else { '' }
+  if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ($v -notmatch '^omp/[0-9]+\.[0-9]+\.[0-9]+$')) { throw 'STOP: omp --version did not print a usable omp/<semver>.' }
+  Write-Output ('OMP_VERSION ' + $v)
   Write-Output ('PYTHON ' + $PY)
   Write-Output ('COURSE ' + $R)
   if ([string]::IsNullOrEmpty($env:OPENROUTER_API_KEY)) { Write-Output 'MISSING' } else { Write-Output 'SET' }
 }
 ```
 
-**Expected:** `OMP_VERSION omp/18.3.5`, the Python and course paths, and `MISSING` as the last line.
+**Expected:** `OMP_VERSION omp/<semver>`, the Python and course paths, and `MISSING` as the last line.
 
 **Stop:** a `STOP:` line, or `SET` before you've typed a key in this window.
 
