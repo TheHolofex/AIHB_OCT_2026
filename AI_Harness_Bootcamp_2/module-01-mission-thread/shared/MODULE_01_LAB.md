@@ -287,7 +287,7 @@ In the calculation column, show the numbers you started with, the arithmetic, th
 
 A correct clock calculation is not the same as a trip that can happen. The arrival is possible only if the sources let the truck leave and get through the gate. If you calculate a time that assumes a block isn't there, label it **counterfactual**. That means this is what the clock would say if that block were gone. It is not an arrival you observed, and it is not an ETA you can use.
 
-The script can help you calculate. Its output is not the evidence. The arithmetic you write down is.
+The ledger check prints each calculation it is checking, one function at a time. That printout is not the evidence. The arithmetic you write in the ledger is.
 
 ![Redo the arithmetic from the source numbers, then ask whether that result can actually happen. A correct sum doesn't mean the truck can leave.](figures/m01-recompute-feasibility.png)
 
@@ -312,7 +312,7 @@ Start with the source numbers and their units. Ask whether the sources actually 
 & "$env:PY" "$env:M\scripts\check_work.py" "$env:W" --phase ledger
 ```
 
-**Expected:** The ledger check passes the eight steps and the practice calculations, including the formulas and the units. This only checks the mechanics. It is not a verdict about whether the source applies.
+**Expected:** The ledger check prints each calculation it is checking, then passes the eight steps and the practice calculations, including the formulas and the units. This only checks the mechanics. It is not a verdict about whether the source applies.
 
 **Stop:** A required step, formula, unit, or computed value fails.
 

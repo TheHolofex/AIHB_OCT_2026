@@ -11,7 +11,7 @@ Logistics knowledge outside the packet is not tested. If learners need facts tha
 ## Before class
 1. Run `python3 scripts/verify_content.py` from the Module 1 directory.
 2. The producer rebuttal for practice uses `--fixture` and the sealed fixture (prints exact PRACTICE warning and provenance sidecar); live uses the shared launcher with write-only target. A failed child exit never becomes success.
-3. Run the staff reference calculator and visible checker against staff passing and failing specimens. Do not give the calculator's answer output to learners before they freeze their calculations.
+3. Run the staff reference calculator and visible checker against staff passing and failing specimens. The ledger check prints the baseline arithmetic it scores, one function at a time. Do not hand learners the calculator's full output before they freeze; that output also includes the sealed-change clock.
 4. Confirm the sealed practice change is in the facilitator fixtures; prepare decisive checks.
 5. Confirm the learner's Module 0 setup; do not reuse Module 0 answers.
 6. Keep `SEALED_CHANGE.md` closed until each baseline ledger, prediction, and verdict hash is recorded.

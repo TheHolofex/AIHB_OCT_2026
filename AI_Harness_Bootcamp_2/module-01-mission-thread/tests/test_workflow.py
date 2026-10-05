@@ -374,6 +374,66 @@ class WorkflowTest(unittest.TestCase):
         result = run("check_work.py", "--phase", "ingest", self.work)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("PASS: phase ingest", result.stdout)
+        self.assertNotIn("scanned_kits():", result.stdout)
+
+    def test_calculator_shows_each_function_and_json_stays_values_only(self) -> None:
+        shown = run("compute_thread.py")
+        self.assertEqual(shown.returncode, 0, shown.stderr)
+        parsed = run("compute_thread.py", "--json")
+        self.assertEqual(parsed.returncode, 0, parsed.stderr)
+        values = json.loads(parsed.stdout)
+        self.assertNotIn("():", parsed.stdout)
+        expected = {
+            "scanned_kits": "12 totes * 18 kits/tote = 216 kits",
+            "usable_kits": "10 released totes * 18 kits/tote = 180 kits",
+            "released_mass_kg": "10 released totes * 132 kg/tote = 1320 kg",
+            "mission_payload_kg": "1320 kg + 84 kg rack = 1404 kg",
+            "payload_margin_kg": "1650 kg - 1404 kg = 246 kg",
+            "all_scanned_payload_kg": "12 totes * 132 kg/tote + 84 kg rack = 1668 kg",
+            "all_scanned_overage_kg": "1668 kg - 1650 kg = 18 kg",
+            "v5_closure_local": "20:50Z - 6 h = 14:50 MDT",
+            "earliest_departure": "14:05 MDT + 20 min = 14:25 MDT",
+            "earliest_gate_arrival": "14:25 MDT + 28 min = 14:53 MDT",
+            "v5_gate_margin_minutes": "14:50 MDT - 14:53 MDT = -3 min",
+            "clinic_arrival_if_admitted": "14:53 MDT + 40 min = 15:33 MDT",
+            "clinic_margin_if_admitted_minutes": "16:00 MDT - 15:33 MDT = 27 min",
+            "v6_closure_local": "21:20Z - 6 h = 15:20 MDT",
+            "v6_gate_margin_minutes": "15:20 MDT - 14:53 MDT = 27 min",
+        }
+        self.assertEqual(set(values), set(expected))
+        for name, formula in expected.items():
+            self.assertIn(f"{name}(): {formula}", shown.stdout)
+            shown_result = formula.rsplit("= ", 1)[1]
+            if isinstance(values[name], int):
+                self.assertTrue(shown_result.startswith(f"{values[name]} "))
+            else:
+                self.assertEqual(shown_result, values[name])
+
+    def test_ledger_check_shows_scored_math_and_hides_sealed_change(self) -> None:
+        self.prepare()
+        result = run("check_work.py", self.work, "--phase", "ledger")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        for name in (
+            "scanned_kits()",
+            "usable_kits()",
+            "released_mass_kg()",
+            "mission_payload_kg()",
+            "payload_margin_kg()",
+            "v5_closure_local()",
+            "earliest_departure()",
+            "earliest_gate_arrival()",
+        ):
+            self.assertIn(name, result.stdout)
+        self.assertNotIn("v6_closure_local():", result.stdout)
+        self.assertNotIn("v6_gate_margin_minutes():", result.stdout)
+        self.assertNotIn("21:20Z", result.stdout)
+        self.assertIn("12 totes * 18 kits/tote = 216 kits", result.stdout)
+        self.assertIn("10 released totes * 132 kg/tote = 1320 kg", result.stdout)
+        self.assertIn("1320 kg + 84 kg rack = 1404 kg", result.stdout)
+        self.assertIn("1650 kg - 1404 kg = 246 kg", result.stdout)
+        self.assertIn("20:50Z - 6 h = 14:50 MDT", result.stdout)
+        self.assertIn("14:05 MDT + 20 min = 14:25 MDT", result.stdout)
+        self.assertIn("14:25 MDT + 28 min = 14:53 MDT", result.stdout)
 
     def test_challenge_missing_vx240_fails(self) -> None:
         self.prepare()

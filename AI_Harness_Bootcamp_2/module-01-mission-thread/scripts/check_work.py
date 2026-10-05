@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Visible mechanical checker for Module 1 practice work.
 
+The ledger phase prints the arithmetic each scored calculation function uses.
 This checker does not judge source applicability, warrants, inferences, or the
 professional quality of the verdict.
 """
@@ -10,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import re
 import subprocess
@@ -127,6 +129,60 @@ def check_register(work: Path, check) -> None:
             )
 
 
+def load_calculator():
+    path = ROOT / "scripts/compute_thread.py"
+    spec = importlib.util.spec_from_file_location("compute_thread", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def calculation_formulas(module) -> dict[str, str]:
+    return {name: formula for name, formula, _value in module.calculations()}
+
+
+def show_calculation(formulas: dict[str, str] | None, name: str) -> None:
+    formula = formulas.get(name) if formulas else None
+    if not formula:
+        print(f"HOLD: missing arithmetic for {name}()")
+        return
+    print(f"{name}(): {formula}")
+
+
+def check_scanned_kits(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "scanned_kits")
+    check("practice scanned count 216", "216" in fields)
+
+
+def check_usable_kits(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "usable_kits")
+    check("practice usable kits 180", "180" in fields)
+
+
+def check_mission_payload(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "released_mass_kg")
+    show_calculation(formulas, "mission_payload_kg")
+    check("practice mission payload 1404", "1404" in fields or "1,404" in fields)
+
+
+def check_payload_margin(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "payload_margin_kg")
+    check("practice payload margin 246", "246" in fields)
+
+
+def check_v5_closure(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "v5_closure_local")
+    check("practice v5 closure 14:50", "14:50" in fields)
+
+
+def check_earliest_gate(fields: str, formulas: dict[str, str] | None, check) -> None:
+    show_calculation(formulas, "earliest_departure")
+    show_calculation(formulas, "earliest_gate_arrival")
+    check("practice earliest gate 14:53", "14:53" in fields)
+
+
 def check_ledger(work: Path, check) -> None:
     try:
         baseline = load_rows(work / "thread-ledger.csv")
@@ -178,12 +234,17 @@ def check_ledger(work: Path, check) -> None:
         " ".join(row.get(field, "") or "" for field in ("calculation", "claim", "result"))
         for row in baseline
     )
-    check("practice scanned count 216", "216" in practice_fields)
-    check("practice usable kits 180", "180" in practice_fields)
-    check("practice mission payload 1404", "1404" in practice_fields or "1,404" in practice_fields)
-    check("practice payload margin 246", "246" in practice_fields)
-    check("practice v5 closure 14:50", "14:50" in practice_fields)
-    check("practice earliest gate 14:53", "14:53" in practice_fields)
+    try:
+        formulas = calculation_formulas(load_calculator())
+    except Exception as exc:
+        print(f"HOLD: cannot show calculator arithmetic — {exc}")
+        formulas = None
+    check_scanned_kits(practice_fields, formulas, check)
+    check_usable_kits(practice_fields, formulas, check)
+    check_mission_payload(practice_fields, formulas, check)
+    check_payload_margin(practice_fields, formulas, check)
+    check_v5_closure(practice_fields, formulas, check)
+    check_earliest_gate(practice_fields, formulas, check)
 
 
 def check_challenge(work: Path, check) -> None:
