@@ -2,11 +2,11 @@
 
 ## What this session must prove
 
-Each learner can give AI a clear, limited job, check a material claim at the source, prove their own check is capable of failing, keep the draft inside the class, handle one changed fact, and leave a handoff with the exact paths and files so the work is locatable from the handoff alone.
+Each learner can get a long document they can trust from AI: write the brief (with the minimum screen) and the tests before any prose, correct and freeze an AI-proposed outline, have OMP draft one section per session, check the draft against references outside it, verify every review finding before accepting it, revise only the flagged sections, apply one changed fact only where it is used, decide send or hold, and leave a handoff that makes the work locatable from the handoff alone.
 
 Setup is an entry condition, not the lesson, and it is not part of the PO-00 result. A learner whose machine is not ready records `HOLD` on setup and moves to a loaner machine or a paired observation path. Observation keeps the learner in the room but does not pass the operating task.
 
-The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its checker is inspectable. Do not invent a second case or describe a public file as secret.
+The supplied North Shelf packet (the request, six sources, the style rules, and the changed input) is public practice. Its checker and the helper `scripts/longform.py`, with its session instructions in `shared/case/prompts/`, are inspectable. Do not invent a second case or describe a public file as secret.
 
 ## Before learners arrive
 
@@ -17,7 +17,8 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 5. Choose fresh readiness-check work directories and preserve every prior attempt.
 6. Confirm a same-state path for every control a learner must operate. Record any unverified operation explicitly.
 7. Prepare a support owner for managed-machine and account problems.
-8. Put a visible clock where learners can observe the 60-minute first-result design target. Record actual timing and assistance; this target has not been validated with learners.
+8. Put a visible clock where learners can observe the 60-minute first-result design target: a frozen plan and a first section checked against its sources. Record actual timing and assistance; this target has not been validated with learners.
+9. Confirm the classroom network reaches OpenRouter. The lab runs about 14 short launcher sessions per learner (one outline, five or six sections, five review sessions, two revisions); a second review round adds six.
 
 ## Keep three readiness lanes separate
 
@@ -69,25 +70,24 @@ Plan about three hours. The clock marks below are approximate planning guides, n
 
 | Segment | Roughly | What you do |
 |---|---|---|
-| Opening | 0:00–0:20 | Record setup state and route blocked learners. Name the fictional case and sharing limit. Explain the inspectable practice checker and start the visible clock. |
-| Checkpoint | 1:15–1:35 | Record first-draft state and actual elapsed time. Confirm direction and responsibility records preceded the run. Preserve failures and stop after the stated correction limit; do not read drafts aloud. |
-| Close | 2:40–3:00 | Preserve original drafts, source/control identities and first failures. Name unresolved dependencies. |
+| Opening | 0:00–0:20 | Record setup state and route blocked learners. Name the fictional case and sharing limit. Explain the inspectable practice checker and helper, and start the visible clock. |
+| Checkpoint | 1:00–1:15 | Record whether each learner has a frozen plan and a checked first section, and the actual elapsed time. Confirm `brief.md` and `tests.md` predate the outline. Don't read drafts aloud. |
+| Close | 2:40–3:00 | Preserve every version, the review files, the receipts, and any first failure. Name unresolved dependencies. |
 
 ### What learners work on
 
 | Roughly | Learner work | Evidence you should see |
 |---|---|---|
-| 0:20–0:30 | Work folder created; email requirements written | `email-requirements.md` lists what the request asks for and two things the checker can't judge |
-| 0:30–0:40 | Case and practice checker read | The learner can name two things the checker cannot judge |
-| 0:40–0:50 | Delegation decision and responsibility screen | Both files saved, both before any AI run |
-| 0:50–1:00 | Direction brief frozen | What a correct email must show, the falsifier, stop condition, and correction limit are all written |
-| 1:00–1:15 | First draft produced and practice check run | A file on disk and a check output, within about the first hour |
-| 1:35–1:50 | Material claim checked against the source | Exact source text quoted by the learner, not by the model |
-| 1:50–2:00 | Falsifier run against a deliberately wrong copy | `falsifier-probe.md` plus the observed failure copied verbatim |
-| 2:00–2:10 | Capability-limit statement written | Model output, product surface, harness control, and human decision separated; one capability and one limitation from this run |
-| 2:10–2:15 | Send-or-hold decision | `READY TO SEND` or `HOLD`, with the evidence behind it |
-| 2:15–2:35 | Changed input predicted, applied, and compared | Prediction timestamped before the second run; `artifact.md` untouched |
-| 2:35–2:40 | Handoff written | Handoff names the exact paths and files so the work is locatable without asking the author |
+| 0:20–0:35 | Work folder created; request, six sources, and the checker's opening comment read | The learner can name what each source can't establish and which clinic questions the sources don't answer |
+| 0:35–0:50 | Brief and tests written | `brief.md` with every screen line answered; `tests.md` with all three headings, including tests the checker can't run |
+| 0:50–1:05 | Outline proposed, corrected, and frozen | `outline-proposed.md` beside a corrected `outline.md`; `PLAN FROZEN` and `E/plan.json` |
+| 1:05–1:15 | First section drafted and read | `draft/v1/01.md`, its receipts, and any problem quoted in `notes.md` |
+| 1:15–1:35 | Remaining sections drafted and read | `draft-v1.md` and the word table; notes on anything wrong |
+| 1:35–1:50 | Checker run, failing copy, number list | Checker output; `checker-test.md` failing on the on-hand count; every `NOT IN SOURCES` resolved |
+| 1:50–2:20 | Review sessions run and every finding verified | `review/r1/` files and `fixes.md` with each finding accepted (with its source, test, or rule) or rejected (with a reason) |
+| 2:20–2:30 | Flagged sections revised and rechecked | `draft-v2.md`; `SAME`/`CHANGED` only where fixes named a section |
+| 2:30–2:40 | Changed fact applied | `change-fixes.md` written before the revision; `draft-v3.md`; the stale-count checker failure; `ORIGINAL UNCHANGED` |
+| 2:40–2:50 | Decision and handoff | `decision.md` starting `READY TO SEND` or `HOLD`, each reason pointing to a file; `handoff.md` |
 
 ## Coaching limits
 
@@ -97,17 +97,16 @@ You may:
 - define a term in plain language;
 - help recover the machine or open a supplied file;
 - ask what source supports a claim;
-- remind the learner of the correction limit.
+- remind the learner that revision stops after two rounds.
 
 You may not:
 
-- supply the delegation decision;
-- fill in the responsibility screen;
-- rewrite the direction brief;
+- write or fix the brief, the tests, or the outline;
+- say which review findings to accept or reject;
 - identify the material source line;
-- disclose any genuinely protected deciding control;
-- tell the learner which statements the changed input should move;
-- tell the learner what to break in the falsifier probe;
+- tell the learner which sections the changed input should move;
+- edit a draft, a section file, or the checker;
+- run another review round past the second;
 - accept a narrated action in place of an operation.
 
 If coaching crosses one of those lines, mark that part of the attempt as guided practice in the evidence record.
@@ -122,7 +121,8 @@ If coaching crosses one of those lines, mark that part of the attempt as guided 
 | Provider or participant key unavailable | Preserve the blocked live lane; no provider/model substitute or invented artifact |
 | Platform operation unavailable | Record exactly what was not exercised; parsing or another OS is not native proof |
 | Managed policy | Capture the exact message and route it to the IT owner |
-| Learner exceeds two draft corrections | Preserve the attempts and record the practice result as `HOLD` |
+| A material finding remains after two revision rounds | Preserve every version and record the decision as `HOLD` |
+| A launcher session holds mid-lab | Keep the receipts; fix the named cause and rerun the same helper command, which skips finished work |
 
 The shared receipt auditor accounts for OMP 18.3.5's stream-only `completedAt`
 timestamp. It still requires every other final assistant field to match the
@@ -138,14 +138,13 @@ Collect or verify:
 - OMP setup report path and separate live readiness result;
 - Obsidian READY/HOLD, both disk-check paths, refresh record, actual version/platform, and separate GUI observations;
 - separate n8n READY/HOLD, observed platform/version/port/service state, workflow name, reload and stop/start persistence observations, and unresolved owner approvals;
-- `email-requirements.md`;
-- first-checked-draft timestamp;
-- delegation and responsibility records, created before the run;
-- original brief, draft, first check output, source check, and decision;
-- `falsifier-probe.md` and the recorded observed failure;
-- capability-limit statement;
-- changed-input prediction and the unchanged original;
-- handoff;
+- `brief.md`, `tests.md`, `outline-proposed.md`, and the corrected `outline.md`, with `E/plan.json`;
+- the time the first section was checked;
+- `draft/v1/` to `draft/v3/` and the assembled versions;
+- checker outputs, `checker-test.md`, and the number lists;
+- `review/r1/` (and `review/r2/` if used) with `fixes.md`;
+- `change-fixes.md` and the `ORIGINAL UNCHANGED` result;
+- `decision.md` and `handoff.md`;
 - reason for any `HOLD`;
 - support packet for any blocked dependency.
 

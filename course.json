@@ -57,16 +57,16 @@
     {
       "id": "00",
       "directory": "module-00-setup",
-      "title": "Module 0 · Set up the harness and direct bounded work",
+      "title": "Module 0 · Set up the harness and get a long document you can trust",
       "case_name": "North Shelf",
-      "summary": "Give an AI tool a clearly limited job and check the internal email it drafts against the sources.",
-      "nav_summary": "Oh My Pi · giving AI a limited job",
+      "summary": "Get Oh My Pi to plan, draft, check, and revise a long status brief, one section at a time, and decide whether you'd send it.",
+      "nav_summary": "Oh My Pi · a long document you can trust",
       "outcomes": {
-        "can": "Give an AI tool one clearly limited writing job, check what it wrote against the source facts yourself, and decide whether you'd send it.",
+        "can": "Get an AI tool to write a multi-section document from sources that stays true to them, and decide from evidence whether you'd send it.",
         "will": [
-                "Decide, before the tool runs, what it may draft, what judgment stays with you, and what you refuse to delegate.",
-                "Run a supplied check on the draft, make it fail on purpose, and confirm it can catch a wrong fact.",
-                "Change one input fact, predict what should change in the draft, and confirm that only that changed."
+                "Write the brief, the tests, and the outline before any prose, then have the AI draft one section at a time within that plan.",
+                "Check the draft against things outside it: a checker you've made fail on purpose, a list of every number, and separate review sessions, then verify each finding yourself.",
+                "Revise only the sections a verified finding or a changed fact touches, and confirm that every other section stayed the same."
         ]
       },
       "pages": [
@@ -83,22 +83,24 @@
         {"source": "shared/SOURCES.md", "dest": "shared/SOURCES.html", "kind": "reference"}
       ],
       "figures": [
-        {"source": "shared/figures/m00-bounded-direction.png", "dest": "shared/figures/m00-bounded-direction.png"},
         {"source": "shared/figures/m00-change-isolation.png", "dest": "shared/figures/m00-change-isolation.png"},
         {"source": "shared/figures/m00-claim-check.png", "dest": "shared/figures/m00-claim-check.png"},
+        {"source": "shared/figures/m00-critique-passes.png", "dest": "shared/figures/m00-critique-passes.png"},
         {"source": "shared/figures/m00-falsifier.png", "dest": "shared/figures/m00-falsifier.png"},
+        {"source": "shared/figures/m00-longform-loop.png", "dest": "shared/figures/m00-longform-loop.png"},
+        {"source": "shared/figures/m00-plan-first.png", "dest": "shared/figures/m00-plan-first.png"},
         {"source": "shared/figures/m00-readiness-lanes.png", "dest": "shared/figures/m00-readiness-lanes.png"},
         {"source": "shared/figures/m00-recovery-loop.png", "dest": "shared/figures/m00-recovery-loop.png"},
-        {"source": "shared/figures/m00-responsibility-screen.png", "dest": "shared/figures/m00-responsibility-screen.png"},
         {"source": "shared/figures/m00-tool-layers.png", "dest": "shared/figures/m00-tool-layers.png"}
       ],
       "scripts": [
         {"source": "scripts/verify-setup.sh", "dest": "scripts/verify-setup.sh"},
         {"source": "scripts/verify-setup.ps1", "dest": "scripts/verify-setup.ps1"},
-        {"source": "scripts/obsidian_readiness.py", "dest": "scripts/obsidian_readiness.py"}
+        {"source": "scripts/obsidian_readiness.py", "dest": "scripts/obsidian_readiness.py"},
+        {"source": "scripts/longform.py", "dest": "scripts/longform.py"}
       ],
       "download_dirs": ["shared/case"],
-      "tests": ["tests/test_module_00.py", "tests/test_checker.py"]
+      "tests": ["tests/test_module_00.py", "tests/test_checker.py", "tests/test_longform.py"]
     },
     {
       "id": "01",

@@ -1,10 +1,10 @@
-# Module 0 · Set up the harness and direct bounded work
+# Module 0 · Set up the harness and get a long document you can trust
 
-Install and check your tools, then ask Oh My Pi to draft an internal email. Check every important claim against the supplied North Shelf facts. Set the limits, choose what to delegate, and decide whether you'd send the email.
+Install and check your tools, then have Oh My Pi plan, draft, check, and revise a North Shelf status brief one section at a time. You write the plan and the tests first, check the draft against the sources in separate review sessions, and decide whether you'd send it.
 
-Start with one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check. In that check, the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep those results separate from the checked email.
+Start with one platform guide. Install what's missing, open a new terminal, and run the OMP readiness check. In that check, the model reads a fresh token and writes a real file through the course launcher. Check local Obsidian before Module 2 and local n8n before Module 7; keep those results separate from the status brief.
 
-Plan for about one to three hours for setup (a rough estimate). Downloads, desktop readiness, or owner approvals may take longer. Plan for about three hours for the bounded-work assignment (a rough estimate).
+Plan for about one to three hours for setup (a rough estimate). Downloads, desktop readiness, or owner approvals may take longer. Plan for about three hours for the [status brief](shared/MODULE_00_LAB.md) (a rough estimate).
 
 ## Start here
 

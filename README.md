@@ -16,7 +16,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 ## Core promise
 
-The first-result target is about an hour to produce and check a useful, bounded artifact. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner directs work, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, improves from observed runs, operates a fixed workflow, controls hallucinations through structured checks and independent agent review, and transfers the method.
+The first-result target is about an hour to a frozen plan and a first AI-drafted section checked against its sources. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner gets a long document they can trust from AI, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, improves from observed runs, operates a fixed workflow, controls hallucinations through structured checks and independent agent review, and transfers the method.
 
 The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
@@ -24,7 +24,7 @@ The core runs on **four teaching days, Monday through Thursday, instructor-led a
 
 | ID | Module | Primary capability |
 |---:|---|---|
-| 00 | Select, screen, and direct bounded work | Delegate appropriately, check one useful result, screen responsibility, and turn a request into accepted direction with a communication artifact. |
+| 00 | Get a long document you can trust from AI | Screen responsibility, plan and test a long document before any prose, have AI draft it one section at a time, check it against references outside it, revise only what's flagged, and decide whether to send it. |
 | 01 | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
 | 02 | Build and control a reusable second brain | Construct source-traceable knowledge, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
 | 03 | Operate MCP tools under limited authority | Connect an MCP server, research through it, judge AI handling classifications against stated rules, and limit the connection so forbidden actions cannot happen, with proof and removal. |
@@ -108,7 +108,7 @@ Module 02 also uses Obsidian to edit the local Markdown vault. It requires no co
 
 Module 06 also sets OMP's judge role to **`openrouter/typesafe/jev-1.13`**, TypeSafe's Jev decision model, through the same key and launcher. The course chat model makes exactly one `eval` call with a launcher-written cell; the guard refuses any other code. The launcher checks every saved judgment, the dated build that answered, the cost, and the work folder. A moving alias, the router, or a chat model as judge holds before any call.
 
-Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 keeps its four-file copy. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
+Modules 02–10 use `shared/prepare_work.py`; Module 01 keeps its nine-source starter and Module 00 copies its request, style rules, checker, and six sources. Helpers refuse existing work/output attempts. A missing key or unavailable pinned provider/model holds the live lane without replacing it with a different model or unlabeled fixture.
 
 Module 05 runs native `task` children rather than a second scheduler. Its three read-only specialists feed a coordinator-owned brief and a dependent read-only review. The first missing-input attempt remains on record; selective repair can reuse only still-valid independent results. The module checker joins requested assignments to native child records, source identities and permitted effects. A parent summary, finished task, or fixture transcript cannot substitute for accepted live handoffs.
 
