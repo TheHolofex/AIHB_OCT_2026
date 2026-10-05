@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "run_id": "20261005T002550Z-navigation-main-integration",
-  "generated_at_utc": "2026-10-05T01:44:11.255Z",
+  "generated_at_utc": "2026-10-05T01:49:23.069Z",
   "implementation_status": "integrated_and_technically_verified",
   "external_acceptance_status": "unobserved_lanes_remain_hold",
   "release_status": "HOLD",
@@ -27,7 +27,7 @@
   "path_resolution": "Resolve href/raw_href against evidence_root. Historical reports keep their original path semantics. Source-manifest paths are checkout-relative.",
   "integration": {
     "task_commit": "95c0cfce52e2c3511b2b1f258fe6a4d8c081f27e",
-    "incoming_main_commit": "27a9e4d",
+    "incoming_main_commit": "4ad745ce5a2ac01157619e5ecaae1c17d0c5b810",
     "preserved_designs": [
       "Module00 long-document workflow and current-course README from concurrent upstream work",
       "Native OMP orchestration in Module05",
@@ -101,7 +101,12 @@
         "sha256": "4ca0d8a7840dc31d7b140c0034392f3787256da06b1b2388fc57d515614db2ce",
         "bytes": 402
       },
-      "scope": "Final merged sources on Darwin arm64, dedicated TMPDIR, unchanged 600-second per-command deadline and complete oracles. No provider calls; not native Windows/Linux or human acceptance."
+      "scope": "Complete34-gate run before the subsequent five-file staff reference/verification merge. No executable or public-source bytes changed in that subsequent merge; its affected checks and exact byte publication check passed separately below. Darwin arm64, dedicated TMPDIR, unchanged600-second per-command deadline, no provider calls.",
+      "source_manifest": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/source-manifest.json",
+        "sha256": "2e143fd1e822b27df84a4ff6bcbad77cb02a32d3a8def25ccbabe26efebfa57f",
+        "bytes": 182189
+      }
     },
     "command_parsers": {
       "status": "passed",
@@ -839,7 +844,56 @@
         ]
       }
     ],
-    "historical_limits": "Earlier57-image audit, hosted32-gate run, and72-view matrix remain bound to their archived task source. New merged-source proof is recorded above; no inherited native, human, live-model, or billing PASS."
+    "historical_limits": "Earlier57-image audit, hosted32-gate run, and72-view matrix remain bound to their archived task source. New merged-source proof is recorded above; no inherited native, human, live-model, or billing PASS.",
+    "post_full_gate_merge": {
+      "status": "passed",
+      "incoming_main_commit": "4ad745ce5a2ac01157619e5ecaae1c17d0c5b810",
+      "changed_files": [
+        {
+          "path": "AI_Harness_Bootcamp_2/module-00-setup/reference/REFERENCE.md",
+          "before_sha256": "d0dd91ef2abe06328f28282c468e4cfa03dcebdf8e6c15a04c98379c48cd99c8",
+          "after_sha256": "4fb8353aa0f66df24ad398857640142d1f6cea9cce64c63ec0ad8bb9578575f9"
+        },
+        {
+          "path": "AI_Harness_Bootcamp_2/module-00-setup/reference/REFERENCE.sha256",
+          "before_sha256": "79cd6d5f9430f50b39b396b4184e22a0d2cb05f5bb331ebff401a71a42918734",
+          "after_sha256": "8bdcdeb1df4321e06bcf9f8f9da13821b0209457cfc62e684e6d5329177dde8a"
+        },
+        {
+          "path": "AI_Harness_Bootcamp_2/module-05-diagnose-review/reference/REFERENCE.md",
+          "before_sha256": "6c25300f9760b46bac58985767c41284c4b8eb4f7047d223ad89c72d342eaaeb",
+          "after_sha256": "94dccde477c1582671b4032ce26da473a943b410ab5eba4c2e2220fbf9711508"
+        },
+        {
+          "path": "AI_Harness_Bootcamp_2/module-05-diagnose-review/reference/REFERENCE.sha256",
+          "before_sha256": "c36116f031d3dab3693fad4d1289b89e7b87c4de9a0a0f42b4a18440a6727cd8",
+          "after_sha256": "0e00aeeeb883d4be866a7e1fcc66068acb3670dbaafcc18e6b1e1ec33a70bc08"
+        },
+        {
+          "path": "README.md",
+          "before_sha256": "a261baa33f0f325683199d98e8aa336ba36b571122b2c398fb8e9d9786309199",
+          "after_sha256": "80e6e92c8c9fae08272f2c27c9683d40704b0017c91a3eaf7aee5f9a0213b708"
+        }
+      ],
+      "checks": [
+        "Current502-fence command syntax inventory",
+        "Module00 behavioral and12-mutation oracle",
+        "Module05 behavioral suite:14 tests",
+        "Core frozen-reference and eleven-module supply graph",
+        "Exact-byte publication:35 pages,436 raw downloads,40 assets"
+      ],
+      "elapsed_seconds": 17.32,
+      "record": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/post-main-checks.log",
+        "sha256": "be37e051c2e61409c1cb9f290797f55fb3324280876a01937f4276378e6ed9b8",
+        "bytes": 43619
+      },
+      "raw_record": {
+        "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/post-main-checks.raw.log",
+        "sha256": "be37e051c2e61409c1cb9f290797f55fb3324280876a01937f4276378e6ed9b8",
+        "bytes": 43619
+      }
+    }
   },
   "modules": [
     {
@@ -1249,8 +1303,8 @@
   ],
   "release_decision": "Git integration/publication and task-resource removal authorized explicitly by the user. Missing evidence remains HOLD; it does not prohibit this authorized publication and is not relabeled PASS.",
   "source_manifest": {
-    "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/source-manifest.json",
-    "sha256": "2e143fd1e822b27df84a4ff6bcbad77cb02a32d3a8def25ccbabe26efebfa57f",
-    "bytes": 182189
+    "href": "20261005T002550Z-navigation-main-integration/final-upstream-integration/post-main-source-manifest.json",
+    "sha256": "da226ae380c95e789575dfec694b93d3f4cba3acc93d504468093329d0172ac3",
+    "bytes": 182153
   }
 }
