@@ -76,8 +76,8 @@ MUTATIONS: list[Mutation] = [
     Mutation("M1-02", "flip one byte of baseline source S01", flip_source_byte),
     Mutation("M1-14", "force scanned_kits to 0",
              sub("scripts/compute_thread.py",
-                 r'"scanned_kits": scanned_totes \* kits_per_tote',
-                 '"scanned_kits": 0')),
+                 r"return SCANNED_TOTES \* KITS_PER_TOTE",
+                 "return 0")),
     Mutation("M1-ANSWER", "leak 246 kg into README.md",
              append("README.md", "\n246 kg\n")),
 ]
