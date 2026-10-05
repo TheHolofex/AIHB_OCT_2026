@@ -2,7 +2,7 @@
 
 Build the smallest kit of files and instructions that lets a colleague bring the pinned uncensored model up as a loopback-only service, prove one live interaction, stop it, and restore it, all without your chat history. Freeze only the declared bundle, copy it to a new location, and run from a new terminal. Keep your own rerun separate from watching another person use the kit.
 
-The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
+The pinned model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, one 15.7 GB weight file. Its identity does not guarantee an answer, a refusal, a warning, or accuracy. You retain the judgment about every use of its output. The service binds only to `127.0.0.1`, the weights stay on this laptop, and the harness records your prompts.
 
 Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours.
 
@@ -55,6 +55,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve this attempt.' }
 
 A closed terminal forgets these variables. In a new terminal, run this block to reload them for the same attempt instead of preparing another one.
 
+Keep the approved `hf` and `llama-server` paths in your private run notes. If either tool is outside PATH, enter its full path when prompted below; spaces and apostrophes are allowed. Repeat this resolution in each new terminal. Do not replace an existing installation.
+
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
@@ -68,6 +70,10 @@ W="$BASE/work"
 E="$BASE/evidence"
 F="$BASE/received package"
 printf '%s\n' "RUN=$RUN" "W=$W"
+HF="${HF:-$(command -v hf)}"
+LLAMA="${LLAMA:-$(command -v llama-server)}"
+if [ -z "$HF" ]; then printf 'Approved hf executable path: '; IFS= read -r HF; fi
+if [ -z "$LLAMA" ]; then printf 'Approved llama-server executable path: '; IFS= read -r LLAMA; fi
 ```
 
 **Terminal: PowerShell, ordinary user.**
@@ -83,6 +89,10 @@ $W = "$BASE/work"
 $E = "$BASE/evidence"
 $F = "$BASE/received package"
 "RUN=$RUN"; "W=$W"
+if (-not $HF) { $HF = (Get-Command hf -CommandType Application -ErrorAction SilentlyContinue).Source }
+if (-not $LLAMA) { $LLAMA = (Get-Command llama-server -CommandType Application -ErrorAction SilentlyContinue).Source }
+if (-not $HF) { $HF = Read-Host 'Approved hf executable path' }
+if (-not $LLAMA) { $LLAMA = Read-Host 'Approved llama-server executable path' }
 ```
 
 **Expected:** The terminal prints `RUN=` followed by the identifier you saw when you prepared this attempt, then `W=` followed by the existing work folder.
@@ -95,7 +105,7 @@ $F = "$BASE/received package"
 
 Open these files in your editor: `W/shared/case/SERVICE_RULES.md`, `W/shared/case/model-card.json`, `W/shared/case/task.json`, `W/shared/case/hostile-note.md`, and `W/shared/PACKAGE.md`.
 
-In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check. Say why neither carries any authority here. Name what the uncensored model won't do for you: refuse, warn, or apply judgment.
+In `E/pre-run.md`, record the pinned model identity, the byte size, the license, the base model, and the loopback bind. Explain what the identity check proves and what it doesn't. Quote the community note's two suggestions, the `0.0.0.0` bind and the skipped digest check. Say why neither carries any authority here. Name the decisions you retain even when a model answers without a refusal or warning.
 
 ![Loopback limits network reach, and the identity check identifies the checked weight file; neither establishes the model's safety, accuracy, or fitness for publication.](figures/m10-operator-boundary.png)
 
@@ -114,6 +124,45 @@ The service boundary is `127.0.0.1` only. Inside it, one operator exchanges requ
 
 **Recovery:** Reopen `SERVICE_RULES.md` and the note. The boundary doesn't bend for anyone, including you.
 
+## Check local-model readiness before downloading
+
+First, [prepare your work and evidence folders](#prepare-separate-work-and-transfer-locations) if you haven't already. Those commands set `PY` and `W`, which the check below uses. If you've already prepared this attempt but opened a new terminal, [reload its variables](#if-you-open-a-new-terminal) instead of preparing another attempt.
+
+Staff provision missing tools with the device owner's approval. Run this check before logging in or downloading. It requires **35 GiB total free space before a new download**, on the work/download volume and the separate HF Xet cache volume when configured. That policy already includes two model-sized allocations and a margin; it is not 35 GiB in addition to the model or a vendor minimum. The weight file is exactly 15,676,553,472 bytes.
+
+Use the approved full executable paths when prompted if a tool is outside PATH. Keep those paths for every later command and new terminal.
+
+The fixed command uses `--local-dir weights`: download metadata stays under `weights/.cache/huggingface`, and the unrelated Hub cache is not a weight destination. A small `HF_HUB_CACHE` volume does not block this route. The checker still measures the Xet cache at its configured location.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+HF="${HF:-$(command -v hf)}"
+LLAMA="${LLAMA:-$(command -v llama-server)}"
+if [ -z "$HF" ]; then printf 'Approved hf executable path: '; IFS= read -r HF; fi
+if [ -z "$LLAMA" ]; then printf 'Approved llama-server executable path: '; IFS= read -r LLAMA; fi
+"$PY" "$W/scripts/check_readiness.py" --work-dir "$W" --hf "$HF" --llama-server "$LLAMA"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+if (-not $HF) { $HF = (Get-Command hf -CommandType Application -ErrorAction SilentlyContinue).Source }
+if (-not $LLAMA) { $LLAMA = (Get-Command llama-server -CommandType Application -ErrorAction SilentlyContinue).Source }
+if (-not $HF) { $HF = Read-Host 'Approved hf executable path' }
+if (-not $LLAMA) { $LLAMA = Read-Host 'Approved llama-server executable path' }
+& $PY "$W/scripts/check_readiness.py" --work-dir "$W" --hf "$HF" --llama-server "$LLAMA"
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: local-model prerequisites; do not log in, download, or launch.' }
+```
+
+**Expected:** Exact paths, versions, required help flags, free bytes/GiB, total/available RAM, the pinned identity, and a free `127.0.0.1:8080`. `READY_FOR_REHEARSAL` is not evidence that the model runs. At least 16 GiB but less than 24 GiB RAM is `CONDITIONAL`; 24 GiB is only a provisional planning floor. Every machine still needs a complete exact-model rehearsal with context 32768.
+
+On Linux, `MemTotal` excludes memory reserved by the system. If installed capacity is unverified, get the actual installed-RAM record from the device owner and add `--installed-ram-gib` followed by that recorded value to both preflight commands, including the later before-launch command. Keep the inventory's source with your report; do not round `MemTotal` up or guess. A VM needs its assigned capacity and limits recorded separately from its host.
+
+**Stop:** The checker reports `HOLD`, a tool differs from the approved one, or staff have not resolved a failed rehearsal on this machine.
+
+**Recovery:** Keep the report and contact the device/support owner. Below 16 GiB, or after a failed full rehearsal, arrange an owner-approved qualified machine. Do not stop somebody else's server, change port 8080, lower the context, or substitute a smaller model. Observing somebody else's probe does not establish your own live operation.
+
 ## Gain account access and download the pinned weights
 
 Log in to Hugging Face, open the pinned repository page, and accept its conditions. The download is 15.7 GB and resumes if interrupted.
@@ -121,22 +170,23 @@ Log in to Hugging Face, open the pinned repository page, and accept its conditio
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-hf auth login
-hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-27B-Uncensored.gguf" --local-dir "$W/weights"
+"$HF" auth login &&
+"$HF" download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF "OrcaSAQ-2-27B-Uncensored.gguf" --revision a0ebe1b5ad5c009cd382908585c04b7e9e0cf0c0 --local-dir "$W/weights"
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
-hf auth login
-hf download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF --include "OrcaSAQ-2-27B-Uncensored.gguf" --local-dir "$W/weights"
+& $HF auth login
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: account access; do not download.' }
+& $HF download orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF "OrcaSAQ-2-27B-Uncensored.gguf" --revision a0ebe1b5ad5c009cd382908585c04b7e9e0cf0c0 --local-dir "$W/weights"
 ```
 
 **Expected:** One file, `OrcaSAQ-2-27B-Uncensored.gguf`, at exactly 15,676,553,472 bytes when complete. Record the account name in `E/pre-run.md`; never record a token.
 
 **Stop:** You haven't accepted the conditions, the download is interrupted, or the byte size differs.
 
-**Recovery:** Run `hf download` again; it picks up where it stopped. Never accept a file of the wrong size, and don't continue until you've accepted the conditions.
+**Recovery:** Preserve an incomplete download and repeat the same pinned download command after resolving access or connection problems. It resumes supported partial downloads. Do not edit the identity card, accept conditions for someone else, or continue with a wrong-size file.
 
 ## Verify the pinned identity
 
@@ -205,22 +255,28 @@ Read shared/case/SERVICE_RULES.md, shared/case/model-card.json, and shared/case/
 Draft the exact llama-server launch line for the pinned weight file: loopback bind on port 8080, context 32768, no other flags that widen the boundary. Print the line and each flag's purpose. Do not run it yourself; I approve and run it.
 ```
 
-Check the proposed line against `SERVICE_RULES.md`: the host must be `127.0.0.1`, the context must be 32768, and nothing else may widen the boundary. Run the approved line in a terminal you keep just for the server (if it's a new terminal, run the block under "If you open a new terminal" there first):
+Check the proposed line against `SERVICE_RULES.md`: the host must be `127.0.0.1`, the context must be 32768, and nothing else may widen the boundary. Use a terminal kept just for the server. In a new terminal, reload the attempt and executable paths under [If you open a new terminal](#if-you-open-a-new-terminal).
 
+Repeat the tool, RAM, and free-endpoint checks immediately before starting the server. `--before-launch` reports current storage without requiring another 35 GiB after the verified download.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-llama-server -m "$W/weights/OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
+"$PY" "$W/scripts/check_readiness.py" --work-dir "$W" --hf "$HF" --llama-server "$LLAMA" --before-launch &&
+"$LLAMA" -m "$W/weights/OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
 ```
-
 
 **Terminal: PowerShell, ordinary user.**
+
 ```powershell
-llama-server -m "$W\weights\OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
+& $PY "$W/scripts/check_readiness.py" --work-dir "$W" --hf "$HF" --llama-server "$LLAMA" --before-launch
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: do not start a server on this endpoint.' }
+& $LLAMA -m "$W/weights/OrcaSAQ-2-27B-Uncensored.gguf" --host 127.0.0.1 --port 8080 -c 32768
 ```
 
-Loading takes a few minutes on most laptops. When the server says loading is complete, check that it's reachable from a second terminal (run the block under "If you open a new terminal" there first):
+Wait for this newly started process to report loading complete and listening. Record its actual process ID, executable/launch arguments, and `127.0.0.1:8080` listener in your private run evidence using the machine's process/network inspector. If they do not identify this attempt's server, hold the probe; a response from a pre-existing service proves nothing about this attempt. Record load time and other active workload rather than assuming interactive speed.
+
+From a second terminal, reload the attempt variables and check reachability:
 
 
 **Terminal: Bash or zsh, ordinary user.**
@@ -241,7 +297,7 @@ Set-Location -LiteralPath $BASE
 
 **Stop:** The proposed line binds anything except `127.0.0.1`, loading fails, or the probe reports the service unreachable.
 
-**Recovery:** If the bind is wrong, reject the drafted line and ask again. If loading failed, free some memory and probe again. Don't change the bind address or the context.
+**Recovery:** Reject a wrong bind before launch. Preserve a failed load and arrange an owner-approved qualified machine; do not reduce the model or context. If the server never reported listening, do not count a health response from another process.
 
 ## Prove one live interaction
 
@@ -279,7 +335,7 @@ omp --model llama.cpp/OrcaSAQ-2-27B-Uncensored --config omp-local.yml --no-sessi
 Set-Location -LiteralPath $BASE
 ```
 
-**Expected:** The saved stream contains a real assistant reply, names `llama.cpp` as the provider, and reports zero cost. A refusal would be surprising from this model; the failure to watch for is a connection failure.
+**Expected:** The saved stream contains a real assistant reply, names `llama.cpp` as the provider, and reports zero provider cost. Preserve the reply as observed, including a refusal or warning; the identity card does not promise its wording.
 
 **Stop:** A context-size refusal or connection failure appears.
 
@@ -287,9 +343,9 @@ Set-Location -LiteralPath $BASE
 
 ## Observe the uncensored behaviour
 
-Ask the model for one deliberately blunt answer, for example a sentence a safety-tuned model would soften, and save the exchange to `E/observations.md`. The model won't refuse and won't warn you; that's the capability you chose, so the guardrail is you. Record what you wouldn't put your name on, and why you wouldn't send it anywhere.
+Ask the model for one deliberately blunt answer and save the actual exchange to `E/observations.md`. Record any refusal or warning rather than assuming it cannot occur. State what you would not put your name on and why you would not send it anywhere.
 
-**Expected:** A saved exchange where the model answers without refusing, and the boundary you've set on using its output.
+**Expected:** A saved exchange and the boundary you set on using its output, whether the model answered, warned, or refused.
 
 **Stop:** The exchange isn't saved, or your note reads like an endorsement of unlimited use.
 
@@ -328,7 +384,7 @@ Write a stop receipt in `W` that names the port and the action:
 
 **Terminal: PowerShell, ordinary user.**
 ```powershell
-"$PY" -c "import json; print(json.dumps({'action':'stop','port':8080,'stopped_by':'operator Ctrl+C at the server terminal'}))" > "$W/stop-receipt.json"; Get-Content "$W/stop-receipt.json"
+& $PY -c "from pathlib import Path; import json,sys; p=Path(sys.argv[1]); p.write_text(json.dumps({'action':'stop','port':8080,'stopped_by':'operator Ctrl+C at the server terminal'})+'\n',encoding='utf-8'); print(p.read_text(encoding='utf-8'))" "$W/stop-receipt.json"
 ```
 
 Then confirm it:
@@ -379,15 +435,25 @@ Restoring the control does not restart the service automatically, and a restored
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-"$PY" -c "from pathlib import Path; import json; Path('$W/shared/controls/run.json').write_text(json.dumps({'enabled': False})+'\n')" && cd "$W" && "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json; cd "$BASE"
+(
+  "$PY" -c "from pathlib import Path; import json,sys; Path(sys.argv[1]).write_text(json.dumps({'enabled': False})+'\n',encoding='utf-8')" "$W/shared/controls/run.json" && cd "$W" || exit 1
+  "$PY" scripts/local_ai.py verify --model weights/OrcaSAQ-2-27B-Uncensored.gguf --control shared/controls/run.json
+  "$PY" scripts/local_ai.py wire --port 8080 --control shared/controls/run.json --work-dir .
+  "$PY" scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
+  "$PY" scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
+)
 ```
 
 
 **Terminal: PowerShell, ordinary user.**
 ```powershell
-& $PY -c "from pathlib import Path; import json; Path('$W/shared/controls/run.json').write_text(json.dumps({'enabled': False})+'\n')"
+& $PY -c "from pathlib import Path; import json,sys; Path(sys.argv[1]).write_text(json.dumps({'enabled': False})+'\n',encoding='utf-8')" "$W/shared/controls/run.json"
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: control was not disabled.' }
 Set-Location -LiteralPath $W
+& $PY scripts/local_ai.py verify --model weights/OrcaSAQ-2-27B-Uncensored.gguf --control shared/controls/run.json
+& $PY scripts/local_ai.py wire --port 8080 --control shared/controls/run.json --work-dir .
 & $PY scripts/local_ai.py probe --port 8080 --control shared/controls/run.json
+& $PY scripts/local_ai.py stop --port 8080 --control shared/controls/run.json --receipt stop-receipt.json
 Set-Location -LiteralPath $BASE
 ```
 
@@ -401,7 +467,7 @@ Restore the control from the baseline by running the package's own restore comma
 
 ## Freeze the declared bundle before copying
 
-Keep only the ten files the package declares. Don't add the weights, evidence, repository, private material, or chat history. Record each file's digest in `E` outside `W`:
+Keep only the eleven files the package declares. Don't add the weights, evidence, repository, private material, or chat history. Record each file's digest in `E` outside `W`:
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -410,7 +476,7 @@ Keep only the ten files the package declares. Don't add the weights, evidence, r
 from pathlib import Path
 import hashlib, json, sys
 w,e = map(Path,sys.argv[1:])
-names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
+names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','scripts/check_readiness.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
 files = {name:hashlib.sha256((w/name).read_bytes()).hexdigest() for name in names}
 record = {'files':files,'stop_receipt_sha256':hashlib.sha256((w/'stop-receipt.json').read_bytes()).hexdigest()}
 with (e/'bundle-before.json').open('x',encoding='utf-8') as output:
@@ -426,7 +492,7 @@ PY
 from pathlib import Path
 import hashlib, json, sys
 w,e = map(Path,sys.argv[1:])
-names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
+names = ['shared/PACKAGE.md','scripts/local_ai.py','scripts/check_package.py','scripts/check_readiness.py','shared/case/model-card.json','shared/case/SERVICE_RULES.md','shared/case/task.json','shared/case/hostile-note.md','shared/controls/run.json','shared/baseline/run.json','shared/baseline/run.json.sha256']
 files = {name:hashlib.sha256((w/name).read_bytes()).hexdigest() for name in names}
 record = {'files':files,'stop_receipt_sha256':hashlib.sha256((w/'stop-receipt.json').read_bytes()).hexdigest()}
 with (e/'bundle-before.json').open('x',encoding='utf-8') as output:
@@ -435,7 +501,7 @@ print('FROZEN BUNDLE',len(files),'files')
 '@ | & $PY - "$W" "$E"
 ```
 
-**Expected:** `FROZEN BUNDLE 10 files`, and a new record, `E/bundle-before.json`, with ten path/digest pairs and the stop receipt's digest.
+**Expected:** `FROZEN BUNDLE 11 files`, and a new record, `E/bundle-before.json`, with eleven path/digest pairs and the stop receipt's digest.
 
 **Stop:** A file is missing, a record already exists, or the set differs from the package's declared inputs.
 

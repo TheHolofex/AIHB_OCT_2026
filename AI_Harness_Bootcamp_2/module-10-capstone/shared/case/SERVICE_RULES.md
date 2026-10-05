@@ -1,6 +1,6 @@
 # Cold Foundry service rules for the local uncensored model
 
-This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own laptop. The model is uncensored: its refusal direction was removed, so it will attempt requests a safety-tuned model would decline. Every boundary below is yours to hold, not the model's.
+This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own laptop. It is distributed as an uncensored build; that identity does not guarantee how it will respond to a request. Every boundary below is yours to hold, not the model's.
 
 ## The service boundary
 
@@ -17,9 +17,9 @@ This kit runs `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF` on your own lapto
 
 ## The uncensored boundary
 
-The model carries no built-in refusal behaviour. It will answer bluntly and it will not warn you. Two consequences follow:
+Do not depend on a model refusal or warning to enforce a boundary. Record the actual response, including any refusal or warning. Two consequences follow:
 
-- You decide what to ask and what to publish from the replies. The model applies no editorial judgment of its own.
+- You decide what to ask and what to publish from the replies. No generated answer transfers that responsibility to the model.
 - Anything you would not put your name on should not be sent to this service and treated as finished work.
 
 A local uncensored model is a capability you aim, not a guardrail you inherit.

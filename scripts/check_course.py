@@ -32,7 +32,10 @@ def main() -> int:
         modules = course["modules"]
         if [module["id"] for module in modules] != [f"{i:02d}" for i in range(11)]:
             raise ValueError("manifest must enumerate all eleven module IDs in order")
-        commands: list[tuple[list[str], Path]] = []
+        commands: list[tuple[list[str], Path]] = [
+            ([sys.executable, str(ROOT / "tests/test_command_syntax.py")], ROOT),
+            ([sys.executable, str(ROOT / "scripts/check_command_syntax.py")], ROOT),
+        ]
         for module in modules:
             directory = (ROOT / "AI_Harness_Bootcamp_2" / module["directory"]).resolve()
             if not directory.is_relative_to(ROOT / "AI_Harness_Bootcamp_2") or not directory.is_dir():
@@ -47,6 +50,8 @@ def main() -> int:
                 required.update({"tests/test_workflow.py", "tests/test_adequacy.py"})
             elif module_id != "09":
                 required.add("tests/test_adequacy.py")
+            if module_id == "10":
+                required.add("tests/test_readiness.py")
             listed = module["tests"]
             if len(listed) != len(set(listed)) or not required.issubset(listed):
                 raise ValueError(f"Module {module_id} manifest omits or duplicates required tests")

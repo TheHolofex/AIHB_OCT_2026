@@ -345,11 +345,11 @@ If you revise a category label, keep the original first-failure notes visible ne
 
 Account for each run once.
 
-1. Run IDs: each run ID connects to exactly one bucket. Each run once.
-2. The three buckets are pass, fail by category, and other.
+1. Run IDs: each run ID goes into exactly one group. Each run once.
+2. The three groups are pass, fail by category, and other.
 3. Inside fail by category, each Original note sits beside its Revised category. Original notes stay; revising a category never replaces the note.
-4. All three buckets add into Total = 16.
-5. Exception: Counts do not close → HOLD. If the buckets do not add to sixteen, or a run is missing or counted twice, record HOLD.
+4. All three groups add into Total = 16.
+5. Exception: Not 16, or a run missing or counted twice: HOLD. If the groups do not add to sixteen, or a run is missing or counted twice, record HOLD.
 
 </details>
 

@@ -77,7 +77,7 @@ Some assignments also have a break partway through, at these points:
 
 Before any break, save your notes and receipts.
 
-**Cold Foundry's handoff happens outside class hours.** The assignment ends with a kit that another person should be able to start, stop, and restore from its saved files, without your chat history. Their attempt is scheduled separately, so line up that person before Thursday. Running the kit yourself in a fresh terminal shows that it restarts from its saved files, but not that someone else can use it, so you record the two results separately. If no one is available, record the other person's attempt as unobserved, not passed.
+**Cold Foundry's handoff happens outside class hours.** The assignment ends with a kit that another person should be able to start, stop, and restore from its saved files, without your chat history. The coordinator arranges that person with you by three days before the first teaching day; their attempt is scheduled separately from Thursday's 13:30–16:30 block. Running the kit yourself in a fresh terminal shows that it restarts from its saved files, but not that someone else can use it, so you record the two results separately. If no one is available, record the other person's attempt as unobserved, not passed.
 
 <div data-photo-band="route"></div>
 
@@ -105,4 +105,18 @@ Module 2 needs Obsidian installed on your machine, with community plugins in Res
 
 Module 7 has its own n8n readiness check: you open the local editor and confirm that a saved workflow survives stopping and restarting n8n. You don't need an n8n Cloud account, an Assistant key, or any paid model calls. Keep the Assistant off, leave workflows unpublished, and open n8n only at localhost in your browser. The device owner must approve the privileged Docker-in-Docker runner and any Docker Desktop licensing that applies. On the native Windows PowerShell route, n8n is the only part that runs through a WSL Ubuntu bridge; OMP, Python, Git, your credentials, and the rest of the course work stay native to Windows. If WSL or Docker is blocked, n8n stays on HOLD even when OMP passes.
 
+Cold Foundry has a separate **Local model** readiness check. Staff prepare missing tools with the device owner's approval, then you check the intended machine before any model download or launch. A passing OMP, Obsidian or n8n check doesn't establish local-model capacity. Use [Cold Foundry's readiness requirements](module-10-capstone/README.md) and report any missing tool, capacity limit or occupied service port to the support owner.
+
 Allow roughly one to three hours for setup on top of the daily schedule, and longer if downloads are slow, the Obsidian or n8n checks take extra work, or you're waiting on the device owner's approval. That's a rough estimate, not a measured time.
+
+### Arrange access and report blockers
+
+Let **T** be the first teaching day confirmed by the coordinator.
+
+| When | What you need |
+|---|---|
+| T−7 days | The coordinator sends setup instructions and access requirements. Confirm the GitHub invitation belongs to the account you'll use and obtain the device owner's installation approval. |
+| T−3 days | Return your operating system/version, architecture, device owner, separate readiness results, evidence locations and blockers. Confirm authorized OpenRouter access and the provisional US$40 learner allowance with the account owner; that allowance isn't an automatically enforced cap. Confirm access and any usage conditions for the pinned Hugging Face repository with its account owner. |
+| By T−1 day | Work with the support owner to resolve blockers. Staff complete the capstone download and full exact-model rehearsal on the intended machine. Keep unresolved checks on HOLD; don't infer readiness from a missed deadline. |
+
+Send private names, contact details and account evidence through the coordinator's approved private channel. Never include a token in a readiness record. Only the account owner can authorize paid use or accept repository conditions; only the device owner can approve installations, Docker access and applicable licensing.

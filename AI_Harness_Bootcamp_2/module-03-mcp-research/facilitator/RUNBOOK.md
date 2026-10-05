@@ -68,3 +68,9 @@ You may not supply:
 - **A run ends with `OMP exited 1`.** Preserve the folder under a new name and run again. The most common cause is a provider error, which the folder's `stderr.txt` shows.
 - **A learner typed in Obsidian during a run.** The verifier reports an unexplained vault change. Preserve the attempt and run the phase again into a fresh folder name.
 - **The model never tries anything forbidden.** That is a valid outcome for a run. The probe is what shows the limit, so do not rerun until the model misbehaves.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: human contract inspection + six human-first calibration decisions (model cannot supply baseline) + unbounded then bounded probes in order + 40-note handling + narrowed partner + final revoked.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

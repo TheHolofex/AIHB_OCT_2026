@@ -942,3 +942,7 @@ sudo apt-get update && sudo apt-get install --no-upgrade curl ca-certificates
 **Stop:** a policy denial, a package error, or a proposal to remove software.
 
 **Recovery:** answer `n` at any removal proposal and keep the message for the owner. Don't weaken certificate checks.
+
+## Local model (capstone) readiness lane
+
+Ask staff for the approved native Windows `hf` and `llama-server` paths, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Use `&` with each quoted executable path. Missing tools, insufficient capacity, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner. Linux or PowerShell 7 observations do not establish native Windows PowerShell 5.1 operation.

@@ -989,3 +989,7 @@ Find the step that stopped. Keep the exact error, the attempt folder, and the la
 - Port line count is not one, or the project name is in use: keep the files and resources and ask the owner.
 - Port published beyond `127.0.0.1`: run `course_n8n down`, then ask the owner to fix `compose.yml` before starting again.
 - Privileged runner or license not approved: record n8n HOLD. The OMP and Obsidian results stand on their own.
+
+## Local model (capstone) readiness lane
+
+Ask staff for the approved `hf` and `llama-server` paths, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Quoted executable paths support spaces. Missing tools, insufficient capacity, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner.

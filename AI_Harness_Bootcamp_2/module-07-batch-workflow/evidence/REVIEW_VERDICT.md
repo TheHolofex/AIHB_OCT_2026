@@ -1,4 +1,6 @@
-# Module 6 verdict
+# Module 07 review verdict
+
+**Historical numbering:** Previously titled "Module 6 verdict" in early records (body, date 2026-08-23, commands, retired Python section, native n8n cutover 2026-10-02, and all outcomes preserved unchanged as historical evidence).
 
 The 2026-08-23 record below describes the retired Python implementation. Its commands and review results are historical, not current verification. See [Native n8n cutover](#native-n8n-cutover--2026-10-02) for the replacement evidence.
 

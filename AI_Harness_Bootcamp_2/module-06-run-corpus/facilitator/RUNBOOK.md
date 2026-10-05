@@ -37,3 +37,9 @@ Use `HOLD` when fewer than eight interpretable runs exist in the sample, the sup
 ## Stretch
 
 If the learner does the stretch, confirm that the two stretch configs were frozen and the prediction was written before the public practice labels were opened. The stretch is optional.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: sample frozen before categories/held-out labels after prediction; sixteen first-failure notes.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

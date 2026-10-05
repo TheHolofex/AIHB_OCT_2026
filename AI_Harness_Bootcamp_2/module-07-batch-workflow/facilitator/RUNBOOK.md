@@ -92,3 +92,9 @@ If learners correct graph construction after baseline collection, treat that as 
 Look for a traceable record, not a score: attempt folder, frozen predictions, source filenames, workflow names and URLs, execution IDs, baseline and changed exports, original identity and digest recheck reports, six core receipts, and five core receipt comparisons. Observations should explain any HOLD without deleting it. A screenshot documents a UI state; downloaded reports document the comparison and file hashes. Keep secrets, account details, and completed prediction sets out of demonstration captures before prediction.
 
 For optional revised-wave work, freeze two predictions first. Compare wave2-baseline against wave2-revised-baseline under OPEN to isolate input effects. Compare wave2-revised-baseline against wave2-revised-changed to isolate policy effects with the input fixed. Use the retained restored and changed workflows without another policy edit. Require a separate predicted-change report for each comparison and preserve all unchanged bytes. Leave unrun optional work unclaimed.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: blank-canvas build, frozen deltas, both waves, restored exact reports (180 min block preserved; do not cut work to clock).
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

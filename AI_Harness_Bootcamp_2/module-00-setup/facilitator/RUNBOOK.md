@@ -20,10 +20,15 @@ The supplied Harbor Depot desk note to Field Clinic S-3 is public practice. Its 
 8. Confirm a same-state path for every control a learner must operate. Record any unverified operation explicitly.
 9. Prepare a support owner for managed-machine and account problems.
 10. Put a visible clock where learners can observe the 60-minute first-result design target. Record actual timing and assistance; this target has not been validated with learners.
+11. Confirm T (first teaching day). At T-7 the coordinator sends setup instructions and access requirements. At T-3 each participant returns readiness status, evidence, and blockers via the register below. By T-1 device/support owners resolve blockers and staff complete capstone rehearsals/downloads on intended machines. Missing deadlines produce named HOLD records.
+12. Maintain one privacy-safe readiness register (participant alias only, no real names/contact; route/platform, OS/architecture, device owner, required check, due date, status, evidence locator + date + redacted hash, support owner, disposition). Private details stay outside repo and public site. Use actual cohort intake; do not assume availability of people or machines.
+13. Record separately: GitHub account/invitation acceptance and repository read probe; participant-authorized OpenRouter access/key readiness, funded-credit readiness and provisional US$40 learner allowance (owner-confirmed, not an enforced cap); HF access/conditions; device-owner installation approval; Docker access/privileged-runner approval and Desktop licensing applicability; and Local model tool/storage/RAM/port status. Exact local paths and private approvals belong in the external register, not this source. The US$25 staff verification admission remains distinct from the unchanged v6 learner contract.
+14. Freeze the platform rehearsal matrix from the actual cohort inventory plus the mandatory changed-path routes (host macOS/Apple Silicon, native Windows PowerShell 5.1, clean Arch). At least one clean owner-approved machine per required combination completes the checks. Missing required machines hold release; unrepresented advertised routes remain explicitly runtime-unobserved.
+15. Exercise the published commands for each required live lane on actual machines and preserve failures. Confirm class-work authorization and funded-credit readiness with the participant's account owner. Staff verification campaigns use their separately authorized [campaign ledger](../../../evidence/exercise-runs.json); its additional admission controls do not change the learner contract.
 
-## Keep three readiness lanes separate
+## Keep four readiness lanes separate
 
-Record **OMP**, **Obsidian**, and **n8n** separately. The OMP lane retains both its prerequisite report and live `READINESS CHECK PASS/HOLD`; a passing report never replaces the live tool-write proof. Record **Obsidian READY/HOLD** from its two disk checks plus separate actual GUI observation, and **n8n READY/HOLD** from its runtime, browser, and persistence checks. No lane establishes another. Preserve every earlier result when a different lane holds. Obsidian HOLD blocks Module 2's local vault operation; n8n HOLD blocks Module 7's local operating path.
+Record **OMP**, **Obsidian**, **n8n**, and **Local model** separately. The OMP lane retains both its prerequisite report and live `READINESS CHECK PASS/HOLD`; a passing report never replaces the live tool-write proof. Record **Obsidian READY/HOLD** from its two disk checks plus separate actual GUI observation, and **n8n READY/HOLD** from runtime, browser, and persistence checks. Record **Local model READY/HOLD** from approved tool identities, actual destination/cache volumes, installed and available RAM, a free `127.0.0.1:8080` before launch, and the complete exact-model lifecycle in Module 10. A preflight alone cannot make the Local model lane READY. No lane establishes another lane's result.
 
 ## Set up local Obsidian
 
@@ -140,6 +145,10 @@ Collect or verify:
 - OMP setup report path and separate live readiness result;
 - Obsidian READY/HOLD, both disk-check paths, refresh record, actual version/platform, and separate GUI observations;
 - separate n8n READY/HOLD, observed platform/version/port/service state, workflow name, reload and stop/start persistence observations, and unresolved owner approvals;
+- separate Local model readiness status, preflight report, intended machine, and complete exact-model rehearsal evidence or the missing prerequisite;
+- readiness-register entries with evidence locators and platform-matrix status;
+- actual pilot observations, facilitator rehearsal records with source hashes and machines, human peer-review and independent-recipient records where observed;
+- the relevant staff-verification ledger entry for campaign work, kept separate from class-work authorization;
 - `acceptance-control.md`;
 - first-checked-draft timestamp;
 - delegation and responsibility records, created before the run;
@@ -152,3 +161,32 @@ Collect or verify:
 - support packet for any blocked dependency.
 
 Do not collect API keys, environment dumps, account screenshots, or the learner's full home path.
+
+## Pre-release operational evidence requirements
+
+These procedures are exercised on actual cohort machines and participants. Record actual observations only; do not fabricate participants, approvals, or results. Report missing people, machines, authorizations, and any unresolved staff-campaign admission prerequisite.
+
+**Readiness register and schedule:** Use the privacy-safe register defined above. Collect from actual intake. T-7 / T-3 / T-1 deadlines govern; missing items produce named HOLDs. The provisional US$40 learner allowance is owner-confirmed, not an enforced cap. Staff-verification spending and its additional admission controls belong in the separate campaign ledger.
+
+**Platform matrix:** Mandatory: host macOS/Apple Silicon, native Windows PowerShell 5.1, clean Arch. Plus every OS/version/arch in the confirmed cohort. One clean owner-approved machine per required combo must complete install + fresh-terminal + repo auth + OMP + Obsidian GUI + n8n + capstone where assigned. WSL2 Ubuntu, native Ubuntu, Intel macOS added where present in cohort. Unrepresented routes: explicitly unobserved.
+
+**Three nondeveloper pilots (Modules 00-02):** Recruit three representative nondevelopers. Exercise Modules 00, 01, 02 in order on the candidate generated site served locally. Observe setup, source verification, Obsidian workflow, navigation/search, elapsed time, questions, interventions, friction, outcomes. Record failures and assistance. Fix instruction/UI defects and re-observe affected path. No scores or qualification decisions.
+
+**Current Module 00-10 facilitator controls (rehearsals):** Facilitators perform each current lab using its owning runbook. Record source/config hashes, operator alias, actual machine/date, outputs, assistance, HOLDs. Particular controls:
+- 00: separate OMP/Obsidian/n8n/Local model lanes + register.
+- 01: baseline/prediction before sealed change; thread walk and claim defense.
+- 02: real Obsidian GUI + cold retrieval + admission.
+- 03: human contract inspection, six human-first calibration decisions (model does not supply baseline), unbounded then bounded probes in order, forty-note handling, narrowed partner, final revoked.
+- 04: labels before model answers/adjudication; ten-message sample limits stated.
+- 05: restore before fault/sealed first miss/authorized correction/three recovery runs.
+- 06: sample before categories/held-out labels after prediction; first-failure notes.
+- 07: blank-canvas build, frozen deltas, both waves, restored reports; three-hour block preserved.
+- 08: pre-result policy, 120 authored rows, six designated failures, restoration; 38-call stretch only after mandatory lanes and budget gate.
+- 09: three core probes + strict planted-question verifier; human peer review of policy/probe/measurement evidence.
+- 10: exact-model lifecycle (weights, 127.0.0.1:8080, 32768, health after listening evidence, OMP reply, stop/unreachable, digest restore, cold replay); separate pre-release independent recipient rehearsal on frozen package; per-learner after-hours recipient attempt arranged by coordinator.
+
+**Module 09 human peer review:** Obtain real human peer review of current Module 09 policy/probe/measurement evidence and handoff from someone able to inspect the mechanisms. Technical peer critique is distinct from novice pilot. Current evidence is ungraded observation.
+
+**Module 10 pre-release and per-learner recipient:** Recruit actual recipient before publication; observe package-only operation from the frozen package on approved machine. Class coordinator arranges each learner's recipient by T-3 for after-hours attempt. Record questions, commands, outputs, all help. Assisted stays assisted; independent attempt required if first was guided. Missing pre-release recipient proof holds release. Future class transfer records remain pending until actual attempts.
+
+**Billing and evidence integrity:** Record every paid staff-verification attempt in its campaign ledger, including facilitator, pilot, and platform work. Preserve receipts, planned/attempted/completed/held counts, and actual billing when observable. No synthetic evidence. Retired evidence stays in the archived prior report.

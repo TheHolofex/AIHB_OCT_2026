@@ -2,11 +2,13 @@
 
 Stand up the pinned uncensored model on your laptop as a loopback-only service. Prove one live interaction, stop and restore the service, then hand the kit to a colleague who can run it without you. OMP drafts the launch line and the bring-up steps and fills in package fields; you approve and run the server line, and the adapter scripts check the package's claims.
 
-The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its refusal direction was removed: it answers bluntly and doesn't apply its own judgment. You must keep every boundary.
+The model is `orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF`, a 15.7 GB uncensored build. Its identity does not guarantee an answer, refusal, warning, safety, or accuracy. You retain every consequential decision and operating boundary.
 
 Plan for about three hours on Thursday (a rough estimate). Your recipient's attempt happens outside class hours. If no recipient is available, record independent-person operation as unobserved, not passed.
 
 ## Start here
+
+Ask staff for the approved `hf` and `llama-server` executable paths, then [check local-model readiness](shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before downloading or launching. Keep existing installations. A preflight reports capacity and prerequisites without downloading or starting a service; each machine still needs a complete exact-model rehearsal.
 
 1. [Stand the service up and transfer it](shared/MODULE_10_LAB.md) end to end.
 2. Read the [service rules](shared/case/SERVICE_RULES.md) before the first launch.

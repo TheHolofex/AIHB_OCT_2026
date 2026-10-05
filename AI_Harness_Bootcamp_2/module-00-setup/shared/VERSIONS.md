@@ -72,3 +72,32 @@ For a fresh configuration, change only the n8n port mapping from `5678:5678` to 
 For a fresh installation, the platform guide has you save one unused project name approved by the owner in `.course-project`. The `course_n8n` helper uses that name, `.env`, and `compose.yml`, and it refuses exported configuration overrides. Use the same saved name on the same approved engine for every restart; a file path by itself does not tell Compose which project to use. If you already have an installation, keep its existing project identity and let its owner manage its lifecycle.
 
 The editor UI was checked only on Apple Silicon. The guides' n8n steps, from installing the engine through the saved-workflow restart, also ran in Linux test machines for Ubuntu (x86-64 and ARM64), Arch Linux ARM, and Ubuntu in WSL with a separate engine standing in for Docker Desktop; there, the editor's own web requests stood in for the browser. None of that shows the steps run on your device. If you use Windows, Intel macOS, Ubuntu, or Arch, check them on that device.
+
+## Local model readiness lane (Module 10)
+
+Keep existing tools and ask the device owner to approve any missing installation. Record the actual executable paths, version/help output and platform/architecture; a matching version is not proof that the model fits or runs.
+
+The official Hugging Face CLI candidate is **huggingface-hub 2.1.1**, installed into an isolated per-user Python environment. The [official universal wheel](https://files.pythonhosted.org/packages/33/23/885b3a3b510c305f1d84421913935e19b6a48b93d173a0541674c1e88c2a/huggingface_hub-2.1.1-py3-none-any.whl) has SHA-256 `d76fa1d8e6a59e01f012b1d88da604c099c7a0f2e26b1cc7d708f0a4283bd2a2`. Retain the installation report's resolved dependency versions, URLs and hashes. [CLI reference](https://huggingface.co/docs/huggingface_hub/guides/cli).
+
+The llama.cpp candidate is official prerelease **b11146**, commit `7fe450e19305b828c199d602c23a8337aaa1f03b`. Select the archive for the actual OS and architecture; do not substitute a GPU build or another release merely to get a passing startup. These immutable file identities are from the [official release metadata](https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/b11146). The upstream tag is not marked immutable; verify the retained digest before extracting.
+
+| Runtime | Official archive | SHA-256 |
+|---|---|---|
+| macOS ARM64 | [llama-b11146-bin-macos-arm64.tar.gz](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-macos-arm64.tar.gz) | `1ad3f9eff80edb9dbef4259ad564d1720612ef7eea48fa4afed0e54f5f3d5711` |
+| macOS x86-64 | [llama-b11146-bin-macos-x64.tar.gz](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-macos-x64.tar.gz) | `305f0e3a17d2c01eb205cd0a62128357f1ec3b55329cb084d94e5ec0115d7a3b` |
+| Windows ARM64, CPU | [llama-b11146-bin-win-cpu-arm64.zip](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-win-cpu-arm64.zip) | `1727d241f3bf6d27360e984e851cf013928fd655bf89f8628e70da027f377b7d` |
+| Windows x86-64, CPU | [llama-b11146-bin-win-cpu-x64.zip](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-win-cpu-x64.zip) | `14cf1303ca9ac3abd94816850532f9f9a69ac66fbaca3776fc6f9061c2fac1d1` |
+| Linux ARM64, CPU | [llama-b11146-bin-ubuntu-arm64.tar.gz](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-ubuntu-arm64.tar.gz) | `4aeda6fe68831547e49b7fa87607383ca5352b3d72ca5f70d52ed265f58c131f` |
+| Linux x86-64, CPU | [llama-b11146-bin-ubuntu-x64.tar.gz](https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-ubuntu-x64.tar.gz) | `c150306eb16b5ab696f76a8bdf810c35fd98a24e82158742e6fa28f420ff8410` |
+
+Archive availability is not platform qualification. Full current native model rehearsals for these candidates remain **unobserved/HOLD**; an installed-host version or a Linux container cannot establish native Windows, Arch or another machine's operation. Keep the exact resolved environment after its rehearsal; do not call an untested combination qualified.
+
+Before a new weight download, require **35 GiB total free** on the actual work/download volume and every separately configured cache volume that may hold the full weight allocation. This conservative policy allows two model-sized allocations plus roughly 5 GiB margin; it is not a vendor minimum or additional space above 35 GiB. The pinned file is 15,676,553,472 bytes, approximately 14.60 GiB. The separate base setup thresholds remain 15/25 GiB.
+
+The fixed `--local-dir weights` route stores download metadata under that directory and bypasses the Hub file cache. Its capacity check covers the actual destination and HF Xet cache, not an unused `HF_HUB_CACHE` volume. [Local-directory download behavior](https://huggingface.co/docs/huggingface_hub/v2.1.1/en/package_reference/file_download#huggingface_hub.hf_hub_download).
+
+Use **24 GiB installed RAM** as a provisional planning floor, not a speed guarantee. At least 16 GiB but less than 24 GiB is conditional on the complete exact-model rehearsal at context 32768. Below 16 GiB, or after a failed rehearsal, arrange an owner-approved qualified machine. Machines at or above 24 GiB still need that rehearsal. Record available RAM and competing workload. Linux `MemTotal` excludes reservations: retain the device owner's installed-capacity inventory separately, plus any VM/container limit.
+
+[Check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) in a fresh terminal before HF authentication/download and immediately before launch. The endpoint must be free at `127.0.0.1:8080`; never use another service's health response as this attempt's evidence. The check neither downloads nor starts a model.
+
+Retain actual evidence of verified weights, an owned loopback listener, context 32768, health after listening, a real OMP reply, stop/unreachable, disabled-control refusal, digest-checked restore and byte comparison, frozen copy, cold replay, and final stop. None of the capacity or identity checks promises answers, refusals, warnings, or interactive speed.

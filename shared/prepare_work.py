@@ -21,7 +21,7 @@ SHARED = {
 SCRIPTS = {
     "02": ("second_brain.py",), "03": (), "05": ("render_review.py", "restore.py"), "06": (),
     "07": (), "08": ("evaluate_pairs.py", "restore_baseline.py"),
-    "09": (), "10": ("local_ai.py", "check_package.py"),
+    "09": (), "10": ("local_ai.py", "check_package.py", "check_readiness.py"),
     "04": ("chalk.py", "build_state.py", "check_questions.py", "label_template.py", "freeze_labels.py", "validate_answers.py", "compare_labels.py", "route.py", "compare_runs.py"),
 }
 MODULE_07_DOWNLOADS = (

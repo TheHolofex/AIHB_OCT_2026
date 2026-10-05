@@ -83,3 +83,9 @@ paid operation. Aggregate key usage is not exact per-generation billing.
 
 Local mode does not establish available account credit or waive learner
 prerequisites.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: pre-result policy freeze, 120 authored rows, six designated failures, restoration. 38-call stretch only after mandatory lanes and budget gate, separate preregistration.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

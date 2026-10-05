@@ -1,4 +1,6 @@
-# Module 4 verdict
+# Module 05 review verdict
+
+**Historical numbering:** Previously titled "Module 4 verdict" in early records (body, date 2026-08-23, commands, and outcomes preserved unchanged as historical evidence for that run).
 
 **Date:** 2026-08-23
 **Standard:** `reference/REFERENCE.md`, SHA-256 recorded in `reference/REFERENCE.sha256`

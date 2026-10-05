@@ -959,4 +959,9 @@ The list below is organized by the step that produced the first error. Keep the 
 - n8n generate or bind substitution fails the exactly-one check: keep the directory; the verification is strict. Ask owner.
 - n8n start or workflow does not persist: keep the directory, volumes, and `.course-project`. Use only `course_n8n` for lifecycle. The saved blank workflow after down/up is required for Module 7.
 
+
+## Local model (capstone) readiness lane
+
+Ask staff for the approved `hf` and `llama-server` paths, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Quoted executable paths support spaces. Missing tools, insufficient capacity, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner.
+
 See also [shared/TROUBLESHOOTING.md](../shared/TROUBLESHOOTING.md) and [shared/CREDENTIALS.md](../shared/CREDENTIALS.md) for cross-platform cases. Record every HOLD with the concrete symptom and the attempt path; a later prerequisite report cannot replace an earlier live check.

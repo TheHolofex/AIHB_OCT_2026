@@ -98,3 +98,9 @@ A well-documented `HOLD` can complete practice. It does not satisfy the module r
 - result or reason for `HOLD`.
 
 Do not collect credentials, private local files, outside operational details, or model chat history unrelated to the case.
+
+## Operational readiness notes
+
+See Module 00 facilitator runbook for shared staff operational procedures, T-relative schedule, privacy-safe register, platform matrix, and evidence collection. This module: baseline/prediction before sealed change; thread walk and claim defense on unseen selection.
+
+Record machine, source hashes, outcomes, and HOLDs for the published controls. No blind provider retry.

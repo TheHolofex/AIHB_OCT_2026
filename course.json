@@ -515,11 +515,12 @@
       ],
       "scripts": [
         {"source": "scripts/local_ai.py", "dest": "scripts/local_ai.py"},
-        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"}
+        {"source": "scripts/check_package.py", "dest": "scripts/check_package.py"},
+        {"source": "scripts/check_readiness.py", "dest": "scripts/check_readiness.py"}
       ],
       "download_dirs": ["shared/case", "shared/controls", "shared/baseline"],
       "raw_downloads": ["shared/PACKAGE.md"],
-      "tests": ["tests/test_module_10.py", "tests/test_adequacy.py"]
+      "tests": ["tests/test_module_10.py", "tests/test_adequacy.py", "tests/test_readiness.py"]
     }
   ],
   "shared_downloads": [

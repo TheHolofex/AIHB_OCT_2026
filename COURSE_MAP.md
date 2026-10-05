@@ -12,7 +12,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
-| Variable model/tool spend | Provisional ≤US$40 per learner; at most two concurrent paid attempts | Requires an actual usage ledger; Module 08 stretch has 36 paired calls and two restored controls |
+| Variable model/tool spend | Provisional US$40 learner allowance, confirmed by the account owner; at most two concurrent paid attempts | Not an enforced spending ceiling or an observed total; requires actual usage records. Module 08 stretch has 36 paired calls and two restored controls. Separately authorized staff verification uses its own aggregate budget and admission controls. |
 | Independent-recipient session | One per learner, outside the four course days | Provisional; requires recruitment and scheduling evidence |
 | Expected cohort / 10x case | 20 / 200 learners | Planning cases, not demonstrated capacity |
 
@@ -75,7 +75,7 @@ The Copper Span break follows the sealed first miss, the Blue Gauge break follow
 
 ### Thursday timetable
 
-Thursday starts around 08:00 and ends around 16:00. Times are approximate.
+Thursday starts around 08:00 and ends around 16:30. Times are approximate.
 
 | Roughly | Work |
 |---|---|
@@ -86,6 +86,20 @@ Thursday starts around 08:00 and ends around 16:00. Times are approximate.
 | 13:30–16:30 | Cold Foundry |
 
 The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its pacing route.
+
+Cold Foundry keeps its full 13:30–16:30 block. Its independent-recipient attempt is separately scheduled outside class hours; it is not part of that three-hour allocation.
+
+### Readiness deadlines
+
+Let **T** be the first teaching day confirmed by the course coordinator. Until that date is confirmed, retain these relative deadlines without inventing calendar dates.
+
+| Due | Owner | Required action |
+|---|---|---|
+| T−7 days | Course coordinator | Send setup instructions, repository invitations and account/access requirements through approved channels. |
+| T−3 days | Each participant; coordinator for recipient arrangements | Return separate OMP, Obsidian, n8n and Local model readiness evidence and blockers. Confirm the participant's route, OS/version/architecture and device/support owner. Arrange the after-hours recipient attempt. |
+| T−1 day | Device/support owner and facilitators | Resolve approved installation/access blockers and complete exact-model capstone downloads and full rehearsals on the intended machines. Record unresolved items as named HOLDs. |
+
+The Module 00 facilitator runbook owns the privacy-safe intake/register procedure and required checks. Names, consent and contact details stay outside the repository. A missed deadline is HOLD, not presumed readiness. Three actual novice pilots, current facilitator/platform observations, a Module 09 human peer review and an independently observed Module 10 recipient rehearsal are pre-release requirements; later class-time learner records remain future operating evidence.
 
 Sessions run in this order. Each capability assumes earlier skills, while **no module depends on another module's evidence**. Every module receives its own case and machinery, verified at entry. Recover missing prerequisites explicitly. A technical `HOLD` identifies work that needs attention; it does not block later participation.
 
