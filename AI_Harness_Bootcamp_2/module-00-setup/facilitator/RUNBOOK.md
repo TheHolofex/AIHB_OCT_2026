@@ -52,20 +52,87 @@ The observed reference GUI is **1.13.7 on Darwin arm64**. Native Windows, WSLg, 
 
 ## Local n8n readiness
 
-Before starting n8n, confirm device-owner approval for the full official six-service stack, privileged `sandbox-runner-1` Docker-in-Docker, ordinary-account Docker access, and applicable Docker Desktop licensing. Preserve existing contexts, containers, volumes, applications, destinations, and attempts. On native PowerShell, keep OMP, Git, Python, keys, checkout, and receipts native; the selected WSL Ubuntu is only the n8n bridge. If policy blocks WSL/Docker, preserve HOLD and arrange an approved operating machine.
+Staff own Docker installation, licensing review, engine privileges, image pins at 2.41.5, and the prepared destination using the helper. Learners run only the recorded start/status (and observe stop/start when staff perform it). Preserve existing stacks, containers, volumes, and data; no migration or removal without owner authorization.
 
-The platform guide must establish all of the following on the learner’s actual device:
+The procedures and helper establish on the learner's device:
 
-- `docker info` and modern `docker compose version` succeed in the intended new shell; Compose 5 is acceptable.
-- The fresh install uses the reviewed official installer 1.4.0 contract, explicit n8n 2.41.5, and `--no-start`, with a completed-download review alternative. A live installer URL can change. An existing destination is preserved for owner review, not reinstalled.
-- A fresh installation has an unused owner-approved project name recorded in `.course-project`; lifecycle commands use `course_n8n` with explicit project and configuration files and no exported overrides. Reuse the same identity and engine. Existing installations retain their owner-managed identity; stopped Docker Desktop requires startup approval because existing work may resume.
-- The n8n browser port is `127.0.0.1:5678`, with no other host ports added. The running version is exactly `2.41.5`; a mismatch remains HOLD pending owner resolution.
-- `n8n`, `runners`, `sandbox-api`, `sandbox-runner-1`, and `searxng` stay running, with health checks healthy where shown. `sandbox-certs` is the sixth service and correctly finishes at `Exited (0)`.
-- A named blank, unpublished workflow survives browser reload and ordinary course `down` / `up -d` against the same project and named volumes. Never use `down -v`. Assistant remains off. Module 7 requires no Cloud signup, Assistant key, or model call.
+- `docker info` and `docker compose version` succeed in the shell used for the helper.
+- Staff invoke `.../n8n_local.py prepare --project <fresh-approved-name> [--port 5678] --directory <destination>`; the helper refuses existing (or linked) destinations, colliding or reserved project resources, occupied 127.0.0.1 ports, any inherited Docker/Compose/N8N_* overrides, non-local engines, and unapproved configuration.
+- Identity (project, port, engine context, file hashes) recorded in .course-n8n.json; start/status/stop always use that identity with explicit project/env-file/compose arguments. No pass-through flags.
+- Editor bound to 127.0.0.1:5678. Services are exactly `n8nio/n8n:2.41.5` and `ghcr.io/n8n-io/runners:2.41.5`, with external runner mode, broker on 0.0.0.0 inside the Compose network, and diagnostics off. No privileged containers, host ports on runners, or Docker socket mounts.
+- Helper `status` reports both services running, correct loopback binding, and the reviewed runner configuration (no Assistant or sandbox keys present).
+- Staff run a real Code node (simple JS or Python) through the external runner and confirm a successful execution result appears; HOLD if the runner does not execute user code.
+- Named blank unpublished workflow survives browser reload and a staff-assisted stop/start cycle via the helper. Named data volume is retained (down without -v or prune).
+- An existing six-service installation stays under its owner's control. Export and back up its workflows and encrypted credentials only with permission; never print decrypted credentials. Prepare a fresh project and destination on an approved machine, import through n8n's supported mechanisms and verify operation before considering removal of the original. The helper does not migrate data. If staff select a nondefault directory, supply the learner's exact commands with `--directory` on every operation.
+- Assistant remains off. Module 7 uses the AI Agent node on the canvas; the OpenRouter key belongs only in the n8n credential.
 
-For the observed fresh-instance UI, use **Set up owner account → Next**, optional survey **Get started**, free-license offer **Skip**, then Assistant **Set up later in Settings**. On an empty instance, **Overview → Build a workflow** opens the canvas. Click the title, enter the readiness name, and press **Enter**. Saving is automatic; require the name and blank canvas to persist after reload, not a mandatory **Saved** label. An existing instance uses its existing local login. Preserve a preexisting workflow; choose a distinct readiness name if needed.
+For a fresh instance, complete local owner account setup, skip offers and surveys, leave Assistant off. From Overview choose Build a workflow (or Create), name the blank readiness workflow, press Enter (auto-save), reload the page or return via list and reopen. Confirm name, empty canvas, unpublished.
 
-The integration owner observed these runtime/UI/persistence results on Apple Silicon only. Do not report Windows, Intel macOS, Ubuntu, or Arch as exercised on that basis. Image availability is not execution proof. Record each actual platform and any unexercised operation. Use [shared n8n troubleshooting](../shared/TROUBLESHOOTING.md#when-local-n8n-stops) for blocked prerequisites, login, pulls, version, port, and persistence failures.
+Staff stop the recorded project (helper stop), then start again; learners reopen the same named workflow from the list and confirm it survived. Record n8n READY/HOLD from the combination of helper status, browser success, real Code-node execution, and observed persistence. Record actual platform/version/port/service state, workflow name, and any owner approvals or blocks. Unexercised combinations stay unobserved.
+
+Use the n8n troubleshooting section for engine, port, login, or persistence problems. The helper never prints tokens or claims browser/Code-node readiness from a port response alone.
+
+### Provision before handing over the machine
+
+Use the participant's ordinary account. Install Docker only when missing, with device-owner approval: [Docker Desktop on macOS](https://docs.docker.com/desktop/setup/install/mac-install/), [Docker Desktop on Windows](https://docs.docker.com/desktop/setup/install/windows-install/), [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/), or [the Arch Docker procedure](https://wiki.archlinux.org/title/Docker). Review [Docker Desktop licence eligibility](https://docs.docker.com/subscription/desktop-license/). Docker daemon access on Linux grants powerful host access; follow the owner's approved access policy rather than making the socket world-writable.
+
+On native Windows, use Docker Desktop's Linux-container backend and native `docker.exe`; no separate Ubuntu distribution is needed for the n8n commands. On the WSL course route, enable Docker Desktop integration for the intended Ubuntu distribution and keep its configuration in Linux home. Do not install a second engine over an existing setup. Reopen the intended terminal after installation. Check `docker info` and `docker compose version`; missing access or approval is HOLD.
+
+In the chosen platform guide, complete step 5 to resolve `PY`, `R`, and `M`. These commands create a new private configuration at `$HOME/n8n-course`, select an unused project and start only that project. If that destination or project already exists, stop for owner review; do not delete it to make preparation pass.
+
+**Terminal: Bash or zsh, ordinary participant account; approved local Docker engine running.**
+
+```bash
+"$PY" "$M/scripts/n8n_local.py" prepare --project n8n-course &&
+"$PY" "$M/scripts/n8n_local.py" start &&
+"$PY" "$M/scripts/n8n_local.py" status
+```
+
+**Terminal: native Windows PowerShell 5.1, ordinary participant account; approved Docker Desktop running.**
+
+```powershell
+& $PY "$M\scripts\n8n_local.py" prepare --project n8n-course
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the preparation error.' }
+& $PY "$M\scripts\n8n_local.py" start
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the startup error.' }
+& $PY "$M\scripts\n8n_local.py" status
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the status error.' }
+```
+
+**Expected:** `PREPARED`, then `STARTED` or `RUNNING`, and a status report naming n8n 2.41.5, external runners and `127.0.0.1:5678`. Preparation generates a private runner-authentication token; it is not an OpenRouter credential. Never publish `.env`, the n8n database or resolved Compose configuration.
+
+**Stop:** Any HOLD, a different port/version, a partial startup, or a request to change an existing installation.
+
+**Recovery:** Inspect the recorded project privately with its owner. Keep failed configuration and logs. Correct the actual engine, access, registry or project conflict before another attempt; do not use another image or remove resources automatically. Initial browser startup can take longer than container creation: open the editor only when it responds.
+
+Complete local owner setup and the browser save/reopen sequence above. In a separate unpublished readiness workflow, add a Manual Trigger and a Code node containing `return [{json: {runner_check: 42}}];`. Execute it and require the actual output `runner_check: 42`, then use the current Module 07 workflow for its separately authorized provider rehearsal. A running container alone does not prove external Code-node execution.
+
+### Prove stop/start persistence
+
+Keep the saved blank readiness workflow. Run the following in the same approved account and shell.
+
+**Terminal: Bash or zsh, ordinary participant account.**
+
+```bash
+"$PY" "$M/scripts/n8n_local.py" stop &&
+"$PY" "$M/scripts/n8n_local.py" start &&
+"$PY" "$M/scripts/n8n_local.py" status
+```
+
+**Terminal: native Windows PowerShell 5.1, ordinary participant account.**
+
+```powershell
+& $PY "$M\scripts\n8n_local.py" stop
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the stop error.' }
+& $PY "$M\scripts\n8n_local.py" start
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the restart error.' }
+& $PY "$M\scripts\n8n_local.py" status
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: preserve the status error.' }
+```
+
+**Expected:** The named volume is retained. Once the editor responds, the same local login and blank workflow remain available. Observe the learner reopening it. **Stop:** Missing work, renewed owner setup, or any HOLD. **Recovery:** Keep the volumes and configuration and inspect the recorded engine/project with its owner; do not initialize another instance over missing data.
+
+For isolated staff validation only, `prepare --port PORT --directory PATH --project NAME` may select a free alternate loopback port without touching an existing instance. The helper sets `N8N_WEBHOOK_URL` so generated test-form URLs use that port too; verify the displayed URL before uploading. Record the deviation; it is not execution of the default `5678` path. Learner machines retain `127.0.0.1:5678`.
 
 ## Session shape
 

@@ -2,7 +2,7 @@
 
 Setup takes this Windows laptop from no course tools to a live readiness check, in which Oh My Pi writes one file you can verify. It has three parts. First you install Oh My Pi and pass the readiness check in Steps 1 to 9. Then you set up local Obsidian, and finally local n8n for Module 7. Plan for roughly 60 to 120 minutes for Steps 1 to 9 and about 20 to 30 minutes for Obsidian. The n8n time depends on downloads and restarts.
 
-You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and the latest stable Oh My Pi release. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course checkout, and your key stay on native Windows. Module 7's n8n runs in Docker Desktop, controlled from an Ubuntu window under WSL 2. Use that Ubuntu window only for n8n. Don't install Node, npm, or another agent.
+You need Git, Python 3.12 or newer, a browser, a plain text editor, local Obsidian, and the latest stable Oh My Pi release. The only provider key is `OPENROUTER_API_KEY`, and the course launcher selects `openrouter/anthropic/claude-sonnet-4.6`. Oh My Pi, Python, Git, Obsidian, the course checkout, and your key stay on native Windows. Staff prepare n8n in Docker Desktop; you start it from PowerShell and use it in your browser. Don't install Node, npm, or another agent.
 
 Open **Windows PowerShell** (version 5.1) from the Start menu as your ordinary user. Check with the device owner that you're allowed to install these tools. If an installer asks for administrator approval, use the owner's approved route. If policy denies an installer, stop and keep the message. Don't open an Administrator window to get around a denial.
 
@@ -494,242 +494,50 @@ In Notepad, create a new plain-text file named `gui-observation.txt` directly in
 
 Record **Obsidian READY** only if you saw every one of those actions in the app on this laptop and both checks passed. Otherwise record **Obsidian HOLD** and name the action that failed or that you didn't see. A helper `PASS` alone isn't enough. Keep this result separate from the Oh My Pi and n8n results.
 
-## Local n8n for Module 7
+## Prepare local n8n for Module 7
 
-n8n is a visual workflow editor. You'll run it locally in Docker Desktop, reach it only from this laptop at `http://localhost:5678`, and confirm that a saved workflow survives a stop and restart. The commands that control n8n run in an Ubuntu window under WSL 2, Windows' built-in Linux layer. Keep this result separate from `SETUP CHECK PASS` and `READINESS CHECK PASS`; Module 7 needs n8n ready.
+n8n is the local workflow editor for Module 7. Staff prepare and qualify the two-service environment (n8n + runner) using Docker Desktop's Linux backend on this Windows machine. Run the common Python helper from native PowerShell. Keep n8n separate from SETUP CHECK PASS and READINESS CHECK PASS.
 
-Before you install anything, get the device owner's answers to three questions. First: does this laptop meet [Docker Desktop's Windows requirements](https://docs.docker.com/desktop/setup/install/windows-install/)? These include WSL 2.1.5 or newer, Windows 10 22H2 (build 19045) or Windows 11 23H2 (build 22631) or newer, 8 GB of RAM, hardware virtualization, and the Windows Server service (`LanmanServer`) set to Automatic. Windows on Arm uses an Early Access build. Second: does your use qualify under [Docker Desktop licensing](https://docs.docker.com/subscription/desktop-license/)? Third: may you run the [official n8n stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml)? Its sandbox runner uses privileged Docker-in-Docker. Keep n8n's Assistant off, and never enter a provider key into n8n.
+Staff prepare Docker Desktop and its approved Linux-container backend, check licensing, and verify that workflows survive a restart. You stay in PowerShell; no Ubuntu window is needed for n8n. Preserve any existing instances and data. If your environment is not prepared, record **n8n HOLD** and contact the device/support owner.
 
-### Check Windows, WSL, and Docker
 
-This block reads your Windows build, memory, WSL version, installed Linux distributions, Docker, and whether anything already uses port 5678. It changes nothing.
+### Start the prepared instance from native PowerShell
 
-**Terminal: Windows PowerShell 5.1, ordinary user, opened from Start.**
-
-```powershell
-. {
-  $env:WSL_UTF8 = '1'
-  $os = Get-CimInstance -ClassName Win32_OperatingSystem
-  $ramGb = [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 1)
-  Write-Output ('WINDOWS ' + $os.Caption + ' build ' + $os.BuildNumber + ', RAM ' + $ramGb + ' GB')
-  $server = Get-Service -Name LanmanServer
-  Write-Output ('LANMANSERVER ' + $server.Status + ', ' + $server.StartType)
-  wsl --version
-  wsl --list --verbose
-  if (Get-Command docker -CommandType Application -ErrorAction SilentlyContinue) { docker version; docker ps --all } else { Write-Output 'DOCKER not installed' }
-  $listener = @(Get-NetTCPConnection -State Listen -LocalPort 5678 -ErrorAction SilentlyContinue)
-  if ($listener.Count -eq 0) { Write-Output 'PORT 5678 free' } else { Write-Output ('PORT 5678 in use by process ' + $listener[0].OwningProcess) }
-}
-```
-
-**Expected:** a build and memory that meet Docker's requirements, `LANMANSERVER Running, Automatic`, a WSL version of 2.1.5 or newer, and `PORT 5678 free`. The distribution list may show an existing `Ubuntu-24.04` or `Ubuntu-26.04` with VERSION `2`.
-
-**Stop:** a requirement isn't met, `wsl --version` prints help text instead of a version, an Ubuntu shows VERSION `1`, Docker shows containers you don't recognize, or port 5678 is in use.
-
-**Recovery:** settle each finding with the device owner, and keep every existing distribution, container, and volume. See [If a step stops](#local-n8n-problems).
-
-### Install Ubuntu if you don't have it
-
-If the list showed any Ubuntu with VERSION `2`, whatever its NAME, skip this block and open that one in the next section; the Ubuntu check there confirms its release. Install only if no Ubuntu is listed, or if the Ubuntu check reports a release other than 24.04 or 26.04. After the device owner approves, open PowerShell with **Run as administrator** and install the named release. New installs use WSL 2. See [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
-
-**Terminal: Windows PowerShell, elevated with Run as administrator, owner-approved install only.**
-
-```powershell
-wsl --install -d Ubuntu-24.04
-```
-
-**Expected:** Ubuntu 24.04 installs, or Windows asks you to restart. When Ubuntu first opens, create an ordinary Linux username and password. The password doesn't show as you type.
-
-**Stop:** an error, help text instead of an install, or a policy denial.
-
-**Recovery:** keep the message and work through [Microsoft's install troubleshooting](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues) with the owner. Never reinstall or unregister a distribution that's already there.
-
-### Open Ubuntu and check it
-
-Open Ubuntu by its exact name and start in your Linux home folder. If you're using an Ubuntu that was already listed with a different NAME, such as `Ubuntu-26.04` or `Ubuntu`, replace `Ubuntu-24.04` in the command with that name.
+Use the PowerShell window where step 5 set the variables. In a new window, repeat the step 5 box first.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, opened from Start.**
 
 ```powershell
-wsl --distribution Ubuntu-24.04 --cd ~
+& $PY "$M\scripts\n8n_local.py" start
+if ($LASTEXITCODE -ne 0) { throw 'HOLD: keep the helper message and contact the support owner.' }
+& $PY "$M\scripts\n8n_local.py" status
 ```
 
-**Expected:** an Ubuntu prompt as your ordinary Linux user. The rest of this part runs in that Ubuntu window.
+**Expected:** `STARTED` or `RUNNING`, then a status report naming n8n 2.41.5, its external runner, and `127.0.0.1:5678`.
 
-**Stop:** the launch fails, or first-time user setup doesn't finish.
+**Stop:** The helper reports `HOLD` or the page does not open.
 
-**Recovery:** keep the error and ask the owner to repair the distribution without resetting it.
+**Recovery:** Keep the first message and contact the support owner. Staff must resolve a stopped or unavailable Docker Desktop; don't change its settings yourself.
 
-This check confirms your Linux user, release, and free space. It also makes sure Ubuntu doesn't already have its own Docker Engine, because Docker warns against running that alongside Docker Desktop.
+### Save and reopen blank workflow
 
-**Terminal: Ubuntu Bash, ordinary Linux user, the window you just opened.**
+Open **http://localhost:5678** in a Windows browser. On a fresh instance, complete local owner setup. On an existing instance, use its existing login. Skip optional offers and leave **Assistant** off. Don't enter your OpenRouter key until Module 7.
 
-```bash
-course_check_ubuntu() {
-  local release avail_kb
-  [ -n "${BASH_VERSION:-}" ] || { printf 'STOP: run this in Bash\n'; return 1; }
-  [ "$(id -u)" -ne 0 ] || { printf 'STOP: use your ordinary Linux user, not root\n'; return 1; }
-  case "$HOME" in /home/*) ;; *) printf 'STOP: your home must be under /home\n'; return 1 ;; esac
-  release="$(. /etc/os-release && printf '%s:%s' "$ID" "$VERSION_ID")" || return 1
-  case "$release" in
-    ubuntu:24.04|ubuntu:26.04) ;;
-    *) printf 'STOP: %s is not Ubuntu 24.04 or 26.04\n' "$release"; return 1 ;;
-  esac
-  avail_kb="$(df -Pk "$HOME" | awk 'NR == 2 { print $4 }')"
-  [ "${avail_kb:-0}" -ge 26214400 ] || { printf 'STOP: less than 25 GB free in your Linux home\n'; return 1; }
-  if dpkg-query -W -f='${Status}\n' docker-ce docker.io 2>/dev/null | grep -q 'ok installed'; then
-    printf 'HOLD: Ubuntu already has its own Docker Engine; it was kept\n'; return 1
-  fi
-  command -v curl >/dev/null || { printf 'STOP: curl is missing\n'; return 1; }
-  printf 'UBUNTU %s %s user %s, %s GB free\n' "$release" "$(uname -m)" "$(id -un)" "$((avail_kb / 1048576))"
-}
-course_check_ubuntu
-```
+Select **Overview → Build a workflow** (or **Create workflow**). Name the blank workflow **Module 7 readiness** and press Enter. If that name already holds work, choose a distinct name. Leave the canvas blank and unpublished. Reload, return to the workflow list, and reopen it. Confirm the name, empty canvas, and unpublished state.
 
-**Expected:** one line such as `UBUNTU ubuntu:24.04 x86_64 user yourname, 180 GB free`.
+**Expected:** Blank unpublished workflow survives reload.
 
-**Stop:** a `STOP:` or `HOLD:` line.
+**Stop:** Login fails, owner setup appears unexpectedly, or the saved workflow is missing.
 
-**Recovery:** for missing `curl` or an existing Docker Engine, see [If a step stops](#local-n8n-problems). Never move course work under `/mnt/`.
+**Recovery:** Preserve the instance and contact the support owner. Don't create another owner account over existing work.
 
-### Install Docker Desktop and connect Ubuntu
+### Staff-assisted persistence
 
-**Window: Windows desktop, ordinary user.**
+Ask staff to stop and restart only the recorded course instance without removing its data. After staff confirm restart, reopen the same workflow. Confirm its name, blank canvas, and unpublished state.
 
-1. If the Windows check showed Docker already installed, keep that installation. If it's installed but not running, ask the owner before starting it, because starting Docker can restart containers that have a restart policy. See [Docker restart policies](https://docs.docker.com/engine/containers/start-containers-automatically/).
-2. Otherwise download **Docker Desktop for Windows** for your processor from [Docker's Windows install page](https://docs.docker.com/desktop/setup/install/windows-install/) and run it. Use the installation mode the owner approves; the per-user mode needs no administrator rights. Select **Use WSL 2 instead of Hyper-V** if it's offered, select **Close** when it finishes, and restart Windows if asked.
-3. Open **Docker Desktop** from Start. Read the agreement, and select **Accept** only if the licensing question is settled.
-4. In **Settings → Resources → WSL Integration**, turn on the exact Ubuntu NAME you opened, then select **Apply & restart**.
-5. Type `exit` in the Ubuntu window, then open Ubuntu again with the PowerShell box in [Open Ubuntu and check it](#open-ubuntu-and-check-it), so the window picks up Docker Desktop's connection.
+Record **n8n READY** only if status, browser access, reload/reopen, and staff-assisted persistence all succeed. Otherwise record **n8n HOLD** with the first failure. Keep OMP, Obsidian, and Local model results separate.
 
-### Create the n8n configuration
-
-The official installer writes n8n's configuration into `n8n-course` in your Linux home without starting anything. This block first confirms that Ubuntu can reach Docker, that nothing is using port 5678, and that no `n8n-course` folder or Docker project exists yet. Then it downloads the installer to a review folder and checks that the installer reports version 1.4.0. It opens the installer in `less`, a pager that shows a file one screen at a time. Press **q** when you've read it, and type `INSTALL` to go ahead. The installer accepts the course's pinned n8n version and `--no-start`; see the [official one-line setup](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup). The block then changes the one published port line from `'5678:5678'` to `'127.0.0.1:5678:5678'`, so only this laptop can reach the editor. Finally it records the Docker Compose project name `n8n-course`, the name Docker uses to group this stack's containers, volumes, and networks.
-
-**Terminal: Ubuntu Bash, ordinary Linux user, the Ubuntu window you just reopened.**
-
-```bash
-course_n8n_configure() {
-  local dir="$HOME/n8n-course" review approved found count
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use your ordinary Linux user\n'; return 1; }
-  if [ -e "$dir" ] || [ -L "$dir" ]; then
-    printf 'HOLD: %s already exists; it was kept as it is\n' "$dir"; return 1
-  fi
-  if [ -n "${DOCKER_HOST:-}" ] || [ -n "${DOCKER_CONTEXT:-}" ]; then
-    printf 'HOLD: DOCKER_HOST or DOCKER_CONTEXT is set; review it with the device owner\n'; return 1
-  fi
-  command -v docker >/dev/null || { printf 'HOLD: docker is not available in Ubuntu; turn on WSL Integration for this distribution in Docker Desktop\n'; return 1; }
-  docker info >/dev/null || { printf 'HOLD: Ubuntu cannot reach Docker; check WSL Integration\n'; return 1; }
-  docker compose version || return 1
-  if ss -ltn 'sport = :5678' | grep -q LISTEN; then
-    printf 'HOLD: port 5678 is already in use\n'; return 1
-  fi
-  found="$(docker ps -aq --filter label=com.docker.compose.project=n8n-course)" || return 1
-  found="$found$(docker volume ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
-  found="$found$(docker network ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
-  [ -z "$found" ] || { printf 'HOLD: Docker already has an n8n-course project; it was kept\n'; return 1; }
-  review="$(mktemp -d "$HOME/n8n-installer-review.XXXXXX")" || return 1
-  curl -fsSL https://get.n8n.io -o "$review/get-n8n.sh" || { printf 'HOLD: download failed; nothing was run\n'; return 1; }
-  grep -qx 'SCRIPT_VERSION="1.4.0"' "$review/get-n8n.sh" || { printf 'HOLD: installer version changed; nothing was run\n'; return 1; }
-  less "$review/get-n8n.sh"
-  read -r -p 'Type INSTALL to create the n8n configuration: ' approved
-  [ "$approved" = INSTALL ] || { printf 'HOLD: not confirmed; nothing was run\n'; return 1; }
-  N8N_DIR="$dir" sh "$review/get-n8n.sh" --version 2.41.5 --no-start || { printf 'HOLD: installer failed; its files were kept\n'; return 1; }
-  count="$(grep -cF -- "- '5678:5678'" "$dir/compose.yml")"
-  [ "$count" = 1 ] || { printf 'HOLD: expected one 5678 port line, found %s; compose.yml was not changed\n' "$count"; return 1; }
-  sed -i "s/- '5678:5678'/- '127.0.0.1:5678:5678'/" "$dir/compose.yml" || return 1
-  grep -qF -- "- '127.0.0.1:5678:5678'" "$dir/compose.yml" || { printf 'HOLD: the port binding was not saved\n'; return 1; }
-  (umask 077; set -o noclobber; printf 'n8n-course\n' > "$dir/.course-project") || return 1
-  printf 'N8N CONFIGURED %s, port 127.0.0.1:5678, project n8n-course\n' "$dir"
-}
-course_n8n_configure
-```
-
-**Expected:** the Docker Compose version, the installer in `less`, installer lines ending in `Not starting (--no-start)`, then `N8N CONFIGURED`. Nothing starts yet.
-
-**Stop:** any `HOLD:` line.
-
-**Recovery:** keep any folder or files the block made. Don't delete `n8n-course` or run the installer over it; see [If a step stops](#local-n8n-problems).
-
-### Start n8n and inspect it
-
-This helper runs Docker Compose with the recorded project name and the `n8n-course` files every time. If one of the listed variables is exported in your shell, it would override the saved settings, so the helper stops and prints only the variable's name. Define it in each new Ubuntu window before you control n8n.
-
-**Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
-
-```bash
-course_n8n() {
-  local variable conflict=0 project
-  for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then
-      printf 'HOLD: %s is exported in this shell\n' "$variable"
-      conflict=1
-    fi
-  done
-  [ "$conflict" -eq 0 ] || return 1
-  if [ -L "$HOME/n8n-course/.course-project" ] || [ ! -f "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record is missing or linked\n'; return 1
-  fi
-  project="$(cat "$HOME/n8n-course/.course-project")" || return 1
-  case "$project" in
-    ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid project record\n'; return 1 ;;
-  esac
-  docker compose -p "$project" --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
-}
-```
-
-**Expected:** nothing prints. The helper is ready but hasn't started anything.
-
-**Stop:** a later call prints a `HOLD:` line.
-
-**Recovery:** ask the owner where the exported variable comes from, then open a clean Ubuntu window and define the helper again.
-
-The first start downloads several images, which can take a while.
-
-**Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
-
-```bash
-course_n8n up -d &&
-  course_n8n ps --all &&
-  course_n8n port n8n 5678 &&
-  course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** six services appear. `sandbox-certs` shows `Exited (0)` because it runs once, and the other five are running, healthy where a health check is shown. The port line is exactly `127.0.0.1:5678`, and n8n prints `2.41.5`.
-
-**Stop:** a service is missing, restarting, or unhealthy; the port isn't `127.0.0.1:5678`; or the version differs.
-
-**Recovery:** give the stack a minute to finish starting, then run the block again. If it still fails, keep the files and volumes and see [If a step stops](#local-n8n-problems).
-
-### Save a blank workflow and confirm it persists
-
-**Window: a Windows browser, ordinary user.**
-
-1. Open **http://localhost:5678**. On a fresh instance, complete **Set up owner account** with local credentials. That account is the local instance owner, not an n8n Cloud account. Skip optional offers and leave the n8n Assistant off.
-2. Select **Overview**, then **Build a workflow** or **Create workflow**. Click the title, name it **Module 7 Readiness**, and press Enter. The editor saves on its own. Leave the canvas blank and don't select **Publish**.
-3. Reload the page and confirm the name and the blank canvas are still there.
-
-Now stop and restart only this project. Stopping without `-v` keeps the named volumes that hold your workflow.
-
-**Terminal: Ubuntu Bash, ordinary Linux user, same Ubuntu window.**
-
-```bash
-course_n8n down &&
-  course_n8n up -d &&
-  course_n8n ps --all &&
-  course_n8n port n8n 5678 &&
-  course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** the containers stop and start again, with the same six-service state, `127.0.0.1:5678`, and `2.41.5` as before.
-
-**Stop:** a stop or start error, or a different service state, port, or version.
-
-**Recovery:** keep the files and volumes, fix the named error, and run the block again. Never add `-v` or prune volumes.
-
-Reload **http://localhost:5678**, sign in as the same local owner if asked, and open **Module 7 Readiness**. Record **n8n READY** only if the version, the localhost-only port, the six-service state, and the saved workflow all survived the restart. Otherwise record **n8n HOLD** and name the failed check. Type `exit` to leave Ubuntu; Docker Desktop keeps n8n running.
-
-In later sessions, check that Docker Desktop is running, open the same Ubuntu by name, define `course_n8n` again, and run the start block again: after a restart, n8n stays stopped until you start it, and the block starts it and checks it. Reuse the recorded `n8n-course` project. Never run `course_n8n_configure` again for an existing installation.
+In a later session, open fresh PowerShell, repeat the step 5 variable block, then run the two helper commands above.
 
 ## If a step stops
 
@@ -870,59 +678,12 @@ Run this only if the check named the **User** scope.
 
 ### Local n8n problems
 
-- **Ubuntu already has its own Docker Engine:** keep it, and don't turn on Docker Desktop integration for that distribution until its owner has backed up its work and resolved the conflict.
-- **Docker Desktop installed but stopped:** get the owner's approval before starting it.
-- **`docker info` fails in Ubuntu:** check that WSL Integration is on for the exact distribution you opened, and that Docker Desktop is running.
-- **`n8n-course` or a Docker project with that name already exists:** keep it, and ask its owner which project, version, and port it uses before you control it.
-- **Port 5678 in use:** identify the owner of the listening process with the device owner. Don't stop processes or containers to free the port.
-- **Installer version changed:** nothing ran. Ask the owner to review the new installer before you go on.
-- **Services unhealthy or wrong version:** keep the result as HOLD. Don't change the pinned version, delete volumes, or disable services.
-
-If `wsl --version` printed help text or a version below 2.1.5, update WSL after the owner approves. Save your work first, because the update can stop running Linux distributions.
-
-**Terminal: Windows PowerShell, elevated with Run as administrator, owner-approved update only.**
-
-```powershell
-. {
-  wsl --update
-  if ($LASTEXITCODE -ne 0) { throw 'STOP: the WSL update failed. Keep the message.' }
-  wsl --version
-}
-```
-
-**Expected:** a WSL version of 2.1.5 or newer.
-
-**Stop:** an error, a denial, or a request to restart.
-
-**Recovery:** complete any approved restart, then run the Windows check again in an ordinary window.
-
-If your Ubuntu shows VERSION `1`, the owner first makes a backup that can be restored, using [wsl --export](https://learn.microsoft.com/en-us/windows/wsl/basic-commands#export-a-distribution). Then convert that exact distribution: replace `Ubuntu-24.04` in the command with the NAME that shows VERSION `1` in your list.
-
-**Terminal: Windows PowerShell 5.1, ordinary user, owner-approved conversion after a backup.**
-
-```powershell
-wsl --set-version Ubuntu-24.04 2
-```
-
-**Expected:** the conversion finishes, and `wsl --list --verbose` shows VERSION `2` for that name.
-
-**Stop:** the conversion fails or the entry still shows `1`.
-
-**Recovery:** keep the distribution and the backup, and ask the owner to resolve the error. Never unregister or reset a distribution to fix it.
-
-If the Ubuntu check printed `STOP: curl is missing`, install only these packages after the owner approves. `sudo` asks for your Linux password, which doesn't show as you type.
-
-**Terminal: Ubuntu Bash, ordinary Linux user with sudo, owner-approved packages only.**
-
-```bash
-sudo apt-get update && sudo apt-get install --no-upgrade curl ca-certificates
-```
-
-**Expected:** the packages install without removing or upgrading other packages. Then run the Ubuntu check again.
-
-**Stop:** a policy denial, a package error, or a proposal to remove software.
-
-**Recovery:** answer `n` at any removal proposal and keep the message for the owner. Don't weaken certificate checks.
+- **The helper reports missing preparation:** contact staff. Don't create another project or install a second stack.
+- **Docker Desktop is stopped or `docker.exe` is missing:** ask the device owner to start the approved Linux-container backend and check Docker in a fresh PowerShell window.
+- **The helper reports a changed engine, configuration or project:** keep the message and existing work. Ask staff to identify the prepared instance before another operation.
+- **Port 5678 is occupied:** ask the device owner to identify its owner. Don't stop another service or select another port yourself.
+- **A runner is missing, the version differs, or workflows disappear:** record **n8n HOLD**. Preserve the configuration and data volumes for staff inspection.
+- **The browser asks for owner setup again on an existing instance:** don't create another owner account. Ask staff to verify the engine, project and retained data.
 
 ## Local model (capstone) readiness lane
 

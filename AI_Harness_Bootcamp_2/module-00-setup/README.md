@@ -12,13 +12,13 @@ Choose one platform path and stay in it. A **terminal** is the text window where
 
 | Your machine | Use this guide |
 |---|---|
-| Windows, native OMP with a WSL Ubuntu bridge for n8n | [Windows · PowerShell OMP and local n8n](platforms/windows-powershell.md) |
+| Windows, native PowerShell | [Windows · PowerShell OMP and local n8n](platforms/windows-powershell.md) |
 | Windows with or willing to install WSL 2 | [Windows · WSL 2 with Ubuntu](platforms/windows-wsl.md) |
 | Mac | [macOS](platforms/macos.md) |
 | Ubuntu desktop | [Ubuntu](platforms/ubuntu.md) |
 | Arch Linux desktop | [Arch Linux](platforms/arch-linux.md) |
 
-On Windows, choose WSL if your organization permits it and you can restart the machine. Choose PowerShell if you want to keep OMP, Python, Git, credentials, and course work native to Windows; its WSL Ubuntu bridge is only for n8n. Both routes require approved WSL 2 and Docker Desktop for n8n. If WSL is blocked, keep the native OMP result and record n8n HOLD until the owner resolves it. Don't complete both OMP routes.
+Choose PowerShell to keep OMP, Python, Git, credentials, and course work native to Windows. Choose WSL if your organization permits it and you want to do that work inside Ubuntu. Staff prepare local n8n for your chosen shell using the approved Docker Desktop Linux backend. You don't need a separate Ubuntu window for n8n on the PowerShell route. If device policy blocks the backend, keep your OMP result and record **n8n HOLD** until the owner resolves it. Don't complete both OMP routes.
 
 ## What you will install
 
@@ -26,7 +26,7 @@ On Windows, choose WSL if your organization permits it and you can restart the m
 - Install Python 3.12 or newer.
 - Install Oh My Pi (`omp`) from the latest stable release (the setup prints the observed `omp/<semver>`).
 - Before Module 2, install local Obsidian. A **vault** is a folder of linked Markdown notes on your laptop. For a fresh install, use release **1.13.7**; if it's already installed, keep it and record its version.
-- Before Module 7, install local n8n **2.41.5** with the full official Docker stack and a working modern `docker compose` plugin. Follow your platform guide's n8n path.
+- Before Module 7, use the prepared local n8n environment. Staff own the two-service setup and persistence qualification. Follow your platform guide's n8n steps and run the common helper.
 
 **Restart your terminal after installing OMP so PATH changes take effect.** Close the installation window and open a new terminal before starting OMP or entering your API key. **PATH** is the list of folders your shell searches for commands.
 
@@ -162,19 +162,22 @@ You're done when the guide's checks pass and you saw the practice in the Obsidia
 
 ## Local n8n readiness for Module 7
 
-Complete your platform guide's n8n path as an ordinary user. On the native PowerShell route, run only the n8n steps in the selected WSL Ubuntu; keep the earlier OMP environment intact. The fresh destination is `$HOME/n8n-course` in the intended shell, outside the checkout.
+Staff prepare the two-service n8n environment (n8n + external task runner images) and qualify persistence before class. Use the common Python helper in your platform's ordinary shell. Keep n8n separate from OMP, Obsidian, and Local model results.
 
-Record **n8n READY** only after checking all of the following. Keep these checks separate from the OMP report and live OMP proof:
+In your chosen platform guide, follow only the n8n steps:
 
-- The intended new shell passes `docker info` and `docker compose version` against the approved local engine. Modern Compose can report version 5; the older `docker-compose` command on its own isn't enough.
-- The running n8n reports exactly `2.41.5`, and the published browser port is exactly `127.0.0.1:5678`.
-- All six services appear: `n8n`, `runners`, `sandbox-api`, `sandbox-runner-1`, and `searxng` remain running; the one-shot `sandbox-certs` shows `Exited (0)`. Health checks are healthy where shown.
-- At `http://localhost:5678`, the local owner can reopen a named blank, unpublished readiness workflow after reload. Assistant remains off.
-- The same workflow survives the course stack's ordinary `down` then `up -d`, using the same approved engine, directory, recorded project name, and named data volumes. Use the guide's `course_n8n` helper; keep `.course-project` between restarts. Never use `down -v`.
+- [Windows PowerShell](platforms/windows-powershell.md#prepare-local-n8n-for-module-7)
+- [Windows with WSL](platforms/windows-wsl.md#set-up-local-n8n-for-module-7)
+- [Mac](platforms/macos.md#prepare-local-n8n-for-module-7)
+- [Ubuntu](platforms/ubuntu.md#prepare-local-n8n-for-module-7)
+- [Arch Linux](platforms/arch-linux.md#prepare-local-n8n-for-module-7)
 
-On a fresh instance with the UI shown, complete **Set up owner account → Next**. If the optional survey appears, continue with **Get started**. Choose **Skip** on the free-license offer and **Set up later in Settings** on the Assistant screen. From **Overview**, select **Build a workflow** on an empty instance. Click the workflow title, enter **Module 7 readiness**, and press **Enter**. The editor saves automatically, so you do not need to see a **Saved** label. Reload and check that the name and blank canvas remain. If an instance already exists, use its local login and never reset its owner. If a workflow with that name already contains work, leave it in place and use a different name.
 
-Run these checks on your device. The n8n app and stack were checked only on Apple Silicon. If the UI differs or any check fails, record **n8n HOLD** and use [When setup stops](shared/TROUBLESHOOTING.md). Keep an OMP pass even if n8n is on HOLD; an OMP pass does not show that n8n is ready.
+Open **http://localhost:5678**. On a fresh instance, complete local owner setup; on an existing instance, use its existing login. Leave Assistant off and don't enter your provider key until Module 7. Create a blank, unpublished workflow named **Module 7 readiness**, choosing a different name if it already exists. Reload and reopen it to confirm that it was saved.
+
+Ask staff to stop and restart only the recorded course instance without removing its data. Reopen the same workflow afterward. Record **n8n READY** only when helper status, browser access, reload/reopen, and staff-assisted persistence all succeed. Otherwise record **n8n HOLD** with the first failure.
+
+Existing instances and data remain owner-controlled. If staff have not prepared your environment, contact the device/support owner. Complete the checks on your own device; an OMP pass does not establish n8n readiness.
 
 ## Local model readiness for Module 10
 

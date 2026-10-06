@@ -1293,6 +1293,35 @@
         "No human learner acceptance or timing measured.",
         "Browser rendering is not Windows execution."
       ]
+    },
+    "local_n8n_simplification": {
+      "run_id": "20261006T021456Z-simplify-local-n8n",
+      "status": "scoped_technical_checks_passed",
+      "scope": "Staff-prepared n8n 2.41.5 plus matching external task runners; five simplified learner routes; actual agent/tool/XLSX run and persistence on Apple Silicon.",
+      "evidence_root": "$HOME/course-evidence/reformation-qa/20261006T021456Z-simplify-local-n8n",
+      "path_resolution": "Paths in this revision resolve against its evidence_root. Source-manifest paths are checkout-relative.",
+      "report": {
+        "path": "validation-summary.json",
+        "sha256": "a9951767e22fe86b2884d60f23b8fdc672eb0fab61ab939aab09c9090c440927",
+        "bytes": 8118
+      },
+      "source_manifest": {
+        "path": "source-manifest.json",
+        "sha256": "edeca601fd879c138a8e7b67dd0c59c6d4b1dd785b9d2ad5827ecc48eaaa8174",
+        "bytes": 5872
+      },
+      "previous_report": {
+        "path": "previous-exercise-runs.json",
+        "sha256": "dff0fea28be960c9478f3023d1677d61237f572d3aa1f0b72cee41ac48d1b55d",
+        "bytes": 72666
+      },
+      "limits": [
+        "Native runtime observed on Apple Silicon only; no Windows PowerShell 5.1, WSL, Intel Mac, Ubuntu or Arch execution.",
+        "Workflows assembled through the local API; browser upload, execution, download, publish/unpublish and export actions exercised.",
+        "Observed key-level OpenRouter usage delta was USD 0.13572; no per-generation billing receipts or enforced-cap proof.",
+        "Course visuals are screen-media PDF rasterizations after screenshot capture timeouts.",
+        "No human learner timing, independent acceptance or assistive-technology evidence. Prior unobserved lanes remain HOLD."
+      ]
     }
   },
   "unobserved_lanes": [

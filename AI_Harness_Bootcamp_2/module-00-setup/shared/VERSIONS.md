@@ -10,7 +10,7 @@ Use the latest stable Oh My Pi release and the exact provider/model pair in your
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
 | Python | 3.12 or newer | Resolve its absolute executable path and inspect its version. |
 | Obsidian | Local desktop app required for Module 2; fresh reference 1.13.7 | Keep an existing version; record it, and watch the full GUI workflow in the Obsidian window separately from the disk check. |
-| n8n | 2.41.5, local full official Docker stack | Check the running container version, service state, localhost port, editor access, and saved-workflow persistence separately from OMP. |
+| n8n | 2.41.5, staff-prepared two-service local (n8n + external runners) | Use the common helper start/status in the platform shell; check editor, reload workflow, and staff-assisted persistence. |
 | Docker and Compose | Approved local engine and modern `docker compose` plugin | `docker info` and `docker compose version` succeed as the ordinary user in the intended new shell; version 5 is acceptable. |
 | Git | Git 2 from your platform guide's official route: Git for Windows, Apple's Command Line Tools or Homebrew, or the Ubuntu or Arch `git` package | `git --version` prints `git version 2.` followed by more numbers, and the intended checkout is readable. |
 | Browser and text editor | An accessible combination you can operate | You can read instructions, edit plain-text work files, and inspect actual outputs. |
@@ -23,7 +23,7 @@ Use the macOS/Linux installer inside macOS, Linux, or WSL Ubuntu. Use the PowerS
 
 | Setup route | Operating-system and shell boundary |
 |---|---|
-| Native Windows OMP | Windows PowerShell 5.1 on an owner-supported Windows installation with WinGet; x64 or ARM64. PowerShell on macOS/Linux is a different environment. n8n alone uses a separate WSL 2 Ubuntu bridge with Docker Desktop integration; its host requirements and owner approvals also apply. |
+| Native Windows OMP | Windows PowerShell 5.1 on an owner-supported Windows installation with WinGet; x64 or ARM64. PowerShell on macOS/Linux is a different environment. n8n uses the prepared two-service environment with Docker Desktop Linux backend (staff-managed); native OMP stays in PowerShell. |
 | Windows with WSL 2 | Windows 10 build 19041+ or Windows 11 is the technical floor for Microsoft's install command; Obsidian needs the higher WSLg floor of Windows 10 build 19044+ or Windows 11. The host must also remain supported under the device owner's policy. Use Ubuntu 24.04 or 26.04 in WSL 2 and run course commands in Ubuntu Bash. |
 | macOS | Bash or zsh on Apple Silicon or Intel. Homebrew's current supported-install requirements are macOS 15+; Intel is Tier 3. An OMP download for Intel doesn't mean Homebrew supports Intel equally. |
 | Ubuntu | Ubuntu 24.04 or 26.04 on x86-64 or ARM64, using Bash or zsh and the distribution's Python package. |
@@ -56,15 +56,11 @@ The Obsidian app window has been checked only with **Obsidian 1.13.7 on Darwin a
 
 ## Local n8n stack contract
 
-The [official installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh) that was checked identifies itself as **1.4.0**. The platform guides select n8n **2.41.5** with `--version 2.41.5 --no-start` and `N8N_DIR="$HOME/n8n-course"`. The live installer URL and Compose source can change, and the installer version is not the running n8n version. Use the guide’s download-and-review alternative to inspect the fully downloaded script before you run it. Keep any existing destination, including partial attempts; an “existing install” response does not tell its version or whether it is ready. If a different version is running, keep it on HOLD until the owner resolves it; don't automatically upgrade or change the pinned version.
+Staff provision the two-service environment using the official n8nio/n8n:2.41.5 and ghcr.io/n8n-io/runners:2.41.5 images. The learner uses the Python helper `n8n_local.py start/status` in the ordinary shell. See the [task runner configuration](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-task-runners.md) and [Docker Compose install options](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose.md).
 
-The [official Compose stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml) has six services: `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. Five should keep running, and `sandbox-certs` should finish successfully (`Exited (0)`). The runner uses privileged Docker-in-Docker, so it needs device-owner approval even when Assistant is off. Wherever you use Docker Desktop, the owner must approve license eligibility. On Linux, you need approved daemon access from your ordinary account; don't run the installer as root or make the socket world-writable.
+The editor port is 127.0.0.1:5678. Assistant remains off. A named blank unpublished workflow must survive reload and a staff-assisted stop/start of the recorded instance (volumes preserved). Existing instances and data remain owner-controlled; no learner migration or deletion.
 
-For a fresh configuration, change only the n8n port mapping from `5678:5678` to `127.0.0.1:5678:5678` before you start it. Leave the other services and named volumes in place, and don't display `.env` or resolved Compose secrets. The course's usual `down` / `up -d` commands keep named data; don't use `down -v` for course work.
-
-For a fresh installation, the platform guide has you save one unused project name approved by the owner in `.course-project`. The `course_n8n` helper uses that name, `.env`, and `compose.yml`, and it refuses exported configuration overrides. Use the same saved name on the same approved engine for every restart; a file path by itself does not tell Compose which project to use. If you already have an installation, keep its existing project identity and let its owner manage its lifecycle.
-
-The editor UI was checked only on Apple Silicon. The guides' n8n steps, from installing the engine through the saved-workflow restart, also ran in Linux test machines for Ubuntu (x86-64 and ARM64), Arch Linux ARM, and Ubuntu in WSL with a separate engine standing in for Docker Desktop; there, the editor's own web requests stood in for the browser. None of that shows the steps run on your device. If you use Windows, Intel macOS, Ubuntu, or Arch, check them on that device.
+Staff check the Docker installation, image versions, external Code-node execution and retained workflow data before class. If the prepared instance is missing or a check fails, record **n8n HOLD** and contact the device/support owner. Use your platform guide to start and inspect the instance; don't edit its configuration or install another stack.
 
 ## Local model readiness lane (Module 10)
 

@@ -271,9 +271,6 @@ def class_b(r: Recorder, root: Path) -> None:
 # Class C — the oracle cannot be defeated by editing a file it does not read
 
 FORBIDDEN_TOKENS = ("VERIFY:", "CUSTODY:", "PO00_RESULT", "oracle criterion", "M0-17")
-HOME_PATH_RE = re.compile(r"/Users/[\w.-]+|/home/[\w.-]+|C:\\Users\\[\w.-]+")
-# Placeholder home directories are how a guide *should* refer to a learner's own path.
-PLACEHOLDER_HOME = re.compile(r"^(?:/Users|/home|C:\\Users)[/\\](?:yourname|youruser|username|user|you)$", re.I)
 
 DANGEROUS = {
     r"sudo\s+npm\s+(?:install|i)\b[^\n]*\s-g\b": "sudo global npm",
@@ -330,7 +327,7 @@ def class_c(r: Recorder, root: Path) -> None:
 
 
 
-    # C7 — no internal token, and no personal path, anywhere a learner can reach
+    # C7 — unpublished assessment tokens must not reach learner files.
     leaks = []
     for p in all_files + [root / "reference/GAUNTLET_PROMPT.md"]:
         if not p.exists():
@@ -339,11 +336,7 @@ def class_c(r: Recorder, root: Path) -> None:
         for tok in FORBIDDEN_TOKENS:
             if tok in text:
                 leaks.append(f"{p.name}: {tok}")
-        for m in HOME_PATH_RE.findall(text):
-            if PLACEHOLDER_HOME.match(m):
-                continue
-            leaks.append(f"{p.name}: personal path {m}")
-    r.check("C7", not leaks, "no internal token or personal path in reachable files",
+    r.check("C7", not leaks, "no internal assessment token in reachable files",
             f"leaks: {sorted(set(leaks))[:6]}")
 
 

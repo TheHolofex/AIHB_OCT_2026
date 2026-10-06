@@ -561,333 +561,50 @@ Keep the practice vault open with `Token` visible. This box checks your saved re
 
 In a text editor, create `gui-observation.txt` beside the vault, in the `OBS_ROOT` folder. Record the date, system and architecture, app version, exact vault path, both disk-record paths, that Restricted mode was on and Sync off, and what you saw at each GUI step. Write `Obsidian READY` only if both checks passed and you saw every GUI step in the window; otherwise write `Obsidian HOLD` and the missing step or error. These GUI steps have not been checked on Ubuntu, so record what actually happens.
 
-## 10. Check Docker and the n8n destination
+## Prepare local n8n for Module 7
 
-Module 7 needs a local n8n at `http://localhost:5678`, installed in `~/n8n-course` outside the checkout. Its result stays separate from the OMP and Obsidian results. The [official stack](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml) runs six services, and `sandbox-runner-1` uses privileged Docker-in-Docker, so get device-owner approval for that privilege and the license terms before installing. If Docker Desktop is used, its owner must confirm [Docker Desktop license eligibility](https://docs.docker.com/subscription/desktop-license/).
+n8n is the local workflow editor for Module 7. Staff prepare and qualify its two-service environment before you use it. Allow about 10 minutes to start it and check a saved workflow, plus staff-assisted restart. Keep n8n readiness separate from OMP, Obsidian, and Local model.
 
-This first box looks at services, the port, the destination, and installed packages without contacting the Docker daemon, which a Docker command could start.
+Staff own Docker installation, access, licensing, image versions, project identity, and persistence. Keep any existing installation and its data; do not install or migrate yourself. If staff have not prepared your environment, record **n8n HOLD** and contact the device/support owner.
 
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, new window.**
+### Start and inspect the prepared instance
 
-```bash
-id -un
-systemctl show docker.service docker.socket containerd.service --property=Id,LoadState,ActiveState,UnitFileState 2>/dev/null || true
-systemctl --user show docker.service docker.socket --property=Id,LoadState,ActiveState,UnitFileState 2>/dev/null || true
-ss -ltn 'sport = :5678'
-if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: n8n-course already exists; preserve it\n'; else printf 'DESTINATION absent: %s/n8n-course\n' "$HOME"; fi
-if command -v docker >/dev/null 2>&1; then docker --version; docker context ls; docker context show; else printf 'DOCKER missing\n'; fi
-printf 'DOCKER_HOST %s\nDOCKER_CONTEXT %s\n' "${DOCKER_HOST:-unset}" "${DOCKER_CONTEXT:-unset}"
-for package in docker.io docker-ce docker-ce-cli docker-compose docker-compose-v2 docker-compose-plugin docker-buildx docker-buildx-plugin docker-doc podman-docker containerd containerd.io runc; do
-  dpkg-query -W -f='${binary:Package} ${Status} ${Version}\n' "$package" 2>/dev/null || printf '%s absent\n' "$package"
-done
-ls -ld /etc/apt/keyrings/docker.asc /etc/apt/sources.list.d/docker.sources /etc/apt/sources.list.d/docker.list 2>/dev/null || true
-```
+Use the Ubuntu terminal where step 5 set `PY` and `R`. In a new terminal, repeat the step 5 box first.
 
-**Expected:** Your ordinary user name, `DESTINATION absent`, no listener rows under the port header, and either `DOCKER missing` with every package absent, or a local `default` context.
-
-**Stop:** `HOLD`, a listener on 5678, a remote or unfamiliar context or `DOCKER_HOST`, a masked or failed unit, or Docker packages you don't recognize.
-
-**Recovery:** Ask the device owner to identify the existing work; don't delete, stop, or switch anything. See [If a step stops](#if-a-step-stops).
-
-If Docker is already installed, get the owner's approval to contact its daemon, then list existing work.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
+**Terminal: Ubuntu, Bash or Zsh, ordinary user.**
 
 ```bash
-if command -v docker >/dev/null 2>&1; then
-  docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
-fi
+"$PY" "$M/scripts/n8n_local.py" start &&
+"$PY" "$M/scripts/n8n_local.py" status
 ```
 
-**Expected:** Docker answers without sudo, `docker compose version` prints a version such as 5.x, and the owner recognizes every listed container and volume.
+**Expected:** The helper reports the prepared n8n 2.41.5 instance and its external task runner, editor at `http://localhost:5678`.
 
-**Stop:** Permission denied, no daemon, no Compose plugin, or unidentified work.
+**Stop:** The helper reports `HOLD`, the environment is not prepared, or the browser page does not open.
 
-**Recovery:** Keep a working engine and continue with the steps that fix only what is missing.
+**Recovery:** Keep the first error and contact the device/support owner. Don't create a project or change Docker settings.
 
-## 11. Install Docker
+### Save and reopen a blank workflow
 
-Use this box only on a clean machine. Step 10 showed no Docker packages, keyring, or repository. It follows [Docker's Ubuntu instructions](https://docs.docker.com/engine/install/ubuntu/), with owner approval for the repository, the five packages, and Docker starting at boot.
+Open **http://localhost:5678**. On a fresh instance, complete local owner setup. On an existing instance, use its existing login. Skip optional offers and leave **Assistant** off. Don't enter your OpenRouter key until Module 7.
 
-**Terminal: Ubuntu, Bash or Zsh, same window; sudo elevates approved repository and package changes.**
+Select **Overview → Build a workflow** (or **Create workflow**). Name the blank workflow **Module 7 readiness** and press Enter. If that name already holds work, choose a distinct name. Leave the canvas blank and unpublished. Reload, return to the workflow list, and reopen it. Confirm the name, empty canvas, and unpublished state.
 
-```bash
-course_install_docker_ubuntu() {
-  local ID VERSION_ID VERSION_CODENAME UBUNTU_CODENAME arch codename package item
-  . /etc/os-release || return 1
-  arch="$(dpkg --print-architecture)" || return 1
-  codename="${UBUNTU_CODENAME:-$VERSION_CODENAME}"
-  case "$ID:$VERSION_ID:$codename:$arch" in
-    ubuntu:24.04:noble:amd64|ubuntu:24.04:noble:arm64|ubuntu:26.04:resolute:amd64|ubuntu:26.04:resolute:arm64) ;;
-    *) printf 'HOLD: unsupported release or architecture\n' >&2; return 1 ;;
-  esac
-  for package in docker.io docker-ce docker-ce-cli docker-compose docker-compose-v2 docker-compose-plugin docker-buildx docker-buildx-plugin docker-doc podman-docker containerd containerd.io runc; do
-    if [ "$(dpkg-query -W -f='${Status}' "$package" 2>/dev/null)" = "install ok installed" ]; then
-      printf 'HOLD: existing %s requires owner review; no changes made\n' "$package" >&2; return 1
-    fi
-  done
-  for item in /etc/apt/keyrings/docker.asc /etc/apt/sources.list.d/docker.sources /etc/apt/sources.list.d/docker.list; do
-    if [ -e "$item" ] || [ -L "$item" ]; then printf 'HOLD: existing %s preserved\n' "$item" >&2; return 1; fi
-  done
-  sudo install -m 0755 -d /etc/apt/keyrings || return 1
-  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc || return 1
-  sudo chmod a+r /etc/apt/keyrings/docker.asc || return 1
-  sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null <<EOF
-Types: deb
-URIs: https://download.docker.com/linux/ubuntu
-Suites: $codename
-Components: stable
-Architectures: $arch
-Signed-By: /etc/apt/keyrings/docker.asc
-EOF
-  [ "$?" -eq 0 ] || return 1
-  sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-}
-course_install_docker_ubuntu
-```
+**Expected:** Named blank workflow survives reload.
 
-**Expected:** apt shows the five Docker packages; answer `Y` only for that approved transaction, and the prompt returns without errors.
+**Stop:** Owner setup appears unexpectedly, login fails, or you cannot confirm the saved workflow.
 
-**Stop:** HOLD, an update error, or a transaction that removes or replaces packages.
+**Recovery:** Keep the first error and ask the support owner. Don't create another owner account over an existing instance.
 
-**Recovery:** Decline the transaction and keep the repository files for the owner; never remove conflicting packages yourself.
+### Observe staff-assisted persistence
 
-## 12. Give your account Docker access
+Ask staff to stop and restart only this recorded course instance without removing data. Reopen the workflow after. Record **n8n READY** only if helper status, browser, reload/reopen, and staff-assisted persistence succeed. Otherwise **n8n HOLD**.
 
-The `docker` group gives its members control equal to root, so add your account only with the owner's explicit approval, as in [Docker's post-install guide](https://docs.docker.com/engine/install/linux-postinstall/). Skip this box if `docker info` already worked without sudo.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same window; sudo changes approved group membership only.**
-
-```bash
-course_docker_access() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use your ordinary account\n' >&2; return 1; }
-  getent group docker >/dev/null || sudo groupadd docker || return 1
-  sudo usermod -aG docker "$(id -un)"
-}
-course_docker_access
-```
-
-**Expected:** No errors. Then sign out of the desktop completely and sign back in; a new terminal alone does not pick up the group.
-
-**Stop:** The group change is refused.
-
-**Recovery:** Ask the owner; never use `sudo docker` or change socket permissions instead.
-
-After signing back in, start the service only if step 10 showed it inactive and the owner approved it.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, fresh login; sudo starts the approved system service.**
-
-```bash
-sudo systemctl start docker.service
-```
-
-**Expected:** The prompt returns without errors.
-
-**Stop:** A masked or failed unit, or a dependency error.
-
-**Recovery:** Keep the error and ask the owner; don't unmask or enable units yourself.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, fresh login.**
-
-```bash
-id -nG && docker context show && docker info && docker compose version && docker ps -a && docker volume ls
-```
-
-**Expected:** `docker` appears in your groups, the context is `default`, and Docker and Compose answer without sudo.
-
-**Stop:** Any command fails or the context differs.
-
-**Recovery:** Work through the first failure with the owner; use this terminal for the remaining steps.
-
-## 13. Generate the n8n configuration
-
-Use n8n 2.41.5. You download the official installer script, read it, and run it with `--no-start` so nothing starts yet. Then limit the browser port to this computer. The [one-line setup docs](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup) describe these options.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_download_n8n() {
-  local attempt
-  unset N8N_REVIEW_SCRIPT
-  attempt="$(mktemp -d "$HOME/n8n-installer-review.XXXXXX")" || return 1
-  curl -fsSL https://get.n8n.io -o "$attempt/get-n8n.sh" || { printf 'HOLD: incomplete download preserved; do not execute\n' >&2; return 1; }
-  [ -s "$attempt/get-n8n.sh" ] || { printf 'HOLD: empty download\n' >&2; return 1; }
-  N8N_REVIEW_SCRIPT="$attempt/get-n8n.sh"
-  printf 'REVIEW %s\n' "$N8N_REVIEW_SCRIPT"
-}
-course_download_n8n
-```
-
-**Expected:** `REVIEW` and the path of the downloaded script.
-
-**Stop:** A HOLD line.
-
-**Recovery:** Keep the folder and retry only after the network problem is fixed.
-
-The next box opens the script in a pager, a full-screen reader. Scroll with the arrow keys or Space, and press `q` to close it. Look for `SCRIPT_VERSION="1.4.0"` near the top and read what it downloads and creates. Run the box after it only if the device owner approves what you read.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-less "$N8N_REVIEW_SCRIPT"
-```
-
-**Expected:** The script opens, and the prompt returns after you press `q`.
-
-**Stop:** The file is empty, or the version or behavior is not what the owner approved.
-
-**Recovery:** Don't run the installer; keep the download for owner review.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_run_n8n_installer() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use an ordinary account\n' >&2; return 1; }
-  [ -n "${N8N_REVIEW_SCRIPT:-}" ] && [ -s "$N8N_REVIEW_SCRIPT" ] && [ ! -L "$N8N_REVIEW_SCRIPT" ] || { printf 'HOLD: no reviewed script in this terminal\n' >&2; return 1; }
-  grep -qx 'SCRIPT_VERSION="1.4.0"' "$N8N_REVIEW_SCRIPT" || { printf 'HOLD: installer version changed; owner review needed\n' >&2; return 1; }
-  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: existing destination preserved\n' >&2; return 1; fi
-  N8N_DIR="$HOME/n8n-course" sh "$N8N_REVIEW_SCRIPT" --version 2.41.5 --no-start
-}
-course_run_n8n_installer
-```
-
-**Expected:** The installer reports a generated configuration in `~/n8n-course` and starts no containers.
-
-**Stop:** A HOLD line, an installer error, or an "existing install" message.
-
-**Recovery:** Keep the destination and error for the owner; don't rerun the installer over it or change the version.
-
-The generated `compose.yml` publishes port 5678 on every network interface. This box checks that exactly one `- '5678:5678'` line exists and that no Docker resources already use the project name `n8n-course`. It then changes that line to `- '127.0.0.1:5678:5678'` and records the project name. A Compose **project name** groups the stack's containers, volumes, and networks.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_bind_and_record() {
-  local file count found project=n8n-course
-  local LC_ALL=C
-  file="$HOME/n8n-course/compose.yml"
-  if [ -L "$HOME/n8n-course" ] || [ ! -f "$file" ] || [ -L "$file" ]; then printf 'HOLD: compose.yml is missing or linked\n' >&2; return 1; fi
-  if [ -e "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then printf 'HOLD: existing project record preserved\n' >&2; return 1; fi
-  count="$(grep -c -F -- "- '5678:5678'" "$file" || true)"
-  [ "$count" = 1 ] || { printf 'HOLD: expected one 5678:5678 port line, found %s\n' "${count:-none}" >&2; return 1; }
-  found="$(docker ps -aq --filter "label=com.docker.compose.project=$project")" || { printf 'HOLD: container inspection failed\n' >&2; return 1; }
-  [ -z "$found" ] || { printf 'HOLD: containers already use project %s\n' "$project" >&2; return 1; }
-  found="$(docker volume ls -q --filter "label=com.docker.compose.project=$project")" || { printf 'HOLD: volume inspection failed\n' >&2; return 1; }
-  [ -z "$found" ] || { printf 'HOLD: volumes already use project %s\n' "$project" >&2; return 1; }
-  found="$(docker network ls -q --filter "label=com.docker.compose.project=$project")" || { printf 'HOLD: network inspection failed\n' >&2; return 1; }
-  [ -z "$found" ] || { printf 'HOLD: networks already use project %s\n' "$project" >&2; return 1; }
-  sed -i "s/- '5678:5678'/- '127.0.0.1:5678:5678'/" "$file" || { printf 'HOLD: port edit failed\n' >&2; return 1; }
-  count="$(grep -c -F -- "- '127.0.0.1:5678:5678'" "$file" || true)"
-  [ "$count" = 1 ] || { printf 'HOLD: loopback port line not found exactly once\n' >&2; return 1; }
-  printf 'PORT bound to 127.0.0.1:5678\n'
-  ( umask 077; set -o noclobber; printf '%s\n' "$project" > "$HOME/n8n-course/.course-project" ) || { printf 'HOLD: project record could not be saved\n' >&2; return 1; }
-  printf 'PROJECT recorded: %s\n' "$project"
-}
-course_bind_and_record
-```
-
-**Expected:** `PORT bound to 127.0.0.1:5678` and `PROJECT recorded: n8n-course`.
-
-**Stop:** Any HOLD line.
-
-**Recovery:** Keep the files and Docker resources, and ask the owner to review `compose.yml`; don't edit it by hand to force a match.
-
-Define `course_n8n` so every command uses the recorded project, the generated `.env`, and `compose.yml`. Exported shell variables would override the `.env` values, so the helper stops if any are set, without showing them. Don't display or share `.env`, and don't run `course_n8n config`; both can reveal generated secrets.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n() {
-  local variable conflict=0 project
-  local LC_ALL=C
-  for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then printf 'HOLD: %s\n' "$variable" >&2; conflict=1; fi
-  done
-  [ "$conflict" -eq 0 ] || return 1
-  if [ -L "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course/.course-project" ] || [ ! -f "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record is missing or linked\n' >&2; return 1
-  fi
-  project="$(cat "$HOME/n8n-course/.course-project")" || { printf 'HOLD: project record could not be read\n' >&2; return 1; }
-  case "$project" in ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid recorded project name\n' >&2; return 1 ;; esac
-  docker compose -p "$project" --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
-}
-```
-
-**Expected:** The prompt returns with no output. In a later terminal, paste only this box again.
-
-**Stop:** A later `course_n8n` call prints HOLD.
-
-**Recovery:** Ask the owner to trace a named variable in a clean shell; don't unset or print it.
-
-## 14. Start n8n on this computer only
-
-This box starts the stack only if nothing else is listening on port 5678. The first start downloads images and can take several minutes.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-if [ -n "$(ss -Hltn 'sport = :5678')" ]; then
-  printf 'HOLD: something already listens on port 5678\n' >&2
-else
-  course_n8n up -d
-fi
-```
-
-**Expected:** Compose pulls images and reports the containers as started.
-
-**Stop:** HOLD, or a pull, permission, or startup error.
-
-**Recovery:** Keep files and volumes and ask the owner; don't prune, reset, or upgrade.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n ps --all &&
-course_n8n port n8n 5678 &&
-course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** Six services; `sandbox-certs` shows `Exited (0)` and the others run, with `sandbox-api` healthy. The port line is `127.0.0.1:5678`, and n8n prints `2.41.5`.
-
-**Stop:** A missing or restarting service, a port on another address, or another version.
-
-**Recovery:** Wait a minute and paste the box again; if it persists, see [If a step stops](#if-a-step-stops).
-
-## 15. Save a blank workflow and confirm it persists
-
-**Window: web browser on this computer.**
-
-1. Open `http://localhost:5678`. On a fresh instance, complete **Set up owner account** with your name, email, and a new local password, then select **Next**. On an existing instance, sign in with its login. Skip registration and license offers, keep Assistant off, and don't enter the OpenRouter key.
-2. Select **Overview**, then **Build a workflow** (or **Create workflow** if workflows exist). Click the title, type `Module 7 readiness`, and press **Enter**. The editor saves automatically. If that name already exists, open it instead of overwriting it.
-3. Keep the canvas blank, don't select **Publish**, and reload the page.
-
-**Expected:** After reload, the blank, unpublished **Module 7 readiness** workflow is still there.
-
-**Stop:** A Cloud login or API key is required, the workflow is missing after reload, or an existing instance asks for owner setup again.
-
-**Recovery:** Keep the instance and ask the course owner; don't reset the owner account.
-
-This box stops the course stack and starts it again. `down` without `-v` keeps the data volume.
-
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n down &&
-course_n8n up -d &&
-course_n8n ps --all &&
-course_n8n port n8n 5678 &&
-course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** The services match step 14, the port is `127.0.0.1:5678`, and n8n prints `2.41.5`. Reload `http://localhost:5678`, sign in if asked, and the blank, unpublished **Module 7 readiness** workflow is still there.
-
-**Stop:** Missing workflow, a new owner-setup screen, wrong version or port, or failed services.
-
-**Recovery:** Keep the folder and volumes and ask the owner to check the data volume; never use `down -v`.
+In later session, repeat the two helper lines in your shell. Do not run the staff stop procedure.
 
 ## Later sessions
 
-After a restart, Docker starts on its own, but the n8n stack stays stopped until you start it. A new terminal also doesn't know the `course_n8n` helper. Before Module 7, open a new terminal and paste these boxes again, in order: the [step 13](#13-generate-the-n8n-configuration) box that defines `course_n8n`, then the [step 14](#14-start-n8n-on-this-computer-only) start box and check box. The data volume keeps your workflow, so sign in with your existing local owner account.
+After a restart, open a new terminal, repeat the step 5 box to set `PY`, `R`, and `M`, then run the two `n8n_local.py` lines above. Sign in with the existing local owner account and reopen your workflow.
 
 ## If a step stops
 
@@ -930,15 +647,12 @@ Find the step that stopped. Keep the exact error, the attempt folder, and the la
 - Closed terminal: paste step 5 again, then set `OBS_ROOT` to the folder printed before `/vault`.
 - Check HOLD: correct `Reply` in Obsidian and check again. Never edit the helper's expected records or remove its lock.
 
-### Steps 10 to 15
+### n8n (prepared helper)
 
-- Existing `~/n8n-course`, a listener on 5678, or unknown Docker work: HOLD until its owner identifies it. Don't stop, delete, or reuse it.
-- Existing Docker packages or repository: the owner plans any migration. Never remove `docker.io`, `containerd`, or `runc` as a group.
-- Docker group or service refused: HOLD. Never run the installer or `docker` with sudo, and never change socket permissions.
-- Installer version changed, or an "existing install" message: keep the folder for owner review.
-- Port line count is not one, or the project name is in use: keep the files and resources and ask the owner.
-- Port published beyond `127.0.0.1`: run `course_n8n down`, then ask the owner to fix `compose.yml` before starting again.
-- Privileged runner or license not approved: record n8n HOLD. The OMP and Obsidian results stand on their own.
+- Environment not prepared or helper HOLD: record n8n HOLD and contact owner. Do not create project.
+- Port 5678 in use or wrong bind: ask owner; preserve existing.
+- Wrong version or missing runner after helper status: record HOLD; owner resolves.
+- Workflow fails reload or staff restart: record HOLD; keep volumes; confirm recorded instance with owner.
 
 ## Local model (capstone) readiness lane
 
