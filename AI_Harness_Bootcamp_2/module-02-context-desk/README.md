@@ -1,26 +1,30 @@
 # Module 2 · Build and control a reusable second brain
 
-You'll have OMP draft notes from the Ledger Pike paperwork, turn them into linked notes in Obsidian, and accept the ones whose quotations check out. Then a fresh OMP session answers from only those notes, without the earlier chat or the original files, and its run records show what it loaded and read. After that, you'll fix one gap it found and show the difference in another fresh session.
+Turn forty source notes into reusable knowledge without losing their evidence or limits. You start a bounded chain of AI judgments, knowledge organization, and fresh retrieval. The helper saves the results as a provisional revision. You inspect every material answer back to its original sources, then use source-backed feedback to direct a substantive correction in a second, preserved revision.
 
-Plan for about three hours (a rough estimate). The exercise is ungraded.
+Plan for about three hours (a rough estimate). Two complete runs use six paid OMP sessions: three for v1 and three for v2, using `openrouter/anthropic/claude-sonnet-4.6`. The missing-rule test and snapshot checks are local. There are no automatic paid retries or ongoing background updates. The exercise is ungraded.
 
 ## Start here
 
 Open the [Module 2 lab](shared/MODULE_02_LAB.md). Use the Python, OMP, and local Obsidian you already checked in Module 00.
 
-You'll learn to:
+## Capabilities
 
-- Have OMP draft notes from forty source files under a saved rule that treats instructions inside a source as data, not as orders.
-- Turn drafts into linked Obsidian notes whose quotations match their sources exactly, and accept them with recorded reasons.
-- Show from the run records that a fresh session loaded your saved rule and read only the notes you accepted, then fix one gap it reports and show the change in another fresh session.
+- Direct claim-granular AI judgments across the supplied sources into linked, provisional knowledge while preserving evidence, conflicts, unknowns, and source-as-data limits.
+- Prove that each AI pass loaded the saved rule and consumed the validated preceding handoff, and that fresh retrieval used only frozen navigation and Knowledge notes, not the source-processing chat or raw packet.
+- Give source-backed feedback on one substantive weakness and show its correction in a new content revision and fresh answer that reads and cites the focal note.
+
+Keep applying the source-verification practices from Module 01. AI-processed notes, answers, and machine receipts are not human approval. Your source inspection is independent of the automatic handoffs; no per-note selection or approval unlocks a pass.
 
 ## The working files
 
-Forty notes hold fictional paperwork for crate C-44 and vehicle QP-17. You start with the sources and blank templates. You write and link the notes.
+Forty notes hold fictional paperwork for crate C-44 and vehicle QP-17. The originals stay unchanged in `vault/Sources`. Each revision has its own `Knowledge/REV/` notes, so an old answer's links still reach the old note bytes.
 
-Open the editable `vault` folder in Obsidian. Leave the original paperwork in `Sources`, the model’s suggestions in `Drafts`, notes you accept in `Knowledge`, and your short reasons in `Reviews`. Later you save a frozen copy, a fixed snapshot of your index and the notes you accepted. The new chat can read that copy. It can’t reread the original paperwork or the earlier chat.
+Open `vault` in Obsidian. The AI has only the read-only `course_read` tool and returns structured judgments, a build plan, and answers. Only the helper writes the generated Knowledge, `Reviews/REV-judgments.md`, `Reviews/REV-answers.md`, frozen snapshots, and navigation. You edit `Feedback.md`, not the generated records.
 
-A saved rule tells the model how to treat the paperwork. A file screen flags lines that look like orders. A read limit decides which folder the model can open. You decide which claims become notes you can use again.
+Judgment reads a staged copy of all forty sources. On a revision it also reads frozen prior judgments, the prior build, and your feedback as data. Build reads the validated new judgments and, for a revision, the prior build. Fresh retrieval can read only the chosen frozen `MOC.md` and versioned Knowledge notes—not Sources, feedback, prior processing chat, or judgment files.
+
+The launcher explicitly loads the saved rule from outside each read root before contacting the model. The local file screen flags instruction-like wording; it does not decide which facts are true. The rule keeps quoted orders, generated text, and feedback from granting authority or overriding the evidence boundary.
 
 ## Class-only boundary
 

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Admit source-backed Markdown and freeze independently checkable cold revisions.
+"""Module 02 AI handoffs: initialize, run (judge+build+freeze+retrieve), retrieve, check.
 
-Identity patterns adapted from P4 verify_baseline/verify_brain. No legacy runtime
- dependency. Review receipts record operator decisions, not proof of authorship.
+Three fresh read-only stages via shared launcher. No human admission between passes.
+Reuses safe paths, source identity, atomic publish, shared auditor/launcher.
+Fails closed on structure; semantic unknowns preserved. Boring, contained.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -16,7 +18,6 @@ import re
 import shutil
 import sys
 import tempfile
-import uuid
 from pathlib import Path
 
 DN = {f'DN-{i:03}' for i in range(1, 41)}
@@ -105,7 +106,7 @@ def publish_directory(source, destination):
     if sys.platform == 'darwin':
         rename = libc.renamex_np
         rename.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
-        args = (os.fsencode(source), os.fsencode(destination), 4)  # RENAME_EXCL
+        args = (os.fsencode(source), os.fsencode(destination), 4)
     else:
         require(hasattr(libc, 'renameat2'), 'atomic no-replace rename is unavailable on this platform')
         rename = libc.renameat2
@@ -118,7 +119,6 @@ def publish_directory(source, destination):
 
 
 def tree(root):
-    """Validate each directory entry before descending, including junctions."""
     root = safe(root)
     require(root.is_dir(), f'missing directory: {root}')
     for path in sorted(root.iterdir()):
@@ -152,20 +152,21 @@ def source_identity(work, live=True):
     require(isinstance(identity['files'], list), 'source files must be an array')
     for entry in identity['files']:
         fields(entry, {'path', 'bytes', 'sha256'})
-        require(isinstance(entry['path'], str) and type(entry['bytes']) is int and entry['bytes'] >= 0 and isinstance(entry['sha256'], str) and re.fullmatch(r'[0-9a-f]{64}', entry['sha256']), f'{work / "source-manifest.json"}: malformed source identity entry: {entry["path"]}')
+        require(isinstance(entry['path'], str) and type(entry['bytes']) is int and entry['bytes'] >= 0 and isinstance(entry['sha256'], str) and re.fullmatch(r'[0-9a-f]{64}', entry['sha256']), f'{work / "source-manifest.json"}: malformed source identity entry')
     fields(identity['instruction'], {'path', 'sha256'})
-    require(identity['instruction']['path'] == str(work / 'shared/controls/SAVED_INSTRUCTION.md') and isinstance(identity['instruction']['sha256'], str) and re.fullmatch(r'[0-9a-f]{64}', identity['instruction']['sha256']), f'{work / "source-manifest.json"}: malformed initial instruction identity for {work / "shared/controls/SAVED_INSTRUCTION.md"}')
-    require(type(identity['schema_version']) is int and identity['schema_version'] == 1 and identity['root_fingerprint'] == digest(canonical(identity['files'])), f'source manifest identity differs: {work / "source-manifest.json"}')
+    instr = identity['instruction']
+    require(instr['path'] == str(work / 'shared/controls/SAVED_INSTRUCTION.md') and isinstance(instr['sha256'], str) and re.fullmatch(r'[0-9a-f]{64}', instr['sha256']), 'malformed instruction identity')
+    require(type(identity['schema_version']) is int and identity['schema_version'] == 1 and identity['root_fingerprint'] == digest(canonical(identity['files'])), 'source manifest identity differs')
     paths = [f['path'] for f in identity['files']]
     expected_paths = {n + '.md' for n in DN}
-    bad_paths = (set(paths) ^ expected_paths) | {p for p in paths if paths.count(p) > 1}
-    require(not bad_paths, f'{work / "source-manifest.json"}: missing, extra or duplicate source identities: ' + ', '.join(sorted(bad_paths)))
+    bad = (set(paths) ^ expected_paths) | {p for p in paths if paths.count(p) > 1}
+    require(not bad, 'missing/extra/duplicate source identities: ' + ', '.join(sorted(bad)))
     if live:
         root = work / 'vault/Sources'
         actual = inventory(root)
         changed = identity_changes(identity['files'], actual)
         changed += [p.relative_to(root).as_posix() for p in tree(root) if p.is_dir()]
-        require(paths == sorted(paths), f'source identity order differs: {work / "source-manifest.json"}')
+        require(paths == sorted(paths), 'source identity order differs')
         originals = []
         for item in identity['files']:
             path = work / 'shared/case' / item['path']
@@ -173,20 +174,20 @@ def source_identity(work, live=True):
                 require(digest(raw(path)) == item['sha256'], f'original source changed: {path}')
             except (ValueError, OSError) as exc:
                 originals.append(f'{path}: {exc}')
-        require(not changed, 'source identity changed/added/missing: ' + ', '.join(str(root / p) for p in changed) + '\n' + '\n'.join(originals))
+        require(not changed, 'source identity changed: ' + ', '.join(str(root / p) for p in changed))
         require(not originals, '\n'.join(originals))
     return identity
 
 
 def initialize(work):
     absent(work / 'vault')
-    for name in ['source-manifest.json', 'reviews', 'identities', 'cold']:
+    for name in ['source-manifest.json', 'runs', 'cold', 'identities']:
         absent(work / name)
     case = safe(work / 'shared/case')
     candidates = [p for p in tree(case) if p.name.lower().startswith('dn-')]
     expected = {case / (n + '.md') for n in DN}
     bad = (expected - set(candidates)) | {p for p in candidates if p not in expected or not p.is_file()}
-    require(not bad, 'missing, duplicate, or malformed DN packet file: ' + ', '.join(str(p) for p in sorted(bad)))
+    require(not bad, 'missing, duplicate, or malformed DN: ' + ', '.join(str(p) for p in sorted(bad)))
     files = []
     for p in sorted(candidates):
         data = raw(p)
@@ -194,19 +195,47 @@ def initialize(work):
     rule = work / 'shared/controls/SAVED_INSTRUCTION.md'
     rule_bytes = raw(rule)
     require(rule_bytes.decode().strip(), 'empty saved instruction')
-    templates = {n: raw(work / 'shared/controls' / n) for n in ['NOTE_TEMPLATE.md', 'REVIEW_TEMPLATE.md']}
     vault = work / 'vault'
     vault.mkdir()
-    for name in ['Sources', 'Drafts', 'Knowledge', 'Reviews', 'Templates']:
+    for name in ['Sources', 'Knowledge', 'Reviews']:
         (vault / name).mkdir()
     for p in candidates:
         write_new(vault / 'Sources' / p.name, raw(p))
-    for name, data in templates.items():
-        write_new(vault / 'Templates' / name, data)
     write_new(vault / 'MOC.md', b'# Knowledge index\n')
-    for name in ['reviews', 'identities', 'cold']:
+    write_new(vault / 'Feedback.md', raw(work / 'shared/controls/FEEDBACK_TEMPLATE.md'))
+    for name in ['runs', 'cold', 'identities']:
         (work / name).mkdir()
     save(work / 'source-manifest.json', dict(schema_version=1, files=files, root_fingerprint=digest(canonical(files)), instruction=dict(path=str(rule), sha256=digest(rule_bytes))))
+def phase_prompt(base_text, phase, revision, previous=None, focus=None):
+    """Pure helper-owned derivation of frozen prompt bytes for a phase.
+    Injects revision/previous/focus metadata only; never leaks raw source content,
+    feedback text, or prior JSON bodies into any stage (esp. cold retrieve).
+    Deterministic so verifier can recompute exact frozen prompt from base control.
+    """
+    base = base_text.rstrip('\n')
+    extra = [
+        '',
+        f'## Frozen stage context (revision {revision})',
+        f'revision: {revision}',
+    ]
+    if previous:
+        extra.append(f'previous: {previous}')
+    if focus:
+        extra.append(f'focus_note: {focus}')
+    if phase == 'retrieve':
+        extra.append('Cold retrieve workdir supplies only MOC.md and Knowledge/<rev>/*.md. No raw sources, no Feedback.md, no previous run files. Read required focal and cited notes.')
+    elif phase == 'build':
+        extra.append('This build receives validated judgments (and prior build if v2) as data files. Focal note revision uses helper metadata here.')
+    extra.append('')
+    return base + '\n' + '\n'.join(extra) + '\n'
+def replace_latest_moc(work, rev, moc_bytes):
+    """Atomic replacement of live MOC with staged bytes.
+    Caller must wrap the call + manifest save in try to restore old MOC bytes on error.
+    """
+    moc_live = work / 'vault' / 'MOC.md'
+    tmp = moc_live.parent / ('.tmp-moc-replace-' + rev)
+    write_new(tmp, moc_bytes)
+    os.replace(tmp, moc_live)
 
 
 def decode_quote(value):
@@ -247,96 +276,73 @@ def parse_note(data, note_id):
             current, quote = match[1], []
         elif line.startswith('>') and current:
             quote.append(line)
+        elif not current and ('Judgment provenance' in line or ('Reviews/' in line and 'judgments' in line)):
+            # allow helper-rendered real wiki link to JG heading in Evidence (note->JG->source); model markup refused upstream
+            pass
         else:
             require(not line.strip(), f'{note_id}: malformed Evidence line: {line}')
     finish()
-    require(evidence, f'{note_id}: no evidence')
+    # evidence may legitimately be [] for unresolved no-source notes (eligibility from treatment, not quotes); all-excluded empty index also valid
     related = []
     for line in parts['Related'].splitlines():
         if not line.strip():
             continue
-        match = re.fullmatch(r'- \[\[Knowledge/(' + KB + r')(?:\|[^\]\n]+)?\]\]', line)
-        require(match, f'{note_id}: Related must use existing Knowledge/KB-NNN links; replace Drafts or ambiguous links')
+        # support revision-qualified links [[Knowledge/<rev>/KB-xxx]]
+        match = re.fullmatch(r'- \[\[Knowledge/(?:[a-z][a-z0-9-]*/)?(' + KB + r')(?:\|[^\]\n]+)?\]\]', line)
+        require(match, f'{note_id}: Related must use Knowledge/KB-NNN links (rev-qualified ok)')
         related.append(match[1])
-    # Links outside the two structural link sections are not navigation.
     require(not any('[[' in parts[k] or '](' in parts[k] for k in ['Claim', 'Limits and conflicts']), f'{note_id}: put links in Evidence or Related')
     require(note_id not in related and len(related) == len(set(related)), f'{note_id}: duplicate/self relationship')
     return evidence, related
 
 
-def note_receipt(work, path):
-    evidence, related = parse_note(raw(path), path.stem)
-    for target in related:
-        require(safe(work / 'vault/Knowledge' / (target + '.md')).is_file(), f'{path.name}: missing Knowledge/{target}.md')
-    return [support(work, e['source_id'], e['excerpt']) for e in evidence]
-
-
-def review(work, note, decision, reason):
-    source_identity(work)
-    note, reason = safe(note), safe(reason)
-    folder = 'Knowledge' if decision == 'admit' else 'Drafts'
-    require(note.parent == work / 'vault' / folder and re.fullmatch(KB + r'\.md', note.name), f'{decision} requires vault/{folder}/KB-NNN.md')
-    require(reason.is_relative_to(work / 'vault/Reviews'), 'reason file must be under vault/Reviews')
-    reason_bytes = raw(reason)
-    require(reason_bytes.decode().strip(), 'write a short review reason first')
-    quotes = note_receipt(work, note) if decision == 'admit' else []
-    receipt = dict(note_id=note.stem, note_sha256=digest(raw(note)), decision=decision, reason_sha256=digest(reason_bytes), reason_text=reason_bytes.decode(), source_manifest_sha256=digest(raw(work / 'source-manifest.json')), quotes=quotes)
-    save(work / 'reviews' / f'{note.stem}-{uuid.uuid4().hex}.json', receipt)
-
-
-def matching_review(work, path):
-    for p in sorted(safe(work / 'reviews').glob(path.stem + '-*.json')):
-        receipt = load(p)
-        if receipt.get('decision') == 'admit' and receipt.get('note_sha256') == digest(raw(path)):
-            verify_review(work, path, receipt)
-            return dict(path=p.name, sha256=digest(raw(p)))
-    return None
-
-
-def verify_review(work, path, receipt):
-    fields(receipt, {'note_id', 'note_sha256', 'decision', 'reason_sha256', 'reason_text', 'source_manifest_sha256', 'quotes'})
-    require(receipt['decision'] == 'admit' and receipt['note_id'] == path.stem and receipt['note_sha256'] == digest(raw(path)), f'{path.name}: admission bytes differ')
-    require(receipt['source_manifest_sha256'] == digest(raw(work / 'source-manifest.json')), 'review source identity differs')
-    require(receipt['reason_text'].strip() and digest(receipt['reason_text'].encode()) == receipt['reason_sha256'], 'immutable review reason differs')
-    evidence, _ = parse_note(raw(path), path.stem)
-    require(len(receipt['quotes']) == len(evidence), 'review quote set differs')
-    for item, quote in zip(evidence, receipt['quotes']):
-        fields(quote, {'source_id', 'locator', 'excerpt', 'sha256'})
-        require(quote['source_id'] in DN, f'unknown receipt source: {quote["source_id"]}')
-        require(item == {k: quote[k] for k in item} and quote['sha256'] == digest(quote['excerpt'].encode()) and re.fullmatch(r'L[1-9][0-9]*-L[1-9][0-9]*', quote['locator']), 'review quote identity differs')
-
-
 def navigation(root, files):
-    notes = {Path(f['path']).stem for f in files if f['path'].startswith('Knowledge/')}
-    require(notes, 'no admitted Knowledge notes')
+    notes = {Path(f['path']).name.replace('.md', '') for f in files if 'Knowledge/' in f['path']}
+    # empty notes allowed for honest all-excluded initial (MOC has no links)
     links = set()
     for i, line in enumerate(text(root / 'MOC.md').splitlines()):
-        if not line.strip() or i == 0 and re.fullmatch(r'# .+', line):
+        if not line.strip() or (i == 0 and re.fullmatch(r'# .+', line)):
             continue
-        match = re.fullmatch(r'- \[\[Knowledge/(' + KB + r')(?:\|[^\]\n]+)?\]\]', line)
-        require(match, 'MOC.md accepts only a title and Knowledge links')
+        match = re.fullmatch(r'- \[\[Knowledge/(?:[a-z][a-z0-9-]*/)?(' + KB + r')(?:\|[^\]\n]+)?\]\]', line)
+        require(match, 'MOC.md accepts only title and Knowledge links (rev-qualified ok)')
         links.add(match[1])
-    require(links <= notes, 'MOC.md names missing Knowledge notes')
+    require(links <= notes, 'MOC names missing Knowledge notes')
+    # derive rev from validated manifest file paths (strict Knowledge/<rev>/ )
+    rev = None
+    for f in files:
+        if 'Knowledge/' in f.get('path', ''):
+            ps = f['path'].split('/')
+            if len(ps) >= 3 and ps[0] == 'Knowledge':
+                rev = ps[1]
+                break
     graph = {}
     for name in notes:
-        _, related = parse_note(raw(root / 'Knowledge' / (name + '.md')), name)
+        require(rev, 'cannot resolve versioned note without rev in files')
+        note_p = root / 'Knowledge' / rev / (name + '.md')
+        require(note_p.is_file(), f'missing note {name}')
+        _, related = parse_note(raw(note_p), name)
         require(set(related) <= notes, f'{name}: missing Knowledge link')
         graph[name] = related
     reached = set(links)
     while True:
-        expanded = reached | {n for p in reached for n in graph[p]}
+        expanded = reached | {n for p in reached for n in graph.get(p, [])}
         if expanded == reached:
             break
         reached = expanded
-    require(reached == notes, 'MOC.md does not reach every Knowledge note')
+    require(reached == notes, 'MOC does not reach every Knowledge note')
 
 
 def content_files(root):
+    root = safe(root)
+    rev = root.name
+    require(re.fullmatch(r'[a-z][a-z0-9-]*', rev), f'cold root must be valid revision: {root}')
     files = inventory(root)
-    bad = {f['path'] for f in files if not (f['path'] == 'MOC.md' or re.fullmatch(r'Knowledge/' + KB + r'\.md', f['path']))}
-    directories = {p.relative_to(root).as_posix() for p in tree(root) if p.is_dir()}
-    bad |= directories ^ {'Knowledge'}
-    require(not bad, 'cold content/directory membership differs: ' + ', '.join(str(root / p) for p in sorted(bad)))
+    vkb = rf'Knowledge/{re.escape(rev)}/' + KB + r'\.md'
+    bad = {f['path'] for f in files if not (f['path'] == 'MOC.md' or re.fullmatch(vkb, f['path']))}
+    dirs = {p.relative_to(root).as_posix() for p in tree(root) if p.is_dir()}
+    ok_dirs = {'Knowledge', f'Knowledge/{rev}'}
+    bad |= (dirs - ok_dirs)
+    require(not bad, 'cold membership differs: ' + ', '.join(str(root / p) for p in sorted(bad)))
     return files
 
 
@@ -348,399 +354,946 @@ def revision_id(value):
 def check(work, revision, seen=None):
     revision_id(revision)
     seen = set() if seen is None else seen
-    require(revision not in seen, 'cyclic previous revision')
+    require(revision not in seen, 'cyclic previous')
     seen.add(revision)
     manifest = load(work / 'identities' / (revision + '.json'))
-    fields(manifest, {'schema_version', 'files', 'root_fingerprint', 'source_manifest_sha256', 'instruction_sha256', 'reviews', 'previous_manifest_sha256', 'previous', 'focus_note'})
-    require(type(manifest['schema_version']) is int and manifest['schema_version'] == 1, 'unsupported manifest schema')
-    require(isinstance(manifest['files'], list) and isinstance(manifest['reviews'], dict), 'malformed snapshot files/reviews')
-    paths = set()
+    require(type(manifest.get('schema_version')) is int and manifest['schema_version'] == 2, 'unsupported schema (clean cutover v2)')
+    require(manifest.get('revision') == revision, 'manifest revision must match arg')
+    fields(manifest, {'schema_version', 'revision', 'files', 'root_fingerprint', 'source_manifest_sha256', 'instruction_sha256', 'prompt_shas', 'judgments_sha256', 'build_sha256', 'answers_sha256', 'feedback_sha256', 'previous', 'previous_manifest_sha256', 'focus_note', 'phases', 'run_files', 'public_files'})
     for entry in manifest['files']:
         fields(entry, {'path', 'bytes', 'sha256'})
-        relative = entry['path']
-        require(isinstance(relative, str) and (relative == 'MOC.md' or re.fullmatch(r'Knowledge/' + KB + r'\.md', relative)), f'unsafe snapshot path: {relative}')
-        require(relative not in paths, f'duplicate snapshot path: {relative}')
-        paths.add(relative)
-        require(type(entry['bytes']) is int and entry['bytes'] >= 0 and isinstance(entry['sha256'], str) and re.fullmatch(r'[0-9a-f]{64}', entry['sha256']), f'malformed snapshot identity: {relative}')
+        rel = entry['path']
+        require(re.fullmatch(r'Knowledge/' + re.escape(revision) + r'/' + KB + r'\.md', rel) or rel == 'MOC.md', f'unsafe or wrong path {rel}')
     source = source_identity(work, live=False)
-    require(manifest['source_manifest_sha256'] == digest(raw(work / 'source-manifest.json')) and manifest['instruction_sha256'] == source['instruction']['sha256'], 'snapshot source/rule identity differs')
+    require(manifest['source_manifest_sha256'] == digest(raw(work / 'source-manifest.json')) and manifest['instruction_sha256'] == source['instruction']['sha256'], 'source/rule identity differs')
+    base_js = digest(raw(work / 'shared/controls/JUDGE_PROMPT.md'))
+    base_bs = digest(raw(work / 'shared/controls/BUILD_PROMPT.md'))
+    base_rs = digest(raw(work / 'shared/controls/RETRIEVE_PROMPT.md'))
+    require(manifest.get('prompt_shas') == {'judge': base_js, 'build': base_bs, 'retrieve': base_rs}, 'prompt_shas base controls identity')
+    rdir = work / 'runs' / revision
+    require((rdir / 'answers.json').is_file() and digest(raw(rdir / 'answers.json')) == manifest.get('answers_sha256'), 'answers sha differs')
+    if manifest.get('previous'):
+        require((rdir / 'feedback.md').is_file(), 'v2 must record feedback')
+    else:
+        require(manifest.get('feedback_sha256') is None, 'initial no feedback')
     root = work / 'cold' / revision
     actual = content_files(root)
     if actual != manifest['files']:
-        expected = {i['path']: i for i in manifest['files']}
-        current = {i['path']: i for i in actual}
-        bad = [p for p in sorted(expected.keys() | current.keys()) if expected.get(p) != current.get(p)]
-        raise ValueError('snapshot changed/added/missing: ' + ', '.join(bad))
-    require(manifest['root_fingerprint'] == digest(canonical(actual)), 'snapshot fingerprint differs')
+        exp = {i['path']: i for i in manifest['files']}
+        cur = {i['path']: i for i in actual}
+        bad = [p for p in sorted(exp.keys() | cur.keys()) if exp.get(p) != cur.get(p)]
+        raise ValueError('snapshot changed: ' + ', '.join(bad))
+    computed_fp = digest(canonical(actual))
+    require(computed_fp == manifest.get('root_fingerprint'), 'root_fingerprint differs from recomputed')
     navigation(root, actual)
-    require(set(manifest['reviews']) == {f['path'] for f in actual if f['path'] != 'MOC.md'}, 'snapshot admission set differs')
-    for relative, entry in manifest['reviews'].items():
-        fields(entry, {'path', 'sha256'})
-        require(re.fullmatch(KB + r'-[0-9a-f]+\.json', entry['path']), 'unsafe review receipt path')
-        p = work / 'reviews' / entry['path']
-        require(digest(raw(p)) == entry['sha256'], f'review receipt changed: {p.name}')
-        verify_review(work, root / relative, load(p))
+    for entry in actual:
+        rel = entry['path']
+        if rel == 'MOC.md':
+            continue
+        pubp = work / 'vault' / rel
+        require(pubp.is_file() and digest(raw(pubp)) == entry['sha256'], f'published {rel} differs from cold')
+    rj = work / 'vault/Reviews' / f'{revision}-judgments.md'
+    ra = work / 'vault/Reviews' / f'{revision}-answers.md'
+    require(rj.is_file() and ra.is_file(), 'Reviews must be published for completed')
+    require((rdir / 'judgments.json').is_file() and digest(raw(rdir / 'judgments.json')) == manifest['judgments_sha256'], 'judgments sha differs')
+    require((rdir / 'build.json').is_file() and digest(raw(rdir / 'build.json')) == manifest.get('build_sha256'), 'build sha differs')
+    phs = manifest.get('phases', {})
+    require(set(phs.keys()) == {'judge', 'build', 'retrieve'}, 'all 3 phases required')
+    for ph in ['judge', 'build', 'retrieve']:
+        pm = phs.get(ph) or {}
+        require(pm, f'missing {ph} phase meta')
+        exact_meta_keys = ['phase', 'evidence', 'work_root', 'runner', 'prompt', 'instruction', 'inputs', 'required_reads', 'reads', 'receipts', 'omp_version']
+        fields(pm, exact_meta_keys)
+        rdecl = pm.get('runner') or {}
+        runner_p = Path(rdecl.get('path', ''))
+        require(runner_p.is_file(), f'declared runner for {ph} missing or not file')
+        require(digest(raw(runner_p)) == rdecl.get('sha256'), f'runner hash for {ph}')
+        evp = pm.get('evidence')
+        require(evp, f'missing evidence for {ph}')
+        ev = Path(evp)
+        if ph == 'retrieve':
+            wdir = root
+        else:
+            wdir = rdir / 'inputs' / ph
+        prompt_path = rdir / 'prompts' / f'{ph}.md'
+        require(prompt_path.is_file(), f'frozen derived prompt required at {prompt_path}')
+        exp_inputs = inventory(wdir) if wdir.is_dir() else []
+        if ph == 'judge':
+            req = [f['path'] for f in exp_inputs if f['path'].endswith('.md')]
+            for ex in ['Feedback.md', 'previous-judgments.json', 'previous-build.json']:
+                if (wdir / ex).is_file(): req.append(ex)
+            req = sorted(set(req))
+        elif ph == 'build':
+            req = ['judgments.json']
+            if (wdir / 'previous-build.json').is_file(): req.append('previous-build.json')
+            req = sorted(set(req))
+        elif ph == 'retrieve':
+            req = ['MOC.md']
+            if manifest.get('focus_note'):
+                req.append(f'Knowledge/{revision}/{manifest["focus_note"]}.md')
+            req = sorted(set(req))
+        resp_text, reads, vmeta = verify_phase(work, runner_p, ph, prompt_path, wdir, ev, exp_inputs, req)
+        require(vmeta == pm, 'exact vmeta == pm')
+        if ph == 'build':
+            j = load(rdir / 'judgments.json')
+            binp = load(wdir / 'judgments.json') if (wdir / 'judgments.json').is_file() else {}
+            require(j == binp, 'causal judge to build exact')
+            require(raw(rdir / 'build.json') == canonical(response_json(resp_text)) + b'\n', 'build.json differs from audited response')
+        if ph == 'judge':
+            for d in DN:
+                p = wdir / f'{d}.md'
+                require(p.is_file(), f'judge packet missing {d}')
+            jv = response_json(resp_text)
+            require(raw(rdir / 'judgments.json') == canonical(jv) + b'\n', 'judgments.json differs from audited response')
+        if ph == 'retrieve':
+            av = response_json(resp_text)
+            require(raw(rdir / 'answers.json') == canonical(av) + b'\n', 'answers.json differs from audited response')
+            bv = load(rdir / 'build.json')
+            jv = load(rdir / 'judgments.json')
+            cmap = validate_judgments(work, jv)
+            rendered = render_answers_text(revision, av, cmap, bv, manifest.get('focus_note'))
+            require(raw(ra) == rendered.encode('utf-8'), 'exact raw render bytes answers')
+            fields(av, {'answers'})
+            require(len(av['answers']) == 3, 'typed answers')
+            validate_retrieve(work, revision, manifest, reads, av, manifest.get('focus_note'), cmap, bv)
+            for n in bv.get('notes', []):
+                nid = n['note_id']
+                title = n.get('title', nid)
+                cids = n.get('claim_ids', [])
+                rels = n.get('related', [])
+                rnote = render_knowledge_note(revision, nid, title, cids, rels, cmap)
+                cnote = root / 'Knowledge' / revision / (nid + '.md')
+                require(cnote.is_file() and raw(cnote) == rnote.encode('utf-8'), f'rerender KB {nid}')
+        if ph == 'judge':
+            jv = response_json(resp_text)
+            cmap = validate_judgments(work, jv)
+            cov = jv.get('coverage', [])
+            rendered = render_judgments_text(revision, cmap, cov)
+            require(raw(rj) == rendered.encode('utf-8'), 'exact raw render bytes judgments')
+            validate_build(load(rdir / 'build.json'), cmap)
+    run_inv = inventory(rdir) if rdir.is_dir() else []
+    require(manifest.get('run_files') == run_inv, 'run_files exact')
+    pub_actual = []
+    kdir = work / 'vault' / 'Knowledge' / revision
+    if kdir.is_dir():
+        for p in sorted(kdir.iterdir()):
+            if p.is_file() and re.fullmatch(KB + r'\.md', p.name):
+                d = raw(p)
+                pub_actual.append(dict(path=f'Knowledge/{revision}/{p.name}', bytes=len(d), sha256=digest(d)))
+    for rbase in [f'{revision}-judgments.md', f'{revision}-answers.md']:
+        rp = work / 'vault/Reviews' / rbase
+        if rp.is_file():
+            d = raw(rp)
+            pub_actual.append(dict(path=f'Reviews/{rbase}', bytes=len(d), sha256=digest(d)))
+    pub_actual.sort(key=lambda x: x['path'])
+    require(manifest.get('public_files') == pub_actual, 'public_files exact sorted')
     if manifest['previous'] is not None:
-        previous = revision_id(manifest['previous'])
-        require(digest(raw(work / 'identities' / (previous + '.json'))) == manifest['previous_manifest_sha256'], 'previous manifest changed')
-        old = check(work, previous, seen)
-        delta(old, manifest['files'], manifest['focus_note'])
+        prev = revision_id(manifest['previous'])
+        require(digest(raw(work / 'identities' / (prev + '.json'))) == manifest['previous_manifest_sha256'], 'prev manifest')
+        check(work, prev, seen)
     else:
-        require(manifest['previous_manifest_sha256'] is None and manifest['focus_note'] is None, 'initial revision cannot have a focus/previous hash')
+        require(manifest.get('previous_manifest_sha256') is None and manifest.get('focus_note') is None, 'initial no prev')
     return manifest
-
-
-def delta(previous, files, focus):
-    before = {f['path']: f['sha256'] for f in previous['files'] if f['path'].startswith('Knowledge/')}
-    after = {f['path']: f['sha256'] for f in files if f['path'].startswith('Knowledge/')}
-    require(before.keys() <= after.keys(), 'revision deleted Knowledge notes')
-    changed = {p for p in after if before.get(p) != after[p]}
-    require(f'Knowledge/{focus}.md' in changed, 'focus_note must be a changed or new Knowledge note')
-
-
-def admission_hint(work, path):
-    reason = work / 'vault/Reviews' / (path.stem + '.md')
-    command = [sys.executable, work / 'scripts/second_brain.py', 'review', '--work', work,
-               '--note', path, '--decision', 'admit', '--reason-file', reason]
-    shell_quote = lambda value: "'" + str(value).replace("'", "'\"'\"'") + "'"
-    ps_quote = lambda value: "'" + str(value).replace("'", "''") + "'"
-    return (f'{path}: inspect/remove this note in Obsidian, or complete it and review it.\n'
-            f'Create a short-reason file at {reason}, or substitute your actual short-reason file under vault/Reviews in the command.\n'
-            'Bash/zsh: ' + ' '.join(shell_quote(part) for part in command) + '\n'
-            'PowerShell: & ' + ' '.join(ps_quote(part) for part in command))
-
-
-def knowledge_issues(root):
-    """Collect all unsafe entries without descending through a link or junction."""
-    root = safe(root)
-    issues = []
-    def visit(directory):
-        for path in sorted(directory.iterdir()):
-            try:
-                safe(path)
-            except (ValueError, OSError) as exc:
-                issues.append(f'{path}: {exc}')
-                continue
-            if path.parent != root or not re.fullmatch(KB + r'\.md', path.name) or not path.is_file():
-                issues.append(str(path))
-            if path.is_dir():
-                visit(path)
-    visit(root)
-    return issues
-
-
-def freeze(work, revision, previous=None, focus=None):
-    revision_id(revision)
-    destination = absent(work / 'cold' / revision)
-    manifest_path = absent(work / 'identities' / (revision + '.json'))
-    source = source_identity(work)
-    require(digest(raw(work / 'shared/controls/SAVED_INSTRUCTION.md')) == source['instruction']['sha256'], 'saved instruction changed')
-    knowledge_root = work / 'vault/Knowledge'
-    unsafe = knowledge_issues(knowledge_root)
-    # Keep collecting unreviewed direct notes even when another filename is unsafe.
-    knowledge = []
-    for p in sorted(knowledge_root.iterdir()):
-        if re.fullmatch(KB + r'\.md', p.name):
-            try:
-                data = raw(p)
-            except (ValueError, OSError) as exc:
-                unsafe.append(f'{p}: {exc}')
-                continue
-            knowledge.append(dict(path=p.name, bytes=len(data), sha256=digest(data)))
-    reviews, missing = {}, []
-    for item in knowledge:
-        p = work / 'vault/Knowledge' / item['path']
-        try:
-            receipt = matching_review(work, p)
-            if receipt is None:
-                missing.append(admission_hint(work, p))
-            else:
-                note_receipt(work, p)
-                reviews['Knowledge/' + p.name] = receipt
-        except (ValueError, OSError) as exc:
-            missing.append(f'{p}: {exc}')
-    issues = (['Unsafe Knowledge entries: ' + '; '.join(unsafe) +
-               '. Inspect/remove these files or directories in Obsidian, or give each note a unique KB-NNN.md name, complete it and review it.'] if unsafe else []) + missing
-    require(not issues, 'Knowledge needs attention:\n' + '\n'.join(issues))
-    files = [dict(path='MOC.md', bytes=len(raw(work / 'vault/MOC.md')), sha256=digest(raw(work / 'vault/MOC.md')))] + [dict(f, path='Knowledge/' + f['path']) for f in knowledge]
-    files.sort(key=lambda f: f['path'])
-    navigation(work / 'vault', files)
-    prior = None
-    if previous:
-        previous = safe(previous)
-        require(previous.parent == work / 'identities' and previous.suffix == '.json', 'previous must be an external identity in this work')
-        prior = check(work, previous.stem)
-        delta(prior, files, focus)
-    else:
-        require(focus is None, 'focus-note requires previous')
-    manifest = dict(schema_version=1, files=files, root_fingerprint=digest(canonical(files)), source_manifest_sha256=digest(raw(work / 'source-manifest.json')), instruction_sha256=source['instruction']['sha256'], reviews=reviews, previous=previous.stem if previous else None, previous_manifest_sha256=digest(raw(previous)) if previous else None, focus_note=focus)
-    # Exclusive sibling lock serializes publishers; existing attempts are never replaced.
-    lock = absent(destination.with_name('.' + revision + '.lock'))
-    lock.mkdir()
-    temporary = Path(tempfile.mkdtemp(prefix='.' + revision + '-', dir=safe(destination.parent)))
-    try:
-        (temporary / 'Knowledge').mkdir()
-        for item in files:
-            write_new(temporary / item['path'], raw(work / 'vault' / item['path']))
-        require(content_files(temporary) == files, 'content changed while freezing')
-        require(source_identity(work) == source, 'source identity changed while freezing')
-        require(digest(raw(work / 'shared/controls/SAVED_INSTRUCTION.md')) == manifest['instruction_sha256'], 'saved instruction changed while freezing')
-        for entry in reviews.values():
-            require(digest(raw(work / 'reviews' / entry['path'])) == entry['sha256'], 'review receipt changed while freezing')
-        absent(destination)
-        absent(manifest_path)
-        publish_directory(temporary, destination)
-        save(manifest_path, manifest)
-    finally:
-        if temporary.exists():
-            shutil.rmtree(temporary)
-        lock.rmdir()
 
 
 def response_json(value):
     value = value.strip()
     if value.startswith('```'):
-        match = re.fullmatch(r'```(?:json)?\n(.*)\n```', value, re.S)
-        require(match, 'response must be JSON or one outer JSON fence')
-        value = match[1]
+        m = re.fullmatch(r'```(?:json)?\n(.*)\n```', value, re.S)
+        require(m, 'response must be JSON or one outer fence')
+        value = m[1]
     return strict(value)
-
-
-def stage(work, response):
-    value = response_json(response)
-    fields(value, {'notes'})
-    require(isinstance(value['notes'], list), 'notes must be an array')
-    ids = [n.get('note_id') for n in value['notes'] if isinstance(n, dict)]
-    valid, invalid = [], []
-    for index, note in enumerate(value['notes']):
-        name = note.get('note_id') if isinstance(note, dict) else None
-        try:
-            fields(note, {'note_id', 'title', 'claim', 'limits', 'related', 'sources'})
-            require(isinstance(name, str) and re.fullmatch(KB, name), 'unsafe note ID')
-            require(ids.count(name) == 1, f'duplicate note ID {name}')
-            for key in ['title', 'claim', 'limits']:
-                require(isinstance(note[key], str) and note[key].strip(), f'empty {key}')
-            require('\n' not in note['title'] and '\r' not in note['title'], 'multiline title')
-            require(isinstance(note['related'], list) and all(isinstance(n, str) and n in ids and n != name for n in note['related']) and len(set(note['related'])) == len(note['related']), 'invalid related IDs')
-            require(isinstance(note['sources'], list) and note['sources'], 'missing sources')
-            quotes = []
-            for s in note['sources']:
-                fields(s, {'source_id', 'excerpt'})
-                quotes.append(support(work, s['source_id'], s['excerpt']))
-            body = f'# {note["title"]}\n## Claim\n{note["claim"]}\n## Limits and conflicts\n{note["limits"]}\n## Evidence\n'
-            for q in quotes:
-                body += f'### [[Sources/{q["source_id"]}]]\n' + '\n'.join('> ' + line for line in q['excerpt'].split('\n')) + '\n'
-            body += '## Related\n'
-            # Validate structural Markdown before adding deliberately non-clickable suggestions.
-            parse_note(body.encode(), name)
-            body += ''.join(f'- {n} — {next((p.get("title", n) for p in value["notes"] if isinstance(p, dict) and p.get("note_id") == n), n)}\n' for n in note['related'])
-            valid.append((name, body))
-        except (ValueError, TypeError, KeyError) as exc:
-            invalid.append(dict(note_id=name if isinstance(name, str) else f'proposal-{index+1}', reason=str(exc)))
-    for name, body in valid:
-        write_new(work / 'vault/Drafts' / (name + '.md'), body.encode())
-    save(work / 'reviews/ingest-report.json', dict(staged=[n for n, _ in valid], invalid=invalid))
-    require(not invalid, 'proposal HOLD: ' + '; '.join(f'{n["note_id"]}: {n["reason"]}' for n in invalid))
+def verify_phase(work, runner_p, phase, prompt_path, wdir, evdir, expected_inputs, required_reads):
+    runner_p = safe(runner_p)
+    rhash = digest(raw(runner_p))
+    rt = runner_module(runner_p)
+    ev = safe(evdir)
+    wdir = safe(wdir)
+    errs = rt.audit_evidence(ev)
+    require(not errs, 'audit: ' + '; '.join(errs))
+    polf = ev / 'policy.json'
+    resf = ev / 'result.json'
+    require(polf.is_file() and resf.is_file(), 'missing policy or result')
+    pol = load(polf)
+    res = load(resf)
+    require(pol.get('work_root') == str(wdir), 'work_root policy mismatch')
+    require(pol.get('profile') == 'read', 'read-only profile required')
+    require(pol.get('thinking') == 'low', 'bounded low thinking required')
+    tools = pol.get('tools', [])
+    require(tools == ['course_read'], 'tools exactly course_read')
+    require(pol.get('write_files', []) == [], 'no writes permitted')
+    require(pol.get('write_root') is None, 'write_root None')
+    require(pol.get('declaration') is None, 'declaration None')
+    require('mcp' not in pol and 'judge' not in pol, 'mcp/judge disallowed')
+    source = source_identity(work, live=False)
+    rule = safe(work / 'shared/controls/SAVED_INSTRUCTION.md')
+    instr = pol.get('instruction') or {}
+    require(instr.get('path') == str(rule) and instr.get('sha256') == source['instruction']['sha256'], 'instruction identity')
+    prm = safe(prompt_path)
+    require(digest(raw(prm)) == pol.get('prompt_sha256'), 'prompt sha mismatch')
+    actual_in = inventory(wdir)
+    if expected_inputs is not None:
+        require(len(identity_changes(expected_inputs, actual_in)) == 0, 'inputs changed from pre-stage inventory')
+    in_sh = res.get('input_sha256', {}) or {}
+    for it in (expected_inputs or actual_in):
+        require(in_sh.get(it['path'], it.get('sha256')) == it.get('sha256'), 'input hash match')
+    require(res.get('output_sha256', {}) == {}, 'no outputs')
+    ompv = res.get('omp_version')
+    require(isinstance(ompv, str) and ompv.strip() and ompv == pol.get('omp_version'), 'omp_version nonempty exact policy/result match')
+    reads = check_actual_reads(ev, wdir, phase)
+    req = sorted(required_reads or [])
+    require(set(req) <= set(reads), f'missing required reads {set(req)-set(reads)}')
+    receipts = sorted(inventory(ev), key=lambda x: x['path'])
+    meta = {
+        'phase': phase,
+        'evidence': str(ev),
+        'work_root': str(wdir),
+        'runner': {'path': str(runner_p), 'sha256': rhash},
+        'prompt': {'path': str(prm), 'sha256': digest(raw(prm))},
+        'instruction': {'path': str(rule), 'sha256': digest(raw(rule))},
+        'inputs': sorted(expected_inputs or actual_in, key=lambda x: x['path']),
+        'required_reads': sorted(required_reads or []),
+        'reads': sorted(reads),
+        'receipts': receipts,
+        'omp_version': ompv,
+    }
+    resp = text(ev / 'response.md')
+    return resp, reads, meta
+def check_actual_reads(ev, workdir, phase):
+    guard = []
+    events = []
+    if (ev / 'guard.jsonl').is_file():
+        guard = [strict(l) for l in text(ev / 'guard.jsonl').splitlines() if l.strip()]
+    if (ev / 'events.jsonl').is_file():
+        events = [strict(l) for l in text(ev / 'events.jsonl').splitlines() if l.strip()]
+    reads = set()
+    tool_results = {}
+    for row in events:
+        if row.get('type') == 'message_end':
+            msg = row.get('message', {})
+            if msg.get('role') == 'toolResult':
+                tid = msg.get('toolCallId')
+                contents = msg.get('content', [])
+                if contents and isinstance(contents, list) and contents[0].get('type') == 'text':
+                    tool_results[tid] = contents[0].get('text', '')
+    for call, dec, exe, state in attempted_calls(guard, events):
+        if state == 'EXECUTED' and exe:
+            t = Path(exe.get('resolved_path', ''))
+            if t.is_absolute() and t.is_relative_to(safe(workdir)):
+                rel = t.relative_to(workdir).as_posix()
+                if not (workdir / rel).is_file():
+                    continue
+                cid = call.get('id')
+                if cid and cid in tool_results:
+                    actual = tool_results[cid]
+                    expected = text(workdir / rel)
+                    require(actual == expected, f'executed read payload for {rel} differs from frozen packet content')
+                    reads.add(rel)
+                else:
+                    require(False, f'missing/empty/error payload for credited read {rel}')
+    if phase == 'judge':
+        require({f'{d}.md' for d in DN} <= reads, 'judge must read all 40 distinct DN sources')
+    elif phase == 'build':
+        require('judgments.json' in reads, 'build must read judgments.json handoff')
+    elif phase == 'retrieve':
+        require('MOC.md' in reads, 'retrieve must read MOC.md')
+    return reads
+def call_stage(work, runner_p, phase, prompt_name, wdir, evdir, *, expected_inputs=None, required_reads=None):
+    rule = safe(work / 'shared/controls/SAVED_INSTRUCTION.md')
+    prm = safe(work / 'shared/controls' / prompt_name)
+    require(rule.is_file() and prm.is_file(), f'missing rule or {prompt_name}')
+    require(digest(raw(rule)) == source_identity(work, live=False)['instruction']['sha256'], 'saved instruction changed before model contact')
+    wdir = safe(wdir)
+    evdir = safe(evdir)
+    if expected_inputs is None:
+        expected_inputs = inventory(wdir)
+    if required_reads is None:
+        if phase == 'judge':
+            required_reads = sorted([f'{d}.md' for d in DN])
+        elif phase == 'build':
+            required_reads = ['judgments.json']
+        elif phase == 'retrieve':
+            required_reads = ['MOC.md']
+        else:
+            required_reads = []
+    # actual shared replay via declared frozen runner
+    rt = runner_module(runner_p)
+    code = rt.main(['--workdir', str(wdir), '--prompt', str(prm), '--instruction', str(rule), '--thinking', 'low', '--evidence', str(evdir)])
+    if code != 0:
+        return code, None, set(), None
+    # mandatory verify on every call (shared replay, policy, full payloads, exact meta)
+    resp, reads, meta = verify_phase(work, runner_p, phase, prm, wdir, evdir, expected_inputs, required_reads)
+    return 0, resp, reads, meta
 
 
 def runner_module(path):
     path = safe(path)
     raw(path)
-    spec = importlib.util.spec_from_file_location('module02_explicit_runner', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def phase_audit(work, evidence, runtime, phase, manifest=None):
-    inventory(evidence)  # Reject selected receipt files or parents that are links.
-    errors = runtime.audit_evidence(evidence)
-    require(not errors, 'shared runtime audit: ' + '; '.join(errors))
-    source = source_identity(work, live=phase == 'ingest')
-    root = work / 'vault/Sources' if phase == 'ingest' else work / 'cold' / manifest[0]
-    expected = source['files'] if phase == 'ingest' else manifest[1]['files']
-    policy, result = load(evidence / 'policy.json'), load(evidence / 'result.json')
-    prompt = work / 'shared/controls' / ('INGEST_PROMPT.md' if phase == 'ingest' else 'RETRIEVE_PROMPT.md')
-    require(policy['profile'] == 'read' and policy['tools'] == ['course_read'] and policy['work_root'] == str(root), 'phase read policy/root differs')
-    require(policy['instruction'] == source['instruction'], 'missing or changed saved-instruction descriptor')
-    require(policy['prompt_sha256'] == digest(raw(prompt)), 'phase prompt differs')
-    require(result['input_sha256'] == {f['path']: f['sha256'] for f in expected} and result['output_sha256'] == {}, 'phase input/output identity differs')
-    require(inventory(root) == expected, 'phase input bytes changed')
-    guard = runtime.read_jsonl(evidence / 'guard.jsonl')
-    snapshots = load(evidence / 'snapshots.json')
-    reads, classifications = set(), []
-    events = runtime.read_jsonl(evidence / 'events.jsonl')
-    for call, row, event, classification in attempted_calls(guard, events):
-        if event:
-            require(event['tool'] == 'course_read' and event.get('output_sha256') is None, 'non-read effect')
-            target = Path(event['resolved_path'])
-            require(target.is_relative_to(root), 'read escaped phase root')
-            relative = target.relative_to(root).as_posix()
-            if relative in {f['path'] for f in expected}:
-                reads.add(relative)
-            else:
-                require(relative == '.' or snapshots['before']['work'].get(relative, {}).get('type') == 'directory', f'successful read of nonmember: {relative}')
-        elif classification == 'ALLOWED_ABSENT':
-            target = Path(row.get('resolved_path', ''))
-            require(target.is_absolute() and target.is_relative_to(root) and not target.exists(), 'allowed failed call was not an absent in-root path')
-        classifications.append(classification)
-    if phase == 'ingest':
-        require(reads == {n + '.md' for n in DN}, 'ingest must read forty distinct DN files')
-    else:
-        require('MOC.md' in reads, 'cold run did not read MOC.md')
-    return reads, classifications or ['NOT_ATTEMPTED']
+    spec = importlib.util.spec_from_file_location('module02_runner', path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def attempted_calls(guard, events):
-    """Enumerate actual calls after the shared auditor has verified their receipts."""
-    decisions = {row['call_id']: row for row in guard if row['type'] == 'decision'}
-    executed = {row['call_id']: row for row in guard if row['type'] == 'executed'}
+    decisions = {row['call_id']: row for row in guard if row.get('type') == 'decision'}
+    executed = {row['call_id']: row for row in guard if row.get('type') == 'executed'}
     for row in events:
-        message = row.get('message', {})
-        if row['type'] != 'message_end' or message.get('role') != 'assistant':
+        msg = row.get('message', {})
+        if row.get('type') != 'message_end' or msg.get('role') != 'assistant':
             continue
-        for call in message.get('content', []):
+        for call in msg.get('content', []):
             if call.get('type') != 'toolCall':
                 continue
-            decision, execution = decisions.get(call['id']), executed.get(call['id'])
-            # A missing decision can pass the shared audit only for an
-            # undeclared tool rejected by OMP before the extension hook.
-            state = 'EXECUTED' if execution else 'ALLOWED_ABSENT' if decision and decision.get('allow') else 'DENIED'
-            yield call, decision, execution, state
+            dec = decisions.get(call['id'])
+            exe = executed.get(call['id'])
+            state = 'EXECUTED' if exe else ('ALLOWED_ABSENT' if dec and dec.get('allow') else 'DENIED')
+            yield call, dec, exe, state
 
 
-def raw_access_observations(guard, events):
-    """Classify raw-source path references in call arguments, not successful reads."""
-    def mentions_raw(value):
-        if isinstance(value, str):
-            return bool(re.search(r'(?<![\w.-])(?:Sources|Drafts|Reviews|shared|DN-[0-9]{3}\.md)(?![\w.-])', value))
-        if isinstance(value, dict):
-            return any(mentions_raw(item) for item in value.values())
-        if isinstance(value, list):
-            return any(mentions_raw(item) for item in value)
-        return False
-
-    observations = []
-    for call, decision, execution, state in attempted_calls(guard, events):
-        if not mentions_raw(call.get('arguments')):
-            continue
-        observations.append(state)
-    return observations or ['NOT_ATTEMPTED']
 
 
-def answers(work, revision, manifest, reads, response):
-    value = response_json(response)
-    fields(value, {'answers'})
-    require(isinstance(value['answers'], list) and len(value['answers']) == 3, 'exactly three answers required')
-    seen, cited = set(), set()
-    for answer in value['answers']:
-        fields(answer, {'question_id', 'status', 'answer', 'citations'})
-        q = answer['question_id']
-        require(q in {'Q1', 'Q2', 'Q3'} and q not in seen, 'duplicate/unknown question ID')
-        seen.add(q)
-        require(answer['status'] in {'supported', 'unsupported'} and isinstance(answer['answer'], str) and answer['answer'].strip() and isinstance(answer['citations'], list), f'{q}: malformed answer')
-        require(answer['status'] != 'supported' or answer['citations'], f'{q}: supported answer needs citations')
-        for citation in answer['citations']:
-            fields(citation, {'note_id', 'source_id', 'excerpt'})
-            name = citation['note_id']
-            require(isinstance(name, str) and re.fullmatch(KB, name), 'unsafe cited KB ID')
-            relative = f'Knowledge/{name}.md'
-            require(relative in reads and relative in manifest['reviews'], f'{q}: unread/unfrozen citation {name}')
-            quotes, _ = parse_note(raw(work / 'cold' / revision / relative), name)
-            excerpt = citation['excerpt']
-            require(isinstance(excerpt, str) and excerpt.strip(), 'empty citation excerpt')
-            # Try literal first: a source's leading > must never disappear merely
-            # because it resembles presentation syntax.
-            candidates = [excerpt.replace('\r\n', '\n'), decode_quote(excerpt)]
-            require(any(c and c in item['excerpt'] for item in quotes if item['source_id'] == citation['source_id'] for c in candidates), f'{q}: fabricated DN/excerpt citation')
-            cited.add(name)
-        print(f'{q} ({answer["status"]}): {answer["answer"]}')
-        for c in answer['citations']:
-            print(f'  Knowledge/{c["note_id"]}.md · {c["source_id"]}: {c["excerpt"]}')
-    require(manifest['focus_note'] is None or manifest['focus_note'] in cited, 'revised focus note must be read and cited')
+def validate_judgments(work, value):
+    fields(value, {'claims', 'coverage'})
+    claims = value['claims']
+    require(isinstance(claims, list) and claims, 'claims required')
+    seen = set()
+    cmap = {}
+    for c in claims:
+        fields(c, {'claim_id', 'claim', 'treatment', 'reason', 'limits', 'sources'})
+        jg = c['claim_id']
+        require(re.fullmatch(r'JG-[0-9]{3}', jg), 'bad JG id')
+        require(jg not in seen, 'duplicate JG')
+        seen.add(jg)
+        cmap[jg] = c
+        treat = c['treatment']
+        require(treat in {'use', 'qualify', 'unresolved', 'exclude'}, 'treatment must be use|qualify|unresolved|exclude')
+        for fld in ('claim', 'reason', 'limits'):
+            val = c.get(fld, '')
+            require(isinstance(val, str), f'{fld} must be string')
+            require(val.strip(), f'empty {fld}')
+            require('[[' not in val and '](' not in val, f'model-injected markup/navigation refused in {fld} for {jg}')
+        require(c['claim'].strip() and c['reason'].strip(), 'empty claim/reason')
+        srcs = c['sources']
+        require(isinstance(srcs, list), 'sources must be list')
+        if treat in {'use', 'qualify'}:
+            require(srcs, 'use/qualify need evidence')
+        for s in srcs:
+            fields(s, {'source_id', 'excerpt'})
+            require(isinstance(s['excerpt'], str) and s['excerpt'].strip(), 'empty excerpt')
+            support(work, s['source_id'], s['excerpt'])
+    cov = value['coverage']
+    require(isinstance(cov, list) and len(cov) == 40, 'exactly 40 coverage')
+    cset = set()
+    claim_to_cov_sources = {}
+    cov_source_to_claims = {}
+    for e in cov:
+        fields(e, {'source_id', 'claim_ids', 'reason'})
+        sid = e['source_id']
+        require(sid in DN, 'bad source in cov')
+        require(sid not in cset, 'dup cov source')
+        cset.add(sid)
+        require(isinstance(e['claim_ids'], list), 'claim_ids list')
+        require(e['reason'].strip(), 'coverage reason required (empty not allowed)')
+        require('[[' not in e['reason'] and '](' not in e['reason'], 'model-injected in coverage reason')
+        cov_source_to_claims[sid] = set(e['claim_ids'])
+        for j in e['claim_ids']:
+            require(j in cmap, 'cov refs unknown claim')
+            if j not in claim_to_cov_sources:
+                claim_to_cov_sources[j] = []
+            claim_to_cov_sources[j].append(sid)
+    # exact bidirectional membership: claims declare sources, cov declares reverse, must match exactly; no dups via sets
+    claim_decl_sources = {}
+    for jg, c in cmap.items():
+        claim_decl_sources[jg] = {s['source_id'] for s in c.get('sources', [])}
+    source_decl_claims = {}
+    for jg, sset in claim_decl_sources.items():
+        for sid in sset:
+            source_decl_claims.setdefault(sid, set()).add(jg)
+    for sid in DN:
+        cov_claims = cov_source_to_claims.get(sid, set())
+        decl_claims = source_decl_claims.get(sid, set())
+        require(cov_claims == decl_claims, f'exact reverse source↔claim membership required for {sid} (no dups/ambiguous)')
+    for jg, c in cmap.items():
+        if c['treatment'] in {'use', 'qualify'}:
+            require(jg in claim_to_cov_sources and claim_to_cov_sources[jg], f'use/qualify claim {jg} missing from coverage reverse map')
+    return cmap
 
 
-def paid(work, runtime_path, evidence, phase, revision=None):
-    rule = safe(work / 'shared/controls/SAVED_INSTRUCTION.md')
-    if not rule.is_file():
-        print(f'HOLD: missing saved instruction: {rule}', file=sys.stderr)
-        return 2
-    source = source_identity(work, live=phase == 'ingest')
-    require(digest(raw(rule)) == source['instruction']['sha256'], 'saved instruction differs from initial identity')
-    evidence = absent(evidence)
-    require(not (evidence.is_relative_to(work) or work.is_relative_to(evidence)), 'work and evidence overlap')
-    manifest = check(work, revision) if phase == 'retrieve' else None
-    root = work / 'cold' / revision if manifest else work / 'vault/Sources'
-    prompt = safe(work / 'shared/controls' / ('INGEST_PROMPT.md' if phase == 'ingest' else 'RETRIEVE_PROMPT.md'))
-    prompt_hash = digest(raw(prompt))
-    runtime = runner_module(runtime_path)
-    marker = work / 'reviews/ingest-attempt.json'
-    reservation = None
-    if phase == 'ingest':
-        absent(work / 'reviews/ingest-report.json')
-        require(not list(safe(work / 'vault/Drafts').iterdir()), 'staged drafts already exist; use fresh work and evidence')
-        reservation = dict(reservation=uuid.uuid4().hex, evidence=str(evidence), source_manifest_sha256=digest(raw(work / 'source-manifest.json')), instruction=source['instruction'], prompt_sha256=prompt_hash)
-        save(marker, reservation)
-    code = runtime.main(['--workdir', str(root), '--prompt', str(prompt), '--instruction', str(rule), '--evidence', str(evidence)])
-    if phase == 'ingest' and code == 2 and not evidence.exists() and not evidence.is_symlink():
-        require(load(marker) == reservation, 'ingest reservation changed; preserve it')
-        save(work / 'reviews' / ('ingest-preflight-' + uuid.uuid4().hex + '.json'), reservation)
-        marker.unlink()
-        return 2
-    if code != 0:
-        return code if code in {1, 2} else 1
-    require(digest(raw(prompt)) == prompt_hash, 'phase prompt changed during run')
-    reads, classifications = phase_audit(work, evidence, runtime, phase, (revision, manifest) if manifest else None)
-    print('Observed calls: ' + ', '.join(classifications))
-    if phase == 'ingest':
-        stage(work, text(evidence / 'response.md'))
+def validate_build(value, cmap):
+    fields(value, {'notes'})
+    notes = value['notes']
+    require(isinstance(notes, list), 'notes must be list')
+    seen = set()
+    used = set()
+    all_nids = set()
+    for n in notes:
+        all_nids.add(n.get('note_id'))
+    for n in notes:
+        fields(n, {'note_id', 'title', 'claim_ids', 'related'})
+        nid = n['note_id']
+        require(re.fullmatch(KB, nid), 'bad KB id')
+        require(nid not in seen, 'dup note')
+        seen.add(nid)
+        title = n['title']
+        require(isinstance(title, str) and title.strip(), 'empty title')
+        require(not any(char in title for char in '[]|\r\n'), 'title must be one line without brackets or pipes')
+        cids = n['claim_ids']
+        require(isinstance(cids, list) and cids, 'note needs claim_ids')
+        for j in cids:
+            require(j in cmap and cmap[j]['treatment'] != 'exclude', 'excluded or unknown claim')
+            require(j not in used, 'claim used >1')
+            used.add(j)
+        rels = n['related']
+        require(isinstance(rels, list), 'related must be list')
+        for r in rels:
+            require(isinstance(r, dict) and set(r.keys()) >= {'note_id', 'reason'}, 'related entries must match {note_id,reason}')
+            rid = r['note_id']
+            require(re.fullmatch(KB, rid) and rid != nid and rid in all_nids, 'bad related target (must exist and distinct)')
+            reason = r.get('reason', '')
+            require(isinstance(reason, str) and reason.strip(), 'bad related')
+            require('[[' not in reason and '](' not in reason, 'model-injected markup refused in related reason')
+    non_ex = {j for j, c in cmap.items() if c['treatment'] != 'exclude'}
+    require(used == non_ex, 'all non-exclude claims must be in exactly one note')
+    return value
+
+
+def render_knowledge_note(rev, nid, title, cids, rels, cmap):
+    clines = []
+    llines = []
+    evs = []
+    for j in cids:
+        c = cmap[j]
+        clines.append(f"[{j} {c['treatment']}] {c['claim']}")
+        if c['limits'].strip():
+            llines.append(f"[{j}] {c['limits']}")
+        for s in c.get('sources', []):
+            evs.append((s['source_id'], s['excerpt']))
+    body = f"# {title}\n## Claim\n" + "\n\n".join(clines) + "\n## Limits and conflicts\n" + ("\n\n".join(llines) if llines else "No specific limits.") + "\n"
+    body += "## Evidence\n"
+    body += "Judgment provenance (AI): see " + ", ".join(f"[[Reviews/{rev}-judgments.md#{j}|{j}]]" for j in cids) + "\n"
+    seen = set()
+    for sid, ex in evs:
+        if (sid, ex) in seen: continue
+        seen.add((sid, ex))
+        body += f"### [[Sources/{sid}]]\n" + "\n".join("> " + ln for ln in ex.splitlines()) + "\n"
+    rel_ids = [r if isinstance(r, str) else r.get('note_id', '') for r in (rels or [])]
+    body += "## Related\n" + "".join(f"- [[Knowledge/{rev}/{rid}|{rid}]]\n" for rid in rel_ids if rid)
+    return body
+
+
+def render_judgments_text(rev, cmap, cov):
+    ls = [f"# {rev} judgments (AI-processed, provisional)\n"]
+    for j in sorted(cmap):
+        c = cmap[j]
+        ls.append(f"## {j}\nTreatment: {c['treatment']}\nClaim: {c['claim']}\nReason: {c['reason']}\nLimits: {c['limits']}")
+        for s in c.get('sources', []):
+            ls.append(f"### [[Sources/{s['source_id']}]]")
+            ls.extend("> " + ln for ln in s['excerpt'].splitlines())
+        ls.append("")
+    ls.append("## Coverage\n" + "\n".join(f"- {e['source_id']}: {e['claim_ids']} {e['reason']}" for e in cov))
+    return "\n".join(ls) + "\n"
+
+
+def render_answers_text(rev, aval, cmap, bval, focus=None):
+    ls = [f"# {rev} answers (AI-processed, provisional)\n"]
+    note2claims = {nn['note_id']: [cmap[j] for j in nn.get('claim_ids', []) if j in cmap] for nn in bval.get('notes', [])}
+    cited = set()
+    for a in aval.get('answers', []):
+        ls.append(f"## {a['question_id']} ({a['status']})\n{a['answer']}")
+        for c in a.get('citations', []):
+            ls.append(f"  [[Knowledge/{rev}/{c['note_id']}|{c['note_id']}]] · [[Sources/{c['source_id']}|{c['source_id']}]]: {c['excerpt']}")
+            for cl in note2claims.get(c['note_id'], []):
+                if cl.get('limits', '').strip():
+                    ls.append(f"    (limit) {cl['limits']}")
+            nobj = next((nn for nn in bval.get('notes', []) if nn.get('note_id') == c['note_id']), None)
+            if nobj:
+                for jg in nobj.get('claim_ids', []):
+                    ls.append(f"    (from judgment [[Reviews/{rev}-judgments.md#{jg}|{jg}]])")
+            cited.add(c.get('note_id'))
+        ls.append("")
+    if focus and focus not in cited:
+        ls.append(f"Focal note [[Knowledge/{rev}/{focus}|{focus}]] was read but is uncitable (no eligible use/qualify claims; honest unsupported path).")
+        ls.append("")
+    return "\n".join(ls) + "\n"
+
+
+def render_navigation(rev, notes):
+    """Pure MOC renderer. notes: list of build note dicts or ids. Matches staged MOC bytes."""
+    mlines = ['# Knowledge index', '']
+    for n in (notes or []):
+        if isinstance(n, dict):
+            nid = n.get('note_id', '')
+            title = n.get('title', nid)
+        else:
+            nid = str(n)
+            title = nid
+        if nid:
+            mlines.append(f"- [[Knowledge/{rev}/{nid}|{title}]]")
+    return '\n'.join(mlines) + '\n'
+
+
+def knowledge_signature(note, cmap):
+    """Canonical bytes of substantive knowledge for comparison.
+    Structured (not regex): sorted normalized claim/treatment/limits + (source_id, exact excerpt).
+    Ignores claim IDs, title, ordering, generated paths/rev, reason/rel wording, whitespace.
+    """
+    if not isinstance(note, dict):
+        note = {}
+    cids = note.get('claim_ids', []) or []
+    claim_norms = []
+    for j in sorted(cids):
+        c = cmap.get(j) or {}
+        srcs = sorted((s.get('source_id', ''), s.get('excerpt', '')) for s in c.get('sources', []))
+        claim_norms.append({
+            'claim': (c.get('claim') or '').strip(),
+            'treatment': c.get('treatment') or '',
+            'limits': (c.get('limits') or '').strip(),
+            'sources': [{'source_id': sid, 'excerpt': ex} for sid, ex in srcs]
+        })
+    payload = {'claims': claim_norms}
+    return canonical(payload)
+
+
+def render_judgments_md(work, rev, cmap, cov):
+    txt = render_judgments_text(rev, cmap, cov)
+    p = work / 'vault/Reviews' / f'{rev}-judgments.md'
+    write_new(p, txt.encode())
+    return p
+
+
+def render_answers_md(work, rev, aval, cmap, bval, focus=None):
+    txt = render_answers_text(rev, aval, cmap, bval, focus=focus)
+    p = work / 'vault/Reviews' / f'{rev}-answers.md'
+    write_new(p, txt.encode())
+    return p
+
+
+def validate_retrieve(work, rev, manifest, reads, aval, focus, cmap, build_notes=None):
+    fields(aval, {'answers'})
+    require(isinstance(aval.get('answers'), list), 'answers must be list')
+    require(len(aval['answers']) == 3, 'exactly 3 answers')
+    seenq = set()
+    cited = set()
+    for a in aval['answers']:
+        fields(a, {'question_id', 'status', 'answer', 'citations'})
+        q = a['question_id']
+        require(q in {'Q1','Q2','Q3'} and q not in seenq, 'bad Q')
+        seenq.add(q)
+        require(a['status'] in {'supported','unsupported'}, 'bad status')
+        ans = a['answer']
+        require(isinstance(ans, str) and ans.strip(), 'empty answer')
+        require('[[' not in ans and '](' not in ans, f'model-injected markup refused in answer {q}')
+        cits = a.get('citations', [])
+        require(isinstance(cits, list), 'citations list')
+        if a['status'] == 'supported':
+            require(cits, f'{q}: supported answer needs citations')
+        for c in cits:
+            fields(c, {'note_id', 'source_id', 'excerpt'})
+            nid = c['note_id']
+            require(re.fullmatch(KB, nid), 'bad cited nid')
+            qrel = f'Knowledge/{rev}/{nid}.md'
+            require(qrel in reads, f'unread citation {nid} (exact path required)')
+            np = work / 'cold' / rev / 'Knowledge' / rev / (nid + '.md')
+            require(np.is_file(), f'missing frozen note {nid}')
+            quotes, _ = parse_note(raw(np), nid)
+            ex = c['excerpt']
+            cands = [ex.replace('\r\n','\n'), decode_quote(ex)]
+            # every citation must match exact rendered note evidence
+            require(any(cc and cc in qq['excerpt'] for qq in quotes if qq['source_id'] == c['source_id'] for cc in cands), 'fabricated excerpt')
+            cited.add(nid)
+            # stricter: the source+excerpt must be from an eligible (use/qualify) claim treatment in THIS note, not unresolved elsewhere in note or ambiguous
+            if build_notes and cmap:
+                bnotes = build_notes.get('notes', []) if isinstance(build_notes, dict) else (build_notes or [])
+                nobj = next((nn for nn in bnotes if nn.get('note_id') == nid), None)
+                if nobj:
+                    eligible_exs = []
+                    for j in nobj.get('claim_ids', []):
+                        cl = cmap.get(j, {})
+                        if cl.get('treatment') in {'use', 'qualify'}:
+                            for s in cl.get('sources', []):
+                                if s.get('source_id') == c['source_id']:
+                                    eligible_exs.append(s.get('excerpt', ''))
+                    matched_eligible = any( any(cc and (cc in el or el in cc) for cc in cands) for el in eligible_exs )
+                    require(matched_eligible, f'{q} citation {c["source_id"]} excerpt must match eligible claim treatment in note {nid} (unresolved ambiguous not sufficient)')
+    # per answer has at least one eligible (kept for overall)
+    if build_notes and cmap:
+        note_treats = {}
+        bnotes = build_notes.get('notes', []) if isinstance(build_notes, dict) else (build_notes or [])
+        for n in bnotes:
+            note_treats[n.get('note_id')] = [cmap.get(j, {}).get('treatment', '') for j in n.get('claim_ids', []) if j in cmap]
+        for a in aval['answers']:
+            if a['status'] == 'supported':
+                c_nids = [c['note_id'] for c in a.get('citations', [])]
+                has_eligible = any(any(t in {'use', 'qualify'} for t in note_treats.get(nid, [])) for nid in c_nids)
+                require(has_eligible, f"{a['question_id']}: supported answer cannot rely only on unresolved claims")
+    if focus:
+        # focal actual read always required (even all unsupported/uncitable)
+        fpath = f'Knowledge/{rev}/{focus}.md'
+        require(fpath in reads, f'focal note {focus} must be actually read')
+        supported = any(a['status'] == 'supported' for a in aval['answers'])
+        if supported:
+            require(focus in cited, 'v2 must cite focal note for supported answers')
+        # else uncitable focal read but not cited is ok, helper render will note limitation
+    return aval
+
+
+
+
+def freeze_rev(work, rev, prev=None, foc=None, moc_bytes=None):
+    revision_id(rev)
+    dest = absent(work / 'cold' / rev)
+    src = source_identity(work, live=False)
+    require(digest(raw(work / 'shared/controls/SAVED_INSTRUCTION.md')) == src['instruction']['sha256'], 'instruction changed')
+    kdir = work / 'vault' / 'Knowledge' / rev
+    require(kdir.is_dir(), 'no rendered Knowledge for rev')
+    if moc_bytes is not None:
+        moc_entry = dict(path='MOC.md', bytes=len(moc_bytes), sha256=digest(moc_bytes))
     else:
-        print('Raw-source access: ' + ', '.join(raw_access_observations(runtime.read_jsonl(evidence / 'guard.jsonl'), runtime.read_jsonl(evidence / 'events.jsonl'))))
-        answers(work, revision, manifest, reads, text(evidence / 'response.md'))
-        check(work, revision)
+        moc_entry = dict(path='MOC.md', bytes=len(raw(work / 'vault/MOC.md')), sha256=digest(raw(work / 'vault/MOC.md')))
+    files = [moc_entry]
+    for p in sorted(kdir.iterdir()):
+        if re.fullmatch(KB + r'\.md', p.name):
+            d = raw(p)
+            files.append(dict(path=f'Knowledge/{rev}/{p.name}', bytes=len(d), sha256=digest(d)))
+    files.sort(key=lambda x: x['path'])
+    if prev:
+        old = check(work, prev)
+    lock = absent(dest.with_name('.' + rev + '.lock'))
+    lock.mkdir()
+    tmp = Path(tempfile.mkdtemp(prefix='.' + rev + '-', dir=safe(dest.parent)))
+    try:
+        (tmp / 'Knowledge' / rev).mkdir(parents=True)
+        for it in files:
+            if it['path'] == 'MOC.md':
+                if moc_bytes is not None:
+                    write_new(tmp / 'MOC.md', moc_bytes)
+                else:
+                    sp = work / 'vault' / 'MOC.md'
+                    write_new(tmp / it['path'], raw(sp))
+            else:
+                sp = work / 'vault' / 'Knowledge' / rev / Path(it['path']).name
+                write_new(tmp / it['path'], raw(sp))
+        navigation(tmp, files)
+        absent(dest)
+        publish_directory(tmp, dest)
+    finally:
+        if tmp.exists():
+            shutil.rmtree(tmp)
+        lock.rmdir()
+    return {'files': files, 'previous': prev, 'focus_note': foc}
+
+
+def do_run(work, rev, runner, ev_base, prev=None, foc=None, fb_path=None):
+    work = safe(work)
+    rev = revision_id(rev)
+    rulep = work / 'shared/controls/SAVED_INSTRUCTION.md'
+    if not rulep.is_file():
+        print(f'HOLD: missing saved instruction: {rulep}', file=sys.stderr)
+        return 2
+    source_identity(work, live=True)
+    # single work-wide exclusive lock for entire mutating lifecycle (MOC, KB, cold); released in finally on success/error/early return
+    wlock = absent(work / '.module02-ai-handoff.lock')
+    wlock.mkdir()
+    try:
+        prior = None
+        require(prev or (foc is None and fb_path is None), 'focus-note and feedback require --previous')
+        if prev:
+            prev = revision_id(prev)
+            prior = check(work, prev)
+            require(foc and re.fullmatch(KB, foc), 'focus-note required for revision')
+            require(fb_path, 'feedback required for v2 correction run')
+            require(any(note['note_id'] == foc for note in load(work / 'runs' / prev / 'build.json')['notes']), f'focus-note {foc} is absent from previous revision {prev}')
+        fb_text = ''
+        if fb_path:
+            fbp = safe(fb_path)
+            require(fbp.is_file(), 'feedback missing')
+            fb_text = text(fbp)
+        if prior:
+            require(fb_text.strip(), 'feedback must describe a source-backed correction')
+        # under-lock preflight (real runner, fresh evidence, exact public no-overwrite) before run state or stage
+        runner_p = safe(runner)
+        require(runner_p.is_file(), 'runner missing or not regular file')
+        base = safe(ev_base)
+        absent(base)
+        # subs created later; whole evidence base must be fresh (no adopt other files)
+        pub_k = work / 'vault' / 'Knowledge' / rev
+        require(not pub_k.exists(), f'public Knowledge/{rev} dir already exists')
+        for suf in ('-judgments.md', '-answers.md'):
+            rp = work / 'vault' / 'Reviews' / f'{rev}{suf}'
+            require(not rp.exists(), f'public Reviews {rev}{suf} already exists')
+        cld = work / 'cold' / rev
+        require(not cld.exists(), f'cold/{rev} already exists')
+        rdir = work / 'runs' / rev
+        absent(rdir)
+        rdir.mkdir(parents=True)
+        if fb_text:
+            write_new(rdir / 'feedback.md', fb_text.encode())
+        if prior:
+            prdir = work / 'runs' / prev
+            if (prdir / 'judgments.json').is_file():
+                write_new(rdir / 'previous-judgments.json', raw(prdir / 'judgments.json'))
+            if (prdir / 'build.json').is_file():
+                write_new(rdir / 'previous-build.json', raw(prdir / 'build.json'))
+
+        # judge packet
+        jpack = rdir / 'inputs' / 'judge'
+        jpack.mkdir(parents=True)
+        for d in sorted(DN):
+            write_new(jpack / (d + '.md'), raw(work / 'vault/Sources' / (d + '.md')))
+        if fb_text:
+            write_new(jpack / 'Feedback.md', fb_text.encode())
+        if prior:
+            if (rdir / 'previous-judgments.json').is_file():
+                write_new(jpack / 'previous-judgments.json', raw(rdir / 'previous-judgments.json'))
+            if (rdir / 'previous-build.json').is_file():
+                write_new(jpack / 'previous-build.json', raw(rdir / 'previous-build.json'))
+        if fb_text:
+            require(fb_text.strip(), 'feedback must be meaningful for v2')
+        # freeze controls and phase prompts (pure derivation; no raw leaks to retrieve; model must read frozen)
+        ctrl = rdir / 'controls'
+        ctrl.mkdir(parents=True, exist_ok=True)
+        for bn in ('SAVED_INSTRUCTION.md', 'JUDGE_PROMPT.md', 'BUILD_PROMPT.md', 'RETRIEVE_PROMPT.md'):
+            bp = work / 'shared/controls' / bn
+            write_new(ctrl / bn, raw(bp))
+        bprm = rdir / 'base-prompts'
+        bprm.mkdir(parents=True, exist_ok=True)
+        for bn in ('JUDGE_PROMPT.md', 'BUILD_PROMPT.md', 'RETRIEVE_PROMPT.md'):
+            write_new(bprm / bn, raw(work / 'shared/controls' / bn))
+        prm_dir = rdir / 'prompts'
+        prm_dir.mkdir(parents=True, exist_ok=True)
+        for ph, bn in (('judge','JUDGE_PROMPT.md'),('build','BUILD_PROMPT.md'),('retrieve','RETRIEVE_PROMPT.md')):
+            bt = text(work / 'shared/controls' / bn)
+            write_new(prm_dir / f'{ph}.md', phase_prompt(bt, ph, rev, prev, foc).encode())
+        j_prompt = prm_dir / 'judge.md'
+        j_exp = inventory(jpack)
+        j_req = [e['path'] for e in j_exp]
+        ej = base / 'judge'
+        code, resp, rds, meta = call_stage(work, runner, 'judge', j_prompt, jpack, ej, expected_inputs=j_exp, required_reads=j_req)
+        if code != 0:
+            return code
+        jv = response_json(resp)
+        cmap = validate_judgments(work, jv)
+        save(rdir / 'judgments.json', jv)
+        # judgments record published with pure render after retrieve validation (no early md write)
+        save(rdir / 'judge-phase.json', meta)
+        # build
+        bpack = rdir / 'inputs' / 'build'
+        bpack.mkdir(parents=True)
+        write_new(bpack / 'judgments.json', raw(rdir / 'judgments.json'))
+        if prior and (rdir / 'previous-build.json').is_file():
+            write_new(bpack / 'previous-build.json', raw(rdir / 'previous-build.json'))
+        eb = base / 'build'
+        b_exp = inventory(bpack)
+        b_req = [e['path'] for e in b_exp]
+        b_prompt = prm_dir / 'build.md'
+        code, resp, rds, meta = call_stage(work, runner, 'build', b_prompt, bpack, eb, expected_inputs=b_exp, required_reads=b_req)
+        if code != 0:
+            return code
+        bv = response_json(resp)
+        validate_build(bv, cmap)
+        if prior:
+            pbuild = load(rdir / 'previous-build.json')
+            prior_nids = {n.get('note_id') for n in pbuild.get('notes', []) if n.get('note_id')}
+            curr_nids = {n.get('note_id') for n in bv.get('notes', []) if n.get('note_id')}
+            require(prior_nids.issubset(curr_nids), 'old note identities must be preserved across revisions')
+        if foc:
+            focal_note = next((n for n in bv.get('notes', []) if n.get('note_id') == foc), None)
+            if focal_note:
+                treats = [cmap.get(j, {}).get('treatment', '') for j in focal_note.get('claim_ids', [])]
+                if treats and all(t == 'exclude' for t in treats):
+                    print(f'HOLD: focal note {foc} wholly excluded; technical hold before publish', file=sys.stderr)
+                    return 1
+        save(rdir / 'build.json', bv)
+        save(rdir / 'build-phase.json', meta)
+        # render notes to vault/Knowledge/rev/ (staged; live nav only updated on full success)
+        kdir = work / 'vault' / 'Knowledge' / rev
+        kdir.mkdir(parents=True)
+        for n in bv['notes']:
+            body = render_knowledge_note(rev, n['note_id'], n['title'], n['claim_ids'], n.get('related', []), cmap)
+            parse_note(body.encode(), n['note_id'])
+            write_new(kdir / (n['note_id'] + '.md'), body.encode())
+        # compute correct rev MOC bytes from this build (staged for cold; live MOC only post full success)
+        mlines = ['# Knowledge index', '']
+        for n in bv['notes']:
+            mlines.append(f"- [[Knowledge/{rev}/{n['note_id']}|{n['title']}]]")
+        moc_bytes = ('\n'.join(mlines) + '\n').encode()
+        # require semantic (not cosmetic) focal change via knowledge_signature (ignores ids/titles/paths/reasons/rels per contract)
+        if prior and foc:
+            pj_p = rdir / 'previous-judgments.json'
+            require(pj_p.is_file(), 'prior judgments required for v2 focal signature')
+            pjv = load(pj_p)
+            prior_cmap = validate_judgments(work, pjv)
+            pbuild_p = rdir / 'previous-build.json'
+            require(pbuild_p.is_file(), 'prior build required for v2 focal signature')
+            pbuild = load(pbuild_p)
+            prior_focal = next((n for n in pbuild.get('notes', []) if n.get('note_id') == foc), None)
+            require(prior_focal, 'prior focal not found in previous build')
+            new_focal = next((n for n in bv.get('notes', []) if n.get('note_id') == foc), None)
+            require(new_focal, 'focal note not present in this build')
+            sig_new = knowledge_signature(new_focal, cmap)
+            sig_old = knowledge_signature(prior_focal, prior_cmap)
+            require(sig_new != sig_old, 'focal change is only cosmetic (prefix/whitespace/render/ids)')
+        # freeze using staged MOC bytes (cold gets this rev's index, not prior live MOC)
+        freeze_info = freeze_rev(work, rev, prev, foc, moc_bytes=moc_bytes)
+        base_files = freeze_info.get('files', [])
+        fman = {
+            'schema_version': 2,
+            'files': base_files,
+            'root_fingerprint': digest(canonical(base_files)),
+            'source_manifest_sha256': digest(raw(work / 'source-manifest.json')),
+            'instruction_sha256': source_identity(work, live=False)['instruction']['sha256'],
+            'prompt_shas': {
+                'judge': digest(raw(work / 'shared/controls/JUDGE_PROMPT.md')),
+                'build': digest(raw(work / 'shared/controls/BUILD_PROMPT.md')),
+                'retrieve': digest(raw(work / 'shared/controls/RETRIEVE_PROMPT.md')),
+            },
+            'judgments_sha256': digest(raw(rdir / 'judgments.json')),
+            'build_sha256': digest(raw(rdir / 'build.json')),
+            'previous': freeze_info.get('previous'),
+            'previous_manifest_sha256': digest(raw(work / 'identities' / (prev + '.json'))) if prev else None,
+            'focus_note': freeze_info.get('focus_note'),
+            'phases': {'judge': load(rdir / 'judge-phase.json')},
+        }
+        # retrieve on cold
+        # retrieve on cold (use frozen, exact expected from staged MOC+KB, min required MOC+focal)
+        cold = work / 'cold' / rev
+        er = base / 'retrieve'
+        r_exp = inventory(cold)
+        r_req = ['MOC.md']
+        if foc:
+            r_req.append(f'Knowledge/{rev}/{foc}.md')
+        r_prompt = prm_dir / 'retrieve.md'
+        code, resp, rds, meta = call_stage(work, runner, 'retrieve', r_prompt, cold, er, expected_inputs=r_exp, required_reads=r_req)
+        if code != 0:
+            return code
+        av = response_json(resp)
+        validate_retrieve(work, rev, fman, rds, av, foc, cmap, bv)
+        # after retrieve validation: preserve answers.json + pure-rendered judgment/answer records
+        save(rdir / 'answers.json', av)
+        jtext = render_judgments_text(rev, cmap, jv.get('coverage', []))
+        write_new(work / 'vault' / 'Reviews' / f'{rev}-judgments.md', jtext.encode())
+        atext = render_answers_text(rev, av, cmap, bv, focus=foc)
+        write_new(work / 'vault' / 'Reviews' / f'{rev}-answers.md', atext.encode())
+        save(rdir / 'retrieve-phase.json', meta)
+        # complete schema2 manifest with all supplied fields
+        fman['answers_sha256'] = digest(raw(rdir / 'answers.json'))
+        fman['feedback_sha256'] = digest(fb_text.encode()) if fb_text else None
+        fman['phases']['build'] = load(rdir / 'build-phase.json')
+        fman['phases']['retrieve'] = meta
+        fman['run_files'] = inventory(rdir)
+        pubf = []
+        for n in bv.get('notes', []):
+            kp = work / 'vault' / 'Knowledge' / rev / (n.get('note_id') + '.md')
+            if kp.is_file():
+                d = raw(kp)
+                pubf.append(dict(path=f'Knowledge/{rev}/{n["note_id"]}.md', bytes=len(d), sha256=digest(d)))
+        for suf in ('-judgments.md', '-answers.md'):
+            rp = work / 'vault' / 'Reviews' / f'{rev}{suf}'
+            if rp.is_file():
+                d = raw(rp)
+                pubf.append(dict(path=f'Reviews/{rev}{suf}', bytes=len(d), sha256=digest(d)))
+        fman['public_files'] = sorted(pubf, key=lambda x:x['path'])
+        fman['revision'] = rev
+        man_p = work / 'identities' / (rev + '.json')
+        moc_live = work / 'vault' / 'MOC.md'
+        old_moc = raw(moc_live) if moc_live.is_file() else None
+        try:
+            replace_latest_moc(work, rev, moc_bytes)
+            save(man_p, fman)
+            print(f'PASS: run --revision {rev}')
+            return 0
+        except Exception:
+            if old_moc is not None:
+                tmp_r = moc_live.parent / ('.tmp-restore-' + rev)
+                write_new(tmp_r, old_moc)
+                os.replace(tmp_r, moc_live)
+            raise
+    finally:
+        if wlock.exists():
+            wlock.rmdir()
+def do_retrieve(work, rev, runner, ev_base):
+    work = safe(work)
+    rev = revision_id(rev)
+    rulep = work / 'shared/controls/SAVED_INSTRUCTION.md'
+    if not rulep.is_file():
+        print(f'HOLD: missing saved instruction: {rulep}', file=sys.stderr)
+        return 2
+    source_identity(work, live=False)
+    manifest = check(work, rev)
+    cold = work / 'cold' / rev
+    base = safe(ev_base)
+    er = base / 'retrieve'
+    expected = inventory(cold)
+    req = ['MOC.md']
+    fn = manifest.get('focus_note')
+    if fn:
+        req.append(f'Knowledge/{rev}/{fn}.md')
+    frz = work / 'runs' / rev / 'prompts' / 'retrieve.md'
+    prm_arg = frz if frz.is_file() else 'RETRIEVE_PROMPT.md'
+    code, resp, rds, meta = call_stage(work, runner, 'retrieve', prm_arg, cold, er, expected_inputs=expected, required_reads=req)
+    if code != 0:
+        return code
+    av = response_json(resp)
+    cmap = {}
+    rj = work / 'runs' / rev / 'judgments.json'
+    if rj.is_file():
+        cmap = validate_judgments(work, load(rj))
+    bv = {'notes': []}
+    rb = work / 'runs' / rev / 'build.json'
+    if rb.is_file():
+        bv = load(rb)
+    validate_retrieve(work, rev, manifest, rds, av, fn, cmap, bv)
+    # standalone: fresh evidence; skip render to avoid rewriting immutable answers.md; useful negative for missing rule before correction
+    print(f'PASS: retrieve --revision {rev} (fresh evidence {er})')
     return 0
 
 
-def main(argv: list[str] | None = None) -> int:
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    for command in ['initialize', 'ingest', 'review', 'freeze', 'retrieve', 'check']:
-        p = sub.add_parser(command)
-        p.add_argument('--work', required=True, type=Path)
-        if command in {'freeze', 'retrieve', 'check'}:
-            p.add_argument('--revision', required=True)
-        if command in {'ingest', 'retrieve'}:
-            p.add_argument('--runner', required=True, type=Path)
-            p.add_argument('--evidence', required=True, type=Path)
-        if command == 'review':
-            p.add_argument('--note', required=True, type=Path)
-            p.add_argument('--decision', required=True, choices=['admit', 'reject'])
-            p.add_argument('--reason-file', required=True, type=Path)
-        if command == 'freeze':
-            p.add_argument('--previous', type=Path)
-            p.add_argument('--focus-note')
+    pi = sub.add_parser('initialize')
+    pi.add_argument('--work', required=True, type=Path)
+    pr = sub.add_parser('run')
+    pr.add_argument('--work', required=True, type=Path)
+    pr.add_argument('--revision', required=True)
+    pr.add_argument('--runner', required=True, type=Path)
+    pr.add_argument('--evidence', required=True, type=Path)
+    pr.add_argument('--previous')
+    pr.add_argument('--focus-note')
+    pr.add_argument('--feedback', type=Path)
+    prt = sub.add_parser('retrieve')
+    prt.add_argument('--work', required=True, type=Path)
+    prt.add_argument('--revision', required=True)
+    prt.add_argument('--runner', required=True, type=Path)
+    prt.add_argument('--evidence', required=True, type=Path)
+    pc = sub.add_parser('check')
+    pc.add_argument('--work', required=True, type=Path)
+    pc.add_argument('--revision', required=True)
     args = parser.parse_args(argv)
     try:
-        work = safe(args.work)
-        require(work.is_dir(), f'missing work directory: {work}')
+        w = safe(args.work)
+        require(w.is_dir(), f'missing work: {w}')
         if args.command == 'initialize':
-            rule = safe(work / 'shared/controls/SAVED_INSTRUCTION.md')
-            if not rule.is_file():
-                print(f'HOLD: missing saved instruction: {rule}', file=sys.stderr)
+            r = safe(w / 'shared/controls/SAVED_INSTRUCTION.md')
+            if not r.is_file():
+                print(f'HOLD: missing saved instruction: {r}', file=sys.stderr)
                 return 2
-            initialize(work)
-        elif args.command == 'review':
-            review(work, args.note, args.decision, args.reason_file)
-        elif args.command == 'freeze':
-            freeze(work, args.revision, args.previous, args.focus_note)
+            initialize(w)
+        elif args.command == 'run':
+            p = args.previous
+            f = args.feedback
+            return do_run(w, args.revision, args.runner, args.evidence, p, args.focus_note, f)
+        elif args.command == 'retrieve':
+            return do_retrieve(w, args.revision, args.runner, args.evidence)
         elif args.command == 'check':
-            check(work, args.revision)
-        else:
-            return paid(work, args.runner, args.evidence, args.command, getattr(args, 'revision', None))
+            check(w, args.revision)
         print(f'PASS: {args.command}')
         return 0
-    except (OSError, ValueError, UnicodeError, TypeError, KeyError, AttributeError, RuntimeError, ImportError) as exc:
-        print(f'HOLD: {exc}', file=sys.stderr)
+    except (OSError, ValueError, UnicodeError, TypeError, KeyError, AttributeError, RuntimeError, ImportError) as e:
+        print(f'HOLD: {e}', file=sys.stderr)
         return 1
 
 

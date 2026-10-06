@@ -1,4 +1,20 @@
 {
+  "module02_ai_handoffs": {
+    "date": "2026-10-06",
+    "publication_authorization": "Publish now with the two-revision live result explicitly unverified; after the site is live, test and publish necessary fixes without further questions.",
+    "offline_status": "PASS",
+    "offline_scoped_gates": 34,
+    "offline_elapsed_seconds": 227.53,
+    "publication_counts": {"instructional_pages": 35, "raw_downloads": 406, "ui_generated_assets": 40},
+    "ui_observations": ["Chromium walkthrough at 1440 and 390 pixels", "Dark and Sand appearance", "shell switching and command copying", "full-size figure viewing", "native macOS Obsidian source inspection"],
+    "two_revision_live_status": "UNVERIFIED_AT_INITIAL_PUBLICATION",
+    "prior_live_sessions": 2,
+    "prior_live_result": "Both judge attempts read all forty source files, then reached the 300-second deadline before returning judgments; neither build nor retrieval started.",
+    "change_after_failure": "Module 02 explicitly requests the supported low-thinking mode; other callers retain their default.",
+    "post_publication_paid_authorization": {"maximum_total_sessions": 8, "fresh_sessions": 6, "requires_site_live_first": true, "automatic_retries": false, "model_substitution": false},
+    "private_evidence_root": "$HOME/course-evidence/module02-ai-handoffs-20261006T030026Z",
+    "limitations": ["No completed live v1/v2 proof at initial publication", "No human learner completion claim", "No native Windows, WSLg, Intel macOS, Ubuntu, or Arch GUI proof"]
+  },
   "schema_version": 1,
   "run_id": "20261005T002550Z-navigation-main-integration",
   "generated_at_utc": "2026-10-05T01:49:23.069Z",

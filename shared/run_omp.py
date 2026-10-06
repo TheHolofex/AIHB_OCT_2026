@@ -39,7 +39,7 @@ JUDGE_MODEL = re.compile(r"openrouter/typesafe/jev-1\.13(?:-\d{8})?")
 EVAL_KEYS = {"language", "code", "title", "timeout", "reset"}
 DECLARATION = {"schema_version": 1, "yolo": False, "read_root": ".", "write_root": "artifacts", "tools": ["course_read", "course_write"], "skills": False, "gateway": False}
 POLICY_KEYS = {"schema_version", "run_id", "work_root", "profile", "tools", "write_files", "write_root", "provider", "model", "omp_version", "prompt_sha256", "instruction", "declaration", "python", "guard_source_sha256", "runtime_config_sha256", "guard_log", "watch_paths"}
-OPTIONAL_POLICY_KEYS = {"mcp", "snapshot_exclude", "judge"}
+OPTIONAL_POLICY_KEYS = {"mcp", "snapshot_exclude", "judge", "thinking"}
 MODULE_03_MCP = Path(__file__).resolve().parents[1] / "AI_Harness_Bootcamp_2" / "module-03-mcp-research" / "shared" / "mcp"
 MCP_SERVER = "vault"
 MCP_ENV = {"OMP_MCP_REQUIRE_READY": "1", "OMP_MCP_TIMEOUT_MS": "30000"}
@@ -558,6 +558,7 @@ def validate_run(policy: dict, events: list[dict], guard: list[dict], snapshots:
     require(set(policy) - OPTIONAL_POLICY_KEYS == POLICY_KEYS and set(policy) & OPTIONAL_POLICY_KEYS <= OPTIONAL_POLICY_KEYS and (mcp is not None) == (policy.get("profile") == "mcp")
             and (judge is not None) == (policy.get("profile") == "judge") and (not judge or policy.get("tools") == ["eval"]) and policy.get("schema_version") == 1, "resolved policy schema differs")
     require(policy.get("provider") == PROVIDER and policy.get("model") == MODEL, "pinned provider/model differs")
+    require("thinking" not in policy or policy["thinking"] == "low", "unsupported explicit thinking level")
     require(valid_omp_version(policy.get("omp_version")), "omp_version is not a recorded valid OMP identity")
     terminal = [row for row in events if row.get("type") == "agent_end" and row.get("isTerminal") is not False]
     require(len(terminal) == 1, "expected exactly one terminal agent_end")
@@ -860,6 +861,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--prompt")
     parser.add_argument("--evidence", required=True, type=Path)
     parser.add_argument("--instruction")
+    parser.add_argument("--thinking", choices=("low",), help="Use bounded low thinking for this run; omission retains OMP's default")
     access = parser.add_mutually_exclusive_group()
     access.add_argument("--policy")
     access.add_argument("--allow-write", action="append", default=[])
@@ -874,7 +876,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--watch-path", action="append", default=[])
     args = parser.parse_args(argv)
     judge_args = (args.judge_config, args.judge_questions, args.judge_states, args.judge_output)
-    others = (args.instruction, args.policy, args.allow_write, args.write_root, args.mcp_config, args.authority)
+    others = (args.instruction, args.policy, args.allow_write, args.write_root, args.mcp_config, args.authority, args.thinking)
     if args.list_judges:
         if args.workdir or args.prompt or args.watch_path or any(judge_args) or any(others):
             print("HOLD: --list-judges takes only --evidence", file=sys.stderr)
@@ -885,7 +887,7 @@ def main(argv: list[str] | None = None) -> int:
         if judging and not all(value is not None for value in judge_args):
             raise ValueError("--judge-config, --judge-questions, --judge-states, and --judge-output go together")
         if judging and (args.prompt or any(others)):
-            raise ValueError("a judge run takes no --prompt, --instruction, --policy, --allow-write, --write-root, --mcp-config, or --authority; the launcher writes its own prompt")
+            raise ValueError("a judge run takes no --prompt, --instruction, --policy, --allow-write, --write-root, --mcp-config, --authority, or --thinking; the launcher writes its own prompt")
         if args.workdir is None or (not judging and args.prompt is None):
             raise ValueError("--workdir and --prompt are required")
         work = args.workdir.expanduser().resolve()
@@ -988,12 +990,16 @@ def main(argv: list[str] | None = None) -> int:
             policy["mcp"], policy["snapshot_exclude"] = policy_mcp, ["vault/.obsidian"]
         if policy_judge:
             policy["judge"] = policy_judge
+        if args.thinking is not None:
+            policy["thinking"] = args.thinking
         policy_file = evidence / "policy.json"
         policy_file.write_bytes(json_bytes(policy))
         frozen_policy_hash = file_hash(policy_file)
         exclude = tuple(policy.get("snapshot_exclude", []))
         before = snapshot(work, watches, exclude)
         command = [omp, "--model", SELECTOR, "-p", "--mode", "json", "--no-session", "--no-title", "--no-skills", "--no-rules", "--no-extensions", "--no-lsp", "--no-prewalk", "--no-pty", "--max-time", "300", "--approval-mode", "always-ask", "--no-tools"]
+        if args.thinking is not None:
+            command += ["--thinking", args.thinking]
         if not mcp_prep:
             command += ["--tools", ",".join(tools)]
         command += ["--extension", str(GUARD.resolve()), "--config", str(overlay_file)]

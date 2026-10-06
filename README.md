@@ -37,7 +37,7 @@ The clocks and break points are in [COURSE_MAP.md](COURSE_MAP.md).
 |---:|---|---|---|
 | 00 | North Shelf | Get a long document you can trust from AI | Screen responsibility, plan and test a long document before any prose, have AI draft it one section at a time from six sources, check it against references outside it, revise only what's flagged, and decide whether to send it. |
 | 01 | Cold Lantern | Verify sources and outputs | Produce and challenge research/source work with independent evidence. |
-| 02 | Ledger Pike | Build and control a reusable second brain | Construct source-traceable knowledge in Obsidian, explicitly load its governing instruction, and retrieve from reviewed knowledge in a fresh session. |
+| 02 | Ledger Pike | Build and control a reusable second brain | Direct automatic AI judgments into source-traceable provisional knowledge, prove saved-rule loading and fresh retrieval, and correct a subsequent preserved revision through source-backed feedback. |
 | 03 | Kiln Hold | Operate MCP tools under limited authority | Connect a supplied MCP server, research a folder of notes, check the assistant's markings against the written rules, prove each limit including actions the model never tries, and remove the connection with proof. |
 | 04 | Chalk Line | Decide with typed questions | Decompose a desk decision into atomic typed questions, run a model once as a read-only decision function, validate and measure its answers against frozen labels, and route in code with gates set from the measurement. |
 | 05 | Copper Span | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
@@ -51,19 +51,14 @@ Cases and evidence bundles are **independent**: no gate relies on a product from
 
 ### Module 02 mastery
 
-Using verified sources and bounded direction, construct a small source-traceable knowledge vault, load its governing instruction explicitly, and demonstrate useful retrieval from that knowledge in a fresh session without the source-processing chat or raw packet.
+Using verified sources and bounded direction, control a learner-started AI judgment → knowledge build → fresh retrieval chain to create source-traceable reusable knowledge under an explicitly loaded saved instruction, then direct a meaningful correction in a new preserved revision.
 
-The three enabling objectives are:
+Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved-rule load proof, controlled automatic AI handoffs, persistent knowledge, and correction. The supplied helper runs a fixed judge → build → freeze → retrieve chain after one learner start; independent human source inspection can occur during or after processing and never unlocks a pass. AI-processed knowledge and machine receipts are provisional, not human approval. Its separate Ledger Pike case keeps all forty DN sources. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
-1. Select and relate source-backed claims while separating evidence from instructions.
-2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
-3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
-
-Module 01 already established source checking as a quality bar, and bounded direction is also an earlier skill. Module 02 adds saved instructions and proof that they were loaded. Its separate Ledger Pike case keeps all forty DN sources. The learner reviews and links local Markdown notes in Obsidian, admits knowledge, and checks retrieval from a frozen copy that contains only navigation and admitted knowledge. Bounded multi-agent orchestration belongs to Module 05; checking a local-model package from a fresh copy remains Module 10's.
-
+Each complete run uses three paid sessions: judgment, build, and fresh retrieval; freezing is a local helper operation between build and retrieval. The v1 and v2 runs use six paid sessions in total. Each judging pass actually reads all forty originals. Only the helper writes the generated, immutable versioned Knowledge notes, judgment records, and navigation. The learner examines saved judgments and original source support independently, writes the observed correction in plain `Feedback.md`, and starts v2 without editing generated Knowledge. Test the missing-rule stop on v1 before restoring the same rule for v2. Local checks establish bytes, provenance, and executed reads, not truth or improvement.
 ## Core and advanced boundary
 
-The core includes bounded native OMP multi-agent orchestration and task-bounded automation. Module 05 uses read-only specialists and a reviewer with one coordinator-owned output, explicit dependencies, and bounded recovery. Module 07 uses one n8n agent and one spreadsheet-writing tool. Module 08 adds a bounded, human-started, read-only review ensemble: agents work in isolated sessions, and a person starts each fixed stage and owns acceptance. The core permits one narrow form of persistent knowledge: a local, human-reviewed Markdown vault with explicit admission and read-only fresh-session retrieval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, and custom retrieval infrastructure remain advanced work. Core learners recognize the trigger, simpler alternative, added risk, and escalation owner.
+The core includes bounded native OMP multi-agent orchestration and task-bounded automation. Module 05 uses read-only specialists and a reviewer with one coordinator-owned output, explicit dependencies, and bounded recovery. Module 07 uses one n8n agent and one spreadsheet-writing tool. Module 08 adds a bounded, human-started, read-only review ensemble: agents work in isolated sessions, and a person starts each fixed stage and owns acceptance. The core permits one narrow form of persistent knowledge: a local Markdown knowledge vault with learner-started automatic AI-processed provisional versions via the fixed supplied helper chain (judge → build → freeze → retrieve) and independent nonblocking source inspection. Neither AI success nor receipts represent human approval. Autonomous state updates, concurrent agent writes to shared knowledge, unattended or recursively expanding teams, adaptive flow, and custom retrieval infrastructure remain advanced work. The fixed helper workflow is explicitly allowed. Typed calibration belongs to Module 04, native teams to Module 05, ensembles to Module 08.
 
 The core requires zero programming objectives. Dynamic checker implementation, API/MCP construction, custom RAG, agent-runtime development, and deployment remain adapter or builder work.
 
@@ -121,7 +116,7 @@ Participants need Git, Python 3.12+, the **latest stable Oh My Pi release**, a b
 
 Resolve latest when installing or updating, not while auditing saved evidence. Checks compare each attempt's recorded runtime identities, so a later OMP release does not relabel an earlier run. Complete a dependent Module 05 chain with the same verified runtime; after an upgrade, start a fresh chain. Provider and model pins remain unchanged.
 
-Module 02 also uses Obsidian to edit the local Markdown vault. It requires no community plugin, Sync account, REST API, or MCP service.
+Module 02 also uses Obsidian to inspect the local Markdown vault and edit plain `Feedback.md`, not generated Knowledge or navigation. It requires no community plugin, Sync account, REST API, or MCP service.
 
 Module 06 also sets OMP's judge role to **`openrouter/typesafe/jev-1.13`**, TypeSafe's Jev decision model, through the same key and launcher. The course chat model makes exactly one `eval` call with a launcher-written cell; the guard refuses any other code. The launcher checks every saved judgment, the dated build that answered, the cost, and the work folder. A moving alias, the router, or a chat model as judge holds before any call.
 
@@ -220,6 +215,12 @@ The final remote integration retained the new Module 0 long-form lesson and repo
 After integrating the current long-form Module 0 changes, the publisher rebuilt 35 instructional pages, 435 raw downloads, and 40 UI/generated assets. The complete `scripts/check_course.py` run passed all 31 scoped gates in 255 seconds with a dedicated `TMPDIR`; the 600-second per-command deadline was unchanged. This supersedes the earlier combined-gate limitation above. The copied worktree's untracked, cache-only retired Module 06 directory was preserved outside the checkout before verification.
 
 The entire generated site, including search data and downloads, contains no `18.3.5` reference, numeric OMP release requirement, or hard-coded OMP release URL. Browser checks covered all five setup routes; the final merged version table shows `latest stable release`. A fresh macOS install verified the official release checksum and resolved `omp/18.6.1` in a new login shell. A fresh, read-only MCP run passed the independent saved-receipt audit after restoring the result's required MCP metadata; all 32 shared runtime tests passed. The observed executable version is evidence, not a new pin. Logs, the regression's failing/passing runs, and desktop/mobile browser proof are retained under `~/course-evidence/omp-latest-site-check-1791162031193/`. Native Windows/WSL/Linux installation is not claimed.
+
+### Module 02 automatic AI handoffs — 2026-10-06
+
+Module 02 now runs one bounded judge → build → freeze → fresh-retrieval sequence without human admission between stages. Learners inspect the answer-to-source trail in Obsidian and give source-backed feedback for a preserved new revision. All 34 offline course gates passed after the cutover, including behavioral regressions, mutation checks, shared-runtime checks, and byte-for-byte publication. Chromium verification covered the generated walkthrough, shell switching, command copying, figure viewing, and 1440-pixel and 390-pixel layouts. Native Obsidian source inspection was observed on this macOS host; other platforms and learner completion remain unobserved.
+
+**Two-revision live result: UNVERIFIED at initial publication.** Two live judge attempts read all forty sources but reached the 300-second session deadline before returning judgments; neither reached build or retrieval. Both attempts are preserved under `~/course-evidence/module02-ai-handoffs-20261006T030026Z/`. The helper now requests OMP's supported low-thinking mode for each Module 02 phase, with the same pinned model, deadline, and no-retry policy. The user authorized publication in this state, then six fresh sessions after the website is live (eight sessions total). Offline passes are not evidence that those live revisions completed.
 
 ## Netlify deployment
 

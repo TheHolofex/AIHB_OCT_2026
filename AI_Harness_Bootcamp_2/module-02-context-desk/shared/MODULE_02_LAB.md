@@ -1,24 +1,14 @@
 # Module 2 · Build and control a reusable second brain
 
-You'll have OMP draft a few knowledge notes from forty fictional paperwork notes. You'll turn those drafts into linked notes in Obsidian, accept the ones whose quotations check out, and freeze them. Then a fresh OMP session answers three questions from only those notes, and its run records show that it loaded your saved rule and read nothing else. Last, you'll fix one gap that session found and run it again.
+Start one run to have the AI judge source-backed claims, turn those judgments into linked notes, and answer from a saved copy of the notes. Check the answer-to-source trail in Obsidian, then give source-backed feedback for a new revision. The AI stages pass their work forward automatically; your inspection does not pause them.
 
 This is an ungraded exercise with fictional Ledger Pike paperwork. Your result is for class use only. It doesn't authorize a release, vehicle assignment, permit approval, or real movement.
 
 ## The route
 
-Plan for about three hours (a rough estimate). Most of that time goes into Obsidian, turning drafts into linked notes and accepting them. The three paid OMP runs take one to two minutes each.
+Plan for about three hours (a rough estimate). Most of the time is spent in Obsidian inspecting the generated notes and records and writing one short feedback note.
 
-Your work moves from the original sources, to OMP's drafts, to the notes you accept, to a frozen copy, to a fresh session that can read only that copy, and then to one fix.
-
-![Build, freeze, retrieve, improve: sources lead to proposals, human review and admission to Knowledge, a frozen snapshot, a cold run from the snapshot only, and repair of one weakness.](figures/m02-reload.png)
-*Build, freeze, retrieve, improve.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Five steps, in order. 1. Sources: the model reads the paperwork and suggests Draft notes. 2. Review: you check each suggestion and accept supported notes into Knowledge. 3. Freeze: your index and the notes you accepted are copied to a fixed snapshot. 4. Cold run: a new chat answers using only that snapshot. 5. Repair: fix one weakness that matters, review it, and save a new snapshot. A thin arrow from Repair back to Freeze says you repeat this for each later revision.
-
-</details>
+Prepare the vault and run the AI sequence. Trace its answers back to the sources, check that retrieval stops when the saved rule is missing, and restore the rule. Then give feedback, run a new revision, and compare the notes and answers without overwriting the first version.
 
 ## 1. Prepare and open your vault
 
@@ -65,7 +55,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Preparation held; preserve the attempt and rea
 
 **Recovery:** Fix the missing prerequisite with Module 00. If the destination already exists, keep it and run the block again for a new attempt. Don't merge attempts or copy files from an old vault.
 
-Now build the vault once. This copies the forty source notes into `Sources` and adds empty folders, blank templates, and an empty index.
+Now initialize the vault. This creates the Sources folder with the forty unchanged DN notes plus the supporting folders and an empty index.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
@@ -80,7 +70,7 @@ Now build the vault once. This copies the forty source notes into `Sources` and 
 if ($LASTEXITCODE -ne 0) { throw 'Initialization held; read the named file or condition.' }
 ```
 
-**Expected:** `PASS: initialize`. `W/vault` has `Sources` with DN-001 through DN-040, empty `Drafts`, `Knowledge`, and `Reviews` folders, a `Templates` folder, and `MOC.md`.
+**Expected:** `PASS: initialize`. `W/vault` has `Sources` with DN-001 through DN-040, `Knowledge`, `Reviews` folders, and `MOC.md`. `Feedback.md` is present for later edits.
 
 **Stop:** `HOLD`, because the vault already exists, a source is missing, or a path is unsafe.
 
@@ -92,9 +82,7 @@ In Obsidian's vault chooser, click **Open** beside **Open folder as vault**, the
 
 ![Obsidian vault chooser with Open beside Open folder as vault, separate from Create and Sign in.](figures/m02-obsidian-01-open-vault.png)
 
-Click **MOC** in the left file explorer. MOC is the index you'll fill once your notes exist, so it starts with only a title. Obsidian hides the `.md` extension.
-
-![The initialized vault contains Drafts, Knowledge, Reviews, Sources, Templates, and an MOC with no links yet.](figures/m02-obsidian-02-initial-vault.png)
+Click **MOC** in the left file explorer. MOC is the index the helper updates after each revision. It starts with only a title. Obsidian hides the `.md` extension.
 
 Expand **Sources** and open a DN note. You can also press **Ctrl+O** on Windows and Linux or **Command+O** on macOS and type its ID. The breadcrumb above the note shows its folder. Leave source text unchanged.
 
@@ -113,28 +101,17 @@ Select **Core plugins**, find **Sync**, and turn it off if it's on. Don't sign i
 | Location | What belongs there | Who changes it |
 |---|---|---|
 | `vault/Sources` | Original DN evidence | Keep unchanged |
-| `vault/Drafts` | Model suggestions | Keep them; fix the notes in Knowledge |
-| `vault/Knowledge` | Notes you prepare and admit | You, in Obsidian |
-| `vault/Reviews` | A short reason for each decision | You, in Obsidian |
-| `vault/Templates` | Blank starting structures | Copy into your new notes |
-| `reviews`, `identities`, `source-manifest.json` | Run records and identity files outside the vault | Helper only |
-| `cold/v1`, `cold/v2` | Frozen index and accepted notes | Helper only; keep unchanged |
+| `vault/Knowledge` (per revision) | AI-generated notes for that revision | Helper only; read-only for inspection |
+| `vault/Reviews` (per-revision files) | AI decision record and answers with citations | Helper only; readable |
+| `vault/MOC.md` | Latest navigation index pointing to the current revision's notes | Helper only |
+| `vault/Feedback.md` | Your short natural-language direction for the next revision | You, in Obsidian |
+| `cold`, `identities`, `E/`, `runs/` (per revision) | Frozen snapshots, manifests, and evidence | Helper only; keep unchanged |
 
-## 2. Screen the sources and draft notes with OMP
+## 2. Screen the sources and load the saved rule
 
-Three controls stand between the paperwork and the model, and each does one job. The **file screen** checks one file for lines that look like orders. The **saved instruction** is a rule file the launcher loads into every session before it contacts the model; this one says to treat paperwork as data, never as orders. The **read root** is the only folder a session can read. You still decide which notes to accept.
+Three controls stand between the paperwork and the model. The file screen flags instruction-like lines in a local check but does not filter the packet; all forty sources reach the judge as data under the saved rule and read boundary. The saved instruction is a rule file the launcher loads into every session before it contacts the model; this rule says to treat the paperwork as data, never as orders. The read root is the only folder a session may open. You still supply the feedback that shapes the next revision.
 
-![Saved instruction, file screen, read root, and human admission have separate jobs.](figures/m02-resolved-state.png)
-*Saved instruction, file screen, read root, and human admission have separate jobs.*
-
-<details markdown="1">
-<summary>Figure text</summary>
-
-Four limits side by side, not a sequence. Saved instruction: the launcher loads it before contacting the model. File screen: checks one file for lines that look like orders. Read root: the only folder the model can open. That folder is Sources while it drafts notes, and the frozen snapshot during the later check. Human admission: you decide which reviewed claims go into Knowledge.
-
-</details>
-
-Open `W/shared/controls/SAVED_INSTRUCTION.md` in a text viewer to see the rule every session will load. Don't edit it, and don't copy it into the vault.
+Open `W/shared/controls/SAVED_INSTRUCTION.md` in a text viewer to see the rule every session loads. Don't edit it, and don't copy it into the vault.
 
 ### Run the file screen
 
@@ -165,266 +142,54 @@ foreach ($note in @("DN-003", "DN-014", "DN-015", "DN-016", "DN-000")) {
 
 **Recovery:** Check the paths and that `guard.py` is unchanged. Don't create DN-000 or edit the screen to make it pass.
 
-A pass doesn't make a source true, and a flag doesn't make the useful facts in that file false. The screen also can't see text you paste into a chat, which is one reason the saved rule matters.
+A pass on the screen does not make the facts in that file true, and a flag does not make the useful facts false. The screen also can't see text you paste into a chat; that is one reason the saved rule is loaded before every model contact.
 
-### Have OMP draft notes
+## 3. Run v1: automatic judge, build, and retrieve
 
-This is the first paid run. The helper starts one read-only OMP session that loads your saved rule, reads all forty sources, and proposes a few notes for three questions. The questions and the rest of the request are in `W/shared/controls/INGEST_PROMPT.md`. The session can't write files; the helper saves the valid proposals as Drafts.
+Before the first run, make sure `OPENROUTER_API_KEY` is exported in this terminal (use the hidden-input steps from your Module 00 platform guide and [credentials](../../module-00-setup/shared/CREDENTIALS.md)). The launcher pins `openrouter/anthropic/claude-sonnet-4.6`. Each complete `run` uses three paid sessions; two complete runs use six.
+
+The first AI session judges claims from a staged copy of all forty sources. The next session reads those judgments and groups them into linked Knowledge notes. The helper saves a **frozen snapshot**—an unchanged copy of the notes and their index—and a fresh AI session answers from that snapshot alone. Every session loads the saved rule. The sequence continues without asking you to approve individual notes.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
-"$PY" "$W/scripts/second_brain.py" ingest --work "$W" --runner "$R/shared/run_omp.py" --evidence "$E/ingest"
+"$PY" "$W/scripts/second_brain.py" run --work "$W" --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/v1"
 ```
 
 **Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
-& $PY "$W/scripts/second_brain.py" ingest --work $W --runner "$R/shared/run_omp.py" --evidence "$E/ingest"
-$ingestExit = $LASTEXITCODE
-Write-Output "ingest exit=$ingestExit"
+& $PY "$W/scripts/second_brain.py" run --work $W --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/v1"
+if ($LASTEXITCODE -ne 0) { throw 'Run held; preserve the evidence and read the named condition.' }
 ```
 
-**Expected:** `PASS: all checks passed` from the launcher, then `Observed calls:` with forty `EXECUTED` entries, one for each source the session read, and the command exits with 0. Before it saves anything, the helper checks that your saved rule loaded, that the run was read-only, and that all forty sources were actually read. New files appear under **Drafts** in Obsidian. `W/reviews/ingest-report.json` lists the saved drafts and any proposal it rejected, with the reason.
+**Expected:** The command exits 0. The E/v1 directory contains subdirectories judge/, build/, and retrieve/ with the actual policy.json, guard.jsonl, result.json, and response for each stage. New files appear under `Knowledge/v1`, `Reviews/v1-judgments.md` and `Reviews/v1-answers.md` are written, `MOC.md` is updated, and `cold/v1` plus `identities/v1.json` record the frozen state. Open Reviews/v1-answers.md to see the three answers with citations.
 
-**Stop:** A `HOLD`. Work out which kind before you continue:
+**Stop:** A `HOLD`. A setup problem (exit 2 and no evidence) is usually a missing key or rule; fix and start a new attempt. A later structural or evidence failure keeps the attempt; use the named condition to recover.
 
-- Exit 2 and no `E/ingest` folder: a setup problem, such as a missing key. Fix it and run the same command again.
-- A run-check `HOLD` after the run: keep the terminal output and `E/ingest`. Don't continue because the answer looks fine.
-- `HOLD: proposal HOLD:` naming a proposal and the problem, such as `invented or ambiguous excerpt`: keep the valid Drafts. `ingest-report.json` records the others, and you'll write those notes yourself in step 3.
-- No Drafts at all because the response couldn't be read: write your notes from the blank template in step 3.
+**Recovery:** A finished run consumes this revision and evidence path. Start a new `W`/`E` pair for another attempt. The helper does not retry a paid run automatically.
 
-**Recovery:** A finished ingest uses up this attempt, even when it holds. Another ingest needs a fresh `W` and `E`. The helper never retries a paid run by itself.
+### Inspect the trace from answer to source
 
-Expand **Drafts** and open one. Its breadcrumb should start with **Drafts**. The screenshots in this lab use example notes, so your drafts will have different IDs and wording. Work with the drafts you got.
+Open the vault in Obsidian. The generated files are ready after the run completes.
 
-![A partial paper-ticket editing example open under Drafts, with Claim, Limits and conflicts, Evidence, and Related sections.](figures/m02-obsidian-11-inspect-draft.png)
+1. Open `Reviews/v1-answers.md`. For each of Q1, Q2, and Q3 (supported or unsupported):
+   - If the answer lists a Knowledge citation, follow the Knowledge note link to the versioned note. The note shows Claim, Limits and conflicts, Evidence, Related. Use the judgment link in the answer (heading like #JG-xxx in the revision's judgments file) to reach the exact entry.
+   - For unsupported answers with zero citations (no Knowledge link emitted), skip links and instead open the revision's judgments file Coverage section and the original Sources/DN files to identify which required part of the question remains unsupported and to check any partial support against judgments/Coverage/sources. Semantic incompleteness can be described in the answer prose.
+2. Where a source link is present, open the linked original `Sources/DN-xxx.md`. Verify the excerpt matches the source exactly and that the treatment and limits are carried forward into the answer.
 
-## 3. Turn Drafts into linked Knowledge notes
+Explicitly check:
 
-Each note you keep moves from `Drafts` into `Knowledge`, where it becomes yours; the draft stays as OMP's record. A Knowledge note has a title and four sections: `## Claim`, `## Limits and conflicts`, `## Evidence`, and `## Related`. In step 4, the review command checks every quotation against its source file, so this step is about copying text exactly.
+- The answer text includes or respects the limits recorded in the judgment.
+- Find a claim marked `unresolved` or `exclude`, if the AI recorded one. An excluded claim must not appear in Knowledge. An unresolved claim may share a note with supported claims, but the answer must not present that uncertainty as an established fact. Check the actual cited excerpt, not just the note's ID.
 
-### Create a Knowledge note
+Exit 0 means the AI stages completed and the mechanical checks passed. It does not establish that the claims are true or correctly interpreted. Your source inspection supplies that judgment; none of the three AI stages waits for your approval.
 
-Open the command palette with **Ctrl+P** on Windows and Linux or **Command+P** on macOS. Choose **Create new note**, then click the note's title and name it after the draft, such as `KB-001`. Open the command palette again, choose **Move current file to another folder**, and pick **Knowledge**. The breadcrumb should read **Knowledge / KB-001**. Use the same create-and-move steps for every new note.
+You can trace any part of an answer back through its Knowledge note and the judgment entry to the exact passage in the original source. The frozen copy in `cold/v1` is what any later retrieval will read. The live `Sources` folder remains available for your reference.
 
-![Obsidian command palette filtered to Create new note.](figures/m02-obsidian-08-new-review-note.png)
+### Prove the saved rule is required (missing-rule negative on v1)
 
-Before you copy, switch the draft to Source mode, so Markdown characters come along with the words. Open the command palette, search `source`, and choose **Toggle Live Preview/Source mode** if markers such as `#`, `**`, and `[[...]]` are hidden.
-
-![The Obsidian command palette offers Toggle Live Preview/Source mode while a source note is open.](figures/m02-obsidian-06-source-mode-menu.png)
-
-Copy the draft's text into your Knowledge note. To write a note OMP didn't draft, pick an unused three-digit ID and copy the body of `Templates/NOTE_TEMPLATE.md` into the new note, not over the template.
-
-![The unchanged note template contains a bare title marker and the four required section headings.](figures/m02-obsidian-12-note-template.png)
-
-Replace the bare `#` on the first line with `# ` and a title. Keep exactly one of each section heading, in order. Keep each claim to what its quotations say, and cut any sentence that goes beyond them.
-
-![A separate Knowledge note in Source mode retains the required headings while the original Draft remains in the file explorer.](figures/m02-obsidian-13-knowledge-source.png)
-
-### Quote the sources exactly
-
-Each Evidence item is a `###` heading with a source link, followed by the exact supporting quotation. Write the heading as `### [[Sources/DN-NNN]]` with the source's three digits. Open the source in Source mode, copy a passage that appears only once in that file, and put `> ` at the start of each copied line. Keep every character: underscores, emphasis markers, punctuation, and line breaks. If a source line already starts with `>`, keep it after the `> ` you add. The helper works out the passage's line numbers and fingerprint for you.
-
-![The original DN-003 in Source mode exposes its heading and emphasis markers as well as the source wording.](figures/m02-obsidian-07-source-markdown.png)
-
-To compare side by side, open the command palette, choose **Split right**, and open the source in the right pane. Edit only the Knowledge side.
-
-![Obsidian split view shows the Knowledge quotation on the left and the unchanged original source Markdown on the right.](figures/m02-obsidian-14-compare-source.png)
-
-### Link your notes
-
-Fill every Knowledge note before you link them. Under `## Related`, turn a useful suggestion into `- [[Knowledge/KB-NNN|label]]`, where the label says how the two notes connect. Use the exact `Knowledge/` path, not the draft, and delete the suggestions you don't link.
-
-![A Related entry uses the exact Knowledge/KB-002 path and a label explaining what that note clarifies.](figures/m02-obsidian-15-related-link.png)
-
-Switch to Reading view with the book button at the top right, then click the link. It should open a populated note whose breadcrumb starts with **Knowledge**. If a blank note opens, the path is wrong: delete the blank note and fix the link.
-
-![In Reading view, the Related section displays the relationship label as a link rather than Markdown syntax.](figures/m02-obsidian-16-readable-link.png)
-
-![Following the relationship opens the populated Knowledge/KB-002 note, with a link back to the arrival note.](figures/m02-obsidian-17-follow-knowledge-link.png)
-
-### Build the index
-
-In Source mode, start `MOC.md` with `# ` and a title, then add one line for each Knowledge note: `- [[Knowledge/KB-NNN|label]]`. Don't add any other text. Switch MOC to Reading view and click every entry to check that it opens a populated note. Use the back arrow above the note to return to MOC.
-
-![MOC in Source mode has one title and one plain bullet containing a Knowledge link on each subsequent nonblank line.](figures/m02-obsidian-18-moc-source.png)
-
-![MOC in Reading view exposes two navigation links to the partial paper-ticket editing examples.](figures/m02-obsidian-19-moc-links.png)
-
-## 4. Accept your notes
-
-Accepting a note saves a receipt that matches the note's exact bytes. Finish all note and link edits first, because a later edit, even to a link, needs a new receipt.
-
-For each note, write a short reason. Copy the body of `Templates/REVIEW_TEMPLATE.md` into a new note, name it after the note and revision, such as `KB-001-v1`, and move it to **Reviews**. Fill **Note** with the exact path, such as `Knowledge/KB-001.md`, and **Decision** with `admit`. For **Decisive reason**, write what you checked, for example: "Quotations match DN-003 and DN-021; both links open populated notes." Leave a field blank if it doesn't apply.
-
-![Move current file to another folder offers Reviews as the destination for a new note.](figures/m02-obsidian-08b-move-to-reviews.png)
-
-![The blank review template separates the note, decision, decisive reason, competing source, and remaining limit.](figures/m02-obsidian-20-review-template.png)
-
-![An admission reason under Reviews names Knowledge/KB-001.md and states a bounded reason and remaining limit.](figures/m02-obsidian-21-admission-reason.png)
-
-Then record your decision. Change the note and reason names to yours.
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Knowledge/KB-001.md" --decision admit --reason-file "$W/vault/Reviews/KB-001-v1.md"
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-& $PY "$W/scripts/second_brain.py" review --work $W --note "$W/vault/Knowledge/KB-001.md" --decision admit --reason-file "$W/vault/Reviews/KB-001-v1.md"
-if ($LASTEXITCODE -ne 0) { throw 'Admission held; correct the named note or reason before continuing.' }
-```
-
-**Expected:** `PASS: review`. The receipt is saved outside the vault and doesn't change later.
-
-**Stop:** A `HOLD` naming a quotation that doesn't match its source, a link to a missing note, a missing section, or an empty reason.
-
-**Recovery:** Fix the named problem in Obsidian, then run the same command again.
-
-To reject a draft instead, write a reason the same way and point the command at the draft. Run this only for a draft that exists.
-
-![A separate, unfilled rejection reason names a Draft path rather than a Knowledge path; fill it only for a rejection you actually decide.](figures/m02-obsidian-22-rejection-reason.png)
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Drafts/KB-002.md" --decision reject --reason-file "$W/vault/Reviews/KB-002-reject.md"
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-& $PY "$W/scripts/second_brain.py" review --work $W --note "$W/vault/Drafts/KB-002.md" --decision reject --reason-file "$W/vault/Reviews/KB-002-reject.md"
-if ($LASTEXITCODE -ne 0) { throw 'Rejection record held; inspect the named path or reason.' }
-```
-
-**Expected:** `PASS: review`. A rejection copies nothing into Knowledge.
-
-**Stop:** A `HOLD` naming the draft path or the reason file.
-
-**Recovery:** Correct the path or reason and run the command again. A proposal that never became a draft is already recorded in `ingest-report.json`, so there's nothing to reject.
-
-## 5. Freeze v1 and ask a fresh session
-
-Freezing copies `MOC.md` and your accepted Knowledge notes into `cold/v1`, a fixed snapshot. The fresh session will read only that folder. Keep Obsidian on the editable vault, and don't open `cold` as a vault.
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v1
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-& $PY "$W/scripts/second_brain.py" freeze --work $W --revision v1
-if ($LASTEXITCODE -ne 0) { throw 'Freeze held; resolve the named admission, link, or content condition.' }
-```
-
-**Expected:** `PASS: freeze`, a new `cold/v1` folder, and `identities/v1.json`.
-
-**Stop:** A `HOLD` listing notes without a receipt for their current bytes, a Knowledge note missing from MOC, or an empty note.
-
-**Recovery:** For a missing receipt, the `HOLD` prints a ready review command for each note. Write the reason file it names, run the command for your shell, then freeze again.
-
-Now ask a fresh session. This is the second paid run. The helper starts a new OMP process with the same saved rule and the three questions in `W/shared/controls/RETRIEVE_PROMPT.md`, and lets it read only `cold/v1`.
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v1"
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-& $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v1 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v1"
-if ($LASTEXITCODE -ne 0) { throw 'Cold run held; preserve its evidence and read the named condition.' }
-```
-
-**Expected:** `PASS: all checks passed`, then `Observed calls:` and `Raw-source access:` lines, then each question with its status, `supported` or `unsupported`, its answer, and the Knowledge notes and source passages it cited. The command exits with 0. The helper has already checked that your rule loaded before the model was contacted, that the session read only `cold/v1`, and that it read every note it cited.
-
-**Stop:** A `HOLD`. A broken response, a citation the session didn't read, a changed snapshot, or a failed run check is a real failure.
-
-**Recovery:** Keep `E/cold-v1`, fix the named condition, and run again with a new evidence folder name, such as `cold-v1b`. An `unsupported` answer isn't a failure. It means your notes don't cover that question yet, and you'll fix that in step 6.
-
-### See the proof in the run records
-
-Open `E/cold-v1` in a text editor and find these three things. You don't need to copy them anywhere.
-
-- In `guard.jsonl`, an `instruction_loaded` line comes before the first `provider_request` line, so your rule loaded before the model saw anything.
-- In `policy.json`, `work_root` ends in `cold/v1`, and `tools` lists only `course_read`.
-- In `guard.jsonl`, the `execution_check` lines name `MOC.md` and the Knowledge notes the session read.
-
-`Raw-source access:` in the terminal reports whether the session tried to open the original paperwork. `NOT_ATTEMPTED` means it never tried, `DENIED` means it tried and was refused, and `ALLOWED_ABSENT` means the path was allowed but missing, so nothing was read.
-
-Then check one answer yourself. Open a cited Knowledge note in Reading view and click its **Sources/DN-NNN** link. The original opens under **Sources**, and you can confirm that the quotation says what the answer claims.
-
-![Following a source citation opens the original DN-003 under Sources for the human check.](figures/m02-obsidian-24-follow-original-source.png)
-
-## 6. Fix one gap the fresh session found
-
-Pick one answer from the v1 run to improve: an `unsupported` answer, or one that leaves out part of what its question asks. The note you change or add for it is your **focal note**. If every answer is already supported and complete, add a second quotation or a new note that backs up one answer, so the next run can cite it.
-
-Edit the focal note in Obsidian, or write a new note with an unused ID and add it to MOC. Keep earlier Knowledge notes: fix a wrong claim rather than deleting the note.
-
-![The editable Knowledge note now states the additional movement-order limit while its original source quotation remains intact.](figures/m02-obsidian-27-edit-focal-note.png)
-
-Every changed or new note needs a new receipt. Keep the old reason and write a new one, such as `Reviews/KB-001-v2.md`, saying what changed and which quotation supports it.
-
-![Reviews contains distinct v1 and v2 reason notes; the open v2 reason explains the changed qualification.](figures/m02-obsidian-28-new-admission-reason.png)
-
-Set `FOCUS` to your focal note's ID, and record the decision:
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-FOCUS="KB-001"
-"$PY" "$W/scripts/second_brain.py" review --work "$W" --note "$W/vault/Knowledge/$FOCUS.md" --decision admit --reason-file "$W/vault/Reviews/$FOCUS-v2.md"
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-$FOCUS = "KB-001"
-& $PY "$W/scripts/second_brain.py" review --work $W --note "$W/vault/Knowledge/$FOCUS.md" --decision admit --reason-file "$W/vault/Reviews/$FOCUS-v2.md"
-if ($LASTEXITCODE -ne 0) { throw 'Revised admission held; inspect the named condition.' }
-```
-
-**Expected:** `PASS: review`.
-
-**Stop:** A `HOLD` naming a quotation, a link, or the reason file.
-
-**Recovery:** Fix it in Obsidian and run the command again. Review any other note you changed, such as one whose links you updated, the same way.
-
-Freeze v2. The helper compares it with v1 and requires your focal note to be new or changed.
-
-**Terminal: Bash or zsh, ordinary user, same window.**
-
-```bash
-"$PY" "$W/scripts/second_brain.py" freeze --work "$W" --revision v2 --previous "$W/identities/v1.json" --focus-note "$FOCUS"
-```
-
-**Terminal: native PowerShell, ordinary user, same window.**
-
-```powershell
-& $PY "$W/scripts/second_brain.py" freeze --work $W --revision v2 --previous "$W/identities/v1.json" --focus-note $FOCUS
-if ($LASTEXITCODE -ne 0) { throw 'Revision freeze held; inspect changed notes and their admission receipts.' }
-```
-
-**Expected:** `PASS: freeze` and a new `cold/v2`. v1 stays as it was.
-
-**Stop:** A `HOLD` naming a note without a current receipt, a deleted Knowledge note, or a focal note that didn't change.
-
-**Recovery:** Make the named correction, review the note again, and freeze v2 again. Don't edit v1.
-
-## 7. Prove the saved rule is required, then rerun
-
-A run without your saved rule must stop before it contacts the model. This block hides the rule by renaming it, tries a v2 run, checks that it stopped with exit 2 and created no evidence, and then puts the rule back unchanged. It doesn't call the model.
+A retrieval without the saved instruction must stop before it contacts the model or creates an evidence directory. Temporarily rename the rule, attempt retrieval from v1, then restore the same bytes. This check makes no paid call.
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
@@ -432,14 +197,14 @@ A run without your saved rule must stop before it contacts the model. This block
 (
   rule="$W/shared/controls/SAVED_INSTRUCTION.md"
   held="$W/shared/controls/SAVED_INSTRUCTION.md.held"
-  negative="$E/cold-v2-missing-rule"
+  negative="$E/recheck-missing-rule"
   if [ ! -f "$rule" ] || [ -e "$held" ] || [ -L "$held" ] || [ -e "$negative" ] || [ -L "$negative" ]; then
     printf '%s\n' 'HOLD: missing rule or existing negative/held path; preserve it and inspect.'
     exit 1
   fi
   mv "$rule" "$held" || exit 1
   trap 'mv "$held" "$rule"' EXIT
-  "$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v2 --runner "$R/shared/run_omp.py" --evidence "$negative"
+  "$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v1 --runner "$R/shared/run_omp.py" --evidence "$negative"
   negative_exit=$?
   if [ "$negative_exit" -ne 2 ] || [ -e "$negative" ] || [ -L "$negative" ]; then
     printf '%s\n' 'HOLD: expected exit 2 and no evidence directory; stop and preserve observations.'
@@ -454,13 +219,13 @@ A run without your saved rule must stop before it contacts the model. This block
 ```powershell
 $rule = "$W/shared/controls/SAVED_INSTRUCTION.md"
 $held = "$W/shared/controls/SAVED_INSTRUCTION.md.held"
-$negative = "$E/cold-v2-missing-rule"
+$negative = "$E/recheck-missing-rule"
 if (-not (Test-Path -LiteralPath $rule -PathType Leaf) -or (Test-Path -LiteralPath $held) -or (Test-Path -LiteralPath $negative)) {
     throw 'Missing rule or existing negative/held path; preserve it and inspect.'
 }
 Move-Item -LiteralPath $rule -Destination $held -ErrorAction Stop
 try {
-    & $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v2 --runner "$R/shared/run_omp.py" --evidence $negative
+    & $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v1 --runner "$R/shared/run_omp.py" --evidence $negative
     $negativeExit = $LASTEXITCODE
     if ($negativeExit -ne 2 -or (Test-Path -LiteralPath $negative)) {
         throw 'Expected exit 2 and no evidence directory; stop and preserve observations.'
@@ -471,39 +236,65 @@ try {
 }
 ```
 
-**Expected:** `HOLD: missing saved instruction:` with the rule's path, then `Missing-rule prerequisite stopped with exit 2; no evidence directory created.`, and `SAVED_INSTRUCTION.md` is back under its own name.
+**Expected:** `HOLD: missing saved instruction:` naming the rule, then the message that exit 2 occurred and no evidence directory was created. `SAVED_INSTRUCTION.md` is restored by the trap/finally.
 
-**Stop:** Any other exit code, a new `E/cold-v2-missing-rule` folder, or a rule file still named `SAVED_INSTRUCTION.md.held`.
+**Stop:** Any other exit code, a new evidence directory, or the rule still named `.held`.
 
-**Recovery:** Keep the evidence. If the block was interrupted, rename `SAVED_INSTRUCTION.md.held` back to `SAVED_INSTRUCTION.md` without overwriting another file. Don't edit the rule or substitute another one.
+**Recovery:** If the block was interrupted, rename the `.held` file back without overwriting anything else. Don't edit the rule content.
 
-With the rule back, ask a fresh session about v2. This is the third paid run, and it also shows the restored rule works.
+Also run the v1 check here (after the negative test on v1, before feedback/v2):
 
 **Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
-"$PY" "$W/scripts/second_brain.py" retrieve --work "$W" --revision v2 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v2"
+"$PY" "$W/scripts/second_brain.py" check --work "$W" --revision v1
 ```
 
 **Terminal: native PowerShell, ordinary user, same window.**
 
 ```powershell
-& $PY "$W/scripts/second_brain.py" retrieve --work $W --revision v2 --runner "$R/shared/run_omp.py" --evidence "$E/cold-v2"
-if ($LASTEXITCODE -ne 0) { throw 'Restored cold run held; keep its evidence and inspect the failure.' }
+& $PY "$W/scripts/second_brain.py" check --work $W --revision v1
+if ($LASTEXITCODE -ne 0) { throw 'v1 identity held; preserve and inspect the named path.' }
 ```
 
-**Expected:** The same kind of output as for v1, with your focal note among the citations, and exit 0. The helper requires the focal note to be read and cited.
+**Expected:** `PASS: check` for v1.
 
-**Stop:** A `HOLD`.
+**Stop:** `HOLD` or a nonzero exit, including a missing or changed saved rule after restoration.
 
-**Recovery:** Keep `E/cold-v2`, fix the named condition, and run again with a new evidence folder name.
+**Recovery:** If the rule is still named `.held`, restore that same file without overwriting another file, then repeat this local check. For a changed snapshot, source, or receipt, preserve the named files and investigate the reported mismatch; don't edit generated records to make the check pass. Don't start v2 while the v1 identity check is failing.
 
-Compare the v2 answer with the v1 answer for the question you fixed. Each run's raw response is also saved as `response.md` in its evidence folder. If the gap is still there, fix the note again and repeat steps 6 and 7 as `v3`, freezing with `--previous "$W/identities/v2.json"` and using a new evidence folder.
+## 4. Supply feedback and run v2
 
-### Check your snapshots
+After you have inspected the v1 answers, judgments, and sources, edit `Feedback.md` (it lives at the top level of the vault). The file is ordinary Markdown. Write one to three short, source-backed sentences that name the focal note (the KB ID you will pass with --focus-note) and a decisive DN source from the judgments. State the limitation or added qualification you observed and the effect you want on the next revision's answers.
 
-Your later edits to the vault mustn't change the frozen copies. These checks run on your computer and don't call the model.
+Use the direction in the file itself. Cite an actual KB note ID and DN source you inspected. If the v1 answers are already correct, you can still record a substantive added qualification from a source. Do not invent a defect. Do not edit the generated Knowledge notes, MOC, or judgment files. The helper freezes the bytes of Feedback.md that the v2 run receives.
 
+Now run the revision. The `--previous` points at the v1 identity, `--focus-note` tells the builder which note the feedback most directly affects, and `--feedback` supplies your plain-language direction.
+
+**Note:** Replace `KB-001` with the actual focal note ID (e.g. KB-003) that you named in the Feedback.md you wrote. The --focus-note tells the helper which generated note the feedback most directly affects.
+
+**Terminal: Bash or zsh, ordinary user, same window.**
+
+```bash
+"$PY" "$W/scripts/second_brain.py" run --work "$W" --revision v2 --previous v1 --focus-note KB-001 --feedback "$W/vault/Feedback.md" --runner "$R/shared/run_omp.py" --evidence "$E/v2"
+```
+
+**Terminal: native PowerShell, ordinary user, same window.**
+
+```powershell
+& $PY "$W/scripts/second_brain.py" run --work $W --revision v2 --previous v1 --focus-note KB-001 --feedback "$W/vault/Feedback.md" --runner "$R/shared/run_omp.py" --evidence "$E/v2"
+if ($LASTEXITCODE -ne 0) { throw 'Revision run held; preserve the evidence and inspect the named condition.' }
+```
+
+**Expected:** `PASS: run --revision v2` and exit 0. `Knowledge/v2`, `Reviews/v2-judgments.md`, `Reviews/v2-answers.md`, `cold/v2`, and `identities/v2.json` appear. The v1 files remain unchanged. The focal note changed and the fresh session read it; compare the answers with your feedback and sources to decide whether the change is an improvement.
+
+**Stop:** A `HOLD` naming a missing previous identity, an unchanged focal note when one was required, or a feedback file problem.
+
+**Recovery:** Keep the held attempt and its evidence. If v1 still passes its check, stay in the same `W`. If the HOLD names the focal note or feedback, correct the note ID or revise `Feedback.md` before another paid run. Use a fresh revision name and evidence path, such as `v2b` and `$E/v2b`, while retaining `--previous v1`. Use that revision name in later checks and comparisons. If there is no successful v1, prepare a fresh work copy.
+
+## 5. Post-v2 checks
+
+Re-run the v1 check after the v2 run to prove the earlier snapshot is preserved across the revision, then run the v2 check.
 **Terminal: Bash or zsh, ordinary user, same window.**
 
 ```bash
@@ -520,10 +311,26 @@ if ($LASTEXITCODE -ne 0) { throw 'v1 identity held; preserve and inspect the nam
 if ($LASTEXITCODE -ne 0) { throw 'v2 identity held; preserve and inspect the named path.' }
 ```
 
-**Expected:** `PASS: check` twice.
+**Expected:** `PASS: check` for v1 (re-run) and for v2. (If you branched to a different successful revision name such as v2b after a HOLD, substitute that name in these commands and the Expected.)
 
-**Stop:** A `HOLD` naming a frozen file that changed, appeared, or disappeared.
+**Stop:** A `HOLD` naming a file that changed, appeared, or disappeared inside the frozen copy.
 
-**Recovery:** Keep that snapshot as it is and report what the check names. Don't rewrite its identity record to make the check pass. A matching fingerprint shows the bytes didn't change; it doesn't show the notes are true.
+**Recovery:** Keep the snapshot as it is. Report exactly what the check names. The fingerprint match shows the bytes are stable; it does not claim the notes are true.
 
-Keep your vault, both frozen copies, the receipts, and the run evidence. The frozen folders and receipts stay outside the vault.
+## 6. Compare revisions and see the proof in the run records
+
+After the v2 run, compare the material answers explicitly:
+
+Open `Reviews/v1-answers.md` and `Reviews/v2-answers.md`. For Q1, Q2, and Q3, compare the status, answer text, citations, and limits. Does the change follow your feedback and the source evidence? An unchanged correct answer is an honest result; a changed answer is not automatically better.
+
+Open the evidence folder for a retrieve or the judge/build/retrieve subfolders under a run (E/v1 or E/v2). You do not need to copy anything.
+
+- Look in `guard.jsonl` for an `instruction_loaded` line that appears before the first provider request. This shows the saved rule was in place.
+- In each phase's `policy.json`, `work_root` names the only folder that session could read. Judge reads `runs/<revision>/inputs/judge`: copies of the forty sources, plus the previous judgments, previous build, and feedback for a revision. Build reads `runs/<revision>/inputs/build`: the new judgments and, for a revision, the previous build. Retrieval reads only `cold/<revision>`, containing the index and Knowledge notes. The only allowed tool is `course_read`.
+- Compare the tool calls in `events.jsonl` with the decisions and execution records in `guard.jsonl`. A successful read, a missing file, and a blocked call are different outcomes. If no call was attempted, the run does not prove that it would have been blocked. Describe only the records you actually see.
+
+Open the revision's answers file. Follow its Knowledge, judgment, and Source links. Check whether each cited excerpt matches the original passage and whether that passage supports the answer with its stated limits.
+
+Knowledge notes carry source excerpts and AI judgments; the saved instruction contains governing rules, not source evidence. A recorded read and a matching excerpt do not establish that the model interpreted the source correctly. Decide that by inspecting the source yourself.
+Keep your vault, both frozen copies, the Feedback.md you wrote, and the run evidence. The frozen folders and identity records stay outside the editable vault and are never overwritten by later revisions.
+

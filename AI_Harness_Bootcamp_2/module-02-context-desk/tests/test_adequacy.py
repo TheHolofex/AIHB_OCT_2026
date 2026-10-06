@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove eight behavioral criterion groups against applied, isolated mutations."""
+"""Prove six behavioral criterion groups (M2-*) against applied, isolated mutations. Regressions emit non-M2- labels; baseline must match exactly the six M2- without filtering."""
 from __future__ import annotations
 
 import re
