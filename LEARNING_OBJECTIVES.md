@@ -26,11 +26,11 @@ The learner completes research from bounded sources, verifies a material claim a
 
 1. Select and relate source-backed claims while separating evidence from instructions.
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
-3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
+3. Fix one gap a fresh run reports and demonstrate the result in a new content revision and fresh run.
 
 Source verification and bounded direction are earlier prerequisites; source checking remains Module 01's quality bar. Saved instructions and load proof are newly taught here. The core allowance is a local, human-reviewed Markdown knowledge vault with explicit admission and read-only fresh-session retrieval. Autonomous knowledge updates, concurrent agent writes to shared knowledge, custom retrieval infrastructure, and MCP construction remain advanced. Bounded multi-agent orchestration belongs to Module 05; checking a received local-model package from a fresh copy remains Module 10's.
 
-**Evidence:** context map separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen observations and its manual-paste limitation; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a recorded substantive weakness, focal note, expected effect, observed effect, and remaining limits. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
+**Evidence:** the vault's folder layout and run policies separating sources, editable vault, frozen knowledge, and governing instruction; clean/hostile/missing file-screen results; linked source-backed notes and human admission records; distinct frozen content revisions; matching saved-rule load and content identities; actual Knowledge reads and source-backed citations in fresh runs; missing-rule prerequisite result; and a focal note whose fix appears in the next fresh run's answers and citations. Preserve earlier revisions and evidence. The helper establishes reviewed content identity and retrieval; the learner judges whether the change improves the answers. A truthful unsupported answer identifies a coverage gap to resolve through reviewed content and a fresh run.
 **Owner:** Module 02
 
 ## PO-03 — Operate MCP tools under limited authority

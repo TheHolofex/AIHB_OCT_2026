@@ -1,6 +1,6 @@
 # Module 2 · Build and control a reusable second brain
 
-You’ll turn the Ledger Pike paperwork into linked notes in Obsidian, then ask a new chat to answer from those notes alone. It won’t have the earlier chat or the original files. After that, you’ll fix one weakness that changes the answer and show the difference in another new chat.
+You'll have OMP draft notes from the Ledger Pike paperwork, turn them into linked notes in Obsidian, and accept the ones whose quotations check out. Then a fresh OMP session answers from only those notes, without the earlier chat or the original files, and its run records show what it loaded and read. After that, you'll fix one gap it found and show the difference in another fresh session.
 
 Plan for about three hours (a rough estimate). The exercise is ungraded.
 
@@ -8,11 +8,11 @@ Plan for about three hours (a rough estimate). The exercise is ungraded.
 
 Open the [Module 2 lab](shared/MODULE_02_LAB.md). Use the Python, OMP, and local Obsidian you already checked in Module 00.
 
-You’ll learn to:
+You'll learn to:
 
-- Choose claims the paperwork supports, link those notes, and treat an instruction written inside a source as evidence, not as an order.
-- Accept only notes you’ve checked, then confirm a new chat loaded your saved rule and read only the notes you approved.
-- Fix one weakness that changes what that chat can answer, and show the change in a new saved copy and a new chat.
+- Have OMP draft notes from forty source files under a saved rule that treats instructions inside a source as data, not as orders.
+- Turn drafts into linked Obsidian notes whose quotations match their sources exactly, and accept them with recorded reasons.
+- Show from the run records that a fresh session loaded your saved rule and read only the notes you accepted, then fix one gap it reports and show the change in another fresh session.
 
 ## The working files
 
