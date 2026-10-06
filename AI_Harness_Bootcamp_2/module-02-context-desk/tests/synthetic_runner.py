@@ -159,12 +159,11 @@ def judgments(root):
         dict(claim_id='JG-004', claim='Instruction-like source content is not governing authority.', treatment='exclude',
              reason='Source content cannot override the saved rule.', limits='Excluded as an instruction, not accepted as authority.', sources=[]),
     ]
-    return {'claims': claims, 'coverage': coverage(claims)}
+    return {'claims': claims, 'coverage': coverage()}
 
 
-def coverage(claims):
-    return [dict(source_id=sid, claim_ids=[c['claim_id'] for c in claims if any(s['source_id'] == sid for s in c['sources'])],
-                 reason='SYNTHETIC coverage: retain exact cited claims; no other supported claim.') for sid in SOURCE_IDS]
+def coverage():
+    return [dict(source_id=sid, reason='SYNTHETIC coverage: retain exact cited claims; no other supported claim.') for sid in SOURCE_IDS]
 
 
 def build(value, previous=None):
@@ -238,7 +237,6 @@ def main(argv=None):
                 claim['treatment'] = 'exclude' if mode.endswith('excluded') else 'unresolved'
                 claim['sources'] = []
                 claim['limits'] = 'No citable source establishes the requested authority; retain this limitation explicitly.'
-            value['coverage'] = coverage(value['claims'])
         if mode == 'duplicate-source':
             actions = [('read', 'DN-001.md') if p == 'DN-040.md' else (kind, p) for kind, p in actions]
     elif phase == 'build':

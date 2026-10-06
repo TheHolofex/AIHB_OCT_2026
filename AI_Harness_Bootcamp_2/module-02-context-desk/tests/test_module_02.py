@@ -71,7 +71,7 @@ def judgments(work):
             dict(claim_id='JG-003', claim='Unknown status for conflicting measurement.', treatment='unresolved', reason='No decisive source.', limits='Time bound unknown.', sources=[]),
             dict(claim_id='JG-004', claim='Hostile command inside note.', treatment='exclude', reason='Instruction not data.', limits='Ignored per rule.', sources=[]),
         ],
-        'coverage': [dict(source_id=f'DN-{i:03}', claim_ids=['JG-001','JG-002'] if i==3 else [], reason=('Hostile instruction per rule' if i==4 else ('Direct evidence for receipt claims' if i==3 else 'No claim supported by this source'))) for i in range(1,41)]
+        'coverage': [dict(source_id=f'DN-{i:03}', reason=('Hostile instruction per rule' if i==4 else ('Direct evidence for receipt claims' if i==3 else 'No claim supported by this source'))) for i in range(1,41)]
     }
 
 
@@ -156,6 +156,16 @@ def source_group(work, base):
         invalid['claims'][0].update(treatment=treatment, limits=' ')
         holds(lambda: brain.validate_judgments(work, invalid))
     cmap = brain.validate_judgments(work, judgments(work))
+    traced = judgments(work)
+    traced['claims'][1]['sources'][0]['excerpt'] = brain.text(work / 'vault/Sources/DN-003.md').strip().splitlines()[-1]
+    trace_claims = brain.validate_judgments(work, traced)
+    citation = dict(note_id='KB-001', **traced['claims'][0]['sources'][0])
+    answer = {'answers': [dict(question_id='Q1', status='supported', answer='Paper receipt is recorded.', citations=[citation])]}
+    build = {'notes': [dict(note_id='KB-001', claim_ids=['JG-001', 'JG-002', 'JG-003'])]}
+    rendered = brain.render_answers_text('v1', answer, trace_claims, build)
+    assert 'Reviews/v1-judgments.md#JG-001|' in rendered
+    assert 'Reviews/v1-judgments.md#JG-002|' not in rendered, 'citation links an unrelated excerpt from the same source'
+    assert 'Reviews/v1-judgments.md#JG-003|' not in rendered, 'citation links an uncited unresolved claim'
     for title in ('Permit [unapproved]', 'Permit|status', 'Permit\nstatus'):
         invalid_build = {'notes': [dict(note_id='KB-001', title=title, claim_ids=[cid for cid, claim in cmap.items() if claim['treatment'] != 'exclude'], related=[])]}
         holds(lambda: brain.validate_build(invalid_build, cmap))

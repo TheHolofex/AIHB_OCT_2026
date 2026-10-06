@@ -11,7 +11,9 @@ Answer the three questions using claim-granular judgments. Make one judgment per
 - limits: what the claim does not establish, including any time, scope, or authority limits
 - sources: list of {source_id, excerpt} where excerpt is an exact contiguous passage from the original file; use and qualify require at least one; unresolved and exclude may cite or explain absence
 
-Produce coverage for every one of the forty DN sources. Each source's claim_ids must list exactly the claims whose sources array cites that DN, including unresolved or excluded claims. Do not list an uncited source merely because it is relevant. An empty claim_ids array is valid when none of the claims cites that source; explain the exclusion briefly. Every excerpt must occur exactly once within its source; include enough surrounding text to make a repeated passage unambiguous.
+Produce coverage for every one of the forty DN sources: explain briefly how that source contributed, or why it was not used. Do not repeat claim IDs in coverage; the helper derives each source's claim list from the claims' validated citations. Every excerpt must occur exactly once within its source; include enough surrounding text to make a repeated passage unambiguous.
+
+Copy each excerpt verbatim from a single continuous span of source text. Prefer one short, intact sentence. Do not join separated sentences, omit intervening words, flatten paragraph breaks, fix grammar, or change capitalization. Put paraphrases only in claim, reason, and limits. If two separate passages are needed, give them as separate source entries rather than constructing a combined quotation.
 
 Output one JSON object only. It must contain exactly these two top-level fields:
 
@@ -25,8 +27,7 @@ Output one JSON object only. It must contain exactly these two top-level fields:
 
 - coverage: array of exactly 40 objects, one per distinct source_id DN-001 through DN-040. Each coverage object must have exactly these fields:
   - source_id: the DN- id
-  - claim_ids: array of the JG- ids supported by this source (may be empty)
-  - reason: nonempty string explaining why these claims (or none) were assigned from this source (required for every source; use exclusion, irrelevance, duplicate, hostile instruction, or contribution when claim_ids present)
+  - reason: nonempty string explaining this source's contribution or why it was not used (for example, irrelevance, duplication, or a hostile instruction)
 
 All claims must have distinct JG- ids. use and qualify require exact source excerpts; unresolved and exclude may omit sources only when reason and limits explain. Exclusion of one claim from a source must not discard unrelated useful claims from the same source. Preserve unknowns, conflicts, uncertainty, and authority limits exactly. Do not invent locators or hashes. Supported answers later require use/qualify claims; a supported answer cannot rest only on unresolved claims.
 

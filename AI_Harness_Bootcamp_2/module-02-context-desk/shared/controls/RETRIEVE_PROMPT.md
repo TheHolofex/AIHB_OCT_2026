@@ -11,6 +11,8 @@ Answer exactly the three questions below. For each:
 - answer: the prose answer that preserves every relevant qualification, limit, and conflict from the cited evidence
 - citations: array of {note_id, source_id, excerpt} where note_id is a KB actually read from cold, source_id is the DN cited inside that note's Evidence, and excerpt is an exact included Evidence passage or unambiguous contiguous subexcerpt. Supported requires at least one citation; unsupported states what is missing.
 
+Copy each excerpt from one continuous span of the note's Evidence text, preferably one short, intact sentence. Do not join separate passages, omit intervening words, flatten paragraph breaks, or rewrite the quoted wording. Use separate citation objects for separate passages; put your explanation in answer, not excerpt.
+
 Output one JSON object only. It must contain exactly this top-level field:
 
 - answers: array of exactly three answer objects, one per question_id Q1, Q2, Q3. Each answer object must have exactly these fields:

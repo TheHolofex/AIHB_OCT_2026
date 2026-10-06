@@ -685,38 +685,14 @@ def validate_judgments(work, value):
     cov = value['coverage']
     require(isinstance(cov, list) and len(cov) == 40, 'exactly 40 coverage')
     cset = set()
-    claim_to_cov_sources = {}
-    cov_source_to_claims = {}
     for e in cov:
-        fields(e, {'source_id', 'claim_ids', 'reason'})
+        fields(e, {'source_id', 'reason'})
         sid = e['source_id']
         require(sid in DN, 'bad source in cov')
         require(sid not in cset, 'dup cov source')
         cset.add(sid)
-        require(isinstance(e['claim_ids'], list), 'claim_ids list')
         require(e['reason'].strip(), 'coverage reason required (empty not allowed)')
         require('[[' not in e['reason'] and '](' not in e['reason'], 'model-injected in coverage reason')
-        cov_source_to_claims[sid] = set(e['claim_ids'])
-        for j in e['claim_ids']:
-            require(j in cmap, 'cov refs unknown claim')
-            if j not in claim_to_cov_sources:
-                claim_to_cov_sources[j] = []
-            claim_to_cov_sources[j].append(sid)
-    # exact bidirectional membership: claims declare sources, cov declares reverse, must match exactly; no dups via sets
-    claim_decl_sources = {}
-    for jg, c in cmap.items():
-        claim_decl_sources[jg] = {s['source_id'] for s in c.get('sources', [])}
-    source_decl_claims = {}
-    for jg, sset in claim_decl_sources.items():
-        for sid in sset:
-            source_decl_claims.setdefault(sid, set()).add(jg)
-    for sid in DN:
-        cov_claims = cov_source_to_claims.get(sid, set())
-        decl_claims = source_decl_claims.get(sid, set())
-        require(cov_claims == decl_claims, f'exact reverse source↔claim membership required for {sid} (no dups/ambiguous)')
-    for jg, c in cmap.items():
-        if c['treatment'] in {'use', 'qualify'}:
-            require(jg in claim_to_cov_sources and claim_to_cov_sources[jg], f'use/qualify claim {jg} missing from coverage reverse map')
     return cmap
 
 
@@ -784,14 +760,17 @@ def render_knowledge_note(rev, nid, title, cids, rels, cmap):
 
 def render_judgments_text(rev, cmap, cov):
     ls = [f"# {rev} judgments (AI-processed, provisional)\n"]
+    source_claims = {sid: [] for sid in DN}
     for j in sorted(cmap):
         c = cmap[j]
         ls.append(f"## {j}\nTreatment: {c['treatment']}\nClaim: {c['claim']}\nReason: {c['reason']}\nLimits: {c['limits']}")
         for s in c.get('sources', []):
+            if j not in source_claims[s['source_id']]:
+                source_claims[s['source_id']].append(j)
             ls.append(f"### [[Sources/{s['source_id']}]]")
             ls.extend("> " + ln for ln in s['excerpt'].splitlines())
         ls.append("")
-    ls.append("## Coverage\n" + "\n".join(f"- {e['source_id']}: {e['claim_ids']} {e['reason']}" for e in cov))
+    ls.append("## Coverage\n" + "\n".join(f"- {e['source_id']}: {source_claims[e['source_id']]} {e['reason']}" for e in cov))
     return "\n".join(ls) + "\n"
 
 
@@ -803,13 +782,17 @@ def render_answers_text(rev, aval, cmap, bval, focus=None):
         ls.append(f"## {a['question_id']} ({a['status']})\n{a['answer']}")
         for c in a.get('citations', []):
             ls.append(f"  [[Knowledge/{rev}/{c['note_id']}|{c['note_id']}]] · [[Sources/{c['source_id']}|{c['source_id']}]]: {c['excerpt']}")
+            excerpt = c['excerpt'].replace('\r\n', '\n')
+            candidates = (excerpt, decode_quote(excerpt))
             for cl in note2claims.get(c['note_id'], []):
+                if not any(s['source_id'] == c['source_id'] and any(
+                    quote in s['excerpt'].replace('\r\n', '\n') for quote in candidates
+                ) for s in cl['sources']):
+                    continue
                 if cl.get('limits', '').strip():
                     ls.append(f"    (limit) {cl['limits']}")
-            nobj = next((nn for nn in bval.get('notes', []) if nn.get('note_id') == c['note_id']), None)
-            if nobj:
-                for jg in nobj.get('claim_ids', []):
-                    ls.append(f"    (from judgment [[Reviews/{rev}-judgments.md#{jg}|{jg}]])")
+                jg = cl['claim_id']
+                ls.append(f"    (from judgment [[Reviews/{rev}-judgments.md#{jg}|{jg}]])")
             cited.add(c.get('note_id'))
         ls.append("")
     if focus and focus not in cited:
