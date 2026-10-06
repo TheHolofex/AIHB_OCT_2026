@@ -159,103 +159,21 @@ command -v git && git --version
 
 ## 3. Install Oh My Pi
 
-This box resolves the latest stable release once, downloads the matching Linux build and its `SHA256SUMS.txt` into a new folder. A SHA-256 checksum identifies the file's exact contents. The box installs the binary at `~/.local/bin/omp` only if the checksum matches; it never replaces a different `omp` already there. PATH is the list of folders Bash searches for commands. The box adds `~/.local/bin` to the startup files that new Ubuntu windows read.
+Run the one-line installer from [omp.sh](https://omp.sh/).
 
-**Terminal: Ubuntu Bash, ordinary Linux user, same window.**
+**Terminal: Ubuntu Bash inside WSL, ordinary user.**
 
 ```bash
-course_install_omp() {
-  local asset download version course_exit tag base
-  if [ -z "${PY:-}" ] || [ ! -x "$PY" ]; then
-    printf 'STOP: PY is not set; run the step 1 box in this window first\n'; return 1
-  fi
-  case "$(uname -m)" in
-    x86_64) asset=omp-linux-x64 ;;
-    aarch64) asset=omp-linux-arm64 ;;
-    *) printf 'STOP: this processor is not supported\n'; return 1 ;;
-  esac
-  download="$HOME/course-evidence/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-  mkdir -p -- "$HOME/course-evidence" && mkdir -- "$download" || return 1
-  curl --fail --location --show-error --output "$download/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' || return 1
-  tag="$("$PY" - "$download/release.json" "$asset" <<'PYREL'
-import json, re, sys
-from pathlib import Path
-try:
-    release = json.loads(Path(sys.argv[1]).read_text())
-    tag = release["tag_name"]
-    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
-        raise ValueError("invalid release tag")
-    if release.get("draft") is not False or release.get("prerelease") is not False:
-        raise ValueError("release is not stable")
-    base = "https://github.com/can1357/oh-my-pi/releases/download/%s/" % tag
-    for name in (sys.argv[2], "SHA256SUMS.txt"):
-        matches = [item for item in release.get("assets", []) if item.get("name") == name]
-        if len(matches) != 1 or matches[0].get("browser_download_url") != base + name:
-            raise ValueError("required release asset is missing or inconsistent")
-    print(tag)
-except (AttributeError, KeyError, TypeError, ValueError):
-    sys.exit("STOP: latest release metadata or required assets are invalid")
-PYREL
-  )" || return 1
-  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
-  printf 'RELEASE %s (%s)\n' "$tag" "$download/release.json"
-  curl --fail --location --show-error --output "$download/$asset" "$base/$asset" || return 1
-  curl --fail --location --show-error --output "$download/SHA256SUMS.txt" "$base/SHA256SUMS.txt" || return 1
-  "$PY" - "$download" "$asset" <<'PY'
-from pathlib import Path
-import hashlib, sys
-folder, asset = Path(sys.argv[1]), sys.argv[2]
-home = Path.home()
-target = home / '.local/bin/omp'
-rows = [line.split() for line in (folder / 'SHA256SUMS.txt').read_text().splitlines()]
-listed = [row[0].lower() for row in rows if len(row) == 2 and row[1].removeprefix('*') == asset]
-data = (folder / asset).read_bytes()
-digest = hashlib.sha256(data).hexdigest()
-if len(listed) != 1 or listed[0] != digest:
-    raise SystemExit('HOLD: checksum does not match SHA256SUMS.txt; nothing was installed')
-print('SHA256 VERIFIED', asset, digest)
-for path in (home / '.local', home / '.local/bin'):
-    if path.is_symlink() or (path.exists() and not path.is_dir()):
-        raise SystemExit('HOLD: ' + str(path) + ' is a link or not a folder; nothing was installed')
-if target.is_symlink() or (target.exists() and (not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest)):
-    raise SystemExit('HOLD: a different omp already exists at ' + str(target) + '; it was kept')
-target.parent.mkdir(parents=True, exist_ok=True)
-if not target.exists():
-    with target.open('xb') as output:
-        output.write(data)
-target.chmod(target.stat().st_mode | 0o111)
-files = [home / '.profile', home / '.bashrc']
-for name in ('.bash_profile', '.bash_login'):
-    if (home / name).exists() or (home / name).is_symlink():
-        files.append(home / name)
-        break
-line = b'export PATH="$HOME/.local/bin:$PATH"'
-for file in files:
-    if file.is_symlink() or (file.exists() and not file.is_file()):
-        raise SystemExit('HOLD: startup file is a link or not a regular file: ' + str(file))
-    raw = file.read_bytes() if file.exists() else b''
-    if line in raw.split(b'\n'):
-        print('PATH_LINE already present in', file)
-        continue
-    with file.open('ab') as output:
-        output.write((b'\n' if raw and not raw.endswith(b'\n') else b'') + line + b'\n')
-    print('PATH_LINE added to', file)
-PY
-  course_exit=$?
-  [ "$course_exit" -eq 0 ] || return "$course_exit"
-  case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
-  version="$("$HOME/.local/bin/omp" --version)" || return 1
-  printf 'OMP_VERSION %s\n' "$version"
-  [ "$version" = "omp/${tag#v}" ] || { printf 'HOLD: installed version differs from selected %s\n' "$tag"; return 1; }
-}
-course_install_omp
+curl -fsSL https://omp.sh/install | sh
 ```
 
-**Expected:** `RELEASE <tag>`, `SHA256 VERIFIED` with the file name, a `PATH_LINE` line for each startup file, then `OMP_VERSION omp/<semver>`.
+**Restart your terminal after installing OMP so PATH changes take effect.** Follow any PATH instructions the installer prints, complete Step 4 in this window, then close and reopen your terminal as directed in Step 5 before starting OMP or entering your API key. On WSL, reopen Ubuntu.
 
-**Stop:** a `HOLD:` line, a download error, unavailable/malformed release metadata/assets, or a version other than the resolved tag's.
+**Expected:** The installer finishes successfully. In the new terminal, `omp --version` prints the installed version.
 
-**Recovery:** Keep the download folder under `~/course-evidence`; running the box again uses a new folder. For an existing `omp`, a linked folder, or a download error, see [Oh My Pi install problems](#oh-my-pi-install-problems).
+**Stop:** The installer reports an error or `omp` is not found.
+
+**Recovery:** Check the installer’s error. For `omp` not found, use [PATH recovery](../shared/TROUBLESHOOTING.md#if-omp-is-not-found-after-restarting), then reopen the terminal and try `omp --version` again.
 
 ## 4. Get the course files
 
@@ -376,8 +294,8 @@ course_confirm_window() {
   printf 'R %s\nM %s\nPY %s\n' "$R" "$M" "$PY"
   found="$(command -v omp || true)"
   printf 'OMP_PATH %s\n' "${found:-missing}"
-  [ "$found" = "$HOME/.local/bin/omp" ] || { printf 'STOP: this window did not find omp on its own\n'; return 1; }
-  version="$(omp --version)" || return 1
+  case "$found" in /mnt/*|*.exe|'') printf 'STOP: Linux omp is not on PATH\n'; return 1 ;; /*) ;; *) printf 'STOP: omp is not an executable path\n'; return 1 ;; esac
+  version="$("$found" --version)" || return 1
   printf 'OMP_VERSION %s\n' "$version"
   [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
   if [ -n "${OPENROUTER_API_KEY:-}" ]; then
@@ -388,7 +306,7 @@ course_confirm_window() {
 course_confirm_window
 ```
 
-**Expected:** `R`, `M`, and `PY` paths, `OMP_PATH` ending in `/.local/bin/omp`, `OMP_VERSION omp/<semver>`, and `MISSING` as the last line.
+**Expected:** `R`, `M`, and `PY` paths, `OMP_PATH` with the installed Linux command path, `OMP_VERSION omp/<semver>`, and `MISSING` as the last line.
 
 **Stop:** a `STOP:` line, or `SET` before you've entered a key.
 
@@ -938,13 +856,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: list failed.' }
 
 ### Oh My Pi install problems
 
-**`HOLD: a different omp already exists`.** Another copy of Oh My Pi is at `~/.local/bin/omp`. Keep it, and ask the owner whether the latest stable release can replace it; the box never overwrites it.
-
-**`HOLD: ... is a link or not a folder` or `startup file is a link`.** A folder or startup file in your home is redirected. Ask the owner to fix that path; don't replace a linked file.
-
-**`HOLD: checksum does not match`.** The download was damaged or changed on the way. Don't run that file; check your network or proxy, then run the box again for a fresh folder.
-
-**curl reports a certificate or proxy error.** Ask the owner for the approved proxy and certificate settings. Never turn off certificate checks.
+If the installer reports an error, check its message and the current instructions at [omp.sh](https://omp.sh/). Run the Linux installer inside Ubuntu. For a certificate or proxy error, ask for the approved network settings.
 
 ### Course file problems
 
@@ -958,36 +870,7 @@ if ($LASTEXITCODE -ne 0) { throw 'STOP: list failed.' }
 
 ### New window problems
 
-**`OMP_PATH missing` or a different path.** This window didn't read a startup file with the PATH line. The box adds the line to the file this kind of window reads, without changing anything else.
-
-**Terminal: Ubuntu Bash, ordinary Linux user, the new window where step 5 stopped.**
-
-```bash
-course_fix_path_line() {
-  local line='export PATH="$HOME/.local/bin:$PATH"' file="$HOME/.bashrc" candidate
-  if shopt -q login_shell; then
-    file="$HOME/.profile"
-    for candidate in "$HOME/.bash_profile" "$HOME/.bash_login"; do
-      if [ -e "$candidate" ] || [ -L "$candidate" ]; then file="$candidate"; break; fi
-    done
-  fi
-  printf 'STARTUP_FILE %s\n' "$file"
-  if [ -L "$file" ] || { [ -e "$file" ] && [ ! -f "$file" ]; }; then
-    printf 'HOLD: that file is a link or not a regular file; it was not changed\n'; return 1
-  fi
-  if [ -f "$file" ] && grep -Fxq -- "$line" "$file"; then
-    printf 'HOLD: the line is already there; keep this output for the owner\n'; return 1
-  fi
-  printf '\n%s\n' "$line" >> "$file" && printf 'PATH_LINE added to %s\n' "$file"
-}
-course_fix_path_line
-```
-
-**Expected:** `STARTUP_FILE` and `PATH_LINE added`. Close this window, open a new one with the open box, and run step 5 again.
-
-**Stop:** a `HOLD:` line.
-
-**Recovery:** Keep the file as it is and show the output to the owner. Don't export PATH by hand to get past step 5.
+**`OMP_PATH missing`.** Follow the installer’s PATH instructions, then close Ubuntu and reopen it from a new Windows PowerShell window using the [open box](#choose-and-open-ubuntu). Run `command -v omp` and `omp --version` inside Ubuntu to confirm the Linux installation is available.
 
 **`SET` in a new window before you entered a key.** Something passes the key into new windows. The box lists which startup files mention the variable name and which Windows variables WSL forwards (the `WSLENV` setting), without printing any value.
 

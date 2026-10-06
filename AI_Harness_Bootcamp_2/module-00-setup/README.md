@@ -28,7 +28,7 @@ On Windows, choose WSL if your organization permits it and you can restart the m
 - Before Module 2, install local Obsidian. A **vault** is a folder of linked Markdown notes on your laptop. For a fresh install, use release **1.13.7**; if it's already installed, keep it and record its version.
 - Before Module 7, install local n8n **2.41.5** with the full official Docker stack and a working modern `docker compose` plugin. Follow your platform guide's n8n path.
 
-The platform guide keeps **PATH**, the saved list of folders your shell searches for commands. Check it in a new terminal after installation, not just the install window.
+**Restart your terminal after installing OMP so PATH changes take effect.** Close the installation window and open a new terminal before starting OMP or entering your API key. **PATH** is the list of folders your shell searches for commands.
 
 Get GitHub read access to `TheHolofex/AIHB_OCT_2026`; the hosted-course password doesn't grant it. Your guide checks approved Git credentials first. Use GitHub CLI (`gh`) for browser login only if that fails; you don't need it to run the AI.
 
@@ -57,6 +57,37 @@ Git is ready when `git --version` prints `git version 2.` followed by more numbe
 - Keep at least 15 GB free; WSL should have 25 GB.
 - Get administrator approval for operating-system packages.
 
+
+## Start OMP with your OpenRouter key
+
+After restarting your terminal, run the commands for your shell. Replace the placeholder with your complete API key.
+
+**Terminal: Bash or zsh on macOS, Linux, or WSL, ordinary user.**
+
+```bash
+export OPENROUTER_API_KEY='YOUR_COMPLETE_API_KEY'
+omp
+```
+
+**Terminal: PowerShell on Windows, ordinary user.**
+
+```powershell
+$env:OPENROUTER_API_KEY = 'YOUR_COMPLETE_API_KEY'
+omp
+```
+
+1. Press **Esc** to skip provider setup.
+2. Select the OpenRouter model **`openrouter/anthropic/claude-sonnet-4.6`**.
+3. Choose your font, style, and other preferences.
+4. Send `hello` and confirm the model replies, then start chatting.
+
+**No sign-in or YAML configuration is required.** Keep using the same terminal; enter the key again if you open a new one. For hidden key entry, use the [credential guide](shared/CREDENTIALS.md#enter-the-key-through-a-hidden-prompt).
+
+**Expected:** OMP replies to `hello`.
+
+**Stop:** `omp` is not found or the provider rejects the request.
+
+**Recovery:** Use [PATH recovery](shared/TROUBLESHOOTING.md#if-omp-is-not-found-after-restarting) for a missing command, or the [credential guide](shared/CREDENTIALS.md#start-omp-directly-with-openrouter) for a rejected request.
 
 ## When a step fails
 

@@ -1,8 +1,8 @@
-# Use one OpenRouter key without putting it in your work
+# Run OMP with an API key, without provider sign-in
 
-Use the OpenRouter key you were given for `openrouter/anthropic/claude-sonnet-4.6`.
+For the course exercises, use the OpenRouter key you were given for `openrouter/anthropic/claude-sonnet-4.6`. A newly installed OMP can use an API key directly: no `omp login`, `/login`, or model-vendor account is needed. The key must belong to the gateway you select, and that account must have access and credit for the model.
 
-Keep the key in your approved password manager. Don't put it in a prompt, command argument, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. The launcher reads it from this process's environment and gives OMP an isolated configuration; you don't need another provider login.
+Keep the key in your approved password manager. Don't put it in a prompt, file, shell profile, Git setting, screenshot, chat, ticket, or evidence record. Supply it through `OPENROUTER_API_KEY` rather than an OMP command-line argument. The launcher reads it from this process's environment and gives OMP an isolated configuration; you don't need another provider login.
 
 ## Keep repository access separate from model access
 
@@ -19,6 +19,8 @@ Before authorizing browser login, check the GitHub hostname, device code, and in
 [GitHub CLI prefers an operating-system credential store but can fall back to a plaintext file](https://cli.github.com/manual/gh_auth_login). Check which storage `gh auth status --hostname github.com` shows. Don't add `--show-token` or put authentication output in shared evidence. If device policy forbids that storage, stop and ask the device owner for approved storage or Git credentials. Don't use insecure storage. Only if fallback storage is needed and approved, follow the platform steps to set up `gh` as the Git credential helper for `github.com` alone.
 
 ## Enter the key through a hidden prompt
+
+**Restart your terminal after installing OMP so PATH changes take effect.** Enter the key in the new terminal, then start OMP in that same window.
 
 Choose your terminal's command. Paste only that command and press Enter. At the hidden prompt, type your OpenRouter key, which you enter in the terminal rather than save in a file, then press Enter. Don't paste the export or conversion commands while the prompt waits.
 
@@ -72,6 +74,113 @@ if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 
 
 **Recovery:** Re-enter the key through the hidden prompt. Revoke an exposed key first. Don't print the environment to troubleshoot.
 
+## Start OMP directly with OpenRouter
+
+After entering and exporting the key above, run `omp` in the same terminal from the folder where you want to work.
+
+**Terminal: Bash or zsh, ordinary user, same window.**
+
+```bash
+omp
+```
+
+**Terminal: PowerShell, ordinary user, same window.**
+
+```powershell
+omp
+```
+
+1. Press **Esc** to skip provider setup.
+2. Select the OpenRouter model **`openrouter/anthropic/claude-sonnet-4.6`**.
+3. Choose your font, style, and other preferences.
+4. Send `hello` and confirm the model replies, then start chatting.
+
+**No sign-in or YAML configuration is required.**
+
+**Expected:** OMP opens with the selected model and replies to your message. Opening OMP alone does not validate the key. A model request can incur charges.
+
+**Stop:** Missing credentials, HTTP 401, or a model-access or credit error.
+
+**Recovery:** Check that the key belongs to OpenRouter and was entered in this terminal. Replace an invalid or revoked key with the issuer; check credit and model access with the account owner. Do not use provider sign-in to repair an API-key rejection.
+
+For a one-message check without file tools or a saved session, run:
+
+**Terminal: Bash or zsh, ordinary user, same window.**
+
+```bash
+omp --model openrouter/anthropic/claude-sonnet-4.6 --no-tools --no-session --no-title -p "Reply with exactly: OMP_API_KEY_OK"
+```
+
+**Terminal: PowerShell, ordinary user, same window.**
+
+```powershell
+omp --model openrouter/anthropic/claude-sonnet-4.6 --no-tools --no-session --no-title -p "Reply with exactly: OMP_API_KEY_OK"
+```
+
+**Expected:** `OMP_API_KEY_OK` and a successful process exit. This proves a live text reply, not tool operation. Use the course launcher for exercises that require bounded tools and receipts; direct OMP does not replace their readiness check.
+
+**Stop:** An error, unsuccessful process exit, or no completed reply. A listed model or an open interface is not a successful request.
+
+**Recovery:** Check the first error. For missing credentials, repeat the hidden input and export in this window. For HTTP 401, replace the key with a valid OpenRouter key; for credit or model-access errors, ask the account owner. Keep the selected model unchanged.
+
+## If your key is issued by Kilo instead
+
+Kilo and OpenRouter are separate gateways. A Kilo-issued key belongs in `KILO_API_KEY`, with a `kilo/` model selector, not in `OPENROUTER_API_KEY`. This direct OMP route does not change the course launchers' OpenRouter requirement.
+
+**Terminal: Bash or zsh, ordinary user. Paste this command alone, press Return, then paste your Kilo key at the hidden prompt and press Return again.**
+
+```bash
+IFS= read -r -s KILO_API_KEY
+```
+
+**Terminal: PowerShell, ordinary user. Paste this command alone, press Enter, then enter your Kilo key at the hidden prompt.**
+
+```powershell
+$secret = Read-Host 'Kilo API key' -AsSecureString
+```
+
+After the hidden prompt returns, make the key available to OMP:
+
+**Terminal: Bash or zsh, ordinary user, same window.**
+
+```bash
+export KILO_API_KEY
+```
+
+**Terminal: PowerShell, ordinary user, same window.**
+
+```powershell
+$bstr = [IntPtr]::Zero
+try {
+  $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)
+  $env:KILO_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+} finally {
+  if ($bstr -ne [IntPtr]::Zero) { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+  if ($secret) { $secret.Dispose() }
+  Remove-Variable secret,bstr -ErrorAction SilentlyContinue
+}
+```
+
+Run a live one-message check. It can incur charges:
+
+**Terminal: Bash or zsh, ordinary user, same window.**
+
+```bash
+omp --model kilo/anthropic/claude-sonnet-4.6 --no-tools --no-session --no-title -p "Reply with exactly: OMP_API_KEY_OK"
+```
+
+**Terminal: PowerShell, ordinary user, same window.**
+
+```powershell
+omp --model kilo/anthropic/claude-sonnet-4.6 --no-tools --no-session --no-title -p "Reply with exactly: OMP_API_KEY_OK"
+```
+
+**Expected:** `OMP_API_KEY_OK` and a successful process exit. Then use `omp --model kilo/anthropic/claude-sonnet-4.6` for interactive work in that terminal.
+
+**Stop:** HTTP 401 or `INVALID_TOKEN`, even if the error text says to sign in again. The gateway rejected the key; this is not a requirement to sign in to Anthropic.
+
+**Recovery:** Get a valid replacement Kilo key from the account owner. Do not paste it into a chat or command argument. Close the terminal after work to discard its environment, or use `unset KILO_API_KEY` in Bash/zsh or `Remove-Item Env:KILO_API_KEY -ErrorAction SilentlyContinue` in PowerShell. Already-running child processes can retain an inherited copy.
+
 ## Check a separately opened terminal
 
 Open a new terminal independently of the one where you entered the key. It should report `MISSING`. A child shell started from the first terminal can inherit its environment, so it isn't an independent check. `SET` alone doesn't mean the key was saved in a profile or leaked.
@@ -118,4 +227,4 @@ Remove-Item Env:OPENROUTER_API_KEY -ErrorAction SilentlyContinue
 
 Record the provider/model identity, observed `omp/<semver>`, whether the check showed `SET` or `MISSING`, and redacted run outcomes. Never save any part of the key. The current process environment limits persistence but doesn't shield it from other processes under your account.
 
-Sources: [OpenRouter key settings](https://openrouter.ai/settings/keys), [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6), and [OMP model resolution](https://github.com/can1357/oh-my-pi/blob/main/docs/models.md).
+Sources: [OpenRouter key settings](https://openrouter.ai/settings/keys), [Sonnet 4.6 through OpenRouter](https://openrouter.ai/anthropic/claude-sonnet-4.6), [OMP provider environment variables and credential precedence](https://github.com/can1357/oh-my-pi/blob/v18.6.1/docs/providers.md), [OMP model resolution](https://github.com/can1357/oh-my-pi/blob/v18.6.1/docs/models.md), and [Kilo Gateway authentication](https://kilo.ai/docs/gateway/authentication).

@@ -127,79 +127,21 @@ This block shows which `git.exe` PowerShell finds and asks it for its version. R
 
 ## 3. Install Oh My Pi
 
-This block resolves the latest stable release from the official GitHub endpoint once. It downloads the program and its published checksum file for that release into a new folder. A **checksum** is a file's fingerprint. The program runs only after its fingerprint matches the published one exactly. The block then copies it to `omp\omp.exe` under your local app data folder. If a different `omp.exe` is already there, it stops without replacing it. Finally, it saves that folder on your user **PATH**, the list of folders Windows searches when you type a command name. New terminals can then find `omp`. The fingerprint comes from Get-FileHash.
+Run the one-line installer from [omp.sh](https://omp.sh/).
 
-**Terminal: Windows PowerShell 5.1, ordinary user, same window as Step 1.**
+**Terminal: Windows PowerShell, ordinary user.**
 
 ```powershell
-. {
-  if (-not $asset) { throw 'STOP: run Step 1 in this window first.' }
-  [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-  $destDir = Join-Path $env:LOCALAPPDATA 'omp'
-  $dest = Join-Path $destDir 'omp.exe'
-  foreach ($probe in @($destDir, $dest)) {
-    if ((Test-Path -LiteralPath $probe) -and ((Get-Item -LiteralPath $probe -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw ('STOP: ' + $probe + ' is a link. It was not followed.') }
-  }
-  $other = Get-Command omp -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
-  if ($other -and $other.Source -ine $dest) { throw ('STOP: another omp is already on PATH at ' + $other.Source + '. It was not replaced.') }
-  $download = Join-Path $env:LOCALAPPDATA ('omp-downloads\' + [guid]::NewGuid().ToString('n'))
-  New-Item -ItemType Directory -Path $download -ErrorAction Stop | Out-Null
-  $rel = & {
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' -UseBasicParsing -ErrorAction Stop | ConvertFrom-Json
-  }
-  if ($rel.draft -isnot [bool] -or $rel.draft -or $rel.prerelease -isnot [bool] -or $rel.prerelease) { throw 'STOP: latest release metadata is not a stable release' }
-  $tag = [string]$rel.tag_name
-  if ($tag -cnotmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'STOP: tag is not a stable release number' }
-  $base = "https://github.com/can1357/oh-my-pi/releases/download/$tag"
-  foreach ($name in @($asset, 'SHA256SUMS.txt')) {
-    $matches = @($rel.assets | Where-Object { $_.name -ceq $name })
-    if ($matches.Count -ne 1 -or $matches[0].browser_download_url -cne "$base/$name") { throw 'STOP: required release asset is missing or inconsistent' }
-  }
-  $rel | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $download 'release.json') -ErrorAction Stop
-  Write-Output "RELEASE $tag"
-  $sumsPath = Join-Path $download 'SHA256SUMS.txt'
-  $binaryPath = Join-Path $download $asset
-  & {
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri ($base + '/SHA256SUMS.txt') -OutFile $sumsPath -UseBasicParsing -ErrorAction Stop
-    Invoke-WebRequest -Uri ($base + '/' + $asset) -OutFile $binaryPath -UseBasicParsing -ErrorAction Stop
-  }
-  $lines = @(Get-Content -LiteralPath $sumsPath | Where-Object { ($_ -split '  ', 2)[1] -ceq $asset })
-  if ($lines.Count -ne 1) { throw 'STOP: SHA256SUMS.txt has no single line for this file. Nothing was installed.' }
-  $expected = ($lines[0] -split '  ', 2)[0]
-  $actual = (Get-FileHash -LiteralPath $binaryPath -Algorithm SHA256).Hash.ToLowerInvariant()
-  if ($expected -cnotmatch '^[0-9a-f]{64}$' -or $actual -cne $expected) { throw 'STOP: checksum did not match. Nothing was installed.' }
-  Write-Output 'CHECKSUM OK'
-  if (Test-Path -LiteralPath $dest) {
-    $existing = Get-FileHash -LiteralPath $dest -Algorithm SHA256 -ErrorAction SilentlyContinue
-    if (-not $existing -or $existing.Hash.ToLowerInvariant() -cne $actual) { throw 'STOP: a different omp.exe is already installed. It was not replaced.' }
-    Write-Output 'KEPT the identical omp.exe already installed'
-  } else {
-    New-Item -ItemType Directory -Path $destDir -Force | Out-Null
-    Copy-Item -LiteralPath $binaryPath -Destination $dest -ErrorAction Stop
-  }
-  $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-  $entries = @($userPath -split ';' | Where-Object { $_ })
-  if ($entries -notcontains $destDir) {
-    [Environment]::SetEnvironmentVariable('Path', ((@($destDir) + $entries) -join ';'), 'User')
-    Write-Output 'PATH saved for new windows'
-  }
-  $env:Path = (@($destDir) + @($env:Path -split ';' | Where-Object { $_ -and $_ -ne $destDir })) -join ';'
-  $found = (Get-Command omp -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
-  if ($found -ine $dest) { throw 'STOP: omp resolves to a different or missing program.' }
-  $expectedVer = 'omp/' + ($tag -replace '^v','')
-  $version = @(& $dest --version)
-  if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ([string]$version[0]).Trim() -ne $expectedVer) { throw "STOP: omp --version did not print $expectedVer." }
-  Write-Output ('OMP_VERSION ' + ([string]$version[0]).Trim())
-}
+irm https://omp.sh/install.ps1 | iex
 ```
 
-**Expected:** `RELEASE <tag>`, `CHECKSUM OK`, then `OMP_VERSION omp/<semver>`. The version command is the first time the program runs, and it runs only after the fingerprint matched the selected release.
+**Restart your terminal after installing OMP so PATH changes take effect.** Follow any PATH instructions the installer prints, complete Step 4 in this window, then close and reopen your terminal as directed in Step 5 before starting OMP or entering your API key.
 
-**Stop:** any `STOP:` line. A download, checksum, link, or existing-file stop changes nothing. A stop at the final path or version check comes after `omp.exe` was copied and your PATH was saved, and a rerun reports `KEPT the identical omp.exe already installed`.
+**Expected:** The installer finishes successfully. In the new terminal, `omp --version` prints the installed version.
 
-**Recovery:** leave the download folder in place; running the block again uses a new folder. For a different existing `omp`, a link, or a blocked download, see [If a step stops](#step-3-oh-my-pi).
+**Stop:** The installer reports an error or `omp` is not found.
+
+**Recovery:** Check the installer’s error. For `omp` not found, use [PATH recovery](../shared/TROUBLESHOOTING.md#if-omp-is-not-found-after-restarting), then reopen the terminal and try `omp --version` again.
 
 ## 4. Get the course files
 
@@ -289,10 +231,10 @@ Opening PowerShell from Start creates a new process, and a **process** is one ru
   }
   if (-not $PY) { throw 'STOP: Python 3.12+ was not found in this window.' }
   if (-not (Test-Path -LiteralPath (Join-Path $M 'shared\MODULE_00_LAB.md'))) { throw 'STOP: the course checkout was not found. Run Step 4 first.' }
-  $dest = Join-Path $env:LOCALAPPDATA 'omp\omp.exe'
   $found = (Get-Command omp -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
-  if ($found -ine $dest) { throw 'STOP: omp is missing from PATH or points to a different program.' }
-  $version = @(& $dest --version)
+  if (-not $found) { throw 'STOP: omp is not on PATH. Restart PowerShell after installation.' }
+  Write-Output ('OMP_PATH ' + $found)
+  $version = @(& $found --version)
   $v = if ($version.Count -ge 1) { ([string]$version[0]).Trim() } else { '' }
   if ($LASTEXITCODE -ne 0 -or $version.Count -ne 1 -or ($v -notmatch '^omp/[0-9]+\.[0-9]+\.[0-9]+$')) { throw 'STOP: omp --version did not print a usable omp/<semver>.' }
   Write-Output ('OMP_VERSION ' + $v)
@@ -302,7 +244,7 @@ Opening PowerShell from Start creates a new process, and a **process** is one ru
 }
 ```
 
-**Expected:** `OMP_VERSION omp/<semver>`, the Python and course paths, and `MISSING` as the last line.
+**Expected:** `OMP_PATH`, `OMP_VERSION omp/<semver>`, the Python and course paths, and `MISSING` as the last line.
 
 **Stop:** a `STOP:` line, or `SET` before you've typed a key in this window.
 
@@ -805,10 +747,9 @@ Work through the first failure only, and keep its exact message. Keep every exis
 
 ### Step 3: Oh My Pi
 
-- **Download failed or checksum mismatch:** nothing was installed. A proxy or network inspection tool can change downloads, so ask the device owner about it rather than turning off a check. Running Step 3 again uses a new folder.
-- **A different `omp.exe` is already installed, or another `omp` is on PATH:** keep it. Save the printed path and ask whoever installed it how to proceed. Don't overwrite, delete, or hide it.
-- **A destination is a link:** your local app data may be redirected. Ask the owner for a local, unredirected location.
-- **Windows blocks the verified program from starting:** save the message and ask the owner. Don't turn off a security control.
+- **The installer reports an error:** keep the error and check [omp.sh](https://omp.sh/) for the current installation instructions.
+- **`omp` is not found:** follow any PATH instructions the installer printed, close every terminal window, and reopen PowerShell from Start.
+- **Windows blocks OMP from starting:** save the message and ask the device owner.
 
 ### Step 4: GitHub access and the checkout
 
@@ -866,7 +807,7 @@ gh auth status --hostname github.com
 
 ### Step 5: a new window
 
-- **`omp` missing or a different program:** confirm you closed every window and opened PowerShell from Start. If it still fails, run Step 1 and Step 3 again; Step 3 keeps an identical `omp.exe` and saves PATH only if it's missing.
+- **`omp` missing or a different program:** follow the installer’s PATH instructions, close every terminal window, and reopen PowerShell from Start. Use `Get-Command omp` and `omp --version` to check what runs.
 - **`SET` before you typed a key:** something supplies the key to new windows. This check looks for it in your saved environment and PowerShell profiles without printing the value.
 
 **Terminal: Windows PowerShell 5.1, ordinary user, same window.**

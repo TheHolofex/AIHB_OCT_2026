@@ -82,114 +82,21 @@ command -v git && git --version
 
 ## 3. Install Oh My Pi
 
-This box resolves the latest stable release metadata from the official GitHub endpoint once, downloads the matching platform binary and SHA256SUMS.txt for that exact tag into a fresh folder. A **checksum** is a file's fingerprint. The box installs the file to `~/.local/bin/omp` only if its SHA-256 matches the listed entry for your processor from the same release. It won't overwrite a different `omp`. It also adds `~/.local/bin` to PATH in your shell's startup files.
+Run the one-line installer from [omp.sh](https://omp.sh/).
 
-**Terminal: Ubuntu, Bash or Zsh, ordinary user, same window.**
+**Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-course_install_omp() {
-  local asset dir expected actual dest version line startup login_file zdir tag base candidate
-  case "$(uname -m)" in
-    aarch64|arm64) asset=omp-linux-arm64 ;;
-    x86_64) asset=omp-linux-x64 ;;
-    *) printf 'STOP: unsupported architecture\n' >&2; return 1 ;;
-  esac
-  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/course-evidence/reformation-qa" ]; then
-    printf 'STOP: evidence parent is linked\n' >&2; return 1
-  fi
-  dir="$HOME/course-evidence/reformation-qa/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-  if [ -e "$dir" ] || [ -L "$dir" ]; then printf 'STOP: %s already exists\n' "$dir" >&2; return 1; fi
-  mkdir -p -- "$dir" || return 1
-  PY="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; from pathlib import Path; sys.exit(1) if sys.version_info < (3, 12) else print(Path(sys.executable).resolve())' 2>/dev/null && break; done)"
-  case "$PY" in /*) ;; *) printf 'STOP: Python 3.12+ is required to read release metadata\n' >&2; return 1 ;; esac
-  curl -fL --output "$dir/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' ||
-    { printf 'STOP: latest release metadata unavailable\n' >&2; return 1; }
-  tag="$("$PY" - "$dir/release.json" "$asset" <<'PYRELEASE'
-import json, re, sys
-from pathlib import Path
-try:
-    release = json.loads(Path(sys.argv[1]).read_text())
-    tag = release["tag_name"]
-    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
-        raise ValueError("invalid release tag")
-    if release.get("draft") is not False or release.get("prerelease") is not False:
-        raise ValueError("release is not stable")
-    base = f"https://github.com/can1357/oh-my-pi/releases/download/{tag}/"
-    for name in (sys.argv[2], "SHA256SUMS.txt"):
-        matches = [item for item in release["assets"] if item["name"] == name]
-        if len(matches) != 1 or matches[0]["browser_download_url"] != base + name:
-            raise ValueError("required release asset is missing or inconsistent")
-    print(tag)
-except (AttributeError, KeyError, TypeError, ValueError):
-    sys.exit("STOP: latest release metadata or required assets are invalid")
-PYRELEASE
-  )" || return 1
-  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
-  printf 'RELEASE %s (%s)\n' "$tag" "$dir/release.json"
-  curl -fL --output "$dir/$asset" "$base/$asset" ||
-    { printf 'STOP: binary download failed; nothing was installed\n' >&2; return 1; }
-  curl -fL --output "$dir/SHA256SUMS.txt" "$base/SHA256SUMS.txt" ||
-    { printf 'STOP: checksum download failed; nothing was installed\n' >&2; return 1; }
-  printf 'DOWNLOADED %s\n' "$dir/$asset"
-  expected="$(awk -v asset="$asset" '
-    { gsub(/\r/, "") }
-    $2 == asset { count++; hash = $1; if (NF != 2) bad = 1 }
-    END { if (count != 1 || bad || hash !~ /^[0-9a-fA-F]{64}$/) exit 2; print hash }
-  ' "$dir/SHA256SUMS.txt")" || { printf 'STOP: checksum entry for %s is absent, ambiguous, or malformed\n' "$asset" >&2; return 1; }
-  actual="$(sha256sum -- "$dir/$asset" | awk '{ print $1 }')" || return 1
-  [ "$actual" = "$expected" ] || { printf 'STOP: checksum mismatch; nothing was installed\n' >&2; return 1; }
-  if [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then printf 'STOP: ~/.local/bin is a symlink\n' >&2; return 1; fi
-  mkdir -p -- "$HOME/.local/bin" || return 1
-  dest="$HOME/.local/bin/omp"
-  if [ -L "$dest" ]; then printf 'STOP: %s is a symlink; it was not replaced\n' "$dest" >&2; return 1; fi
-  if [ -e "$dest" ]; then
-    { [ -f "$dest" ] && cmp -s -- "$dir/$asset" "$dest"; } || { printf 'STOP: a different omp exists; it was not overwritten\n' >&2; return 1; }
-    printf 'KEEP: destination already matches the verified download\n'
-  else
-    { cp -- "$dir/$asset" "$dest" && cmp -s -- "$dir/$asset" "$dest"; } || { printf 'STOP: copy does not match the verified download\n' >&2; return 1; }
-    printf 'INSTALLED %s\n' "$dest"
-  fi
-  chmod +x -- "$dest" || return 1
-  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
-  printf 'OMP_VERSION %s\n' "${version:-missing}"
-  [ "$version" = "omp/${tag#v}" ] || { printf 'STOP: installed version differs from selected %s\n' "$tag" >&2; return 1; }
-  line='case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac'
-  if [ -n "${BASH_VERSION:-}" ]; then
-    login_file=""
-    for startup in "$HOME/.bash_profile" "$HOME/.bash_login" "$HOME/.profile"; do
-      if [ -z "$login_file" ] && { [ -e "$startup" ] || [ -L "$startup" ]; }; then login_file="$startup"; fi
-    done
-    set -- "$HOME/.bashrc" "${login_file:-$HOME/.profile}"
-  elif [ -n "${ZSH_VERSION:-}" ]; then
-    zdir="${ZDOTDIR-$HOME}"
-    { [ -d "$zdir" ] && [ ! -L "$zdir" ]; } || { printf 'STOP: Zsh startup folder is missing or linked\n' >&2; return 1; }
-    set -- "$zdir/.zshrc" "$zdir/.zprofile"
-  else
-    printf 'STOP: use Bash or Zsh\n' >&2; return 1
-  fi
-  for startup in "$@"; do
-    if [ -L "$startup" ] || { [ -e "$startup" ] && { [ ! -f "$startup" ] || [ ! -r "$startup" ] || [ ! -w "$startup" ]; }; }; then
-      printf 'STOP: %s is not a readable, writable ordinary file\n' "$startup" >&2; return 1
-    fi
-  done
-  for startup in "$@"; do
-    if [ -f "$startup" ] && grep -Fqx -- "$line" "$startup"; then
-      printf 'PATH_LINE already present in %s\n' "$startup"
-    else
-      if [ -s "$startup" ] && [ -n "$(tail -c 1 -- "$startup")" ]; then printf '\n' >> "$startup" || return 1; fi
-      printf '%s\n' "$line" >> "$startup" || return 1
-      printf 'PATH_LINE added to %s\n' "$startup"
-    fi
-  done
-}
-course_install_omp
+curl -fsSL https://omp.sh/install | sh
 ```
 
-**Expected:** `RELEASE <tag>`, `DOWNLOADED`, then `KEEP:` or `INSTALLED`, then `OMP_VERSION` with the observed `omp/<semver>` from the resolved tag, then two `PATH_LINE` lines.
+**Restart your terminal after installing OMP so PATH changes take effect.** Follow any PATH instructions the installer prints, complete Step 4 in this window, then close and reopen your terminal as directed in Step 5 before starting OMP or entering your API key.
 
-**Stop:** Any STOP line, including checksum mismatch, unavailable or invalid release metadata/assets, or a different existing `omp`.
+**Expected:** The installer finishes successfully. In the new terminal, `omp --version` prints the installed version.
 
-**Recovery:** Keep the download folder and any existing `omp`, then see [If a step stops](#if-a-step-stops).
+**Stop:** The installer reports an error or `omp` is not found.
+
+**Recovery:** Check the installer’s error. For `omp` not found, use [PATH recovery](../shared/TROUBLESHOOTING.md#if-omp-is-not-found-after-restarting), then reopen the terminal and try `omp --version` again.
 
 ## 4. Get the course files
 
@@ -327,7 +234,7 @@ course_confirm_new_terminal() {
   printf 'R %s\nM %s\nPY %s\n' "$R" "$M" "$PY"
   resolved="$(command -v omp 2>/dev/null || true)"
   printf 'OMP_PATH %s\n' "${resolved:-missing}"
-  [ "$resolved" = "$HOME/.local/bin/omp" ] || { printf 'STOP: omp is not the user binary\n' >&2; return 1; }
+  case "$resolved" in /*) ;; *) printf 'STOP: omp is not on PATH\n' >&2; return 1 ;; esac
   version="$("$resolved" --version 2>/dev/null)" || { printf 'STOP: installed OMP could not run\n' >&2; return 1; }
   printf 'OMP_VERSION %s\n' "${version:-missing}"
   [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
@@ -337,7 +244,7 @@ course_confirm_new_terminal() {
 course_confirm_new_terminal
 ```
 
-**Expected:** `R`, `M`, `PY`, `GIT_PATH`, `OMP_PATH` ending in `/.local/bin/omp`, `OMP_VERSION omp/<semver>`, and last `MISSING`.
+**Expected:** `R`, `M`, `PY`, `GIT_PATH`, `OMP_PATH` with the installed command path, `OMP_VERSION omp/<semver>`, and last `MISSING`.
 
 **Stop:** Any STOP line, or `SET`.
 
@@ -990,9 +897,8 @@ Find the step that stopped. Keep the exact error, the attempt folder, and the la
 
 - Unsupported OS, shell, or account: ask the device owner for a supported Ubuntu 24.04 or 26.04 account. Don't choose another processor's binary.
 - Package install refused: save the error and ask the device owner. Don't add a PPA, download Git or Python, or use pip.
-- Download or certificate error: keep the failed folder. Install `ca-certificates` through step 2 if it is missing; ask the owner about a proxy. Then paste step 3 again; it uses a new folder.
-- Checksum mismatch: keep the files and ask the course owner. Don't switch to a musl file.
-- A different `omp`, or a symlinked `~/.local/bin` or startup file: leave it and ask the device owner before anything is replaced.
+- Download or certificate error: keep the installer’s error. Install `ca-certificates` through step 2 if it is missing, or ask about the approved proxy settings, then retry the official installer.
+- An existing `omp` reports an unexpected version: check `command -v omp` and `omp --version`, then confirm you are using the installation you intended.
 
 ### Step 4
 
@@ -1003,7 +909,7 @@ Find the step that stopped. Keep the exact error, the attempt folder, and the la
 
 ### Step 5
 
-- `omp` missing or not `~/.local/bin/omp`: paste step 3 again in a window that can edit startup files, then open a new desktop terminal.
+- `omp` missing: follow the installer’s PATH instructions, close the terminal, and open a new one from the desktop menu before retrying `omp --version`.
 - `SET` in a new window: close it. If you opened it from an old terminal, open the next one from the desktop menu. If a desktop terminal still prints `SET`, follow [credentials](../shared/CREDENTIALS.md).
 
 ### Steps 6 and 7

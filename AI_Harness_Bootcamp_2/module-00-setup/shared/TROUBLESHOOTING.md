@@ -11,9 +11,9 @@ Review and apply the fix, then rerun the failed check. If it still fails, paste 
 | Git or Python is missing | Return to step 2 of your platform guide; for Git, finish with its **Confirm Git works** box. On a managed device, stop when policy blocks installation and send the support packet below. |
 | `git --version` fails right after Git installs | Open a new terminal window and run it again; a window opened before the install can miss the new Git. On Windows, close every terminal window and open Windows PowerShell from Start. On a Mac, a dialog that offers the command line developer tools is Apple's Git installer; approve it only if the device owner allows you to install software. |
 | A download fails | Keep the HTTP, proxy, or certificate error. Use the official release URLs. Do not disable TLS verification or execute an incomplete download. |
-| The checksum fails or the selected asset has no unique checksum entry | Do not install or execute the binary. Keep the failed download separate. Check the filename, release, and source before downloading into a new directory. |
-| `omp` is not found | Check the resolved command path below. Add only the user-bin directory named by your platform guide, then check again in the intended terminal. |
-| `omp` reports a different version | Note the path and version you found. Do not silently overwrite a different installation. Use the verified course binary and confirm that PATH resolves to it. |
+| The OMP installer reports an error | Keep the error and check the current installation instructions at [omp.sh](https://omp.sh/). |
+| `omp` is not found | Follow the installer’s PATH instructions, then close and reopen the terminal. Check the resolved command path below and run `omp --version`. |
+| `omp` reports a different version | Note the path and version you found, then confirm PATH selects the intended installation. The official installer supplies the latest stable release; record the actual version used. |
 | A course directory already exists | Confirm that it is the intended checkout. Use it without reset, pull, or clean when it is valid; otherwise leave it untouched and resolve the path conflict. |
 | Git cannot read the private course repository | A website password is not GitHub access. Follow the platform's read check with prompts disabled, then use the browser-login steps if needed. Login does not grant permission. Ask the repository owner about the invitation or organization approval, and keep any existing checkout. |
 | GitHub CLI reports unapproved credential storage | Stop before configuring the Git helper or cloning. Ask the device owner to set up approved credential storage or approved Git credentials. Do not request plaintext storage or share authentication output. |
@@ -31,6 +31,24 @@ Review and apply the fix, then rerun the failed check. If it still fails, paste 
 | WSL paths point under `/mnt/c` | Use the selected Ubuntu distribution's Linux home and Linux OMP asset. Do not mix Windows executable/configuration paths with the WSL attempt. `df` reports filesystem space; its mount name need not begin with `/home`. |
 | The chosen WSL distribution shows VERSION 1 | Setting the default version affects new distributions only. Keep the existing distribution and get the owner's approval for backup and conversion before proceeding. Do not unregister or reset it. |
 | A fresh macOS terminal cannot find Homebrew or Python | Check the saved `brew shellenv` and versioned Python PATH settings for the shell you use, then open another independent terminal. Do not repair PATH inside the verification block. |
+
+## If omp is not found after restarting
+
+On macOS, Linux, or WSL, the installer may print its installation folder without adding it to PATH. Open the startup file for your shell in a text editor:
+
+| Shell | Startup file |
+|---|---|
+| zsh | `~/.zshrc` (or `.zshrc` inside your configured `ZDOTDIR`) |
+| Bash on Linux or WSL | `~/.bashrc` |
+| Bash in macOS Terminal | `~/.bash_profile` |
+
+For the default standalone or Bun installation, add this line once and save the file:
+
+```text
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"
+```
+
+If the installer printed a different installation folder, include that folder instead. Close and reopen the terminal, then run `omp --version` again. On native Windows, close every terminal window and reopen PowerShell from Start so it reads the installer’s saved PATH changes.
 
 ## When local Obsidian stops
 

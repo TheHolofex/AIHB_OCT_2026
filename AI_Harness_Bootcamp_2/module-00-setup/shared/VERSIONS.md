@@ -1,10 +1,10 @@
 # Required tool identities
 
-Use the latest stable Oh My Pi release and the exact provider/model pair in your run policy. Verify the selected release's checksum before executing it and retain its reported version with the run evidence. A similarly named model is not a substitute.
+Use the latest stable Oh My Pi release and the exact provider/model pair in your run policy. Install OMP with the official one-line command from [omp.sh](https://omp.sh/) and retain its reported version with the run evidence. A similarly named model is not a substitute.
 
 | Component | Required value | Check |
 |---|---|---|
-| Oh My Pi | latest stable release (resolved once per install) | The verified executable reports `omp/<semver>` matching the tag from the selected release; checksums are from the same tag's SHA256SUMS.txt. |
+| Oh My Pi | latest stable release from the official installer | In a restarted terminal, `omp --version` reports `omp/<semver>`; record the resolved command path and actual version. |
 | Provider/model | `openrouter/anthropic/claude-sonnet-4.6` | The launcher and actual run receipts agree on OpenRouter and Sonnet 4.6. |
 | Judge model for Module 6 | `openrouter/typesafe/jev-1.13` | `run_omp.py --list-judges` shows it offered, and each judge run records the dated build that answered. |
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
@@ -17,15 +17,7 @@ Use the latest stable Oh My Pi release and the exact provider/model pair in your
 
 You need read access to the private course repository on GitHub. If your existing approved Git credentials work, you don't need another login tool. Otherwise, follow the platform steps to log in through your browser with [GitHub CLI (`gh`)](https://cli.github.com/manual/gh_auth_login). The package is `GitHub.cli` in WinGet, `gh` in Homebrew and Ubuntu Universe, and `github-cli` in Arch's official repositories. GitHub CLI helps you reach the repository; you don't need it to run the AI tools.
 
-Download the OMP binary and `SHA256SUMS.txt` from the latest stable release selected once by the platform resolver (the tag and assets are recorded with the download). Select the asset for the operating system in which it will run:
-
-| Runtime | ARM64 asset | x86-64 asset |
-|---|---|---|
-| macOS | `omp-darwin-arm64` | `omp-darwin-x64` |
-| Linux, including Ubuntu in WSL | `omp-linux-arm64` | `omp-linux-x64` |
-| Native Windows | `omp-windows-arm64.exe` | `omp-windows-x64.exe` |
-
-Check the selected file's checksum before installing or first running it. Install it at `~/.local/bin/omp` on Unix or `%LOCALAPPDATA%\omp\omp.exe` on native Windows. If you already have a different installation, keep it rather than quietly overwriting it.
+Use the macOS/Linux installer inside macOS, Linux, or WSL Ubuntu. Use the PowerShell installer for native Windows. Follow any PATH instructions the installer prints, then restart your terminal before running OMP or entering the API key. The installer chooses its installation location; confirm `omp` is available in the new terminal.
 
 ## Match the package route to the operating system
 

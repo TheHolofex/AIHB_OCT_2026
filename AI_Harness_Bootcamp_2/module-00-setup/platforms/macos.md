@@ -149,6 +149,8 @@ course_install_missing
 
 **Recovery:** Keep the first error and don't install anything else by hand. If you don't have an administrator account, ask the device owner to finish this step; see [Tools and Homebrew](#tools-and-homebrew).
 
+If you installed Homebrew, follow its **Next steps** to add `brew shellenv` to your shell startup file. This keeps Homebrew and its Python available after you restart Terminal.
+
 ### Confirm Git works
 
 This box shows which Git your Terminal window finds and asks it for its version. Run it even if you skipped the install box.
@@ -167,126 +169,21 @@ command -v git && git --version
 
 ## 3. Install Oh My Pi
 
-Download the latest stable OMP release for your Mac's processor into a new folder under `~/course-evidence`. The commands save the selected release's details in `release.json` and download its binary and `SHA256SUMS.txt` together. A **checksum** is a file's fingerprint. The box computes the downloaded file's SHA-256 fingerprint with macOS's `shasum -a 256` and compares it with the one line in `SHA256SUMS.txt` that names your Mac's file. Only a match gets installed. The box copies the verified file to `~/.local/bin/omp`. If a matching copy is already there, it keeps it. If a different file is there, it stops without replacing it.
+Run the one-line installer from [omp.sh](https://omp.sh/).
 
-Next, the box updates your shell's startup files so new terminal windows can find `omp` and Homebrew. `PATH` is the list of folders your shell searches for commands, in order. Your login file gets the Homebrew line. Both files get a line that puts `~/.local/bin` first, so the verified `omp` wins over any other copy. For [zsh](https://zsh.sourceforge.io/Doc/Release/Files.html), the files are `.zprofile` (login) and `.zshrc`. For [Bash](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html), they're your login file and `.bashrc`. The box keeps your existing lines and adds each new line only once.
-
-**Terminal: macOS Terminal, zsh or Bash, ordinary user, same window.**
+**Terminal: Bash or zsh, ordinary user.**
 
 ```bash
-course_add_line() {
-  if [ -f "$1" ] && grep -qxF -e "$2" "$1"; then
-    return 0
-  fi
-  if [ -s "$1" ] && [ -n "$(tail -c 1 "$1")" ]; then
-    printf '\n' >> "$1" || return 1
-  fi
-  printf '%s\n' "$2" >> "$1"
-}
-course_install_omp() {
-  local download expected actual dest version profile login candidate py tag base
-  case "${ASSET:-}" in
-    omp-darwin-arm64|omp-darwin-x64) ;;
-    *) printf 'STOP: paste the step 1 box in this window first\n' >&2; return 1 ;;
-  esac
-  if [ -L "$HOME/course-evidence" ] || [ -L "$HOME/.local" ] || [ -L "$HOME/.local/bin" ]; then
-    printf 'STOP: a course folder is a symlink; nothing was changed\n' >&2
-    return 1
-  fi
-  mkdir -p "$HOME/course-evidence" || return 1
-  download="$HOME/course-evidence/omp-download-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-  mkdir "$download" || { printf 'STOP: could not create a fresh download folder\n' >&2; return 1; }
-  py="$(for candidate in python3.12 python3 python; do "$candidate" -c 'import sys; from pathlib import Path; sys.exit(1) if sys.version_info < (3, 12) else print(Path(sys.executable).resolve())' 2>/dev/null && break; done)"
-  case "$py" in /*) ;; *) printf 'STOP: Python 3.12+ is required to read release metadata\n' >&2; return 1 ;; esac
-  curl --fail --location --output "$download/release.json" 'https://api.github.com/repos/can1357/oh-my-pi/releases/latest' || return 1
-  tag="$("$py" - "$download/release.json" "$ASSET" <<'PYRELEASE'
-import json, re, sys
-from pathlib import Path
-try:
-    release = json.loads(Path(sys.argv[1]).read_text())
-    tag = release["tag_name"]
-    if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
-        raise ValueError("invalid release tag")
-    if release.get("draft") is not False or release.get("prerelease") is not False:
-        raise ValueError("release is not stable")
-    base = "https://github.com/can1357/oh-my-pi/releases/download/%s/" % tag
-    for name in (sys.argv[2], "SHA256SUMS.txt"):
-        matches = [item for item in release.get("assets", []) if item.get("name") == name]
-        if len(matches) != 1 or matches[0].get("browser_download_url") != base + name:
-            raise ValueError("required release asset is missing or inconsistent")
-    print(tag)
-except (AttributeError, KeyError, TypeError, ValueError):
-    sys.exit("STOP: latest release metadata or required assets are invalid")
-PYRELEASE
-  )" || return 1
-  base="https://github.com/can1357/oh-my-pi/releases/download/$tag"
-  printf 'RELEASE %s (%s)\n' "$tag" "$download/release.json"
-  curl --fail --location --output "$download/$ASSET" "$base/$ASSET" || return 1
-  curl --fail --location --output "$download/SHA256SUMS.txt" "$base/SHA256SUMS.txt" || return 1
-  expected="$(awk -v asset="$ASSET" '$2 == asset { count++; hash = $1; fields = NF } END { if (count == 1 && fields == 2 && length(hash) == 64 && hash ~ /^[0-9a-f]+$/) print hash; else exit 1 }' "$download/SHA256SUMS.txt")" || {
-    printf 'STOP: SHA256SUMS.txt has no single valid entry for %s\n' "$ASSET" >&2
-    return 1
-  }
-  actual="$(shasum -a 256 "$download/$ASSET" | awk '{ print $1 }')"
-  if [ "$actual" != "$expected" ]; then
-    printf 'STOP: checksum mismatch; the file was not installed or run\n' >&2
-    return 1
-  fi
-  printf 'SHA256 VERIFIED %s %s\n' "$ASSET" "$actual"
-  mkdir -p "$HOME/.local/bin" || return 1
-  dest="$HOME/.local/bin/omp"
-  if [ -L "$dest" ]; then
-    printf 'STOP: %s is a symlink; it was not replaced\n' "$dest" >&2
-    return 1
-  elif [ -e "$dest" ]; then
-    if [ ! -f "$dest" ] || ! cmp -s "$download/$ASSET" "$dest"; then
-      printf 'STOP: a different %s already exists; it was not replaced\n' "$dest" >&2
-      return 1
-    fi
-    printf 'KEEP: %s already matches the verified download\n' "$dest"
-  else
-    cp "$download/$ASSET" "$dest" && cmp -s "$download/$ASSET" "$dest" || {
-      printf 'STOP: the copy does not match the verified download\n' >&2
-      return 1
-    }
-    printf 'INSTALLED %s\n' "$dest"
-  fi
-  chmod u+x "$dest" || return 1
-  if [ "$SETUP_SHELL" = zsh ]; then
-    set -- "${ZDOTDIR:-$HOME}/.zprofile" "${ZDOTDIR:-$HOME}/.zshrc"
-  else
-    login="$HOME/.bash_profile"
-    for candidate in "$HOME/.bash_profile" "$HOME/.bash_login" "$HOME/.profile"; do
-      if [ -e "$candidate" ] || [ -L "$candidate" ]; then
-        login="$candidate"
-        break
-      fi
-    done
-    set -- "$login" "$HOME/.bashrc"
-  fi
-  for profile in "$@"; do
-    if [ -L "$profile" ] || { [ -e "$profile" ] && [ ! -f "$profile" ]; } || [ -e "$profile.zwc" ]; then
-      printf 'STOP: %s is linked, compiled, or not a file; it was not changed\n' "$profile" >&2
-      return 1
-    fi
-    if [ -x "$BREW" ] && [ "$profile" = "$1" ]; then
-      course_add_line "$profile" "eval \"\$($BREW shellenv $SETUP_SHELL)\"" || return 1
-    fi
-    course_add_line "$profile" 'case ":$PATH:" in ":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac' || return 1
-    printf 'PROFILE READY %s\n' "$profile"
-  done
-  case ":$PATH:" in ":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin${PATH:+:$PATH}" ;; esac
-  version="$("$dest" --version 2>/dev/null)" || { printf 'STOP: the installed omp did not run\n' >&2; return 1; }
-  printf 'OMP_VERSION %s\n' "$version"
-  [ "$version" = "omp/${tag#v}" ] || { printf 'STOP: installed version differs from selected %s\n' "$tag" >&2; return 1; }
-}
-course_install_omp
+curl -fsSL https://omp.sh/install | sh
 ```
 
-**Expected:** `RELEASE <tag>`, `SHA256 VERIFIED` with your file name and its digest, then `INSTALLED` or `KEEP:`, two `PROFILE READY` lines, and `OMP_VERSION omp/<semver>`.
+**Restart your terminal after installing OMP so PATH changes take effect.** Follow any PATH instructions the installer prints, complete Step 4 in this window, then close and reopen your terminal as directed in Step 5 before starting OMP or entering your API key.
 
-**Stop:** Any `STOP` line, including checksum mismatch, unavailable or malformed release metadata/assets, or a different existing `omp`.
-**Recovery:** Keep the download folder and any existing `omp`, and don't delete or replace them to get past this step. Fix the cause, then paste the box again; it uses a new folder each time. See [Oh My Pi install](#oh-my-pi-install).
+**Expected:** The installer finishes successfully. In the new terminal, `omp --version` prints the installed version.
+
+**Stop:** The installer reports an error or `omp` is not found.
+
+**Recovery:** Check the installer’s error. For `omp` not found, use [PATH recovery](../shared/TROUBLESHOOTING.md#if-omp-is-not-found-after-restarting), then reopen the terminal and try `omp --version` again.
 
 ## 4. Get the course files
 
@@ -419,15 +316,8 @@ course_confirm_new_terminal() {
   git --version || return 1
   omp_path="$(command -v omp)"
   printf 'OMP_PATH %s\n' "${omp_path:-missing}"
-  if [ "$omp_path" != "$HOME/.local/bin/omp" ]; then
-    printf 'STOP: omp is not found at %s\n' "$HOME/.local/bin/omp" >&2
-    return 1
-  fi
-  case ":$PATH:" in
-    ":$HOME/.local/bin:"*) printf 'PATH_FIRST %s\n' "$HOME/.local/bin" ;;
-    *) printf 'STOP: %s is not first on PATH\n' "$HOME/.local/bin" >&2; return 1 ;;
-  esac
-  version="$(omp --version 2>/dev/null)"
+  case "$omp_path" in /*) ;; *) printf 'STOP: omp is not on PATH\n' >&2; return 1 ;; esac
+  version="$("$omp_path" --version 2>/dev/null)"
   printf 'OMP_VERSION %s\n' "${version:-missing}"
   [[ "$version" =~ ^omp/[0-9]+\.[0-9]+\.[0-9]+$ ]] || { printf 'STOP: installed OMP did not report a version number\n' >&2; return 1; }
   if [ ! -f "$R/shared/run_omp.py" ] || [ ! -f "$M/shared/case/verify_tool_proof.py" ] || [ ! -f "$M/scripts/verify-setup.sh" ]; then
@@ -445,7 +335,7 @@ course_confirm_new_terminal() {
 course_confirm_new_terminal
 ```
 
-**Expected:** `PYTHON` with an absolute path and version 3.12 or newer, a Git path and version, `OMP_PATH` ending in `/.local/bin/omp`, `PATH_FIRST`, `OMP_VERSION omp/<semver>`, `CHECKOUT`, and `MISSING` as the last line.
+**Expected:** `PYTHON` with an absolute path and version 3.12 or newer, a Git path and version, `OMP_PATH` with the installed command path, `OMP_VERSION omp/<semver>`, `CHECKOUT`, and `MISSING` as the last line.
 
 **Stop:** Any `STOP` line, or `SET`.
 
@@ -905,13 +795,13 @@ xcode-select --install
 Intel Python: download the current macOS installer from https://www.python.org/downloads/macos/, open the .pkg, follow the installer, then open a new terminal window and re-run step 1.
 
 ### Oh My Pi install
-Checksum mismatch or conflicting destination: keep the prior file and start a fresh download attempt (the box uses a new RUN each time). Linked startup file or .zwc: ask the owner to add the two lines by hand (you can copy them from your other startup file after the box adds them there). macOS blocks the binary: follow Apple's Gatekeeper guidance at https://support.apple.com/en-us/102445 with the owner; do not disable Gatekeeper or remove quarantine attributes.
+If the installer fails, keep its error and check [omp.sh](https://omp.sh/) for the current installation instructions. If macOS blocks OMP from starting, follow Apple’s Gatekeeper guidance at https://support.apple.com/en-us/102445 with the device owner.
 
 ### GitHub access and the checkout
 Occupied Documents/AIHB_OCT_2026 that is not a checkout of the course repository: ask its owner to move the work elsewhere; do not overwrite it. gh plaintext storage not approved by device policy: ask the device owner to set up approved credential storage before continuing.
 
 ### New terminal and key
-Tools not found after reopening: re-add the exact lines from step 3 in the first window (Homebrew shellenv only in the login file, PATH case forcing ~/.local/bin first), then open another new window from the Shell menu and re-run step 5. SET in a new window: close that window and open a fresh one directly from the Shell menu; do not add an export here.
+Tools not found after reopening: follow the OMP installer’s PATH instructions or Homebrew’s **Next steps**, then open another new window from the Shell menu and repeat step 5. If `SET` appears before key entry, open a fresh window directly from the Shell menu.
 
 ### Readiness check and report
 LAUNCH_EXIT 2: the key is missing in this window; repeat steps 6 and 7 in this same window, then paste step 8 again. LAUNCH_EXIT 1 or READINESS CHECK HOLD or SETUP CHECK HOLD: keep the attempt folder and all receipts, read the first named failure, correct only that item, then create a new attempt with step 8. Do not edit from-omp.txt by hand or reuse an old result file.
