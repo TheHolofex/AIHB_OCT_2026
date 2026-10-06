@@ -159,3 +159,24 @@ The five platform guides were rewritten on 2026-10-03 (commit `e047199`) and had
 **Stand-ins:** the GitHub browser sign-in (a token from an existing `gh` login), the Obsidian window (the same file edits the app makes; the app process was started under Xvfb), the n8n editor (its own owner-setup, workflow and login requests), Docker Desktop on WSL (a separate engine sharing the network, home folder and socket), and, on emulated Arch, starting `dockerd` by hand after the `systemctl` box. Six live readiness calls were made across the final runs.
 
 **Limits:** No native Windows. The PowerShell boxes were parsed and reviewed against Windows PowerShell 5.1 behavior, and the Step 9 logic was exercised in PowerShell 7, but none ran on Windows. Docker containers aren't desktops: no GUI window was inspected, WSL is an emulation, and x86-64 machines ran under emulation on Apple Silicon. On macOS, nothing was installed system-wide, and n8n wasn't started because another session holds port 5678 on this Mac. This is setup execution only, not learner timing or human review.
+
+## Staff-prepared two-service n8n — 2026-10-06 UTC
+
+The active setup uses n8n 2.41.5 and matching external task runners. Staff own Docker preparation, permission/licensing checks, project identity and recovery. Learners run the supplied Python start/status helper, open the editor, save a blank unpublished workflow and observe a staff-assisted restart. The five platform guides no longer provision Assistant, its sandbox services or search.
+
+Private evidence is retained under `~/course-evidence/reformation-qa/20261006T021456Z-simplify-local-n8n/`; the repository ledger records evidence hashes. Historical results above are not inherited.
+
+| Evidence | Observed result |
+|---|---|
+| Real runtime | Apple Silicon Docker Desktop; exactly n8n and external runners; neither privileged; no host bind mounts or Docker socket; only the n8n editor exposed on loopback |
+| Isolated port | Final run used `127.0.0.1:15679`, not the learner port `5678`, to preserve the existing instance. Generated test-form URLs used the isolated port. |
+| Runner execution | A real JavaScript Code node returned `42`; the runner registered and executed the task. The live Module 7 run also exercised both authored Code nodes. |
+| Persistence | Resumed stopped containers, then removed/recreated only the owned containers without deleting their named volume. All four workflows retained their nodes, connections and unpublished state; the retained OpenRouter credential passed its connection test. |
+| Preservation | Real occupied-port and inherited-empty-override checks returned HOLD; the existing user container retained its identity and loopback binding. |
+| Regression and course gates | All 19 helper tests passed, including stopped/partial runtime, changed identity/configuration, collision and mount boundaries. All 35 scoped course gates passed. |
+| Commands and publication | 472 maintained Bash/PowerShell fences passed 739 parser invocations. Publication and byte checks passed for 35 instructional pages, 437 downloads and 40 assets. |
+| Browser | Eleven affected pages at 1440, 390 and 320 pixels in Dark and Sand: 66 live layout observations, no document overflow, five exact platform command-copy checks. |
+
+Real execution exposed and repaired Docker's named-volume representation in `HostConfig.Binds`, POSIX TIME_WAIT port reuse, restart of stopped owned containers, and the advertised form URL on a nondefault port. Direct course-page screenshot capture timed out; Chromium also failed to produce an animation frame after an active-lifecycle reset. Wide Sand setup and narrow Dark Module 7 screen-media PDFs were rendered, rasterized and visually inspected instead. These are PDF renders, not screenshots. An automation clipboard permission denial was recorded, then the copy check passed with explicit permissions; course copy code was unchanged.
+
+**Limits:** This is native Apple Silicon runtime evidence, not native Windows PowerShell 5.1, WSL, Intel macOS, Ubuntu or Arch qualification. PowerShell parsing used 7.6.6 on macOS. Workflows were assembled through the authenticated local n8n API; browser upload, execution, download and close actions were exercised. No measured learner timing, independent human review or assistive-technology result is claimed.

@@ -4,7 +4,7 @@ You are going to make a local n8n workflow whose job is to turn a batch into a s
 
 White Rack is a fictional shipment of refrigerated reagent kits from Icehouse Depot to Clinic I-6. The batch has 80 lots. The agent writes one row per lot. You still decide whether a row is fit to keep. The file does not authorize a real movement, and it is not a quality release.
 
-Plan for about three hours on Wednesday. That is a rough estimate. Use the local n8n you already checked in [setup](../module-00-setup/README.md). Keep n8n Assistant off, and don't publish the workflows. Assistant is n8n's built-in helper. The agent in this assignment is a node you add.
+Plan for about three hours on Wednesday. That is a rough estimate. Use the local n8n you already checked in [setup](../module-00-setup/README.md). Keep n8n Assistant off. Leave the agent workflow unpublished; publish only its internal spreadsheet tool while using it. Assistant is n8n's built-in helper. The agent in this assignment is a node you add.
 
 ## Start here
 

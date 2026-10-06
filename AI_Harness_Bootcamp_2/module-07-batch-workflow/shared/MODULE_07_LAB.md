@@ -16,13 +16,13 @@ In Finder or File Explorer, create a new folder such as `module-07-attempt-a`. G
 
 **Stop:** The editor does not open, or the n8n version is not 2.41.5.
 
-**Recovery:** Use the setup guide's n8n recovery. Don't switch to n8n Cloud, and don't publish a workflow to get past a local stop.
+**Recovery:** Use the setup guide's n8n recovery. Don't switch to n8n Cloud, and don't publish the agent workflow to get past a local stop.
 
 ## Build the tool that writes the spreadsheet
 
 The agent needs a tool it can call. This tool is a second workflow. It does not decide which lots can travel. It takes the rows the agent sends and turns them into an `.xlsx` file you can download.
 
-Open **Overview**, then **Create workflow**. Click the title, name it `White Rack — write the sheet`, and press Enter. Leave it unpublished.
+Open **Overview**, then **Create workflow**. Click the title, name it `White Rack — write the sheet`, and press Enter. Don't publish it until all three nodes are in place.
 
 Add the first node. Search for **Execute Sub-workflow Trigger**. In the trigger list this is also titled **When Executed by Another Workflow**. Set **Input data mode** to **Define using fields below**. Add one field named `sheet_csv`, type **String**. That field is the CSV text the agent will send.
 
@@ -62,11 +62,13 @@ return items;
 
 Add **Convert to File** after that code. Set the operation to **Convert to XLSX**. Set **Put Output File in Field** to `data`. Open **Options**, set **File Name** to `white-rack.xlsx`, turn **Header Row** on, and set **Sheet Name** to `White Rack`.
 
-**Expected:** The tool workflow has three nodes: the sub-workflow trigger, `Rows from the agent`, and Convert to File. It is unpublished.
+Check that **When Executed by Another Workflow** is its only trigger. Don't add a form, webhook or schedule to this tool. Click **Publish** in the canvas header, then **Publish** in the dialog. Wait for **Published**. If you later change this tool, publish the corrected version before calling it again.
 
-**Stop:** The trigger has no `sheet_csv` field, or Convert to File is set to a format other than XLSX.
+**Expected:** The tool workflow has three nodes: the sub-workflow trigger, `Rows from the agent`, and Convert to File. The tool is published, with no form, webhook or schedule.
 
-**Recovery:** Reopen the trigger and add the missing field. Don't publish the workflow to test it. The agent will call it from the editor.
+**Stop:** The trigger has no `sheet_csv` field, Convert to File is not set to XLSX, or the tool is not published.
+
+**Recovery:** Correct the missing field or file format, then publish this tool's current version. Keep the separate agent workflow unpublished.
 
 ## Put the agent on the canvas
 
@@ -98,7 +100,7 @@ On the AI Agent, set **Prompt** to **Define below**. Switch **Prompt (User Messa
 
 Open the agent options and turn **Return Intermediate Steps** on, so the run shows whether the tool was called. Leave **Max Iterations** at 10.
 
-**Expected:** The canvas is Upload wave, Extract from File, One batch, then AI Agent. The agent has an OpenRouter Chat Model and one workflow tool. Both workflows are unpublished. The key is not visible on the canvas.
+**Expected:** The canvas is Upload wave, Extract from File, One batch, then AI Agent. The agent has an OpenRouter Chat Model and one workflow tool. The agent workflow is unpublished; the three-node tool is published. The key is not visible on the canvas.
 
 **Stop:** The model is not Sonnet 4.6, the tool points at a different workflow, or you pasted the key anywhere except the credential form.
 
@@ -108,15 +110,15 @@ Open the agent options and turn **Return Intermediate Steps** on, so the run sho
 
 Click **Execute workflow** on `White Rack — agent sheet`. Open the form's test URL from that workflow, not from an older tab. Upload `inputs/wave1.csv` once and submit it. Wait for the agent to finish. A long run is normal for 80 lots.
 
-Open the AI Agent output. With intermediate steps on, you should see one call to the write-spreadsheet tool. Open **View sub-execution**. On the Convert to File node, download `white-rack.xlsx` into the attempt's `downloads` folder. If that link is missing, open `White Rack — write the sheet`, open **Executions**, open the latest run, and download from Convert to File there.
+Open the AI Agent output. With intermediate steps on, you should see one call to the write-spreadsheet tool and a successful tool result. A green agent node or a claim that the sheet was written is not enough. Open the workflow tool node and select **View sub-execution**. On the Convert to File node, download `white-rack.xlsx` into the attempt's `downloads` folder. If that link is missing, open `White Rack — write the sheet`, open **Executions**, open the latest run, and download from Convert to File there.
 
 n8n may add a browser suffix such as ` (1)` to the filename. Keep the download. Copy it to `downloads/white-rack.xlsx` without opening it in a spreadsheet app first. Opening and resaving can change the bytes before you have checked them.
 
-**Expected:** `downloads/white-rack.xlsx` exists, and the agent output shows one tool call.
+**Expected:** `downloads/white-rack.xlsx` exists, and the agent output shows one successful tool call.
 
 **Stop:** The agent replies in chat and never calls the tool, the tool reports `Workflow is not active and cannot be executed`, or no file downloads.
 
-**Recovery:** `Workflow is not active and cannot be executed` means the run left the editor test. Stay on the agent workflow, click **Execute workflow** again, and use that workflow's own test form. If the agent answered without a tool call, keep that execution, then run once more. Don't publish either workflow, and don't type the sheet yourself.
+**Recovery:** Keep the failed execution. For `Workflow is not active and cannot be executed`, open `White Rack — write the sheet`, confirm it has only the sub-workflow trigger, and publish its current version. Return to the unpublished agent workflow, click **Execute workflow**, and use its own test form for a new attempt. If the agent answered without a tool call, keep that execution, then run once more. Don't publish the agent workflow or type the sheet yourself.
 
 ## Check the download
 
@@ -150,5 +152,5 @@ Use your attempt folder in place of `module-07-attempt-a`. If the checker cannot
 
 ## Close
 
-In `observations.md`, record the workflow names, the execution you downloaded from, whether the agent called the tool once, and the lots the sheet got wrong. Then export each workflow to the attempt folder and open the JSON. Confirm your key is not in either file. If it is, delete the export. Shut the browser tab when you are done. Leave both workflows unpublished.
+In `observations.md`, record the workflow names, the execution you downloaded from, whether the tool call succeeded, and the lots the sheet got wrong. When finished, open the tool workflow's dropdown beside **Published**, choose **Unpublish**, and confirm. Keep the agent workflow unpublished. On each workflow, open the title's **More actions → Export JSON** menu and save the export in the attempt folder. Open both JSON files and confirm your key is absent. If either contains the key, delete that export. Shut the browser tab when you are done.
 

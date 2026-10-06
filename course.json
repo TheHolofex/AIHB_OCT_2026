@@ -97,10 +97,11 @@
         {"source": "scripts/verify-setup.sh", "dest": "scripts/verify-setup.sh"},
         {"source": "scripts/verify-setup.ps1", "dest": "scripts/verify-setup.ps1"},
         {"source": "scripts/obsidian_readiness.py", "dest": "scripts/obsidian_readiness.py"},
+        {"source": "scripts/n8n_local.py", "dest": "scripts/n8n_local.py"},
         {"source": "scripts/longform.py", "dest": "scripts/longform.py"}
       ],
       "download_dirs": ["shared/case"],
-      "tests": ["tests/test_module_00.py", "tests/test_checker.py", "tests/test_longform.py"]
+      "tests": ["tests/test_module_00.py", "tests/test_checker.py", "tests/test_longform.py", "tests/test_n8n_local.py"]
     },
     {
       "id": "01",

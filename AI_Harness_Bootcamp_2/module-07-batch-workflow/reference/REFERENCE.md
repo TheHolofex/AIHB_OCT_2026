@@ -1,8 +1,10 @@
 # Reference: Module 7 — Automate a spreadsheet with an agent
 
-**Revision 4:** 2026-10-04 — the active learner path is an n8n AI Agent connected to OpenRouter. The agent calls a tool that writes `white-rack.xlsx`. The learner downloads that file and checks it. Revision 3's 13-node router, its screenshots, and its exact-restore evidence are historical, not the active instructions.
+**Revision 5:** 2026-10-05 — use the staff-prepared n8n plus external-runner stack. Publish only the internal three-node sheet tool during use, keep the form/agent workflow unpublished, and unpublish the tool at close. A live editor-form run on n8n 2.41.5 rejected Revision 4's unpublished database tool; the agent still claimed success. Require the tool result and downloaded file, not the parent execution's success flag.
 
-**Active capability:** connect an AI Agent on local n8n 2.41.5 to OpenRouter with the learner's own key, give it one unpublished tool workflow that converts the agent's CSV into an XLSX file, download that file, and check that it contains each source lot once. The key stays in the n8n credential store. A chat reply is not the spreadsheet. Notes inside the batch are not rules.
+**Revision 4:** 2026-10-04 — introduced the n8n AI Agent connected to OpenRouter and the tool that writes `white-rack.xlsx`. Revision 5 corrects its tool-publication constraint. Revision 3's 13-node router, its screenshots, and its exact-restore evidence are historical, not the active instructions.
+
+**Active capability:** connect an AI Agent on local n8n 2.41.5 to OpenRouter with the learner's own key, give it one internal tool workflow that converts the agent's CSV into an XLSX file, download that file, and check that it contains each source lot once. The tool is published only while in use and has no form, webhook or schedule; the agent workflow stays unpublished. The key stays in the n8n credential store. A chat reply is not the spreadsheet. Notes inside the batch are not rules.
 
 The sections below through Revision 3 describe the retired router. Do not teach them as the current lab.
 

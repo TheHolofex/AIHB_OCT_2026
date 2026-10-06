@@ -502,390 +502,50 @@ Use an ordinary text editor to create `gui-observation.txt` beside the vault at 
 
 Write `Obsidian READY` only if both disk checks passed **and** you saw every GUI action in the Obsidian window. Otherwise write `Obsidian HOLD` and name the missing action or error. A file or `.obsidian` folder alone does not prove use of the app. Keep this record separate from OMP and n8n results.
 
-## 10. Check Docker and the n8n destination
+## Prepare local n8n for Module 7
 
-You need local n8n for Module 7. Keep its result separate from OMP and Obsidian. Leave time for downloads and approvals.
+n8n is the local workflow editor for Module 7. Staff prepare and qualify its two-service environment before you use it. Allow about 10 minutes to start it and check a saved workflow, plus staff-assisted restart. Keep n8n readiness separate from OMP, Obsidian, and Local model.
 
-Use your ordinary account. Leave existing apps, contexts, containers, volumes, and attempts in place. Destination `$HOME/n8n-course` outside the checkout; you will open `http://localhost:5678`. If it exists or port 5678 is in use, mark HOLD and ask the owner. Do not delete or run over it.
+Staff own Docker installation, access, licensing, image versions, project identity, and persistence. Keep any existing installation and its data; do not install or migrate yourself. If staff have not prepared your environment, record **n8n HOLD** and contact the device/support owner.
 
-The stack uses privileged Docker-in-Docker for the sandbox runner. Obtain explicit owner approval for the privilege and the software license before proceeding. If using Docker Desktop, its owner must also confirm eligibility.
+### Start and inspect the prepared instance
 
-Check state before contacting the daemon.
+Use the Arch terminal where step 5 set `PY` and `R`. In a new terminal, repeat the step 5 box first.
 
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, new window.**
-
-```bash
-id -un
-systemctl show docker.service docker.socket containerd.service --property=Id,LoadState,ActiveState,UnitFileState
-systemctl --user show docker.service docker.socket --property=Id,LoadState,ActiveState,UnitFileState
-ss -ltn 'sport = :5678'
-if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-  printf 'HOLD: n8n-course already exists; preserve it\n'
-else
-  printf 'DESTINATION absent: %s/n8n-course\n' "$HOME"
-fi
-if command -v docker >/dev/null 2>&1; then
-  docker --version
-  docker context ls
-  docker context show
-else
-  printf 'DOCKER missing\n'
-fi
-printf 'DOCKER_HOST %s\nDOCKER_CONTEXT %s\n' "${DOCKER_HOST:-unset}" "${DOCKER_CONTEXT:-unset}"
-```
-
-**Expected:** Clear state for each unit, context, overrides, destination, and listener table. Fresh machine: destination absent, no listener on 5678.
-
-**Stop:** Remote/unfamiliar context, root account, unknown listener, existing destination, masked/failed unit, or denied inspection: HOLD.
-
-**Recovery:** Ask owner to identify existing work and approve contact with the intended local daemon. Do not switch contexts or start unrelated services. Continue only with an existing course instance whose owner confirms its identity, stack, and version.
-
-Inspect existing work when Docker is present.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+**Terminal: Arch Linux, Bash or Zsh, ordinary user.**
 
 ```bash
-if command -v docker >/dev/null 2>&1; then
-  docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
-else
-  printf 'DOCKER missing\n'
-fi
+"$PY" "$M/scripts/n8n_local.py" start &&
+"$PY" "$M/scripts/n8n_local.py" status
 ```
 
-**Expected:** Responses and listed work. Modern `docker compose` works (5.x acceptable).
+**Expected:** The helper reports the prepared n8n 2.41.5 instance and its external task runner, editor at `http://localhost:5678`.
 
-**Stop:** Permission denial, daemon failure, missing compose, or unidentified work: HOLD.
+**Stop:** The helper reports `HOLD`, the environment is not prepared, or the browser page does not open.
 
-**Recovery:** Follow only the missing steps that apply. Keep compatible engine and plugin. Do not prune or replace a working engine.
+**Recovery:** Keep the first error and contact the device/support owner. Don't create another project or change Docker settings.
 
-## 11. Install Docker
+### Save and reopen a blank workflow
 
-Use official Arch packages only: `docker` and `docker-compose` from extra. The latter supplies the modern `docker compose` plugin. Check first; keep anything already working.
+Open **http://localhost:5678**. On a fresh instance, complete local owner setup. On an existing instance, use its existing login. Skip optional offers and leave **Assistant** off. Don't enter your OpenRouter key until Module 7.
 
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window.**
+Select **Overview → Build a workflow** (or **Create workflow**). Name the blank workflow **Module 7 readiness** and press Enter. If that name already holds work, choose a distinct name. Leave the canvas blank and unpublished. Reload, return to the workflow list, and reopen it. Confirm its name, empty canvas, and unpublished state.
 
-```bash
-for package in docker docker-compose containerd runc podman-docker; do
-  pacman -Q "$package" 2>/dev/null || printf '%s absent\n' "$package"
-done
-```
+**Expected:** Named blank workflow survives reload.
 
-**Expected:** Each package reported as installed or absent.
+**Stop:** Login fails, owner setup appears unexpectedly, or the saved workflow is missing.
 
-**Stop:** Alternative provider, unexplained runtime install, or conflict: HOLD.
+**Recovery:** Preserve the instance and contact the support owner. Don't create another owner account over existing work.
 
-**Recovery:** Ask owner to identify the installation and dependent work. Do not replace providers or use AUR.
+### Observe staff-assisted persistence
 
-If anything is missing, obtain owner approval for the full `-Syu` transaction. Follow any current [Arch news](https://archlinux.org/news/) that requires manual steps.
+Ask staff to stop and restart only this recorded course instance without removing data. Reopen the workflow after. Record **n8n READY** only if helper status, browser, reload/reopen, and staff-assisted persistence succeed. Otherwise **n8n HOLD**.
 
-**Terminal: Arch Linux, Bash or Zsh, same window; sudo elevates the approved full transaction.**
-
-```bash
-sudo pacman -Syu --needed docker docker-compose
-```
-
-**Expected:** Full transaction completes after you type `y` (only if approved).
-
-**Stop:** Conflict, unapproved replacement, denial, or failure: HOLD.
-
-**Recovery:** Keep the error. Do not use partial sync. Complete any required reboot, then recheck with step 10.
-
-## 12. Give your account Docker access
-
-The `docker` group grants root-equivalent control. Obtain explicit owner approval before adding your account. If denied, record HOLD; do not run as root or make the socket world-writable. If you already work with an approved daemon, keep it and skip the group step.
-
-After the group change, sign out of the desktop completely and sign back in (new terminal alone does not refresh groups).
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same window; sudo changes approved group only.**
-
-```bash
-course_docker_access() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use ordinary account\n' >&2; return 1; }
-  getent group docker >/dev/null || { sudo groupadd docker || return 1; }
-  sudo usermod -aG docker "$(id -un)"
-}
-course_docker_access
-```
-
-**Expected:** Account added without error.
-
-**Stop:** Denied group change or unfamiliar account: HOLD.
-
-**Recovery:** Ask owner. Never use `sudo sh`, `sudo docker`, or socket permission changes.
-
-If the system service is inactive, start it only after owner approval of `docker.service` and dependencies. Do not alter boot or existing user services.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, fresh login; sudo starts the approved service.**
-
-```bash
-sudo systemctl start docker.service
-```
-
-**Expected:** Service starts.
-
-**Stop:** Masked/failed unit or refusal: HOLD.
-
-**Recovery:** Keep error; ask owner. Do not unmask or enable sockets to bypass.
-
-In the post-login terminal, re-verify context and work.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, fresh login.**
-
-```bash
-id -un && id -nG && docker context show && docker info && docker compose version && docker ps -a && docker volume ls && docker compose ls --all
-```
-
-**Expected:** Local daemon responds without sudo, modern compose works, all work accounted for.
-
-**Stop:** `docker info` or compose fails, wrong context, or unidentified work: HOLD.
-
-**Recovery:** Work the first failure with the owner. Do not reinstall a working engine.
-
-## 13. Generate the n8n configuration
-
-Use n8n 2.41.5. The installer source checked was 1.4.0. The live URL can change, so use the review path. Download the script, page it with less, inspect it, then run only the reviewed file. The destination must be absent, even as a symlink or empty directory. The project name is fixed as `n8n-course`. The check below verifies the name is unused on this engine before recording it.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_download_n8n() {
-  local attempt
-  unset N8N_REVIEW_SCRIPT
-  attempt="$(mktemp -d "$HOME/n8n-installer-review.XXXXXX")" || return 1
-  curl -fsSL https://get.n8n.io -o "$attempt/get-n8n.sh" || { printf 'HOLD: incomplete download preserved\n' >&2; return 1; }
-  [ -s "$attempt/get-n8n.sh" ] || { printf 'HOLD: empty download\n' >&2; return 1; }
-  N8N_REVIEW_SCRIPT="$attempt/get-n8n.sh"
-  printf 'REVIEW %s\n' "$N8N_REVIEW_SCRIPT"
-}
-course_download_n8n
-```
-
-**Expected:** `REVIEW` path to the completed script.
-
-**Stop:** Failed or empty download, or changed behavior: HOLD.
-
-**Recovery:** Keep the download. Correct with owner; create new attempt only when approved.
-
-Page the script before executing it. Look for the line `SCRIPT_VERSION="1.4.0"`. If the version differs or the line is absent, record HOLD and ask the owner; do not run the script.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-less "$N8N_REVIEW_SCRIPT"
-```
-
-**Expected:** Script content visible in the pager. Press `q` to return.
-
-**Stop:** Pager error or file changed since download.
-
-**Recovery:** Keep the attempt; ask owner.
-
-After review, run the reviewed script.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_run_reviewed_n8n() {
-  [ "$(id -u)" -ne 0 ] || { printf 'HOLD: use ordinary account\n' >&2; return 1; }
-  [ -n "${N8N_REVIEW_SCRIPT:-}" ] && [ -s "$N8N_REVIEW_SCRIPT" ] && [ ! -L "$N8N_REVIEW_SCRIPT" ] || { printf 'HOLD: no completed script\n' >&2; return 1; }
-  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: existing destination preserved\n' >&2; return 1; fi
-  grep -qx 'SCRIPT_VERSION="1.4.0"' "$N8N_REVIEW_SCRIPT" || { printf 'HOLD: installer version changed\n' >&2; return 1; }
-  N8N_DIR="$HOME/n8n-course" sh "$N8N_REVIEW_SCRIPT" --version 2.41.5 --no-start
-}
-course_run_reviewed_n8n
-```
-
-**Expected:** Configuration generated in fresh `$HOME/n8n-course`; containers not started.
-
-**Stop:** Installer failure or existing-install message: HOLD.
-
-**Recovery:** Keep all files; ask owner. Do not switch methods to bypass.
-
-## 14. Start n8n on this computer only
-
-Edit the generated `compose.yml` with a scripted substitution that changes exactly one occurrence of the port mapping. Verify the result. Record the fixed project name `n8n-course` only after confirming it is unused. Define the helper that enforces the record and no exported overrides. Start only after the port and project checks.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_bind_loopback() {
-  local yml="$HOME/n8n-course/compose.yml"
-  [ -f "$yml" ] && [ ! -L "$yml" ] || { printf 'HOLD: no ordinary compose.yml\n' >&2; return 1; }
-  local count_orig
-  count_orig=$(grep -oF -- "- '5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
-  if [ "$count_orig" -ne 1 ]; then
-    printf 'HOLD: expected exactly one 5678:5678, saw %s\n' "$count_orig" >&2; return 1
-  fi
-  sed -i "s/'5678:5678'/'127.0.0.1:5678:5678'/" "$yml" || return 1
-  local count_old count_new
-  count_old=$(grep -oF -- "- '5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
-  count_new=$(grep -oF -- "- '127.0.0.1:5678:5678'" "$yml" | wc -l | tr -d '[:space:]')
-  if [ "$count_old" -ne 0 ] || [ "$count_new" -ne 1 ]; then
-    printf 'HOLD: substitution did not produce exactly one loopback binding\n' >&2; return 1
-  fi
-  printf 'PORT_BOUND 127.0.0.1:5678:5678\n'
-}
-course_bind_loopback
-```
-
-**Expected:** `PORT_BOUND 127.0.0.1:5678:5678`
-
-**Stop:** Any count other than exactly one original, or substitution not producing exactly one new binding: HOLD.
-
-**Recovery:** Keep the directory and ask the owner. Do not edit by hand or rerun the installer to bypass the check.
-
-Record the fixed project name after verifying it is unused on this engine and has no resources.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n_identify() {
-  local project="n8n-course" containers volumes networks
-  local LC_ALL=C
-  if [ ! -d "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then printf 'HOLD: expected ordinary fresh n8n-course\n' >&2; return 1; fi
-  if [ -e "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ]; then printf 'HOLD: existing project record preserved\n' >&2; return 1; fi
-  containers=$(docker ps -aq --filter "label=com.docker.compose.project=$project")
-  [ $? -eq 0 ] || { printf 'HOLD: container inspection failed\n' >&2; return 1; }
-  volumes=$(docker volume ls -q --filter "label=com.docker.compose.project=$project")
-  [ $? -eq 0 ] || { printf 'HOLD: volume inspection failed\n' >&2; return 1; }
-  networks=$(docker network ls -q --filter "label=com.docker.compose.project=$project")
-  [ $? -eq 0 ] || { printf 'HOLD: network inspection failed\n' >&2; return 1; }
-  if [ -n "$containers" ] || [ -n "$volumes" ] || [ -n "$networks" ]; then
-    printf 'HOLD: project name already has Docker resources\n' >&2; return 1
-  fi
-  (
-    umask 077
-    set -o noclobber
-    printf '%s\n' "$project" > "$HOME/n8n-course/.course-project"
-  ) || { printf 'HOLD: project record could not be saved\n' >&2; return 1; }
-  printf 'PROJECT recorded: %s\n' "$project"
-}
-course_n8n_identify
-```
-
-**Expected:** `PROJECT recorded: n8n-course`
-
-**Stop:** Existing record, resources under the name, or write failure: HOLD.
-
-**Recovery:** Keep everything; ask owner. Do not delete to retry.
-
-Define the helper (paste once per shell).
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n() {
-  local variable conflict=0 project
-  local LC_ALL=C
-  for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then printf 'HOLD: %s\n' "$variable" >&2; conflict=1; fi
-  done
-  [ "$conflict" -eq 0 ] || return 1
-  if [ -L "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course/.course-project" ] || [ ! -f "$HOME/n8n-course/.course-project" ]; then
-    printf 'HOLD: project record missing or linked\n' >&2; return 1
-  fi
-  project="$(cat "$HOME/n8n-course/.course-project")" || { printf 'HOLD: could not read project record\n' >&2; return 1; }
-  case "$project" in ''|[!a-z0-9]*|*[!a-z0-9_-]*) printf 'HOLD: invalid recorded project name\n' >&2; return 1 ;; esac
-  docker compose -p "$project" --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
-}
-```
-
-**Expected:** Prompt returns with no output.
-
-**Stop:** HOLD or error from the definition.
-
-**Recovery:** Trace exported variables in a clean shell with the owner. Keep the directory; do not create a new identity.
-
-Recheck the port (fresh instance must have none).
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-ss -ltn 'sport = :5678'
-```
-
-**Expected:** No listener rows.
-
-**Stop:** Unidentified listener: HOLD.
-
-**Recovery:** Ask its owner; do not kill or change another app's port.
-
-Start the stack.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n up -d
-```
-
-**Expected:** Images download and stack starts (first pull can take minutes).
-
-**Stop:** Port, pull, permission, or startup error: HOLD.
-
-**Recovery:** Keep files and volumes; ask owner for the exact cause. Do not prune or upgrade.
-
-Inspect state.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n ps --all &&
-course_n8n port n8n 5678 &&
-course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** All six services. `sandbox-certs` Exited (0). Others running; `sandbox-api` healthy. Port `127.0.0.1:5678`. n8n `2.41.5`.
-
-**Stop:** Missing service, nonzero cert exit, restart loop, non-loopback port, or wrong version: HOLD.
-
-**Recovery:** Let initialization settle and check again. Leave state for owner. Do not silently change pin or port.
-
-## 15. Save a blank workflow and confirm it persists
-
-Open `http://localhost:5678`. If this is a fresh instance, complete the owner setup with a local name, email, and password. For an existing instance, use its login. Keep Assistant off and do not enter any OpenRouter key.
-
-Select Overview → Build a workflow (or Create workflow). Name it **Module 7 readiness**. Keep the canvas blank. Do not Publish. Reload the page and confirm that the name and empty canvas remain.
-
-**Expected:** Named blank workflow reopens after reload and is unpublished.
-
-**Stop:** Cloud login, external key, missing workflow, unexpected owner screen, or different UI: HOLD.
-
-**Recovery:** Check URL and version. Keep instance; ask owner. Do not reset owner account.
-
-Stop only this stack (data volume stays).
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n down
-```
-
-**Expected:** Containers and network stop; data volume remains. Browser page unavailable after reload.
-
-**Stop:** Unexpected project or error: HOLD.
-
-**Recovery:** Keep output; never use `-v`.
-
-Start the stack again and inspect it.
-
-**Terminal: Arch Linux, Bash or Zsh, ordinary user, same verified window.**
-
-```bash
-course_n8n up -d &&
-course_n8n ps --all &&
-course_n8n port n8n 5678 &&
-course_n8n exec -T n8n n8n --version
-```
-
-**Expected:** Same state, port, version as before. Reload browser, use existing login if prompted, reopen the readiness workflow: name and blank canvas persist, still unpublished.
-
-**Stop:** Missing data, new owner screen, wrong version/port, or failed services: HOLD.
-
-**Recovery:** Keep directory and volumes; ask owner. Do not create another account or workflow to hide a failure. The n8n result is independent of OMP.
+In later session, repeat the two helper lines in your shell. Do not run the staff stop procedure.
 
 ## Later sessions
 
-After a restart, Docker and the n8n stack stay stopped, and a new terminal doesn't know the `course_n8n` helper. Before Module 7, open a new terminal and paste these boxes again, in order: `sudo systemctl start docker.service` from [step 12](#12-give-your-account-docker-access), then the `course_n8n` helper box, the `course_n8n up -d` box, and the inspect box from [step 14](#14-start-n8n-on-this-computer-only). The data volume keeps your workflow, so sign in with your existing local owner account.
+After a restart, ask staff to start the approved Docker engine if it is stopped. Open a fresh terminal, repeat the step 5 box to set `PY`, `R`, and `M`, then run the two `n8n_local.py` commands above. Sign in with the existing local owner account and reopen your saved workflow.
 
 ## If a step stops
 
@@ -901,11 +561,7 @@ The list below is organized by the step that produced the first error. Keep the 
 - Report or read-back fails: the readiness check is still the live proof. Correct only the named prerequisite; do not clean the checkout.
 - Obsidian package or launch: return to the approved pacman transaction or record HOLD with the GUI error. Never add `--no-sandbox` or overwrite an existing install.
 - Obsidian GUI steps cannot be performed or observed: record `Obsidian HOLD` with the exact missing action. The disk checks alone are not sufficient.
-- Docker preflight, install, or access: keep existing work. Only the owner approves group membership or service start. Re-login after group change.
-- n8n destination or port occupied: ask owner to identify the owner of `$HOME/n8n-course` or listener. Do not delete or kill.
-- n8n generate or bind substitution fails the exactly-one check: keep the directory; the verification is strict. Ask owner.
-- n8n start or workflow does not persist: keep the directory, volumes, and `.course-project`. Use only `course_n8n` for lifecycle. The saved blank workflow after down/up is required for Module 7.
-
+- n8n helper, browser or persistence failure: keep the configuration and volumes and contact staff. Use only the recorded instance; don't delete data, stop another service or install another engine.
 
 ## Local model (capstone) readiness lane
 

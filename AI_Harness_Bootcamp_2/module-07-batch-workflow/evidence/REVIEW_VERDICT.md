@@ -71,3 +71,19 @@ Direct course-page screenshot capture timed out in the browser tooling. Real Chr
 PowerShell parsing used PowerShell 7 on macOS, not Windows PowerShell 5.1. The host-shell matrix is not native Windows, WSL, Ubuntu or Arch execution. Native n8n behavior was observed only on Apple Silicon Docker Desktop. Human completion time, independent nondeveloper performance and assistive-technology behavior remain unmeasured. No hosted deployment or paid readiness check is asserted here.
 
 The cutover is implemented and the native routing, evidence-control and publication paths above passed their exercised checks. Retain the isolated runtime and original evidence; do not describe this as five-platform native verification or measured learner mastery.
+
+## Agent spreadsheet on the two-service runtime — 2026-10-06 UTC
+
+This rehearsal uses the active agent/spreadsheet assignment, not the historical deterministic router. n8n 2.41.5 and matching external task runners ran on Apple Silicon Docker Desktop at the isolated loopback port `15679`; the existing instance on `5678` was left untouched. The provider/model was OpenRouter `anthropic/claude-sonnet-4.6`, with transport retries set to zero.
+
+The first preregistered attempt stopped before a model call because n8n advertised the wrong form port. After correcting that configuration, agent execution `1` reported success but the internal tool returned `Workflow is not active and cannot be executed`; no spreadsheet existed. That failed run is retained. The lab now requires publishing only the internal three-node sheet tool, whose sole trigger is **When Executed by Another Workflow**. The agent/form workflow stays unpublished. This is not permission to add an active form, webhook or schedule.
+
+Corrected agent execution `2` made one tool call; sheet sub-execution `3` succeeded. Browser download produced `white-rack.xlsx`, 29,931 bytes, SHA-256 `c5140f3dbba425674ea02056d027d904844b634c922b74252c0a49cbdb117eda`. The learner checker found all 80 source lots exactly once. A separate rule-by-rule review found zero route/status mismatches: 64 READY, 10 OPEN, four NOT_AUTHORIZED and two RESOURCE_CONFLICT. Both rack claimants remained held; no reason was blank or contained a comma.
+
+The tool was unpublished at close. Both workflows were exported through the UI and contained no provider key. Stop/start preserved all four saved workflows and the working credential. The form submission, tool-result navigation, XLSX download, publication/unpublication and exports were exercised through Chromium; workflow construction used the authenticated local API.
+
+Observed key-level OpenRouter usage increased by **US$0.13572** across the failed and corrected live runs, with four model invocations in two agent executions. n8n did not retain provider generation IDs; this is an observed `/api/v1/key` usage delta, not per-generation billing receipts or an enforced spending cap.
+
+The complete 35-gate course run and byte-exact publication check passed. Eleven affected pages passed 66 Dark/Sand layout observations across three widths; all five setup command-copy checks matched their sources. Actual n8n screenshots and wide/narrow course screen-media PDF renders are retained privately under `~/course-evidence/reformation-qa/20261006T021456Z-simplify-local-n8n/`, together with preregistrations, failed outcomes, executions, the downloaded workbook and billing observation. The repository ledger binds those records by hash.
+
+**Limits:** One successful batch is not a model accuracy estimate or a learner-performance result. No native Windows/WSL/Linux or Intel Mac run was observed. Course-page screenshot capture failed; the inspected course visuals are PDF renders. Earlier unobserved cohort, human and billing-receipt lanes remain unobserved.

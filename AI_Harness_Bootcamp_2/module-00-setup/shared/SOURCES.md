@@ -60,25 +60,20 @@
 
 The Obsidian window was checked only on **Obsidian 1.13.7, Darwin arm64**. It hasn't been checked on native Windows, WSLg, Intel macOS, Ubuntu, or Arch. Complete **Set up local Obsidian** in your [platform guide](../README.md#set-up-local-obsidian) and check links, edits, saves, refreshed files, and reopening on your own device before recording Obsidian READY. Official documentation and available binaries show how to set it up, but not whether it works on your machine.
 
-## Local n8n and Docker
+## Local n8n (staff-prepared two-service)
 
-- [Official n8n one-line setup, flags, and Windows shell guidance](https://docs.n8n.io/deploy/host-n8n/install-options/one-line-setup)
-- [Live installer download](https://get.n8n.io) and [reviewable installer source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n.sh): the reviewed source reports installer 1.4.0, and requested n8n version is 2.41.5. The live URL can change, so it does not pin the installer to one version.
-- [Official six-service Compose source](https://raw.githubusercontent.com/n8n-io/n8n/master/docker/get-n8n-compose.yml): includes the privileged Docker-in-Docker runner and named data volumes.
+- [n8n task runners and external Code execution](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-task-runners.md)
+- [Install using Docker Compose (official images)](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose.md)
+- [Advertised webhook URLs and `N8N_WEBHOOK_URL`](https://docs.n8n.io/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-webhook-urls-with-reverse-proxy.md)
 - [Docker Desktop for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
 - [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
 - [Docker Desktop WSL integration](https://docs.docker.com/desktop/features/wsl/)
 - [Docker Desktop licensing](https://docs.docker.com/subscription/desktop-license/)
-- [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-- [Docker Linux post-install access and docker-group privileges](https://docs.docker.com/engine/install/linux-postinstall/)
-- [Docker Compose installation](https://docs.docker.com/compose/install/)
-- [Compose down and volume removal options](https://docs.docker.com/reference/cli/docker/compose/down/)
-- [Compose project-name precedence](https://docs.docker.com/compose/how-tos/project-name/) and [environment-variable interpolation precedence](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/): the saved project name and named configuration files keep Compose from using its defaults; you still need to block exported overrides.
-- [Arch Docker guidance](https://wiki.archlinux.org/title/Docker), [Docker package](https://archlinux.org/packages/extra/x86_64/docker/), and [Compose package](https://archlinux.org/packages/extra/x86_64/docker-compose/)
+- [Compose down without volumes](https://docs.docker.com/reference/cli/docker/compose/down/)
 
-Use the full official stack, keep the n8n host port at `127.0.0.1:5678`, and leave Assistant off. Your platform guide gives guarded installation steps or a way to download and review the installer. Don't follow upstream examples for upgrades, uninstalling, turning on Assistant, or convenience installs. A modern Compose plugin may report version 5; the required command is `docker compose`, not a literal `2.x` version number.
+Staff prepare local n8n 2.41.5 with its matching external task runner. Follow your platform guide to start it with the supplied [Python helper](../scripts/n8n_local.py), open **http://localhost:5678**, and confirm that a blank unpublished workflow survives reload and a staff-assisted restart. Keep Assistant off. Preserve existing instances and data.
 
-The n8n app and stack were checked only on Apple Silicon. On a fresh instance, the local owner used **Next**, the optional survey **Get started**, the free-license **Skip**, the Assistant **Set up later in Settings**, and **Overview → Build a workflow**. Clicking the title, renaming it, pressing **Enter**, and reloading showed the editor saved automatically without a **Saved** label. The stack had five long-running services, `sandbox-certs` at `Exited (0)`, publication to localhost only, and a workflow that stayed saved through the usual `down` / `up -d`. The Apple Silicon result does not show how another platform will run.
+Use the prepared configuration rather than running the upstream full-stack installer or changing Compose files. Check the actual browser and saved workflow on your own device before recording **n8n READY**.
 
 ## Source hierarchy
 

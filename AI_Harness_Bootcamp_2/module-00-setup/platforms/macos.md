@@ -596,186 +596,46 @@ Write `Obsidian READY` only if both checks passed and you did every action in th
 
 ## Prepare local n8n for Module 7
 
-n8n is a workflow editor that you'll run on this Mac for Module 7. It runs in Docker, a tool that runs software in isolated containers. Allow extra time for downloads. You'll check Docker, generate the n8n files without starting them, limit the browser port to this Mac, start n8n, save a blank workflow, and confirm it survives a restart. Keep this result separate from your OMP and Obsidian results.
+n8n is the local workflow editor for Module 7. Staff prepare, pin, and qualify the two-service environment (official n8n image + external task runner) and its persistence before you arrive. Plan about 10 minutes in your own shell plus the staff-assisted restart observation. Keep this result separate from OMP, Obsidian, and Local model readiness.
 
-The [official n8n stack](https://github.com/n8n-io/n8n/blob/master/docker/get-n8n-compose.yml) runs six services: `n8n`, `runners`, `sandbox-certs`, `sandbox-api`, `sandbox-runner-1`, and `searxng`. `sandbox-runner-1` runs privileged Docker-in-Docker inside Docker's Linux virtual machine. Get the device owner's approval for that privilege, and for Docker Desktop itself, before you continue. Without approval, record n8n as `HOLD`.
+Staff own the Docker engine, image versions, privilege, licensing, project identity, and data volumes. Existing instances and data stay owner-controlled; do not delete, migrate, or recreate them. If the environment is not prepared for you, record **n8n HOLD** and contact the device or support owner.
 
-### 1. Check Docker
+### Start the prepared instance and check status
 
-A Docker **context** names the engine your `docker` commands reach. This box shows the engine, its existing containers and volumes, the `~/n8n-course` destination, and port 5678. It changes nothing. Keep the output private if it shows other work.
+Use the macOS Terminal window from step 5 (where `PY` and `R` are set). Open a fresh window and re-paste the step 5 box first so the variables are defined in this shell.
 
 **Terminal: macOS Terminal, zsh or Bash, ordinary user.**
 
 ```bash
-course_check_docker() {
-  local ready=yes
-  if [ -d /Applications/Docker.app ]; then printf 'Docker Desktop app found\n'; fi
-  if command -v docker >/dev/null 2>&1; then
-    printf 'DOCKER_CLI %s\n' "$(command -v docker)"
-    docker context show || ready=no
-    docker context ls || ready=no
-    docker info --format 'ENGINE {{.Name}} {{.OperatingSystem}} {{.ServerVersion}}' || ready=no
-    docker compose version || ready=no
-    docker ps -a || ready=no
-    docker volume ls || ready=no
-  else
-    printf 'DOCKER_CLI missing\n'
-    ready=no
-  fi
-  if [ -n "${DOCKER_HOST:-}${DOCKER_CONTEXT:-}" ]; then
-    printf 'HOLD: DOCKER_HOST or DOCKER_CONTEXT is set in this shell\n'
-    ready=no
-  fi
-  if [ -e "$HOME/n8n-course" ] || [ -L "$HOME/n8n-course" ]; then
-    printf 'HOLD: %s already exists; keep it\n' "$HOME/n8n-course"
-    ready=no
-  fi
-  if lsof -nP -iTCP:5678 -sTCP:LISTEN; then
-    printf 'HOLD: something is already listening on port 5678\n'
-    ready=no
-  fi
-  if [ "$ready" = yes ]; then
-    printf 'DOCKER READY FOR N8N\n'
-  else
-    printf 'DOCKER NOT READY\n'
-    return 1
-  fi
-}
-course_check_docker
+"$PY" "$M/scripts/n8n_local.py" start &&
+"$PY" "$M/scripts/n8n_local.py" status
 ```
 
-**Expected:** The context is `desktop-linux` or another local engine you recognize, `ENGINE` names Docker Desktop, `docker compose version` prints a version, and the last line is `DOCKER READY FOR N8N`. Compose version 2 or 5 both work.
+**Expected:** `STARTED` or `RUNNING`, followed by a status report naming n8n 2.41.5, its external runner, and `127.0.0.1:5678`. Check browser access separately below.
 
-**Stop:** `DOCKER_CLI missing`, a failed Docker command, any `HOLD` line, or an engine you don't recognize.
+**Stop:** The helper reports HOLD, missing preparation, wrong version/port, or the browser page does not respond. Keep the exact message; do not create a project or change Docker settings yourself.
 
-**Recovery:** If Docker is missing, install Docker Desktop as described below. For anything else, see [Docker and n8n](#docker-and-n8n). Don't stop other containers or delete anything to make room.
+**Recovery:** Send the message to the device/support owner. Keep your existing workflows and other readiness results.
 
-**Install Docker Desktop only if it is missing.** Check the official [Mac requirements](https://docs.docker.com/desktop/setup/install/mac-install/): at least 4 GB of RAM and one of the three most recent major macOS releases. Confirm license eligibility with the device owner before you accept.
+### Save a blank unpublished workflow and reload
 
-1. On Docker's page, choose **Docker Desktop for Mac with Apple silicon** or **Docker Desktop for Mac with Intel chip** to match the `ARCH` line from step 1 (`arm64` or `x86_64`).
-2. Quit apps that use Docker, open `Docker.dmg`, and drag **Docker** onto **Applications**. Keep the disk image open until copying finishes.
-3. Open **Docker** from **Applications** and select **Accept** if the device owner approved the license terms. Docker Desktop installs its command-line tools in `~/.docker/bin` and adds that folder to your PATH.
-4. Wait until Docker Desktop reports that the engine is running. Then open a new terminal window from the **Shell** menu and paste the box above again.
+Open **http://localhost:5678** in your browser. On a fresh local instance complete the local owner account setup (name, email, password). On an existing instance use its local login. Skip any Cloud signup, license offer, or survey. Leave **n8n Assistant** off; do not paste your OpenRouter key (the Module 7 AI Agent is separate).
 
-### Optional: review the installer script before it runs
-The installer script is downloaded live from the network and can change. To see exactly what it will do, download it first, read it with less, then let the next box use the reviewed copy.
+From **Overview** choose **Build a workflow** (or **Create workflow**). Click the title, enter **Module 7 readiness**, press Enter. Leave the canvas blank and do not Publish. If the name already holds work, pick a distinct readiness name.
 
-**Terminal: macOS Terminal, zsh or Bash, ordinary user, Docker-checked window.**
+Reload the browser. Return to the workflow list and reopen **Module 7 readiness**. Confirm the name, empty canvas, and that it is still unpublished.
 
-```bash
-N8N_REVIEW_DIR="$(mktemp -d "${TMPDIR:-/tmp}/n8n-r.XXXX")" &&
-curl -fsSL https://get.n8n.io -o "$N8N_REVIEW_DIR/get-n8n.sh" &&
-[ -s "$N8N_REVIEW_DIR/get-n8n.sh" ] &&
-less "$N8N_REVIEW_DIR/get-n8n.sh" &&
-N8N_REVIEWED_INSTALLER="$N8N_REVIEW_DIR/get-n8n.sh"
-```
+**Expected:** The named blank workflow reappears after reload.
 
-**Expected:** The script opens in less. It reports SCRIPT_VERSION near the top. After you press q, the variable is set for the generate box.
+**Stop:** Login fails for existing instance, save fails, owner setup reappears unexpectedly, or the UI prevents confirming the state.
 
-**Stop:** The download fails or the script contains actions the owner did not approve.
+### Observe staff-assisted persistence
 
-**Recovery:** Keep the directory and show it to the owner. Use a new directory for a later attempt.
+Ask the staff or device owner to stop and restart only the recorded course n8n instance (without removing volumes or data). After they confirm restart, reopen the same workflow in the browser. Confirm name, blank canvas, and unpublished state.
 
-### 2. Generate the n8n files and limit the port
-This box runs the official one-line setup for n8n 2.41.5 with --no-start. It creates compose.yml, .env, and searxng-settings.yml without starting services. It then changes only the one browser port line in compose.yml from '5678:5678' to '127.0.0.1:5678:5678'. It refuses to run if port 5678 is occupied, the destination already exists, or Docker already has resources for the project name. If you reviewed the installer above, it uses that copy.
+Record **n8n READY** only when the Python status, browser access, reload/reopen, and the staff-assisted stop/start persistence all succeed. Otherwise record **n8n HOLD** with the first observed failure. This does not affect your other readiness results.
 
-**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the Docker check passed.**
-
-```bash
-course_n8n_generate() {
-  local dir containers volumes networks count
-  dir="$HOME/n8n-course"
-  if [ -e "$dir" ] || [ -L "$dir" ]; then printf 'HOLD: %s already exists; keep it\n' "$dir"; return 1; fi
-  containers="$(docker ps -aq --filter label=com.docker.compose.project=n8n-course)" || return 1
-  volumes="$(docker volume ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
-  networks="$(docker network ls -q --filter label=com.docker.compose.project=n8n-course)" || return 1
-  if [ -n "$containers$volumes$networks" ]; then printf 'HOLD: Docker already has resources for project n8n-course\n'; return 1; fi
-  if nc -z -w 1 127.0.0.1 5678 2>/dev/null; then printf 'HOLD: something is already listening on port 5678; nothing was generated\n'; return 1; fi
-  if [ -n "${N8N_REVIEWED_INSTALLER:-}" ]; then
-    N8N_DIR="$dir" sh "$N8N_REVIEWED_INSTALLER" --version 2.41.5 --no-start
-  else
-    ( set -o pipefail; curl -fsSL https://get.n8n.io | N8N_DIR="$dir" sh -s -- --version 2.41.5 --no-start )
-  fi || { printf 'HOLD: the n8n installer failed; keep %s for review\n' "$dir"; return 1; }
-  if [ ! -f "$dir/compose.yml" ] || [ ! -f "$dir/.env" ]; then printf 'HOLD: the installer did not create compose.yml and .env\n'; return 1; fi
-  count="$(grep -cF -e "- '5678:5678'" "$dir/compose.yml")"
-  if [ "$count" != 1 ]; then printf 'HOLD: expected one 5678 port line in compose.yml, found %s\n' "$count"; return 1; fi
-  cp "$dir/compose.yml" "$dir/compose.yml.orig" || return 1
-  sed "s/- '5678:5678'/- '127.0.0.1:5678:5678'/" "$dir/compose.yml.orig" > "$dir/compose.yml.new" || return 1
-  if [ "$(grep -cF -e "- '127.0.0.1:5678:5678'" "$dir/compose.yml.new")" != 1 ] || [ "$(grep -cF -e "- '5678:5678'" "$dir/compose.yml.new")" != 0 ]; then printf 'HOLD: the port change did not apply cleanly; compose.yml is unchanged\n'; return 1; fi
-  mv "$dir/compose.yml.new" "$dir/compose.yml" || return 1
-  printf 'PORT BOUND 127.0.0.1:5678\n'
-  (umask 077; set -o noclobber; printf '%s\n' n8n-course > "$dir/.course-project") || { printf 'HOLD: could not record the project name\n'; return 1; }
-  printf 'PROJECT n8n-course\n'
-}
-course_n8n_generate
-```
-
-**Expected:** The installer reports that it created the three configuration files without starting services. Then you see `PORT BOUND 127.0.0.1:5678` and `PROJECT n8n-course`.
-
-**Stop:** Any HOLD line, an installer error, or an "existing install" message.
-
-**Recovery:** Keep `~/n8n-course` and its output. Work with the owner to fix the specific failure. Do not delete the directory or run the installer into it again.
-
-### 3. Start n8n and check it
-This box defines two helpers and then starts the stack. `course_n8n` runs Docker Compose with the recorded project name, .env, and compose.yml. It stops if any variable that would override .env is exported in this shell. `course_n8n_check` shows the services, the published port, and the running n8n version.
-
-**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
-
-```bash
-course_n8n() {
-  local variable
-  for variable in N8N_VERSION N8N_SANDBOX_VERSION N8N_RUNNERS_AUTH_TOKEN SEARXNG_SECRET COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_DISABLE_ENV_FILE COMPOSE_PROFILES; do
-    if printenv "$variable" >/dev/null 2>&1; then printf '%s HOLD\n' "$variable"; return 1; fi
-  done
-  if [ ! -f "$HOME/n8n-course/.course-project" ] || [ -L "$HOME/n8n-course/.course-project" ] || [ "$(cat "$HOME/n8n-course/.course-project")" != n8n-course ]; then printf 'HOLD: project record\n'; return 1; fi
-  docker compose -p n8n-course --env-file "$HOME/n8n-course/.env" -f "$HOME/n8n-course/compose.yml" "$@"
-}
-course_n8n_check() {
-  course_n8n ps --all && course_n8n port n8n 5678 && course_n8n exec -T n8n n8n --version
-}
-docker context show && course_n8n up -d && course_n8n_check
-```
-
-**Expected:** Images download and the services start. The list shows all six services: `sandbox-certs` shows `Exited (0)`, `sandbox-api` becomes healthy, and the rest are running. The port line is exactly `127.0.0.1:5678`, and the version is exactly `2.41.5`.
-
-**Stop:** A service is missing, restarting, or failed; the port shows something other than `127.0.0.1:5678`; or the version differs.
-
-**Recovery:** If a service still shows starting, wait a minute and paste the box again; `up -d` leaves running services alone. If the port is exposed, run `course_n8n down` to stop only this stack, keep its volumes, and ask the owner to review the bind. See [Docker and n8n](#docker-and-n8n).
-
-### 4. Save a blank workflow
-1. Open **http://localhost:5678** in your browser. On a fresh instance, complete **Set up owner account** and select **Next**. These credentials belong only to this local n8n instance. If a sign-in screen appears, use the existing local login; do not reset its owner or create another instance.
-2. Finish any local onboarding questions. Skip optional offers for a license key or external signup. No n8n Cloud account, external account, or provider API key is required. Leave **n8n Assistant** off, and do not copy your OpenRouter key into n8n.
-3. Select **Overview**, then **Build a workflow** on a fresh instance or **Create workflow** when workflows already exist. Click the workflow title, name the blank workflow **Module 7 readiness**, and press **Enter**. The editor saves automatically. Leave the canvas empty and do not select **Publish**. Keep an existing workflow with that name; choose a distinct readiness name if it contains work.
-4. Reload the browser page. Confirm the workflow title and empty canvas remain, and that the workflow is unpublished. This reload checks saved state rather than an unsaved tab.
-
-**Expected:** The local editor opens and the named blank workflow survives reload without an external account or key.
-
-**Stop:** The page remains unavailable after startup, unexpected owner setup appears for an existing instance, login fails, saving fails, or the interface differs enough that you cannot confirm saved/unpublished state.
-
-**Recovery:** Keep the instance and ask for help with the specific state. Do not clear volumes, reset accounts, publish a workflow, or enable Assistant to work around it.
-
-### 5. Confirm the workflow survives a restart
-Stop only the course stack you identified. Compose `down` removes its containers and network but keeps its named data volumes, so never add `-v`.
-
-If you opened a new terminal window since the n8n start step, paste the box from [### 3. Start n8n and check it](#3-start-n8n-and-check-it) first so the helpers are defined.
-
-**Terminal: macOS Terminal, zsh or Bash, ordinary user, window where the n8n generate box ran.**
-
-```bash
-course_n8n down &&
-course_n8n up -d &&
-course_n8n_check
-```
-
-**Expected:** Course containers stop and are removed; the data volumes remain. Then images are already present so start is fast. The check shows the same six services, `127.0.0.1:5678`, and `2.41.5`. Reload **http://localhost:5678**, sign in if needed, and open **Module 7 readiness** from the workflow list. Its name and empty canvas are still saved, it remains unpublished, and you don't need to set up the owner account again.
-
-**Stop:** Data is missing, owner setup returns, the version/mapping changes, or services fail.
-
-**Recovery:** Keep the directory and volumes. Before doing anything else, ask the owner to check whether the engine or Compose project changed. Don't create a replacement workflow to hide a persistence failure.
-
-Record n8n readiness only after you observe the correct version, local-only mapping, the full stack state, the saved workflow after reload, and the workflow still there after this stop/start. If you can't confirm any of these, keep n8n readiness on **HOLD** for Module 7. This does not change either OMP readiness result.
-
-In a later session, start Docker Desktop if it isn't running, open a new Terminal window, and paste the [step 3 box](#3-start-n8n-and-check-it) again. After a restart the stack stays stopped until you start it; the box defines the helpers, starts n8n, and checks it. The data volume keeps your workflow, so sign in with your existing local owner account.
+In later sessions, open a fresh Terminal, re-paste the step 5 variables if needed, then run the two `n8n_local.py` lines above. Do not run staff stop commands yourself.
 
 ## If a step stops
 
@@ -821,15 +681,8 @@ OBS_ROOT="$HOME/course-evidence/obsidian-macos-20261003T120000-1234"
 
 **Recovery:** Copy the exact path printed by the initialize box, without `/vault`, and paste this box again. If a refresh failed, start a fresh vault with the initialize box and repeat the GUI steps. If the app is blocked or you couldn't complete the link, edit, save, and reopen sequence, record `Obsidian HOLD` with the exact message or missing action.
 
-### Docker and n8n
-docker CLI missing after Docker Desktop install: add the export for the user CLI location to your login startup file only. For zsh use `~/.zprofile` (or the file under `ZDOTDIR`); for Bash use the first existing login file among `~/.bash_profile`, `~/.bash_login`, `~/.profile` and also `~/.bashrc`. Add exactly this line in a text editor:
-
-```text
-export PATH="$HOME/.docker/bin${PATH:+:$PATH}"
-```
-
-Then open a new terminal window from the Shell menu and re-run the Docker check. Wrong context or exported Compose override: ask the owner, then use a clean shell that does not have those variables exported. Existing `~/n8n-course`, port 5678 in use, or project resources for n8n-course: preserve everything; reuse an existing course instance only after the owner confirms its version and settings (skip the generate box). Slow startup: wait for the engine to settle and re-run the check box. Port exposed beyond 127.0.0.1: run `course_n8n down` (this stack only), keep the volumes, and ask the owner to correct the bind in compose.yml before restarting. To review the installer script before execution: use the optional review box that appears before the generate step (it runs `less` on the downloaded file before any execution).
-
+### Local n8n
+If the helper cannot find the prepared instance, Docker is unavailable, or the local browser cannot reach it, keep **n8n HOLD** and send the first error to the device/support owner. Preserve existing instances and workflows. See [local n8n troubleshooting](../shared/TROUBLESHOOTING.md#when-local-n8n-stops).
 ## Local model (capstone) readiness lane
 
 Ask staff for the approved `hf` and `llama-server` paths, then [check local-model readiness](../../module-10-capstone/shared/MODULE_10_LAB.md#check-local-model-readiness-before-downloading) before a download and again before launch. Quoted executable paths support spaces. Missing tools, insufficient capacity, an occupied endpoint, or an unresolved failed rehearsal mean **Local model HOLD**; preserve your other readiness results and contact the device/support owner.
