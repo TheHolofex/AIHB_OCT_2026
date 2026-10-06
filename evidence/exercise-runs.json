@@ -1315,6 +1315,18 @@
         "sha256": "dff0fea28be960c9478f3023d1677d61237f572d3aa1f0b72cee41ac48d1b55d",
         "bytes": 72666
       },
+      "integration": {
+        "incoming_main_commit": "bb936d1d98e0541e322be40d4e8cd85dda1ccbb0",
+        "status": "all_35_scoped_gates_passed",
+        "publication_pages": 35,
+        "publication_downloads": 428,
+        "publication_assets": 40,
+        "report": {
+          "path": "integration-summary.json",
+          "sha256": "4b38d03d18e6b63daa2d40843222e624b73112e08b2ec686242ebf9d333d1ea6",
+          "bytes": 2850
+        }
+      },
       "limits": [
         "Native runtime observed on Apple Silicon only; no Windows PowerShell 5.1, WSL, Intel Mac, Ubuntu or Arch execution.",
         "Workflows assembled through the local API; browser upload, execution, download, publish/unpublish and export actions exercised.",

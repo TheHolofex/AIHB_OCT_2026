@@ -231,6 +231,8 @@ All 35 scoped course gates passed, including 19 helper boundary tests. Publicati
 
 The Module 00 and Module 07 `evidence/REVIEW_VERDICT.md` files record the observed failures, corrections and limits. The `local_n8n_simplification` revision record in `evidence/exercise-runs.json` binds the private source and evidence manifests under `~/course-evidence/reformation-qa/20261006T021456Z-simplify-local-n8n/`.
 
+Integration retained the newer Module 02 revision `bb936d1`. The combined course passed all 35 scoped gates in 421 seconds, and byte-exact publication passed for 35 pages, 428 downloads and 40 assets. The nine generated downloads retired by that incoming revision were preserved outside `site/` before rebuilding. The n8n helper and Module 7 exercise bytes were unchanged by the merge; the rebuilt setup and lab were also inspected in Chromium. Both disposable n8n projects were removed after their evidence was saved, including their test volumes; the preexisting instance retained its identity, running state and loopback binding.
+
 ## Netlify deployment
 
 The hosted course is at [reformation-aihb-oct-2026.netlify.app](https://reformation-aihb-oct-2026.netlify.app). Native Netlify builds use the existing GitHub App connection to the private repository and publish successful pushes to `main`.
