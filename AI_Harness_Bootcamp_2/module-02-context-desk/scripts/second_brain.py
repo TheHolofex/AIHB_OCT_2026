@@ -194,7 +194,7 @@ def initialize(work):
     rule = work / 'shared/controls/SAVED_INSTRUCTION.md'
     rule_bytes = raw(rule)
     require(rule_bytes.decode().strip(), 'empty saved instruction')
-    templates = {n: raw(work / 'shared/controls' / n) for n in ['NOTE_TEMPLATE.md', 'REVIEW_TEMPLATE.md', 'AUDIT_TEMPLATE.md']}
+    templates = {n: raw(work / 'shared/controls' / n) for n in ['NOTE_TEMPLATE.md', 'REVIEW_TEMPLATE.md']}
     vault = work / 'vault'
     vault.mkdir()
     for name in ['Sources', 'Drafts', 'Knowledge', 'Reviews', 'Templates']:

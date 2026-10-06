@@ -158,11 +158,11 @@
       "summary": "Build linked notes in Obsidian and show that a new chat can answer from them.",
       "nav_summary": "Obsidian · linked notes",
       "outcomes": {
-        "can": "Build linked notes in Obsidian from the supplied paperwork, show from the run records that a new chat used your saved rule and only the notes you accepted, and fix one weakness that changes what that chat can answer.",
+        "can": "Have OMP draft notes from the supplied paperwork, turn them into linked Obsidian notes you accept, show from the run records that a fresh session used your saved rule and only those notes, and fix one gap it found.",
         "will": [
-                "Choose claims the paperwork supports, link those notes, and treat an instruction written inside a source as evidence, not as an order.",
-                "Accept only notes you've checked, then confirm a new chat loaded your saved rule and read only the notes you approved, not the earlier chat or the original files.",
-                "Fix one weakness that changes what a new chat can answer, then show that change in a new saved copy and a new chat.",
+                "Have OMP draft notes from forty source files under a saved rule that treats instructions inside a source as data, not as orders.",
+                "Turn the drafts into linked Obsidian notes whose quotations match their sources exactly, and accept each one with a recorded reason.",
+                "Confirm from the run records that a fresh session loaded your saved rule and read only the notes you accepted, then fix one gap it reported and show the change in another fresh session.",
                 "Confirm the run stops before it calls the model when the saved rule file is missing."
         ]
       },
@@ -182,8 +182,6 @@
         {"source": "shared/figures/m02-obsidian-07-source-markdown.png", "dest": "shared/figures/m02-obsidian-07-source-markdown.png"},
         {"source": "shared/figures/m02-obsidian-08-new-review-note.png", "dest": "shared/figures/m02-obsidian-08-new-review-note.png"},
         {"source": "shared/figures/m02-obsidian-08b-move-to-reviews.png", "dest": "shared/figures/m02-obsidian-08b-move-to-reviews.png"},
-        {"source": "shared/figures/m02-obsidian-09-context-map.png", "dest": "shared/figures/m02-obsidian-09-context-map.png"},
-        {"source": "shared/figures/m02-obsidian-10-screen-observations.png", "dest": "shared/figures/m02-obsidian-10-screen-observations.png"},
         {"source": "shared/figures/m02-obsidian-11-inspect-draft.png", "dest": "shared/figures/m02-obsidian-11-inspect-draft.png"},
         {"source": "shared/figures/m02-obsidian-12-note-template.png", "dest": "shared/figures/m02-obsidian-12-note-template.png"},
         {"source": "shared/figures/m02-obsidian-13-knowledge-source.png", "dest": "shared/figures/m02-obsidian-13-knowledge-source.png"},
@@ -196,15 +194,9 @@
         {"source": "shared/figures/m02-obsidian-20-review-template.png", "dest": "shared/figures/m02-obsidian-20-review-template.png"},
         {"source": "shared/figures/m02-obsidian-21-admission-reason.png", "dest": "shared/figures/m02-obsidian-21-admission-reason.png"},
         {"source": "shared/figures/m02-obsidian-22-rejection-reason.png", "dest": "shared/figures/m02-obsidian-22-rejection-reason.png"},
-        {"source": "shared/figures/m02-obsidian-23-record-cold-proof.png", "dest": "shared/figures/m02-obsidian-23-record-cold-proof.png"},
         {"source": "shared/figures/m02-obsidian-24-follow-original-source.png", "dest": "shared/figures/m02-obsidian-24-follow-original-source.png"},
-        {"source": "shared/figures/m02-obsidian-25-audit-template.png", "dest": "shared/figures/m02-obsidian-25-audit-template.png"},
-        {"source": "shared/figures/m02-obsidian-26-plan-revision.png", "dest": "shared/figures/m02-obsidian-26-plan-revision.png"},
         {"source": "shared/figures/m02-obsidian-27-edit-focal-note.png", "dest": "shared/figures/m02-obsidian-27-edit-focal-note.png"},
-        {"source": "shared/figures/m02-obsidian-28-new-admission-reason.png", "dest": "shared/figures/m02-obsidian-28-new-admission-reason.png"},
-        {"source": "shared/figures/m02-obsidian-29-missing-rule-observation.png", "dest": "shared/figures/m02-obsidian-29-missing-rule-observation.png"},
-        {"source": "shared/figures/m02-obsidian-30-compare-retrieval.png", "dest": "shared/figures/m02-obsidian-30-compare-retrieval.png"},
-        {"source": "shared/figures/m02-obsidian-31-preserve-records.png", "dest": "shared/figures/m02-obsidian-31-preserve-records.png"}
+        {"source": "shared/figures/m02-obsidian-28-new-admission-reason.png", "dest": "shared/figures/m02-obsidian-28-new-admission-reason.png"}
       ],
       "scripts": [
         {"source": "scripts/second_brain.py", "dest": "scripts/second_brain.py"}

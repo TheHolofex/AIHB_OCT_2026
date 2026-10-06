@@ -10,7 +10,7 @@
 **Performance stage:** Independent  
 **Work surface:** Local Markdown knowledge vault in Obsidian, saved instruction, supplied file screen, and read-only harness launcher  
 **Practical work:** Process the supplied forty-note packet once, review proposed claims against their sources, admit and link useful knowledge, freeze a reviewed content revision, and retrieve from it in a fresh session. Inspect the saved instruction's load proof. Improve one substantive weakness, review the changed content, and demonstrate the result in another revision and fresh run. Test the missing-rule prerequisite and preserve earlier evidence.  
-**Performance evidence:** CONTEXT_MAP identifies the source, editable-vault, frozen-content, and governing-instruction boundaries. SOURCE_AS_DATA_CONTROL records source-as-data handling and clean, hostile, and missing file-screen observations. KNOWLEDGE_VAULT contains linked, source-backed admitted notes, review records, and distinct content revisions. RELOAD_RESULT records matching instruction and content identities, actual knowledge reads and citations, and the missing-rule result. PO02_RESULT records the substantive weakness, focal note, expected and observed effect, and remaining limits.  
+**Performance evidence:** CONTEXT_MAP is the vault's folder layout plus each run's `policy.json`, which together identify the source, editable-vault, frozen-content, and governing-instruction boundaries. SOURCE_AS_DATA_CONTROL is the saved rule and the file screen's clean, hostile, and missing-input results. KNOWLEDGE_VAULT contains linked, source-backed admitted notes, review records, and distinct content revisions. RELOAD_RESULT records matching instruction and content identities, actual knowledge reads and citations, and the missing-rule result. PO02_RESULT is the focal note, its v2 review reason, and the v1 and v2 answers and citations for the question it fixes.  
 **Failure / HOLD:** Hold when source identity changes, a claim lacks exact support, knowledge lacks a matching admission, links are unsafe or unresolved, frozen content changes, the saved instruction or matching load receipt is missing, or a cold answer cites knowledge it did not read. A truthful unsupported first answer identifies a coverage gap for review; it does not by itself establish a runtime failure. Resolve remaining substantive gaps through reviewed content and a fresh run.  
 **Scope boundary:** Core permits a local, human-reviewed Markdown knowledge vault. Autonomous state updates, concurrent agent writes to shared knowledge, custom retrieval infrastructure, and MCP construction remain advanced. This exercise grants no write tool or consequential release authority. Bounded multi-agent orchestration belongs to Module 05; self-contained local-model operation belongs to Module 10.
 **Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module's gate does not consume another module's product.
@@ -23,7 +23,7 @@ A useful second brain preserves claims you can trace to sources and relationship
 
 1. Select and relate source-backed claims while separating evidence from instructions.
 2. Admit reviewed knowledge and prove the saved rule and approved content are what a fresh session used.
-3. Improve one substantive weakness and demonstrate the result in a new content revision and fresh run.
+3. Fix one gap a fresh run reports and demonstrate the result in a new content revision and fresh run.
 
 ## Check the work
 
@@ -33,9 +33,9 @@ Inspect the saved instruction's identity and the instruction_loaded receipt befo
 
 Freeze only the navigation note and admitted Knowledge notes. In each fresh retrieval, check the frozen identity, actual note reads, and citations. The raw packet, proposals, reviews, templates, and source-processing chat stay outside the cold read root. Human source checking takes place outside that run.
 
-Record one substantive weakness and a focal note. Improve the claim, qualification, treatment of a competing source, or consequential relationship; review every changed note before freezing the next revision. Confirm that the fresh run read and cited the focal note, then judge the effect on the answers. Changed wording is not required when an answer was already correct. Cosmetic edits do not demonstrate this objective.
+Pick one gap from the v1 run, an unsupported answer or one that skips part of its question, and name the focal note that fixes it. If every answer is already complete, add evidence that backs up one answer. Review every changed note before freezing the next revision. Confirm that the fresh run read and cited the focal note, and compare its answer with v1's. Cosmetic edits do not demonstrate this objective.
 
-Preserve the first revision and its evidence. Confirm that it still passes its identity check after legitimate edits to the live vault. A missing saved instruction must stop retrieval with exit 2 before provider contact or evidence creation. Restore the same rule bytes for the next fresh run. Record the remaining limits in PO02_RESULT; a digest establishes identity, not truth or authority.
+Preserve the first revision and its evidence. Confirm that it still passes its identity check after legitimate edits to the live vault. A missing saved instruction must stop retrieval with exit 2 before provider contact or evidence creation. Restore the same rule bytes for the next fresh run. A digest establishes identity, not truth or authority.
 
 ## Supplied-case domain (adapter)
 

@@ -2,7 +2,7 @@
 
 ## Session result
 
-The learner builds and controls a reusable second brain: source-backed Knowledge with useful relationships, explicit saved-rule load proof, human admission, and a fresh knowledge-only run. One substantive audit finding leads to reviewed content changes and a new cold run. This exercise is ungraded and its fictional results are for class use only.
+The learner builds and controls a reusable second brain: source-backed Knowledge with useful relationships, explicit saved-rule load proof, human admission, and a fresh knowledge-only run. One gap from the first cold run leads to a reviewed fix and a new cold run. This exercise is ungraded and its fictional results are for class use only.
 
 Use the staff [reference](../reference/REFERENCE.md) for semantics and reuse provenance. Keep it out of public pages, prepared copies, prompts, and model roots. Do not seed a completed graph or staff answer into learner templates.
 
@@ -24,9 +24,9 @@ The file-screen observations are DN-003 exit 0; DN-014/015/016 exit 1 for hostil
 | 40–55 | Source pass | Controls inspected; forty-source ingest and proposal report |
 | 55–90 | Review, link, and admit | Human-prepared Knowledge, useful existing-file links, MOC, short reasons, matching admissions |
 | 90–105 | First cold run | v1 frozen; fresh retrieval with rule/read evidence |
-| 105–135 | Audit, improve, and retest | Substantive focal edit, all changed notes reviewed, v2 prepared, expected effect recorded |
-| 135–150 | Missing rule, identity, and close | Negative prerequisite stops; restored v2 run, actual effect and preserved v1 checked |
-| 150–180 | Discussion | Evidence, useful relationships, remaining limits, bounded internal-use decision |
+| 105–135 | Fix one gap | Focal edit chosen from the v1 output, every changed note reviewed, v2 frozen |
+| 135–150 | Missing rule, rerun, and identity | Negative prerequisite stops; restored v2 run cites the focal note; v1 and v2 checks pass |
+| 150–180 | Discussion | What the run records proved, and what they didn't |
 
 The marks are approximate planning guides, not measurements: follow the learners' progress, not the clock. The positive v2 run follows missing-rule restoration so it also proves the restored rule works.
 
@@ -38,7 +38,7 @@ Watch a Draft appear from an external helper write. Have the learner use Source 
 
 The learner creates and populates target Knowledge notes before adding clickable Related links. When using the blank note template, replace its bare first-line `#` with `# ` followed by the learner's chosen title. The exact link path is Knowledge/KB-NNN, not the Draft twin. MOC starts with `# ` followed by a title; each subsequent nonblank line is one `- [[Knowledge/KB-NNN|label]]` entry. No answer prose, subheadings, numbered bullets, or trailing text belongs there. If an empty note was accidentally created, have the learner inspect it and either remove that empty note or complete/review it in Obsidian. Do not delete it for them or silently admit it.
 
-Check that relationship labels explain a useful connection and MOC remains navigation. Short reason notes record a decisive reason, competing DN where relevant, and a remaining limit without duplicating the full note. Finish links before review; later edits require fresh admission. Observe an edit saved to disk and a close/reopen. Machine receipts alone cannot establish human authorship or GUI use; label an automation pilot as automation.
+Check that relationship labels explain a useful connection and MOC remains navigation. Short reason notes say what the learner checked; they don't repeat the note. Finish links before review; later edits require fresh admission. Observe an edit saved to disk and a close/reopen. Machine receipts alone cannot establish human authorship or GUI use; label an automation pilot as automation.
 
 ## Interpret outcomes separately
 
@@ -47,7 +47,7 @@ Check that relationship labels explain a useful connection and MOC remains navig
 - **Per-proposal HOLD:** runtime proof passed, but a proposal is invalid. Keep independently valid Drafts. Invalid unstaged proposals have entries only in `W/reviews/ingest-report.json`; that is their machine defect record. Do not invoke `review --decision reject` against a nonexistent Draft. An existing staged Draft may be rejected even if its citations are invalid or its text has been edited. The learner repairs or authors Markdown Knowledge without another paid ingestion.
 - **Top-level response format HOLD:** runtime proof passed, but response parsing failed before staging or report creation. No Drafts or `ingest-report.json` exist. Inspect the terminal HOLD, preserved `E/ingest/response.md`, and runtime evidence. Once runtime proof is established, have the learner author replacement Knowledge from the blank Markdown template without another paid ingestion. Runtime-proof failure means stop.
 - **Admission/freeze HOLD:** exact bytes lack review, sources/links are invalid, navigation is incomplete, a note is empty, or a revision would delete Knowledge. Missing admissions produce full Bash/zsh and PowerShell commands naming each affected note. Before running the appropriate command, the learner must create and fill its reason file or replace `--reason-file` with the actual reason path under `vault/Reviews`. Follow the named condition; never rewrite receipts or renew approval silently.
-- **Semantic gap:** a structurally valid run may truthfully report unsupported evidence or omit an important qualification. Use this for substantive audit. Do not label it a runtime failure or fabricate missing evidence.
+- **Semantic gap:** a structurally valid run may truthfully report unsupported evidence or omit an important qualification. Use it as the gap to fix in step 6. Do not label it a runtime failure or fabricate missing evidence.
 
 A completed ingest with evidence consumes its attempt even when it fails. New ingestion needs new W/E. No automatic paid retries or provider/model substitution. The helper starts a new process for each retrieval. A directory listing does not establish a file read. Report EXECUTED, ALLOWED_ABSENT, DENIED, and NOT_ATTEMPTED literally; no live boundary probe is required. DENIED includes a guard refusal or a runtime rejection of an unavailable tool before the guard runs. The latter has a runtime rejection but no guard decision row; it is valid only if the shared audit passes.
 
@@ -59,11 +59,11 @@ Each material answer cites an actually read Knowledge note and matching DN/excer
 
 ## Audit and close
 
-Require a focal Knowledge note and a substantive weakness, before/after, expected effect, and observed effect. A meaningful qualification or counter-source is valid even if v1 was correct. Cosmetic edits do not suffice. Review all changed notes, including reciprocal links, before freezing v2 with previous identity and focus note. The helper proves reviewed byte changes and focal read/citation; the human judges improvement. Unchanged correct answer wording is an honest outcome.
+Require a focal Knowledge note that fixes a gap from the v1 output: an unsupported answer or one that skips part of its question. Added supporting evidence is valid if v1 was already complete. Cosmetic edits do not suffice. Review all changed notes, including reciprocal links, before freezing v2 with previous identity and focus note. The helper proves reviewed byte changes and focal read/citation; the human judges improvement. Unchanged correct answer wording is an honest outcome.
 
 The missing-rule route renames only the work-copy rule, requires exit 2/no provider/no evidence, then restores identical bytes. Use cold-v2 for the positive. Check v1 still passes after legitimate edits to live Knowledge, reasons, and Obsidian state. A remaining substantive gap requires another reviewed revision/fresh run, not overwriting v1/v2 or retrying unchanged questions.
 
-Retain context map, screen predictions/observations, Knowledge and MOC, human reasons, immutable admission records, both identities/snapshots, actual run evidence, focal audit, missing-rule observation, and bounded internal-use decision. Separate runtime completion, provenance, semantic judgment, and actual human/desktop observation. Record an unresolved HOLD without presenting it as complete mastery. Do not collect credentials or unrelated personal files.
+Retain Knowledge and MOC, human reasons, immutable admission records, both identities/snapshots, actual run evidence, and the missing-rule result. Separate runtime completion, provenance, semantic judgment, and actual human/desktop observation. Record an unresolved HOLD without presenting it as complete mastery. Do not collect credentials or unrelated personal files.
 
 ## Operational readiness notes
 
