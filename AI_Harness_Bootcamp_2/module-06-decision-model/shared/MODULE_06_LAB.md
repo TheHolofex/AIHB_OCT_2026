@@ -56,6 +56,8 @@ The skill reads the TypeSafe docs and writes the questions, gates, and code. Ope
 
 [Speculative fan-out](https://docs.typesafe.ai/patterns/fan-out) asks every question you might need in one Jev call, including questions the route may not use. Jev answers them together. Your code then decides which answers matter.
 
+Use it when one item needs several independent judgments, and you do not yet know which of them the next step will use. A support note may be a bug, a billing problem, and a feature request at once. A cargo message may claim release, claim flight acceptance, and also carry an instruction to skip a check. Asking the first question and waiting hides the others and costs another round trip. Ask them together, then ignore the answers the route does not use.
+
 Do not ask the first question, wait, and then ask the next one. A follow-up call is slower, and it hides answers you already could have had. An ignored answer stays on the page. It must not change `PASS`, `RETURN`, or `REVIEW`.
 
 ![One message goes to one Jev call. Used answers can change the route. An ignored answer stays visible and does nothing.](figures/m06-fan-out.png)
@@ -75,9 +77,9 @@ Using the TypeSafe skill, read the fan-out pattern and the OpenRouter Jev docs. 
 
 [Confidence-gated routing](https://docs.typesafe.ai/patterns/confidence-routing) uses two facts from the same answer. The choice says what Jev selected. The confidence says whether you should act on it. Your code holds the gate. A low gate lets more messages through. A high gate sends more of them to a person.
 
-Compare gates on the saved answers. Do not call Jev again to move the gate. The confidence on a choice is not the same number as the top option's probability. Read the confidence the API returns.
+Use it when a wrong automatic action is more costly than a delay. Checking a balance can accept a lower confidence than approving a transfer. On this desk, an ordinary message can pass at a lower gate than a message that claims stock is released. The middle band belongs to a person. Do not use a gate when you only need the best option and a wrong pick is harmless.
 
-A confident release claim still does not create a missing flight acceptance.
+Compare gates on the saved answers. Do not call Jev again to move the gate. The confidence on a choice is not the same number as the top option's probability. Read the confidence the API returns.
 
 ![Saved answers meet a confidence gate. At or above the gate, the desk continues. Below it, a person reads the message. Moving the gate does not call Jev again.](figures/m06-confidence.png)
 
@@ -96,6 +98,8 @@ Using the TypeSafe skill, keep those saved Jev answers. In code, send a message 
 
 [Composite scoring](https://docs.typesafe.ai/patterns/composite-scoring) asks Jev for separate scores, then combines them in code. Urgency, stated mission impact, and handoff risk are different questions. A weight says how much each score counts. Change the weights and the attention order can change. The scores do not.
 
+Use it when several qualities matter at once and a person may want to change which one counts more. A queue can rank by customer frustration, revenue, and time waiting. This desk ranks by urgency, stated mission impact, and handoff risk. Ask for the scores once. Try a new policy by changing the weights, not by asking Jev again. Do not use one blended score when any single failure must stop the work. That needs a separate yes-or-no check.
+
 Do not call Jev again to try a new weight set. A high rank is desk attention. It is not a loading list, a release, or acceptance for BG-F17.
 
 ![Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.](figures/m06-scoring.png)
@@ -103,6 +107,7 @@ Do not call Jev again to try a new weight set. A high rank is desk attention. It
 *Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.*
 
 **In OMP:**
+
 ```text
 Using the TypeSafe skill, read the composite-scoring pattern. Write code that asks jev-1.13 through OpenRouter for urgency, stated mission impact, and handoff risk, then combines those scores with weights. Change the weights and show the new order from the saved scores, without another call. This is desk attention, not cargo allocation.
 ```
@@ -115,6 +120,8 @@ Using the TypeSafe skill, read the composite-scoring pattern. Write code that as
 
 [Intent routing](https://docs.typesafe.ai/patterns/intent-routing) asks Jev what kind of work the request is, then sends it to the matching path. Judge the work being requested, not how serious the cargo sounds.
 
+Use it when different requests need different kinds of help, and a chat reply would be the wrong tool for some of them. A status question can be a lookup. A record question can be a comparison. A draft, an approval, or an uncertain request needs a person. A loud shortage does not make a waiver into a lookup. Route by the work, then show what actually ran.
+
 A status lookup reads one record. A record question compares the supplied stock and flight records for this cargo and BG-F17 at 05:00. A draft, an approval, or an uncertain request comes to you. Show what actually ran. A lookup is not a clearance. A comparison is not dispatch. A queue entry is not approval.
 
 ![Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.](figures/m06-intent.png)
@@ -122,6 +129,7 @@ A status lookup reads one record. A record question compares the supplied stock 
 *Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.*
 
 **In OMP:**
+
 ```text
 Using the TypeSafe skill, read the intent-routing pattern. Write code that asks jev-1.13 through OpenRouter to classify every request in shared/case/requests, then runs the matching path: a status lookup reads a record, a record question compares the supplied stock and flight records, and a draft, approval, or uncertain request comes to me. Show the request and what actually ran. Nothing you run releases cargo or accepts it for BG-F17.
 ```
