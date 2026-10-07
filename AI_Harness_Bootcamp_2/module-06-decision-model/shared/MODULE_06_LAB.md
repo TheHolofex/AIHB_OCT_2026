@@ -1,6 +1,6 @@
 # Module 6 · Use Jev inside Oh My Pi
 
-Open ordinary Oh My Pi, install the TypeSafe skill, and build four decision patterns on the Blue Gauge desk. Each pattern is its own section. Jev answers fixed questions. The chat model talks to you and writes the work. Both use the OpenRouter key you already have. Plan for about three hours.
+Open ordinary Oh My Pi and install the TypeSafe skill. Oh My Pi stays the chat agent. It writes code that calls the TypeSafe API. Jev answers the fixed questions. Your code decides what to do with those answers. Each pattern is its own section. Plan for about three hours.
 
 ## Blue Gauge: the last resupply flight
 
@@ -12,45 +12,47 @@ The messages are in `shared/case/notes`. The requests are in `shared/case/reques
 
 ## Start Oh My Pi
 
-Use the same terminal where Oh My Pi already works. Start in this module folder so the session can read the case. The extra config sets the judge role to Jev for this session only. It does not change the judge role saved on your computer.
+Use the same terminal where Oh My Pi already works. Start in this module folder so the session can read the case. Do not set a judge role. Jev is not the chat model.
+
+Create a key at the [TypeSafe dashboard](https://console.typesafe.ai/keys). Export it for this terminal only. Do not save it in a file, and do not paste it into the chat.
 
 **Terminal: Bash or zsh, ordinary user.**
 
 ```bash
 cd "$HOME/Documents/AIHB_OCT_2026/AI_Harness_Bootcamp_2/module-06-decision-model"
-omp --model openrouter/anthropic/claude-sonnet-4.6 --config shared/controls/judge.yml
+export TYPESAFE_API_KEY='YOUR_COMPLETE_API_KEY'
+omp
 ```
 
 **Terminal: PowerShell, ordinary user.**
 
 ```powershell
 Set-Location "$HOME\Documents\AIHB_OCT_2026\AI_Harness_Bootcamp_2\module-06-decision-model"
-omp --model openrouter/anthropic/claude-sonnet-4.6 --config shared/controls/judge.yml
+$env:TYPESAFE_API_KEY = 'YOUR_COMPLETE_API_KEY'
+omp
 ```
 
-**Expected:** Oh My Pi opens. The chat model is `openrouter/anthropic/claude-sonnet-4.6`. The judge role is `openrouter/typesafe/jev-1.13`.
+**Expected:** Oh My Pi opens in this folder. The chat model is the one you already use.
 
-**Stop:** Stop if `omp` is not found, or if the session asks for a separate TypeSafe key.
+**Stop:** Stop if `omp` is not found, or if the key appears on screen.
 
-**Recovery:** Return to [setup](../../module-00-setup/README.md) if Oh My Pi is missing. The OpenRouter key already in this terminal is the only key. Do not start `scripts/blue_gauge.py`.
+**Recovery:** Return to [setup](../../module-00-setup/README.md) if Oh My Pi is missing. Replace the placeholder with the complete key, then start `omp` again.
 
 ## Install the TypeSafe skill
 
-In that Oh My Pi session, paste this. It is the install step from the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart#vibe-it-the-agent-skill). One extra constraint keeps the call on the Jev build you already have.
+In that session, paste the install step from the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart#vibe-it-the-agent-skill).
 
 ```text
 Install the TypeSafe skill. If you're in Claude Code, run `claude plugin marketplace add typesafe-ai/skills`, then `claude plugin install typesafe@typesafe-ai`. If you're in another agent, run `npx skills add typesafe-ai/skills --skill typesafe-ai` and select your agent. Use one installation method. You can read the skill directly at https://github.com/typesafe-ai/skills/blob/main/skills/typesafe-ai/SKILL.md (raw: https://raw.githubusercontent.com/typesafe-ai/skills/main/skills/typesafe-ai/SKILL.md). Then use the TypeSafe skill when working on this project.
-
-This session is Oh My Pi. Call Jev from this session as openrouter/typesafe/jev-1.13 through the OpenRouter key already in the environment. Do not ask for a TypeSafe key. Do not use jev-latest. Do not run scripts/blue_gauge.py.
 ```
 
-**Expected:** The skill is loaded, and the agent agrees to use `openrouter/typesafe/jev-1.13`.
+The skill's job is to read the current TypeSafe docs and write code that calls Jev. Code owns the route, the gate, the weights, and the handler. Jev only returns typed answers. Put the questions and thresholds in one place, and read them before you accept them. A Jev answer is not cargo authority.
 
-**Stop:** Stop if it asks for `TYPESAFE_API_KEY`, switches the judge to another model, or starts the course Python launcher.
+**Expected:** The skill is loaded. The agent agrees to call the TypeSafe API from code, using `TYPESAFE_API_KEY` from the environment.
 
-**Recovery:** Paste the last paragraph again. If the installer does not list Oh My Pi, tell it to read the raw skill file above and use that.
+**Stop:** Stop if it tries to make Jev the chat model, prints the key, or writes the key into a file.
 
-Read the questions the agent writes before you accept them. A Jev answer is not cargo authority.
+**Recovery:** Paste the install prompt again. If the installer does not list Oh My Pi, tell it to read the raw skill file in that prompt and use that.
 
 ## 1. Speculative fan-out
 
@@ -65,10 +67,10 @@ Do not ask the first question, wait, and then ask the next one. A follow-up call
 **In OMP:**
 
 ```text
-Using the TypeSafe skill, read the desk rules and the practice messages in shared/case/notes/tuning. Ask Jev several questions about each message in one call, including one question the route may ignore. Show which answers the route used and which it ignored. Use openrouter/typesafe/jev-1.13.
+Using the TypeSafe skill, read the fan-out pattern and the current API docs. Write code that sends each practice message in shared/case/notes/tuning to Jev with several questions in one call, including one the route may ignore. Put the questions in one place. Show the actual request, which answers the route used, and which it ignored.
 ```
 
-**Expected:** One Jev call per message carries every question. An ignored answer is marked and does not change the route.
+**Expected:** One API call per message carries every question. An ignored answer is marked and does not change the route.
 
 **Stop:** Stop if it asks the questions one at a time when you asked for one call, or if a message route is treated as clearance.
 
@@ -76,7 +78,7 @@ Using the TypeSafe skill, read the desk rules and the practice messages in share
 
 [Confidence-gated routing](https://docs.typesafe.ai/patterns/confidence-routing) uses two facts from the same answer. The choice says what Jev selected. The confidence says whether you should act on it. Your code holds the gate. A low gate lets more messages through. A high gate sends more of them to a person.
 
-Compare gates on the saved answers. Do not call Jev again to move the gate. The confidence on a choice is not the same number as the top option's probability. Read the confidence Jev returns.
+Compare gates on the saved answers. Do not call Jev again to move the gate. The confidence on a choice is not the same number as the top option's probability. Read the confidence the API returns.
 
 A confident release claim still does not create a missing flight acceptance.
 
@@ -87,7 +89,7 @@ A confident release claim still does not create a missing flight acceptance.
 **In OMP:**
 
 ```text
-Using the TypeSafe skill, keep those saved Jev answers. Send a message to a person when confidence on the chosen answer is low. Compare two gates on the same answers. Do not call Jev again for the comparison.
+Using the TypeSafe skill, keep those saved Jev answers. In code, send a message to a person when confidence on the chosen answer is low. Compare two gates on the same answers. Do not call the API again for the comparison. Keep the gate next to the questions.
 ```
 
 **Expected:** The second gate changes who waits for a person, and it makes no new Jev call.
@@ -107,7 +109,7 @@ Do not call Jev again to try a new weight set. A high rank is desk attention. It
 **In OMP:**
 
 ```text
-Using the TypeSafe skill, score the Blue Gauge messages for urgency, stated mission impact, and handoff risk. Combine those scores with weights. Then change the weights and show the new order from the saved scores, without another Jev call. This is desk attention, not cargo allocation.
+Using the TypeSafe skill, read the composite-scoring pattern. Write code that asks Jev for urgency, stated mission impact, and handoff risk, then combines those scores with weights. Change the weights and show the new order from the saved scores, without another API call. This is desk attention, not cargo allocation.
 ```
 
 **Expected:** You can see each score's contribution. The new weights change the order, or you can see why a message did not move. No new Jev call.
@@ -127,7 +129,7 @@ A status lookup reads one record. A record question compares the supplied stock 
 **In OMP:**
 
 ```text
-Using the TypeSafe skill, classify every request in shared/case/requests with Jev. Route a status lookup to a record lookup, a record question to a comparison of the supplied stock and flight records, and a draft, approval, or uncertain request to me. Show what actually ran. Nothing you run releases cargo or accepts it for BG-F17.
+Using the TypeSafe skill, read the intent-routing pattern. Write code that asks Jev to classify every request in shared/case/requests, then runs the matching path: a status lookup reads a record, a record question compares the supplied stock and flight records, and a draft, approval, or uncertain request comes to me. Show the API call and what actually ran. Nothing you run releases cargo or accepts it for BG-F17.
 ```
 
 **Expected:** Each request has a typed intent and a path you can inspect. An approval comes to you. A lookup or comparison cites `scans.json` or `flight_acceptances.json`.

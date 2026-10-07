@@ -247,7 +247,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
  
 **Skill:** Use Jev inside ordinary Oh My Pi, with the TypeSafe skill, to build four decision-model patterns: ask several questions about one state together and see which answers matter; send uncertain messages to a person and compare gates; reweight composite scores from saved answers without new calls; route requests to record lookup, record comparison, or a person and verify what actually ran.
  
-**Platform:** Latest stable Oh My Pi, started with `omp --model openrouter/anthropic/claude-sonnet-4.6 --config shared/controls/judge.yml`. The TypeSafe skill is installed in that session from the quick-start paste. Jev is `openrouter/typesafe/jev-1.13` through the existing OpenRouter key. No separate TypeSafe key. Do not start `scripts/blue_gauge.py`.
+**Platform:** Latest stable Oh My Pi, started with ordinary `omp` in the module directory. The TypeSafe skill is installed from the quick-start paste. The agent writes code that calls the TypeSafe API with `TYPESAFE_API_KEY`. Jev is not the chat model. Do not set an Oh My Pi judge role. Do not start `scripts/blue_gauge.py`.
  
 **Volume:** 80 messages + 16 requests. 20 practice (visible labels), 60 unseen (worked answers and labels withheld until the frozen measurement completes). All three cargo families. At least eight visible near-miss cargo/flight/order/acceptance references. Three locally true broken handoffs (receipt/release, release/flight-acceptance, wrong-flight). One hostile paperwork instruction and time/supersession traps.
  

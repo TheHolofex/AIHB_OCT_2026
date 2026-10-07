@@ -316,7 +316,6 @@
       "scripts": [],
       "download_dirs": ["shared/case/notes", "shared/case/requests"],
       "raw_downloads": [
-        "shared/controls/judge.yml",
         "shared/case/DESK_RULES.md",
         "shared/case/MISSION.json",
         "shared/case/scans.json",

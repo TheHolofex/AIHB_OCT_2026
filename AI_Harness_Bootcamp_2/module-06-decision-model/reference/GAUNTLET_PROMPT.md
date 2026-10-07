@@ -1,15 +1,14 @@
 # Gauntlet prompt — Module 6 Blue Gauge
 
-Review the Module 6 learner pages (README.md and shared/MODULE_06_LAB.md) against this path: ordinary Oh My Pi, session judge `openrouter/typesafe/jev-1.13`, TypeSafe skill install from the quick start, then the four patterns built in that session.
-
-The learner does not start `scripts/blue_gauge.py` and does not need a TypeSafe key. The chat model stays `openrouter/anthropic/claude-sonnet-4.6`.
+Review the Module 6 learner pages (README.md and shared/MODULE_06_LAB.md) against TypeSafe's coding-agent path: ordinary Oh My Pi, the TypeSafe skill from the quick start, and code that calls the TypeSafe API. Jev is not the chat model. There is no Oh My Pi judge-role overlay.
 
 Review criteria:
 
-- Start is `omp` with the chat model and `shared/controls/judge.yml`. No Python launcher.
-- The skill install prompt is the quick-start paste, plus the OpenRouter Jev constraint.
-- Four patterns, in TypeSafe order: fan-out, confidence routing, composite scoring, intent routing.
-- Each pattern has one prompt, an expected result, and a stop.
+- Start is `omp` after `TYPESAFE_API_KEY` is exported for that terminal. No `--config` judge file. No Python launcher.
+- The skill install prompt is the quick-start paste, without an OpenRouter judge constraint.
+- Four sections, in TypeSafe order: fan-out, confidence routing, composite scoring, intent routing.
+- Each section teaches the pattern, shows its diagram, and asks the agent to write the API call.
+- Questions and thresholds stay in one place. Code owns the route, gate, weights, and handler.
 - No route, score, or handler result is cargo clearance, flight acceptance, or dispatch.
 - The handoff is labeled "review packet — not a manifest or movement order".
-- `jev-latest`, a separate TypeSafe key, and the course Python launcher are refused.
+- The key is not printed or saved in a file.
