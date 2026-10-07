@@ -1,8 +1,8 @@
 # Reference: Module 6 — Use Jev inside Oh My Pi
 
-**Frozen on:** 2026-10-07 (revision 8; native four-pattern implementation with deterministic intent handlers)
+**Frozen on:** 2026-10-07 (revision 9; learner close measures chat-token use. Revision 8 native four-pattern implementation retained)
 **Scope:** one Wednesday block of about three hours. Learners open ordinary Oh My Pi, install the TypeSafe skill, and have it write code that calls `jev-1.13` through OpenRouter with `OPENROUTER_API_KEY`. Jev is not the chat model. They do not create a TypeSafe key, set an Oh My Pi judge role, or start `scripts/blue_gauge.py`. The launcher, guard, and extension notes below are historical staff mechanics, not the learner path.
-**Course objective:** Using Jev inside Oh My Pi, configure and compare four decision-model patterns: ask several questions about the same state in one request and inspect which answers matter; send uncertain messages to review and measure the effect of different gates; combine normalized scores and change priorities without another Jev call; route requests to record lookup, deterministic record comparison, or human queue and verify what actually ran. One mastery capability with at most three enabling objectives. Earlier capabilities (typed questions, labeled measurement, source checks, bounded native agent work) are prerequisites.
+**Course objective:** Using Jev inside Oh My Pi, configure and compare four decision-model patterns: ask several questions about the same state in one request and inspect which answers matter; send uncertain messages to review and measure the effect of different gates; combine normalized scores and change priorities without another Jev call; route requests to record lookup, deterministic record comparison, or human queue and verify what actually ran. The close measures that those closed decisions stay out of the chat model. One mastery capability with at most three enabling objectives. Earlier capabilities (typed questions, labeled measurement, source checks, bounded native agent work) are prerequisites.
 
 ## 1. The need
 
@@ -101,6 +101,8 @@ Revision 6 replaced the oxygen-cylinder one-shot selection/repair/tuning/freeze/
 Revision 7 clarifies request-work complexity without changing score levels or authority gates, adds the observed intent-only recovery above, and gives the learner the distinction between applying a desk rule and deciding whether to waive it. The recovery does not establish completed specialist lanes or a cost-saving claim.
 
 Revision 8 replaces specialist completions and the general-assistant baseline with record lookup, deterministic record comparison, and the human officer queue. Drafts, approvals, uncertain requests, and ambiguous identities remain human-owned. `max_comparison_complexity` retains a maximum of 1. Intent mode is routed-only; the issued cell is `run({judgeBatch,plan})`. A fresh intent-only check can use practice-visible single-source requests and queue ambiguous requests without disclosing held-out worked records. A single held-out request source still requires the frozen unseen measurement. Source visibility is saved in the immutable plan and retained during replay.
+
+Revision 9 replaces the learner-facing review-packet close with a measured comparison of chat-model tokens and Jev tokens on BG-001 through BG-005. Closed decisions stay out of the chat. A gate change adds no call. A missing cost is "not recorded", not zero. Published OpenRouter comparisons are cited as other inputs, not as this desk's result. `OMP_INSTRUCTIONS.md` still describes the historical launcher handoff; learners do not start that launcher. Historical receipts are unchanged.
 
 ## 8. Latest-runtime compatibility smoke, 2026-10-05 UTC (historical boundary check)
 

@@ -181,10 +181,48 @@ Using the TypeSafe skill, read the citation-check cookbook. Write code that chec
 
 **Stop:** Stop if a fluent sentence is treated as support, or if a missing quote is sent to Jev.
 
-## Hand off
+## 6. Keep the chat model off closed decisions
+
+A token is the unit the provider counts. A chat model bills the tokens you send and the tokens it writes back, including any reasoning. The next turn sends that history again. Jev bills the tokens you send. It counts output tokens and does not bill them. On 7 October 2026 the [Jev model page](https://openrouter.ai/typesafe/jev-1.13) listed $0.042 per million input tokens and $0 per million output tokens. Read that page before you budget. The rate is not the cut that matters.
+
+The cut is which model sees the note.
+
+A closed decision ends in a value you already listed: a route, a score, a yes or no, a support check. That is a Jev question. Asking the chat model to write the same value pays for a paragraph you then parse, and the paragraph stays in the session. Send the note text and the questions to `jev-1.13`. Your code reads the typed answer. The chat model is not in that request.
+
+Send only the state the question needs. A chat turn re-sends the session: the skill, the desk rules, earlier notes, and the model's own replies. A Jev call sends the note, or the note plus the passage the question compares. Desk rules stay in your code. Do not paste the packet into the chat to save a call. Extra text in `state` also makes the answer worse. Jev reads literally, and [irrelevant detail lowers accuracy](https://docs.typesafe.ai/model-jaggedness/jev-1.13).
+
+Call the chat model only when the product is words, and only for that item. A lookup reads `scans.json` or `flight_acceptances.json`. A comparison is code. A draft is a chat completion, after the saved intent already says this request is a draft, and only for that request. If a person needs a written reason, ask for it on the review-queue items only, and give the chat model the saved answer plus the source passage. Do not ask it to draft, rank, or explain all eighty notes. Eighty notes in the chat is eighty notes of input, plus the verdicts, plus that transcript on the next turn. Eighty notes judged by Jev never enter the session.
+
+Changing a gate or a weight reads saved answers. That adds no Jev tokens and no chat tokens. Asking the chat model what a different gate would do puts the notes back in.
+
+Read `usage` on the response, not a summary of it. Jev reports input tokens, output tokens, and a cost. A chat completion reports prompt tokens and completion tokens, and bills both. A missing cost is "not recorded", not zero. The turn in which you ask Oh My Pi to write this comparison can still spend chat tokens. That turn is not the cost of the decision. Report them apart.
+
+Other people's measurements are not this desk. On 19 September 2026, OpenRouter triaged 60 support tickets: Jev cost about $0.025 per 1,000, a small chat model about $0.09, and a frontier chat model about $2.88, with intent accuracy essentially tied ([Jev vs LLM](https://openrouter.ai/blog/tutorials/jev-vs-llm-when-to-use-each/)). On a 50-question set, drafting with a cheap chat model, checking support with Jev, and calling a frontier model only when that check failed cost $0.012, against $0.175 for calling the frontier model every time ([verified cascade](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade)). Those inputs are not these notes. Your `usage` fields are the receipt.
+
+![Three paths. The chat path bills input and output and resends the history. The decision path bills input only, and a new gate reads saved answers. A draft is one chat call; a lookup never enters the chat.](figures/m06-tokens.png)
+
+*Three paths. The chat path bills input and output and resends the history. The decision path bills input only, and a new gate reads saved answers. A draft is one chat call; a lookup never enters the chat.*
+
+**In OMP:**
 
 ```text
-Using the TypeSafe skill, write the airlift-desk handoff. Five rows: pattern, what I changed, what I observed, and the limit. Name one message or request I inspected for each pattern, with its source. List what a person still has to decide, and who owns it. Label it "review packet — not a manifest or movement order".
+Using the TypeSafe skill, read https://openrouter.ai/blog/tutorials/jev-vs-llm-when-to-use-each/ and the usage object on a Jev response. Do not paste the notes into this chat. Do not print the key.
+
+Write code that prints usage from the API responses, not from this conversation.
+
+1. For BG-001 through BG-005 in shared/case/notes/tuning, call the chat model you already use through OpenRouter chat completions at POST https://openrouter.ai/api/v1/chat/completions. If the session does not name that model, use openrouter/anthropic/claude-sonnet-4.6. Ask only for a route of PASS, RETURN, or REVIEW and a confidence, using the same route criteria you already wrote. Cap the completion at 128 tokens. Record prompt tokens, completion tokens, and cost. Do not send the other notes, the desk rules file, or earlier replies. Do not use jev-1.13 or jev-latest for this call.
+
+2. For the same five notes, call jev-1.13 through the OpenRouter path you already use. State is the note text alone. Ask the route question and one score in that same call. Record input tokens, output tokens, and cost. Output tokens are not billed. If you already saved usage for these exact questions and notes, reuse it and do not call again.
+
+3. Change one gate on the saved answers and print the new routes. That step must make zero new Jev requests and zero new chat completions.
+
+Using the saved intent answers, name one request that is a lookup and one that needs words. The lookup must read scans.json or flight_acceptances.json and must not call the chat model. Do not draft the prose request. Do not explain the other notes.
+
+Print each usage object as returned. Label a missing cost "not recorded". A route is not clearance, flight acceptance, or dispatch.
 ```
 
-**Expected:** Every row names a real message or request from this session. No row claims cargo clearance, flight acceptance, or dispatch.
+**Expected:** The printed usage shows chat prompt and completion tokens beside Jev input tokens, with Jev output tokens marked not billed. The gate change adds no model call. The lookup cites `scans.json` or `flight_acceptances.json` and does not call the chat model. The request that needs words was not sent to the chat model.
+
+**Stop:** Stop if the notes are pasted into the chat, if Jev is used as the chat model, if `jev-latest` appears, if the key is printed, if a missing cost is written as zero, if the gate change makes a new call, or if a token count is treated as stock release, flight acceptance, or dispatch.
+
+**Recovery:** If the saved Jev answers have no usage, call `jev-1.13` again for BG-001 through BG-005 only. If a chat completion comes back empty under the 128-token cap, raise that cap to 256 once and record both. Do not send BG-006 through BG-080 to either model for this comparison.

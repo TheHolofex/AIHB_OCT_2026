@@ -16,9 +16,9 @@ The learner opens ordinary Oh My Pi in the module directory. Oh My Pi remains th
 | 0:20–1:00 | Section 1, speculative fan-out | One multi-question API call per message; ignored answers marked |
 | 1:00–1:30 | Section 2, confidence-gated routing | Two gates on saved answers; no new API call for the comparison |
 | 1:30–2:10 | Section 3, composite scoring | New order from saved scores; no new API call |
-| 2:10–2:30 | Section 4, intent routing | Lookup, comparison, and human path are distinct; approvals come to the learner |
-| 2:30–2:50 | Section 5, hallucination check | Missing quote needs no Jev call; a found quote is supports, contradicts, or says nothing |
-| 2:50–3:00 | Hand off | Five rows, real IDs, review packet not a manifest |
+| 2:10–2:25 | Section 4, intent routing | Lookup, comparison, and human path are distinct; approvals come to the learner |
+| 2:25–2:40 | Section 5, hallucination check | Missing quote needs no Jev call; a found quote is supports, contradicts, or says nothing |
+| 2:40–3:00 | Section 6, keep the chat model off closed decisions | Five notes compared from API usage; gate change adds no call; lookup does not call the chat model; missing cost is not recorded |
 
 Clock marks are planning guides. The day's clock is in `COURSE_MAP.md`.
 
@@ -30,4 +30,5 @@ You may point to a desk rule, a source file, or the skill install prompt. Do not
 
 - The OpenRouter key is missing, or `jev-1.13` is rejected: hold the live Jev calls.
 - The agent asks for a TypeSafe key, uses `jev-latest`, makes Jev the chat model, prints the key, or writes the key into a file: stop that path and return to the lab.
-- A route, score, or handler result is treated as cargo clearance, flight acceptance, or dispatch: return the handoff for correction.
+- A route, score, handler result, or token count is treated as cargo clearance, flight acceptance, or dispatch: stop and return to the desk rules.
+- The notes are pasted into the chat, Jev is used as the chat model, or a missing cost is written as zero: stop that path and return to the lab.

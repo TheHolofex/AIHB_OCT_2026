@@ -77,7 +77,7 @@ Before this project, the learner could ask typed questions, check source support
 
 Typed questions, labeled measurement, source checks, and native agent work are prerequisites from earlier modules.
 
-**Evidence:** `PATTERN_CONTROLS`; `PATTERN_COMPARISONS`; `HELD_OUT_MEASURE`; `PO06_RESULT`. Inspected revisions, native judge counts, routes, contributions and rank changes, actual handler records, the frozen unseen result, and a review packet naming source references and human owners.
+**Evidence:** `PATTERN_CONTROLS`; `PATTERN_COMPARISONS`; `HELD_OUT_MEASURE`; `PO06_RESULT`. Inspected revisions, native judge counts, routes, contributions and rank changes, actual handler records, the frozen unseen result, and a usage comparison that keeps chat completions off closed decisions, with a missing cost labeled not recorded.
 **Owner:** Module 06
 
 ## PO-07 — Automate a batch into a spreadsheet

@@ -245,7 +245,7 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
  
  **Stake:** A message can promote a receipt to clearance, treat pending or wrong-flight acceptance as current, or instruct the desk to skip a check. If an overstating or instructed message passes, unsupported cargo enters the packet or a needed review is lost. The patterns make ask-once cost, gate effects, priority changes, and handler choice visible without granting release or dispatch authority.
  
-**Skill:** Use Jev inside ordinary Oh My Pi, with the TypeSafe skill, to build four decision-model patterns: ask several questions about one state together and see which answers matter; send uncertain messages to a person and compare gates; reweight composite scores from saved answers without new calls; route requests to record lookup, record comparison, or a person and verify what actually ran.
+**Skill:** Use Jev inside ordinary Oh My Pi, with the TypeSafe skill, to build four decision-model patterns: ask several questions about one state together and see which answers matter; send uncertain messages to a person and compare gates; reweight composite scores from saved answers without new calls; route requests to record lookup, record comparison, or a person and verify what actually ran. Then keep the chat model off those closed decisions and read the token counts from the API responses.
  
 **Platform:** Latest stable Oh My Pi, started with ordinary `omp` in the module directory. The TypeSafe skill is installed from the quick-start paste. The agent writes code that calls `jev-1.13` through OpenRouter with `OPENROUTER_API_KEY`. Jev is not the chat model. Do not create a TypeSafe key. Do not set an Oh My Pi judge role. Do not start `scripts/blue_gauge.py`.
  
