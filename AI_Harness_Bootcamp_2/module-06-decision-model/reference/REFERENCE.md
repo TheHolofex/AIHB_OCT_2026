@@ -1,7 +1,7 @@
 # Reference: Module 6 — Use Jev inside Oh My Pi
 
 **Frozen on:** 2026-10-07 (revision 8; native four-pattern implementation with deterministic intent handlers)
-**Scope:** one Wednesday block of about three hours built around the fictional Blue Gauge airlift desk for Flight BG-F17 from Aster Airhead to Forward Support Base Kestrel at the fixed 2026-10-15 05:00 UTC+02 snapshot. Eighty overnight messages (BG-001–BG-080) and sixteen requests (BGR-001–BGR-016) operate against supplied stock records, flight-acceptance records, and desk rules. All learner interaction occurs inside the native Oh My Pi TUI.
+**Scope:** one Wednesday block of about three hours. Learners open ordinary Oh My Pi, install the TypeSafe skill, and build the four patterns on the Blue Gauge desk. The session judge is `openrouter/typesafe/jev-1.13` through the existing OpenRouter key. They do not start `scripts/blue_gauge.py`. The launcher, guard, and extension notes below are historical staff mechanics, not the learner path.
 **Course objective:** Using Jev inside Oh My Pi, configure and compare four decision-model patterns: ask several questions about the same state in one request and inspect which answers matter; send uncertain messages to review and measure the effect of different gates; combine normalized scores and change priorities without another Jev call; route requests to record lookup, deterministic record comparison, or human queue and verify what actually ran. One mastery capability with at most three enabling objectives. Earlier capabilities (typed questions, labeled measurement, source checks, bounded native agent work) are prerequisites.
 
 ## 1. The need

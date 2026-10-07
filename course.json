@@ -308,11 +308,10 @@
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["blue-gauge-the-last-resupply-flight", "start-oh-my-pi"], "optional_sections": []}}
       ],
       "figures": [],
-      "scripts": [
-        {"source": "scripts/blue_gauge.py", "dest": "scripts/blue_gauge.py"}
-      ],
-      "download_dirs": ["shared/case/notes", "shared/case/requests", "shared/controls"],
+      "scripts": [],
+      "download_dirs": ["shared/case/notes", "shared/case/requests"],
       "raw_downloads": [
+        "shared/controls/judge.yml",
         "shared/case/DESK_RULES.md",
         "shared/case/MISSION.json",
         "shared/case/scans.json",
