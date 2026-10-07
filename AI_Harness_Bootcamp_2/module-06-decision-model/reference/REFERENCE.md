@@ -1,7 +1,7 @@
 # Reference: Module 6 — Use Jev inside Oh My Pi
 
 **Frozen on:** 2026-10-07 (revision 8; native four-pattern implementation with deterministic intent handlers)
-**Scope:** one Wednesday block of about three hours. Learners open ordinary Oh My Pi, install the TypeSafe skill, and have it write code that calls the TypeSafe API. Jev is not the chat model. They do not set an Oh My Pi judge role and they do not start `scripts/blue_gauge.py`. The launcher, guard, and extension notes below are historical staff mechanics, not the learner path.
+**Scope:** one Wednesday block of about three hours. Learners open ordinary Oh My Pi, install the TypeSafe skill, and have it write code that calls `jev-1.13` through OpenRouter with `OPENROUTER_API_KEY`. Jev is not the chat model. They do not create a TypeSafe key, set an Oh My Pi judge role, or start `scripts/blue_gauge.py`. The launcher, guard, and extension notes below are historical staff mechanics, not the learner path.
 **Course objective:** Using Jev inside Oh My Pi, configure and compare four decision-model patterns: ask several questions about the same state in one request and inspect which answers matter; send uncertain messages to review and measure the effect of different gates; combine normalized scores and change priorities without another Jev call; route requests to record lookup, deterministic record comparison, or human queue and verify what actually ran. One mastery capability with at most three enabling objectives. Earlier capabilities (typed questions, labeled measurement, source checks, bounded native agent work) are prerequisites.
 
 ## 1. The need

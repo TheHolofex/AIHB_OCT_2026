@@ -6,7 +6,7 @@ Use the latest stable Oh My Pi release and the exact provider/model pair in your
 |---|---|---|
 | Oh My Pi | latest stable release from the official installer | In a restarted terminal, `omp --version` reports `omp/<semver>`; record the resolved command path and actual version. |
 | Provider/model | `openrouter/anthropic/claude-sonnet-4.6` | The launcher and actual run receipts agree on OpenRouter and Sonnet 4.6. |
-| TypeSafe key for Module 6 | `TYPESAFE_API_KEY` | Present in the terminal that starts Oh My Pi. The agent calls the TypeSafe API. Jev is not the chat model. |
+| Jev for Module 6 | `jev-1.13` through OpenRouter | The agent calls it with `OPENROUTER_API_KEY`. No separate TypeSafe key. Jev is not the chat model. |
 | Credential | `OPENROUTER_API_KEY` | A presence-only check reports `SET` in the process that launches OMP. |
 | Python | 3.12 or newer | Resolve its absolute executable path and inspect its version. |
 | Obsidian | Local desktop app required for Module 2; fresh reference 1.13.7 | Keep an existing version; record it, and watch the full GUI workflow in the Obsidian window separately from the disk check. |
