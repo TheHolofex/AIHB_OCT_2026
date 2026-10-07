@@ -332,19 +332,19 @@
       "directory": "module-07-batch-workflow",
       "title": "Module 7 · Automate a spreadsheet with an agent",
       "case_name": "White Rack",
-      "summary": "Connect an n8n agent to OpenRouter and have it write a local spreadsheet from a batch.",
-      "nav_summary": "n8n agent · local spreadsheet",
+      "summary": "Build one n8n workflow that asks a model for a spreadsheet and writes the file.",
+      "nav_summary": "One n8n workflow · local spreadsheet",
       "outcomes": {
-        "can": "Put an AI Agent on a local n8n workflow, connect it to OpenRouter with your own key, and have that agent create a spreadsheet on your computer from a batch you give it.",
+        "can": "Build one local n8n workflow, connect it to OpenRouter with your own key, and download the spreadsheet that workflow writes from a batch you give it.",
         "will": [
-                "Add the agent, connect the OpenRouter chat model with your key, and give it one tool that writes the spreadsheet.",
+                "Add one workflow that reads the batch, asks the model for a row per lot, and writes the spreadsheet.",
                 "Run the workflow from the editor and download the spreadsheet file to your computer.",
                 "Check that the file has every source lot once, and record any row the rules say is wrong."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": ["how-the-workflow-runs", "white-rack", "open-n8n"], "optional_sections": []}}
       ],
       "figures": [],
       "scripts": [
