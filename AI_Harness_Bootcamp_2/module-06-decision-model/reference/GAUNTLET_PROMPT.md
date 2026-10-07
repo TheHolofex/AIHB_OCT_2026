@@ -6,7 +6,7 @@ Review criteria:
 
 - Start is `omp` in the module folder. No `TYPESAFE_API_KEY`. No `--config` judge file. No Python launcher.
 - The skill install prompt is the quick-start paste, plus the OpenRouter `jev-1.13` constraint.
-- Four sections, in TypeSafe order: fan-out, confidence routing, composite scoring, intent routing.
+- Five sections: fan-out, confidence routing, composite scoring, intent routing, and a citation check.
 - Each section teaches the pattern, shows its diagram, and asks the agent to write the OpenRouter call.
 - Questions and thresholds stay in one place. Code owns the route, gate, weights, and handler.
 - No route, score, or handler result is cargo clearance, flight acceptance, or dispatch.

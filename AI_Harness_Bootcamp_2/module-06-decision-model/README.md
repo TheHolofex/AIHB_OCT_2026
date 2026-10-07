@@ -1,6 +1,6 @@
 # Module 6 · Use Jev inside Oh My Pi
 
-You already have Oh My Pi and an OpenRouter key. Install the TypeSafe skill in that session and have it write code that calls Jev through OpenRouter as `jev-1.13`. Your code builds four patterns, one section at a time: speculative fan-out, confidence-gated routing, composite scoring, and intent routing. Allow about three hours. [Open the lab](shared/MODULE_06_LAB.md).
+You already have Oh My Pi and an OpenRouter key. Install the TypeSafe skill in that session and have it write code that calls Jev through OpenRouter as `jev-1.13`. Your code builds five checks, one section at a time: speculative fan-out, confidence-gated routing, composite scoring, intent routing, and a hallucination check against the source. Allow about three hours. [Open the lab](shared/MODULE_06_LAB.md).
 
 ## Blue Gauge: the last resupply flight
 

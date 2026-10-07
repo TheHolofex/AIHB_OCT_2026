@@ -16,8 +16,9 @@ The learner opens ordinary Oh My Pi in the module directory. Oh My Pi remains th
 | 0:20–1:00 | Section 1, speculative fan-out | One multi-question API call per message; ignored answers marked |
 | 1:00–1:30 | Section 2, confidence-gated routing | Two gates on saved answers; no new API call for the comparison |
 | 1:30–2:10 | Section 3, composite scoring | New order from saved scores; no new API call |
-| 2:10–2:40 | Section 4, intent routing | Lookup, comparison, and human path are distinct; approvals come to the learner |
-| 2:40–3:00 | Hand off | Four rows, real IDs, review packet not a manifest |
+| 2:10–2:30 | Section 4, intent routing | Lookup, comparison, and human path are distinct; approvals come to the learner |
+| 2:30–2:50 | Section 5, hallucination check | Missing quote needs no Jev call; a found quote is supports, contradicts, or says nothing |
+| 2:50–3:00 | Hand off | Five rows, real IDs, review packet not a manifest |
 
 Clock marks are planning guides. The day's clock is in `COURSE_MAP.md`.
 

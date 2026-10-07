@@ -1,6 +1,6 @@
 # Module 6 · Use Jev inside Oh My Pi
 
-Open ordinary Oh My Pi and install the TypeSafe skill. Oh My Pi stays the chat agent. It writes code that calls Jev through OpenRouter, using the key you already have. Jev answers the fixed questions. Your code decides what to do with those answers. Each pattern is its own section. Plan for about three hours.
+Open ordinary Oh My Pi and install the TypeSafe skill. Oh My Pi stays the chat agent. It writes code that calls Jev through OpenRouter, using the key you already have. Jev answers the fixed questions. Your code decides what to do with those answers. Each check is its own section. Plan for about three hours.
 
 ## Blue Gauge: the last resupply flight
 
@@ -138,10 +138,32 @@ Using the TypeSafe skill, read the intent-routing pattern. Write code that asks 
 
 **Stop:** Stop if an approval is handled without you, or if a result is called clearance.
 
+## 5. Hallucination check
+
+A [citation check](https://docs.typesafe.ai/cookbooks/citation_check) asks whether a claim is actually in its source. Jev does not decide that a sentence sounds careful. It reads the claim beside the passage and returns one choice: the passage supports the claim, contradicts it, or says nothing about it.
+
+Use it when a draft, a message, or a model answer cites a record. A quote that is not in the source is fabricated. Ordinary code can find that. Do not spend a Jev call on a missing quote. A quote that is in the source can still be the wrong support: the words match, and the surrounding record says the opposite, or nothing about the claim. That is the call for Jev. Low confidence on that choice waits for a person.
+
+On this desk, a message can say stock is released or that BG-F17 has accepted the cargo. Check that claim against `scans.json` or `flight_acceptances.json`. A fluent message is not a source. A matching phrase is not release.
+
+![A missing quote is fabricated without Jev. A found quote goes to Jev, which says the source supports the claim, contradicts it, or says nothing about it.](figures/m06-hallucination.png)
+
+*A missing quote is fabricated without Jev. A found quote goes to Jev, which says the source supports the claim, contradicts it, or says nothing about it.*
+
+**In OMP:**
+
+```text
+Using the TypeSafe skill, read the citation-check cookbook. Write code that checks claims in the Blue Gauge messages against scans.json and flight_acceptances.json. If the quoted fact is not in the source, mark it fabricated and do not call Jev. If it is there, ask jev-1.13 through OpenRouter whether the passage supports the claim, contradicts it, or says nothing about it. Send a low-confidence answer to me. Show one of each result.
+```
+
+**Expected:** A missing quote makes no Jev call. A found quote has one choice and a confidence. Unsupported and contradicted claims stay visible. None of them becomes clearance.
+
+**Stop:** Stop if a fluent sentence is treated as support, or if a missing quote is sent to Jev.
+
 ## Hand off
 
 ```text
-Using the TypeSafe skill, write the airlift-desk handoff. Four rows: pattern, what I changed, what I observed, and the limit. Name one message or request I inspected for each pattern, with its source. List what a person still has to decide, and who owns it. Label it "review packet — not a manifest or movement order".
+Using the TypeSafe skill, write the airlift-desk handoff. Five rows: pattern, what I changed, what I observed, and the limit. Name one message or request I inspected for each pattern, with its source. List what a person still has to decide, and who owns it. Label it "review packet — not a manifest or movement order".
 ```
 
 **Expected:** Every row names a real message or request from this session. No row claims cargo clearance, flight acceptance, or dispatch.

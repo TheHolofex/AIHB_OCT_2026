@@ -311,7 +311,8 @@
         {"source": "shared/figures/m06-fan-out.png", "dest": "shared/figures/m06-fan-out.png"},
         {"source": "shared/figures/m06-confidence.png", "dest": "shared/figures/m06-confidence.png"},
         {"source": "shared/figures/m06-scoring.png", "dest": "shared/figures/m06-scoring.png"},
-        {"source": "shared/figures/m06-intent.png", "dest": "shared/figures/m06-intent.png"}
+        {"source": "shared/figures/m06-intent.png", "dest": "shared/figures/m06-intent.png"},
+        {"source": "shared/figures/m06-hallucination.png", "dest": "shared/figures/m06-hallucination.png"}
       ],
       "scripts": [],
       "download_dirs": ["shared/case/notes", "shared/case/requests"],
