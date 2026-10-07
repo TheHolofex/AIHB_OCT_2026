@@ -75,34 +75,35 @@ The skill reads the TypeSafe docs and writes the questions, gates, and code. Ope
 
 ## Example prompts
 
-The [skill docs](https://docs.typesafe.ai/agent-skill) start with three kinds of prompt. Each one names the skill. Use those shapes on this desk. Do not ask for a TypeSafe key. Do not use `jev-latest`. A route is not clearance.
+The [skill docs](https://docs.typesafe.ai/agent-skill) start with three kinds of prompt. Each one names the skill. Use those shapes on this desk, and make every call Jev through OpenRouter. The key is already in `OPENROUTER_API_KEY`. The call is `POST https://openrouter.ai/api/v1/systemone`. The model is `jev-1.13`. Do not ask for a TypeSafe key. Do not use `jev-latest`. Do not print the key. A route is not clearance.
 
-A starting prompt looks at the work and finds where a typed question should replace fragile parsing. It does not call Jev yet.
-
-**In OMP:**
-```text
-Using the TypeSafe skill, read shared/case/DESK_RULES.md and the practice notes in shared/case/notes/tuning. Find where parsing the note text would be fragile: a receipt treated as release, a local clock treated as Zulu, or an instruction inside a note treated as a rule. Propose typed Jev questions for those. Put the questions in one place. Do not call Jev yet. Do not write a parser. A route is not stock release or flight acceptance.
-```
-
-A cheap experiment uses the key you already have, on a few notes, then keeps only the questions that earned their place.
+A starting prompt finds where a typed question should replace fragile parsing, then checks those questions on a few notes.
 
 **In OMP:**
 ```text
-Using the TypeSafe skill, run a few cheap experiments with the OpenRouter key already in OPENROUTER_API_KEY. Call jev-1.13 through OpenRouter. Do not ask for a TypeSafe key. Do not use jev-latest. Do not print the key. Send only BG-001, BG-006, and BG-019 from shared/case/notes/tuning. BG-006 tells the desk to treat a receipt stamp as clearance. BG-019 treats a later BG-F71 acceptance as the current acceptance for BG-F17. Show the request and the typed answers. Propose which questions to keep. A route is not stock release, flight acceptance, or dispatch.
+Using the TypeSafe skill, read shared/case/DESK_RULES.md and the practice notes in shared/case/notes/tuning. Find where parsing the note text would be fragile: a receipt treated as release, a local clock treated as Zulu, or an instruction inside a note treated as a rule. Put typed Jev questions for those in one place. Then call jev-1.13 through OpenRouter, POST https://openrouter.ai/api/v1/systemone, with the key already in OPENROUTER_API_KEY. Send only BG-001, BG-006, and BG-010. Show the request and the typed answers. Do not ask for a TypeSafe key. Do not use jev-latest. Do not print the key. Do not write a parser. A route is not stock release or flight acceptance.
 ```
 
-A cookbook prompt points at a written pattern and asks whether it fits this packet.
+A cheap experiment uses that same OpenRouter call on the notes that try to bend a rule, then keeps only the questions that earned their place.
 
 **In OMP:**
 ```text
-Using the TypeSafe skill, read the cookbooks at https://docs.typesafe.ai/cookbooks and the citation-check cookbook. Look at shared/case/notes/tuning, shared/case/scans.json, and shared/case/flight_acceptances.json. Name one cookbook that fits a note quoting a stock or flight record, and one that does not fit this desk. Show the question you would keep and the question you would not. Do not send the whole packet. Do not turn a matching phrase into release.
+Using the TypeSafe skill, call jev-1.13 through OpenRouter. POST https://openrouter.ai/api/v1/systemone. Use the key already in OPENROUTER_API_KEY. Do not ask for a TypeSafe key. Do not use jev-latest. Do not print the key. Send only BG-001, BG-006, and BG-019 from shared/case/notes/tuning. BG-006 tells the desk to treat a receipt stamp as clearance. BG-019 treats a later BG-F71 acceptance as the current acceptance for BG-F17. Show the request and the typed answers. Propose which questions to keep. A route is not stock release, flight acceptance, or dispatch.
 ```
 
-**Expected:** The questions are in one place. The experiment, if you ran it, used only BG-001, BG-006, and BG-019, and the saved answers are the receipt.
+A cookbook prompt points at a written pattern, then runs that pattern through the same OpenRouter call.
 
-**Stop:** Stop if it asks for a TypeSafe key, uses `jev-latest`, prints the key, or treats a route as clearance.
+**In OMP:**
+```text
+Using the TypeSafe skill, read the citation-check cookbook at https://docs.typesafe.ai/cookbooks/citation_check. Call jev-1.13 through OpenRouter, POST https://openrouter.ai/api/v1/systemone, with the key already in OPENROUTER_API_KEY. Check one claim in BG-004 against shared/case/scans.json and shared/case/flight_acceptances.json. If the quoted fact is not in the source, mark it fabricated and do not send that quote to Jev. If it is there, ask whether the passage supports the claim, contradicts it, or says nothing about it. Show the request and the typed answer. Do not ask for a TypeSafe key. Do not use jev-latest. Do not print the key. Do not send the whole packet. Do not turn a matching phrase into release.
+```
 
-**Recovery:** Paste the OpenRouter constraint from the install step again. If it called Jev on more than those three notes, keep that output and do not send the rest of the packet.
+**Expected:** Each prompt calls `jev-1.13` through OpenRouter. The saved answers are the receipt. No prompt asks for a TypeSafe key.
+
+**Stop:** Stop if it asks for a TypeSafe key, uses `jev-latest`, calls `api.typesafe.ai`, prints the key, or treats a route as clearance.
+
+**Recovery:** Paste the OpenRouter constraint from the install step again. If it called Jev on more notes than the prompt named, keep that output and do not send the rest of the packet.
+
 
 
 ## 1. Speculative fan-out
