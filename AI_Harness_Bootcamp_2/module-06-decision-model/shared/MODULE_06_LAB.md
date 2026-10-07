@@ -2,6 +2,27 @@
 
 Open ordinary Oh My Pi and install the TypeSafe skill. Oh My Pi stays the chat agent. It writes code that calls Jev through OpenRouter, using the key you already have. Jev answers the fixed questions. Your code decides what to do with those answers. Each check is its own section. Plan for about three hours.
 
+## How the Jev skill works
+
+The TypeSafe skill is not Jev, and it is not a second chat model. It is one instruction file, `SKILL.md`. Installing it puts that file where Oh My Pi looks for skills. Oh My Pi keeps the skill's short name and description in reach. When you say to use the TypeSafe skill, the chat agent reads the whole file.
+
+That file tells the agent how to build with Jev. It says to read the live TypeSafe docs before writing an integration, because the docs are the current contract. It says not to invent request fields. It says to keep the questions and the thresholds in one place, so you can read them. Then the agent writes ordinary code. The code calls Jev. The chat model stays the chat model.
+
+![You name the skill. Oh My Pi reads SKILL.md, then the live docs, then writes code that calls Jev. The chat model does not become Jev.](figures/m06-skill-path.png)
+
+*You name the skill. Oh My Pi reads SKILL.md, then the live docs, then writes code that calls Jev. The chat model does not become Jev.*
+
+A Jev call is a separate request from the chat. Your code sends three things: the OpenRouter key already in the terminal, the model `jev-1.13`, and a state plus typed questions. OpenRouter routes that request to TypeSafe. Jev returns one typed answer per question, with probabilities and a confidence. It does not return a paragraph or a reasoning trace. The response also names the served model and a reported cost.
+
+Your code then decides. A route, a gate, a weight, or a handler is a decision in code, not a sentence from the chat. The chat model may explain what came back. That explanation is not the receipt. If the two disagree, keep the saved answers.
+
+![Your code sends the key, jev-1.13, a state, and questions. OpenRouter returns typed answers. Your code decides. A chat explanation is not the receipt.](figures/m06-jev-call.png)
+
+*Your code sends the key, jev-1.13, a state, and questions. OpenRouter returns typed answers. Your code decides. A chat explanation is not the receipt.*
+
+The call is `POST https://openrouter.ai/api/v1/systemone`. The TypeSafe SDK can use that same path if its base URL is `https://openrouter.ai/api` and its key is your OpenRouter key. Do not create a TypeSafe key. Do not use `jev-latest`. That name follows the newest release. This lab uses `jev-1.13`.
+
+
 ## Blue Gauge: the last resupply flight
 
 It is 05:00 UTC+02 on 15 October 2026 at Aster Airhead. Flight BG-F17 is planned to Forward Support Base Kestrel. The cargo list closes at 05:30 and the aircraft departs at 06:00. The next flight is **not supplied**.

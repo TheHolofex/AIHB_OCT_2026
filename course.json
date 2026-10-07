@@ -308,6 +308,8 @@
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["blue-gauge-the-last-resupply-flight", "start-oh-my-pi"], "optional_sections": []}}
       ],
       "figures": [
+        {"source": "shared/figures/m06-skill-path.png", "dest": "shared/figures/m06-skill-path.png"},
+        {"source": "shared/figures/m06-jev-call.png", "dest": "shared/figures/m06-jev-call.png"},
         {"source": "shared/figures/m06-fan-out.png", "dest": "shared/figures/m06-fan-out.png"},
         {"source": "shared/figures/m06-confidence.png", "dest": "shared/figures/m06-confidence.png"},
         {"source": "shared/figures/m06-scoring.png", "dest": "shared/figures/m06-scoring.png"},
