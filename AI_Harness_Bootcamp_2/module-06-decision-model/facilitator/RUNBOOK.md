@@ -13,11 +13,11 @@ The learner opens ordinary Oh My Pi in the module directory, with the chat model
 | Clock (approx.) | Work | Observable |
 |---|---|---|
 | 0:00–0:20 | Start Oh My Pi and install the TypeSafe skill | Session open; judge is `openrouter/typesafe/jev-1.13`; skill loaded |
-| 0:20–1:00 | Fan-out on the practice messages | One multi-question Jev call per message; ignored answers marked |
-| 1:00–1:30 | Confidence gates on saved answers | Two gates; no new Jev call for the comparison |
-| 1:30–2:10 | Composite scores and a weight change | New order from saved scores; no new Jev call |
-| 2:10–2:40 | Intent routing on the sixteen requests | Lookup, comparison, and human path are distinct; approvals come to the learner |
-| 2:40–3:00 | Handoff | Four rows, real IDs, review packet not a manifest |
+| 0:20–1:00 | Section 1, speculative fan-out | One multi-question Jev call per message; ignored answers marked |
+| 1:00–1:30 | Section 2, confidence-gated routing | Two gates on saved answers; no new Jev call for the comparison |
+| 1:30–2:10 | Section 3, composite scoring | New order from saved scores; no new Jev call |
+| 2:10–2:40 | Section 4, intent routing | Lookup, comparison, and human path are distinct; approvals come to the learner |
+| 2:40–3:00 | Hand off | Four rows, real IDs, review packet not a manifest |
 
 Clock marks are planning guides. The day's clock is in `COURSE_MAP.md`.
 

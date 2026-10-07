@@ -1,6 +1,6 @@
 # Module 6 · Use Jev inside Oh My Pi
 
-You already have Oh My Pi and Jev through OpenRouter. Open that session, install the TypeSafe skill, and use it to build four decision patterns on the Blue Gauge airlift desk. Allow about three hours. [Open the lab](shared/MODULE_06_LAB.md).
+You already have Oh My Pi and Jev through OpenRouter. Open that session, install the TypeSafe skill, and build four decision patterns on the Blue Gauge airlift desk, one section at a time: speculative fan-out, confidence-gated routing, composite scoring, and intent routing. Allow about three hours. [Open the lab](shared/MODULE_06_LAB.md).
 
 ## Blue Gauge: the last resupply flight
 

@@ -1,6 +1,6 @@
 # Module 6 · Use Jev inside Oh My Pi
 
-Open ordinary Oh My Pi, install the TypeSafe skill, and build four decision patterns on the Blue Gauge desk. Jev answers fixed questions. The chat model talks to you and writes the work. Both use the OpenRouter key you already have. Plan for about three hours.
+Open ordinary Oh My Pi, install the TypeSafe skill, and build four decision patterns on the Blue Gauge desk. Each pattern is its own section. Jev answers fixed questions. The chat model talks to you and writes the work. Both use the OpenRouter key you already have. Plan for about three hours.
 
 ## Blue Gauge: the last resupply flight
 
@@ -50,16 +50,19 @@ This session is Oh My Pi. Call Jev from this session as openrouter/typesafe/jev-
 
 **Recovery:** Paste the last paragraph again. If the installer does not list Oh My Pi, tell it to read the raw skill file above and use that.
 
-## Build the four patterns
+Read the questions the agent writes before you accept them. A Jev answer is not cargo authority.
 
-The patterns are [speculative fan-out](https://docs.typesafe.ai/patterns/fan-out), [confidence-gated routing](https://docs.typesafe.ai/patterns/confidence-routing), [composite scoring](https://docs.typesafe.ai/patterns/composite-scoring), and [intent routing](https://docs.typesafe.ai/patterns/intent-routing). Read the questions the agent writes before you accept them. A Jev answer is not cargo authority.
+## 1. Speculative fan-out
 
-### 1. Ask once, then use what matters
+[Speculative fan-out](https://docs.typesafe.ai/patterns/fan-out) asks every question you might need in one Jev call, including questions the route may not use. Jev answers them together. Your code then decides which answers matter.
+
+Do not ask the first question, wait, and then ask the next one. A follow-up call is slower, and it hides answers you already could have had. An ignored answer stays on the page. It must not change `PASS`, `RETURN`, or `REVIEW`.
 
 ![One message goes to one Jev call. Used answers can change the route. An ignored answer stays visible and does nothing.](figures/m06-fan-out.png)
 
 *One message goes to one Jev call. Used answers can change the route. An ignored answer stays visible and does nothing.*
 
+**In OMP:**
 
 ```text
 Using the TypeSafe skill, read the desk rules and the practice messages in shared/case/notes/tuning. Ask Jev several questions about each message in one call, including one question the route may ignore. Show which answers the route used and which it ignored. Use openrouter/typesafe/jev-1.13.
@@ -69,12 +72,19 @@ Using the TypeSafe skill, read the desk rules and the practice messages in share
 
 **Stop:** Stop if it asks the questions one at a time when you asked for one call, or if a message route is treated as clearance.
 
-### 2. Make uncertain notes wait
+## 2. Confidence-gated routing
+
+[Confidence-gated routing](https://docs.typesafe.ai/patterns/confidence-routing) uses two facts from the same answer. The choice says what Jev selected. The confidence says whether you should act on it. Your code holds the gate. A low gate lets more messages through. A high gate sends more of them to a person.
+
+Compare gates on the saved answers. Do not call Jev again to move the gate. The confidence on a choice is not the same number as the top option's probability. Read the confidence Jev returns.
+
+A confident release claim still does not create a missing flight acceptance.
 
 ![Saved answers meet a confidence gate. At or above the gate, the desk continues. Below it, a person reads the message. Moving the gate does not call Jev again.](figures/m06-confidence.png)
 
 *Saved answers meet a confidence gate. At or above the gate, the desk continues. Below it, a person reads the message. Moving the gate does not call Jev again.*
 
+**In OMP:**
 
 ```text
 Using the TypeSafe skill, keep those saved Jev answers. Send a message to a person when confidence on the chosen answer is low. Compare two gates on the same answers. Do not call Jev again for the comparison.
@@ -84,12 +94,17 @@ Using the TypeSafe skill, keep those saved Jev answers. Send a message to a pers
 
 **Stop:** Stop if the comparison calls Jev again, or if high confidence is treated as stock release or flight acceptance.
 
-### 3. Change priorities without asking Jev again
+## 3. Composite scoring
+
+[Composite scoring](https://docs.typesafe.ai/patterns/composite-scoring) asks Jev for separate scores, then combines them in code. Urgency, stated mission impact, and handoff risk are different questions. A weight says how much each score counts. Change the weights and the attention order can change. The scores do not.
+
+Do not call Jev again to try a new weight set. A high rank is desk attention. It is not a loading list, a release, or acceptance for BG-F17.
 
 ![Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.](figures/m06-scoring.png)
 
 *Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.*
 
+**In OMP:**
 
 ```text
 Using the TypeSafe skill, score the Blue Gauge messages for urgency, stated mission impact, and handoff risk. Combine those scores with weights. Then change the weights and show the new order from the saved scores, without another Jev call. This is desk attention, not cargo allocation.
@@ -99,12 +114,17 @@ Using the TypeSafe skill, score the Blue Gauge messages for urgency, stated miss
 
 **Stop:** Stop if a high rank is treated as authority to load or dispatch.
 
-### 4. Use the right kind of help
+## 4. Intent routing
+
+[Intent routing](https://docs.typesafe.ai/patterns/intent-routing) asks Jev what kind of work the request is, then sends it to the matching path. Judge the work being requested, not how serious the cargo sounds.
+
+A status lookup reads one record. A record question compares the supplied stock and flight records for this cargo and BG-F17 at 05:00. A draft, an approval, or an uncertain request comes to you. Show what actually ran. A lookup is not a clearance. A comparison is not dispatch. A queue entry is not approval.
 
 ![Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.](figures/m06-intent.png)
 
 *Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.*
 
+**In OMP:**
 
 ```text
 Using the TypeSafe skill, classify every request in shared/case/requests with Jev. Route a status lookup to a record lookup, a record question to a comparison of the supplied stock and flight records, and a draft, approval, or uncertain request to me. Show what actually ran. Nothing you run releases cargo or accepts it for BG-F17.
