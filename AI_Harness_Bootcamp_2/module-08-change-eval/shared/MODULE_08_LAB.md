@@ -1,28 +1,84 @@
 # Module 8 · Control hallucinations
 
-Correct the Slope Brief claims without filling gaps by guesswork. Check each claim against its own source packet, run two reviewer agents separately, have another agent correct the claims, and review the correction afresh. You own the final decision.
+Run five sessions on one brief. Code checks the numbers and the quotes. Two reviewers judge whether each claim's own packet supports it. A third rewrites the claims. You read the sources and decide. Agreement is not support. Plan for a little over two hours.
 
-Plan for a little over two hours (a rough estimate). The complete sequence makes five paid agent sessions, each of which may make several provider requests. You need the Python, latest stable Oh My Pi release, and OpenRouter access verified in [setup](../../module-00-setup/README.md). The supplied commands use Sonnet 4.6, not Jev's API.
+## How the check works
 
-## The decision rule
+```text
+claims.json                         PC-01  PC-02  PC-03
+7 claims                            each claim uses only its own packet
+        |
+        v
+   freeze  →  exact checks
+        |
+        +-- source reviewer      fresh session
+        +-- skeptical reviewer   fresh session
+        |
+        v
+   you read both against the sources
+        |
+        v
+   correcting agent
+   all 7 claims; null means unknown
+        |
+        +-- source reviewer      fresh session, no old verdicts
+        +-- skeptical reviewer   fresh session, no old verdicts
+        |
+        v
+   you decide
+   dispatch stays HOLD
+```
 
-Slope Brief concerns fictional heater-fuel cans at Ridge Depot for Clinic T-8 on vehicle `SB-4`. Treat PC-01, PC-02, and PC-03 as three separate cases, even though the names repeat. Each of the seven claims names its own `case_id`; only that packet can establish the claim. Don't combine masses or clocks from different packets into one shipment record. The starting claims contain deliberate defects; they are authored practice data, not evidence of a live model's behavior.
+The draft is planted practice data. It is not a live model failure. An exact check catches a wrong number, unit, zone, or a quote that is not in the record. It does not decide whether a real quote supports the sentence.
 
-Apply this rule throughout: **a claim needs the right source, not enough agreeing reviewers.** Code checks what can be checked exactly. Agents judge the relationship between a claim and its evidence. You inspect that relationship before using the result.
+Both reviewers are the same model, `openrouter/anthropic/claude-sonnet-4.6`, in separate sessions. They can share a blind spot. Neither sees the other review. After correction they start again and do not see their old answers.
 
-| Finding | Your action |
-|---|---|
-| A required claim is missing, duplicated, or malformed. | Hold the output. You can't inspect a complete correction. |
-| A number, unit, zone, or source identity fails an exact check. | Keep that claim on hold even if both agents approve it. |
-| A citation exists, but concerns another shipment or supports a weaker statement. | Reject the claimed support. Inspect the relevant source. |
-| The packet doesn't establish a material fact or permission. | Keep it explicitly unknown. Name the evidence and owner needed to resolve it. |
-| Reviewers disagree. | Compare their evidence. Record your source-backed disposition or retain the hold; don't decide by vote. |
+`null` means unknown. It does not mean zero, false, or permission denied. A `PASS` line means the files were saved. It does not mean the brief is true, and it does not dispatch the vehicle.
 
-`PASS` in a command means that command's technical checks completed. It is not a learner score, proof that every model judgment is right, or permission to dispatch a vehicle.
+PC-01 has two mass records. `SB-PC-01#payload` is 2211 kg for SB-4 to Clinic T-8. `SB-PC-01#payload-s14` is 2255 kg for a different shipment. Two reviewers can quote the yard note and agree on 2255 kg. The quote is real. The shipment is not.
 
-## 1. Prepare a separate attempt
+## Slope Brief
 
-Create a work folder outside the checkout. `W` names that work folder; `E` names the separate evidence folder that the freeze command will create. These commands leave earlier attempts alone. If your checkout is elsewhere, change only the `R` line to its verified location.
+Heater-fuel cans, Ridge Depot to Clinic T-8, vehicle `SB-4`. Seven claims, `C01` through `C07`. The packets are PC-01, PC-02, and PC-03. Do not combine clocks or masses across packets. The brief does not authorize departure.
+
+## Three patterns
+
+Three patterns cover the useful multi-agent work. Fan-out gets a second look that cannot copy the first. One writer turns those looks into one artifact. Fresh review checks that artifact without the old answers. A vote is not a fourth pattern. Agreement is not support.
+
+### Fan-out
+
+Two agents get the same claims and the same sources. Each has its own session. Neither sees the other answer. Use it when you need a second judgment and the second agent does not need the first result. Do not use it when the second job cannot start until the first one finishes.
+
+![Same claims go to two sessions. Neither session sees the other answer.](figures/m08-fan-out.png)
+
+*Same claims go to two sessions. Neither session sees the other answer.*
+
+On this brief, the source reviewer and the skeptical reviewer are a fan-out. The terminal runs one command, then the next. That order does not share their answers.
+
+### One writer
+
+The findings join. One agent writes the corrected claims. The others do not edit that file. Use it when the product is one claim set, one brief, or one spreadsheet. Do not let two agents write the same rows.
+
+![Reviews and exact checks go to one writer. A review is not an edit.](figures/m08-one-writer.png)
+
+*Reviews and exact checks go to one writer. A review is not an edit.*
+
+The correcting agent is the writer. It sees both reviews and the exact findings. It returns all seven claims. A review is a suggestion. It does not override the source.
+
+### Fresh review
+
+A new session reads the writer's output and the original sources. It does not read the first verdicts or the writer's notes. Use it after a correction. The session that wrote the claims will defend them.
+
+![The corrected claims and the sources go to new sessions. The first verdicts stay out.](figures/m08-fresh-review.png)
+
+*The corrected claims and the sources go to new sessions. The first verdicts stay out.*
+
+The after reviews are a fresh review. A correction can fix one number and break another. The first reviewers do not grade their own earlier answers.
+
+
+## Start
+
+Use the Python, Oh My Pi, and OpenRouter key you already checked in [setup](../../module-00-setup/README.md). These commands make a new attempt. They do not touch an earlier one.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -53,15 +109,13 @@ $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 if ($LASTEXITCODE -ne 0) { throw 'Preparation stopped; preserve this attempt.' }
 ```
 
-**Expected:** `RUN=` and an identifier, followed by `PASS: created` and your work path. Record the identifier. The printed `Next` commands display the case legend; you may read that file in your editor instead. The work folder contains `shared/case` and `shared/controls`. The evidence folder doesn't exist yet.
+**Expected:** `RUN=` and an identifier, then `PASS: created`. Record the identifier. The work folder contains the claims and the three packets.
 
-**Stop:** Preparation fails, the destination already exists, or Python isn't the verified 3.12-or-newer interpreter.
+**Stop:** Stop if preparation fails, the destination already exists, or Python is older than 3.12.
 
-**Recovery:** Preserve the attempt. Fix the prerequisite through setup, then repeat the preparation with a new `RUN`. Don't reset the checkout or delete earlier work.
+**Recovery:** Keep the attempt. Fix the missing piece through setup, then prepare again with a new `RUN`. Do not delete an earlier attempt.
 
-### If you open a new terminal
-
-A closed terminal forgets the variables. Reload the existing attempt without preparing another copy. Resume at the first unfinished stage; don't repeat commands that already succeeded. If the report exists, open it and complete the human decision instead of running `report` again.
+A new terminal forgets `RUN`, `W`, and `E`. Reload them. Do not prepare a second copy.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -91,62 +145,11 @@ $E = "$HOME\course-evidence\module-08-$RUN\evidence"
 
 **Expected:** `RUN=` matches the identifier you recorded, and `W=` names the existing work folder.
 
-**Stop:** The identifier differs or the work folder is missing.
+**Stop:** Stop if the identifier differs or the work folder is missing.
 
-**Recovery:** A later attempt may have replaced the saved marker. Set `RUN` to your recorded identifier, then set `W` and `E` from it using the last lines above. If no work folder was prepared, return to the preparation commands. A new terminal also needs the key entered again before a paid call.
+**Recovery:** Set `RUN` to the identifier you wrote down, then set `W` and `E` from it. A new terminal also needs the key again before a paid call.
 
-## 2. Inspect the claims before asking the agents
-
-Open `W/shared/case/LEGEND.txt`, `claims.json`, and the three `PC-*/sources.json` files. A **locator** identifies one exact source record, such as `SB-PC-01#payload`. Read its text as well as its structured fields. `authoritative: true` applies to that record's stated fact; it is not blanket authority to act.
-
-In your editor, create `W/notes.md`. Pick one claim you would use, one you would stop, and one whose evidence needs a closer look. For each, record the claim ID, source locator, and reason. Distinguish an unsupported assertion from a false one: missing permission is not proof that permission was denied.
-
-Open `W/shared/controls/schema.json` and the two `review-*.txt` instructions. Apply the [typed-question discipline](../../module-04-typed-decisions/README.md) you already used: the state contains the claims and sources, and the narrow question is **“Does this claim's own packet establish it?”** This follows [Jev's state-and-typed-question pattern](https://docs.typesafe.ai/introduction), using the course's pinned model.
-
-Each answer uses `supported`, `contradicted`, or `unknown` and includes `locator`, `quote`, and `reason` fields. Supported and contradicted judgments need a real source locator and exact quotation. An unknown may leave both locator and quote `null`; its reason must still explain what the packet cannot establish. Unknown does not mean false.
-
-The supplied checker rejects missing fields, extra claims, duplicate IDs, and invented quotations. It cannot establish that a real quotation logically supports the model's conclusion; you still need to read it.
-
-Consider this counterexample before any call: two agents approve `2255 kg` for the PC-01 shipment and quote the near-miss yard note. The quote is real. Open `SB-PC-01#payload-s14` and `SB-PC-01#payload`. Which shipment does each concern? Record which value can enter the brief and why agreement cannot resolve the mismatch.
-
-**Expected:** Your notes distinguish structure, source support, and permission to act. You can point to evidence that would defeat two agreeing reviewers.
-
-**Stop:** You can't tell which source belongs to the claim, or you need information outside the packet to settle it.
-
-**Recovery:** Keep that claim unknown and name the missing evidence. Don't fill the gap from model memory or a web search about this fictional movement.
-
-## 3. Freeze the packet and run the exact checks
-
-Freeze the original claims, sources, and controls before the reviews. A **fingerprint** is a SHA-256 digest used to detect changed file bytes. The command preserves the inputs and writes the first deterministic findings without making a model call.
-
-**Terminal: Bash or zsh, ordinary user.**
-
-```bash
-"$PY" "$M/scripts/hallucination.py" freeze --work "$W" --out "$E"
-```
-
-**Terminal: PowerShell, ordinary user.**
-
-```powershell
-& $PY "$M\scripts\hallucination.py" freeze --work "$W" --out "$E"
-if ($LASTEXITCODE -ne 0) { throw 'Freeze stopped; preserve this attempt.' }
-```
-
-**Expected:** A line beginning `PASS: frozen 7 claims`. Open `E/initial-checks.json` and compare it with your notes. The saved `frozen` folder retains the draft, source packets, and controls. Freezing a defective draft preserves a failure for inspection; it doesn't make the draft acceptable.
-
-**Stop:** You see `HOLD:`, the evidence destination already exists, or a required input is missing or malformed.
-
-**Recovery:** Keep the error and original files. Resolve the named prerequisite and prepare a fresh attempt. Never edit a frozen source or a fingerprint to make a check pass.
-
-## 4. Give two reviewers separate looks
-
-Run the source reviewer and the skeptical reviewer in separate fresh sessions. Each gets the same frozen claims and sources. Neither gets the other review, your notes, or the deterministic findings. The first checks exact support; the second looks for wrong-case evidence and conclusions that go beyond the source.
-
-All sessions use `openrouter/anthropic/claude-sonnet-4.6` through the pinned launcher. Different roles are not different model families. The supplied controls allow reads only; the agents cannot edit the packet or authorize a movement. Sessions are not automatically retried or replaced with another model. Check your provider account's available credit and spending limit before starting; five sessions is not a price cap.
-
-### Enter your key in this terminal
-
-Paste the first command by itself and press Enter. Enter the key at the hidden prompt and press Enter again. Then paste the second block. Keep the key out of notes, files, chat, and shell profiles.
+Paste the first command by itself and press Enter. Type the key at the hidden prompt and press Enter again. Then paste the second block. Do not put the key in a note, a file, or the chat.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -160,9 +163,9 @@ IFS= read -r -s OPENROUTER_API_KEY
 $secret = Read-Host 'OpenRouter key' -AsSecureString
 ```
 
-**Expected:** The terminal waits for the key without showing its value, then returns to the ordinary prompt.
+**Expected:** The terminal waits for the key without showing it, then returns to the prompt.
 
-**Stop:** The key's characters appear, or you aren't sure which program is reading the input.
+**Stop:** Stop if the key appears on screen.
 
 **Recovery:** Cancel with Ctrl+C and close the terminal. If the key was exposed, revoke it at OpenRouter and use a replacement.
 
@@ -188,13 +191,50 @@ try {
 if ([string]::IsNullOrWhiteSpace($env:OPENROUTER_API_KEY)) { 'MISSING' } else { 'SET' }
 ```
 
-**Expected:** `SET` proves the key is present in this terminal, not that it is valid or has credit.
+**Expected:** `SET`. That shows the key is in this terminal. It does not show that the key is valid or has credit.
 
-**Stop:** `MISSING`, or any part of the key appears in the output.
+**Stop:** Stop if you see `MISSING`, or if any part of the key appears.
 
-**Recovery:** Repeat the hidden prompt. Don't print the environment to troubleshoot access.
+**Recovery:** Repeat the hidden prompt. Do not print the environment to find the key.
 
-### Run both first reviews
+## 1. Read the claims
+
+Open `W/shared/case/claims.json` and the three `PC-*/sources.json` files. Read the text of a record, not only its fields. `authoritative: true` means the record is the source for its own fact. It does not release the vehicle.
+
+Create `W/notes.md`. Name one claim you would use, one you would stop, and the PC-01 pair: `SB-PC-01#payload` and `SB-PC-01#payload-s14`. For each, write the claim ID, the source locator, and why. A missing permission is not proof that permission was denied.
+
+**Expected:** Your notes name a usable claim, a claim to stop, and which PC-01 record belongs to SB-4.
+
+**Stop:** Stop if you cannot tell which source belongs to the claim.
+
+**Recovery:** Keep that claim unknown and name the packet you checked. Do not fill the gap from memory or a web search.
+
+## 2. Freeze
+
+Freeze the claims and sources before any review. This command makes no model call.
+
+**Terminal: Bash or zsh, ordinary user.**
+
+```bash
+"$PY" "$M/scripts/hallucination.py" freeze --work "$W" --out "$E"
+```
+
+**Terminal: PowerShell, ordinary user.**
+
+```powershell
+& $PY "$M\scripts\hallucination.py" freeze --work "$W" --out "$E"
+if ($LASTEXITCODE -ne 0) { throw 'Freeze stopped; preserve this attempt.' }
+```
+
+**Expected:** `PASS: frozen 7 claims`. Open `E/initial-checks.json` and compare it with your notes. The saved `frozen` folder keeps the draft and the sources.
+
+**Stop:** Stop if you see `HOLD:`, the evidence folder already exists, or an input is missing.
+
+**Recovery:** Keep the error. Prepare a fresh attempt. Do not edit a frozen source to make a check pass.
+
+## 3. Two first reviews
+
+Run the source reviewer, then the skeptical reviewer. Each gets the frozen claims and sources. Neither gets the other review, your notes, or the exact findings. Do not rerun a finished review to get a nicer answer.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -212,34 +252,32 @@ if ($LASTEXITCODE -ne 0) { throw 'Source review stopped; preserve this attempt.'
 if ($LASTEXITCODE -ne 0) { throw 'Skeptical review stopped; preserve this attempt.' }
 ```
 
-**Expected:** Lines beginning `PASS: before source review` and `PASS: before skeptic review`. The typed reviews appear in `E/reviews/before-source.json` and `before-skeptic.json`. Each corresponding folder under `E/runs` preserves the raw model response and launcher receipts. A review passing the receipt and schema checks can still contain a wrong judgment.
+**Expected:** `PASS: before source review` and `PASS: before skeptic review`. The reviews are `E/reviews/before-source.json` and `before-skeptic.json`. A review that passes can still be wrong.
 
-**Stop:** Either command holds, a required source read is unproved, or a review omits a claim, cites a missing record, or supplies a quotation that isn't in that record.
+**Stop:** Stop if either command holds, a claim is missing, or a quotation is not in the cited record.
 
-**Recovery:** Preserve the whole attempt, including the raw response. A missing key can be entered before a call starts. Once a call has produced an attempt, don't rerun it under the same name or edit its response. Correct the prerequisite before beginning another complete attempt; never combine favorable reviews from different attempts.
+**Recovery:** Keep the whole attempt, including the raw response. Do not rerun a finished review under the same name or edit its response. Start a new attempt only after the named problem is fixed. Do not mix reviews from different attempts.
 
-## 5. Compare evidence before correcting
+## 4. Read both reviews
 
-Open both reviews beside `initial-checks.json` and your notes. For every claim, compare the verdicts, locators, quotations, and reasons. Agreement on `supported` is a finding to inspect, not an acceptance rule. Agreement on `unknown` can be the appropriate result.
+Open both reviews beside `initial-checks.json` and the sources. For each disagreement or shared mistake, write in `notes.md`:
 
-Add a short entry to `W/notes.md` for each disagreement or reviewer mistake:
+- Which claim.
+- What the cited record actually says, and for which shipment.
+- Whether an exact check already settled it.
+- What must stay unknown.
 
-- What exact claim is at issue?
-- What does the cited source actually establish, for which shipment?
-- Is the conflict settled by an exact check, by the source text, or not at all?
-- What correction is supported, or what must stay unknown?
+If they agree on every row, still open `SB-PC-01#payload` and `SB-PC-01#payload-s14`. Write why agreement on 2255 kg would not have been enough.
 
-If the agents agree on every row, still inspect every source connection. Use the PC-01 counterexample from Step 2 to explain why their agreement alone would not have been enough.
+**Expected:** You can name the evidence behind each change you would allow, and the claims that should stay as they are. The original reviews are unchanged.
 
-**Expected:** You can explain the evidence behind each proposed change and identify the claims that should remain unchanged. The original reviews remain intact.
+**Stop:** Stop if a repair depends on a guess, or if you would need a vote to choose.
 
-**Stop:** A proposed repair depends on a guess, a reviewer has supplied a fact absent from the packet, or you would need a majority vote to choose.
+**Recovery:** Record the unresolved claim and the missing evidence. The correcting agent can keep an unknown. It cannot invent the missing permission.
 
-**Recovery:** Record the unresolved claim and the missing evidence. A correcting agent can preserve an unknown; it cannot manufacture the missing authority.
+## 5. Correct
 
-## 6. Ask another agent to correct the complete claim set
-
-Give a fresh correcting agent the original packet, both reviews, and the deterministic findings. Reviews are suggestions to examine, not instructions that override the sources. The correcting agent must return all seven claims, preserve their identities, repair supported values, and use `null` for a fact the packet cannot establish. In these files, `null` means “unknown,” not zero, false, or permission denied.
+The correcting agent sees the original packet, both reviews, and the exact findings. Reviews are suggestions. They do not override the sources. It must return all seven claims. A fact the packet cannot establish is `null`.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -254,15 +292,15 @@ Give a fresh correcting agent the original packet, both reviews, and the determi
 if ($LASTEXITCODE -ne 0) { throw 'Correction stopped; preserve this attempt.' }
 ```
 
-**Expected:** A line beginning `PASS: correction of 7 claims`. Open `E/correction.json`. The original draft remains in `E/frozen`; the correcting agent's raw response and receipts remain in `E/runs/correct`. This `PASS` establishes a complete, well-formed correction attempt, not factual acceptance.
+**Expected:** `PASS: correction of 7 claims`. Open `E/correction.json`. The original draft remains in `E/frozen`. This `PASS` means the correction is complete and well formed. It does not mean the values are right.
 
-**Stop:** The command holds, the correction drops or adds a claim, changes a claim's case or kind, or invents a source.
+**Stop:** Stop if the command holds, or if the correction drops a claim, adds a claim, or invents a source.
 
-**Recovery:** Keep the failed correction. Don't hand-edit a model output into a passing receipt. If a well-formed correction contains a bad value, keep it for the next checks; don't hide the error by asking again until you like the answer.
+**Recovery:** Keep the failed correction. Do not hand-edit a model output into a passing file. If a well-formed correction has a bad value, keep it for the next check. Do not ask again until you like the answer.
 
-## 7. Review the correction without showing earlier verdicts
+## 6. Two fresh reviews
 
-Run both reviewers again in fresh sessions. Each sees the full corrected claim set and original sources, without the previous reviews or correction discussion. Check the claims that were already right as carefully as the repaired ones: a corrector can fix one number and damage another.
+Run both reviewers again. Each sees the corrected claims and the original sources. Neither sees the first reviews. A correction can fix one number and break another.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -280,15 +318,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Fresh source review stopped; preserve this att
 if ($LASTEXITCODE -ne 0) { throw 'Fresh skeptical review stopped; preserve this attempt.' }
 ```
 
-**Expected:** Lines beginning `PASS: after source review` and `PASS: after skeptic review`. `E/reviews/after-source.json` and `after-skeptic.json` account for the complete corrected claim set. Their new receipt folders under `E/runs` are separate from the first reviews.
+**Expected:** `PASS: after source review` and `PASS: after skeptic review`. The new files are `E/reviews/after-source.json` and `after-skeptic.json`.
 
-**Stop:** Either command holds, a claim is missing, or the reviewed input isn't the saved correction.
+**Stop:** Stop if either command holds, a claim is missing, or the reviewed input is not the saved correction.
 
-**Recovery:** Retain the failure. A disagreement or a wrong judgment in a valid review belongs in the final evidence; it is not a reason to discard that review. Missing or malformed execution evidence holds the affected result.
+**Recovery:** Keep the failure. A wrong judgment in a valid review belongs in the evidence. Do not discard that review to get a cleaner pair.
 
-## 8. Check every change and make your own decision
+## 7. Decide
 
-Build the final report. The supplied tool audits all five model runs, checks the frozen identities, reruns the exact checks, and compares the original and corrected claims. It does not count votes to authorize a release.
+The report joins the five runs, reruns the exact checks, and compares the original claims with the correction. It does not count votes.
 
 **Terminal: Bash or zsh, ordinary user.**
 
@@ -303,35 +341,20 @@ Build the final report. The supplied tool audits all five model runs, checks the
 if ($LASTEXITCODE -ne 0) { throw 'Report holds; retain all findings and inspect the reason.' }
 ```
 
-**Expected:** With complete valid execution evidence, the command writes `E/report.json`, `report.md`, and `human-decision.json`. A completed report can print a line beginning `PASS: report written; operational dispatch HOLD`. That means the report was assembled; inspect its claim findings before accepting even an internal summary. Operational dispatch remains on hold because the packet doesn't establish the required authority.
+**Expected:** `PASS: report written; operational dispatch HOLD`. The command writes `E/report.json`, `report.md`, and `human-decision.json`. The `PASS` means the report was assembled. Dispatch stays `HOLD`.
 
-**Stop:** A source or control changed, receipts are incomplete, or the report command returns `HOLD:`. Don't treat a favorable review as a substitute for missing execution evidence.
+**Stop:** Stop if a source changed, a receipt is missing, or the command prints `HOLD:`.
 
-**Recovery:** Preserve the attempt and the error. If the report already exists, inspect it instead of rerunning the command. If no complete report was created, record the blocked stage and overall `HOLD` in `W/notes.md`; don't invent missing results or a human-decision file. Resolve the named prerequisite before starting a separate attempt.
+**Recovery:** Keep the attempt. If the report already exists, read it. Do not run the command again. If it was not created, write the blocked stage in `notes.md`. Do not invent a decision file.
 
-If the report was created, finish your decision even when it contains a content hold. Open `E/report.json` and read these fields separately:
+Open `report.json` and `report.md` beside the sources. Fill `human-decision.json` in your editor. Do not edit the report.
 
-- **`technical_complete`:** All five runs and their required evidence passed the audit. Still inspect the claims and quotations; this is not factual acceptance.
-- **`content_holds`:** When `true`, an exact failure, reviewer conflict, disagreement, or changed supported claim remains. Find the affected claims and record a source-backed resolution or `HOLD`. When `false`, still inspect their support. Don't edit the report to clear the flag.
-- **`operational_dispatch`:** The case does not establish dispatch authority. Leave it at `HOLD`, even if an internal summary is usable.
+For each claim, set `disposition` to `USE`, `KEEP_UNKNOWN`, or `HOLD`, and put the source locator and your reason in `reason`. `USE` means the corrected claim is supported by its own packet. `KEEP_UNKNOWN` means the claim is now an explicit unknown. `HOLD` means it is still wrong or unresolved. A missing fact names the packet you checked. Do not invent a locator.
 
-Open `report.md` beside the original sources and complete `human-decision.json` in your editor. Inspect all seven claims, including unchanged ones, within their own case packets. Use `USE` for a supported corrected claim, `KEEP_UNKNOWN` when the unsupported assertion has been withdrawn to an explicit unknown, and `HOLD` when a claim remains wrong or unresolved. Put the source locator and your explanation in `reason`. For an absent fact, name the packet you checked and the missing evidence; don't invent a locator.
+Fill `internal_summary_decision` and `unresolved_evidence_and_owner`. If the packet does not name an owner, write that the owner is not identified. Leave `operational_dispatch` at `HOLD`.
 
-A material fact that still fails its exact check, or a previously supported claim damaged by correction, stays on hold. A reviewer disagreement can be resolved by the original source, not by a vote. Keep that reasoning in the human decision while leaving the model outputs and report unchanged.
+A claim that still fails an exact check stays `HOLD`, even if both reviewers approved it. A claim the correction damaged also stays `HOLD`. A disagreement is settled by the source, not by a vote.
 
-Complete `internal_summary_decision` and `unresolved_evidence_and_owner` for the claim set as a whole. If the packet doesn't identify the responsible owner, record that the owner is not identified rather than inventing a person. Keep `operational_dispatch` at `HOLD` and your decision separate from the model receipts.
+**Expected:** Every claim has a disposition and a reason. Dispatch is `HOLD`. The model files are unchanged.
 
-Your final decision must answer:
-
-1. Which corrected claims are supported, and by which exact records? Did the supported controls remain intact?
-2. Which reviewer judgments did you reject or leave unresolved? What evidence outweighs their agreement or explains their disagreement?
-3. Is the corrected claim set usable as a bounded internal source summary, with its case boundaries intact? If so, which unknowns must travel with it? If not, what holds it?
-4. What prevents dispatch, and who would need to supply the missing fact or authorization?
-
-Keep the whole evidence folder `E` and `W/notes.md` together. A useful handoff lets someone inspect the original failure, separate reviews, correction, full recheck, and your source-backed decision without the chat.
-
-Five sessions on these three small case packets do not establish a hallucination rate, calibrated confidence, or superiority over another model. Separate sessions do not remove shared model or source errors. The useful result is narrower: an inspectable correction with explicit limits.
-
-## Class-only boundary
-
-The Slope Brief case is fictional: heater-fuel cans move from Ridge Depot to Clinic T-8 on vehicle SB-4. Names, hours, and masses used as defects are fictional course fixtures. Don't use this packet to plan, authorize, dispatch, or describe a real movement. Results are for class use only.
+Keep `E` and `W/notes.md` together. Someone else should be able to see the original claims, both first reviews, the correction, both second reviews, and your decision without the chat.

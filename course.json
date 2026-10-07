@@ -347,7 +347,23 @@
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_07_LAB.md", "dest": "shared/MODULE_07_LAB.html", "kind": "lab", "guide": {"context_sections": ["how-the-workflow-runs", "white-rack", "open-n8n"], "optional_sections": []}}
       ],
-      "figures": [],
+      "figures": [
+        {"source": "shared/figures/m07-n8n-01-create-workflow.png", "dest": "shared/figures/m07-n8n-01-create-workflow.png"},
+        {"source": "shared/figures/m07-n8n-02-canvas.png", "dest": "shared/figures/m07-n8n-02-canvas.png"},
+        {"source": "shared/figures/m07-n8n-03-search-form.png", "dest": "shared/figures/m07-n8n-03-search-form.png"},
+        {"source": "shared/figures/m07-n8n-04-form-trigger.png", "dest": "shared/figures/m07-n8n-04-form-trigger.png"},
+        {"source": "shared/figures/m07-n8n-05-upload-wave.png", "dest": "shared/figures/m07-n8n-05-upload-wave.png"},
+        {"source": "shared/figures/m07-n8n-06-extract.png", "dest": "shared/figures/m07-n8n-06-extract.png"},
+        {"source": "shared/figures/m07-n8n-07-one-batch.png", "dest": "shared/figures/m07-n8n-07-one-batch.png"},
+        {"source": "shared/figures/m07-n8n-08-search-chain.png", "dest": "shared/figures/m07-n8n-08-search-chain.png"},
+        {"source": "shared/figures/m07-n8n-09-fill-rows.png", "dest": "shared/figures/m07-n8n-09-fill-rows.png"},
+        {"source": "shared/figures/m07-n8n-10-credential.png", "dest": "shared/figures/m07-n8n-10-credential.png"},
+        {"source": "shared/figures/m07-n8n-11-model.png", "dest": "shared/figures/m07-n8n-11-model.png"},
+        {"source": "shared/figures/m07-n8n-12-parser.png", "dest": "shared/figures/m07-n8n-12-parser.png"},
+        {"source": "shared/figures/m07-n8n-13-rows.png", "dest": "shared/figures/m07-n8n-13-rows.png"},
+        {"source": "shared/figures/m07-n8n-14-convert.png", "dest": "shared/figures/m07-n8n-14-convert.png"},
+        {"source": "shared/figures/m07-n8n-15-download.png", "dest": "shared/figures/m07-n8n-15-download.png"}
+      ],
       "scripts": [
         {"source": "scripts/check_sheet.py", "dest": "scripts/check_sheet.py"}
       ],
@@ -363,20 +379,25 @@
       "directory": "module-08-change-eval",
       "title": "Module 8 · Control hallucinations",
       "case_name": "Slope Brief",
-      "summary": "Find unsupported claims, compare independent agent reviews, and check every correction against the original sources before deciding what you can use.",
-      "nav_summary": "Hallucination control · review ensemble",
+      "summary": "Check a brief that sounds ready. Two reviewers can agree and still be wrong.",
+      "nav_summary": "Source checks · two reviewers",
       "outcomes": {
-        "can": "Control unsupported claims by combining structured source checks with independent agent reviews, correcting only what the evidence supports, and keeping unresolved facts visible in your final decision.",
+        "can": "Check a brief claim by claim, keep a correction from grading itself, and decide what the sources support.",
         "will": [
-                "Run two reviewers independently, compare their evidence, and use a correcting agent without letting agreement overrule a source check.",
-                "Recheck every corrected claim, retain unknowns and disagreements, and decide whether the brief is usable within its stated limits."
+                "Read the claims and freeze them before any review.",
+                "Run two separate reviews, a correction, and two fresh reviews.",
+                "Decide each claim from its source, and leave dispatch on hold."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": ["the-decision-rule", "class-only-boundary"], "optional_sections": []}}
+        {"source": "shared/MODULE_08_LAB.md", "dest": "shared/MODULE_08_LAB.html", "kind": "lab", "guide": {"context_sections": ["how-the-check-works", "slope-brief", "three-patterns", "start"], "optional_sections": []}}
       ],
-      "figures": [],
+      "figures": [
+        {"source": "shared/figures/m08-fan-out.png", "dest": "shared/figures/m08-fan-out.png"},
+        {"source": "shared/figures/m08-one-writer.png", "dest": "shared/figures/m08-one-writer.png"},
+        {"source": "shared/figures/m08-fresh-review.png", "dest": "shared/figures/m08-fresh-review.png"}
+      ],
       "scripts": [
         {"source": "scripts/hallucination.py", "dest": "scripts/hallucination.py"}
       ],

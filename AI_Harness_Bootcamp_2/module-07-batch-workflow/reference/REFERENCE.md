@@ -1,5 +1,7 @@
 # Reference: Module 7 — Automate a spreadsheet with an agent
 
+**Revision 7:** 2026-10-07 — the lab now shows the n8n 2.41.5 editor for each construction step: Create workflow, the six-node line, node search, form trigger, extract, both Code bodies, Basic LLM Chain, the empty credential form, the pinned model id, the parser schema, Convert to File, and the Binary download. Those PNGs are captures of that editor. They are not the retired router figures.
+
 **Revision 6:** 2026-10-07 — one unpublished workflow. Upload wave → Extract from File → One batch → Basic LLM Chain (`Fill the rows`) with OpenRouter and a Structured Output Parser → Rows → Convert to File. The AI Agent node requires a tool sub-node, and the file-writing tool was a second published workflow. That path is retired. Download `white-rack.xlsx` from Convert to File on the same execution. Do not publish the workflow.
 
 **Revision 5:** 2026-10-05 — use the staff-prepared n8n plus external-runner stack. Publish only the internal three-node sheet tool during use, keep the form/agent workflow unpublished, and unpublish the tool at close. A live editor-form run on n8n 2.41.5 rejected Revision 4's unpublished database tool; the agent still claimed success. Require the tool result and downloaded file, not the parent execution's success flag.

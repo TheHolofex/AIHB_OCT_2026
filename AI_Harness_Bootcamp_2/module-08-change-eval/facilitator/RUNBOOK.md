@@ -1,8 +1,6 @@
 # Module 8 facilitator runbook
 
-## What the harness changes
-
-A plausible Slope Brief would otherwise reach the next desk with an invented mass, misleading clocks or citation, and unsupported dispatch authority. Exact claim checks, isolated reviewer agents, constrained correction, and fresh full-set review expose those defects without treating agreement as evidence. The human accepts only a bounded source summary or retains the hold.
+The learner runs five sessions on the Slope Brief. The brief says the shipment is released. The sources do not. PC-01 has a real quote for a different shipment, so two reviewers can agree and still be wrong. The learner decides from the sources. Dispatch stays HOLD.
 
 ## Capability and prerequisites
 
