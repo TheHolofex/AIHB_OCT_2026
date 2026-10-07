@@ -37,7 +37,7 @@ BANNED = ["246 kg", "1,404 kg", "3 minutes late", "1,320 kg", "84 kg", "1,650 kg
           "QA-661", "RCPT-8821", "Cold Lantern", "Red Mesa", "Clinic H-17", "R-71", "VX-204", "VX-240", "PR-4418", "MO-27", "C-44", "ST-17", "Harbor Depot",
           "Clinic S-3", "Ivo Marsh", "555-0194", "555-0148", "12 Mesa Yard", "QP-17", "Quarry Depot", "Clinic P-4", "CS-2", "Basin Depot", "Clinic F-9",
           "East Yard", "Clinic O-2", "Icehouse Depot", "Clinic I-6", "SB-4", "Ridge Depot", "Clinic T-8", "West Annex", "Clinic N-5", "South Store", "Clinic R-12", "W-9",
-          "NB-NOTE-17", "North Shelf", "Ledger Pike", "Copper Span", "Blue Gauge", "White Rack", "Slope Brief", "Night Desk", "Last Count"]
+          "NB-NOTE-17", "North Shelf", "Ledger Pike", "Copper Span", "Blue Gauge", "White Rack", "Slope Brief", "Night Desk", "Last Count", "Aster Airhead", "Forward Support Base Kestrel"]
 BANNED_PATTERNS = [r"\bLW-\d", r"\bCR-(09|1[0-8])\b", r"\bS(0[1-9]|10)\b(?=[ ,.)])"]
 NEAR_MISSES = ["MH-6", "MH-8", "NH-6", "B-2", "B-3", "D-2", "MSR Heron", "ASR Linden", "ASR Larch", "L-7731", "L-7713", "L-7640", "BR-14", "BR-22", "BR-31"]
 

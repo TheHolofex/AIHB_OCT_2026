@@ -1,105 +1,175 @@
 #!/usr/bin/env python3
-"""Build launcher-shaped judge evidence that the shared auditor accepts. Offline tests only; never live proof."""
+"""TEST ONLY: native-artifact vectors; never a provider or learner execution option."""
 from __future__ import annotations
 
 import json
 import sys
-import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from types import SimpleNamespace
 
-MODULE = Path(__file__).resolve().parents[1]
-REPO = MODULE.parents[1]
-sys.path.insert(0, str(REPO / "shared"))
-import run_omp as runtime  # noqa: E402
+ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parents[1]
+sys.path[:0] = [str(ROOT / "scripts"), str(REPO / "shared")]
+import blue_gauge as bg
+import prepare_work
 
-# Synthetic fixture data only. Used to construct observed-identity receipts for auditor tests.
-SYNTH_OMP_VERSION = "omp/18.3.5"
-BUILD = "openrouter/typesafe/jev-1.13-20260917"
-OPTIONS = ["released_for_issue", "inspected", "received", "held", "not_stated"]
+MODEL = "openrouter/typesafe/jev-1.13-20000101"
+COST = 0.0001
 
 
-def answers_for(label: dict, *, claim: float | None = None, status: str | None = None, reversed_status: str | None = None,
-                instruct: float | None = None, confidence: float = 0.95) -> dict:
-    """Answers a careful judge would give for one desk label, with any field overridden."""
-    status = status or label["note_status"]
-    reversed_status = reversed_status or status
-
-    def choice(selected: str, order: list[str]) -> dict:
-        spread = round((1 - confidence) / (len(order) - 1), 4)
-        return {"type": "choice", "choice": selected, "probabilities": {option: confidence if option == selected else spread for option in order}, "confidence": confidence}
-    return {
-        "claims_release": {"type": "bool", "bool": claim if claim is not None else (0.95 if label["note_status"] == "released_for_issue" else 0.03)},
-        "note_status": choice(status, OPTIONS),
-        "note_status_reversed": choice(reversed_status, list(reversed(OPTIONS))),
-        "instructs_reader": {"type": "bool", "bool": instruct if instruct is not None else (0.95 if label["instructs"] else 0.04)},
-        "urgency": {"type": "score", "score": 0.2, "legend": {"0": "Routine", "1": "Today", "2": "Immediate"}, "probabilities": {"0": 0.8, "1": 0.2, "2": 0.0}, "confidence": 0.7},
-    }
+def prepared(folder: Path) -> tuple[Path, dict]:
+    work = prepare_work.prepare("06", folder / "work", root=REPO)
+    return work, bg.create_policy(work, "omp/18.6.0")
 
 
-def judge_run(work: Path, evidence_root: Path, name: str, split: str, answers: dict, *, model: str = BUILD, cost: float = 0.0008) -> dict:
-    """Write one complete judge run: frozen inputs, outputs in the work folder, events, guard log, snapshots, and result."""
-    evidence = evidence_root / name
-    evidence.mkdir(parents=True)
-    args = SimpleNamespace(judge_config=str(work / "JUDGE.yml"), judge_questions=str(work / "QUESTIONS.json"), judge_states=str(work / "shared/case/notes" / split), judge_output=f"out/{name}")
-    prompt_text, judge = runtime.judge_launch_files(runtime.prepare_judge(args, work), work, evidence)
-    (evidence / "prompt.md").write_text(prompt_text, encoding="utf-8")
-    overlay = {"retry": {"enabled": False, "modelFallback": False}, "providers": {"cacheWarming": "off"}, "tools": {"approval": {"eval": "allow"}, "intentTracing": False}, "modelRoles": {"judge": runtime.JUDGE_SELECTOR}}
-    (evidence / "runtime-config.yml").write_bytes(runtime.json_bytes(overlay))
-    run_id = str(uuid.uuid4())
-    policy = {"schema_version": 1, "run_id": run_id, "work_root": str(work), "profile": "judge", "tools": ["eval"], "write_files": [], "write_root": None,
-              "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "prompt_sha256": runtime.file_hash(evidence / "prompt.md"),
-              "instruction": None, "declaration": None, "python": sys.executable, "guard_source_sha256": runtime.file_hash(runtime.GUARD),
-              "runtime_config_sha256": runtime.file_hash(evidence / "runtime-config.yml"), "guard_log": str(evidence / "guard.jsonl"), "watch_paths": [], "judge": judge}
-    (evidence / "policy.json").write_bytes(runtime.json_bytes(policy))
-    policy_hash = runtime.file_hash(evidence / "policy.json")
-    started = datetime.now(timezone.utc).isoformat()
-    before = runtime.snapshot(work, [])
-    folder = work / "out" / name
-    folder.mkdir()
-    rows = [{"key": key, "answers": answers[key], "error": None, "model": model} for key in judge["states"]]
-    (folder / "judgments.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
-    status = {"id": f"jdgb-{name}", "intent": f"Judging {len(rows)} states", "total": len(rows), "done": len(rows), "failed": 0, "cost": cost, "running": False, "model": model, "elapsedS": 2.0}
-    (folder / "batch-status.json").write_text(json.dumps(status) + "\n", encoding="utf-8")
-    after = runtime.snapshot(work, [])
-    call_args = {"language": "js", "code": judge["cell_code"], "title": "Judge runner", "timeout": 120}
-    text = f"judged {len(rows)}/{len(rows)}; failed 0; model {model}; cost {cost}"
-    usage = {"cost": {"total": 0.03}}
-    call = {"type": "toolCall", "id": "judge-1", "name": "eval", "arguments": call_args}
-    assistant = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "toolUse", "content": [call], "usage": usage}
-    final = {"role": "assistant", "provider": runtime.PROVIDER, "model": runtime.MODEL, "stopReason": "stop", "content": [{"type": "text", "text": text}], "usage": usage}
-    content = [{"type": "text", "text": text}]
-    events = [{"type": "agent_start"}, {"type": "message_end", "message": assistant},
-              {"type": "tool_execution_start", "toolCallId": "judge-1", "toolName": "eval", "args": call_args},
-              {"type": "tool_execution_end", "toolCallId": "judge-1", "toolName": "eval", "result": {"content": content}, "isError": False},
-              {"type": "message_end", "message": {"role": "toolResult", "toolCallId": "judge-1", "toolName": "eval", "content": content, "isError": False}},
-              {"type": "message_end", "message": final}, {"type": "agent_end", "isTerminal": True, "messages": [assistant, final]}]
-    request = {"type": "provider_request", "run_id": run_id, "provider": runtime.PROVIDER, "model": runtime.MODEL, "tools": ["eval"]}
-    guard = [{"type": "guard_ready", "run_id": run_id, "provider": runtime.PROVIDER, "model": runtime.MODEL, "active_tools": ["eval"], "policy_sha256": policy_hash}, request,
-             {"run_id": run_id, "type": "decision", "call_id": "judge-1", "tool": "eval", "arguments": call_args, "allow": True, "reason": "frozen judge cell"}, request,
-             {"type": "guard_end", "run_id": run_id, "ready": True, "failed": False, "provider_requests": 2, "policy_sha256": policy_hash}]
-    (evidence / "events.jsonl").write_text("".join(json.dumps(row) + "\n" for row in events), encoding="utf-8")
-    (evidence / "guard.jsonl").write_text("".join(json.dumps(row) + "\n" for row in guard), encoding="utf-8")
-    snapshots = {"before": before, "after": after}
-    (evidence / "snapshots.json").write_bytes(runtime.json_bytes(snapshots))
-    (evidence / "response.md").write_text(text, encoding="utf-8")
-    (evidence / "stderr.txt").write_text("", encoding="utf-8")
-    errors = runtime.validate_run(policy, events, guard, snapshots, 0)
-    if errors:
-        raise AssertionError(f"synthetic run is not launcher-shaped: {errors}")
-    result = {"run_id": run_id, "provider": runtime.PROVIDER, "model": runtime.MODEL, "omp_version": SYNTH_OMP_VERSION, "started_at": started,
-              "finished_at": datetime.now(timezone.utc).isoformat(), "exit_code": 0, "policy_sha256": policy_hash, "guard_sha256": runtime.file_hash(evidence / "guard.jsonl"),
-              "declared_policy_sha256": None, "instruction_sha256": None,
-              "input_sha256": {relative: value["sha256"] for relative, value in before["work"].items() if value["type"] == "file"},
-              "output_sha256": {relative: value.get("sha256") for relative, value in after["work"].items() if value["type"] == "file" and value != before["work"].get(relative)},
-              "status": "PASS", "reason": "complete guarded OMP turn; module content still requires its own check", "judge": runtime.judge_output_errors(policy)[1]}
-    (evidence / "result.json").write_bytes(runtime.json_bytes(result))
+def boolean(value: float) -> dict:
+    return {"type": "bool", "bool": value}
+
+
+def choice(question: dict, selected: str, confidence: float = 1, top: float = 1) -> dict:
+    options = list(question["criteria"])
+    return {"type": "choice", "choice": selected, "confidence": confidence,
+            "probabilities": {option: top if option == selected else (1 - top) / (len(options) - 1) for option in options}}
+
+
+def score(question: dict, value: float, confidence: float = 1) -> dict:
+    levels = len(question["criteria"])
+    low, high = int(value), min(levels - 1, int(value) + 1)
+    probabilities = {str(level): 0.0 for level in range(levels)}
+    probabilities[str(low)] = 1 - (value - low)
+    probabilities[str(high)] += value - low
+    return {"type": "score", "score": value, "confidence": confidence, "probabilities": probabilities}
+
+
+def screen_answers(questions: dict, label: dict) -> dict:
+    return {"instructs_reader": boolean(float(label["instructs"])),
+            "claims_release": boolean(float(label["claims_release"])),
+            "claims_flight_ready": boolean(float(label["claims_flight_ready"])),
+            "note_status": choice(questions["note_status"], label["note_status"]),
+            "note_status_reversed": choice(questions["note_status_reversed"], label["note_status"]),
+            "urgency": score(questions["urgency"], 1)}
+
+
+def revision(policy: dict, pattern: str) -> str:
+    return bg.load(bg.state_file(policy))["active_revisions"][pattern]
+
+
+def configure(policy: dict, pattern: str, changes: dict) -> str:
+    result = bg.control_action({"action": "configure", "pattern": pattern, "changes": changes}, policy)
+    assert result["status"] == "PASS", result
+    return result["revision"]
+
+
+def prepare(policy: dict, pattern: str, mode: str) -> dict:
+    result = bg.control_action({"action": "prepare", "pattern": pattern, "mode": mode, "revision": revision(policy, pattern)}, policy)
+    assert result["status"] == "PASS", result
     return result
 
 
-def candidates(evidence_root: Path) -> None:
-    folder = evidence_root / "judge-candidates"
-    folder.mkdir(parents=True)
-    (folder / "candidates.json").write_text(json.dumps({"models": [{"selector": runtime.JUDGE_SELECTOR}, {"selector": "openrouter/~typesafe/jev-latest"}]}), encoding="utf-8")
-    (folder / "result.json").write_text(json.dumps({"omp_version": SYNTH_OMP_VERSION, "candidates": 2, "pinned": runtime.JUDGE_SELECTOR, "pinned_offered": True}), encoding="utf-8")
+def judgment(plan: dict, key: str, names: list[str], answers: dict, sequence: int, start: datetime) -> dict:
+    namespace = plan["question_namespace"] + str(sequence) + "_"
+    mapping = {namespace + name: name for name in names}
+    return {"type": "judge", "id": key, "sequence": sequence, "batch_id": "fixture_batch_" + str(sequence),
+            "namespace": namespace, "question_map": mapping,
+            "questions": {native: plan["questions"][logical] for native, logical in mapping.items()},
+            "state_sha256": bg.value_hash(plan["items"][key]["state"]), "started_at": start.isoformat(),
+            "elapsed_ms": 1, "answers": {name: answers[name] for name in names}, "error": None, "model": MODEL,
+            "status": {"id": "fixture_batch_" + str(sequence), "total": 1, "done": 1, "failed": 0, "running": False, "model": MODEL, "cost": COST}}
+
+
+def finish(start: datetime, wall_ms: int, complete: bool = True) -> dict:
+    return {"type": "finish", "started_at": start.isoformat(), "wall_ms": wall_ms,
+            "complete": complete, "error": None if complete else "fixture interruption"}
+
+
+def record_run(policy: dict, issued: dict, *, join_usage: bool = True, complete: bool = True, override: dict | None = None, failed_handlers: set[str] | None = None) -> dict:
+    """Exercise the real plan/finalizer/seals using explicitly fabricated test receipts."""
+    run_id = issued["run_id"]
+    plan = bg.read_plan(policy, run_id)
+    assert bg.control_action({"action": "authorize_eval", "code": issued["cell_code"]}, policy)["status"] == "PASS"
+    folder = bg.run_folder(policy, run_id)
+    packet = bg.validate_packet(Path(policy["work_root"]))
+    stream = folder / "raw.jsonl"
+    stream.write_text("", encoding="utf-8")
+    native = Path(policy["evidence_root"]) / "sessions" / "fixture-only.jsonl"
+    guard = Path(policy["guard_log"])
+    call_id = "fixture_eval_" + run_id
+    args = {"language": "js", "timeout": 250, "reset": False, "code": issued["cell_code"]}
+    bg.append(guard, {"type": "guard_ready", "fixture_only": True})
+    bg.append(guard, {"type": "decision", "tool": "eval", "allow": True, "arguments": args, "call_id": call_id})
+    bg.append(native, {"type": "message", "message": {"role": "assistant", "provider": "openrouter", "model": "anthropic/claude-sonnet-4.6",
+               "content": [{"type": "toolCall", "id": call_id, "name": "eval", "arguments": args}]}})
+    start = datetime.now(timezone.utc)
+    sequence = 0
+    if complete:
+        for key, item in plan["items"].items():
+            if plan["pattern"] in {"fan_out", "confidence"}:
+                answers = screen_answers(plan["questions"], packet["labels"][key])
+            elif plan["pattern"] == "scoring":
+                answers = {name: score(question, int(key[3:]) % len(question["criteria"])) for name, question in plan["questions"].items()}
+            else:
+                label = packet["request_labels"][key]
+                answers = {"intent": choice(plan["questions"]["intent"], label["expected_intents"][0]),
+                           "complexity": score(plan["questions"]["complexity"], 1)}
+            answers.update((override or {}).get(key, {}))
+            prior = dict(plan.get("seed_answers", {}).get(key, {}))
+            if plan["pattern"] == "intent":
+                # intent asks both once in runner; fabricate one-shot then handler record
+                names = [name for name in plan["questions"] if name not in prior]
+                if names:
+                    sequence += 1
+                    at = start + timedelta(milliseconds=sequence * 2)
+                    row = judgment(plan, key, names, answers, sequence, at)
+                    bg.append(stream, row)
+                    if join_usage:
+                        bg.append(native, {"type": "model_usage", "id": f"fixture_usage_{run_id}_{sequence}", "timestamp": at.isoformat(),
+                                  "purpose": "judge_batch", "api": "test-only", "provider": "openrouter", "model": "typesafe/jev-1.13",
+                                  "usage": {"cost": {"total": COST}}, "stopReason": "stop"})
+                    prior.update(row["answers"])
+            else:
+                while True:
+                    if plan["pattern"] in {"fan_out", "confidence"}:
+                        step = bg.screen_step(item["state"]["note"], item["stock"], item["flight"], item["mission"], prior, plan["config"]["gates"])
+                        names = step["need"] if plan["mode"] == "serial" else list(plan["questions"]) if step["route"] is None else []
+                    else:
+                        names = [name for name in plan["questions"] if name not in prior]
+                    if not names:
+                        break
+                    sequence += 1
+                    at = start + timedelta(milliseconds=sequence * 2)
+                    row = judgment(plan, key, names, answers, sequence, at)
+                    bg.append(stream, row)
+                    if join_usage:
+                        bg.append(native, {"type": "model_usage", "id": f"fixture_usage_{run_id}_{sequence}", "timestamp": at.isoformat(),
+                                  "purpose": "judge_batch", "api": "test-only", "provider": "openrouter", "model": "typesafe/jev-1.13",
+                                  "usage": {"cost": {"total": COST}}, "stopReason": "stop"})
+                    prior.update(row["answers"])
+            if plan["pattern"] == "intent":
+                selected = bg.select_handler(item["state"]["message"], prior, plan["config"], packet, item["source"])
+                handler = selected["handler"]
+                deterministic = handler in {"record_lookup", "record_comparison", "human_review"}
+                result = selected.get("result")
+                failed = key in (failed_handlers or set())
+                if deterministic and result is not None:
+                    bg.save(folder / "handlers" / (key + ".json"), result)
+                bg.append(stream, {"type": "handler", "id": key, "handler": handler, "executed": not failed, "result": None if failed else result,
+                                  "completion_id": None, "requested_model": None, "error": "fixture provider refusal" if failed else None,
+                                  "started_at": start.isoformat(), "elapsed_ms": 1})
+    bg.append(stream, finish(start, sequence * 2 + 10, complete))
+    result = bg.control_action({"action": "finalize", "plan_id": run_id}, policy)
+    assert "run_id" in result, result
+    bg.append(native, {"type": "message", "message": {"role": "toolResult", "toolCallId": call_id, "isError": False,
+                                                      "content": [{"type": "text", "text": "fixture-only eval receipt"}]}})
+    return bg.read_report(policy, run_id)
+
+
+def fan_run(policy: dict, **kwargs) -> dict:
+    configure(policy, "fan_out", {"screen_strategy": "fan_out"})
+    return record_run(policy, prepare(policy, "fan_out", "fan_out"), **kwargs)
+
+
+def unlock_full_packet(policy: dict) -> tuple[dict, dict]:
+    practice = fan_run(policy)
+    configure(policy, "confidence", {"gates": {"auto_pass_confidence": 0.6}})
+    unseen = record_run(policy, prepare(policy, "confidence", "unseen"))
+    return practice, unseen

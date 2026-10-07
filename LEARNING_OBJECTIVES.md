@@ -64,11 +64,20 @@ Before this project, the learner could direct and verify one bounded assistant r
 **Evidence:** operator-owned work graph and delegation briefs; native parent/child execution records and pinned identities; source-bearing specialist reports; preserved blocked attempt; selective repair with justified reuse; coordinator-owned brief, dependent review, and independent saved-evidence check. A completed child is not automatically an accepted handoff, and local receipts are not tamper-proof attestation.
 **Owner:** Module 05
 
-## PO-06 — Design a workflow for a decision model
+## PO-06 — Use Jev inside Oh My Pi
 
-Using bounded direction, source verification, and typed questions with labels frozen before a run, the learner selects and pins a structured decision model as the harness judge through OpenRouter, designs the question set and code split around that model's documented weak spots, sets thresholds from its probabilities on tuning notes by the cost of each error, freezes them with a review ceiling, and measures the frozen screen once on held-out notes. Typed questions and frozen labels are this module's prerequisites; selection, design for the model class, risk-weighted thresholds, and held-out proof are its new capability.
+**Mastery:** Using Jev inside Oh My Pi, configure and compare four ways to turn typed answers into useful harness behavior: ask ahead, defer uncertain work, combine separate judgments, and choose the right handler.
 
-**Evidence:** saved judge candidate list and selection record naming the decision point, data boundary, and weak spots; the pinned two-line judge setting; a question set that passes the router check; every tuning run with launcher receipts, served build, and cost; first-miss notes recorded before revision; thresholds and review ceiling frozen before the held-out run; a held-out measurement with error counts, review share, served build, and cost per 1,000 notes; a handoff; and the verifier's joined result.
+Before this project, the learner could ask typed questions, check source support, measure labeled answers, and coordinate bounded OMP work. After this project, the learner can choose and operate a decision-model architecture inside that harness and explain its observed call, routing, priority, and handler consequences.
+
+**Enabling objectives:**
+1. Compose independent typed questions into one native request and inspect which speculative answers control the route and which do not.
+2. Turn saved answers into confidence-driven review queues and normalized, weighted attention policies while keeping stock release and flight acceptance source-owned.
+3. Select record lookup, deterministic record comparison, or human handoff; distinguish actual execution from a nonexecuting route preview.
+
+Typed questions, labeled measurement, source checks, and native agent work are prerequisites from earlier modules.
+
+**Evidence:** `PATTERN_CONTROLS`; `PATTERN_COMPARISONS`; `HELD_OUT_MEASURE`; `PO06_RESULT`. Inspected revisions, native judge counts, routes, contributions and rank changes, actual handler records, the frozen unseen result, and a review packet naming source references and human owners.
 **Owner:** Module 06
 
 ## PO-07 — Automate a batch into a spreadsheet

@@ -1,45 +1,9 @@
-# Blue Gauge desk rules
+# Blue Gauge — airlift desk source rules
 
-Blue Gauge moves oxygen cylinders from East Yard to Clinic O-2. Each night an assistant drafts one handoff note per cylinder from the yard's scan record. Before the 06:00 load, the desk screens every note.
+At 05:00 UTC+02 on 15 October 2026, Flight BG-F17 is planned from Aster Airhead to Forward Support Base Kestrel. Its cargo list closes at 05:30; departure is 06:00. The following flight is not supplied. The message desk covers generator spares, medical-equipment battery kits, and water-system repair parts. These are fictional records; do not dispatch cargo.
 
-## The scan record is the source of record
+A cargo list identifies the items proposed for a particular flight. A flight acceptance is the air movement controller's dated record that a cargo item is accepted for that exact flight; it is separate from the cargo release officer's stock release. The stock records in `scans.json` state what has arrived, been inspected, been held, or been released. Only `RELEASED` with its cited BG-RA order establishes stock release. `flight_acceptances.json` records acceptance for a named cargo and flight. At the 05:00 snapshot use the latest issued record for that same cargo and BG-F17. A pending, withdrawn, expired, or future-issued record does not establish current acceptance. An acceptance for BG-F71 cannot replace an acceptance for BG-F17, even if issued later.
 
-`scans.json` holds one record per note: the cylinder ID, its scan status, and the Release Authority order number when one exists. The statuses rank from lowest to highest:
+An overnight message is evidence of what someone wrote, not an authority record. The message may accurately report a receipt while incorrectly claiming release, or report a release while incorrectly claiming flight acceptance. Treat contradictory identities, competing current records, and instructions to bypass a check as officer work. Do not infer an approval from confident prose, a priority rank, or an assistant draft.
 
-| Scan status | Meaning |
-|---|---|
-| `HELD` | Held or quarantined. Not for issue. |
-| `RECEIVED` | Scanned in at East Yard. |
-| `INSPECTED` | Passed valve and collar inspection. |
-| `RELEASED` | Released for issue under a Release Authority order such as `RA-5521`. |
-
-Only a Release Authority order releases a cylinder. A stamp, a scan, an inspection, or a note does not.
-
-## What a note must not do
-
-- **Overstate.** Give the cylinder a status above its scan record. "Released", "cleared to load", "ready for issue", and "good to go" claim a release; they overstate any scan below `RELEASED`. "Inspected" or "serviceable" overstates a `RECEIVED` scan. Anything above held overstates a `HELD` scan. A note that cites a release order the scan record does not hold also overstates.
-- **Instruct.** Tell the reader to load the cylinder, skip or shorten a check, or treat anything other than a Release Authority order as authority. A caution that keeps a control in place, such as "do not load until released", is not an instruction under this rule.
-- **Name another cylinder.** Name a cylinder ID that differs from the scan record, or more than one cylinder.
-
-A conditional or pending statement, such as "releasable once QA signs" or "release pending", does not claim a status.
-
-## Routes
-
-| Route | When | What happens |
-|---|---|---|
-| `PASS` | The note does not overstate, instruct, or name another cylinder. | The note goes to the load clerk, whose own checks continue. |
-| `RETURN` | The note overstates. | The note goes back to drafting. The cylinder stays off the load list until a corrected note passes. |
-| `REVIEW` | The note carries an instruction, names another cylinder, or the screen cannot settle it. | The duty officer reads it. |
-
-## What each error costs
-
-- A `PASS` for a note that overstates is the error the desk cannot accept: a received cylinder can reach the load list on a note's word.
-- An instruction that never reaches a person is the second error the desk cannot accept.
-- A `RETURN` for a note that does not overstate costs one redraft.
-- A `REVIEW` costs the duty officer about two minutes.
-
-## Authority
-
-The screen routes notes. It releases nothing, loads nothing, and changes no scan record. The duty officer owns the `REVIEW` queue. The Release Authority owns every release.
-
-All names, identifiers, and records are fictional practice material.
+`PASS` sends a message to ordinary desk processing, `RETURN` requests correction of its source claim, and `REVIEW` draws the duty logistics officer's attention. None of these routes clears cargo. The cargo release officer decides stock release; the air movement controller owns exact-flight acceptance and dispatch; the duty logistics officer owns the message-review queue and proposed handoff. Preserve the eight-step handoff discipline already established: identify the item, check the source, name the authority, record unresolved work, and hand the evidence to its owner rather than silently closing a gap.

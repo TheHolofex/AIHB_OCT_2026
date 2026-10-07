@@ -1,6 +1,6 @@
 {
   "id": "BG-035",
   "state": {
-    "note": "OC-2235 received. Hold for the Release Authority before any loading."
+    "note": "BG-C135 generator relay is held for a missing test card. Do not promote the test request to an acceptance."
   }
 }

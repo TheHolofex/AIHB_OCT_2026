@@ -42,14 +42,13 @@ def remove(rel: str) -> Callable[[Path], None]:
 
 SCRIPT = "scripts/blue_gauge.py"
 MUTATIONS = [
-    Mutation("M6-REF", "the frozen reference changes after its digest", sub("reference/REFERENCE.md", r"\Z", "\nAn unfrozen line.\n")),
-    Mutation("M6-CASE", "a held-out note disappears", remove("shared/case/notes/held-out/BG-080.json")),
-    Mutation("M6-STATE", "the scan record leaks into the model's state", edit_json("shared/case/notes/tuning/BG-002.json", lambda data: data["state"].update(scan="RECEIVED"))),
-    Mutation("M6-QUESTIONS", "the checker stops comparing the twin's option order", sub(SCRIPT, r"if list\(reverse\) != list\(reversed\(list\(status\)\)\) or ", "if ")),
-    Mutation("M6-ROUTE", "the instruction check stops taking precedence", sub(SCRIPT, r'if answers\["instructs_reader"\]\["bool"\] >= t\["instruction_review"\]:', "if False:")),
-    Mutation("M6-PREP", "the selection form is not supplied", remove("shared/controls/SELECTION.template.md")),
-    Mutation("M6-FREEZE", "a freeze no longer compares the tuning run's questions", sub(SCRIPT, r'if digest\(evidence / args\.tuning_run / "questions\.json"\) != digest\(work / "QUESTIONS\.json"\):', "if False:")),
-    Mutation("M6-MEASURE", "a held-out run that started before the freeze is measured anyway", sub(SCRIPT, r'if result\["started_at"\] <= freeze\["created_at"\]:', "if False:")),
-    Mutation("M6-VERIFY", "first-miss notes are no longer compared with the misses", sub(SCRIPT, r'problems = \[f"first-misses\.md does not mention \{key\}" for key in missed if key not in notes\]', "problems = []")),
-    Mutation("M6-LEARNER", "staff wording reaches the lab", sub("shared/MODULE_06_LAB.md", r"\Z", "\nThe answer key is in WORKED_QUESTIONS.\n")),
+    Mutation("M6-CASE", "future-issued acceptance becomes applicable at the snapshot", sub(SCRIPT, r'and date\(record\["issued_at"\]\) <= at', 'and True')),
+    Mutation("M6-AUTH", "instruction precedence is dropped in screen_step", sub(SCRIPT, r'if answers\["instructs_reader"\]\["bool"\] >= gates\["instruction_review"\]:', 'if False:')),
+    Mutation("M6-FAN", "fan-out requests staged need only instead of all six screen questions", sub(SCRIPT, r'wanted = step\["need"\] if plan\["mode"\] == "serial" else list\(CONTRACT\) if step\["route"\] is None else \[\]', 'wanted = step["need"]')),
+    Mutation("M6-CONFIDENCE", "higher twin confidence overrides the weaker answer", sub(SCRIPT, r'confidence = min\(first\["confidence"\], second\["confidence"\]\)', 'confidence = max(first["confidence"], second["confidence"])')),
+    Mutation("M6-SCORE", "composite scoring omits normalization before weighting", sub(SCRIPT, r'normalized = answer\["score"\] / \(len\(questions\[key\]\["criteria"\]\) - 1\)', 'normalized = float(answer.get("score", 0))')),
+    Mutation("M6-INTENT", "low-confidence intent bypasses human review", sub(SCRIPT, r'elif intent\["confidence"\] < config\["handlers"\]\["intent_confidence"\]:', 'elif False:')),
+    Mutation("M6-NATIVE", "one-use eval cell admission allows reuse of consumed plan", sub(SCRIPT, r'if not active or active\["consumed"\]:', 'if False:  # mutated one-use admission allows reuse')),
+    Mutation("M6-EVIDENCE", "sealed report HOLD reasons are ignored during audit recomputation", sub(SCRIPT, r'if report\["decision"\] == "HOLD":', 'if False:  # sealed recompute bypass')),
+    Mutation("M6-PREP", "prepared work safety rejects repo-relative or symlink work folders", sub(SCRIPT, r'if work\.is_symlink\(\) or not work\.is_dir\(\) or work\.resolve\(\) != work or work\.is_relative_to\(REPO\):', 'if work.is_symlink() or not work.is_dir() or work.resolve() != work or False:')),
 ]

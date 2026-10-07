@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove the Module 6 oracle can fail each live criterion."""
+"""Prove each of the nine retained behavioral groups can be killed by a semantic mutation; reports survivors/unapplied/unproven and returns non-zero on any."""
 from __future__ import annotations
 
 import re
@@ -15,6 +15,8 @@ MODULE = Path(__file__).resolve().parents[1]
 REPO = MODULE.parents[1]
 CID_RE = re.compile(r"^\s*(?:PASS|FAIL)\s+(M6-[A-Z0-9-]+):", re.M)
 FAIL_RE = re.compile(r"^\s*FAIL\s+(M6-[A-Z0-9-]+):", re.M)
+RETAINED = {"M6-CASE", "M6-AUTH", "M6-FAN", "M6-CONFIDENCE", "M6-SCORE", "M6-INTENT", "M6-NATIVE", "M6-EVIDENCE", "M6-PREP"}
+
 
 
 def run_oracle(root: Path) -> subprocess.CompletedProcess[str]:
@@ -37,8 +39,15 @@ def main() -> int:
         print("LIVE ORACLE FAIL — adequacy does not run against a red module")
         return 1
     live_ids = set(CID_RE.findall(output))
-    unproven = live_ids - {mutation.cid for mutation in MUTATIONS}
+    if live_ids != RETAINED:
+        print(f"ORACLE GROUP MISMATCH: live={sorted(live_ids)} retained={sorted(RETAINED)}")
+        return 1
+    unproven = RETAINED - {mutation.cid for mutation in MUTATIONS}
+    if unproven:
+        print(f"UNPROVEN (mutations missing): {sorted(unproven)}")
+        return 1
     survivors: list[str] = []
+
     unapplied: list[str] = []
     for mutation in MUTATIONS:
         with tempfile.TemporaryDirectory() as tmp:
@@ -66,7 +75,7 @@ def main() -> int:
         print(f"UNPROVEN: {sorted(unproven)}")
     if survivors or unapplied or unproven:
         return 1
-    print(f"PASS: {len(MUTATIONS)} mutations, 0 survivors")
+    print(f"PASS: {len(MUTATIONS)} mutations for {len(RETAINED)} groups, 0 survivors")
     return 0
 
 

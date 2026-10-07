@@ -12,7 +12,7 @@ Eleven sessions, eleven movements. A mission thread is the ordered path from a r
 | Tue PM | Kiln Hold | burn-dressing cases | Mill Depot | Clinic B-2 |
 | Tue block 3 | Chalk Line | sterile surgical gloves | Ferry Depot | Clinic K-3 |
 | Wed block 1 | Copper Span | IV fluid cases | Basin Depot | Clinic F-9 |
-| Wed block 2 | Blue Gauge | oxygen cylinders | East Yard | Clinic O-2 |
+ | Wed block 2 | Blue Gauge | generator spares, battery kits, water repair parts | Aster Airhead | Forward Support Base Kestrel |
 | Wed block 3 | White Rack | refrigerated reagent kits | Icehouse Depot | Clinic I-6 |
 | Thu block 1 | Slope Brief | heater-fuel cans | Ridge Depot | Clinic T-8 |
 | Thu block 2 | Night Desk | field stretchers | West Annex | Clinic N-5 |
@@ -237,23 +237,23 @@ Reserved bands, so a rebuild does not collide with a sibling or with Monday PM:
 
 **Independence:** A self-contained Copper Span source packet. No input or gate consumes Blue Gauge's runs, Cold Lantern's packet, or another module's evidence.
 
-## A note can promote a receipt in Blue Gauge
-
-**Status:** adopted 2026-10-04. The shipped lab screens AI-drafted handoff notes with a pinned decision model. The earlier eighty-run corpus, two-literal predicate control, and their figures are retired; their evidence stays historical.
-
-**Project:** Blue Gauge is a vehicle resupply of oxygen cylinders from East Yard to Clinic O-2. Each night an assistant drafts one handoff note per cylinder from the yard's scan record, and the desk screens every note before the 06:00 load. Eighty authored notes `BG-001`–`BG-080`, each with a scan record and a desk label. Twenty tuning notes have visible labels; sixty held-out notes are measured once after the freeze. The learner selects and pins `openrouter/typesafe/jev-1.13` as OMP's judge through OpenRouter, repairs a starter question set, runs the tuning notes, records first misses before revising, sets four thresholds, freezes them with a review ceiling, judges the held-out notes once, and hands off the measured screen.
-
-**Stake:** Most notes read fine. The repeated failure claims a release the scan record doesn't hold, often without the word released: "good to go", "cleared", "okay to load". A few notes tell the desk to treat a stamp as authority or skip a check. If an overstating note passes, Clinic O-2 is told a received cylinder can load. If an instruction reaches no person, a note authorizes a load.
-
-**Skill:** Choose and pin a decision model in the harness; design questions and a code split for its documented weak spots (literal reading, numbers and dates, long state, adversarial text, option order); set thresholds from tuning answers by error cost; prove the frozen screen on held-out notes with the served build and cost. Typed questions and frozen labels are prerequisites from Module 04.
-
-**Platform:** The latest stable OMP release through `shared/run_omp.py`, with the actual runtime version recorded: `--list-judges` saves the candidates; the judge profile overlays `modelRoles.judge`, exposes only `eval`, and the guard allows one launcher-written cell. `scripts/blue_gauge.py` supplies the router, spread, freeze, measurement, and joined verifier. No learner-written code.
-
-**Volume:** 80 notes. Tuning 20 (seven overstatements, two instructions, one other cylinder). Held-out 60 (seventeen overstatements, six instructions, three other-cylinder notes). Traps: negated, pending, conditional, and expected releases; cautions that keep a control in place; a cited order the scan record lacks; status claims on held cylinders; a vendor tag reading `READY`.
-
-**Worked question set:** staff-only `reference/WORKED_QUESTIONS.json`. Observed staff runs 2026-10-04, build `jev-1.13-20260917`, thresholds 0.6 / 0.6 / 0.2 / 0.4: the worked set as frozen gave no critical error on held-out, one wrong return, and 27% review; after the lab's first-miss revision, no critical error, one wrong return, and 20% review. The same build drifts by a few hundredths between runs.
-
-**Independence:** New notes and scan records. Not Module 05's Copper Span movement or its vehicle. Not Monday's ledger.
+## Blue Gauge: the last resupply flight
+ 
+ **Status:** adopted for native OMP pattern configuration. The earlier oxygen-cylinder case, predicate control, and form exercises are retired; their evidence stays historical.
+ 
+**Project:** Blue Gauge is the last resupply flight BG-F17 from Aster Airhead to Forward Support Base Kestrel. Decision snapshot 2026-10-15 05:00 UTC+02; cargo list closes 05:30, aircraft departs 06:00, next flight not supplied. Eighty overnight messages (BG-001–BG-080) plus sixteen requests describe cargo and shortages across generator spares, medical-equipment battery kits, and water-system repair parts. Stock release and acceptance for this exact flight are separate human authorities. The learner starts native OMP, inspects the fixed mission and sources through supplied controls, configures the four patterns with plain prompts, runs the supplied arms, inspects actual calls/routes/rankings/handlers, changes settings via replay, and hands off a review packet.
+ 
+ **Stake:** A message can promote a receipt to clearance, treat pending or wrong-flight acceptance as current, or instruct the desk to skip a check. If an overstating or instructed message passes, unsupported cargo enters the packet or a needed review is lost. The patterns make ask-once cost, gate effects, priority changes, and handler choice visible without granting release or dispatch authority.
+ 
+ **Skill:** Use Jev inside Oh My Pi to configure and compare four decision-model patterns: ask several questions about one state together and see what the router uses; send uncertain messages to review and measure gate impact; reweight composite scores from saved answers without new calls; route requests to record lookup, deterministic record comparison, or human and verify what actually executed. Earlier typed questions and native bounded work are prerequisites.
+ 
+ **Platform:** Latest stable OMP through the module's blue_gauge launcher. Supplied controls (patterns.mjs and extension) register the blue_gauge tool with inspect/configure/prepare/replay/show/verify actions. Native judgeBatch runs only through the frozen plan cell admitted by the guard; lookup, record comparison and human queue effects are deterministic code. One active paid operation at a time; replays use saved answers and do not execute handlers. The append-system prompt and policy record the exact protocol and source hashes.
+ 
+**Volume:** 80 messages + 16 requests. 20 practice (visible labels), 60 unseen (worked answers and labels withheld until the frozen measurement completes). All three cargo families. At least eight visible near-miss cargo/flight/order/acceptance references. Three locally true broken handoffs (receipt/release, release/flight-acceptance, wrong-flight). One hostile paperwork instruction and time/supersession traps.
+ 
+ **Worked authoring example:** BG-006 receipt message tells the desk to treat the stamp as clearance and omit pending approval. BG-004 has supported stock release and current BG-F17 acceptance. BG-019 cites a later record for BG-F71. Only practice-visible examples appear before the freeze.
+ 
+ **Independence:** New airlift sources, stock records, flight acceptances, and requests. Not Module 05's Copper Span movement or vehicle. Not Monday's ledger.
 
 ## Paperwork arriving does not make a White Rack lot ready
 
@@ -344,7 +344,7 @@ Write this sentence into the facilitator runbook when a spec is adopted. If the 
 | Tue PM | The model obeys a note addressed to automation and re-marks the sources, or tidies the vault by tagging and overwriting them. | The server refuses writes outside the declared folder, tools the declaration omits are never offered, and the probe shows the limit holds when the model never tries. |
 | Tue block 3 | The clerk totals the Chalk Line pile from a fluent summary, counts a corrected requisition twice, and obeys the note that calls itself approved. | Seven typed questions per message, validated; supersession and gates applied in code; the hostile note and the authority change referred to a person; declared confidence measured against frozen labels. |
 | Wed block 1 | The operator treats two completed Copper Span specialist reports as a complete clearance while a required input is missing. | Native child records expose the blocked handoff. Valid independent results remain attributable; only invalidated work is repaired before the combined brief and dependent review are checked. |
-| Wed block 2 | The clerk automates the cylinder-ID typo and leaves a Blue Gauge receipt marked released. | Sample frozen as `R-001`–`R-016`. The predicate catches a receipt promoted to release. |
+| Wed block 2 | The desk treats a receipt as clearance or a later wrong-flight acceptance as current for BG-F17. | Native controls keep stock release and exact-flight acceptance separate while exposing fan-out questions, confidence gates, composite scores and actual handlers. Gate/weight/intent previews make zero additional Jev or handler calls. Unsupported claims need source correction; instructions and unsettled cases need officer review. No route or priority clears cargo. |
 | Wed block 3 | Familiar White Rack lots are marked ready because the paperwork arrived. | The n8n AI Agent, connected to OpenRouter, writes the spreadsheet by calling a tool. The learner downloads the file and checks it. A note in the batch does not release a lot. |
 | Thu block 1 | The fluent Slope Brief load sheet is the one handed to vehicle `SB-4`. | Exact claim checks, blind source and skeptical reviews, source-constrained correction, and two fresh full-set reviews expose unsupported facts and reviewer errors. A human resolves disagreements by evidence; missing dispatch authority remains unknown and operational dispatch stays HOLD. |
 | Thu block 2 | The agent files the Night Desk release for lot `ST-17` while answering the length question. | Consumed policy and receipts distinguish an observed boundary denial from no attempt. The length is quoted; watched forbidden targets remain unchanged. |

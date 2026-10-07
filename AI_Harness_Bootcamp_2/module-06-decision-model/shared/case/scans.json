@@ -1,401 +1,481 @@
 {
   "BG-001": {
-    "cylinder": "OC-2201",
+    "cargo_id": "BG-C101",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-002": {
-    "cylinder": "OC-2202",
+    "cargo_id": "BG-C102",
+    "cargo_description": "water-pump controller",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-003": {
-    "cylinder": "OC-2203",
+    "cargo_id": "BG-C103",
+    "cargo_description": "generator spare",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-004": {
-    "cylinder": "OC-2204",
+    "cargo_id": "BG-C104",
+    "cargo_description": "generator spare",
     "status": "RELEASED",
-    "release_order": "RA-5521"
+    "release_order": "BG-RA7104"
   },
   "BG-005": {
-    "cylinder": "OC-2205",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C105",
+    "cargo_description": "water-system repair kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-006": {
-    "cylinder": "OC-2206",
+    "cargo_id": "BG-C106",
+    "cargo_description": "ground-support generator control module",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-007": {
-    "cylinder": "OC-2207",
-    "status": "HELD",
-    "release_order": null
+    "cargo_id": "BG-C107",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7107"
   },
   "BG-008": {
-    "cylinder": "OC-2208",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C108",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7108"
   },
   "BG-009": {
-    "cylinder": "OC-2209",
+    "cargo_id": "BG-C109",
+    "cargo_description": "generator spare",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-010": {
-    "cylinder": "OC-2210",
+    "cargo_id": "BG-C110",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-011": {
-    "cylinder": "OC-2211",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C111",
+    "cargo_description": "water-system repair kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-012": {
-    "cylinder": "OC-2212",
+    "cargo_id": "BG-C112",
+    "cargo_description": "spare charger set",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-013": {
-    "cylinder": "OC-2213",
+    "cargo_id": "BG-C113",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-014": {
-    "cylinder": "OC-2214",
-    "status": "RELEASED",
-    "release_order": "RA-5530"
+    "cargo_id": "BG-C114",
+    "cargo_description": "shared generator spare",
+    "status": "INSPECTED",
+    "release_order": null
   },
   "BG-015": {
-    "cylinder": "OC-2215",
+    "cargo_id": "BG-C115",
+    "cargo_description": "generator spare",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-016": {
-    "cylinder": "OC-2216",
-    "status": "HELD",
-    "release_order": null
+    "cargo_id": "BG-C116",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7116"
   },
   "BG-017": {
-    "cylinder": "OC-2217",
+    "cargo_id": "BG-C117",
+    "cargo_description": "water-system repair kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-018": {
-    "cylinder": "OC-2218",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C118",
+    "cargo_description": "generator spare",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-019": {
-    "cylinder": "OC-2219",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C119",
+    "cargo_description": "water-system valve assembly",
+    "status": "RELEASED",
+    "release_order": "BG-RA7119"
   },
   "BG-020": {
-    "cylinder": "OC-2220",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C120",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7120"
   },
   "BG-021": {
-    "cylinder": "OC-2221",
+    "cargo_id": "BG-C121",
+    "cargo_description": "generator spare",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-022": {
-    "cylinder": "OC-2222",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C122",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-023": {
-    "cylinder": "OC-2223",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C123",
+    "cargo_description": "water-system repair kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-024": {
-    "cylinder": "OC-2224",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C124",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7124"
   },
   "BG-025": {
-    "cylinder": "OC-2225",
+    "cargo_id": "BG-C125",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-026": {
-    "cylinder": "OC-2226",
+    "cargo_id": "BG-C126",
+    "cargo_description": "water-system repair kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-027": {
-    "cylinder": "OC-2227",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C127",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7127"
   },
   "BG-028": {
-    "cylinder": "OC-2228",
+    "cargo_id": "BG-C128",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-029": {
-    "cylinder": "OC-2229",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C129",
+    "cargo_description": "water-system repair kit",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-030": {
-    "cylinder": "OC-2230",
-    "status": "INSPECTED",
-    "release_order": null
+    "cargo_id": "BG-C130",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7130"
   },
   "BG-031": {
-    "cylinder": "OC-2231",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C131",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-032": {
-    "cylinder": "OC-2232",
-    "status": "INSPECTED",
+    "cargo_id": "BG-C132",
+    "cargo_description": "water-system repair kit",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-033": {
-    "cylinder": "OC-2233",
+    "cargo_id": "BG-C133",
+    "cargo_description": "generator spare",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-034": {
-    "cylinder": "OC-2234",
-    "status": "RECEIVED",
-    "release_order": null
-  },
-  "BG-035": {
-    "cylinder": "OC-2235",
-    "status": "RECEIVED",
-    "release_order": null
-  },
-  "BG-036": {
-    "cylinder": "OC-2236",
+    "cargo_id": "BG-C134",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
+  "BG-035": {
+    "cargo_id": "BG-C135",
+    "cargo_description": "water-system repair kit",
+    "status": "HELD",
+    "release_order": null
+  },
+  "BG-036": {
+    "cargo_id": "BG-C136",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7136"
+  },
   "BG-037": {
-    "cylinder": "OC-2237",
+    "cargo_id": "BG-C137",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-038": {
-    "cylinder": "OC-2238",
+    "cargo_id": "BG-C138",
+    "cargo_description": "water-system repair kit",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-039": {
-    "cylinder": "OC-2239",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C139",
+    "cargo_description": "generator spare",
+    "status": "HELD",
     "release_order": null
   },
   "BG-040": {
-    "cylinder": "OC-2240",
-    "status": "INSPECTED",
-    "release_order": null
+    "cargo_id": "BG-C140",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7140"
   },
   "BG-041": {
-    "cylinder": "OC-2241",
-    "status": "INSPECTED",
+    "cargo_id": "BG-C141",
+    "cargo_description": "water-system repair kit",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-042": {
-    "cylinder": "OC-2242",
-    "status": "INSPECTED",
+    "cargo_id": "BG-C142",
+    "cargo_description": "generator spare",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-043": {
-    "cylinder": "OC-2243",
+    "cargo_id": "BG-C143",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-044": {
-    "cylinder": "OC-2244",
+    "cargo_id": "BG-C144",
+    "cargo_description": "water-system repair kit",
     "status": "RELEASED",
-    "release_order": "RA-5544"
+    "release_order": "BG-RA7144"
   },
   "BG-045": {
-    "cylinder": "OC-2245",
-    "status": "RELEASED",
-    "release_order": "RA-5545"
-  },
-  "BG-046": {
-    "cylinder": "OC-2246",
-    "status": "RELEASED",
-    "release_order": "RA-5546"
-  },
-  "BG-047": {
-    "cylinder": "OC-2247",
-    "status": "RELEASED",
-    "release_order": "RA-5547"
-  },
-  "BG-048": {
-    "cylinder": "OC-2248",
-    "status": "RELEASED",
-    "release_order": "RA-5548"
-  },
-  "BG-049": {
-    "cylinder": "OC-2249",
-    "status": "RELEASED",
-    "release_order": "RA-5549"
-  },
-  "BG-050": {
-    "cylinder": "OC-2250",
+    "cargo_id": "BG-C145",
+    "cargo_description": "generator spare",
     "status": "HELD",
     "release_order": null
   },
-  "BG-051": {
-    "cylinder": "OC-2251",
+  "BG-046": {
+    "cargo_id": "BG-C146",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RECEIVED",
+    "release_order": null
+  },
+  "BG-047": {
+    "cargo_id": "BG-C147",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7147"
+  },
+  "BG-048": {
+    "cargo_id": "BG-C148",
+    "cargo_description": "generator spare",
+    "status": "INSPECTED",
+    "release_order": null
+  },
+  "BG-049": {
+    "cargo_id": "BG-C149",
+    "cargo_description": "medical-equipment battery kit",
     "status": "HELD",
+    "release_order": null
+  },
+  "BG-050": {
+    "cargo_id": "BG-C150",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7150"
+  },
+  "BG-051": {
+    "cargo_id": "BG-C151",
+    "cargo_description": "generator spare",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-052": {
-    "cylinder": "OC-2252",
-    "status": "HELD",
-    "release_order": null
+    "cargo_id": "BG-C152",
+    "cargo_description": "generator regulator",
+    "status": "RELEASED",
+    "release_order": "BG-RA7152"
   },
   "BG-053": {
-    "cylinder": "OC-2253",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C153",
+    "cargo_description": "water-system repair kit",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-054": {
-    "cylinder": "OC-2254",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C154",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7154"
   },
   "BG-055": {
-    "cylinder": "OC-2255",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C155",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-056": {
-    "cylinder": "OC-2256",
+    "cargo_id": "BG-C156",
+    "cargo_description": "water-system repair kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-057": {
-    "cylinder": "OC-2257",
-    "status": "INSPECTED",
-    "release_order": null
+    "cargo_id": "BG-C157",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7157"
   },
   "BG-058": {
-    "cylinder": "OC-2258",
+    "cargo_id": "BG-C158",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
   "BG-059": {
-    "cylinder": "OC-2259",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C159",
+    "cargo_description": "water-system repair kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-060": {
-    "cylinder": "OC-2260",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C160",
+    "cargo_description": "generator spare",
+    "status": "RELEASED",
+    "release_order": "BG-RA7160"
   },
   "BG-061": {
-    "cylinder": "OC-2261",
-    "status": "HELD",
+    "cargo_id": "BG-C161",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-062": {
-    "cylinder": "OC-2262",
-    "status": "HELD",
+    "cargo_id": "BG-C162",
+    "cargo_description": "water-system repair kit",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-063": {
-    "cylinder": "OC-2263",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C163",
+    "cargo_description": "generator spare",
+    "status": "HELD",
     "release_order": null
   },
   "BG-064": {
-    "cylinder": "OC-2264",
+    "cargo_id": "BG-C164",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-065": {
-    "cylinder": "OC-2265",
-    "status": "INSPECTED",
+    "cargo_id": "BG-C165",
+    "cargo_description": "water-system repair kit",
+    "status": "RECEIVED",
     "release_order": null
   },
   "BG-066": {
-    "cylinder": "OC-2266",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C166",
+    "cargo_description": "generator spare",
+    "status": "INSPECTED",
     "release_order": null
   },
   "BG-067": {
-    "cylinder": "OC-2267",
-    "status": "RECEIVED",
-    "release_order": null
-  },
-  "BG-068": {
-    "cylinder": "OC-2268",
+    "cargo_id": "BG-C167",
+    "cargo_description": "medical-equipment battery kit",
     "status": "HELD",
     "release_order": null
   },
+  "BG-068": {
+    "cargo_id": "BG-C168",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7168"
+  },
   "BG-069": {
-    "cylinder": "OC-2269",
+    "cargo_id": "BG-C169",
+    "cargo_description": "generator spare",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-070": {
-    "cylinder": "OC-2270",
-    "status": "RECEIVED",
-    "release_order": null
-  },
-  "BG-071": {
-    "cylinder": "OC-2271",
+    "cargo_id": "BG-C170",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
+  "BG-071": {
+    "cargo_id": "BG-C171",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7171"
+  },
   "BG-072": {
-    "cylinder": "OC-2272",
+    "cargo_id": "BG-C172",
+    "cargo_description": "generator spare",
     "status": "RECEIVED",
     "release_order": null
   },
   "BG-073": {
-    "cylinder": "OC-2273",
-    "status": "RECEIVED",
+    "cargo_id": "BG-C173",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "HELD",
     "release_order": null
   },
   "BG-074": {
-    "cylinder": "OC-2274",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C174",
+    "cargo_description": "water-system repair kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7174"
   },
   "BG-075": {
-    "cylinder": "OC-2275",
-    "status": "RECEIVED",
-    "release_order": null
+    "cargo_id": "BG-C175",
+    "cargo_description": "medical-equipment battery kit",
+    "status": "RELEASED",
+    "release_order": "BG-RA7175"
   },
   "BG-076": {
-    "cylinder": "OC-2276",
-    "status": "RELEASED",
-    "release_order": "RA-5576"
-  },
-  "BG-077": {
-    "cylinder": "OC-2277",
+    "cargo_id": "BG-C176",
+    "cargo_description": "medical-equipment battery kit",
     "status": "INSPECTED",
     "release_order": null
   },
-  "BG-078": {
-    "cylinder": "OC-2278",
+  "BG-077": {
+    "cargo_id": "BG-C177",
+    "cargo_description": "water-system repair kit",
     "status": "RECEIVED",
     "release_order": null
   },
+  "BG-078": {
+    "cargo_id": "BG-C178",
+    "cargo_description": "generator spare",
+    "status": "HELD",
+    "release_order": null
+  },
   "BG-079": {
-    "cylinder": "OC-2279",
+    "cargo_id": "BG-C179",
+    "cargo_description": "medical-equipment battery kit",
     "status": "RELEASED",
-    "release_order": "RA-5579"
+    "release_order": "BG-RA7179"
   },
   "BG-080": {
-    "cylinder": "OC-2280",
+    "cargo_id": "BG-C180",
+    "cargo_description": "water-system repair kit",
     "status": "RECEIVED",
     "release_order": null
   }

@@ -77,7 +77,7 @@ Native child completion and artifact presence are not acceptance. Join actual re
 | MCP operation, AI classification judgment, limited tool authority proved by probes, revocation | 03 |
 | Typed-question decomposition, read-only decision runs, measured confidence gates, code-owned routing | 04 |
 | Native OMP team decomposition, evidence-bearing handoffs, dependent review, selective recovery | 05 |
-| Observed-run analysis and predicate specification | 06 |
+ | Jev pattern configuration and comparison (fan-out, confidence, scoring, intent routing to lookup / deterministic comparison / human queue) inside native OMP controls | 06 |
 | Model-driven tool use that produces a real structured-data artifact, with observed execution and downloaded-file inspection | 07 |
 | Hallucination control with structured claim checks, isolated reviewer agents, correction, re-review and human disposition | 08 |
 | Live-agent allow-list, write jail, planted-instruction refuse | 09 |

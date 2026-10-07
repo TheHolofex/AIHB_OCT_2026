@@ -1,34 +1,32 @@
-# Module 06 — Design a workflow for a decision model
+# Module 06 — Use Jev inside Oh My Pi
 
 **Serves oracle:** S04, S12, S14, S17, S19
-**Primary objective:** PO-06 — Design a workflow for a decision model
-**Prerequisites:** Bounded direction, source verification, and typed questions with labels frozen before a run; a preflighted accessible environment, the course launcher on the latest stable OMP release with its judge profile, and this module's supplied case and controls
+**Primary objective:** PO-06 — Use Jev inside Oh My Pi
+**Prerequisites:** Typed questions, labeled measurement, source checks, and bounded native agent work are assumed. A preflighted Python/OMP installation and this module's supplied case and controls are required.
 **Consumes:** VERIFY:PREFLIGHT; VERIFY:CASE; VERIFY:JUDGE_ROUTE; VERIFY:DESK_LABELS
-**Produces:** JUDGE_SELECTION; DECISION_QUESTIONS; RISK_THRESHOLDS; HELD_OUT_MEASURE; PO06_RESULT
-**Rough time:** about 3 hours
+**Produces:** PATTERN_CONTROLS; PATTERN_COMPARISONS; HELD_OUT_MEASURE; PO06_RESULT
+**Rough time:** about 3 hours. Design allocation: 10 minutes orientation, 35 fan-out, 40 confidence, 35 scoring, 40 intent, 20 handoff; break after confidence. Not measured learner time.
 **Performance stage:** Adversarial
-**Work surface:** Decision-model screen for AI-drafted notes
-**Practical work:** List the judge models the course key reaches and record a selection; pin `openrouter/typesafe/jev-1.13` as OMP's judge role; repair a starter question set against the router contract and the model's documented weak spots; run twenty tuning notes through the launcher's judge profile; record first misses before revising; set four thresholds from the tuning answers; freeze questions, thresholds, served build, and review ceiling; judge sixty held-out notes once; measure and hand off.
-**Performance evidence:** Saved judge candidate list and selection record; two-line judge setting; question set passing the router check; every tuning run with launcher receipts, served build, and cost; first-miss notes covering every note the first run missed; frozen thresholds and review ceiling recorded before the held-out run; held-out measurement with error counts, review share, served build, and cost per 1,000 notes; handoff; the verifier's joined result.
-**Failure / HOLD:** Hold when the pinned judge is unavailable or another selector is set; a judgment is missing, malformed, or from another build; the questions changed after the tuning run a freeze names; the held-out run started before the freeze; a saved judgment or measurement is edited; or the held-out measurement shows a missed overstatement, an unreviewed instruction, an unreviewed note about another cylinder, a changed build, or a review share above the frozen ceiling.
-**Scope boundary:** Proves one frozen screen on sixty practice notes judged by one served build. It does not establish the model's accuracy beyond the sample, calibrate its probabilities in general, authorize a release or a load, or require programming: the learner writes questions, thresholds, and records in supplied formats, and the launcher, guard, runner, and router are supplied.
-**Handoff:** Give the duty officer the frozen questions and thresholds, the held-out errors and review share, the served build and cost, the limits, and the owners of the review queue and every release.
-**Case family:** [CASE_FAMILY.md](../../CASE_FAMILY.md). The adapter supplies a self-contained case in that family. This module's gate does not consume another module's product.
+**Work surface:** Native OMP TUI with `blue_gauge` and `eval`
+**Practical work:** Configure supplied patterns through plain-language prompts. Run cold serial/fan-out arms, replay confidence gates, freeze and measure the unseen set once, rank all messages and replay weights, classify sixteen requests through Jev, execute the three routed handlers (record lookup, deterministic record comparison, human officer queue), and hand off a review packet.
+**Performance evidence:** `PATTERN_CONTROLS` records inspected configuration revisions; `PATTERN_COMPARISONS` records observed call, route, rank and handler consequences; `HELD_OUT_MEASURE` records the frozen 60-message result; `PO06_RESULT` records the work decision and limits in the review packet.
 
 ## Capability added
 
-Before this project, the learner can shape an AI judgment as typed questions, freeze labels before a run, and route the chat model's answers in code with gates set from measurement. After it, the learner can select, pin, and operate a dedicated decision model in their own harness, design the question set and code split around that model's documented weak spots, set thresholds from its probabilities by the cost of each error, and prove the frozen screen on held-out data with the served build and cost on record. Typed questions and frozen labels are prerequisites, not new objectives.
+Before this project, the learner could ask typed questions, check source support, measure labeled answers, and coordinate bounded OMP work. After this project, the learner can choose and operate a decision-model architecture inside that harness and explain its observed call, routing, priority, and handler consequences.
 
 ## Enabling objectives
 
-1. Select and pin a decision model as the harness judge from the candidates a key reaches, and state the decision point, the data boundary, and the weak spots the design must answer.
-2. Design questions and a code split for that model class: rules settled in code, minimal state, one condition per question, explicit ways out, and option order checked by asking twice.
-3. Set thresholds from tuning answers by error cost, freeze them with a review ceiling, and measure the frozen screen once on held-out notes.
+1. Compose independent typed questions into one native request and inspect which speculative answers control the route and which do not.
+2. Turn saved answers into confidence-driven review queues and normalized, weighted attention policies while keeping stock release and flight acceptance source-owned.
+3. Select record lookup, deterministic record comparison, or human handoff; distinguish actual handler execution from a nonexecuting route preview.
 
 ## Check the work
 
-Recheck every judge run with the shared auditor: one frozen cell, every answer shaped by the frozen questions, one served `jev-1.13` build, a finished batch with cost, and no work-folder change beyond the declared output. Confirm the first-miss notes name every note the first tuning run missed, and that a revised run followed. Confirm the freeze names a tuning run with the current questions and predates the held-out run, measure the saved held-out answers again, and compare with the saved measurement. Read the selection record and handoff. Record the result in PO06_RESULT.
+Use the supplied verifier to join native calls, guard decisions, usage, frozen inputs and saved effects. Inspect three confidence gates, the prescribed two weight sets and a learner-chosen third, and actual execution of each handler type. Explain an observed effect for one message or request per pattern. Preserve errors, missing provenance and `HOLD`; none is a learner grade. The review packet names unresolved sources, human owners and the limits of the evidence.
 
 ## Supplied-case domain (adapter)
 
-Blue Gauge screens AI-drafted handoff notes for oxygen cylinders moving from East Yard to Clinic O-2 against the yard's scan record. Eighty notes `BG-001`–`BG-080`: twenty tuning notes with visible desk labels and sixty held-out notes whose labels the learner opens only through the measurement after the freeze. The state sent to the model is the note text alone; the cylinder ID, cited order, and scan rank stay in code. Traps include release claims without the word released, negated and conditional releases, cautions that keep a control in place, embedded instructions, a cited order the scan record lacks, other-cylinder notes, and a vendor tag that reads like a release.
+At Aster Airhead, Flight BG-F17 to Forward Support Base Kestrel has a fixed 2026-10-15 05:00 UTC+02 snapshot. The cargo list closes at 05:30 and departure is at 06:00. The next confirmed flight is not supplied. Eighty messages and sixteen requests concern generator spares, medical-equipment battery kits and water-system repair parts.
+
+Stock release belongs to the cargo release officer. Current exact-flight acceptance and dispatch belong to the air movement controller. `PASS`, `RETURN` and `REVIEW` route messages, not cargo. Source traps include receipt promoted to clearance, release without acceptance, a newer other-flight record, current withdrawal, expiration and hostile paperwork instructions. At least eight near-miss cargo/order/flight identities remain visible. The learner owns desk attention and the review packet, not loading or dispatch.

@@ -290,28 +290,35 @@
     {
       "id": "06",
       "directory": "module-06-decision-model",
-      "title": "Module 6 · Design a workflow for a decision model",
+      "title": "Module 6 · Use Jev inside Oh My Pi",
       "case_name": "Blue Gauge",
-      "summary": "Choose and pin a decision model in Oh My Pi, write the questions it answers, set thresholds from its answers, and prove the screen on notes you didn't tune it on.",
-      "nav_summary": "Decision models · typed questions · thresholds",
+      "summary": "Use Jev inside Oh My Pi to work a military airlift desk: ask questions together, defer uncertain messages, prioritize competing support needs, and select the right handler. Compare actual calls, routes, rankings, and results.",
+      "nav_summary": "Four Jev patterns · inside Oh My Pi",
       "outcomes": {
-        "can": "Pick a decision model as your harness's judge and pin one version, write questions around what it gets wrong, set thresholds by what each mistake costs, and prove the frozen screen on notes you didn't tune it on.",
+        "can": "Use Jev inside Oh My Pi to configure and compare four decision-model patterns, choosing how answers become routes, priorities, and calls to the right kind of help.",
         "will": [
-                "Compare the judge models your key can reach, pin one version, and write down why and what data leaves your laptop.",
-                "Fix a question set so code settles what a rule can, each question asks one thing, and a status asked in two orders shows when the order sways the answer.",
-                "Read the first misses before you change anything, fix the wording, and set four thresholds from the tuning answers.",
-                "Freeze the screen, judge the held-out notes once, and hand off the errors, the review share, the build that answered, and the cost per 1,000 notes."
+          "Ask several questions about the same note in one request and inspect which answers matter.",
+          "Send uncertain notes to review and measure the effect of different gates.",
+          "Combine normalized scores and change priorities without another Jev call.",
+          "Route requests to record lookup, deterministic record comparison, or human queue and verify what actually ran."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["use-the-judge-in-your-own-omp-sessions", "before-you-stop", "class-only-boundary"], "optional_sections": ["stretch-run-the-tuning-notes-a-second-time"]}}
+        {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["blue-gauge-the-last-resupply-flight", "start-oh-my-pi"], "optional_sections": []}}
       ],
       "figures": [],
       "scripts": [
         {"source": "scripts/blue_gauge.py", "dest": "scripts/blue_gauge.py"}
       ],
-      "download_dirs": ["shared/case", "shared/controls"],
+      "download_dirs": ["shared/case/notes", "shared/case/requests", "shared/controls"],
+      "raw_downloads": [
+        "shared/case/DESK_RULES.md",
+        "shared/case/MISSION.json",
+        "shared/case/scans.json",
+        "shared/case/flight_acceptances.json",
+        "shared/case/labels/tuning-labels.json"
+      ],
       "tests": ["tests/test_module_06.py", "tests/test_adequacy.py"]
     },
     {

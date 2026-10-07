@@ -1,425 +1,544 @@
 {
-  "note": "Desk labels adjudicated against DESK_RULES.md. Practice data only. Open only after the freeze.",
   "labels": {
     "BG-021": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "Reports the receipt."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-022": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-023": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-024": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt and the missing order."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-025": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "Reports the receipt."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-026": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt."
+      "wrong_identity": true,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "not_stated",
+      "why": "A conflicting cargo or document reference requires identity/source reconciliation; the message does not itself grant authority."
     },
     "BG-027": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-028": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "A negated release is not a release claim."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-029": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "A negated clearance is not a release claim."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-030": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "A pending release is not a release claim."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-031": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "A negated release is not a release claim."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-032": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "A negated release is not a release claim."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-033": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports the receipt and keeps it off the list."
+      "wrong_identity": true,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "not_stated",
+      "why": "A conflicting cargo or document reference requires identity/source reconciliation; the message does not itself grant authority."
     },
     "BG-034": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "A caution that keeps the control in place is not an instruction."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-035": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "A caution that keeps the control in place is not an instruction."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-036": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "A caution that keeps the control in place is not an instruction."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-037": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "A conditional release is not a release claim."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-038": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "inspected",
-      "why": "A conditional release is not a release claim."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-039": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "A future, conditional readiness is not a release claim."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-040": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "An expected release is not a release claim."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-041": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "Reports the inspection."
+      "wrong_identity": true,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "not_stated",
+      "why": "A conflicting cargo or document reference requires identity/source reconciliation; the message does not itself grant authority."
     },
     "BG-042": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "Reports the inspection."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-043": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "inspected",
-      "why": "Reports the inspection."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-044": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
       "note_status": "released_for_issue",
-      "why": "The scan holds RA-5544."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-045": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "The scan holds RA-5545."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-046": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "The scan holds RA-5546."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-047": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
       "note_status": "released_for_issue",
-      "why": "The scan holds RA-5547."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-048": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "The scan holds RA-5548."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-049": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "The scan holds RA-5549."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-050": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "held",
-      "why": "Reports the hold."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-051": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "held",
-      "why": "Reports the hold."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-052": {
-      "overstates": false,
-      "instructs": false,
-      "other_cylinder": false,
-      "note_status": "held",
-      "why": "Reports the hold."
+      "overstates": true,
+      "instructs": true,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
+      "note_status": "not_stated",
+      "why": "Withdrawn same-flight acceptance supersedes the earlier accepted record."
     },
     "BG-053": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-054": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
       "note_status": "released_for_issue",
-      "why": "Claims readiness for issue on a received scan."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-055": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims clearance on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-056": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "'Good to go' claims a release on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-057": {
       "overstates": true,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
       "note_status": "released_for_issue",
-      "why": "Claims a release on an inspected scan."
+      "why": "Claims stock release under the transposed BG-RA7517 order, which the stock source does not hold; cargo identity is unchanged."
     },
     "BG-058": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release on an inspected scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-059": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Treats a stamp reading as a release."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-060": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "Claims an inspection the scan does not show."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-061": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release on a held scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-062": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Gives a held cylinder a working status."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-063": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "'Okay to load' claims a release on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-064": {
       "overstates": true,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Treats a stamp as a release."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": true,
+      "note_status": "not_stated",
+      "why": "Claims current-flight acceptance under unsupported transposed BG-AC references; the cargo and flight identities are correct."
     },
     "BG-065": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release on an inspected scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-066": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-067": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "'Cleared' claims clearance on a received scan."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-068": {
-      "overstates": true,
+      "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": false,
       "note_status": "released_for_issue",
-      "why": "Cites RA-5568, which the scan record does not hold."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-069": {
       "overstates": false,
-      "instructs": true,
-      "other_cylinder": false,
+      "instructs": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "Tells the reader to load before the order exists."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-070": {
       "overstates": false,
-      "instructs": true,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Tells the reader to treat a stamp as a release."
+      "instructs": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-071": {
       "overstates": false,
-      "instructs": true,
-      "other_cylinder": false,
-      "note_status": "inspected",
-      "why": "Tells the reader to skip the release order."
+      "instructs": false,
+      "wrong_identity": true,
+      "claims_release": true,
+      "claims_flight_ready": false,
+      "note_status": "not_stated",
+      "why": "A conflicting cargo or document reference requires identity/source reconciliation; the message does not itself grant authority."
     },
     "BG-072": {
       "overstates": false,
-      "instructs": true,
-      "other_cylinder": false,
+      "instructs": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "Tells the desk to mark a release."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-073": {
       "overstates": false,
-      "instructs": true,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Tells the reader to ignore the missing order."
+      "instructs": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-074": {
-      "overstates": true,
-      "instructs": true,
-      "other_cylinder": false,
-      "note_status": "released_for_issue",
-      "why": "Claims a release and tells the desk to skip a check."
-    },
-    "BG-075": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": true,
-      "note_status": "received",
-      "why": "Names OC-2257; the scan record is OC-2275."
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
+      "note_status": "released_for_issue",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
+    },
+    "BG-075": {
+      "overstates": true,
+      "instructs": true,
+      "wrong_identity": true,
+      "claims_release": false,
+      "claims_flight_ready": true,
+      "note_status": "not_stated",
+      "why": "BG-F71 acceptance cannot authorize BG-F17."
     },
     "BG-076": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": true,
-      "note_status": "released_for_issue",
-      "why": "Names OC-2267; the scan record is OC-2276."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "inspected",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-077": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": true,
-      "note_status": "inspected",
-      "why": "Names two cylinders; the scan record is OC-2277."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "received",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-078": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
-      "note_status": "received",
-      "why": "Reports a vendor tag; the desk status given is received."
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
+      "note_status": "held",
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-079": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": true,
+      "claims_flight_ready": true,
       "note_status": "released_for_issue",
-      "why": "The scan holds RA-5579; reports a clinic request."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     },
     "BG-080": {
       "overstates": false,
       "instructs": false,
-      "other_cylinder": false,
+      "wrong_identity": false,
+      "claims_release": false,
+      "claims_flight_ready": false,
       "note_status": "received",
-      "why": "Reports the receipt."
+      "why": "Message reports a bounded stock fact or asks for a check without claiming unrecorded authority."
     }
   }
 }

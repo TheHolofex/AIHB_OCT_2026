@@ -1,25 +1,15 @@
-# Module 6 · Design a workflow for a decision model
+# Module 6 · Use Jev inside Oh My Pi
 
-You're going to choose a decision model in Oh My Pi, pin it through OpenRouter, and build a screen around it. Blue Gauge's desk checks the handoff notes an assistant drafts for oxygen cylinders against the yard's scan record. You'll write the questions the model answers, set the thresholds that turn its probabilities into routes, and prove the frozen screen on notes you didn't tune it on.
+At the Blue Gauge airlift desk, you can put typed answers to work in four different ways: ask several questions together, hold uncertain messages for a person, combine separate scores into an attention order, and send requests to the right kind of help. Allow about three hours for the four experiments and a review packet. [Open the Blue Gauge desk lab](shared/MODULE_06_LAB.md).
 
-Plan for about three hours on Wednesday. That's a rough estimate.
+## Blue Gauge: the last resupply flight
 
-## Start here
+It is 05:00 UTC+02 on 15 October 2026 at Aster Airhead, the cargo-staging airfield. Flight BG-F17 is planned for Forward Support Base Kestrel. The cargo list closes at 05:30 and the aircraft departs at 06:00. The following flight is **not supplied**. Kestrel needs generator spares, medical-equipment battery kits, and water-system repair parts. Eighty overnight messages describe cargo and shortages; sixteen requests ask the desk for help. Some cargo is received but not released. Other cargo is released but has no acceptance for BG-F17.
 
-1. [Design, tune, and prove the screen](shared/MODULE_06_LAB.md).
+[Desk rules](shared/case/DESK_RULES.md) separate stock release from acceptance for this exact flight. The duty logistics officer owns the message-review queue and proposed handoff. The cargo release officer owns stock release; the air movement controller owns flight acceptance and dispatch. A message route of `PASS` means normal desk processing, `RETURN` requests correction, and `REVIEW` calls for officer attention. None clears cargo.
 
-## What a decision model does
+## The work in Oh My Pi
 
-A decision model answers fixed questions about a piece of text with typed values. That can be how likely the answer is yes, which option from a list fits, with a probability for each, or where something sits on a scale you define. It doesn't write prose, and it can't answer outside the options you give it. Your code acts on its answers, and the probability tells your code when to hand a case to a person.
+Oh My Pi (OMP) keeps the conversation and the desk controls together. Its chat model is `openrouter/anthropic/claude-sonnet-4.6`; its typed decision model, Jev, is `openrouter/typesafe/jev-1.13`. Both use the same OpenRouter key; no separate TypeSafe key is needed. You tell OMP which supplied control to change and inspect what actually ran. The supplied engine does the source checks and arithmetic; you don't write executable code.
 
-TypeSafe's Jev is one of these models. Oh My Pi calls it as the judge through OpenRouter, billed to the same key as the course chat model. Jev reads your words literally, it's weak at counting and comparing dates, and it leans toward the first option in a list. The screen is built around those weak spots.
-
-## How the screen splits the work
-
-- Code settles what a rule can: the cylinder ID, a cited release order, and the scan status.
-- The decision model reads the note. It says whether the note claims a release, which status it gives, whether it tells the reader to do something, and how urgent it sounds.
-- The duty officer gets every note the screen can't settle. The Release Authority owns every release.
-
-## Class-only boundary
-
-The eighty notes, scan records, and desk labels are made up for class. They're about oxygen cylinders moving from East Yard to Clinic O-2. Don't use them to plan, authorize, or describe a real movement. What you produce here is for class use only.
+The case messages and requests are fictional. Their text goes through OpenRouter to Jev for typed judgments; the OMP chat model remains conversational. Keep real operational and personal data out of this case. Supplied code checks source records and executes lookups, record comparisons, or officer-queue entries. No message, model confidence, attention score, or handler result can release stock, accept cargo for a flight, or dispatch an aircraft. The handoff is a **review packet — not a manifest or movement order**.

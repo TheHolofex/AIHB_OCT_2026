@@ -56,13 +56,7 @@ def prepare_module_03(stage: Path, dest: Path) -> None:
     shutil.copyfile(stage / "shared/mcp/AUTHORITY.template.md", stage / "AUTHORITY.md")
 
 
-MODULE_06_EDITABLE = (("QUESTIONS.starter.json", "QUESTIONS.json"), ("THRESHOLDS.template.json", "THRESHOLDS.json"), ("SELECTION.template.md", "SELECTION.md"))
-
-
-def prepare_module_06(stage: Path) -> None:
-    """Place the three files the lab edits at the work root."""
-    for template, name in MODULE_06_EDITABLE:
-        shutil.copyfile(stage / "shared/controls" / template, stage / name)
+MODULE_06_CONTROLS = ("PATTERNS.json", "patterns.mjs", "patterns.extension.mjs", "panels.mjs", "OMP_INSTRUCTIONS.md")
 
 
 def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path:
@@ -108,8 +102,8 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
         require_regular(source, module)
         copies.append((source, Path("scripts") / name))
     if module_id == "06":
-        for template, _ in MODULE_06_EDITABLE:
-            require_regular(module / "shared/controls" / template, module)
+        for name in MODULE_06_CONTROLS:
+            require_regular(module / "shared/controls" / name, module)
     if module_id == "10":
         source = module / "shared/PACKAGE.md"
         require_regular(source, module)
@@ -128,8 +122,6 @@ def prepare(module_id: str, destination: Path, root: Path = REFORMATION) -> Path
             shutil.copyfile(source, target)
         if module_id == "03":
             prepare_module_03(stage, dest)
-        if module_id == "06":
-            prepare_module_06(stage)
         if dest.exists() or dest.is_symlink():
             raise FileExistsError(f"destination already exists: {dest}")
         # Reserve the destination exclusively; never let POSIX rename replace an
@@ -149,7 +141,7 @@ def next_arguments(module_id: str) -> list[str]:
     if module_id == "02":
         return [python, "scripts/second_brain.py", "initialize", "--work", "."]
     if module_id == "06":
-        return [python, "scripts/blue_gauge.py", "check-questions", "QUESTIONS.json"]
+        return [python, str(REFORMATION / "AI_Harness_Bootcamp_2/module-06-decision-model/scripts/blue_gauge.py"), "start", "--work", "."]
     if module_id == "03":
         return [python, "shared/mcp/mcp_inspect.py", "--config", "mcp.json"]
     if module_id == "05":
