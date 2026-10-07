@@ -56,6 +56,11 @@ The patterns are [speculative fan-out](https://docs.typesafe.ai/patterns/fan-out
 
 ### 1. Ask once, then use what matters
 
+![One message goes to one Jev call. Used answers can change the route. An ignored answer stays visible and does nothing.](figures/m06-fan-out.png)
+
+*One message goes to one Jev call. Used answers can change the route. An ignored answer stays visible and does nothing.*
+
+
 ```text
 Using the TypeSafe skill, read the desk rules and the practice messages in shared/case/notes/tuning. Ask Jev several questions about each message in one call, including one question the route may ignore. Show which answers the route used and which it ignored. Use openrouter/typesafe/jev-1.13.
 ```
@@ -65,6 +70,11 @@ Using the TypeSafe skill, read the desk rules and the practice messages in share
 **Stop:** Stop if it asks the questions one at a time when you asked for one call, or if a message route is treated as clearance.
 
 ### 2. Make uncertain notes wait
+
+![Saved answers meet a confidence gate. At or above the gate, the desk continues. Below it, a person reads the message. Moving the gate does not call Jev again.](figures/m06-confidence.png)
+
+*Saved answers meet a confidence gate. At or above the gate, the desk continues. Below it, a person reads the message. Moving the gate does not call Jev again.*
+
 
 ```text
 Using the TypeSafe skill, keep those saved Jev answers. Send a message to a person when confidence on the chosen answer is low. Compare two gates on the same answers. Do not call Jev again for the comparison.
@@ -76,6 +86,11 @@ Using the TypeSafe skill, keep those saved Jev answers. Send a message to a pers
 
 ### 3. Change priorities without asking Jev again
 
+![Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.](figures/m06-scoring.png)
+
+*Saved scores for urgency, mission impact, and handoff risk. Two weight sets produce two attention orders. Neither calls Jev again.*
+
+
 ```text
 Using the TypeSafe skill, score the Blue Gauge messages for urgency, stated mission impact, and handoff risk. Combine those scores with weights. Then change the weights and show the new order from the saved scores, without another Jev call. This is desk attention, not cargo allocation.
 ```
@@ -85,6 +100,11 @@ Using the TypeSafe skill, score the Blue Gauge messages for urgency, stated miss
 **Stop:** Stop if a high rank is treated as authority to load or dispatch.
 
 ### 4. Use the right kind of help
+
+![Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.](figures/m06-intent.png)
+
+*Jev classifies the request. A lookup reads a record, a comparison checks the BG-F17 record, and a draft or approval comes to a person. None of those paths clears cargo.*
+
 
 ```text
 Using the TypeSafe skill, classify every request in shared/case/requests with Jev. Route a status lookup to a record lookup, a record question to a comparison of the supplied stock and flight records, and a draft, approval, or uncertain request to me. Show what actually ran. Nothing you run releases cargo or accepts it for BG-F17.

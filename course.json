@@ -307,7 +307,12 @@
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
         {"source": "shared/MODULE_06_LAB.md", "dest": "shared/MODULE_06_LAB.html", "kind": "lab", "guide": {"context_sections": ["blue-gauge-the-last-resupply-flight", "start-oh-my-pi"], "optional_sections": []}}
       ],
-      "figures": [],
+      "figures": [
+        {"source": "shared/figures/m06-fan-out.png", "dest": "shared/figures/m06-fan-out.png"},
+        {"source": "shared/figures/m06-confidence.png", "dest": "shared/figures/m06-confidence.png"},
+        {"source": "shared/figures/m06-scoring.png", "dest": "shared/figures/m06-scoring.png"},
+        {"source": "shared/figures/m06-intent.png", "dest": "shared/figures/m06-intent.png"}
+      ],
       "scripts": [],
       "download_dirs": ["shared/case/notes", "shared/case/requests"],
       "raw_downloads": [
