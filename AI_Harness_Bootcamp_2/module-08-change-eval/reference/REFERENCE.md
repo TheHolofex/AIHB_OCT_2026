@@ -1,19 +1,19 @@
 # Reference: Module 8 — Control hallucinations
 
-**Revision:** 3  
-**Frozen on:** 2026-10-04  
-**Scope:** structured claim checks and a fixed review-and-correction ensemble on fictional Slope Brief evidence  
+**Revision:** 4  
+**Frozen on:** 2026-10-08  
+**Scope:** three typed Jev checks, then structured claim checks and a fixed review-and-correction ensemble, on fictional Slope Brief evidence  
 **Supersedes:** the 40-pair change-evaluation exercise and 38-call variation/restore stretch; their historical evidence remains historical
 
 ## Mastery and progression
 
 Using source verification, typed questions, deterministic predicates, and fixed-flow operation, the learner controls unsupported assertions through a source-bound review-and-correction loop. The learner can handle reviewer error, unanimous unsupported approval, correction regressions, and absent authority without converting any of them into release permission.
 
-The three enabling capabilities are assigning the appropriate evidence check to each material claim; directing blind review and source-constrained correction while retaining coverage; and adjudicating disagreements and regressions against original evidence. Files and receipts prove the work; creating them is not the mastery claim.
+The enabling capabilities are composing three typed Jev checks over the whole brief with the questions and gates in one readable file; assigning the appropriate evidence check to each material claim; directing blind review and source-constrained correction while retaining coverage; and adjudicating disagreements and regressions against original evidence. Files and receipts prove the work; creating them is not the mastery claim.
 
 ## Source basis
 
-[Jev's introduction](https://docs.typesafe.ai/introduction) describes state plus atomic typed questions and directly structured results. Its [confidence documentation](https://docs.typesafe.ai/confidence) distinguishes returned distributions and derived confidence. These are design references, checked on 2026-10-04, not a course API integration or a claim that generated confidence is calibrated.
+[Jev's introduction](https://docs.typesafe.ai/introduction) describes state plus atomic typed questions and directly structured results. Its [confidence documentation](https://docs.typesafe.ai/confidence) distinguishes returned distributions and derived confidence. The [citation check](https://docs.typesafe.ai/cookbooks/citation_check), [Noul primitive](https://docs.typesafe.ai/primitives/noul), [line-by-line search](https://docs.typesafe.ai/cookbooks/semantic_find), and [SDE cascade](https://docs.typesafe.ai/cookbooks/sde_cascade) pages, with OpenRouter's [verified cascade](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade), supply the three check shapes, checked on 2026-10-08. Those checks run live through OpenRouter as `jev-1.13` with `OPENROUTER_API_KEY`, from code the coordinator writes under `W/checks`. No run here measures their calibration; the gates (0.8 and 0.6 for support confidence, 0.7 and 0.5 for wrongness, 0.7 and 0.35 for existence) are starting values taken from the cookbooks for comparison, not validated thresholds.
 
 The runtime is the existing shared launcher with the latest stable OMP release and `openrouter/anthropic/claude-sonnet-4.6`, using only `OPENROUTER_API_KEY`. Each attempt records its actual OMP version. It generates JSON, which the supplied Python checker validates. Neither provider-enforced structured output nor Jev probability semantics is claimed.
 
@@ -34,6 +34,10 @@ The movement is heater-fuel cans from Ridge Depot to Clinic T-8 on SB-4. Source 
 The corrector must preserve C05 and C06. Gate and citation fields are extractive complete-source passages, not free paraphrases. Mass and clock fields require exact sourced values and labels with the correct locator. A missing authorization becomes an explicit null value and null locator, not a denial or an invented approval. The PC-01 `2255 kg` near-miss versus `2211 kg` payload example is a separate worked counterexample, not another registered claim.
 
 No other module's files, verdicts, or scenario facts are consumed. This fictional exercise authorizes no movement.
+
+## Typed checks before freeze
+
+Step 1 finds each claim's value in its own packet in code, after whitespace normalization, and records every containing locator, its authoritative flag, and whether it equals the claim's locator; no model is called. Step 2 sends each found claim with the full cited record (or the authoritative record of that kind when no locator is cited) to Jev with one choice question, supports, contradicts, or says nothing, and compares two gates on saved answers. Steps 3 and 4 send each of the seven claims with every packet record and four Noul questions phrased so that yes means wrong, keep the highest, and compare two gates without a call. Step 5 sends only the flagged claims to the pinned chat model through chat completions for a proposed value or null with a packet locator, records usage, and saves the result as a proposal. Steps 6 and 7 send each claim's question with every packet record as choice options plus one Noul existence question, then join the files into `summary.md` headed as checks. Nothing under `W/checks` is a frozen input, a child input, or a disposition; the freeze and audit code do not read it.
 
 ## Execution contract
 

@@ -9,7 +9,7 @@ This file is authoritative for sequence, supplied inputs, work surfaces, budgets
 | Budget | Standard | Evidence status |
 |---|---:|---|
 | Course length | Four teaching days, Monday–Thursday; every module is instructor-led and hands-on | Structural |
-| Module time | About three hours for most modules, including Cold Foundry; about two and a half for Chalk Line; a little over two for Slope Brief and Night Desk | Rough estimates; unmeasured until pilot |
+| Module time | About three hours for most modules, including Slope Brief and Cold Foundry; about two and a half for Chalk Line; a little over two for Night Desk | Rough estimates; unmeasured until pilot |
 | First checked useful artifact | Within about the first hour | Provisional until timestamped pilot |
 | Core modules | 11, one per session | Measured structurally |
 | Variable model/tool spend | Provisional US$40 learner allowance, confirmed by the account owner; at most two concurrent paid attempts | Not an enforced ceiling or an observed total; requires an actual usage ledger. The five-turn paid review/correction sequence uses one pinned model per turn. Separately authorized staff verification has its own aggregate budget and admission controls. |
@@ -21,14 +21,14 @@ Time estimates exclude meals and breaks, setup, and optional stretches.
 
 ## Schedule and independence
 
-Eleven instructor-led, hands-on module blocks run across four teaching days, Monday–Thursday. Most take about three hours, including Cold Foundry; Chalk Line takes about two and a half, and Slope Brief and Night Desk a little over two.
+Eleven instructor-led, hands-on module blocks run across four teaching days, Monday–Thursday. Most take about three hours, including Slope Brief and Cold Foundry; Chalk Line takes about two and a half, and Night Desk a little over two.
 
 | Day | Modules, in order | Roughly |
 |---|---|---:|
 | Monday | 00 North Shelf; 01 Cold Lantern | 6 hours |
 | Tuesday | 02 Ledger Pike; 03 Kiln Hold; 04 Chalk Line | 8 to 9 hours |
 | Wednesday | 05 Copper Span; 06 Blue Gauge; 07 White Rack | 9 hours |
-| Thursday | 08 Slope Brief; 09 Night Desk; 10 Cold Foundry | 7.5 hours |
+| Thursday | 08 Slope Brief; 09 Night Desk; 10 Cold Foundry | 8.5 hours |
 
 | Session | Day | Module |
 |---:|---|---|
@@ -74,19 +74,19 @@ Wednesday starts around 08:00 and ends around 18:30. Times are approximate.
 
 ### Thursday timetable
 
-Thursday starts around 08:00 and ends around 16:30. Times are approximate.
+Thursday starts around 08:00 and ends around 17:30. Times are approximate.
 
 | Roughly | Work |
 |---|---|
-| 08:00–10:15 | Slope Brief |
-| 10:15–10:25 | Break |
-| 10:25–12:50 | Night Desk |
-| 12:50–13:30 | Lunch |
-| 13:30–16:30 | Cold Foundry |
+| 08:00–11:10 | Slope Brief |
+| 11:10–11:20 | Break |
+| 11:20–13:45 | Night Desk |
+| 13:45–14:25 | Lunch |
+| 14:25–17:25 | Cold Foundry |
 
 The Night Desk break falls between the two probes and the planted-note attempt. Each module's facilitator runbook carries its pacing route.
 
-Cold Foundry keeps its full 13:30–16:30 block. Each learner runs, stops, restores, and checks their own saved package within that session.
+Cold Foundry keeps its full 14:25–17:25 block. Each learner runs, stops, restores, and checks their own saved package within that session.
 
 ### Readiness deadlines
 
@@ -127,7 +127,7 @@ File presence cannot establish observed performance. An authored practice output
 | 05 | Orchestrate an OMP agent team | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:NATIVE_TASK`; `VERIFY:ORCHESTRATION_CONTROLS` | `WORK_GRAPH`; `AGENT_HANDOFFS`; `PARTIAL_RECOVERY`; `INTEGRATED_BRIEF`; `PO05_RESULT` | Native OMP parent and child sessions | Complete briefs and dependency graph; native execution and accepted source-bearing reports; preserved blocked child; selective repair with justified reuse; one coordinator-owned brief and a dependent read-only review |
  | 06 | Use Jev inside Oh My Pi | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:JUDGE_ROUTE`; `VERIFY:DESK_LABELS` | `PATTERN_CONTROLS`; `PATTERN_COMPARISONS`; `HELD_OUT_MEASURE`; `PO06_RESULT` | Native OMP TUI + blue_gauge/eval | Configure and compare four Jev patterns: fan-out questions, confidence gates, composite scoring, intent routing; actual call counts, routes, rankings, handler execution (lookup, deterministic comparison, human queue); chat-token comparison that keeps closed decisions out of the chat model |
 | 07 | Automate a spreadsheet with an agent | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:BATCH_WORKLOAD` | `AGENT_SHEET`; `PO07_RESULT` | **structured-data/batch** work | Learner connects an n8n AI Agent to OpenRouter and has it write a spreadsheet from the White Rack batch; the downloaded file is checked against the source lots |
-| 08 | Control hallucinations | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CLAIMS` | `FROZEN_CLAIMS`; `BEFORE_REVIEWS`; `CORRECTION`; `AFTER_REVIEWS`; `REPORT`; `HUMAN_DISPOSITION`; `PO08_RESULT` | Structured claim checks and a fixed read-only ensemble of five audited child agents that the ordinary OMP coordinator launches from copied prompts | Seven claims on three frozen source packets; blind source and skeptical reviews; one source-constrained correction; two fresh full-set reviews; all five actual runs audited; disagreements and regressions resolved by evidence or held; individual human disposition retains unknown authority. |
+| 08 | Control hallucinations | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:CLAIMS` | `FROZEN_CLAIMS`; `BEFORE_REVIEWS`; `CORRECTION`; `AFTER_REVIEWS`; `REPORT`; `HUMAN_DISPOSITION`; `PO08_RESULT` | Three typed Jev checks that the ordinary OMP coordinator writes and runs from copied prompts, then a fixed read-only ensemble of five audited child agents it launches the same way | Seven claims on three source packets; claim check, wrongness gate with escalation, and answer-in-packet check saved before freeze; blind source and skeptical reviews; one source-constrained correction; two fresh full-set reviews; all five actual runs audited; disagreements and regressions resolved by evidence or held; individual human disposition retains unknown authority. |
 | 09 | Constrain agent behavior | a little over 2h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:AGENT_POLICY`; `VERIFY:SUPPLIED_PROBE` | `AGENT_POLICY`; `PROBE_REFUSE`; `PLANTED_REFUSE`; `PO09_RESULT` | A bounded child agent run that the ordinary OMP coordinator launches from copied prompts | Freeze and enforce AGENT_POLICY before the turn; inspect actual calls, results, guard records and disk snapshots; distinguish observed guard/runtime denials from calls never attempted; extract the planted note's measurement without a release write |
 | 10 | Stand up and package a local uncensored AI | about 3h | `VERIFY:PREFLIGHT`; `VERIFY:CASE`; `VERIFY:TRANSFER_TASK` | `LOCAL_MODEL_SERVICE`; `PO10_RESULT` | A real local-model service on the learner's own laptop, started and stopped through OMP's managed service after the learner approves | Verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, structure check from a new terminal and new OMP conversation, and close-out naming unresolved limits. ~180 min allocation (unmeasured). Access/hardware/time misses: honest in-session HOLD. Learner retains ownership. |
 ## Minimum screen and release authority

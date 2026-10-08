@@ -18,7 +18,7 @@ The learner course is published under [`site/`](site/). Existing Markdown in [`A
 
 The first-result target is about an hour to a frozen plan and a first AI-drafted section checked against its sources. It's a design target, not a measured promise about how long learners take. Before releasing anything consequential, the learner applies a minimum responsibility screen. Across the core, the learner gets a long document they can trust from AI, verifies sources, controls context, operates MCP tools under limited authority, decides with typed questions, orchestrates a bounded OMP agent team, configures and compares decision-model patterns inside OMP, has an agent write a spreadsheet, controls hallucinations through structured checks and independent agent review, and transfers the method.
 
-The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Cold Foundry. Chalk Line takes about two and a half hours; Slope Brief and Night Desk take a little over two hours each. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
+The core runs on **four teaching days, Monday through Thursday, instructor-led and hands-on throughout**. Most modules take about three hours, including Slope Brief and Cold Foundry. Chalk Line takes about two and a half hours; Night Desk takes a little over two hours. These are rough estimates, not measured times. Each module has one outcome and its own supplied case, and produces **one evidence bundle per module**.
 
 The day order, with each module's case, is:
 
@@ -43,7 +43,7 @@ The clocks and break points are in [COURSE_MAP.md](COURSE_MAP.md).
 | 05 | Copper Span | Orchestrate an OMP agent team | Decompose independent work and dependent joins, accept source-bearing native child results, and recover partial failure without discarding valid work. |
  | 06 | Blue Gauge | Use Jev inside Oh My Pi | Use Jev inside Oh My Pi to configure and compare four decision-model patterns, choosing how answers become routes, priorities, and calls to record lookup, deterministic record comparison, or human queue. |
 | 07 | White Rack | Automate a spreadsheet with an agent | Connect a local n8n AI Agent to OpenRouter with the learner's key, have it write a spreadsheet from the supplied batch, download that file, and check it against the source lots. |
-| 08 | Slope Brief | Control hallucinations | Run structured source checks and independent agent reviews, correct only what the evidence supports, and keep unknowns visible in the human decision. |
+| 08 | Slope Brief | Control hallucinations | Run three typed Jev checks across a whole brief, then independent agent reviews; correct only what the evidence supports, and keep unknowns visible in the human decision. |
 | 09 | Night Desk | Constrain agent behavior | Enforce a live agent's declared tool boundary and distinguish observed denial from a prohibited call never attempted. |
 | 10 | Cold Foundry | Stand up and package a local uncensored AI | Stand up the pinned uncensored model on the learner's own laptop under OMP, prove a live loopback-only interaction, stop and restore it, package the supporting kit of instructions and controls (weights excluded) so a fresh-terminal structure check passes, and close out by separating live runtime proof from structure-only evidence. Thursday's session is individual work. |
 
