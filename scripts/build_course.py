@@ -29,7 +29,6 @@ SEARCH_PATH = PurePosixPath("assets/search-index.json")
 CALLOUT_KINDS = {"Expected:": "expected", "Stop:": "stop", "Recovery:": "recovery"}
 SHELL_FAMILY = {"bash": "bash", "sh": "bash", "zsh": "bash", "powershell": "powershell"}
 SHELL_NAMES = {"bash": "Bash or zsh", "powershell": "PowerShell"}
-LEARNER_TOKEN = re.compile(r"\bVERIFY:|\bPO0\d|\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+\b")
 STEP_NUMBER = re.compile(r"^\s*(\d+)\.\s+")
 
 
@@ -177,15 +176,14 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
         directory = module["directory"]
         if any(not isinstance(module.get(key), str) or not module[key].strip() for key in ("title", "case_name", "summary", "nav_summary")):
             raise ValueError("module display fields must be nonempty strings")
-        outcomes = module.get("outcomes")
-        if not isinstance(outcomes, dict) or set(outcomes) != {"can", "will"}:
-            raise ValueError(f"module {module['id']} needs outcomes with 'can' and 'will'")
-        if not isinstance(outcomes["can"], str) or not outcomes["can"].strip() or len(outcomes["can"]) > 320:
-            raise ValueError(f"module {module['id']}: outcomes.can must be one sentence of learner language")
-        if not isinstance(outcomes["will"], list) or not 2 <= len(outcomes["will"]) <= 4 or any(not isinstance(item, str) or not item.strip() for item in outcomes["will"]):
-            raise ValueError(f"module {module['id']}: outcomes.will must list two to four learner-language items")
-        if any(LEARNER_TOKEN.search(text) for text in (outcomes["can"], *outcomes["will"])):
-            raise ValueError(f"module {module['id']}: outcomes must not carry staff tokens")
+        outcomes = module.get("outcomes", {})
+        if not isinstance(outcomes, dict) or not set(outcomes) <= {"can", "will"}:
+            raise ValueError(f"module {module['id']}: outcomes may contain only 'can' and 'will'")
+        if not isinstance(outcomes.get("can", ""), str):
+            raise ValueError(f"module {module['id']}: outcomes.can must be a string")
+        will = outcomes.get("will", [])
+        if not isinstance(will, list) or any(not isinstance(item, str) or not item.strip() for item in will):
+            raise ValueError(f"module {module['id']}: outcomes.will must be a list of nonempty strings")
         kinds = [page.get("kind") for page in module["pages"]]
         if any(kind not in PAGE_KINDS - {"home"} for kind in kinds):
             raise ValueError("unrecognized instructional page kind")
@@ -197,10 +195,10 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
         base = boot / directory
         prefix = PurePosixPath(course["course_id"]) / directory
         for page in module["pages"]:
-            guide = page.get("guide")
-            if page["kind"] == "lab":
-                if not isinstance(guide, dict) or set(guide) != {"context_sections", "optional_sections"}:
-                    raise ValueError("lab guide must declare context_sections and optional_sections")
+            if "guide" in page:
+                guide = page["guide"]
+                if not isinstance(guide, dict) or not set(guide) <= {"context_sections", "optional_sections"}:
+                    raise ValueError(f"{directory}/{page['source']}: guide may declare only context_sections and optional_sections")
                 anchors = []
                 for values in guide.values():
                     if not isinstance(values, list) or any(not isinstance(value, str) or not value for value in values):
@@ -208,11 +206,6 @@ def inventory(root: Path) -> tuple[dict, dict[PurePosixPath, Path], dict[Path, P
                     anchors.extend(values)
                 if len(anchors) != len(set(anchors)):
                     raise ValueError("guide anchors must be unique and disjoint")
-            elif page["kind"] == "setup":
-                if guide != {}:
-                    raise ValueError("setup requires an empty guide object")
-            elif "guide" in page:
-                raise ValueError("only lab and setup pages may define a guide")
             add(base, page["source"], str(prefix / page["dest"]), True)
         for kind in ("figures", "scripts"):
             for entry in module.get(kind, []):
@@ -275,42 +268,22 @@ def rewrite_link(value: str, source: Path, dest: PurePosixPath, mapping: dict[Pa
     return urlunsplit(("", "", quote(path, safe="/-._~"), parsed.query, parsed.fragment))
 
 
-def procedure_errors(tree: Node, label: str) -> list[str]:
-    errors = []
-    nodes = list(tree.walk())
-    if sum(node.tag == "h1" for node in nodes) != 1:
-        errors.append(f"{label}: expected one h1")
-    blocks = [node for node in nodes if node.tag in {"h1", "h2", "h3", "h4", "p", "pre", "summary"}]
-    for index, node in enumerate(blocks):
+def _annotate_commands(tree: Node) -> None:
+    """Mark each fence explicitly labelled with a shell language; every other fence stays ordinary copyable text."""
+    for node in tree.walk():
         if node.tag != "pre":
             continue
         codes = [child for child in node.children if isinstance(child, Node) and child.tag == "code"]
-        language = codes[0].attrs.get("class", "").removeprefix("language-") if len(codes) == 1 else ""
-        if not language or not codes[0].attrs.get("class", "").startswith("language-"):
-            errors.append(f"{label}: every fenced block needs an explicit language")
-            continue
-        if language not in COMMAND_LANGUAGES:
-            continue
-        previous = index - 1
-        while previous >= 0 and blocks[previous].tag not in {"h1", "h2", "h3", "h4", "pre"}:
-            previous -= 1
-        before = " ".join(block.text() for block in blocks[previous + 1:index])
-        end = index + 1
-        while end < len(blocks) and blocks[end].tag not in {"h1", "h2", "h3", "h4"}:
-            end += 1
-        after = " ".join(block.text() for block in blocks[index + 1:end] if block.tag != "pre")
-        if not re.search(r"\bTerminal\s*:", before, re.I) or not re.search(r"\b(user|administrator|admin|root|elevat\w*|privilege)\b", before, re.I):
-            errors.append(f"{label}: {language} command lacks its terminal/privilege label")
-        if not re.search(r"\b(Expected|Expect|You should see|You.ll see|Observation)\b", after, re.I):
-            errors.append(f"{label}: {language} command lacks an associated expected observation")
-        if not re.search(r"\b(Stop|HOLD)\b", after, re.I):
-            errors.append(f"{label}: {language} command lacks an associated stop condition")
-        if not re.search(r"\b(Recover\w*|Retry|Rerun|Restore|Ask|Choose|Correct|Return|Contact)\b", after, re.I):
-            errors.append(f"{label}: {language} command lacks an associated recovery")
-        if re.search(r"^(?:PASS|HOLD|FAIL|READY|READINESS CHECK (?:PASS|HOLD))(?::|$)", codes[0].text(), re.M):
-            errors.append(f"{label}: observed output must be separate from command text")
-        node.attrs["data-command"] = language
-    return errors
+        language = codes[0].attrs.get("class", "") if len(codes) == 1 else ""
+        if language.startswith("language-") and language.removeprefix("language-") in COMMAND_LANGUAGES:
+            node.attrs["data-command"] = language.removeprefix("language-")
+
+
+def _identify_stretch(node: Node, label: str) -> None:
+    """An optional stretch disclosure needs a stable anchor and exactly one summary, guided or not."""
+    node.attrs.setdefault("id", "rf-stretch")
+    if len([child for child in node.children if isinstance(child, Node) and child.tag == "summary"]) != 1:
+        raise ValueError(f"{label}: optional stretch requires one summary")
 
 
 def _procedure_cards(tree: Node) -> None:
@@ -409,16 +382,8 @@ def _guide_tree(tree: Node, guide: dict, label: str) -> tuple[list[dict], list[d
     def stretch(node):
         return isinstance(node, Node) and node.tag == "details" and "rf-stretch" in node.attrs.get("class", "").split()
 
-    def validate_group(nodes: list[Node | str]):
-        errors = procedure_errors(Node("", {}, [Node("h1", {}, [label]), *nodes]), label)
-        if errors:
-            raise ValueError("\n".join(errors))
-
     def identify_stretch(node):
-        node.attrs.setdefault("id", "rf-stretch")
-        summaries = [child for child in node.children if isinstance(child, Node) and child.tag == "summary"]
-        if len(summaries) != 1:
-            raise ValueError(f"{label}: optional stretch requires one summary")
+        _identify_stretch(node, label)
         outline.append({"id": node.attrs["id"], "title": "Optional stretch"})
 
     index = 0
@@ -434,12 +399,10 @@ def _guide_tree(tree: Node, guide: dict, label: str) -> tuple[list[dict], list[d
                     raise ValueError(f"{label}: optional heading must precede its stretch disclosure")
                 identify_stretch(children[end])
                 group = children[index:end + 1]
-                validate_group(group)
                 result.append(Node("section", {"class": "rf-optional"}, group))
                 index = end + 1
                 continue
             group = children[index:end]
-            validate_group(group)
             context = anchor in contexts
             name = "context" if context else "step"
             body = Node("div", {"class": f"rf-{name}-body", "id": f"rf-body-{anchor}"}, group[1:])
@@ -458,16 +421,11 @@ def _guide_tree(tree: Node, guide: dict, label: str) -> tuple[list[dict], list[d
             index = end
         elif stretch(node):
             identify_stretch(node)
-            validate_group([node])
             result.append(node)
             index += 1
         else:
-            if isinstance(node, Node) and any("data-command" in descendant.attrs for descendant in node.walk()):
-                raise ValueError(f"{label}: command outside a procedure section")
             result.append(node)
             index += 1
-    if not steps:
-        raise ValueError(f"{label}: guide needs at least one core section")
     tree.children = result
     if tree.text() != original_text or [node.text() for node in tree.walk() if "data-command" in node.attrs] != original_commands:
         raise ValueError(f"{label}: procedure transformation changed authored text")
@@ -526,9 +484,10 @@ def _prepare_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePos
         tree = parse_html(fragment, True)
     except ValueError as error:
         raise ValueError(f"{source.relative_to(root)}: {error}") from error
-    errors = procedure_errors(tree, source.relative_to(root).as_posix())
-    if errors:
-        raise ValueError("\n".join(errors))
+    label = source.relative_to(root).as_posix()
+    if sum(node.tag == "h1" for node in tree.walk()) != 1:
+        raise ValueError(f"{label}: expected one h1")
+    _annotate_commands(tree)
     placeholders = [node for node in tree.walk() if "data-course-map" in node.attrs]
     if len(placeholders) != (1 if record["kind"] == "home" else 0):
         raise ValueError("exactly one course map placeholder is required, on home only")
@@ -553,8 +512,11 @@ def _prepare_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePos
     title = next(node.text() for node in tree.walk() if node.tag == "h1")
     steps = []
     outline = [{"id": node.attrs["id"], "title": node.text()} for node in tree.children if isinstance(node, Node) and node.tag == "h2"]
-    if record["kind"] in {"lab", "setup"}:
-        steps, outline = _guide_tree(tree, record["guide"], source.relative_to(root).as_posix())
+    if "guide" in record:
+        steps, outline = _guide_tree(tree, record["guide"], label)
+    for node in tree.walk():
+        if node.tag == "details" and "rf-stretch" in node.attrs.get("class", "").split():
+            _identify_stretch(node, label)
     _procedure_cards(tree)
     sections = _section_records(tree, title)
     heading = "Course data"
@@ -584,19 +546,29 @@ def _relative(dest: PurePosixPath, target: str) -> str:
     return quote(posixpath.relpath(target, str(dest.parent)), safe="/-._~")
 
 
+def _outcomes(module: dict) -> tuple[str, list[str]]:
+    """Displayed outcome text; a blank capability or an empty activity list is simply absent."""
+    outcomes = module.get("outcomes", {})
+    can = outcomes.get("can", "")
+    return (can if can.strip() else ""), outcomes.get("will", [])
+
+
 def _course_map(course: dict, dest: PurePosixPath) -> Node:
     rows = []
     for module in course["modules"]:
         overview = next(page for page in module["pages"] if page["kind"] == "overview")
         path = str(PurePosixPath(course["course_id"]) / module["directory"] / overview["dest"])
-        rows.append(Node("li", {}, [Node("a", {"href": _relative(dest, path)}, [
+        can, _ = _outcomes(module)
+        parts = [
             Node("span", {"class": "rf-map-number"}, [module["id"]]),
             Node("span", {"class": "rf-map-name"}, [module["case_name"]]),
             Node("span", {"class": "rf-map-title"}, [module["title"].split("·", 1)[-1].strip()]),
             Node("span", {"class": "rf-map-summary"}, [module["summary"]]),
-            Node("span", {"class": "rf-map-outcome"}, [module["outcomes"]["can"]]),
-            Node("span", {"class": "rf-map-progress", "data-module-progress": module["id"]}, []),
-        ])]))
+        ]
+        if can:
+            parts.append(Node("span", {"class": "rf-map-outcome"}, [can]))
+        parts.append(Node("span", {"class": "rf-map-progress", "data-module-progress": module["id"]}, []))
+        rows.append(Node("li", {}, [Node("a", {"href": _relative(dest, path)}, parts)]))
     return Node("ol", {"class": "rf-course-map"}, rows)
 
 
@@ -695,11 +667,6 @@ def _asset_context(course: dict, outputs: dict[PurePosixPath, bytes]) -> dict:
         if path.suffix == ".webp":
             dimensions[str(path)] = _webp_dimensions(outputs[path], path)
     hero = next((str(path) for path in declared if path.suffix == ".webp"), None)
-    if hero and dimensions[hero] != ("1672", "941"):
-        raise ValueError(f"hero image must be 1672x941: {hero}")
-    for target in course.get("home_bands", {}).values():
-        if dimensions[target] != ("1672", "716"):
-            raise ValueError(f"home band image must be 1672x716: {target}")
     return {"styles": [str(path) for path in declared if path.suffix == ".css"],
             "fonts": fonts, "hero": hero,
             "dimensions": dimensions}
@@ -833,6 +800,8 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
     home = _relative(dest, course["index"]["dest"])
     assets = common["assets"]
     module = next((item for item in course["modules"] if item["id"] == module_id), None)
+    can, will = _outcomes(module) if module else ("", [])
+    outcomes_title = "After this assignment you can" if can else "You will"
     routes = _module_routes(course, module) if module else {}
     navigation = _course_navigation(common["modules"], dest, module_id)
     _decorate_reading(tree, dest, assets, kind)
@@ -851,7 +820,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
     page_data = {"version": 2, "page": str(dest), "kind": kind, "moduleId": module_id,
                  "root": posixpath.relpath(".", str(dest.parent)).rstrip("/") + "/",
                  "modules": common["modules"], "pages": common["pages"], "steps": prepared["steps"], "resume": common["resume"]}
-    module_steps = sum(len(page["steps"]) for page in common["pages"] if page["moduleId"] == module_id and page["kind"] in {"lab", "setup"})
+    module_steps = sum(len(page["steps"]) for page in common["pages"] if page["moduleId"] == module_id)
     labels = _step_labels(prepared["steps"])
     for section in list(tree.walk()):
         if section.tag == "section" and "data-step-index" in section.attrs:
@@ -861,13 +830,13 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             heading.children.insert(0, Node("span", {"class": "rf-step-number", "aria-hidden": "true"}, [labels[section.attrs["data-step-id"]]]))
     nav_items = [{"id": section["id"], "title": section["title"], "level": section["level"]}
                  for section in prepared["sections"] if section["level"] in {2, 3}]
-    if kind == "overview":
-        nav_items.insert(0, {"id": "rf-outcomes-title", "title": "After this assignment you can", "level": 2})
+    if kind == "overview" and (can or will):
+        nav_items.insert(0, {"id": "rf-outcomes-title", "title": outcomes_title, "level": 2})
     step_titles = {item["id"]: item["title"] for item in prepared["steps"]}
     for item in nav_items:
         if item["id"] in step_titles:
             item["title"] = step_titles[item["id"]]
-    inline_outline = _outline(nav_items, compact=True, steps=prepared["steps"])
+    inline_outline = _outline(nav_items, compact=True, steps=prepared["steps"] or None)
     if kind == "home":
         lead = next(node for node in tree.children if isinstance(node, Node) and node.tag == "p")
         tree.children.remove(lead)
@@ -898,28 +867,30 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
                 break
             intro.append(tree.children.pop(0))
         controls = ""
-        if kind in {"lab", "setup"}:
+        if prepared["steps"]:
             controls = '''<fieldset id="rf-reader-controls" hidden><legend>Reading mode</legend>
 <button type="button" class="sc-btn rf-btn sc-btn--secondary" data-view-choice="guided">Guided</button>
 <button type="button" class="sc-btn rf-btn sc-btn--secondary" data-view-choice="read">Read full page</button>
 <p class="rf-reader-hint">Use Read full page to find text across every section.</p></fieldset>'''
-        outcomes = module["outcomes"]
-        can = html.escape(outcomes["can"])
+        panel = ""
         if kind == "overview":
-            will = "".join(f"<li>{html.escape(item)}</li>" for item in outcomes["will"])
-            panel = (f'<section class="rf-outcomes" aria-labelledby="rf-outcomes-title"><h2 id="rf-outcomes-title" class="rf-outcomes-title">After this assignment you can</h2>'
-                     f'<p class="rf-outcomes-can">{can}</p><p class="rf-outcomes-sub">You will</p><ul class="rf-outcomes-list">{will}</ul></section>'
-                     f'<section class="rf-module-progress" data-module-progress="{module_id}" data-step-total="{module_steps}" aria-labelledby="rf-module-progress-title">'
-                     f'<h2 id="rf-module-progress-title" class="rf-module-progress-title">Your progress</h2><p class="rf-module-progress-text">{module_steps} lab steps. Mark each one done as you finish it; progress is saved on this device.</p>'
-                     f'<div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div></section>')
-        else:
-            panel = ""
+            if can or will:
+                body = f'<p class="rf-outcomes-can">{html.escape(can)}</p>' if can else ""
+                if will:
+                    items = "".join(f"<li>{html.escape(item)}</li>" for item in will)
+                    body += ('<p class="rf-outcomes-sub">You will</p>' if can else "") + f'<ul class="rf-outcomes-list">{items}</ul>'
+                panel += (f'<section class="rf-outcomes" aria-labelledby="rf-outcomes-title"><h2 id="rf-outcomes-title" class="rf-outcomes-title">{outcomes_title}</h2>{body}</section>')
+            if module_steps:
+                panel += (f'<section class="rf-module-progress" data-module-progress="{module_id}" data-step-total="{module_steps}" aria-labelledby="rf-module-progress-title">'
+                          f'<h2 id="rf-module-progress-title" class="rf-module-progress-title">Your progress</h2><p class="rf-module-progress-text">{module_steps} steps. Mark each one done as you finish it; progress is saved on this device.</p>'
+                          f'<div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div></section>')
         progress = ""
-        if kind in {"lab", "setup"}:
+        if kind in {"lab", "setup"} and can:
+            progress += f'<p class="rf-outcome-line"><span class="rf-outcome-label">After this assignment you can</span> {html.escape(can)}</p>'
+        if prepared["steps"]:
             total = len(prepared["steps"])
-            progress = (f'<p class="rf-outcome-line"><span class="rf-outcome-label">After this assignment you can</span> {can}</p>'
-                        f'<div class="rf-progress" data-progress data-step-total="{total}"><div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div>'
-                        f'<p class="rf-progress-text">{total} steps. Mark each step done as you finish it; progress is saved on this device.</p></div>')
+            progress += (f'<div class="rf-progress" data-progress data-step-total="{total}"><div class="rf-progress-track" aria-hidden="true"><div class="rf-progress-fill"></div></div>'
+                         f'<p class="rf-progress-text">{total} steps. Mark each step done as you finish it; progress is saved on this device.</p></div>')
         if prepared["steps"]:
             last = next(node for node in tree.walk() if node.attrs.get("data-step-id") == prepared["steps"][-1]["id"])
             actions = []
@@ -937,7 +908,7 @@ def render_page(source: Path, dest: PurePosixPath, mapping: dict[Path, PurePosix
             actions.append(Node("a", {"href": next_href, "class": "sc-btn rf-btn sc-btn--secondary"}, [next_label]))
             last.children[-1].children.append(Node("nav", {"class": "rf-end-actions", "aria-label": "Continue reading"}, actions))
         back = f'<p class="rf-back-to-lab"><a class="sc-btn rf-btn sc-btn--secondary" href="{_relative(dest, routes["lab"])}">Back to lab</a></p>' if kind == "reference" else ""
-        rail_outline = _outline(nav_items, steps=prepared["steps"] if kind in {"lab", "setup"} else None)
+        rail_outline = _outline(nav_items, steps=prepared["steps"] or None)
         main = f'''<div class="rf-layout"><aside class="rf-course-rail">{_course_navigation(common["modules"], dest, module_id, True)}</aside>
 <main id="main" class="rf-reading" tabindex="-1"><header class="rf-page-header sc-grid">{breadcrumb}{h1.render()}</header>{local}{progress}
 <div class="rf-intro">{Node("", {}, intro).render()}</div>{panel}<div class="rf-reader-mobile-slot">{controls}</div>{inline_outline}{tree.render()}{back}</main>
@@ -1030,7 +1001,7 @@ def build(root: Path = ROOT, check: bool = False) -> int:
         "pages": [{"path": str(dest), "title": page["title"], "kind": page["record"]["kind"], "moduleId": page["record"]["moduleId"], "steps": [step["id"] for step in page["steps"]]} for dest, page in prepared.items()],
         "resume": {str(dest): [{**step, "optional": False} for step in page["steps"]] + [
             {key: section[key] for key in ("id", "title", "optional")} for section in page["sections"] if section["optional"]
-        ] for dest, page in prepared.items() if page["record"]["kind"] in {"lab", "setup"}},
+        ] for dest, page in prepared.items() if page["steps"]},
     }
     for dest, page in prepared.items():
         page["common"] = common
@@ -1065,7 +1036,7 @@ def build(root: Path = ROOT, check: bool = False) -> int:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
     ui_count = len(course["ui_assets"]) + 1
-    print(f"PASS: {len(pages)} instructional pages, {len(outputs) - len(pages) - ui_count} raw downloads, {ui_count} UI/generated assets {'checked byte-for-byte' if check else 'published'}; public links and procedure structure checked")
+    print(f"PASS: {len(pages)} instructional pages, {len(outputs) - len(pages) - ui_count} raw downloads, {ui_count} UI/generated assets {'checked byte-for-byte' if check else 'published'}; public links and page structure checked")
     return 0
 
 

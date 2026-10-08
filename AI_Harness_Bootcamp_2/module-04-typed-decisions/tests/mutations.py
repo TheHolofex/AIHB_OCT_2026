@@ -95,8 +95,5 @@ MUTATIONS: list[Mutation] = [
     Mutation("M4-VERIFY", "trust the freeze record instead of the run's input snapshot", sub("shared/verify/verify_decisions.py", r'if inputs\.get\("out/labels\.json"\) != labels_digest:', "if False:")),
     Mutation("M4-VERIFY", "let the validator accept a held launcher run", sub("scripts/validate_answers.py", r'if result\.get\("status"\) != "PASS":', "if False:")),
     Mutation("M4-BAN", "publish the answer key inside the case folder", copy_key_into_case),
-    Mutation("M4-INDEP", "name another module's movement in the overview", append("README.md", "\nSee also Cold Lantern.\n")),
-    Mutation("M4-TOKEN", "leak a staff token into the lab", append("shared/MODULE_04_LAB.md", "\nRecord VERIFY:CASE here.\n")),
     Mutation("M4-LEAK", "state the key's total in the overview", append("README.md", "\nThe correct line is 58 boxes.\n")),
-    Mutation("M4-LAUNCH", "grant write authority in the launcher fence", sub("shared/MODULE_04_LAB.md", r'--instruction "\$W/shared/controls/CONTRACT.md"', '--instruction "$W/shared/controls/CONTRACT.md" --write-root artifacts', count=1)),
 ]

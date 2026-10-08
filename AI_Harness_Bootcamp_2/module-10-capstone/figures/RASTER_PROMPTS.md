@@ -6,6 +6,8 @@ Staff-only record. Not published (absent from `course.json`).
 - Style: flat light instructional diagram (warm off-white ground, white boxes, thin neutral borders, one ochre accent, muted red only for stop/HOLD, muted green only for allowed). Sentence-case titles and plain-language labels.
 - Post-processing: composited onto the opaque `#FAF7F0` ground and saved as lossless RGB PNG at native size; no other pixel changes.
 - Run evidence (all attempts, prompts, logs): `~/course-evidence/image-remake-20261003T204449`
+- Run evidence (both prompt-first regenerations, all attempts, prompts, logs): `~/course-evidence/image-remake-20261008T010638Z-m10-prompt-first`
+- These two figures were regenerated for the prompt-first redesign.
 - These figures replace an earlier set that used dark, glowing styling and slogan-style labels.
 
 ## m10-evidence-boundaries
@@ -51,8 +53,8 @@ Before returning, check every text element is present, spelled exactly, and noth
 
 ## m10-launch-approval
 
-- Title: You approve and start the launch
-- Native size: 1536×1024; published SHA-256: `6ad21637cb16f1214d835e184c020757518db2a7972e3b33a8727b884884ecbc`
+- Title: You approve; OMP starts the server
+- Native size: 1536×1024; published SHA-256: `496479a7e923baf4dd5be1b568bd9389791fd2c2acd03f053f13d5cb609abedb`
 - Accepted attempt: 01 of 1
 
 ### Final prompt
@@ -68,7 +70,7 @@ VISUAL STYLE (strict):
 - Typography: one clean sans-serif (Inter or Helvetica style), sentence case everywhere (no ALL CAPS except code tokens and status words like HELD/BREACHED), title 44px semibold at top-left, labels 26-30px regular, generous padding, consistent spacing, aligned grid.
 - Render every text string exactly as given, once, spelled correctly. Add no other words, numbers, logos or captions.
 
-TITLE (top-left): "You approve and start the launch"
+TITLE (top-left): "You approve; OMP starts the server"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
 - "Checked weight file"
@@ -76,13 +78,13 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 - "OMP drafts the launch line"
 - "Your check: 127.0.0.1, context 32768, nothing that widens the boundary"
 - "Wrong: reject the line and ask OMP for a new draft"
-- "Passes: you start the server"
+- "Approved: OMP starts the server"
 - "Health probe: is the service reachable?"
 - "Unreachable: HOLD"
 - "A drafted line is not a running service"
 
 LAYOUT AND RELATIONSHIPS:
-Row 1, read left to right: two input boxes stacked, 'Checked weight file' and 'Loopback configuration', each with an arrow into 'OMP drafts the launch line' (grey outline, marked as OMP's step). An arrow goes to a decision box, 'Your check: 127.0.0.1, context 32768, nothing that widens the boundary', with a solid outline marked as the operator's step. From the check, the 'Wrong' exit drops to a red-outlined box 'Wrong: reject the line and ask OMP for a new draft'. A short dashed return arrow goes from that box straight back to 'OMP drafts the launch line', a direct short return with no wraparound; nothing from this box reaches the server. Row 2: the 'Passes' exit drops to 'Passes: you start the server' (operator's step). After a visible gap, an arrow to a separate box 'Health probe: is the service reachable?', then a red-outlined exit 'Unreachable: HOLD'. A footnote under row 1, attached to the draft box by a thin line: 'A drafted line is not a running service'. Monospace for 127.0.0.1 and 32768. No terminal window, command text or PASS readout.
+Row 1, read left to right: two input boxes stacked, 'Checked weight file' and 'Loopback configuration', each with an arrow into 'OMP drafts the launch line' (grey outline, marked as OMP's step). An arrow goes to a decision box, 'Your check: 127.0.0.1, context 32768, nothing that widens the boundary', with a solid outline marked as the operator's step. From the check, the 'Wrong' exit drops to a red-outlined box 'Wrong: reject the line and ask OMP for a new draft'. A short dashed return arrow goes from that box straight back to 'OMP drafts the launch line', a direct short return with no wraparound; nothing from this box reaches the server. Row 2: the 'Approved' exit drops to 'Approved: OMP starts the server' (OMP's step after your approval). After a visible gap, an arrow to a separate box 'Health probe: is the service reachable?', then a red-outlined exit 'Unreachable: HOLD'. A footnote under row 1, attached to the draft box by a thin line: 'A drafted line is not a running service'. Monospace for 127.0.0.1 and 32768. No terminal window, command text or PASS readout.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````
@@ -127,8 +129,8 @@ Before returning, check every text element is present, spelled exactly, and noth
 ## m10-stop-restore
 
 - Title: Service stop and control restore are separate
-- Native size: 1536×1024; published SHA-256: `42fe48941a39278b97e507affd249348b52554b7404ec2fceb37bd761b29950a`
-- Accepted attempt: 01 of 1
+- Native size: 1536×1024; published SHA-256: `eba9634945575cfe011c43e1276f1bb86d0f3541c4d9759a6b5bde33000b0ca8`
+- Accepted attempt: 02 of 2
 
 ### Final prompt
 
@@ -147,7 +149,7 @@ TITLE (top-left): "Service stop and control restore are separate"
 
 TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbatim):
 - "Stop (previous step)"
-- "Operator stops the process (Ctrl+C)"
+- "OMP stops its owned process"
 - "Probe reports unreachable"
 - "Stop receipt"
 - "Adapter verifies the stopped state"
@@ -161,7 +163,9 @@ TEXT ELEMENTS (each exactly once unless the layout says a token repeats; verbati
 - "To claim it is running again: launch it, then probe"
 
 LAYOUT AND RELATIONSHIPS:
-Two horizontal swimlanes in separate bordered panels with a clear gap between them; no line crosses between the lanes. Top lane, header 'Stop (previous step)', left to right with arrows: 'Operator stops the process (Ctrl+C)' (tagged as the operator's step) → 'Probe reports unreachable' → 'Stop receipt' → 'Adapter verifies the stopped state' (tagged as the adapter's check; no power or kill icon). Bottom lane, header 'Control', with two sub-sequences separated by a gap. First: 'Control disabled' → a red-outlined box 'Every adapter command returns HOLD: control disabled', which is a dead end, with the small note 'This refusal is not evidence that the service stopped' directly beneath it. Second: 'Validate the baseline digest' → 'Restore the control from the baseline' → a terminal note box 'Restoring the control does not restart the service'. A separate grey box beside that terminal note, with no incoming arrow, reads 'To claim it is running again: launch it, then probe'. No decorative bars, people, hands or shields.
+Two horizontal swimlanes in separate bordered panels with a clear gap between them; no line crosses between the lanes. Top lane, header 'Stop (previous step)', left to right with arrows: 'OMP stops its owned process' (tagged as OMP's step) → 'Probe reports unreachable' → 'Stop receipt' → 'Adapter verifies the stopped state' (tagged as the adapter's check; no power or kill icon). Bottom lane, header 'Control', with two sub-sequences separated by a gap. First: 'Control disabled' → a red-outlined box 'Every adapter command returns HOLD: control disabled', which is a dead end, with the small note 'This refusal is not evidence that the service stopped' directly beneath it. Second: 'Validate the baseline digest' → 'Restore the control from the baseline' → a terminal note box 'Restoring the control does not restart the service'. A separate grey box beside that terminal note, with no incoming arrow, reads 'To claim it is running again: launch it, then probe'. No decorative bars, people, hands or shields.
+
+FIX NOTE FOR THIS REGENERATION: Render every box label entirely in deep ink #2B2A27, with no colored or bold words. Show the actor only through the label text itself: no colored tags, badges or pills. Keep all existing labels, arrows, lanes and spacing unchanged.
 
 Before returning, check every text element is present, spelled exactly, and nothing else was added.
 ````

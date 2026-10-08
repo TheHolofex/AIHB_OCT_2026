@@ -13,7 +13,7 @@ Maintainer record for the photographs in this directory. It is not published: th
 
 Custody and route are the placed bands: cargo received into custody, then the vehicle moves. They are decorative (`alt=""`), lazy-loaded, and placed on the home page with `<div data-photo-band="ID"></div>`. The clinic photograph is kept here and is not on the home page.
 
-## Style contract
+## Style guidance
 
 Same lineage as the Starzl field photographs in `$HOME/Documents/GitHub/SE_Website/public/assets/` (`starzl-desert-operations`, `starzl-alt-pnt-network`, `starzl-ew-multidomain-range`; these were attached to every generation as style references and are not reproduced).
 
@@ -31,11 +31,12 @@ One vocabulary, composed into the photograph at about 20–30% strength, photogr
 3. Survey mesh: a faint translucent survey grid with topographic contour lines draped on the ground in perspective (the design system's survey grid and dune contours made spatial).
 4. State nodes: olive `#8FA15A` = cleared or confirmed, gold = in transit, brick red `#B43A2F` = hold, at most one per image.
 
-### Composition
+### Composition (current treatment)
 
 - Hero: 16:9, subject mass in the right 55%, calm left 40% (the headline sits there), horizon 45–66% down, detail in the upper 75%.
 - Band: generate 16:9 at 1672×941 and crop the vertical center to 1672×716. Keep all key content inside the central 68% of the height.
 
+These ratios and crops are recommendations for the current visual treatment. The publisher reads and emits intrinsic dimensions; fixed pixel sizes are not a publication requirement.
 ## Generation
 
 Codex's built-in image tool through `codex exec` (ChatGPT login; no API key). One call produces one image, in about 80–100 seconds. Attach the three style references with `-i`. The session id printed on stderr names the output folder under `$HOME/.codex/generated_images/`; never pick "the newest file", because parallel runs share that folder.
@@ -56,9 +57,7 @@ Prompt wrapper (prepended to each spec):
 cwebp -quiet -q 66 -m 6 -sns 100 -f 50 -segments 4 -resize 1672 941 master.png -o home-hero.webp
 cwebp -quiet -q 66 -m 6 -sns 100 -f 50 -segments 4 -crop 0 112 1672 716 master.png -o home-band-NAME.webp
 ```
-
-Budgets: hero at most 170 KB (hard cap 180 KB), band at most 130 KB. Plain `-q 80` produced 228 KB on the hero. Decode the sky and check for banding after encoding. The publisher reads WebP dimensions from the file header and requires exactly 1672×941 for the hero and 1672×716 for each band.
-
+Budgets and sizes are recommendations for the current treatment, not hard release caps. Hero at most 170 KB (soft target), band at most 130 KB. Plain `-q 80` produced 228 KB on the hero. Decode the sky and check for banding after encoding. The publisher reads WebP dimensions from the file header and emits the actual width/height for the shipped assets. The exact 1672×941 / 1672×716 sizes, byte counts, generation dates, and prompts below are the records for the images that were accepted and published; they are not requirements for future images.
 ## QA rubric
 
 Accept only if every point holds, checked on the full image and on native-resolution crops of tablet screens, container panels, crate faces, tent flaps, and vehicle doors:

@@ -6,7 +6,7 @@ Learn to operate AI harnesses by doing useful work: <br>draft a document, check 
 
 An **AI harness** is the working environment around a model: its instructions, source files, tools, permissions, and records of what happened. You control that environment so the model can do a defined job and you can check the result.
 
-You'll use Oh My Pi to work with files, supplied tools, and small agent teams; Obsidian to review and link notes; and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, delegate independent assignments, recover blocked work, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, edit instructions and settings, and open the files yourself to see what they contain.
+You'll use Oh My Pi to work with files, supplied tools, and small agent teams; Obsidian to review and link notes; and a local copy of n8n to build visual workflows in Module 7. You'll save instructions, delegate independent assignments, recover blocked work, and decide whether an output holds up against its sources. You don't need any programming experience: you'll paste supplied commands, copy supplied prompts into Oh My Pi, edit instructions and settings, and open the files yourself to see what they contain.
 
 <div data-photo-band="custody"></div>
 

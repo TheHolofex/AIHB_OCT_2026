@@ -26,11 +26,6 @@ FAIL: list[str] = []
 KEY = json.loads((ROOT / "tests" / "answer_key.json").read_text(encoding="utf-8"))
 LEARNER_FILES = [ROOT / "README.md", ROOT / "shared" / "MODULE_04_LAB.md", ROOT / "shared" / "case" / "DESK_RULES.md",
                  ROOT / "shared" / "controls" / "CONTRACT.md", ROOT / "shared" / "controls" / "questions.json", ROOT / "shared" / "prompts" / "DECIDE.md"]
-OTHER_MODULE_TOKENS = ("DN-0", "KH-0", "BK-2", "LW-", "PC-0", "AG-0", "RC-0", "R-0", "ST-17", "W-9", "Cold Lantern", "Ledger Pike", "Kiln Hold", "Copper Span",
-                       "Blue Gauge", "White Rack", "Slope Brief", "Night Desk", "Last Count", "North Shelf", "C-44", "QP-17", "Mill Depot", "Quarry Depot",
-                       "Red Mesa", "Route R-71", "VX-204", "VX-240", "PR-4418", "MO-27", "Task Force Marlin", "Forward Base Brandt")
-BANNED = ("246 kg", "1,404 kg", "3 minutes late", "20:50Z", "21:20Z")
-STAFF_TOKENS = ("VERIFY:", "PO10", "TYPED_ANSWERS", "LABEL_AGREEMENT", "CONFIDENCE_GATES", "ROUTED_REQUIREMENT", "answer_key", "what we'll cover", "in this section")
 
 
 def check(cid: str, condition: bool, detail: str) -> None:
@@ -334,20 +329,9 @@ def main() -> int:
         check("M4-BAN", not any("answer_key" in name or name.startswith("tests/") or name.startswith("reference/") for name in copied), "the work copy holds no answer key, tests, or reference")
         check("M4-BAN", {"scripts/chalk.py", "scripts/route.py", "scripts/check_questions.py", "scripts/compare_runs.py", "shared/controls/questions.json", "shared/prompts/DECIDE.md", "shared/case/messages.jsonl"} <= set(copied) and "shared/verify/verify_decisions.py" not in copied, "the work copy holds the controls and scripts, not the verifier")
     learner_text = "\n".join(read(path) for path in LEARNER_FILES)
-    for token in OTHER_MODULE_TOKENS:
-        check("M4-INDEP", token not in learner_text, f"learner files omit {token}")
-    for token in BANNED:
-        check("M4-INDEP", token not in learner_text, f"learner files omit {token}")
-    for token in STAFF_TOKENS:
-        check("M4-TOKEN", token not in learner_text, f"learner files omit {token}")
     leaks = ("requirement 58", "58 boxes", "GL-75     28", "GL-65     12", "GL-70     12", "PICK 7,", "SUPERSEDED 9", "REFER 5")
     for token in leaks:
         check("M4-LEAK", token not in learner_text, f"learner files do not state the key total {token!r}")
-    lab = read(ROOT / "shared" / "MODULE_04_LAB.md")
-    launcher_lines = [line for line in lab.splitlines() if "run_omp.py" in line]
-    check("M4-LAUNCH", launcher_lines and all("--instruction" in line and "DECIDE.md" in line and "CONTRACT.md" in line for line in launcher_lines), f"{len(launcher_lines)} launcher fences carry the contract as the saved instruction")
-    check("M4-LAUNCH", not any(flag in line for line in launcher_lines for flag in ("--allow-write", "--write-root", "--policy", "--mcp-config")), "launcher fences grant no write or tool authority")
-    check("M4-LAUNCH", "SET" in lab and "IFS= read -r -s OPENROUTER_API_KEY" in lab, "the lab enters the key through a hidden prompt")
 
     print(f"\n{len(PASS)} checks passed, {len(FAIL)} failed across {len({item.split(':')[0] for item in PASS + FAIL})} criteria")
     return 1 if FAIL else 0

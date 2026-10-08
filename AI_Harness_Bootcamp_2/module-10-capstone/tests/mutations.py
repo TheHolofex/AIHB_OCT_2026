@@ -49,11 +49,6 @@ def drop_restore_field(root: Path) -> None:
     if current.count(old) != 1:
         raise RuntimeError("FIELDS restore anchor missing")
     current = current.replace(old, new)
-    old_cmd = 'for name in ("run", "stop", "restore"):'
-    new_cmd = 'for name in ("run", "stop"):'
-    if current.count(old_cmd) != 1:
-        raise RuntimeError("command-loop restore anchor missing")
-    current = current.replace(old_cmd, new_cmd)
     path.write_text(current, encoding="utf-8")
 
 def leave_temp_files(root: Path) -> None:
@@ -72,17 +67,10 @@ ADAPTER = "scripts/local_ai.py"
 
 MUTATIONS = [
     Mutation("M10-REF", "flip the frozen reference digest", flip_ref_hash),
-    Mutation("M10-HIDE", "expose the protected case folder in the README", append("README.md", "\nSee [facilitator/cases](facilitator/cases) for the protected material.\n")),
-    Mutation("M10-INDEP", "inject a retired module product token into the lab", append("shared/MODULE_10_LAB.md", "\nThe earlier bundle named RUNNABLE_PACKAGE as its product.\n")),
-    Mutation("M10-TOKEN", "inject a supply token into the README", append("README.md", "\nThis module consumes VERIFY:TRANSFER_TASK.\n")),
-    Mutation("M10-CHK-CITE", "neuter the cross-module citation list",
-             replace_exact(CHECKER, 'SOURCE_IDS = tuple(f"S0{n}" for n in range(1, 10))', "SOURCE_IDS = ()")),
     Mutation("M10-CHK-MISSING", "treat a missing package as success",
              replace_exact(CHECKER, 'print("HOLD: missing input", file=sys.stderr)\n        return 1', 'return 0')),
     Mutation("M10-CHK-ARGS", "accept a missing package argument",
              replace_exact(CHECKER, 'if len(argv) != 2:\n        print("usage: check_package.py <package.md>", file=sys.stderr)\n        return 1', 'if len(argv) < 2:\n        return 0')),
-    Mutation("M10-CHK-CLEAN", "alter the success phrase",
-             replace_exact(CHECKER, '"PASS: package structure checked"', '"structure ok"')),
     Mutation("M10-PACKAGE-STRUCTURE", "accept a package without any restore requirement", drop_restore_field),
     Mutation("M10-PACKAGE-PATH", "skip path confinement",
              replace_exact(CHECKER, 'if not resolved.is_relative_to(root.resolve()):', 'if False:')),

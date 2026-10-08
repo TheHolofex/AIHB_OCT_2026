@@ -218,11 +218,6 @@ class PublicationBehavior(unittest.TestCase):
         self.assertEqual(next(node for node in overview.walk() if "data-module-progress" in node.attrs).attrs["data-step-total"], "2")
         home = builder.parse_html((self.root / "site/index.html").read_text())
         self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 11)
-        for bad in ({"can": "Keep PO03_RESULT.", "will": ["a", "b"]}, {"can": "Fine.", "will": ["only one"]}, {"can": "", "will": ["a", "b"]}, {"can": "Fine.", "will": ["Carry VERIFY:CASE forward.", "b"]}):
-            self.course["modules"][0]["outcomes"] = bad
-            self.save_manifest()
-            with self.subTest(outcomes=bad), self.assertRaises(ValueError):
-                self.build()
 
     def test_authored_step_numbers_win_over_sequential_labels(self):
         lab = self.page.parent / "lab.md"
@@ -269,13 +264,6 @@ class PublicationBehavior(unittest.TestCase):
         image = next(node for node in tree.walk() if node.attrs.get("class") == "rf-hero-image")
         self.assertEqual((image.attrs["width"], image.attrs["height"]), ("1672", "941"))
         self.assertEqual(image.attrs["src"], "assets/images/hero.webp")
-
-    def test_wrong_hero_dimensions_fail_before_publication(self):
-        self.add_webp("hero.webp", 1672, 940)
-        self.save_manifest()
-        with self.assertRaises(ValueError):
-            self.build()
-        self.assertFalse((self.root / "site").exists())
 
     def test_unknown_home_band_placeholder_fails(self):
         self.add_home_band('<div data-photo-band="unknown"></div>')
@@ -326,12 +314,6 @@ class PublicationBehavior(unittest.TestCase):
         self.add_home_band('<div data-photo-band="custody"></div>\n\n<div data-photo-band="route"></div>')
         self.course["home_bands"]["route"] = self.course["home_bands"]["custody"]
         self.save_manifest()
-        with self.assertRaises(ValueError):
-            self.build()
-
-    def test_wrong_home_band_dimensions_fail(self):
-        self.add_home_band()
-        (self.root / "ui/custody.webp").write_bytes(_webp_image(1672, 715))
         with self.assertRaises(ValueError):
             self.build()
 
@@ -448,14 +430,6 @@ class PublicationBehavior(unittest.TestCase):
                     self.build()
                 self.assertFalse((self.root / "site").exists())
 
-    def test_each_command_needs_its_own_terminal_and_later_observation(self):
-        variants = [PROCEDURE.replace("```bash", "```", 1), PROCEDURE.replace("**Terminal: Bash or zsh, ordinary user.**", "**Bash**"), PROCEDURE + "\n## Another action\n\n**Terminal: Bash, ordinary user.**\n\n```bash\nprintf forgotten\n```\n"]
-        for text in variants:
-            with self.subTest(text=text):
-                self.page.write_text(text, encoding="utf-8")
-                with self.assertRaises(ValueError):
-                    self.build()
-
     def test_broken_anchor_and_unlisted_output_are_rejected(self):
         self.page.write_text(PROCEDURE + "\n[Missing](#missing)\n", encoding="utf-8")
         with self.assertRaises(ValueError):
@@ -542,12 +516,8 @@ class PublicationBehavior(unittest.TestCase):
         data = json.loads(next(node.text() for node in nodes if node.attrs.get("id") == "rf-page-data"))
         self.assertEqual([step["id"] for step in data["steps"]], ["read-a-file", "preserve-the-decision"])
 
-    def test_orphaned_commands_and_invalid_guide_anchors_are_rejected(self):
+    def test_invalid_guide_anchors_are_rejected(self):
         lab = self.page.parent / "lab.md"
-        lab.write_text(GUIDED_PROCEDURE.replace("## Read a file", "Read a file", 1))
-        with self.assertRaises(ValueError):
-            self.build()
-        lab.write_text(GUIDED_PROCEDURE)
         guide = self.course["modules"][0]["pages"][1]["guide"]
         for anchors in (["missing"], ["read-a-file", "read-a-file"]):
             guide["context_sections"] = anchors
@@ -603,6 +573,153 @@ class PublicationBehavior(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.build()
         self.assertFalse((self.root / "site").exists())
+
+    def test_unguided_lab_publishes_mixed_content_without_fake_progress(self):
+        module = self.course["modules"][0]
+        del module["outcomes"]
+        del module["pages"][1]["guide"]
+        (self.page.parent / "figures").mkdir()
+        (self.page.parent / "figures/flow.png").write_bytes(_png_image(40, 20))
+        module["figures"] = [{"source": "figures/flow.png", "dest": "figures/flow.png"}]
+        prompt = "Help me run this exercise using the supplied tools.\n  Keep this indented line, a < b & c, unchanged.\n"
+        (self.page.parent / "lab.md").write_text(
+            "# Mixed lesson\n\nWhy this page exists, in plain prose.\n\n## Background\n\nSome explanation.\n\n### A detail\n\nMore explanation.\n\n"
+            "```\nunlabeled sample\n```\n\n**In Oh My Pi:**\n\n```text\n" + prompt + "```\n\n```bash\nprintf 'no card rhetoric\\n'\n```\n\n"
+            "![A labelled flow](figures/flow.png)\n\n<details><summary>More detail</summary><p>Ordinary disclosure text.</p></details>\n\n"
+            "## Next idea\n\nClosing prose.\n\n<details class=\"rf-stretch\" markdown=\"1\">\n<summary>Optional stretch: go further</summary>\n\n## Further work\n\nOptional prose.\n\n</details>\n",
+            encoding="utf-8")
+        self.save_manifest()
+        self.build()
+        lab = (self.published.parent / "lab.html").read_text(encoding="utf-8")
+        nodes = list(builder.parse_html(lab).walk())
+        self.assertTrue({"background", "a-detail", "next-idea", "further-work", "rf-stretch"} <= {node.attrs.get("id") for node in nodes})
+        pres = [node for node in nodes if node.tag == "pre"]
+        self.assertEqual([next(child for child in pre.children if isinstance(child, builder.Node)).text() for pre in pres],
+                         ["unlabeled sample\n", prompt, "printf 'no card rhetoric\\n'\n"])
+        self.assertEqual([pre.attrs.get("data-command") for pre in pres], [None, None, "bash"])
+        self.assertFalse(any("rf-command" in node.attrs.get("class", "").split() for node in nodes))
+        for marker in ("data-step-id", "data-step-done", "data-progress"):
+            self.assertFalse(any(marker in node.attrs for node in nodes), marker)
+        self.assertFalse(any(node.attrs.get("id") == "rf-reader-controls" or node.attrs.get("class") == "rf-outcome-line" for node in nodes))
+        rail = next(node for node in nodes if node.attrs.get("id") == "rf-outline")
+        self.assertEqual((rail.attrs["aria-label"], rail.attrs.get("class")), ("On this page", None))
+        image = next(node for node in nodes if node.tag == "img")
+        self.assertEqual((image.attrs["alt"], image.attrs["width"], image.attrs["height"]), ("A labelled flow", "40", "20"))
+        disclosure = next(node for node in nodes if node.tag == "details" and any(isinstance(child, builder.Node) and child.tag == "summary" and child.text() == "More detail" for child in node.children))
+        self.assertIn("Ordinary disclosure text.", disclosure.text())
+        data = json.loads(next(node.text() for node in nodes if node.attrs.get("id") == "rf-page-data"))
+        self.assertEqual(data["steps"], [])
+        self.assertNotIn(data["page"], data["resume"])
+        overview = self.published.read_text(encoding="utf-8")
+        for document in (lab, overview):
+            self.assertNotIn("0 steps", document)
+        self.assertNotIn("rf-outcomes", overview)
+        self.assertNotIn("data-module-progress", overview)
+        home = builder.parse_html((self.root / "site/index.html").read_text(encoding="utf-8"))
+        self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 10)
+        search = json.loads((self.root / "site/assets/search-index.json").read_text(encoding="utf-8"))
+        sections = next(page for page in search["pages"] if page["path"] == data["page"])["sections"]
+        self.assertTrue(next(section for section in sections if section["id"] == "further-work")["optional"])
+        self.assertEqual(self.build(check=True), 0)
+
+    def test_optional_outcomes_render_only_their_content(self):
+        long_can = "Explain " + "a supported capability in detail, " * 12 + "and then name what remains open."
+        self.assertGreater(len(long_can), 320)
+        cases = {
+            "can only": {"can": long_can},
+            "will only": {"will": ["Read the OPENROUTER_API_KEY guidance before the VERIFY: checks in Module 4."]},
+            "many activities": {"can": "Inspect the source.", "will": [f"Activity {number}." for number in range(6)]},
+            "one activity": {"can": "Inspect the source.", "will": ["Only one activity."]},
+            "blank": {"can": "  ", "will": []},
+        }
+        for label, outcomes in cases.items():
+            with self.subTest(case=label):
+                self.course["modules"][0]["outcomes"] = outcomes
+                self.save_manifest()
+                self.build()
+                can, will = outcomes.get("can", "").strip(), outcomes.get("will", [])
+                nodes = list(builder.parse_html(self.published.read_text(encoding="utf-8")).walk())
+                text = lambda css: [node.text() for node in nodes if node.attrs.get("class") == css]
+                self.assertEqual(text("rf-outcomes-can"), [can] if can else [])
+                self.assertEqual([node.text() for node in nodes if node.tag == "li" and node.attrs == {} and will and node.text() in will], will)
+                self.assertEqual(len(text("rf-outcomes-sub")), 1 if can and will else 0)
+                expected_title = "After this assignment you can" if can else "You will" if will else None
+                self.assertEqual(next((node.text() for node in nodes if node.attrs.get("id") == "rf-outcomes-title"), None), expected_title)
+                outline_links = [node.text() for node in nodes if node.tag == "a" and node.attrs.get("href") == "#rf-outcomes-title"]
+                self.assertEqual(outline_links, [expected_title] * 2 if expected_title else [])
+                lab = builder.parse_html((self.published.parent / "lab.html").read_text(encoding="utf-8"))
+                self.assertEqual(len([node for node in lab.walk() if node.attrs.get("class") == "rf-outcome-line"]), 1 if can else 0)
+                home = builder.parse_html((self.root / "site/index.html").read_text(encoding="utf-8"))
+                self.assertEqual(len([node for node in home.walk() if node.attrs.get("class") == "rf-map-outcome"]), 11 if can else 10)
+        for bad in (None, [], {"can": 3}, {"will": "Read the file."}, {"will": ["Fine.", " "]}, {"can": "Fine.", "extra": "x"}):
+            with self.subTest(outcomes=bad):
+                self.course["modules"][0]["outcomes"] = bad
+                self.save_manifest()
+                with self.assertRaises(ValueError):
+                    self.build()
+
+    def test_explicit_guides_without_steps_stay_readable_and_reference_steps_count(self):
+        module = self.course["modules"][0]
+        module["pages"][1]["guide"] = {"context_sections": ["read-a-file", "preserve-the-decision"]}
+        (self.page.parent / "sheet.md").write_text("# Prompt sheet\n\nUse these when you are ready.\n\n## First prompt\n\nCopy it.\n\n## Second prompt\n\nCopy this one too.\n", encoding="utf-8")
+        (self.page.parent / "plain.md").write_text("# Plain guided page\n\nOnly prose, without any second-level heading.\n", encoding="utf-8")
+        module["pages"] += [{"source": "sheet.md", "dest": "sheet.html", "kind": "reference", "guide": {}},
+                            {"source": "plain.md", "dest": "plain.html", "kind": "reference", "guide": {}}]
+        self.save_manifest()
+        self.build()
+        parse = lambda name: list(builder.parse_html((self.published.parent / name).read_text(encoding="utf-8")).walk())
+        for name in ("lab.html", "plain.html"):
+            with self.subTest(page=name):
+                nodes = parse(name)
+                self.assertFalse(any("data-step-id" in node.attrs or "data-progress" in node.attrs or node.attrs.get("id") == "rf-reader-controls" for node in nodes))
+                self.assertEqual(next(node for node in nodes if node.attrs.get("id") == "rf-outline").attrs["aria-label"], "On this page")
+                self.assertFalse(any("hidden" in node.attrs for node in nodes if node.attrs.get("class") == "rf-context-body"))
+        lab = parse("lab.html")
+        self.assertEqual([node.attrs["data-context-id"] for node in lab if "data-context-id" in node.attrs], ["read-a-file", "preserve-the-decision"])
+        self.assertEqual([node.text() for node in lab if "data-command" in node.attrs], ["printf '%s\\n' 'a < b & c'\n"])
+        sheet = parse("sheet.html")
+        self.assertEqual([node.attrs["data-step-id"] for node in sheet if "data-step-id" in node.attrs], ["first-prompt", "second-prompt"])
+        self.assertTrue(any(node.attrs.get("id") == "rf-reader-controls" for node in sheet))
+        self.assertEqual(next(node for node in sheet if "data-progress" in node.attrs).attrs["data-step-total"], "2")
+        self.assertEqual(next(node for node in sheet if node.attrs.get("id") == "rf-outline").attrs["aria-label"], "Steps")
+        data = json.loads(next(node.text() for node in sheet if node.attrs.get("id") == "rf-page-data"))
+        self.assertEqual({page["path"].rsplit("/", 1)[1]: page["steps"] for page in data["pages"] if page["moduleId"] == "00"},
+                         {"README.html": [], "lab.html": [], "sheet.html": ["first-prompt", "second-prompt"], "plain.html": []})
+        self.assertEqual({path.rsplit("/", 1)[1] for path in data["resume"] if "/module-00-example/" in path}, {"sheet.html"})
+        overview = parse("README.html")
+        self.assertEqual(next(node for node in overview if "data-module-progress" in node.attrs).attrs["data-step-total"], "2")
+        for bad in (None, {"steps": []}, {"context_sections": "read-a-file"}):
+            with self.subTest(guide=bad):
+                module["pages"][1]["guide"] = bad
+                self.save_manifest()
+                with self.assertRaises(ValueError):
+                    self.build()
+
+    def test_hero_and_band_publish_their_actual_dimensions(self):
+        self.add_webp("hero.webp", 800, 600)
+        self.course["home_bands"] = {"custody": self.add_webp("custody.webp", 960, 480)}
+        home = self.root / "AI_Harness_Bootcamp_2/README.md"
+        home.write_text(home.read_text(encoding="utf-8") + '\n\n<div data-photo-band="custody"></div>\n', encoding="utf-8")
+        self.save_manifest()
+        self.build()
+        tree = builder.parse_html((self.root / "site/index.html").read_text(encoding="utf-8"))
+        images = {node.attrs["class"]: (node.attrs["width"], node.attrs["height"]) for node in tree.walk() if node.tag == "img"}
+        self.assertEqual(images, {"rf-hero-image": ("800", "600"), "rf-band-image": ("960", "480")})
+        self.assertEqual(self.build(check=True), 0)
+
+    def test_allowlisted_supplementary_reference_page_links_and_is_searchable(self):
+        module = self.course["modules"][0]
+        (self.page.parent / "shared/PROMPTS.md").write_text("# Prompt sheet\n\nEvery prompt for this assignment, collected for printing.\n", encoding="utf-8")
+        module["pages"].append({"source": "shared/PROMPTS.md", "dest": "shared/PROMPTS.html", "kind": "reference"})
+        (self.page.parent / "lab.md").write_text(GUIDED_PROCEDURE + "\n[Prompt sheet](shared/PROMPTS.md)\n", encoding="utf-8")
+        self.save_manifest()
+        self.build()
+        self.assertIn('href="shared/PROMPTS.html"', (self.published.parent / "lab.html").read_text(encoding="utf-8"))
+        search = json.loads((self.root / "site/assets/search-index.json").read_text(encoding="utf-8"))
+        page = next(page for page in search["pages"] if page["path"].endswith("module-00-example/shared/PROMPTS.html"))
+        self.assertEqual((page["kind"], page["moduleId"]), ("reference", "00"))
+        self.assertIn("Every prompt for this assignment, collected for printing.", " ".join(section["text"] for section in page["sections"]))
+        self.assertEqual(self.build(check=True), 0)
 
 
 if __name__ == "__main__":

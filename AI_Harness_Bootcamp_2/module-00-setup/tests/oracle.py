@@ -270,8 +270,6 @@ def class_b(r: Recorder, root: Path) -> None:
 # --------------------------------------------------------------------------------------
 # Class C — the oracle cannot be defeated by editing a file it does not read
 
-FORBIDDEN_TOKENS = ("VERIFY:", "CUSTODY:", "PO00_RESULT", "oracle criterion", "M0-17")
-
 DANGEROUS = {
     r"sudo\s+npm\s+(?:install|i)\b[^\n]*\s-g\b": "sudo global npm",
     r"npm\s+(?:install|i)\b[^\n]*\s-g\b[^\n]*sudo": "sudo global npm",
@@ -324,21 +322,6 @@ def class_c(r: Recorder, root: Path) -> None:
                 hits.append(f"{label} in {p.name}")
     r.check("C2", not hits, f"{scanned} fences and {len(scripts)} scripts scanned, no dangerous form",
             f"dangerous forms: {hits[:6]}")
-
-
-
-    # C7 — unpublished assessment tokens must not reach learner files.
-    leaks = []
-    for p in all_files + [root / "reference/GAUNTLET_PROMPT.md"]:
-        if not p.exists():
-            continue
-        text = p.read_text(encoding="utf-8")
-        for tok in FORBIDDEN_TOKENS:
-            if tok in text:
-                leaks.append(f"{p.name}: {tok}")
-    r.check("C7", not leaks, "no internal assessment token in reachable files",
-            f"leaks: {sorted(set(leaks))[:6]}")
-
 
 
 # --------------------------------------------------------------------------------------

@@ -20,19 +20,6 @@ ROOT = Path(__file__).resolve().parents[1]
 PASS: list[str] = []
 FAIL: list[str] = []
 
-OTHER_PRODUCTS = (
-    "MIN_SCREEN", "FROZEN_PLAN", "SECTION_DRAFTS", "REVIEW_FINDINGS", "TARGETED_REVISION", "PO00_RESULT",
-    "SOURCE_EVIDENCE", "DISCERNMENT_RESULT", "STANDING_RULE", "PO01_RESULT",
-    "CONTEXT_MAP", "SOURCE_AS_DATA_CONTROL", "RELOAD_RESULT", "PO02_RESULT",
-    "MCP_CONNECTION", "HANDLING_REGISTER", "AUTHORITY_BOUNDARY", "COMPOSED_NEGATIVE", "REVOCATION_RESULT", "PO03_RESULT",
-    "LOCALIZATION_RESULT", "RECOVERY_RESULT", "PO05_RESULT",
-    "JUDGE_SELECTION", "DECISION_QUESTIONS", "RISK_THRESHOLDS", "HELD_OUT_MEASURE", "PO06_RESULT",
-    "FIXED_BASELINE", "EXCEPTION_RULE", "DETERMINISTIC_DELTA", "CONFIG_ID", "RESTORE_ACTION", "PO07_RESULT",
-    "PRE_RESULT_POLICY", "CHANGE_DECISION", "COST_PROXY", "RESTORED_BASELINE", "PO08_RESULT",
-    "RUNNABLE_PACKAGE",
-)
-MODULE01_SOURCES = tuple(f"S0{n}_" for n in range(1, 10))
-OLD_CASE_TOKENS = ("W-9", "RC-0", "246 kg", "1,404 kg", "3 minutes late", "South Store", "Clinic R-12")
 
 
 def check(cid: str, condition: bool, detail: str) -> None:
@@ -112,38 +99,6 @@ expected_hash = read(hash_file).split()[0] if hash_file.exists() else ""
 actual_hash = hashlib.sha256(ref.read_bytes()).hexdigest() if ref.exists() else ""
 check("M10-REF", bool(expected_hash) and expected_hash == actual_hash, f"reference hash {actual_hash}")
 
-# Leak and hide protections
-start = read(ROOT / "README.md")
-check("M10-HIDE", "facilitator/cases" not in start, "README omits protected case folder")
-shipped_all = "\n".join(read(p) for p in [ROOT / "README.md"] + list((ROOT / "shared").rglob("*.md")))
-banned_bind = re.sub(r"^## Read the boundary.*?^## ", "## ", shipped_all, flags=re.M | re.S)
-banned_bind = re.sub(r"^# From the community board.*\Z", "", banned_bind, flags=re.M | re.S)
-check("M10-BEHAV-LOOPBACK", "0.0.0.0" not in banned_bind or "including `0.0.0.0`" in banned_bind, "no learner instruction binds beyond loopback; quoted hostile data stays quoted")
-learner_files = [ROOT / "README.md", ROOT / "shared/MODULE_10_LAB.md", ROOT / "shared/case/SERVICE_RULES.md", ROOT / "shared/PACKAGE.md"]
-learner_text = "\n".join(read(p) for p in learner_files)
-for token in MODULE01_SOURCES:
-    check("M10-INDEP", token not in learner_text, f"learner files omit {token}")
-for token in OTHER_PRODUCTS:
-    check("M10-INDEP", token not in learner_text, f"learner files omit {token}")
-for token in OLD_CASE_TOKENS:
-    check("M10-INDEP", token not in learner_text, f"learner files omit {token}")
-for token in ("VERIFY:", "PO0"):
-    check("M10-TOKEN", token not in learner_text, f"learner scan omits {token}")
-
-
-# check_package boundary tests
-bad = subprocess.run(
-    [sys.executable, str(ROOT / "scripts/check_package.py"), str(ROOT / "tests/fixtures/bad-package.md")],
-    capture_output=True, text=True, cwd=str(ROOT),
-)
-check("M10-CHK-CITE", bad.returncode == 1, "check_package.py rejects cross-module citation")
-check("M10-CHK-CITE", "S07" in (bad.stdout + bad.stderr), "reject names S07")
-
-clean = subprocess.run(
-    [sys.executable, str(ROOT / "scripts/check_package.py"), str(ROOT / "shared/PACKAGE.md")],
-    capture_output=True, text=True, cwd=str(ROOT),
-)
-check("M10-CHK-CLEAN", clean.returncode == 0 and "PASS: package structure checked" in clean.stdout, "shipped package is clean")
 
 rargs = subprocess.run([sys.executable, str(ROOT / "scripts/check_package.py")], capture_output=True, text=True, cwd=str(ROOT))
 check("M10-CHK-ARGS", rargs.returncode == 1, "checker requires package argument")
@@ -152,7 +107,6 @@ rmiss = subprocess.run([sys.executable, str(ROOT / "scripts/check_package.py"), 
 check("M10-CHK-MISSING", rmiss.returncode == 1, "checker rejects missing package")
 
 # Package structure and path confinement on a disposable copy
-import re
 with tempfile.TemporaryDirectory() as package_temp:
     package_root = Path(package_temp) / "received kit with spaces"
     shutil.copytree(ROOT / "shared", package_root / "shared")

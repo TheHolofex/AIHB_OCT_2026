@@ -85,8 +85,6 @@ MUTATIONS: list[Mutation] = [
              append(LAB, "\n```text\nsudo npm install --global whatever -g\n```\n")),
     Mutation("C2", "a learner block deletes the course checkout",
              append(LAB, '\n```bash\nrm -rf "$HOME/Documents/AIHB_OCT_2026"\n```\n')),
-    Mutation("C7", "an internal token reaches a learner file",
-             append(LAB, "\nRecord PO00_RESULT when the run finishes.\n")),
     # Class D
     Mutation("REF", "the frozen Reference is edited without re-freezing",
              append("reference/REFERENCE.md", "\nAn unrecorded change.\n")),

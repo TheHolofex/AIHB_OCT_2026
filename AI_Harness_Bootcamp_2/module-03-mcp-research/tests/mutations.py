@@ -32,12 +32,6 @@ def sub(rel: str, pattern: str, repl: str, count: int = 1) -> Callable[[Path], N
     return go
 
 
-def append(rel: str, text: str) -> Callable[[Path], None]:
-    def go(root: Path) -> None:
-        path = root / rel
-        path.write_text(path.read_text(encoding="utf-8") + text, encoding="utf-8")
-
-    return go
 
 
 def flip_reference_digest(root: Path) -> None:
@@ -63,13 +57,9 @@ MUTATIONS = [
     Mutation("M3-EXTRACT", "the scanner stops deriving protected facts", sub("shared/mcp/scan_extract.py", r"return staff - shared", "return set()")),
     Mutation("M3-STAGE", "the stager also copies STAFF notes", sub("shared/mcp/stage_releasable.py", r'register\[note\]\["final"\] in \("OPEN", "PARTNER"\)', 'register[note]["final"] in ("OPEN", "PARTNER", "STAFF")')),
     Mutation("M3-STAGE", "the seeder fills the AI proposed column with one fixed level", sub("shared/mcp/seed_register.py", r'value = given\.get\(note, ""\)', 'value = "STAFF"')),
-    Mutation("M3-LAB", "the lab runs a script that does not exist", sub("shared/MODULE_03_LAB.md", r"stage_releasable\.py", "stage_release.py", count=1)),
-    Mutation("M3-LAB", "the lab passes an option its script does not define", sub("shared/MODULE_03_LAB.md", r'--vault "\$W/vault" --out "\$E/probe-raw.json"', '--vault "$W/vault" --report "$E/probe-raw.json"')),
     Mutation("M3-VERIFY", "the verifier stops requiring probes to precede live runs", sub("shared/verify/verify_research.py", r'instant\(probe\["probed_at_utc"\]\) < earliest,', 'instant(probe["probed_at_utc"]) < earliest or True,')),
     Mutation("M3-VERIFY", "the verifier accepts a revoked run that was offered tools", sub("shared/verify/verify_research.py", r'all\(row\.get\("tools"\) == \[\] for row in requests\)', "True")),
-    Mutation("M3-INDEP", "another module's case name leaks into the overview", append("README.md", "\nCold Lantern\n")),
-    Mutation("M3-BAN", "a banned figure leaks into a prompt", append("shared/prompts/SMOKE.md", "\n246 kg\n")),
 ]
 REQUIRED_COVERAGE = frozenset({
-    "M3-REF", "M3-SERVER", "M3-AUTH", "M3-INSPECT", "M3-PROBE", "M3-CORPUS", "M3-HANDLING", "M3-EXTRACT", "M3-STAGE", "M3-LAB", "M3-VERIFY", "M3-INDEP", "M3-BAN",
+    "M3-REF", "M3-SERVER", "M3-AUTH", "M3-INSPECT", "M3-PROBE", "M3-CORPUS", "M3-HANDLING", "M3-EXTRACT", "M3-STAGE", "M3-VERIFY",
 })

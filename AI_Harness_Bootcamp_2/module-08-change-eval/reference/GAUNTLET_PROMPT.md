@@ -11,10 +11,14 @@ Inspect these failure paths:
 - An initially supported control damaged by correction.
 - Missing authority represented as explicit unknown, never a positive permission or a denial.
 - Before reviewers exposed to each other, or after reviewers exposed to prior verdicts.
-- Five parsed files presented without five distinct audited executions, required source reads, exact input identities, and saved instruction proof.
+- Five parsed files presented without five distinct audited child executions, required source reads, exact input identities, and saved instruction proof.
 - A parsed result edited after the provider response, or source/control drift after freeze.
-- An existing attempt or human decision overwritten, or a failed call silently retried or substituted.
+- An existing attempt or human decision overwritten, or a failed child call silently retried or substituted.
+- Coordinator conversation, W/notes.md, or earlier verdicts sent into any child; children not isolated.
+- Learners not using copyable In Oh My Pi prompts; evidence of shell commands or key entry presented instead of natural-language prompt copies and inspectable Expected/Stop/Recovery checkpoints.
+- Human disposition not performed by the learner after inspecting the report and sources; coordinator or model choosing USE/KEEP_UNKNOWN/HOLD or editing report/provider outputs.
+- Resume prompt absent or resume logic selecting a started/partial paid stage instead of waiting at the first unstarted actionable step.
 
-Check the capability delta: source verification and typed questions are assumed; the new capability is controlling claim admission through a source-bound review-and-correction loop that can itself fail. Check both supported controls and explicit unknowns. There is no model vote-based release, learner score, or required classmate/instructor sign-off.
+Check the capability delta: source verification and typed questions are assumed; the new capability is controlling claim admission through a source-bound review-and-correction loop that can itself fail. Check both supported controls and explicit unknowns. There is no model vote-based release, learner score, or required classmate/instructor sign-off. Verify that the published lab uses the prompt contract (In Oh My Pi followed by Expected/Stop/Recovery) and that the five audited children remain the isolated runs, with the OMP conversation acting only as coordinator.
 
 Report concrete defects with file, behavior, consequence, and correction. Separate static review, offline tests, actual provider execution, browser observations, and unmeasured learner outcomes. Do not fabricate runs or convert an editorial judgment into performance evidence.

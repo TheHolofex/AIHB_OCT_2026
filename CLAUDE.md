@@ -24,17 +24,13 @@ Remediation is the exception. If learners cannot perform a prerequisite, repair 
 
 ## Learner-facing content
 
-Never ship the making-of frame. Course pages, handouts, and briefs teach the craft, not the curriculum. No design rationale (why content is sequenced this way, why a mechanism belongs to one party, why a topic was scoped in or out) and no meta-commentary about the artifact ("what we'll cover," "in this section," section recaps, handoffs to companion materials).
-
-Test: would this still exist if the same knowledge were delivered by a book, a mentor, or on the job — with no course around it? If it only makes sense because there is an artifact, cut it, or reframe it so it survives outside the setting.
-
-Put this constraint in the brief of any subagent or generator writing learner-facing prose, and check the output against the test before delivery.
+Use detailed explanations, behind-the-scenes discussion, orientation, rationale, recaps, worked examples, diagrams, screenshots, supplementary guides, and handouts when they help the learner. Choose the format that serves the task rather than a fixed page template. Explain unfamiliar terms instead of blacklisting identifier-shaped words. Keep claims about execution tied to observed evidence: narration, proposed commands, and generated answers do not prove that work ran or that a person accepted it.
 
 The bootcamp is ungraded. Do not add learner scores, qualification decisions, scoring rubrics, or exercise-grading guidance. Technical checks and work decisions may still return `PASS` or `HOLD`.
 
 ## Repository shape
 
-The website is the course. Edit the owning maintainer source under `AI_Harness_Bootcamp_2/` and publish HTML through `scripts/build_course.py`; do not create parallel learner-facing Markdown pages. Add a raw file only when working with it is part of the exercise. `course.json` owns the publication allowlist. Serve only generated `site/`, never the repository root or staff sources. See [`README.md`](README.md) for the path map and verification commands.
+The website is the course. Edit the owning maintainer source under `AI_Harness_Bootcamp_2/` and publish HTML through `scripts/build_course.py`; do not create a second raw-Markdown navigation site. Additional canonical explanatory/reference pages, prompt sheets, and accessible or downloadable handouts may live under the owning module when explicitly registered in `course.json`. Raw learner resources need not be limited to files edited during an exercise. `course.json` owns the publication allowlist; never allowlist or serve private/staff sources or answer keys. Serve only generated `site/`, never the repository root or staff sources. See [`README.md`](README.md) for the path map and verification commands.
 
 ## Reformation scenario memory
 

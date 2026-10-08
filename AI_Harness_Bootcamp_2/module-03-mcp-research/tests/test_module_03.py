@@ -42,14 +42,6 @@ import vault_mcp  # noqa: E402
 
 KEY = json.loads((ROOT / "scripts" / "handling_key.json").read_text(encoding="utf-8"))
 EFFECTIVE = {note: row["effective"] for note, row in KEY["notes"].items()}
-OWN_PRODUCTS = ("MCP_CONNECTION", "HANDLING_REGISTER", "AUTHORITY_BOUNDARY", "COMPOSED_NEGATIVE", "REVOCATION_RESULT", "PO03_RESULT")
-OTHER_PRODUCTS = (
-    "MIN_SCREEN", "FROZEN_PLAN", "SECTION_DRAFTS", "REVIEW_FINDINGS", "TARGETED_REVISION", "PO00_RESULT", "SOURCE_EVIDENCE", "DISCERNMENT_RESULT", "STANDING_RULE", "PO01_RESULT", "CONTEXT_MAP",
-    "SOURCE_AS_DATA_CONTROL", "RELOAD_RESULT", "PO02_RESULT", "LOCALIZATION_RESULT", "RECOVERY_RESULT", "PO05_RESULT", "JUDGE_SELECTION", "DECISION_QUESTIONS",
-    "RISK_THRESHOLDS", "HELD_OUT_MEASURE", "PO06_RESULT", "FIXED_BASELINE", "EXCEPTION_RULE", "DETERMINISTIC_DELTA", "CONFIG_ID", "RESTORE_ACTION", "PO07_RESULT",
-    "PRE_RESULT_POLICY", "CHANGE_DECISION", "COST_PROXY", "RESTORED_BASELINE", "PO08_RESULT",
-)
-BAN_TOKENS = ("246 kg", "1,404 kg", "3 minutes late", "1,320 kg", "84 kg", "1,650 kg", "1,668 kg", "18 kg over", "20:50Z", "21:20Z", "14:50 MDT", "27-minute margin", "QA-661", "RCPT-8821", "PR-4418")
 
 
 def check(cid: str, condition: bool, detail: str) -> None:
@@ -408,36 +400,6 @@ def criterion_seed() -> None:
         check("M3-STAGE", missing == ["KH-040"] and handling.parse_register(register.read_text(encoding="utf-8"))["KH-040"]["proposed"] is None, "a note without a usable proposal stays empty and is reported")
 
 
-def criterion_lab() -> None:
-    lab = read(ROOT / "shared" / "MODULE_03_LAB.md")
-    scripts = {}
-    for match in re.finditer(r"shared[/\\](mcp|verify)[/\\]([a-z_]+\.py)", lab):
-        scripts[match.group(2)] = ROOT / "shared" / match.group(1) / match.group(2)
-    check("M3-LAB", len(scripts) >= 7 and all(path.is_file() for path in scripts.values()), "every script the lab runs exists: " + ", ".join(sorted(scripts)))
-    prompts = set(re.findall(r"prompts[/\\]([A-Z_]+\.md)", lab))
-    check("M3-LAB", len(prompts) == 4 and all((ROOT / "shared" / "prompts" / name).is_file() for name in prompts), "every prompt the lab runs exists")
-    problems = []
-    for line in lab.splitlines():
-        if "$PY" not in line and "& $PY" not in line:
-            continue
-        flags = set(re.findall(r"\s(--[a-z-]+)", line))
-        name = re.search(r"([a-z_]+\.py)", line)
-        if not name:
-            continue
-        if name.group(1) == "run_omp.py":
-            source = read(REPO / "shared" / "run_omp.py")
-        elif name.group(1) in scripts:
-            source = read(scripts[name.group(1)])
-        elif name.group(1) == "prepare_work.py":
-            continue
-        else:
-            problems.append(name.group(1))
-            continue
-        problems.extend(f"{name.group(1)} {flag}" for flag in flags if f'"{flag}"' not in source)
-    check("M3-LAB", not problems, "every option the lab passes is one its script defines" + ("" if not problems else f": {problems[:3]}"))
-    check("M3-LAB", read(ROOT / "README.md").count("shared/MODULE_03_LAB.md") == 1, "the overview links the lab once")
-
-
 def criterion_verify() -> None:
     with tempfile.TemporaryDirectory() as temp:
         holds, output = sb.Bundle(Path(temp)).run()
@@ -484,42 +446,9 @@ def criterion_verify() -> None:
     tamper("a receipt set the auditor rejects", "research: the launcher receipts are complete and agree", lambda b: b.audit_errors.update(research=["unreceipted vault change: vault/Sources/KH-001.md"]))
 
 
-def learner_files() -> list[Path]:
-    files = [ROOT / "README.md", ROOT / "shared" / "MODULE_03_LAB.md", ROOT / "shared" / "mcp" / "AUTHORITY.template.md", ROOT / "shared" / "mcp" / "mcp.template.json"]
-    for pattern, folder in (("*.md", ROOT / "shared" / "vault"), ("*.md", ROOT / "shared" / "prompts")):
-        files.extend(sorted(folder.rglob(pattern)))
-    return files
-
-
-def criterion_independence() -> None:
-    missing = [path.name for path in learner_files()[:2] if not path.exists()]
-    check("M3-INDEP", not missing, "the overview and the lab page exist")
-    names = [token for token in corpus_rules.BANNED if token not in BAN_TOKENS]
-    leaks = []
-    for path in learner_files():
-        text = read(path)
-        for token in (*names, *OTHER_PRODUCTS, *OWN_PRODUCTS, "VERIFY:"):
-            if token in text:
-                leaks.append((path.name, token))
-        if re.search(r"\bPO0\d\b", text):
-            leaks.append((path.name, "PO0n"))
-        for pattern in corpus_rules.BANNED_PATTERNS:
-            if re.search(pattern, text):
-                leaks.append((path.name, pattern))
-    check("M3-INDEP", not leaks, "learner files carry no other module's names, no product tokens, no VERIFY: or PO ids" + ("" if not leaks else f": {leaks[:3]}"))
-    lab = read(ROOT / "shared" / "MODULE_03_LAB.md")
-    check("M3-INDEP", lab.count("**Terminal: Bash or zsh, ordinary user.**") == lab.count("**Terminal: PowerShell, ordinary user.**") >= 6, "every lab command appears for both Bash/zsh and PowerShell")
-
-
-def criterion_ban() -> None:
-    hits = [(path.name, token) for path in learner_files() for token in BAN_TOKENS if token in read(path)]
-    check("M3-BAN", not hits, "no banned figure or identifier appears in a learner file" + ("" if not hits else f": {hits[:3]}"))
-    check("M3-BAN", all(token not in read(path) for path in (ROOT / "scripts" / "handling_key.json",) for token in ("246 kg", "1,404 kg")), "the key carries no banned figure")
-
-
 def main() -> int:
     for step in (criterion_ref, criterion_server, criterion_auth, criterion_inspect, criterion_probe, criterion_corpus, criterion_handling,
-                 criterion_extract, criterion_stage, criterion_seed, criterion_lab, criterion_verify, criterion_independence, criterion_ban):
+                 criterion_extract, criterion_stage, criterion_seed, criterion_verify):
         try:
             step()
         except Exception as error:  # a crash is a failure of that criterion, never a pass

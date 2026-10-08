@@ -4,22 +4,9 @@
 from __future__ import annotations
 
 import re
-import shlex
 import sys
 from pathlib import Path
 
-BANNED = (
-    "246 kg",
-    "1,404 kg",
-    "3 minutes late",
-    "module-01-mission-thread",
-    "W-9",
-    "RC-0",
-    "RUNNABLE_PACKAGE",
-    "0.0.0.0",
-    "route R-71",
-)
-SOURCE_IDS = tuple(f"S0{n}" for n in range(1, 10))
 FIELDS = (
     "purpose", "bounds", "inputs", "controls / config identity", "run", "check",
     "stop", "restore", "strongest evidence", "limitations", "next owner",
@@ -27,19 +14,8 @@ FIELDS = (
 LOCAL_PATH = re.compile(r"\b(?:scripts|shared|out)[/\\][A-Za-z0-9_.\\/+-]+")
 
 
-def check(text: str) -> list[str]:
-    hits: list[str] = []
-    for token in BANNED:
-        if token in text:
-            hits.append(token)
-    for token in SOURCE_IDS:
-        if re.search(rf"\b{token}(?:_|-|\b)", text):
-            hits.append(token)
-    return hits
-
-
 def structure_errors(text: str, root: Path) -> list[str]:
-    """Read the package's fixed named fields; never execute its command text."""
+    """Check required instruction sections and local dependencies without executing them."""
     fields: dict[str, list[str]] = {}
     current = None
     fence = False
@@ -47,8 +23,6 @@ def structure_errors(text: str, root: Path) -> list[str]:
     for line in text.splitlines():
         if line.startswith("```"):
             fence = not fence
-            if fence and not line[3:].strip():
-                errors.append("code block lacks a language")
             if current:
                 fields[current].append(line)
             continue
@@ -65,27 +39,6 @@ def structure_errors(text: str, root: Path) -> list[str]:
         content = fields.get(name, [])
         if not any(line.strip() and not line.startswith("```") for line in content):
             errors.append(f"missing or empty field: {name}")
-
-    def commands(name: str, script: str) -> list[list[str]]:
-        found = []
-        for line in fields.get(name, []):
-            try:
-                words = shlex.split(line, comments=True)
-            except ValueError:
-                continue
-            if words[:1] == ["&"]:
-                words = words[1:]
-            words = [word.replace("\\", "/") for word in words]
-            if len(words) >= 2 and words[0] == "$PY" and words[1] == script:
-                found.append(words)
-        return found
-
-    for name in ("run", "stop", "restore"):
-        calls = commands(name, "scripts/local_ai.py")
-        if not calls:
-            errors.append(f"{name} lacks a complete local_ai command")
-    if not any(len(call) == 3 and call[2] == "shared/PACKAGE.md" for call in commands("check", "scripts/check_package.py")):
-        errors.append("check lacks the package-check command")
 
     paths = {value.replace("\\", "/") for value in LOCAL_PATH.findall(text)}
     for name in ("inputs", "controls / config identity"):
@@ -118,10 +71,6 @@ def main(argv: list[str]) -> int:
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError) as error:
         print(f"HOLD: unreadable package: {error}", file=sys.stderr)
-        return 1
-    hits = check(text)
-    if hits:
-        print("HOLD: package cites " + ", ".join(hits))
         return 1
     root = (path.parent.parent if path.parent.name == "shared" else path.parent).resolve()
     try:

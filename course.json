@@ -409,7 +409,7 @@
       "directory": "module-09-agent-safeguards",
       "title": "Module 9 · Constrain agent behavior",
       "case_name": "Night Desk",
-      "summary": "Run a declared tool policy and inspect what the agent actually attempted.",
+      "summary": "Use OMP prompts to test a declared tool policy, then inspect what the agent actually attempted and what stopped it.",
       "nav_summary": "Agent tool policies · observed enforcement",
       "outcomes": {
         "can": "Show, from records rather than the agent's own words, what one AI agent actually tried to do and what stopped it.",
@@ -421,7 +421,7 @@
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_09_LAB.md", "dest": "shared/MODULE_09_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_09_LAB.md", "dest": "shared/MODULE_09_LAB.html", "kind": "lab", "guide": {"context_sections": ["read-the-declared-boundary"], "optional_sections": []}}
       ],
       "figures": [
         {"source": "shared/figures/m09-declared-versus-observed.png", "dest": "shared/figures/m09-declared-versus-observed.png"},
@@ -440,19 +440,19 @@
       "directory": "module-10-capstone",
       "title": "Module 10 · Stand up and package a local uncensored AI",
       "case_name": "Cold Foundry",
-      "summary": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again.",
+      "summary": "Use OMP prompts to run a local uncensored model, stop and restore it, and check a saved copy of its supporting files.",
       "nav_summary": "Your own local model",
       "outcomes": {
         "can": "Run an uncensored model on your own laptop, stop it, bring it back, and keep the files so you can do that again without the chat.",
         "will": [
                 "Download the named model file under your own account, check that it is the right file, and point OMP at a server only this laptop can reach.",
                 "Get one real reply, then stop the server and bring the saved settings back so the wiring matches.",
-                "Save the eleven files, copy them, and check that copy from a new terminal using only those files."
+                "Save the eleven files, copy them, and check that copy from a new terminal and OMP conversation using only those files."
         ]
       },
       "pages": [
         {"source": "README.md", "dest": "README.html", "kind": "overview"},
-        {"source": "shared/MODULE_10_LAB.md", "dest": "shared/MODULE_10_LAB.html", "kind": "lab", "guide": {"context_sections": [], "optional_sections": []}}
+        {"source": "shared/MODULE_10_LAB.md", "dest": "shared/MODULE_10_LAB.html", "kind": "lab", "guide": {"context_sections": ["resume-an-existing-attempt"], "optional_sections": []}}
       ],
       "figures": [
         {"source": "shared/figures/m10-evidence-boundaries.png", "dest": "shared/figures/m10-evidence-boundaries.png"},

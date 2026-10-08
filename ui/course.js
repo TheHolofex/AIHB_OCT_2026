@@ -49,7 +49,7 @@
     if (['guided', 'read'].includes(value.view)) state.view = value.view;
     if (SHELLS.includes(value.shell)) state.shell = value.shell;
     const last = value.last;
-    if (last && pages.has(last.page) && ['lab', 'setup'].includes(pages.get(last.page).kind)) {
+    if (last && pages.has(last.page) && Object.hasOwn(data.resume, last.page)) {
       state.last = {page: last.page, anchor: targets(last.page).some(item => item.id === last.anchor) ? last.anchor : ''};
     }
     if (value.positions && typeof value.positions === 'object') {
@@ -87,7 +87,7 @@
   function moduleProgress(moduleId) {
     let total = 0, done = 0;
     for (const page of data.pages) {
-      if (page.moduleId !== moduleId || !['lab', 'setup'].includes(page.kind)) continue;
+      if (page.moduleId !== moduleId) continue;
       total += page.steps.length;
       done += doneList(page.path).length;
     }

@@ -2,20 +2,18 @@
 
 ## Session result
 
-The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes a kit they can use again without the chat that built it. All work is individual within the Thursday session. The package carries everything except the weights. The structure check does not run the package commands and does not start the service. The learner keeps the kit and the evidence. This is the learner's own capability, not a handoff to another person.
-
+The learner stands up the pinned uncensored model on their own laptop under OMP orchestration, proves a live loopback-only interaction, stops and restores it, and freezes a kit they can use again without the chat that built it. All work is individual within the Thursday session. The package carries everything except the weights. The structure check does not carry out the package's instructions and does not start the service. The learner keeps the kit and the evidence. This is the learner's own capability, not a handoff to another person.
 ## Staff release validation
 
 Complete the current full lifecycle on every distinct intended runtime/architecture, including the facilitator's machine, before Thursday:
 
 1. Obtain device-owner installation approval and inventory existing tools. Provision only missing tools using the procedure below. Preserve all existing installations and profiles.
-2. Run the lab's fresh-terminal preflight before any HF login or download. Retain actual volume free bytes/GiB, installed and available RAM, tool paths/versions/help, workload, and free-endpoint evidence.
-3. Let the account owner authenticate and accept repository conditions. Download the fixed revision/filename and verify the real byte count and SHA-256 already in `shared/case/model-card.json`; never replace the identity to admit a file. Preserve incomplete downloads and resume with the same pinned command.
-4. Complete verify, wire, approved launch line, owned listener at `127.0.0.1:8080`, context 32768, health after listening, one real OMP interaction, stop/unreachable, disabled-control refusal, digest-checked restore, byte comparison, frozen copy, cold technical replay and final stop. Record load/probe/interaction timings; no speed guarantee follows from RAM.
+2. Have OMP run the lab's readiness prompt before any HF login or download. Retain actual volume free bytes/GiB, installed and available RAM, tool paths/versions/help, workload, and free-endpoint evidence.
+3. Let the account owner authenticate and accept repository conditions. Download the fixed revision/filename and verify the real byte count and SHA-256 already in `shared/case/model-card.json`; never replace the identity to admit a file. Preserve incomplete downloads and resume with the same pinned request.
+4. Complete verify, wire, learner-approved launch through OMP's named managed service, ownership proof, then health at `127.0.0.1:8080`, context 32768, one real OMP interaction, stop/unreachable, disabled-control refusal, digest-checked restore, byte comparison, frozen copy, cold technical replay and final stop. Record load/probe/interaction timings; no speed guarantee follows from RAM.
 5. Use 24 GiB installed RAM as a planning floor. At least 16 GiB but less than 24 GiB is conditional on the full rehearsal. Below 16 GiB, or after any failed full rehearsal, arrange an owner-approved qualified machine. Observing another person's probe loop supports participation but does not establish operating evidence.
 
 Hold the affected lane and release when required machines, approvals, or full current observations are missing. Never bind beyond loopback, change port/context/model, edit the pin, or claim another process's health response as this attempt.
-
 ## Provision only missing capstone tools
 
 Use an ordinary account and the Python 3.12+ executable resolved by the selected Module 00 platform route (`PY`). Keep a private record of approval, OS/version/architecture, executable paths and existing versions before making changes. An existing `hf` or `llama-server` is not a missing installation: retain it, inspect version/help, and qualify its complete model run separately. If it fails, obtain an owner decision; do not overwrite it.
@@ -57,14 +55,12 @@ Only when `llama-server` is missing:
 2. Compare the complete SHA-256 before extraction. On Unix, use `shasum -a 256` or `sha256sum`; on Windows, use `Get-FileHash -Algorithm SHA256 -LiteralPath` with the actual downloaded path. A mismatch is HOLD; never update the expected digest to fit it.
 3. Extract the verified `.tar.gz` or `.zip` with the platform archive tool into a new approved per-user directory. Keep the complete archive layout and neighboring libraries; do not copy only the executable or replace system libraries. Inspect the extracted files and record the actual `llama-server`/`llama-server.exe` path—do not guess a Windows install location.
 4. Run that exact executable's `--version` and `--help`; confirm build 11146 and `-m`, `--host`, `--port`, `-c`. The lab preflight repeats these observations. Missing native libraries or an architecture mismatch remains HOLD for the device owner.
-5. Open a new desktop terminal, enter the approved paths when prompted by the lab's resolver, and complete the exact-model lifecycle. Record the archive hash and final binary hash separately. Leave VERSIONS unqualified for any native combination that has not completed this rehearsal.
-
+5. Open a new desktop terminal, give OMP the approved paths when it asks, then complete the lifecycle through the lab prompts in a new terminal and ordinary OMP conversation. Record the archive hash and final binary hash separately. Leave VERSIONS unqualified for any native combination that has not completed this rehearsal.
 The b11146 Ubuntu CPU archives are candidates on Linux, not proof of Arch or WSL compatibility. If no suitable official artifact exists for an actual cohort runtime, use only an owner-approved source build pinned to commit `7fe450e19305b828c199d602c23a8337aaa1f03b`, with the official [build instructions at that commit](https://github.com/ggml-org/llama.cpp/blob/7fe450e19305b828c199d602c23a8337aaa1f03b/docs/build.md). Record compiler/native dependencies, build flags and binary hash, then perform the same rehearsal. Do not silently substitute an old package, another model, or a source build for a merely untested archive.
 
 ### Qualify the machine, not just the installation
 
-Retain the helper report and complete current lab/package observations outside the repository. Native Windows includes the actual Windows PowerShell 5.1 fence-parser report, the repaired UTF-8 receipt with paths containing spaces, actual stop-verifier execution, and the package's real probe during cold replay. Account owners authenticate and accept model conditions themselves; provisioning grants neither account authority nor permission to stop an existing service.
-
+Retain the helper report and complete current lab/package observations outside the repository. Native Windows includes the actual Windows PowerShell 5.1 parser results for the staff installation fences, OMP's managed start/stop and process/listener inspection on that platform, a UTF-8 stop receipt written by OMP in a path containing spaces, actual stop-verifier execution, and the package's real probe during cold replay. Account owners authenticate and accept model conditions themselves; provisioning grants neither account authority nor permission to stop an existing service.
 ## Thursday delivery route
 
 Total facilitated allocation: 180 minutes (13:30–16:30). The blocks are planning allocations, not measured learner times. Preserve the three-hour block. All work is individual within the Thursday session.
@@ -74,14 +70,14 @@ Total facilitated allocation: 180 minutes (13:30–16:30). The blocks are planni
 | Boundary discussion | 20 min | Service rules, uncensored behaviour, the community note as data |
 | Account and download | 25 min | Device login, accepted conditions, resumable download |
 | Verify and wire | 15 min | Pinned identity check, loopback overlay |
-| Bring-up and probe | 25 min | OMP-drafted launch line, learner approval, probe to green |
+| Bring-up and probe | 25 min | OMP proposes the launch, learner approves, OMP starts its owned managed service, ownership then probe |
 | Live interaction and observation | 30 min | One real exchange, observed response/refusal/warning, named boundary |
-| Stop and restore | 25 min | Stopped-state proof, control disable/restore, byte comparison |
-| Package freeze and fresh-terminal check | 25 min | Freeze the declared ten-file bundle, make a digest-checked copy into `F`, then from a new terminal inside `F` run `scripts/check_package.py shared/PACKAGE.md` and record `PASS: package structure checked` or the observed HOLD |
-| Close | 15 min | Learner shuts down the service and records verified identity, live interaction, stop receipt, restore comparison, fresh-terminal structure check, what ran, and unresolved limits in `E/close-out.md` |
+| Stop and restore | 25 min | OMP stops its owned service with exit/listener/unreachable proof before the receipt, control disable/restore, byte comparison, approved restart and final stop |
+| Package freeze and fresh-terminal check | 25 min | Freeze the declared eleven-file bundle, make a digest-checked copy into `F`, then from a new terminal and new ordinary OMP conversation rooted in `F` run `scripts/check_package.py shared/PACKAGE.md` and record the observed result |
+| Close | 15 min | Learner confirms the final service is down and records verified identity, live interaction, stop receipt, restore comparison, fresh-terminal structure check, what ran, and unresolved limits in `E/close-out.md` |
 
 ## Close-out observations
 
-The learner records the checks they actually ran and their limits. The fresh-terminal structure check confirms named fields and files within `F`. It does not execute package commands, and it does not hand the model to anyone else. The learner is the one who runs it.
+The learner records the checks they actually ran and their limits. The fresh-terminal structure check confirms named fields and files within `F`. It does not carry out the package's instructions, and it does not hand the model to anyone else. The learner is the one who runs it.
 
 Hold the affected work and name the reason when: the repository conditions are not accepted; the downloaded file's size or digest differs; disk space runs out during download; the server binds any address other than `127.0.0.1`; the endpoint becomes reachable from another machine; a helper pass is forced by editing `model-card.json` or any fixture; the fresh-terminal structure check fails; or access, download, or hardware prevents required steps. Preserve every artifact of a held attempt. Access, hardware, or time misses close as honest HOLD in the session. No one else finishes the attempt, and no work continues after the session.

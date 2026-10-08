@@ -7,8 +7,8 @@
 **Produces:** LOCAL_MODEL_SERVICE; PO10_RESULT  
 **Rough time:** about 3 hours  
 **Performance stage:** Transferred  
-**Work surface:** A real local-model service on the learner's own laptop  
-**Practical work:** Stand up the pinned uncensored model on the learner's own laptop under OMP orchestration (account, download, live bring-up, interaction, stop/restore), freeze a digest-checked 10-file kit copy excluding weights, and run the package structure check from a fresh terminal. ~180 min Thursday allocation (unmeasured). All individual in-session work on own laptop.
+**Work surface:** A real local-model service on the learner's own laptop, operated through prompts copied into ordinary OMP (the coordinator); the learner approves access, download, each launch and each stop, and OMP starts and stops its own managed service  
+**Practical work:** Stand up the pinned uncensored model on the learner's own laptop under OMP orchestration (account, download, live bring-up under an owned managed service, interaction, stop/restore), freeze a digest-checked eleven-file kit copy excluding weights, and run the package structure check from a fresh terminal and new OMP conversation. ~180 min Thursday allocation (unmeasured). All individual in-session work on own laptop.
 **Performance evidence:** Verified weights identity, loopback-only service proof, live-interaction transcript, stop/restore receipts, byte-identical restore comparison, frozen bundle record, digest-checked copy, fresh-terminal structure check, and close-out.
 **Failure / HOLD:** Hold the affected work for gated access not accepted, wrong-size or wrong-hash weights, insufficient hardware, a bind beyond loopback, public exposure, or a forced pass. If access, download, hardware, or time prevents completion, record the reason and close the attempt within the session; no outside-session continuation is required.
 **Scope boundary:** Live identity, interaction, and stop/restore evidence proves only the local runtime behavior exercised. The separate structure check confirms named files and fields in the fresh copy; it does not execute commands or prove runtime behavior. Neither establishes production fitness, safety-stack completeness, or model quality.
@@ -27,7 +27,7 @@ Saved artifacts are the claim. A local uncensored model is finished when it runs
 
 ## Check the work
 
-A clean individual session uses the learner's work folder. The learner freezes the declared 10-file bundle, makes a digest-checked copy to fresh location `F`, opens new terminal in `F`, runs `scripts/check_package.py shared/PACKAGE.md`, records `PASS: package structure checked`. The structure check reads named fields and confirms files inside `F`; it does not run commands. PO10_RESULT records verified identity, live interaction, stop/restore receipts, byte-identical restore comparison, frozen bundle, digest-checked copy, fresh-terminal structure check, and unresolved limits.
+A clean individual session uses the learner's work folder. The learner copies prompts into ordinary OMP. OMP executes the mechanical steps. The learner freezes the declared eleven-file bundle, makes a digest-checked copy to fresh location `F`, opens a new terminal and a new ordinary OMP conversation in `F`, runs `scripts/check_package.py shared/PACKAGE.md`, records the observed result. The structure check reads named fields and confirms files inside `F`; it does not run commands. PO10_RESULT records verified identity, live interaction, stop/restore receipts, byte-identical restore comparison, frozen bundle, digest-checked copy, fresh-terminal structure check, and unresolved limits.
 
 ## Supplied-case domain (adapter)
 

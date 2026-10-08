@@ -23,3 +23,5 @@ The model will not refuse on its own. It will answer bluntly, and it will not wa
 - Anything you would not put your name on should not be sent to this service and treated as finished work.
 
 A local uncensored model is a capability you aim. It is not a guardrail you inherit.
+
+You approve the use of your account, the download, the launch of the managed service, each interaction, each stop, and the final package. OMP performs the mechanical operations (prepare, readiness, verify, wire, managed start under a named handle, probe, local-provider execution, managed stop, file edits for control, freeze and copy) using its normal tools and shows the actual results for your inspection. OMP saves the local interaction's event stream and your confirmed observations in your evidence folder; treat every prompt as recorded.
